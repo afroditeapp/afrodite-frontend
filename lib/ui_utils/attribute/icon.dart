@@ -4,6 +4,18 @@ import 'package:logging/logging.dart';
 final _log = Logger("AttributeIcons");
 
 class AttributeIcons {
+  static const Map<String, IconData> materialIcons = {
+    "celebration_rounded": Icons.celebration_rounded,
+    "close_rounded": Icons.close_rounded,
+    "color_lens_rounded": Icons.color_lens_rounded,
+    "favorite_rounded": Icons.favorite_rounded,
+    "location_city_rounded": Icons.location_city_rounded,
+    "question_mark_rounded": Icons.question_mark_rounded,
+    "search_rounded": Icons.search_rounded,
+    "waving_hand_rounded": Icons.waving_hand_rounded,
+    "star_rounded": Icons.star_rounded,
+  };
+
   static IconData? iconResourceToMaterialIcon(String? iconResouce) {
     if (iconResouce == null) {
       return null;
@@ -16,18 +28,7 @@ class AttributeIcons {
 
     final identifier = iconResouce.substring(PREFIX.length);
 
-    final IconData? iconObject = switch (identifier) {
-      "celebration_rounded" => Icons.celebration_rounded,
-      "close_rounded" => Icons.close_rounded,
-      "color_lens_rounded" => Icons.color_lens_rounded,
-      "favorite_rounded" => Icons.favorite_rounded,
-      "location_city_rounded" => Icons.location_city_rounded,
-      "question_mark_rounded" => Icons.question_mark_rounded,
-      "search_rounded" => Icons.search_rounded,
-      "waving_hand_rounded" => Icons.waving_hand_rounded,
-      "star_rounded" => Icons.star_rounded,
-      _ => null,
-    };
+    final IconData? iconObject = materialIcons[identifier];
 
     if (iconObject == null) {
       _log.warning("Icon $identifier is not supported");

@@ -5,6 +5,7 @@ import 'package:app/ui/normal/settings/admin/moderator_tasks.dart';
 import 'package:app/ui/normal/settings/admin/open_account_admin_settings.dart';
 import 'package:app/ui/normal/settings/admin/view_accounts.dart';
 import 'package:app/ui/normal/settings/admin/view_admins.dart';
+import 'package:app/ui/normal/settings/admin/profile_attributes/schema_editor.dart';
 import 'package:app/ui/normal/settings/server.dart';
 import 'package:app/ui/normal/settings/metrics.dart';
 import 'package:flutter/material.dart';
@@ -124,6 +125,15 @@ class AdminSettingsScreen extends StatelessWidget {
           Icons.group,
           "View accounts",
           () => MyNavigator.pushLimited(context, ViewAccountsPage(r)),
+        ),
+      );
+    }
+    if (permissions.adminEditProfileAttributesSchema) {
+      settings.add(
+        Setting.createSetting(
+          Icons.schema,
+          "Profile attributes schema",
+          () => MyNavigator.pushLimited(context, ProfileAttributesSchemaPage(r)),
         ),
       );
     }
