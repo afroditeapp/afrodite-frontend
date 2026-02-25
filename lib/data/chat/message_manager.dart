@@ -203,7 +203,6 @@ class MessageManager extends LifecycleMethods {
 
   Future<Result<(), DeleteSendFailedError>> _deleteSendFailedMessage(
     LocalMessageId localId, {
-    bool sendUiEvent = true,
     bool actuallySentMessageCheck = true,
   }) async {
     if (actuallySentMessageCheck) {
@@ -229,11 +228,6 @@ class MessageManager extends LifecycleMethods {
     if (deleteResult.isErr()) {
       return const Err(DeleteSendFailedError.unspecifiedError);
     } else {
-      if (sendUiEvent) {
-        profile.sendProfileChange(
-          ConversationChanged(toBeRemoved.remoteAccountId, ConversationChangeType.messageRemoved),
-        );
-      }
       return const Ok(());
     }
   }
@@ -260,17 +254,12 @@ class MessageManager extends LifecycleMethods {
 
     ResendFailedError? sendingError;
     ResendFailedError? deleteError;
-    await for (var e in sendMessageUtils.sendMessageTo(
-      receiverAccount,
-      toBeResentMessage,
-      sendUiEvent: false,
-    )) {
+    await for (var e in sendMessageUtils.sendMessageTo(receiverAccount, toBeResentMessage)) {
       switch (e) {
         case SavedToLocalDb():
           // actuallySentMessageCheck is false because the check is already done
           final deleteResult = await _deleteSendFailedMessage(
             localId,
-            sendUiEvent: false,
             actuallySentMessageCheck: false,
           );
           switch (deleteResult) {
@@ -279,9 +268,6 @@ class MessageManager extends LifecycleMethods {
             case Ok():
               ();
           }
-          profile.sendProfileChange(
-            ConversationChanged(toBeResent.remoteAccountId, ConversationChangeType.messageResent),
-          );
         case ErrorBeforeMessageSaving():
           sendingError = ResendFailedError.unspecifiedError;
         case ErrorAfterMessageSaving():
@@ -332,11 +318,7 @@ class MessageManager extends LifecycleMethods {
     );
 
     ResendDeliveryFailedError? sendingError;
-    await for (var e in sendMessageUtils.sendMessageTo(
-      toBeResent.remoteAccountId,
-      resentMessage,
-      sendUiEvent: true,
-    )) {
+    await for (var e in sendMessageUtils.sendMessageTo(toBeResent.remoteAccountId, resentMessage)) {
       switch (e) {
         case SavedToLocalDb():
           ();

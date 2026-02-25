@@ -45,8 +45,7 @@ class UpdateIsInMatches extends ConversationEvent {
 
 class MessageCountChanged extends ConversationEvent {
   final int newMessageCount;
-  final ConversationChangeType? changeInfo;
-  MessageCountChanged(this.newMessageCount, this.changeInfo);
+  MessageCountChanged(this.newMessageCount);
 }
 
 class BlockProfile extends ConversationEvent {
@@ -79,7 +78,7 @@ abstract class ConversationDataProvider {
   Future<bool> isInSentBlocks(AccountId accountId);
   Future<bool> sendBlockTo(AccountId accountId);
   Stream<MessageSendingEvent> sendMessageTo(AccountId accountId, Message message);
-  Stream<(int, ConversationChanged?)> getMessageCountAndChanges(AccountId match);
+  Stream<int> getMessageCount(AccountId match);
 
   Future<Result<(), DeleteSendFailedError>> deleteSendFailedMessage(LocalMessageId localId);
   Future<Result<(), ResendFailedError>> resendSendFailedMessage(LocalMessageId localId);
@@ -106,8 +105,8 @@ class DefaultConversationDataProvider extends ConversationDataProvider {
   }
 
   @override
-  Stream<(int, ConversationChanged?)> getMessageCountAndChanges(AccountId match) {
-    return chat.getMessageCountAndChanges(match);
+  Stream<int> getMessageCount(AccountId match) {
+    return chat.getMessageCount(match);
   }
 
   @override
@@ -142,7 +141,7 @@ class ConversationBloc extends Bloc<ConversationEvent, ConversationData> with Ac
   final ApiManager api;
   final AccountRepository account;
 
-  StreamSubscription<(int, ConversationChanged?)>? _messageCountSubscription;
+  StreamSubscription<int>? _messageCountSubscription;
   StreamSubscription<ProfileChange>? _profileChangeSubscription;
   StreamSubscription<bool>? _isInMatchesSubscription;
 
@@ -177,10 +176,7 @@ class ConversationBloc extends Bloc<ConversationEvent, ConversationData> with Ac
               emit(state.copyWith(isBlocked: true));
             }
           }
-        case ProfileUnblocked() ||
-            ConversationChanged() ||
-            ReloadMainProfileView() ||
-            ProfileFavoriteStatusChange():
+        case ProfileUnblocked() || ReloadMainProfileView() || ProfileFavoriteStatusChange():
           {}
       }
     });
@@ -325,11 +321,10 @@ class ConversationBloc extends Bloc<ConversationEvent, ConversationData> with Ac
       add(HandleProfileChange(event));
     });
 
-    _messageCountSubscription = dataProvider.getMessageCountAndChanges(state.accountId).listen((
-      countAndEvent,
+    _messageCountSubscription = dataProvider.getMessageCount(state.accountId).listen((
+      newMessageCount,
     ) {
-      final (newMessageCount, event) = countAndEvent;
-      add(MessageCountChanged(newMessageCount, event?.change));
+      add(MessageCountChanged(newMessageCount));
     });
 
     _isInMatchesSubscription = dataProvider.isInMatchesStream(state.accountId).listen((value) {

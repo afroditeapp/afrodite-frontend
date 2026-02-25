@@ -21,6 +21,10 @@ class HandleProfileChange extends ViewProfileEvent {
   HandleProfileChange(this.change);
 }
 
+class ReloadProfileAction extends ViewProfileEvent {
+  ReloadProfileAction();
+}
+
 class ToggleFavoriteStatus extends ViewProfileEvent {
   final AccountId accountId;
   ToggleFavoriteStatus(this.accountId);
@@ -46,6 +50,7 @@ class ViewProfileBloc extends Bloc<ViewProfileEvent, ViewProfilesData> with Acti
   final ChatRepository chat;
 
   StreamSubscription<ProfileChange>? _profileChangeSubscription;
+  StreamSubscription<void>? _profileActionSubscription;
   StreamSubscription<ProfileEntry?>? _profileRefreshSubscription;
 
   ViewProfileBloc(
@@ -69,6 +74,10 @@ class ViewProfileBloc extends Bloc<ViewProfileEvent, ViewProfilesData> with Acti
           profileActionState: action,
         ),
       );
+    });
+    on<ReloadProfileAction>((data, emit) async {
+      final action = await resolveProfileAction(chat, state.profile.accountId);
+      emit(state.copyWith(profileActionState: action));
     });
     on<ToggleFavoriteStatus>((data, emit) async {
       await runOnce(() async {
@@ -116,12 +125,6 @@ class ViewProfileBloc extends Bloc<ViewProfileEvent, ViewProfilesData> with Acti
             if (change.profile == state.profile.accountId) {
               emit(state.copyWith(isBlocked: true));
             }
-          }
-        case ConversationChanged():
-          {
-            // Show the chat action when the first message is received
-            final action = await resolveProfileAction(chat, state.profile.accountId);
-            emit(state.copyWith(profileActionState: action));
           }
         case ProfileUnblocked() || ReloadMainProfileView() || ProfileFavoriteStatusChange():
           {}
@@ -199,6 +202,15 @@ class ViewProfileBloc extends Bloc<ViewProfileEvent, ViewProfilesData> with Acti
       add(HandleProfileChange(event));
     });
 
+    // Show the chat action when the first message is received
+    _profileActionSubscription = chat.isInMatchesStream(state.profile.accountId).listen((
+      isInMatches,
+    ) {
+      if (state.profileActionState != ProfileActionState.chat && isInMatches) {
+        add(ReloadProfileAction());
+      }
+    });
+
     // Refresh profile from server when needed. Previous screens will
     // show the updated profile.
     _profileRefreshSubscription = profile
@@ -212,6 +224,7 @@ class ViewProfileBloc extends Bloc<ViewProfileEvent, ViewProfilesData> with Acti
   Future<void> close() async {
     await _profileRefreshSubscription?.cancel();
     await _profileChangeSubscription?.cancel();
+    await _profileActionSubscription?.cancel();
     return super.close();
   }
 }

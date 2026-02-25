@@ -666,12 +666,6 @@ class ProfileUnblocked extends ProfileChange {
   ProfileUnblocked(this.profile);
 }
 
-class ConversationChanged extends ProfileChange {
-  final AccountId conversationWith;
-  final ConversationChangeType change;
-  ConversationChanged(this.conversationWith, this.change);
-}
-
 class ProfileFavoriteStatusChange extends ProfileChange {
   final AccountId profile;
   final bool isFavorite;
@@ -687,8 +681,6 @@ class ReloadMainProfileView extends ProfileChange {
     required this.eventHandlingTracker,
   });
 }
-
-enum ConversationChangeType { messageSent, messageReceived, messageRemoved, messageResent }
 
 enum ProfileRefreshPriority {
   /// Refresh if 15 minutes have passed since last refresh

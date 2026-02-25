@@ -20,6 +20,14 @@ class DaoReadMessage extends DatabaseAccessor<AccountDatabase> with _$DaoReadMes
     return await q.map((r) => r.read(messageCount)).getSingleOrNull();
   }
 
+  Stream<int> watchCountMessagesInConversation(api.AccountId remoteAccountId) {
+    final messageCount = message.localId.count();
+    final q = (selectOnly(message)
+      ..where(message.remoteAccountId.equals(remoteAccountId.aid))
+      ..addColumns([messageCount]));
+    return q.map((r) => r.read(messageCount) ?? 0).watchSingle();
+  }
+
   /// Get message with given index in a conversation.
   /// The index 0 is the latest message.
   Future<dbm.MessageEntry?> getMessage(api.AccountId remoteAccountId, int index) async {

@@ -69,7 +69,7 @@ class ChatListLogic {
 
   void _setupEventSubscription() {
     final messageEvents = chatRepository
-        .getMessageCountAndChanges(messageReceiver)
+        .getMessageCount(messageReceiver)
         .map((_) => _MessageCountChanged());
 
     final typingEvents = typingIndicatorEnabled

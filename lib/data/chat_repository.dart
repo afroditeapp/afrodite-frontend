@@ -272,49 +272,9 @@ class ChatRepository extends DataRepositoryWithLifecycle {
     return db.accountStream((db) => db.message.getMessageUpdatesUsingLocalMessageId(localId));
   }
 
-  /// Get message and updates to it.
-  /// Index 0 is the latest message.
-  Stream<MessageEntry?> getMessageWithIndex(AccountId match, int index) async* {
-    final message = await db.accountData((db) => db.message.getMessage(match, index)).ok();
-    final localId = message?.localId;
-    if (message == null || localId == null) {
-      yield null;
-      return;
-    }
-    yield message;
-    await for (final event in profile.profileChanges) {
-      if (event is ConversationChanged && event.conversationWith == match) {
-        final messageList =
-            await db
-                .accountData(
-                  (db) => db.message.getMessageListUsingLocalMessageId(match, localId, 1),
-                )
-                .ok() ??
-            [];
-        final message = messageList.firstOrNull;
-        if (message != null) {
-          yield message;
-        }
-      }
-    }
-  }
-
-  /// Get message count of conversation and possibly the related change event.
-  /// Also receive updates to both.
-  Stream<(int, ConversationChanged?)> getMessageCountAndChanges(AccountId match) async* {
-    final messageNumber = await db
-        .accountData((db) => db.message.countMessagesInConversation(match))
-        .ok();
-    yield (messageNumber ?? 0, null);
-
-    await for (final event in profile.profileChanges) {
-      if (event is ConversationChanged && event.conversationWith == match) {
-        final messageNumber = await db
-            .accountData((db) => db.message.countMessagesInConversation(match))
-            .ok();
-        yield (messageNumber ?? 0, event);
-      }
-    }
+  /// Get message count of conversation
+  Stream<int> getMessageCount(AccountId match) {
+    return db.accountStreamOrDefault((db) => db.message.watchCountMessagesInConversation(match), 0);
   }
 
   /// First message is the latest message.

@@ -39,12 +39,8 @@ class SendMessageUtils {
 
   bool allSentMessagesAcknowledgedOnce = false;
 
-  Stream<MessageSendingEvent> sendMessageTo(
-    AccountId accountId,
-    Message message, {
-    bool sendUiEvent = true,
-  }) async* {
-    await for (final e in _sendMessageToInternal(accountId, message, sendUiEvent: sendUiEvent)) {
+  Stream<MessageSendingEvent> sendMessageTo(AccountId accountId, Message message) async* {
+    await for (final e in _sendMessageToInternal(accountId, message)) {
       switch (e) {
         case SavedToLocalDb():
           yield e;
@@ -61,11 +57,7 @@ class SendMessageUtils {
     }
   }
 
-  Stream<MessageSendingEvent> _sendMessageToInternal(
-    AccountId accountId,
-    Message message, {
-    bool sendUiEvent = true,
-  }) async* {
+  Stream<MessageSendingEvent> _sendMessageToInternal(AccountId accountId, Message message) async* {
     final isMatch = await _isInMatches(accountId);
     if (!isMatch) {
       final resultSendLike = await api.chatAction((api) => api.postSendLike(accountId));
@@ -130,10 +122,6 @@ class SendMessageUtils {
       case Err():
         yield const ErrorBeforeMessageSaving();
         return;
-    }
-
-    if (sendUiEvent) {
-      profile.sendProfileChange(ConversationChanged(accountId, ConversationChangeType.messageSent));
     }
 
     final currentUserKeys = await messageKeyManager.getKeysWhenChatIsEnabled().ok();
@@ -253,11 +241,6 @@ class SendMessageUtils {
 
         await publicKeyUtils.getLatestPublicKeyForForeignAccount(accountId);
         // Show possible key change info to user
-        if (sendUiEvent) {
-          profile.sendProfileChange(
-            ConversationChanged(accountId, ConversationChangeType.messageSent),
-          );
-        }
         yield ErrorAfterMessageSaving(localId);
         return;
       }

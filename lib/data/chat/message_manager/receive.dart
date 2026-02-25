@@ -128,9 +128,6 @@ class ReceiveMessageUtils {
           )
           .ok();
       if (unreadMessagesCount != null) {
-        profile.sendProfileChange(
-          ConversationChanged(message.parsed.sender, ConversationChangeType.messageReceived),
-        );
         if (conversationId == null) {
           await NotificationMessageReceived.getInstance().showFallbackMessageReceivedNotification(
             db,
