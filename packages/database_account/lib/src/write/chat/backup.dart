@@ -164,7 +164,7 @@ class DaoWriteBackup extends DatabaseAccessor<AccountDatabase> with _$DaoWriteBa
         await into(conversationList).insertOnConflictUpdate(
           ConversationListCompanion.insert(
             accountId: latestMessage.remoteAccountId,
-            conversationLastChangedTime: Value(latestMessage.sentUnixTime),
+            conversationLastChangedTime: Value(latestMessage.localUnixTime),
           ),
         );
       }
