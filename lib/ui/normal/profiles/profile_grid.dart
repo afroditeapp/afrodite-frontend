@@ -134,8 +134,6 @@ class ProfileGridState extends State<ProfileGrid> {
           }
           return PagingState();
         });
-      case ProfileUnblocked():
-        {}
     }
   }
 

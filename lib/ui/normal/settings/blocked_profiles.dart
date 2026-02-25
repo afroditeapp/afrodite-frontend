@@ -1,19 +1,18 @@
-import 'dart:async';
-
 import 'package:app/data/chat_repository.dart';
 import 'package:app/data/utils/repository_instances.dart';
 import 'package:app/model/freezed/logic/main/navigator_state.dart';
+import 'package:app/ui_utils/bloc_listener.dart';
 import 'package:app/ui_utils/extensions/other.dart';
 import 'package:app/ui_utils/profile_thumbnail_image_or_error.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:openapi/api.dart';
 import 'package:app/data/image_cache.dart';
-import 'package:app/data/profile_repository.dart';
 import 'package:database/database.dart';
 import 'package:infinite_scroll_pagination/infinite_scroll_pagination.dart';
 import 'package:app/localizations.dart';
 import 'package:app/logic/settings/blocked_profiles.dart';
+import 'package:app/model/freezed/logic/settings/blocked_profiles.dart';
 import 'package:app/ui_utils/consts/padding.dart';
 import 'package:app/ui_utils/dialog.dart';
 import 'package:app/ui_utils/list.dart';
@@ -27,9 +26,8 @@ class BlockedProfilesPage extends MyScreenPage<()> with SimpleUrlParser<BlockedP
 }
 
 class BlockedProfilesScreen extends StatefulWidget {
-  final ProfileRepository profile;
   final ChatRepository chat;
-  BlockedProfilesScreen(RepositoryInstances r, {super.key}) : profile = r.profile, chat = r.chat;
+  BlockedProfilesScreen(RepositoryInstances r, {super.key}) : chat = r.chat;
 
   @override
   State<BlockedProfilesScreen> createState() => _BlockedProfilesScreen();
@@ -40,28 +38,9 @@ typedef BlockedProfileEntry = (AccountId account, ProfileEntry? profile);
 const _IMG_SIZE = 100.0;
 
 class _BlockedProfilesScreen extends State<BlockedProfilesScreen> {
-  StreamSubscription<ProfileChange>? _profileChangesSubscription;
   PagingState<int, BlockedProfileEntry> _pagingState = PagingState();
 
   bool isDisposed = false;
-
-  @override
-  void initState() {
-    super.initState();
-    _profileChangesSubscription?.cancel();
-    _profileChangesSubscription = widget.profile.profileChanges.listen((event) {
-      handleProfileChange(event);
-    });
-  }
-
-  void handleProfileChange(ProfileChange event) {
-    switch (event) {
-      case ProfileUnblocked():
-        removeAccountIdFromList(event.profile);
-      case ProfileBlocked() || ProfileFavoriteStatusChange() || ReloadMainProfileView():
-        {}
-    }
-  }
 
   void updatePagingState(
     PagingState<int, BlockedProfileEntry> Function(PagingState<int, BlockedProfileEntry>) action,
@@ -98,9 +77,18 @@ class _BlockedProfilesScreen extends State<BlockedProfilesScreen> {
 
   @override
   Widget build(BuildContext context) {
-    return Scaffold(
-      appBar: AppBar(title: Text(context.strings.blocked_profiles_screen_title)),
-      body: page(context),
+    return BlocListenerWithInitialValue<BlockedProfilesBloc, BlockedProfilesData>(
+      listener: (context, state) {
+        final lastUnblocked = state.lastUnblocked;
+        if (lastUnblocked != null) {
+          removeAccountIdFromList(lastUnblocked);
+          context.read<BlockedProfilesBloc>().add(LastUnblockedHandled());
+        }
+      },
+      child: Scaffold(
+        appBar: AppBar(title: Text(context.strings.blocked_profiles_screen_title)),
+        body: page(context),
+      ),
     );
   }
 
@@ -197,8 +185,6 @@ class _BlockedProfilesScreen extends State<BlockedProfilesScreen> {
   @override
   void dispose() {
     isDisposed = true;
-    _profileChangesSubscription?.cancel();
-    _profileChangesSubscription = null;
     super.dispose();
   }
 }

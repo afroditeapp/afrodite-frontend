@@ -224,7 +224,7 @@ class LikeViewContentState extends State<LikeViewContent> {
     switch (event) {
       case ProfileBlocked():
         _removeAccountIdFromList(event.profile);
-      case ProfileUnblocked() || ReloadMainProfileView() || ProfileFavoriteStatusChange():
+      case ReloadMainProfileView() || ProfileFavoriteStatusChange():
         {}
     }
   }

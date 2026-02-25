@@ -14,13 +14,15 @@ class UnblockProfile extends BlockedProfilesEvent {
   UnblockProfile(this.value);
 }
 
+class LastUnblockedHandled extends BlockedProfilesEvent {}
+
 class BlockedProfilesBloc extends Bloc<BlockedProfilesEvent, BlockedProfilesData>
     with ActionRunner {
   final ChatRepository chat;
 
   BlockedProfilesBloc(RepositoryInstances r) : chat = r.chat, super(BlockedProfilesData()) {
     on<UnblockProfile>((data, emit) async {
-      if (state.unblockOngoing) {
+      if (state.unblockOngoing || state.lastUnblocked != null) {
         showSnackBar(R.strings.blocked_profiles_screen_unblock_profile_in_progress);
         return;
       }
@@ -29,11 +31,15 @@ class BlockedProfilesBloc extends Bloc<BlockedProfilesEvent, BlockedProfilesData
 
       if (await chat.removeBlockFrom(data.value)) {
         showSnackBar(R.strings.blocked_profiles_screen_unblock_profile_successful);
+        emit(state.copyWith(unblockOngoing: false, lastUnblocked: data.value));
       } else {
         showSnackBar(R.strings.blocked_profiles_screen_unblock_profile_failed);
+        emit(state.copyWith(unblockOngoing: false));
       }
+    });
 
-      emit(state.copyWith(unblockOngoing: false));
+    on<LastUnblockedHandled>((event, emit) {
+      emit(state.copyWith(lastUnblocked: null));
     });
   }
 }

@@ -79,7 +79,7 @@ class _GenericProfileGridState extends State<GenericProfileGrid> {
     switch (event) {
       case ProfileBlocked():
         _removeAccountIdFromList(event.profile);
-      case ProfileUnblocked() || ReloadMainProfileView() || ProfileFavoriteStatusChange():
+      case ReloadMainProfileView() || ProfileFavoriteStatusChange():
         {}
     }
   }

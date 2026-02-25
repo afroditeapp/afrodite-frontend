@@ -176,7 +176,7 @@ class ConversationBloc extends Bloc<ConversationEvent, ConversationData> with Ac
               emit(state.copyWith(isBlocked: true));
             }
           }
-        case ProfileUnblocked() || ReloadMainProfileView() || ProfileFavoriteStatusChange():
+        case ReloadMainProfileView() || ProfileFavoriteStatusChange():
           {}
       }
     });

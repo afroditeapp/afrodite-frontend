@@ -126,7 +126,7 @@ class ViewProfileBloc extends Bloc<ViewProfileEvent, ViewProfilesData> with Acti
               emit(state.copyWith(isBlocked: true));
             }
           }
-        case ProfileUnblocked() || ReloadMainProfileView() || ProfileFavoriteStatusChange():
+        case ReloadMainProfileView() || ProfileFavoriteStatusChange():
           {}
       }
     });

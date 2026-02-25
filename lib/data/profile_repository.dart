@@ -661,11 +661,6 @@ class ProfileBlocked extends ProfileChange {
   ProfileBlocked(this.profile);
 }
 
-class ProfileUnblocked extends ProfileChange {
-  final AccountId profile;
-  ProfileUnblocked(this.profile);
-}
-
 class ProfileFavoriteStatusChange extends ProfileChange {
   final AccountId profile;
   final bool isFavorite;

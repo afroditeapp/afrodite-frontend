@@ -195,7 +195,6 @@ class ChatRepository extends DataRepositoryWithLifecycle {
     final result = await api.chatAction((api) => api.postUnblockProfile(accountId));
     if (result.isOk()) {
       await db.accountAction((db) => db.conversationList.setSentBlockStatus(accountId, false));
-      profile.sendProfileChange(ProfileUnblocked(accountId));
     }
     return result.isOk();
   }
