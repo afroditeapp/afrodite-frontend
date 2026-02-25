@@ -75,6 +75,9 @@ class AdminSettingsScreen extends StatelessWidget {
         permissions.adminServerViewImageProcessingConfig ||
         permissions.adminServerViewInfo ||
         permissions.adminServerRestart ||
+        permissions.adminServerReboot ||
+        permissions.adminServerScheduledRestart ||
+        permissions.adminServerScheduledReboot ||
         permissions.adminServerDataReset ||
         permissions.adminServerSoftwareUpdate ||
         permissions.adminServerEditMaintenanceNotification) {
@@ -146,6 +149,9 @@ class AdminSettingsPermissions {
   bool get adminViewPermissions => _permissions.adminViewPermissions;
   bool get adminViewAllProfiles => _permissions.adminViewAllProfiles;
   bool get adminServerRestart => _permissions.adminServerRestart;
+  bool get adminServerReboot => _permissions.adminServerReboot;
+  bool get adminServerScheduledRestart => _permissions.adminServerScheduledRestart;
+  bool get adminServerScheduledReboot => _permissions.adminServerScheduledReboot;
   bool get adminServerEditBotConfig => _permissions.adminServerEditBotConfig;
   bool get adminServerViewBotConfig => _permissions.adminServerViewBotConfig;
   bool get adminServerEditImageProcessingConfig =>
@@ -158,6 +164,9 @@ class AdminSettingsPermissions {
   bool get adminServerEditMaintenanceNotification =>
       _permissions.adminServerEditMaintenanceNotification;
   bool get adminProfileStatistics => _permissions.adminProfileStatistics;
+  bool get adminEditProfileAttributesSchema => _permissions.adminEditProfileAttributesSchema;
+  bool get adminEditProfileAttributesSchemaVisibleContent =>
+      _permissions.adminEditProfileAttributesSchemaVisibleContent;
   bool get adminFindAccountByEmailAddress => _permissions.adminFindAccountByEmailAddress;
   bool get adminSubscribeAdminNotifications => _permissions.adminSubscribeAdminNotifications;
   AdminSettingsPermissions(this._permissions);
@@ -172,6 +181,9 @@ class AdminSettingsPermissions {
         adminViewPermissions ||
         adminViewAllProfiles ||
         adminServerRestart ||
+        adminServerReboot ||
+        adminServerScheduledRestart ||
+        adminServerScheduledReboot ||
         adminServerEditBotConfig ||
         adminServerViewBotConfig ||
         adminServerEditImageProcessingConfig ||
@@ -181,6 +193,8 @@ class AdminSettingsPermissions {
         adminServerDataReset ||
         adminServerEditMaintenanceNotification ||
         adminProfileStatistics ||
+        adminEditProfileAttributesSchema ||
+        adminEditProfileAttributesSchemaVisibleContent ||
         adminFindAccountByEmailAddress ||
         adminSubscribeAdminNotifications;
   }

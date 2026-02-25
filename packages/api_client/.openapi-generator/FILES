@@ -255,6 +255,7 @@ lib/model/profile_attribute_value_update.dart
 lib/model/profile_attributes_config_query.dart
 lib/model/profile_attributes_config_query_item.dart
 lib/model/profile_attributes_config_query_result.dart
+lib/model/profile_attributes_schema_export.dart
 lib/model/profile_config.dart
 lib/model/profile_content.dart
 lib/model/profile_content_version.dart
@@ -352,6 +353,7 @@ lib/model/update_chat_message_report.dart
 lib/model/update_custom_report_empty.dart
 lib/model/update_news_translation.dart
 lib/model/update_news_translation_result.dart
+lib/model/update_profile_attributes_schema.dart
 lib/model/update_profile_content_report.dart
 lib/model/update_profile_name_report.dart
 lib/model/update_profile_text_report.dart

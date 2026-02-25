@@ -260,11 +260,13 @@ Class | Method | HTTP request | Description
 *ProfileAdminApi* | [**getAdminProfileIteratorPage**](doc//ProfileAdminApi.md#getadminprofileiteratorpage) | **GET** /profile_api/get_admin_profile_iterator_page | Get admin profile iterator page
 *ProfileAdminApi* | [**getLatestCreatedAccountIdDb**](doc//ProfileAdminApi.md#getlatestcreatedaccountiddb) | **GET** /profile_api/get_latest_created_account_id_db | Get latest created account ID DB
 *ProfileAdminApi* | [**getProfileAgeAndName**](doc//ProfileAdminApi.md#getprofileageandname) | **GET** /profile_api/get_profile_age_and_name/{aid} | Get profile age and name
+*ProfileAdminApi* | [**getProfileAttributesSchema**](doc//ProfileAdminApi.md#getprofileattributesschema) | **GET** /profile_api/profile_attributes_schema | Get profile attributes schema from DB.
 *ProfileAdminApi* | [**getProfileStatisticsHistory**](doc//ProfileAdminApi.md#getprofilestatisticshistory) | **GET** /profile_api/profile_statistics_history | 
 *ProfileAdminApi* | [**getProfileStringPendingModerationList**](doc//ProfileAdminApi.md#getprofilestringpendingmoderationlist) | **GET** /profile_api/profile_string_pending_moderation | Get first page of pending profile string moderations. Oldest item is first and count 25.
 *ProfileAdminApi* | [**getProfileStringState**](doc//ProfileAdminApi.md#getprofilestringstate) | **GET** /profile_api/get_profile_string_state/{aid} | Get profile string state
 *ProfileAdminApi* | [**postModerateProfileString**](doc//ProfileAdminApi.md#postmoderateprofilestring) | **POST** /profile_api/moderate_profile_string | Rejected category and details can be set only when [PostModerateProfileString::value] is rejected.
 *ProfileAdminApi* | [**postSetProfileName**](doc//ProfileAdminApi.md#postsetprofilename) | **POST** /profile_api/set_profile_name | Set profile name
+*ProfileAdminApi* | [**putProfileAttributesSchema**](doc//ProfileAdminApi.md#putprofileattributesschema) | **PUT** /profile_api/profile_attributes_schema | Add or edit profile attributes to profile attributes schema in DB.
 
 
 ## Documentation For Models
@@ -502,6 +504,7 @@ Class | Method | HTTP request | Description
  - [ProfileAttributesConfigQuery](doc//ProfileAttributesConfigQuery.md)
  - [ProfileAttributesConfigQueryItem](doc//ProfileAttributesConfigQueryItem.md)
  - [ProfileAttributesConfigQueryResult](doc//ProfileAttributesConfigQueryResult.md)
+ - [ProfileAttributesSchemaExport](doc//ProfileAttributesSchemaExport.md)
  - [ProfileConfig](doc//ProfileConfig.md)
  - [ProfileContent](doc//ProfileContent.md)
  - [ProfileContentVersion](doc//ProfileContentVersion.md)
@@ -599,6 +602,7 @@ Class | Method | HTTP request | Description
  - [UpdateCustomReportEmpty](doc//UpdateCustomReportEmpty.md)
  - [UpdateNewsTranslation](doc//UpdateNewsTranslation.md)
  - [UpdateNewsTranslationResult](doc//UpdateNewsTranslationResult.md)
+ - [UpdateProfileAttributesSchema](doc//UpdateProfileAttributesSchema.md)
  - [UpdateProfileContentReport](doc//UpdateProfileContentReport.md)
  - [UpdateProfileNameReport](doc//UpdateProfileNameReport.md)
  - [UpdateProfileTextReport](doc//UpdateProfileTextReport.md)

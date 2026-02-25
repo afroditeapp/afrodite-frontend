@@ -648,6 +648,8 @@ class ApiClient {
           return ProfileAttributesConfigQueryItem.fromJson(value);
         case 'ProfileAttributesConfigQueryResult':
           return ProfileAttributesConfigQueryResult.fromJson(value);
+        case 'ProfileAttributesSchemaExport':
+          return ProfileAttributesSchemaExport.fromJson(value);
         case 'ProfileConfig':
           return ProfileConfig.fromJson(value);
         case 'ProfileContent':
@@ -842,6 +844,8 @@ class ApiClient {
           return UpdateNewsTranslation.fromJson(value);
         case 'UpdateNewsTranslationResult':
           return UpdateNewsTranslationResult.fromJson(value);
+        case 'UpdateProfileAttributesSchema':
+          return UpdateProfileAttributesSchema.fromJson(value);
         case 'UpdateProfileContentReport':
           return UpdateProfileContentReport.fromJson(value);
         case 'UpdateProfileNameReport':

@@ -184,6 +184,54 @@ class ProfileAdminApi {
     return null;
   }
 
+  /// Get profile attributes schema from DB.
+  ///
+  /// # Access - Permission [Permissions::admin_edit_profile_attributes_schema].
+  ///
+  /// Note: This method returns the HTTP [Response].
+  Future<Response> getProfileAttributesSchemaWithHttpInfo() async {
+    // ignore: prefer_const_declarations
+    final path = r'/profile_api/profile_attributes_schema';
+
+    // ignore: prefer_final_locals
+    Object? postBody;
+
+    final queryParams = <QueryParam>[];
+    final headerParams = <String, String>{};
+    final formParams = <String, String>{};
+
+    const contentTypes = <String>[];
+
+
+    return apiClient.invokeAPI(
+      path,
+      'GET',
+      queryParams,
+      postBody,
+      headerParams,
+      formParams,
+      contentTypes.isEmpty ? null : contentTypes.first,
+    );
+  }
+
+  /// Get profile attributes schema from DB.
+  ///
+  /// # Access - Permission [Permissions::admin_edit_profile_attributes_schema].
+  Future<ProfileAttributesSchemaExport?> getProfileAttributesSchema() async {
+    final response = await getProfileAttributesSchemaWithHttpInfo();
+    if (response.statusCode >= HttpStatus.badRequest) {
+      throw ApiException(response.statusCode, await _decodeBodyBytes(response));
+    }
+    // When a remote server returns no body with a status of 204, we shall not decode it.
+    // At the time of writing this, `dart:convert` will throw an "Unexpected end of input"
+    // FormatException when trying to decode an empty string.
+    if (response.body.isNotEmpty && response.statusCode != HttpStatus.noContent) {
+      return await apiClient.deserializeAsync(await _decodeBodyBytes(response), 'ProfileAttributesSchemaExport',) as ProfileAttributesSchemaExport;
+    
+    }
+    return null;
+  }
+
   /// Performs an HTTP 'GET /profile_api/profile_statistics_history' operation and returns the [Response].
   /// Parameters:
   ///
@@ -459,6 +507,54 @@ class ProfileAdminApi {
   /// * [SetProfileName] setProfileName (required):
   Future<void> postSetProfileName(SetProfileName setProfileName,) async {
     final response = await postSetProfileNameWithHttpInfo(setProfileName,);
+    if (response.statusCode >= HttpStatus.badRequest) {
+      throw ApiException(response.statusCode, await _decodeBodyBytes(response));
+    }
+  }
+
+  /// Add or edit profile attributes to profile attributes schema in DB.
+  ///
+  /// Removing attributes or attribute values is not possible.  Restart server to make changes visible to users.  # Access - Permission [Permissions::admin_edit_profile_attributes_schema]. - Modifying user visible values (texts and icons) requires   [Permissions::admin_edit_profile_attributes_schema_visible_content].
+  ///
+  /// Note: This method returns the HTTP [Response].
+  ///
+  /// Parameters:
+  ///
+  /// * [UpdateProfileAttributesSchema] updateProfileAttributesSchema (required):
+  Future<Response> putProfileAttributesSchemaWithHttpInfo(UpdateProfileAttributesSchema updateProfileAttributesSchema,) async {
+    // ignore: prefer_const_declarations
+    final path = r'/profile_api/profile_attributes_schema';
+
+    // ignore: prefer_final_locals
+    Object? postBody = updateProfileAttributesSchema;
+
+    final queryParams = <QueryParam>[];
+    final headerParams = <String, String>{};
+    final formParams = <String, String>{};
+
+    const contentTypes = <String>['application/json'];
+
+
+    return apiClient.invokeAPI(
+      path,
+      'PUT',
+      queryParams,
+      postBody,
+      headerParams,
+      formParams,
+      contentTypes.isEmpty ? null : contentTypes.first,
+    );
+  }
+
+  /// Add or edit profile attributes to profile attributes schema in DB.
+  ///
+  /// Removing attributes or attribute values is not possible.  Restart server to make changes visible to users.  # Access - Permission [Permissions::admin_edit_profile_attributes_schema]. - Modifying user visible values (texts and icons) requires   [Permissions::admin_edit_profile_attributes_schema_visible_content].
+  ///
+  /// Parameters:
+  ///
+  /// * [UpdateProfileAttributesSchema] updateProfileAttributesSchema (required):
+  Future<void> putProfileAttributesSchema(UpdateProfileAttributesSchema updateProfileAttributesSchema,) async {
+    final response = await putProfileAttributesSchemaWithHttpInfo(updateProfileAttributesSchema,);
     if (response.statusCode >= HttpStatus.badRequest) {
       throw ApiException(response.statusCode, await _decodeBodyBytes(response));
     }

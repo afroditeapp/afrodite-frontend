@@ -251,7 +251,7 @@ class CommonAdminApi {
 
   /// Get available manager instances.
   ///
-  /// # Access * Permission [model::Permissions::admin_server_view_info] * Permission [model::Permissions::admin_server_software_update] * Permission [model::Permissions::admin_server_data_reset] * Permission [model::Permissions::admin_server_restart]
+  /// # Access * Permission [model::Permissions::admin_server_view_info] * Permission [model::Permissions::admin_server_software_update] * Permission [model::Permissions::admin_server_data_reset] * Permission [model::Permissions::admin_server_restart] * Permission [model::Permissions::admin_server_reboot] * Permission [model::Permissions::admin_server_scheduled_restart] * Permission [model::Permissions::admin_server_scheduled_reboot]
   ///
   /// Note: This method returns the HTTP [Response].
   Future<Response> getManagerInstanceNamesWithHttpInfo() async {
@@ -281,7 +281,7 @@ class CommonAdminApi {
 
   /// Get available manager instances.
   ///
-  /// # Access * Permission [model::Permissions::admin_server_view_info] * Permission [model::Permissions::admin_server_software_update] * Permission [model::Permissions::admin_server_data_reset] * Permission [model::Permissions::admin_server_restart]
+  /// # Access * Permission [model::Permissions::admin_server_view_info] * Permission [model::Permissions::admin_server_software_update] * Permission [model::Permissions::admin_server_data_reset] * Permission [model::Permissions::admin_server_restart] * Permission [model::Permissions::admin_server_reboot] * Permission [model::Permissions::admin_server_scheduled_restart] * Permission [model::Permissions::admin_server_scheduled_reboot]
   Future<ManagerInstanceNameList?> getManagerInstanceNames() async {
     final response = await getManagerInstanceNamesWithHttpInfo();
     if (response.statusCode >= HttpStatus.badRequest) {
@@ -299,7 +299,7 @@ class CommonAdminApi {
 
   /// Get scheduled tasks status from manager instance.
   ///
-  /// # Access * Permission [model::Permissions::admin_server_restart]
+  /// # Access * Permission [model::Permissions::admin_server_scheduled_restart] * Permission [model::Permissions::admin_server_scheduled_reboot]
   ///
   /// Note: This method returns the HTTP [Response].
   ///
@@ -335,7 +335,7 @@ class CommonAdminApi {
 
   /// Get scheduled tasks status from manager instance.
   ///
-  /// # Access * Permission [model::Permissions::admin_server_restart]
+  /// # Access * Permission [model::Permissions::admin_server_scheduled_restart] * Permission [model::Permissions::admin_server_scheduled_reboot]
   ///
   /// Parameters:
   ///
@@ -1125,7 +1125,7 @@ class CommonAdminApi {
 
   /// Schedule task.
   ///
-  /// # Access * Permission [model::Permissions::admin_server_restart]
+  /// # Access * Permission [model::Permissions::admin_server_scheduled_restart] * Permission [model::Permissions::admin_server_scheduled_reboot]
   ///
   /// Note: This method returns the HTTP [Response].
   ///
@@ -1167,7 +1167,7 @@ class CommonAdminApi {
 
   /// Schedule task.
   ///
-  /// # Access * Permission [model::Permissions::admin_server_restart]
+  /// # Access * Permission [model::Permissions::admin_server_scheduled_restart] * Permission [model::Permissions::admin_server_scheduled_reboot]
   ///
   /// Parameters:
   ///
@@ -1395,7 +1395,7 @@ class CommonAdminApi {
 
   /// Trigger system reboot.
   ///
-  /// # Access * Permission [model::Permissions::admin_server_restart]
+  /// # Access * Permission [model::Permissions::admin_server_reboot]
   ///
   /// Note: This method returns the HTTP [Response].
   ///
@@ -1431,7 +1431,7 @@ class CommonAdminApi {
 
   /// Trigger system reboot.
   ///
-  /// # Access * Permission [model::Permissions::admin_server_restart]
+  /// # Access * Permission [model::Permissions::admin_server_reboot]
   ///
   /// Parameters:
   ///
@@ -1445,7 +1445,7 @@ class CommonAdminApi {
 
   /// Unschedule task.
   ///
-  /// # Access * Permission [model::Permissions::admin_server_restart]
+  /// # Access * Permission [model::Permissions::admin_server_scheduled_restart] * Permission [model::Permissions::admin_server_scheduled_reboot]
   ///
   /// Note: This method returns the HTTP [Response].
   ///
@@ -1484,7 +1484,7 @@ class CommonAdminApi {
 
   /// Unschedule task.
   ///
-  /// # Access * Permission [model::Permissions::admin_server_restart]
+  /// # Access * Permission [model::Permissions::admin_server_scheduled_restart] * Permission [model::Permissions::admin_server_scheduled_reboot]
   ///
   /// Parameters:
   ///

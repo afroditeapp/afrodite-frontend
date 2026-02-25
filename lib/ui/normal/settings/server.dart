@@ -74,7 +74,11 @@ class ServerScreen extends StatelessWidget {
         ),
       );
     }
-    if (permissions.adminServerRestart || permissions.adminServerDataReset) {
+    if (permissions.adminServerRestart ||
+        permissions.adminServerReboot ||
+        permissions.adminServerScheduledRestart ||
+        permissions.adminServerScheduledReboot ||
+        permissions.adminServerDataReset) {
       settings.add(
         Setting.createSetting(
           Icons.schedule,

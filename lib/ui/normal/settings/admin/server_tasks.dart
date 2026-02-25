@@ -43,7 +43,8 @@ class _ServerTasksScreenState extends State<ServerTasksScreen> {
     final managers = _managers?.names ?? [];
     final List<ManagerInstanceRelatedState> data = [];
     for (final m in managers) {
-      if (!widget.permissions.adminServerRestart) {
+      if (!widget.permissions.adminServerScheduledRestart &&
+          !widget.permissions.adminServerScheduledReboot) {
         data.add(ManagerInstanceRelatedState(m, null));
         continue;
       }
@@ -124,7 +125,7 @@ class _ServerTasksScreenState extends State<ServerTasksScreen> {
               (api) => api.postTriggerBackendRestart(data.manager),
             ),
           ),
-        if (widget.permissions.adminServerRestart)
+        if (widget.permissions.adminServerReboot)
           hPad(
             actionButton(
               context,
@@ -145,10 +146,12 @@ class _ServerTasksScreenState extends State<ServerTasksScreen> {
             ),
           ),
         const Padding(padding: EdgeInsets.only(top: 8.0)),
-        if (widget.permissions.adminServerRestart && status == null)
+        if ((widget.permissions.adminServerScheduledRestart ||
+                widget.permissions.adminServerScheduledReboot) &&
+            status != null)
+          displayScheduledtasks(context, data, status)
+        else
           hPad(Text(context.strings.generic_error)),
-        if (widget.permissions.adminServerRestart && status != null)
-          displayScheduledtasks(context, data, status),
       ],
     );
   }
@@ -181,83 +184,89 @@ class _ServerTasksScreenState extends State<ServerTasksScreen> {
 
     const restartBackendTitle = "Backend restart";
     const restartBackendTaskType = ScheduledTaskType.backendRestart;
-    widgets.add(hPad(Text(restartBackendTitle, style: Theme.of(context).textTheme.titleMedium)));
-    widgets.add(const Padding(padding: EdgeInsets.all(8.0)));
-    if (backendRestart != null) {
-      widgets.add(
-        displayMaintenanceTaskState(
-          context,
-          state,
-          restartBackendTitle,
-          backendRestart,
-          restartBackendTaskType,
-        ),
-      );
+    if (widget.permissions.adminServerScheduledRestart) {
+      widgets.add(hPad(Text(restartBackendTitle, style: Theme.of(context).textTheme.titleMedium)));
       widgets.add(const Padding(padding: EdgeInsets.all(8.0)));
-    } else {
-      widgets.add(
-        hPad(
-          actionButton(
+      if (backendRestart != null) {
+        widgets.add(
+          displayMaintenanceTaskState(
             context,
             state,
-            "Schedule",
             restartBackendTitle,
-            (api) => api.postScheduleTask(state.manager, restartBackendTaskType, true),
+            backendRestart,
+            restartBackendTaskType,
           ),
-        ),
-      );
-      widgets.add(
-        hPad(
-          actionButton(
-            context,
-            state,
-            "Schedule hidden",
-            restartBackendTitle,
-            (api) => api.postScheduleTask(state.manager, restartBackendTaskType, false),
+        );
+      } else {
+        widgets.add(
+          hPad(
+            actionButton(
+              context,
+              state,
+              "Schedule",
+              restartBackendTitle,
+              (api) => api.postScheduleTask(state.manager, restartBackendTaskType, true),
+            ),
           ),
-        ),
-      );
+        );
+        widgets.add(
+          hPad(
+            actionButton(
+              context,
+              state,
+              "Schedule hidden",
+              restartBackendTitle,
+              (api) => api.postScheduleTask(state.manager, restartBackendTaskType, false),
+            ),
+          ),
+        );
+      }
+    }
+
+    if (widget.permissions.adminServerScheduledRestart &&
+        widget.permissions.adminServerScheduledReboot) {
+      widgets.add(const Padding(padding: EdgeInsets.all(8.0)));
     }
 
     const systemRebootTitle = "System reboot";
     const systemRebootTaskType = ScheduledTaskType.systemReboot;
-    widgets.add(const Padding(padding: EdgeInsets.all(8.0)));
-    widgets.add(hPad(Text(systemRebootTitle, style: Theme.of(context).textTheme.titleMedium)));
-    widgets.add(const Padding(padding: EdgeInsets.all(8.0)));
-    if (systemReboot != null) {
-      widgets.add(
-        displayMaintenanceTaskState(
-          context,
-          state,
-          systemRebootTitle,
-          systemReboot,
-          systemRebootTaskType,
-        ),
-      );
+    if (widget.permissions.adminServerScheduledReboot) {
+      widgets.add(hPad(Text(systemRebootTitle, style: Theme.of(context).textTheme.titleMedium)));
       widgets.add(const Padding(padding: EdgeInsets.all(8.0)));
-    } else {
-      widgets.add(
-        hPad(
-          actionButton(
+      if (systemReboot != null) {
+        widgets.add(
+          displayMaintenanceTaskState(
             context,
             state,
-            "Schedule",
             systemRebootTitle,
-            (api) => api.postScheduleTask(state.manager, systemRebootTaskType, true),
+            systemReboot,
+            systemRebootTaskType,
           ),
-        ),
-      );
-      widgets.add(
-        hPad(
-          actionButton(
-            context,
-            state,
-            "Schedule hidden",
-            systemRebootTitle,
-            (api) => api.postScheduleTask(state.manager, systemRebootTaskType, false),
+        );
+      } else {
+        widgets.add(
+          hPad(
+            actionButton(
+              context,
+              state,
+              "Schedule",
+              systemRebootTitle,
+              (api) => api.postScheduleTask(state.manager, systemRebootTaskType, true),
+            ),
           ),
-        ),
-      );
+        );
+        widgets.add(
+          hPad(
+            actionButton(
+              context,
+              state,
+              "Schedule hidden",
+              systemRebootTitle,
+              (api) => api.postScheduleTask(state.manager, systemRebootTaskType, false),
+            ),
+          ),
+        );
+      }
     }
 
     return widgets;
@@ -289,6 +298,7 @@ class _ServerTasksScreenState extends State<ServerTasksScreen> {
             (api) => api.postUnscheduleTask(state.manager, taskType),
           ),
         ),
+        const Padding(padding: EdgeInsets.all(8.0)),
       ],
     );
   }
