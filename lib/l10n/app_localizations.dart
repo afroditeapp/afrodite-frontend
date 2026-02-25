@@ -838,6 +838,12 @@ abstract class AppLocalizations {
   /// **'Profile was blocked'**
   String get conversation_screen_profile_blocked;
 
+  /// Snackbar text showing remaining messages for currently visible conversation
+  ///
+  /// In en, this message translates to:
+  /// **'Remaining messages for this conversation: {p0} (resets when sent messages are delivered)'**
+  String conversation_screen_remaining_conversation_messages(String p0);
+
   /// Snackbar text showing remaining daily messages count
   ///
   /// In en, this message translates to:

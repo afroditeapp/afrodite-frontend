@@ -278,6 +278,15 @@ class SendMessageUtils {
         );
       }
 
+      final remainingConversationMessages = result.remainingConversationMessages;
+      if (remainingConversationMessages != null && remainingConversationMessages <= 5) {
+        showSnackBar(
+          R.strings.conversation_screen_remaining_conversation_messages(
+            remainingConversationMessages.toString(),
+          ),
+        );
+      }
+
       final signedPgpMessageBase64 = result.d;
       if (signedPgpMessageBase64 == null) {
         yield ErrorAfterMessageSaving(localId);

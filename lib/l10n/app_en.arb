@@ -578,6 +578,15 @@
   "@conversation_screen_profile_blocked": {
     "description": "Snackbar text displayed when profile blocking is successful"
   },
+  "conversation_screen_remaining_conversation_messages": "Remaining messages for this conversation: {p0} (resets when sent messages are delivered)",
+  "@conversation_screen_remaining_conversation_messages": {
+    "description": "Snackbar text showing remaining messages for currently visible conversation",
+    "placeholders": {
+      "p0": {
+        "type": "String"
+      }
+    }
+  },
   "conversation_screen_remaining_daily_messages": "Remaining daily messages: {p0}",
   "@conversation_screen_remaining_daily_messages": {
     "description": "Snackbar text showing remaining daily messages count",

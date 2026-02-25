@@ -442,6 +442,11 @@ class AppLocalizationsFi extends AppLocalizations {
   String get conversation_screen_profile_blocked => 'Profile was blocked';
 
   @override
+  String conversation_screen_remaining_conversation_messages(String p0) {
+    return 'Remaining messages for this conversation: $p0 (resets when sent messages are delivered)';
+  }
+
+  @override
   String conversation_screen_remaining_daily_messages(String p0) {
     return 'Remaining daily messages: $p0';
   }
