@@ -17,6 +17,7 @@ import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:openapi/api.dart';
 import 'package:app/localizations.dart';
 import 'package:app/logic/app/navigator_state.dart';
+import 'package:app/ui/normal/settings/my_profile.dart';
 import 'package:app/ui/normal/settings/media/select_content.dart';
 import 'package:app/ui_utils/consts/padding.dart';
 import 'package:app/ui_utils/view_image_screen.dart';
@@ -62,6 +63,16 @@ class _ContentManagementScreenState extends State<ContentManagementScreen> {
   Widget build(BuildContext context) {
     return Scaffold(
       appBar: AppBar(title: Text(context.strings.content_management_screen_title)),
+      floatingActionButton: FloatingActionButton.extended(
+        onPressed: () async {
+          await openMyProfileScreen(context);
+          if (context.mounted) {
+            widget.selectContentBloc.add(ReloadAvailableContentSilently());
+          }
+        },
+        icon: const Icon(Icons.account_box),
+        label: Text(context.strings.view_profile_screen_my_profile_title),
+      ),
       body: BlocBuilder<ContentBloc, ContentData>(
         builder: (context, contentState) {
           final securityContent = contentState.currentSecurityContent;
@@ -129,6 +140,7 @@ class _ContentManagementScreenState extends State<ContentManagementScreen> {
     );
 
     widgets.add(listView);
+    widgets.add(const SizedBox(height: FLOATING_ACTION_BUTTON_EMPTY_AREA));
 
     return SingleChildScrollView(
       child: Column(crossAxisAlignment: CrossAxisAlignment.center, children: widgets),

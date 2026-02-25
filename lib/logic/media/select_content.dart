@@ -13,6 +13,8 @@ sealed class SelectContentEvent {}
 
 class ReloadAvailableContent extends SelectContentEvent {}
 
+class ReloadAvailableContentSilently extends SelectContentEvent {}
+
 class DeleteContent extends SelectContentEvent {
   final AccountId account;
   final ContentId content;
@@ -32,6 +34,11 @@ class SelectContentBloc extends Bloc<SelectContentEvent, SelectContentData> with
     on<ReloadAvailableContent>((data, emit) async {
       await runOnce(() async {
         await reload(emit, true);
+      });
+    });
+    on<ReloadAvailableContentSilently>((data, emit) async {
+      await runOnce(() async {
+        await reload(emit, false);
       });
     });
     on<DeleteContent>((data, emit) async {
