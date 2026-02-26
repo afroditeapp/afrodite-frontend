@@ -1,9 +1,9 @@
 import 'package:app/ui_utils/attribute/filter.dart';
 import 'package:app/ui_utils/attribute/icon.dart';
+export 'package:app/ui_utils/attribute/icon.dart';
 import 'package:app/ui_utils/attribute/state.dart';
 import 'package:app/ui_utils/attribute/translation.dart';
 import 'package:database/database.dart';
-import 'package:flutter/material.dart';
 import 'package:openapi/api.dart';
 
 class AttributeManager {
@@ -76,7 +76,7 @@ class AttributeManager {
 class UiAttribute {
   final Attribute _attribute;
   final List<UiAttributeValue> _valuesAndGroupValues;
-  final IconData? _icon;
+  final AttributeIcon? _icon;
   final String _uiName;
   UiAttribute._(this._attribute, this._valuesAndGroupValues, this._icon, this._uiName);
 
@@ -106,7 +106,7 @@ class UiAttribute {
     return UiAttribute._(
       attribute,
       valuesAndGroupValues,
-      AttributeIcons.iconResourceToMaterialIcon(attribute.icon),
+      AttributeIcons.parseIconResource(attribute.icon),
       AttributeTranslation.getTranslatedString(
         locale,
         attribute.key,
@@ -122,13 +122,13 @@ class UiAttribute {
 
   String uiName() => _uiName;
 
-  IconData? uiIcon() => _icon;
+  AttributeIcon? uiIcon() => _icon;
 }
 
 class UiAttributeValue {
   final Attribute _apiAttribute;
   final AttributeValue _value;
-  final IconData? _icon;
+  final AttributeIcon? _icon;
   final UiAttributeValue? _groupValueParent;
   final String _uiName;
   UiAttributeValue._(
@@ -148,7 +148,7 @@ class UiAttributeValue {
     return UiAttributeValue._(
       attribute,
       value,
-      AttributeIcons.iconResourceToMaterialIcon(value.icon),
+      AttributeIcons.parseIconResource(value.icon),
       groupValueParent,
       AttributeTranslation.getTranslatedString(
         locale,
@@ -165,7 +165,7 @@ class UiAttributeValue {
 
   String uiName() => _uiName;
 
-  IconData? uiIcon() => _icon;
+  AttributeIcon? uiIcon() => _icon;
 
   UiAttributeValue? groupValueParent() => _groupValueParent;
 

@@ -459,7 +459,7 @@ class EditAttributeRow extends StatelessWidget {
 class ViewAttributeTitle extends StatelessWidget {
   final String text;
   final bool isEnabled;
-  final IconData? icon;
+  final AttributeIcon? icon;
   final Widget Function(Color? disabledColor)? iconWidgetBuilder;
   final String? valueText;
   const ViewAttributeTitle(
@@ -493,7 +493,7 @@ class ViewAttributeTitle extends StatelessWidget {
             if (icon != null)
               Padding(
                 padding: const EdgeInsets.only(right: 8.0),
-                child: Icon(icon, color: disabledColor),
+                child: AttributeIconWidget(icon: icon, color: disabledColor),
               ),
             if (currentIconWidgetBuilder != null)
               Padding(

@@ -145,7 +145,7 @@ class _ProfileFiltersScreenState extends State<ProfileFiltersScreen> {
           profileCreatedOrEditedFilter(
             context,
             context.strings.profile_filters_screen_profile_created_filter,
-            Icons.auto_awesome_rounded,
+            const MaterialAttributeIcon(Icons.auto_awesome_rounded),
             (state) => state.valueProfileCreatedTime()?.value,
             (bloc, value) {
               if (value == null) {
@@ -159,7 +159,7 @@ class _ProfileFiltersScreenState extends State<ProfileFiltersScreen> {
           profileCreatedOrEditedFilter(
             context,
             context.strings.profile_filters_screen_profile_edited_filter,
-            Icons.edit,
+            const MaterialAttributeIcon(Icons.edit),
             (state) => state.valueProfileEditedTime()?.value,
             (bloc, value) {
               if (value == null) {
@@ -192,7 +192,7 @@ class _ProfileFiltersScreenState extends State<ProfileFiltersScreen> {
             const Padding(padding: EdgeInsets.all(4)),
             ViewAttributeTitle(
               context.strings.generic_age,
-              icon: Icons.eighteen_up_rating_outlined,
+              icon: const MaterialAttributeIcon(Icons.eighteen_up_rating_outlined),
               valueText: stateText,
             ),
             const Padding(padding: EdgeInsets.all(4)),
@@ -335,7 +335,7 @@ class _ProfileFiltersScreenState extends State<ProfileFiltersScreen> {
   Widget profileCreatedOrEditedFilter(
     BuildContext context,
     String title,
-    IconData? icon,
+    AttributeIcon? icon,
     int? Function(ProfileFiltersData) valueGetter,
     void Function(ProfileFiltersBloc, int?) valueSetter,
   ) {
@@ -475,7 +475,7 @@ class _ProfileFiltersScreenState extends State<ProfileFiltersScreen> {
             const Padding(padding: EdgeInsets.all(4)),
             ViewAttributeTitle(
               context.strings.profile_filters_screen_distance_filter,
-              icon: Icons.social_distance_rounded,
+              icon: const MaterialAttributeIcon(Icons.social_distance_rounded),
               valueText: stateText,
             ),
             const Padding(padding: EdgeInsets.all(4)),
@@ -572,7 +572,7 @@ class _ProfileFiltersScreenState extends State<ProfileFiltersScreen> {
             const Padding(padding: EdgeInsets.all(4)),
             ViewAttributeTitle(
               context.strings.profile_filters_screen_profile_text_filter,
-              icon: Icons.notes,
+              icon: const MaterialAttributeIcon(Icons.notes),
               valueText: stateText,
             ),
             const Padding(padding: EdgeInsets.all(4)),

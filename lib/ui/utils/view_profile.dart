@@ -502,10 +502,10 @@ class AttributeValuesArea extends StatelessWidget {
 
     for (final v in a.valueAreaSelectedValues()) {
       final text = v.uiName();
-      final iconData = v.uiIcon();
+      final icon = v.uiIcon();
       final Widget? avatar;
-      if (iconData != null) {
-        avatar = Icon(iconData);
+      if (icon != null) {
+        avatar = AttributeIconWidget(icon: icon);
       } else {
         avatar = null;
       }
@@ -521,10 +521,10 @@ class AttributeValuesArea extends StatelessWidget {
 
     for (final v in a.valueAreaUnwantedValues()) {
       final text = v.uiName();
-      final iconData = v.uiIcon();
+      final icon = v.uiIcon();
       final Widget? avatar;
-      if (iconData != null) {
-        avatar = Icon(iconData);
+      if (icon != null) {
+        avatar = AttributeIconWidget(icon: icon);
       } else {
         avatar = null;
       }

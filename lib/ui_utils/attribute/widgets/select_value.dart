@@ -214,7 +214,7 @@ class _SelectAttributeValueState extends State<SelectAttributeValue> {
     if (icon != null) {
       title = Row(
         children: [
-          Icon(icon),
+          AttributeIconWidget(icon: icon),
           const Padding(padding: EdgeInsets.all(8.0)),
           Text(text),
         ],
