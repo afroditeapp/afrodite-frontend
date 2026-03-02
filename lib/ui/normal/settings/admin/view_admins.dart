@@ -18,7 +18,10 @@ class ViewAdminsPage extends MyScreenPageLimited<()> {
 
 class ViewAdminsScreen extends StatefulWidget {
   final ApiManager api;
-  ViewAdminsScreen(RepositoryInstances r, {super.key}) : api = r.api;
+  final AccountId currentAccountId;
+  ViewAdminsScreen(RepositoryInstances r, {super.key})
+    : api = r.api,
+      currentAccountId = r.accountId;
 
   @override
   State<ViewAdminsScreen> createState() => _ViewAdminsScreenState();
@@ -46,6 +49,9 @@ class _ViewAdminsScreenState extends State<ViewAdminsScreen> {
         }
       }
     }
+
+    // Move the logged in account to the top of the list
+    data.sortBy<num>((v) => v.$1.aid == widget.currentAccountId.aid ? 0 : 1);
 
     return data;
   }
