@@ -108,7 +108,7 @@ Widget commonInitialSetupScreenContent({
         ]),
       ],
     ),
-    body: child,
+    body: SafeArea(child: child),
     resizeToAvoidBottomInset: resizeToAvoidBottomInset,
   );
 }
