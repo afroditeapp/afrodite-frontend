@@ -73,6 +73,35 @@ class ConversationData {
 }
 
 class _ChatViewState extends State<ChatView> {
+  @override
+  Widget build(BuildContext context) {
+    return Column(
+      children: [
+        Expanded(
+          child: ChatViewingBlocker(
+            child: ConversationList(profile: widget.profile, chat: widget.chat),
+          ),
+        ),
+
+        // Zero sized widgets
+        const ChatDataOutdatedEventHandler(),
+        const ChatBackupReminderDialogOpener(),
+      ],
+    );
+  }
+}
+
+class ConversationList extends StatefulWidget {
+  final ProfileRepository profile;
+  final ChatRepository chat;
+
+  const ConversationList({required this.profile, required this.chat, super.key});
+
+  @override
+  State<ConversationList> createState() => _ConversationListState();
+}
+
+class _ConversationListState extends State<ConversationList> {
   final ScrollController _scrollController = ScrollController();
 
   final ConversationListChangeCalculator calculator = ConversationListChangeCalculator();
@@ -157,18 +186,6 @@ class _ChatViewState extends State<ChatView> {
 
   @override
   Widget build(BuildContext context) {
-    return Column(
-      children: [
-        Expanded(child: ChatViewingBlocker(child: conversationsSupported(context))),
-
-        // Zero sized widgets
-        const ChatDataOutdatedEventHandler(),
-        const ChatBackupReminderDialogOpener(),
-      ],
-    );
-  }
-
-  Widget conversationsSupported(BuildContext context) {
     return NotificationListener<ScrollMetricsNotification>(
       onNotification: (notification) {
         final isScrolled = notification.metrics.pixels > 0;
