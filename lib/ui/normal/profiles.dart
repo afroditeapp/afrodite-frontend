@@ -153,10 +153,9 @@ class PublicProfileViewingBlocker extends StatelessWidget {
           return _handleBlocked(startInitialSetupButton(context));
         } else if (!data.emailVerified) {
           return _handleBlocked(emailNotVerified(context));
-        } else if (data.visibility == ProfileVisibility.public) {
-          return checkMyContent();
-        } else if (data.visibility == ProfileVisibility.pendingPublic) {
-          return _handleBlocked(profileIsInModerationInfo(context));
+        } else if (data.visibility == ProfileVisibility.public ||
+            data.visibility == ProfileVisibility.pendingPublic) {
+          return checkMyContent(data.visibility);
         } else {
           return _handleBlocked(profileIsSetToPrivateInfo(context));
         }
@@ -164,7 +163,7 @@ class PublicProfileViewingBlocker extends StatelessWidget {
     );
   }
 
-  Widget checkMyContent() {
+  Widget checkMyContent(ProfileVisibility visiblity) {
     return BlocBuilder<ContentBloc, ContentData>(
       builder: (context, contentState) {
         if (contentState.isLoadingSecurityContent || contentState.isLoadingPrimaryContent) {
@@ -185,7 +184,12 @@ class PublicProfileViewingBlocker extends StatelessWidget {
                   final faceDetected = primaryContent?.faceDetected == true;
 
                   if (primaryContent?.accepted == true && (!requireFace || faceDetected)) {
-                    return _handleBlocked(ChatViewingBlocker(child: child));
+                    if (visiblity == ProfileVisibility.pendingPublic) {
+                      return _handleBlocked(profileIsInModerationInfo(context));
+                    } else {
+                      // Public profile viewing allowed
+                      return _handleBlocked(ChatViewingBlocker(child: child));
+                    }
                   } else {
                     return _handleBlocked(
                       primaryProfileContentIsNotAccepted(context, primaryContent, requireFace),
