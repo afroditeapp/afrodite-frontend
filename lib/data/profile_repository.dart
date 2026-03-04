@@ -615,6 +615,16 @@ class ProfileRepository extends DataRepositoryWithLifecycle {
         )
         .andThen(
           (_) => db.accountAction(
+            (db) => db.app.profileNameAccepted.updateViewedId(viewed.nameAccepted),
+          ),
+        )
+        .andThen(
+          (_) => db.accountAction(
+            (db) => db.app.profileNameRejected.updateViewedId(viewed.nameRejected),
+          ),
+        )
+        .andThen(
+          (_) => db.accountAction(
             (db) => db.app.profileTextAccepted.updateViewedId(viewed.textAccepted),
           ),
         )

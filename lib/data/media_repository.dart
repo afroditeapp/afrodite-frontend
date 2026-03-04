@@ -155,6 +155,10 @@ class MediaRepository extends DataRepositoryWithLifecycle {
         .andThen(
           (_) =>
               db.accountAction((db) => db.app.mediaContentRejected.updateViewedId(viewed.rejected)),
+        )
+        .andThen(
+          (_) =>
+              db.accountAction((db) => db.app.mediaContentDeleted.updateViewedId(viewed.deleted)),
         );
   }
 
