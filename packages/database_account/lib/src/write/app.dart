@@ -139,6 +139,22 @@ class DaoWriteApp extends DatabaseAccessor<AccountDatabase> with _$DaoWriteAppMi
     )..where((t) => t.id.equals(SingleRowTable.ID.value))).map(extractColumn).watchSingleOrNull();
   }
 
+  Future<void> resetNotificationStatuses() async {
+    await into(notificationStatus).insertOnConflictUpdate(
+      NotificationStatusCompanion.insert(
+        id: SingleRowTable.ID,
+        jsonAutomaticProfileSearchFoundProfiles: Value(null),
+        jsonMediaContentAccepted: Value(null),
+        jsonMediaContentRejected: Value(null),
+        jsonMediaContentDeleted: Value(null),
+        jsonProfileNameAccepted: Value(null),
+        jsonProfileNameRejected: Value(null),
+        jsonProfileTextAccepted: Value(null),
+        jsonProfileTextRejected: Value(null),
+      ),
+    );
+  }
+
   Future<void> setUnreadNewsCount({
     required api.NewsSyncVersion version,
     required api.UnreadNewsCount unreadNewsCount,

@@ -103,9 +103,12 @@ class CommonRepository extends DataRepositoryWithLifecycle {
 
   @override
   Future<void> onLogin() async {
-    // Force sending the push notification device token to server.
-    // This is needed if this login is for different account than previously.
-    await accountDb.accountAction((db) => db.app.updateDeviceToken(null));
+    await accountDb.accountAction((db) async {
+      // Force sending the push notification device token to server.
+      // This is needed if this login is for different account than previously.
+      await db.app.updateDeviceToken(null);
+      await db.app.resetNotificationStatuses();
+    });
   }
 
   @override
