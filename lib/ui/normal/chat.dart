@@ -8,7 +8,6 @@ import 'package:app/ui/normal/chat/chat_data_outdated_widget.dart';
 import 'package:app/ui_utils/profile_thumbnail_status_indicators.dart';
 import 'package:app/utils/result.dart';
 import 'package:app/utils/time.dart';
-import 'package:async/async.dart' show StreamExtensions;
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:logging/logging.dart';
@@ -108,7 +107,6 @@ class _ConversationListState extends State<ConversationList> {
   int initialItemCount = 0;
   List<AccountId>? items;
 
-  final BehaviorSubject<SliverAnimatedListState?> _listState = BehaviorSubject.seeded(null);
   final GlobalKey<SliverAnimatedListState> _listKey = GlobalKey<SliverAnimatedListState>();
 
   /// Avoid UI flickering when conversation animation runs
@@ -124,23 +122,15 @@ class _ConversationListState extends State<ConversationList> {
         .getConversationListUpdates()
         .asyncMap((data) async {
           final current = items;
+          final listState = _listKey.currentState;
           final toBeProcessed = calculator.calculate(data);
-          if (current == null) {
+          if (current == null || listState == null) {
             setState(() {
               initialItemCount = toBeProcessed.current.length;
               items = toBeProcessed.current;
             });
-            WidgetsBinding.instance.addPostFrameCallback((_) {
-              final listState = _listKey.currentState;
-              if (listState != null) {
-                _listState.add(_listKey.currentState);
-              }
-            });
           } else {
-            final listState = await _listState.whereNotNull().firstOrNull;
-            if (listState == null) {
-              return;
-            }
+            // List state exists, so use list state methods
             for (final change in toBeProcessed.changes) {
               switch (change) {
                 case AddItem(:final i):
@@ -211,6 +201,7 @@ class _ConversationListState extends State<ConversationList> {
   Widget currentItems() {
     final current = items;
     if (current == null) {
+      // Wait init of initialItemCount and items
       return SizedBox.shrink();
     } else {
       return listAndEmptyListText(context, current);
@@ -279,7 +270,6 @@ class _ConversationListState extends State<ConversationList> {
     _scrollController.removeListener(scrollEventListener);
     _scrollController.dispose();
     _conversationListSubscription?.cancel();
-    _listState.close();
     super.dispose();
   }
 }
