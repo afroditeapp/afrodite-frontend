@@ -298,8 +298,13 @@ class UpdateNotificationStatus {
   /// Returns true when notification must be shown
   Future<bool> shouldBeShown(api.NotificationStatus newValue) async {
     final currentStatusJsonObject = await currentValueGetter();
-    final currentStatus = currentStatusJsonObject?.value ?? _defaultNotificationStatus();
+    final currentStatus = currentStatusJsonObject?.value;
     await updateValue(newValue);
+
+    if (currentStatus == null) {
+      return newValue.id.id != newValue.viewed.id;
+    }
+
     return newValue.id.id != currentStatus.id.id || newValue.viewed.id != currentStatus.viewed.id;
   }
 
