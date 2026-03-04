@@ -16,6 +16,13 @@ class NotificationProfileStringModerationCompleted extends AppSingletonNoInit {
 
   final notifications = NotificationManager.getInstance();
 
+  Future<void> hideAll() async {
+    await notifications.hideNotification(NotificationIdStatic.profileNameModerationAccepted.id);
+    await notifications.hideNotification(NotificationIdStatic.profileNameModerationRejected.id);
+    await notifications.hideNotification(NotificationIdStatic.profileTextModerationAccepted.id);
+    await notifications.hideNotification(NotificationIdStatic.profileTextModerationRejected.id);
+  }
+
   static Future<void> handleNameAccepted(
     NotificationStatus notification,
     AccountDatabaseManager db, {
@@ -105,12 +112,6 @@ class NotificationProfileStringModerationCompleted extends AppSingletonNoInit {
       ModerationCompletedState.rejected => R.strings.notification_profile_name_rejected,
     };
 
-    if (state == ModerationCompletedState.accepted) {
-      await notifications.hideNotification(NotificationIdStatic.profileNameModerationRejected.id);
-    } else if (state == ModerationCompletedState.rejected) {
-      await notifications.hideNotification(NotificationIdStatic.profileNameModerationAccepted.id);
-    }
-
     await notifications.sendNotification(
       id: id,
       title: title,
@@ -131,12 +132,6 @@ class NotificationProfileStringModerationCompleted extends AppSingletonNoInit {
       ModerationCompletedState.accepted => R.strings.notification_profile_text_accepted,
       ModerationCompletedState.rejected => R.strings.notification_profile_text_rejected,
     };
-
-    if (state == ModerationCompletedState.accepted) {
-      await notifications.hideNotification(NotificationIdStatic.profileTextModerationRejected.id);
-    } else if (state == ModerationCompletedState.rejected) {
-      await notifications.hideNotification(NotificationIdStatic.profileTextModerationAccepted.id);
-    }
 
     await notifications.sendNotification(
       id: id,

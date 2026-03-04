@@ -1,3 +1,6 @@
+import 'dart:async';
+
+import 'package:app/data/general/notification/state/profile_string_moderation_completed.dart';
 import 'package:app/data/utils/repository_instances.dart';
 import 'package:app/logic/account/client_features_config.dart';
 import 'package:app/model/freezed/logic/account/client_features_config.dart';
@@ -113,6 +116,8 @@ class _EditProfileScreenState extends State<EditProfileScreen> {
   @override
   void initState() {
     super.initState();
+
+    unawaited(NotificationProfileStringModerationCompleted.getInstance().hideAll());
 
     // Profile data
     final restoreState = widget.restoreState;
