@@ -229,9 +229,7 @@ class _ProfileAttributesSchemaScreenState extends State<ProfileAttributesSchemaS
               Icon(Icons.info_outline),
               SizedBox(width: 12),
               Expanded(
-                child: Text(
-                  "Note: Server restart is required for changes to take effect. Removing attributes or attribute values is not supported.",
-                ),
+                child: Text("Note: Removing attributes or attribute values is not supported."),
               ),
             ],
           ),
