@@ -514,7 +514,7 @@ class ProfileAdminApi {
 
   /// Add or edit profile attributes to profile attributes schema in DB.
   ///
-  /// Removing attributes or attribute values is not possible.  Restart server to make changes visible to users.  # Access - Permission [Permissions::admin_edit_profile_attributes_schema]. - Modifying user visible values (texts and icons) requires   [Permissions::admin_edit_profile_attributes_schema_visible_content].
+  /// Removing attributes or attribute values is not possible.  # Access - Permission [Permissions::admin_edit_profile_attributes_schema]. - Modifying user visible values (texts and icons) requires   [Permissions::admin_edit_profile_attributes_schema_visible_content].
   ///
   /// Note: This method returns the HTTP [Response].
   ///
@@ -548,7 +548,7 @@ class ProfileAdminApi {
 
   /// Add or edit profile attributes to profile attributes schema in DB.
   ///
-  /// Removing attributes or attribute values is not possible.  Restart server to make changes visible to users.  # Access - Permission [Permissions::admin_edit_profile_attributes_schema]. - Modifying user visible values (texts and icons) requires   [Permissions::admin_edit_profile_attributes_schema_visible_content].
+  /// Removing attributes or attribute values is not possible.  # Access - Permission [Permissions::admin_edit_profile_attributes_schema]. - Modifying user visible values (texts and icons) requires   [Permissions::admin_edit_profile_attributes_schema_visible_content].
   ///
   /// Parameters:
   ///

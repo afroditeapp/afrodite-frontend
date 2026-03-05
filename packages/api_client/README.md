@@ -87,6 +87,7 @@ Class | Method | HTTP request | Description
 *AccountApi* | [**postEmailLoginWithToken**](doc//AccountApi.md#postemailloginwithtoken) | **POST** /account_api/email_login_with_token | Login using email login token (single use).
 *AccountApi* | [**postGetClientFeaturesConfig**](doc//AccountApi.md#postgetclientfeaturesconfig) | **POST** /account_api/client_features_config | 
 *AccountApi* | [**postGetCustomReportsConfig**](doc//AccountApi.md#postgetcustomreportsconfig) | **POST** /account_api/custom_reports_config | 
+*AccountApi* | [**postGetDynamicClientFeaturesConfig**](doc//AccountApi.md#postgetdynamicclientfeaturesconfig) | **POST** /account_api/dynamic_client_features_config | 
 *AccountApi* | [**postGetNewsPage**](doc//AccountApi.md#postgetnewspage) | **POST** /account_api/news_page | 
 *AccountApi* | [**postGetUnreadNewsCount**](doc//AccountApi.md#postgetunreadnewscount) | **POST** /account_api/news_count | The unread news count for public news.
 *AccountApi* | [**postInitEmailChange**](doc//AccountApi.md#postinitemailchange) | **POST** /account_api/init_email_change | Initiate email change process by providing a new email address.
@@ -114,6 +115,7 @@ Class | Method | HTTP request | Description
 *AccountAdminApi* | [**postCreateNewsItem**](doc//AccountAdminApi.md#postcreatenewsitem) | **POST** /account_api/create_news_item | 
 *AccountAdminApi* | [**postDeleteAccount**](doc//AccountAdminApi.md#postdeleteaccount) | **POST** /account_api/delete_account/{aid} | Delete account instantly
 *AccountAdminApi* | [**postGetClientVersionStatistics**](doc//AccountAdminApi.md#postgetclientversionstatistics) | **POST** /account_api/client_version_statistics | Get client version statistics.
+*AccountAdminApi* | [**postSaveInfoBanners**](doc//AccountAdminApi.md#postsaveinfobanners) | **POST** /account_api/save_info_banners | Save info banners to dynamic client config.
 *AccountAdminApi* | [**postSetAccountLockedState**](doc//AccountAdminApi.md#postsetaccountlockedstate) | **POST** /account_api/set_account_locked_state/{aid} | Set account locked state
 *AccountAdminApi* | [**postSetBanState**](doc//AccountAdminApi.md#postsetbanstate) | **POST** /account_api/set_ban_state | Ban or unban account
 *AccountAdminApi* | [**postSetNewsPublicity**](doc//AccountAdminApi.md#postsetnewspublicity) | **DELETE** /account_api/set_news_publicity/{nid} | 
@@ -313,6 +315,8 @@ Class | Method | HTTP request | Description
  - [BackupTransferClientRole](doc//BackupTransferClientRole.md)
  - [BackupTransferInitialMessage](doc//BackupTransferInitialMessage.md)
  - [BackupTransferTargetData](doc//BackupTransferTargetData.md)
+ - [BannerPlatform](doc//BannerPlatform.md)
+ - [BannerVisibility](doc//BannerVisibility.md)
  - [BooleanSetting](doc//BooleanSetting.md)
  - [BotAccount](doc//BotAccount.md)
  - [BotConfig](doc//BotConfig.md)
@@ -367,6 +371,8 @@ Class | Method | HTTP request | Description
  - [DemoAccountLoginToAccount](doc//DemoAccountLoginToAccount.md)
  - [DemoAccountRegisterAccountResult](doc//DemoAccountRegisterAccountResult.md)
  - [DemoAccountToken](doc//DemoAccountToken.md)
+ - [DynamicClientFeaturesConfig](doc//DynamicClientFeaturesConfig.md)
+ - [DynamicClientFeaturesConfigHash](doc//DynamicClientFeaturesConfigHash.md)
  - [EmailAddressState](doc//EmailAddressState.md)
  - [EmailAddressStateAdmin](doc//EmailAddressStateAdmin.md)
  - [EmailLogin](doc//EmailLogin.md)
@@ -393,6 +399,7 @@ Class | Method | HTTP request | Description
  - [GetClientVersionStatisticsSettings](doc//GetClientVersionStatisticsSettings.md)
  - [GetConversationId](doc//GetConversationId.md)
  - [GetCustomReportsConfigResult](doc//GetCustomReportsConfigResult.md)
+ - [GetDynamicClientFeaturesConfigResult](doc//GetDynamicClientFeaturesConfigResult.md)
  - [GetInitialProfileAgeResult](doc//GetInitialProfileAgeResult.md)
  - [GetIpAddressStatisticsResult](doc//GetIpAddressStatisticsResult.md)
  - [GetIpAddressStatisticsSettings](doc//GetIpAddressStatisticsSettings.md)
@@ -416,6 +423,10 @@ Class | Method | HTTP request | Description
  - [GetReportList](doc//GetReportList.md)
  - [GetSentMessage](doc//GetSentMessage.md)
  - [ImageProcessingDynamicConfig](doc//ImageProcessingDynamicConfig.md)
+ - [InfoBanner](doc//InfoBanner.md)
+ - [InfoBannerMode](doc//InfoBannerMode.md)
+ - [InfoBannerUrlButton](doc//InfoBannerUrlButton.md)
+ - [InfoBannersConfig](doc//InfoBannersConfig.md)
  - [InitEmailChange](doc//InitEmailChange.md)
  - [InitEmailChangeAdmin](doc//InitEmailChangeAdmin.md)
  - [InitEmailChangeResult](doc//InitEmailChangeResult.md)
@@ -561,6 +572,7 @@ Class | Method | HTTP request | Description
  - [RequestEmailLoginTokenResult](doc//RequestEmailLoginTokenResult.md)
  - [ResetNewsIteratorResult](doc//ResetNewsIteratorResult.md)
  - [ResetReceivedLikesIteratorResult](doc//ResetReceivedLikesIteratorResult.md)
+ - [SaveInfoBanners](doc//SaveInfoBanners.md)
  - [ScheduledMaintenanceStatus](doc//ScheduledMaintenanceStatus.md)
  - [ScheduledTaskStatus](doc//ScheduledTaskStatus.md)
  - [ScheduledTaskType](doc//ScheduledTaskType.md)
@@ -592,6 +604,7 @@ Class | Method | HTTP request | Description
  - [StringResource](doc//StringResource.md)
  - [SyncVersion](doc//SyncVersion.md)
  - [SystemInfo](doc//SystemInfo.md)
+ - [TextInfoBanner](doc//TextInfoBanner.md)
  - [TimeGranularity](doc//TimeGranularity.md)
  - [Translation](doc//Translation.md)
  - [TypingIndicatorConfig](doc//TypingIndicatorConfig.md)

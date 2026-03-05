@@ -103,6 +103,9 @@ String parameterToString(dynamic value) {
   if (value is EventType) {
     return EventTypeTypeTransformer().encode(value).toString();
   }
+  if (value is InfoBannerMode) {
+    return InfoBannerModeTypeTransformer().encode(value).toString();
+  }
   if (value is IpCountryStatisticsType) {
     return IpCountryStatisticsTypeTypeTransformer().encode(value).toString();
   }

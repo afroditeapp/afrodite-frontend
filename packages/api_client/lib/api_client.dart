@@ -266,6 +266,10 @@ class ApiClient {
           return BackupTransferInitialMessage.fromJson(value);
         case 'BackupTransferTargetData':
           return BackupTransferTargetData.fromJson(value);
+        case 'BannerPlatform':
+          return BannerPlatform.fromJson(value);
+        case 'BannerVisibility':
+          return BannerVisibility.fromJson(value);
         case 'BooleanSetting':
           return BooleanSetting.fromJson(value);
         case 'BotAccount':
@@ -374,6 +378,10 @@ class ApiClient {
           return DemoAccountRegisterAccountResult.fromJson(value);
         case 'DemoAccountToken':
           return DemoAccountToken.fromJson(value);
+        case 'DynamicClientFeaturesConfig':
+          return DynamicClientFeaturesConfig.fromJson(value);
+        case 'DynamicClientFeaturesConfigHash':
+          return DynamicClientFeaturesConfigHash.fromJson(value);
         case 'EmailAddressState':
           return EmailAddressState.fromJson(value);
         case 'EmailAddressStateAdmin':
@@ -426,6 +434,8 @@ class ApiClient {
           return GetConversationId.fromJson(value);
         case 'GetCustomReportsConfigResult':
           return GetCustomReportsConfigResult.fromJson(value);
+        case 'GetDynamicClientFeaturesConfigResult':
+          return GetDynamicClientFeaturesConfigResult.fromJson(value);
         case 'GetInitialProfileAgeResult':
           return GetInitialProfileAgeResult.fromJson(value);
         case 'GetIpAddressStatisticsResult':
@@ -472,6 +482,14 @@ class ApiClient {
           return GetSentMessage.fromJson(value);
         case 'ImageProcessingDynamicConfig':
           return ImageProcessingDynamicConfig.fromJson(value);
+        case 'InfoBanner':
+          return InfoBanner.fromJson(value);
+        case 'InfoBannerMode':
+          return InfoBannerModeTypeTransformer().decode(value);
+        case 'InfoBannerUrlButton':
+          return InfoBannerUrlButton.fromJson(value);
+        case 'InfoBannersConfig':
+          return InfoBannersConfig.fromJson(value);
         case 'InitEmailChange':
           return InitEmailChange.fromJson(value);
         case 'InitEmailChangeAdmin':
@@ -762,6 +780,8 @@ class ApiClient {
           return ResetNewsIteratorResult.fromJson(value);
         case 'ResetReceivedLikesIteratorResult':
           return ResetReceivedLikesIteratorResult.fromJson(value);
+        case 'SaveInfoBanners':
+          return SaveInfoBanners.fromJson(value);
         case 'ScheduledMaintenanceStatus':
           return ScheduledMaintenanceStatus.fromJson(value);
         case 'ScheduledTaskStatus':
@@ -824,6 +844,8 @@ class ApiClient {
           return SyncVersion.fromJson(value);
         case 'SystemInfo':
           return SystemInfo.fromJson(value);
+        case 'TextInfoBanner':
+          return TextInfoBanner.fromJson(value);
         case 'TimeGranularity':
           return TimeGranularityTypeTransformer().decode(value);
         case 'Translation':

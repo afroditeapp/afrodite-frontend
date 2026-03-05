@@ -36,6 +36,7 @@ class Permissions {
     this.adminServerDataReset = false,
     this.adminServerEditBotConfig = false,
     this.adminServerEditImageProcessingConfig = false,
+    this.adminServerEditInfoBanners = false,
     this.adminServerEditMaintenanceNotification = false,
     this.adminServerReboot = false,
     this.adminServerRestart = false,
@@ -102,6 +103,8 @@ class Permissions {
 
   bool adminServerEditImageProcessingConfig;
 
+  bool adminServerEditInfoBanners;
+
   bool adminServerEditMaintenanceNotification;
 
   bool adminServerReboot;
@@ -163,6 +166,7 @@ class Permissions {
     other.adminServerDataReset == adminServerDataReset &&
     other.adminServerEditBotConfig == adminServerEditBotConfig &&
     other.adminServerEditImageProcessingConfig == adminServerEditImageProcessingConfig &&
+    other.adminServerEditInfoBanners == adminServerEditInfoBanners &&
     other.adminServerEditMaintenanceNotification == adminServerEditMaintenanceNotification &&
     other.adminServerReboot == adminServerReboot &&
     other.adminServerRestart == adminServerRestart &&
@@ -207,6 +211,7 @@ class Permissions {
     (adminServerDataReset.hashCode) +
     (adminServerEditBotConfig.hashCode) +
     (adminServerEditImageProcessingConfig.hashCode) +
+    (adminServerEditInfoBanners.hashCode) +
     (adminServerEditMaintenanceNotification.hashCode) +
     (adminServerReboot.hashCode) +
     (adminServerRestart.hashCode) +
@@ -226,7 +231,7 @@ class Permissions {
     (adminViewProfileHistory.hashCode);
 
   @override
-  String toString() => 'Permissions[adminBanAccount=$adminBanAccount, adminChangeEmailAddress=$adminChangeEmailAddress, adminDeleteAccount=$adminDeleteAccount, adminDeleteMediaContent=$adminDeleteMediaContent, adminEditLogin=$adminEditLogin, adminEditMediaContentFaceDetectedValue=$adminEditMediaContentFaceDetectedValue, adminEditPermissions=$adminEditPermissions, adminEditProfileAttributesSchema=$adminEditProfileAttributesSchema, adminEditProfileAttributesSchemaVisibleContent=$adminEditProfileAttributesSchemaVisibleContent, adminEditProfileName=$adminEditProfileName, adminExportData=$adminExportData, adminFindAccountByEmailAddress=$adminFindAccountByEmailAddress, adminModerateMediaContent=$adminModerateMediaContent, adminModerateProfileNames=$adminModerateProfileNames, adminModerateProfileTexts=$adminModerateProfileTexts, adminNewsCreate=$adminNewsCreate, adminNewsEditAll=$adminNewsEditAll, adminProcessReports=$adminProcessReports, adminProfileStatistics=$adminProfileStatistics, adminRequestAccountDeletion=$adminRequestAccountDeletion, adminServerDataReset=$adminServerDataReset, adminServerEditBotConfig=$adminServerEditBotConfig, adminServerEditImageProcessingConfig=$adminServerEditImageProcessingConfig, adminServerEditMaintenanceNotification=$adminServerEditMaintenanceNotification, adminServerReboot=$adminServerReboot, adminServerRestart=$adminServerRestart, adminServerScheduledReboot=$adminServerScheduledReboot, adminServerScheduledRestart=$adminServerScheduledRestart, adminServerSoftwareUpdate=$adminServerSoftwareUpdate, adminServerViewBotConfig=$adminServerViewBotConfig, adminServerViewImageProcessingConfig=$adminServerViewImageProcessingConfig, adminServerViewInfo=$adminServerViewInfo, adminSubscribeAdminNotifications=$adminSubscribeAdminNotifications, adminViewAccountApiUsage=$adminViewAccountApiUsage, adminViewAccountIpAddressUsage=$adminViewAccountIpAddressUsage, adminViewAccountState=$adminViewAccountState, adminViewAllProfiles=$adminViewAllProfiles, adminViewEmailAddress=$adminViewEmailAddress, adminViewPermissions=$adminViewPermissions, adminViewProfileHistory=$adminViewProfileHistory]';
+  String toString() => 'Permissions[adminBanAccount=$adminBanAccount, adminChangeEmailAddress=$adminChangeEmailAddress, adminDeleteAccount=$adminDeleteAccount, adminDeleteMediaContent=$adminDeleteMediaContent, adminEditLogin=$adminEditLogin, adminEditMediaContentFaceDetectedValue=$adminEditMediaContentFaceDetectedValue, adminEditPermissions=$adminEditPermissions, adminEditProfileAttributesSchema=$adminEditProfileAttributesSchema, adminEditProfileAttributesSchemaVisibleContent=$adminEditProfileAttributesSchemaVisibleContent, adminEditProfileName=$adminEditProfileName, adminExportData=$adminExportData, adminFindAccountByEmailAddress=$adminFindAccountByEmailAddress, adminModerateMediaContent=$adminModerateMediaContent, adminModerateProfileNames=$adminModerateProfileNames, adminModerateProfileTexts=$adminModerateProfileTexts, adminNewsCreate=$adminNewsCreate, adminNewsEditAll=$adminNewsEditAll, adminProcessReports=$adminProcessReports, adminProfileStatistics=$adminProfileStatistics, adminRequestAccountDeletion=$adminRequestAccountDeletion, adminServerDataReset=$adminServerDataReset, adminServerEditBotConfig=$adminServerEditBotConfig, adminServerEditImageProcessingConfig=$adminServerEditImageProcessingConfig, adminServerEditInfoBanners=$adminServerEditInfoBanners, adminServerEditMaintenanceNotification=$adminServerEditMaintenanceNotification, adminServerReboot=$adminServerReboot, adminServerRestart=$adminServerRestart, adminServerScheduledReboot=$adminServerScheduledReboot, adminServerScheduledRestart=$adminServerScheduledRestart, adminServerSoftwareUpdate=$adminServerSoftwareUpdate, adminServerViewBotConfig=$adminServerViewBotConfig, adminServerViewImageProcessingConfig=$adminServerViewImageProcessingConfig, adminServerViewInfo=$adminServerViewInfo, adminSubscribeAdminNotifications=$adminSubscribeAdminNotifications, adminViewAccountApiUsage=$adminViewAccountApiUsage, adminViewAccountIpAddressUsage=$adminViewAccountIpAddressUsage, adminViewAccountState=$adminViewAccountState, adminViewAllProfiles=$adminViewAllProfiles, adminViewEmailAddress=$adminViewEmailAddress, adminViewPermissions=$adminViewPermissions, adminViewProfileHistory=$adminViewProfileHistory]';
 
   Map<String, dynamic> toJson() {
     final json = <String, dynamic>{};
@@ -253,6 +258,7 @@ class Permissions {
       json[r'admin_server_data_reset'] = this.adminServerDataReset;
       json[r'admin_server_edit_bot_config'] = this.adminServerEditBotConfig;
       json[r'admin_server_edit_image_processing_config'] = this.adminServerEditImageProcessingConfig;
+      json[r'admin_server_edit_info_banners'] = this.adminServerEditInfoBanners;
       json[r'admin_server_edit_maintenance_notification'] = this.adminServerEditMaintenanceNotification;
       json[r'admin_server_reboot'] = this.adminServerReboot;
       json[r'admin_server_restart'] = this.adminServerRestart;
@@ -315,6 +321,7 @@ class Permissions {
         adminServerDataReset: mapValueOfType<bool>(json, r'admin_server_data_reset') ?? false,
         adminServerEditBotConfig: mapValueOfType<bool>(json, r'admin_server_edit_bot_config') ?? false,
         adminServerEditImageProcessingConfig: mapValueOfType<bool>(json, r'admin_server_edit_image_processing_config') ?? false,
+        adminServerEditInfoBanners: mapValueOfType<bool>(json, r'admin_server_edit_info_banners') ?? false,
         adminServerEditMaintenanceNotification: mapValueOfType<bool>(json, r'admin_server_edit_maintenance_notification') ?? false,
         adminServerReboot: mapValueOfType<bool>(json, r'admin_server_reboot') ?? false,
         adminServerRestart: mapValueOfType<bool>(json, r'admin_server_restart') ?? false,

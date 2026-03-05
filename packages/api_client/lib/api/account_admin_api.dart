@@ -734,6 +734,54 @@ class AccountAdminApi {
     return null;
   }
 
+  /// Save info banners to dynamic client config.
+  ///
+  /// Existing banners cannot be removed.  Don't edit [model:InfoBanner::version] field as server will update that.  # Access  Permission [model::Permissions::admin_server_edit_info_banners] is required.
+  ///
+  /// Note: This method returns the HTTP [Response].
+  ///
+  /// Parameters:
+  ///
+  /// * [SaveInfoBanners] saveInfoBanners (required):
+  Future<Response> postSaveInfoBannersWithHttpInfo(SaveInfoBanners saveInfoBanners,) async {
+    // ignore: prefer_const_declarations
+    final path = r'/account_api/save_info_banners';
+
+    // ignore: prefer_final_locals
+    Object? postBody = saveInfoBanners;
+
+    final queryParams = <QueryParam>[];
+    final headerParams = <String, String>{};
+    final formParams = <String, String>{};
+
+    const contentTypes = <String>['application/json'];
+
+
+    return apiClient.invokeAPI(
+      path,
+      'POST',
+      queryParams,
+      postBody,
+      headerParams,
+      formParams,
+      contentTypes.isEmpty ? null : contentTypes.first,
+    );
+  }
+
+  /// Save info banners to dynamic client config.
+  ///
+  /// Existing banners cannot be removed.  Don't edit [model:InfoBanner::version] field as server will update that.  # Access  Permission [model::Permissions::admin_server_edit_info_banners] is required.
+  ///
+  /// Parameters:
+  ///
+  /// * [SaveInfoBanners] saveInfoBanners (required):
+  Future<void> postSaveInfoBanners(SaveInfoBanners saveInfoBanners,) async {
+    final response = await postSaveInfoBannersWithHttpInfo(saveInfoBanners,);
+    if (response.statusCode >= HttpStatus.badRequest) {
+      throw ApiException(response.statusCode, await _decodeBodyBytes(response));
+    }
+  }
+
   /// Set account locked state
   ///
   /// # Access  Permission [model::Permissions::admin_edit_login] is required.

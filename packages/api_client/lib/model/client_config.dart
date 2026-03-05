@@ -15,6 +15,7 @@ class ClientConfig {
   ClientConfig({
     this.clientFeatures,
     this.customReports,
+    this.dynamicClientFeatures,
     this.profileAttributes,
     required this.syncVersion,
   });
@@ -25,6 +26,9 @@ class ClientConfig {
   /// None, if custom reports are not configured.
   CustomReportsConfigHash? customReports;
 
+  /// None, if dynamic client features are not configured.
+  DynamicClientFeaturesConfigHash? dynamicClientFeatures;
+
   /// None, if attributes are not configured.
   PartialProfileAttributesConfig? profileAttributes;
 
@@ -34,6 +38,7 @@ class ClientConfig {
   bool operator ==(Object other) => identical(this, other) || other is ClientConfig &&
     other.clientFeatures == clientFeatures &&
     other.customReports == customReports &&
+    other.dynamicClientFeatures == dynamicClientFeatures &&
     other.profileAttributes == profileAttributes &&
     other.syncVersion == syncVersion;
 
@@ -42,11 +47,12 @@ class ClientConfig {
     // ignore: unnecessary_parenthesis
     (clientFeatures == null ? 0 : clientFeatures!.hashCode) +
     (customReports == null ? 0 : customReports!.hashCode) +
+    (dynamicClientFeatures == null ? 0 : dynamicClientFeatures!.hashCode) +
     (profileAttributes == null ? 0 : profileAttributes!.hashCode) +
     (syncVersion.hashCode);
 
   @override
-  String toString() => 'ClientConfig[clientFeatures=$clientFeatures, customReports=$customReports, profileAttributes=$profileAttributes, syncVersion=$syncVersion]';
+  String toString() => 'ClientConfig[clientFeatures=$clientFeatures, customReports=$customReports, dynamicClientFeatures=$dynamicClientFeatures, profileAttributes=$profileAttributes, syncVersion=$syncVersion]';
 
   Map<String, dynamic> toJson() {
     final json = <String, dynamic>{};
@@ -59,6 +65,11 @@ class ClientConfig {
       json[r'custom_reports'] = this.customReports;
     } else {
       json[r'custom_reports'] = null;
+    }
+    if (this.dynamicClientFeatures != null) {
+      json[r'dynamic_client_features'] = this.dynamicClientFeatures;
+    } else {
+      json[r'dynamic_client_features'] = null;
     }
     if (this.profileAttributes != null) {
       json[r'profile_attributes'] = this.profileAttributes;
@@ -90,6 +101,7 @@ class ClientConfig {
       return ClientConfig(
         clientFeatures: ClientFeaturesConfigHash.fromJson(json[r'client_features']),
         customReports: CustomReportsConfigHash.fromJson(json[r'custom_reports']),
+        dynamicClientFeatures: DynamicClientFeaturesConfigHash.fromJson(json[r'dynamic_client_features']),
         profileAttributes: PartialProfileAttributesConfig.fromJson(json[r'profile_attributes']),
         syncVersion: ClientConfigSyncVersion.fromJson(json[r'sync_version'])!,
       );
