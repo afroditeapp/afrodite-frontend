@@ -13,6 +13,7 @@ import 'package:app/ui/normal/settings/admin/bot_config.dart';
 import 'package:app/ui/normal/settings/admin/image_processing_config.dart';
 import 'package:app/ui/normal/settings/admin/server_software_update.dart';
 import 'package:app/ui/normal/settings/admin/server_system_info.dart';
+import 'package:app/ui/normal/settings/admin/info_banners/schema_editor.dart';
 
 class ServerPage extends MyScreenPageLimited<()> {
   ServerPage({required String title}) : super(builder: (_) => ServerScreen(title: title));
@@ -96,6 +97,15 @@ class ServerScreen extends StatelessWidget {
           Icons.system_update_alt,
           "Server software update",
           () => MyNavigator.pushLimited(context, ServerSoftwareUpdatePage(r)),
+        ),
+      );
+    }
+    if (permissions.adminServerEditInfoBanners) {
+      settings.add(
+        Setting.createSetting(
+          Icons.campaign,
+          "Info banners",
+          () => MyNavigator.pushLimited(context, InfoBannersSchemaPage(r)),
         ),
       );
     }

@@ -81,6 +81,7 @@ class AdminSettingsScreen extends StatelessWidget {
         permissions.adminServerScheduledReboot ||
         permissions.adminServerDataReset ||
         permissions.adminServerSoftwareUpdate ||
+        permissions.adminServerEditInfoBanners ||
         permissions.adminServerEditMaintenanceNotification) {
       const title = "Server";
       settings.add(
@@ -171,6 +172,7 @@ class AdminSettingsPermissions {
   bool get adminServerViewInfo => _permissions.adminServerViewInfo;
   bool get adminServerSoftwareUpdate => _permissions.adminServerSoftwareUpdate;
   bool get adminServerDataReset => _permissions.adminServerDataReset;
+  bool get adminServerEditInfoBanners => _permissions.adminServerEditInfoBanners;
   bool get adminServerEditMaintenanceNotification =>
       _permissions.adminServerEditMaintenanceNotification;
   bool get adminProfileStatistics => _permissions.adminProfileStatistics;
@@ -201,6 +203,7 @@ class AdminSettingsPermissions {
         adminServerViewInfo ||
         adminServerSoftwareUpdate ||
         adminServerDataReset ||
+        adminServerEditInfoBanners ||
         adminServerEditMaintenanceNotification ||
         adminProfileStatistics ||
         adminEditProfileAttributesSchema ||
