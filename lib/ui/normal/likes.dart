@@ -25,6 +25,7 @@ import 'package:app/model/freezed/logic/main/navigator_state.dart';
 import 'package:app/ui_utils/bottom_navigation.dart';
 import 'package:infinite_scroll_pagination/infinite_scroll_pagination.dart';
 import 'package:app/localizations.dart';
+import 'package:app/ui_utils/info_banners.dart';
 import 'package:app/ui_utils/list.dart';
 import 'package:app/ui_utils/scroll_controller.dart';
 import 'package:app/utils/result.dart';
@@ -302,6 +303,7 @@ class LikeViewContentState extends State<LikeViewContent> {
           },
           child: Column(
             children: [
+              const InfoBannersWidget(location: InfoBannerLocation.likes),
               Expanded(
                 child: BlocBuilder<UiSettingsBloc, UiSettingsData>(
                   buildWhen: (previous, current) => previous.gridSettings != current.gridSettings,

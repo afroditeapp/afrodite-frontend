@@ -26,6 +26,7 @@ import 'package:app/model/freezed/logic/main/navigator_state.dart';
 import 'package:app/ui/normal/profiles/view_profile.dart';
 import 'package:app/ui_utils/app_bar/common_actions.dart';
 import 'package:app/ui_utils/app_bar/menu_actions.dart';
+import 'package:app/ui_utils/info_banners.dart';
 import 'package:app/ui_utils/snack_bar.dart';
 import 'package:openapi/api.dart';
 
@@ -246,7 +247,14 @@ class ConversationScreenState extends State<ConversationScreen> {
         ],
       ),
       body: ChatViewingBlocker(
-        child: VideoCallTipDialogOpener(accountId: widget.accountId, child: page(context)),
+        child: Column(
+          children: [
+            const InfoBannersWidget(location: InfoBannerLocation.conversation),
+            Expanded(
+              child: VideoCallTipDialogOpener(accountId: widget.accountId, child: page(context)),
+            ),
+          ],
+        ),
       ),
     );
   }

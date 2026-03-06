@@ -110,3 +110,15 @@ extension AccountIdUiExtensions on AccountId {
     return aid.substring(0, 5);
   }
 }
+
+extension StringResourceUiExtensions on StringResource {
+  String toLocalizedText(BuildContext context) {
+    final languageCode = Localizations.localeOf(context).languageCode;
+    final translated = translations[languageCode];
+    if (translated != null && translated.isNotEmpty) {
+      return translated;
+    } else {
+      return default_;
+    }
+  }
+}

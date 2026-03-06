@@ -27,6 +27,7 @@ import 'package:app/ui_utils/bottom_navigation.dart';
 import 'package:app/localizations.dart';
 import 'package:app/ui_utils/app_bar/common_actions.dart';
 import 'package:app/ui_utils/app_bar/menu_actions.dart';
+import 'package:app/ui_utils/info_banners.dart';
 import 'package:app/ui_utils/scroll_controller.dart';
 import 'package:openapi/api.dart';
 
@@ -203,7 +204,11 @@ class _MenuViewState extends State<MenuView> {
       controller: _scrollController,
       child: Column(
         crossAxisAlignment: CrossAxisAlignment.start,
-        children: [viewServerMaintenanceInfo(), ...settings.map((setting) => setting.toListTile())],
+        children: [
+          viewServerMaintenanceInfo(),
+          const InfoBannersWidget(location: InfoBannerLocation.menu),
+          ...settings.map((setting) => setting.toListTile()),
+        ],
       ),
     );
   }

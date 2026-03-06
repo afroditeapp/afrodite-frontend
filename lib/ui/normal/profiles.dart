@@ -10,6 +10,7 @@ import 'package:app/ui/initial_setup/navigation.dart';
 import 'package:app/ui/normal/chat/chat_data_outdated_widget.dart';
 import 'package:app/ui_utils/consts/colors.dart';
 import 'package:app/ui_utils/consts/icons.dart';
+import 'package:app/ui_utils/info_banners.dart';
 import 'package:app/ui_utils/moderation.dart';
 import 'package:app/ui_utils/extensions/api.dart';
 import 'package:app/ui_utils/snack_bar.dart';
@@ -126,12 +127,19 @@ final _profileGridKey = GlobalKey<ProfileGridState>();
 class _ProfileViewState extends State<ProfileView> {
   @override
   Widget build(BuildContext context) {
-    return PublicProfileViewingBlocker(
-      child: ProfileGrid(
-        r: context.read<RepositoryInstances>(),
-        key: _profileGridKey,
-        profileFiltersBloc: context.read<ProfileFiltersBloc>(),
-      ),
+    return Column(
+      children: [
+        const InfoBannersWidget(location: InfoBannerLocation.profiles),
+        Expanded(
+          child: PublicProfileViewingBlocker(
+            child: ProfileGrid(
+              r: context.read<RepositoryInstances>(),
+              key: _profileGridKey,
+              profileFiltersBloc: context.read<ProfileFiltersBloc>(),
+            ),
+          ),
+        ),
+      ],
     );
   }
 }

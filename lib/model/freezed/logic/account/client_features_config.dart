@@ -1,4 +1,4 @@
-import "package:app/localizations.dart";
+import "package:app/ui_utils/extensions/api.dart";
 import "package:app/utils/list.dart";
 import "package:flutter/widgets.dart";
 import "package:freezed_annotation/freezed_annotation.dart";
@@ -67,15 +67,11 @@ class ClientFeaturesConfigData with _$ClientFeaturesConfigData {
   }
 
   String? aboutDialogAttribution(BuildContext context) {
-    final locale = context.strings.localeName;
-    return config.attribution?.generic?.translations[locale] ??
-        config.attribution?.generic?.default_;
+    return config.attribution?.generic?.toLocalizedText(context);
   }
 
   String? ipCountryDataAttribution(BuildContext context) {
-    final locale = context.strings.localeName;
-    return config.attribution?.ipCountry?.translations[locale] ??
-        config.attribution?.ipCountry?.default_;
+    return config.attribution?.ipCountry?.toLocalizedText(context);
   }
 }
 

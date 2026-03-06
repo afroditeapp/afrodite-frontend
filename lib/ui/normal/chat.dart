@@ -24,6 +24,7 @@ import 'package:app/ui/normal/chat/select_match.dart';
 import 'package:app/ui_utils/app_bar/menu_actions.dart';
 import 'package:app/ui_utils/bottom_navigation.dart';
 import 'package:app/localizations.dart';
+import 'package:app/ui_utils/info_banners.dart';
 import 'package:app/ui_utils/list.dart';
 import 'package:app/ui_utils/scroll_controller.dart';
 import 'package:app/utils/cache.dart';
@@ -76,6 +77,7 @@ class _ChatViewState extends State<ChatView> {
   Widget build(BuildContext context) {
     return Column(
       children: [
+        const InfoBannersWidget(location: InfoBannerLocation.chats),
         Expanded(
           child: ChatViewingBlocker(
             child: ConversationList(profile: widget.profile, chat: widget.chat),
