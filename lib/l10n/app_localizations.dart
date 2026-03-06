@@ -2791,7 +2791,7 @@ abstract class AppLocalizations {
   /// Second step for using pairing code
   ///
   /// In en, this message translates to:
-  /// **'2. Logout if login screen is not visible'**
+  /// **'2. Logout from settings if login screen is not visible'**
   String get receive_chat_backup_pairing_code_step2;
 
   /// Third step for using pairing code

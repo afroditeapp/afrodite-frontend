@@ -2017,7 +2017,7 @@
       }
     }
   },
-  "receive_chat_backup_pairing_code_step2": "2. Logout if login screen is not visible",
+  "receive_chat_backup_pairing_code_step2": "2. Logout from settings if login screen is not visible",
   "@receive_chat_backup_pairing_code_step2": {
     "description": "Second step for using pairing code"
   },

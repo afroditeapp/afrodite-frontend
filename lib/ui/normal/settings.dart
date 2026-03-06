@@ -13,6 +13,7 @@ import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:app/logic/app/navigator_state.dart';
 import 'package:app/logic/settings/profile_visibility.dart';
 import 'package:app/logic/settings/search_settings.dart';
+import 'package:app/logic/login.dart';
 import 'package:app/model/freezed/logic/main/navigator_state.dart';
 import 'package:app/ui/normal/settings/account_settings.dart';
 import 'package:app/ui/normal/settings/chat/chat_backup.dart';
@@ -26,6 +27,7 @@ import 'package:app/ui/normal/settings/profile/search_settings.dart';
 import 'package:app/localizations.dart';
 import 'package:app/model/freezed/logic/settings/profile_visibility.dart';
 import 'package:app/ui_utils/common_update_logic.dart';
+import 'package:app/ui_utils/dialog.dart';
 import 'package:app/ui_utils/snack_bar.dart';
 import 'package:app/utils/api.dart';
 import 'package:openapi/api.dart';
@@ -227,6 +229,18 @@ class _SettingsScreenState extends State<SettingsScreen> {
           openProfileGridSettingsScreen(context);
         },
       ).toListTile(),
+      Setting.createSetting(Icons.logout, context.strings.generic_logout, () {
+        final inProgress = context.read<LoginBloc>().state.logoutInProgress;
+        if (inProgress) {
+          showSnackBar(context.strings.generic_previous_action_in_progress);
+        } else {
+          showConfirmDialogAdvanced(
+            context: context,
+            title: context.strings.generic_logout_confirmation_title,
+            onSuccess: () => context.read<LoginBloc>().add(DoLogout()),
+          );
+        }
+      }).toListTile(),
     ];
   }
 }

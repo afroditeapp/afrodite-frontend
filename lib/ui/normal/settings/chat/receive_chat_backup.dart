@@ -216,7 +216,11 @@ class _ReceiveChatBackupScreenState extends State<ReceiveChatBackupScreen> {
                 context.strings.receive_chat_backup_pairing_code_step1(context.strings.app_name),
               ),
               const SizedBox(height: 12),
-              _instructionStep(context, context.strings.receive_chat_backup_pairing_code_step2),
+              _instructionStepWithIcon(
+                context,
+                context.strings.receive_chat_backup_pairing_code_step2,
+                Icons.logout,
+              ),
               const SizedBox(height: 12),
               _instructionStepWithIcon(
                 context,
@@ -224,7 +228,11 @@ class _ReceiveChatBackupScreenState extends State<ReceiveChatBackupScreen> {
                 Icons.more_vert,
               ),
               const SizedBox(height: 12),
-              _instructionStep(context, context.strings.receive_chat_backup_pairing_code_step4),
+              _instructionStepWithIcon(
+                context,
+                context.strings.receive_chat_backup_pairing_code_step4,
+                Icons.upload,
+              ),
               const SizedBox(height: 12),
               _instructionStep(context, context.strings.receive_chat_backup_pairing_code_step5),
               const SizedBox(height: 12),

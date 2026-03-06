@@ -53,6 +53,13 @@ class LoginScreen extends StatelessWidget {
         actions: [
           menuActions([
             MenuItemButton(
+              leadingIcon: const Icon(Icons.upload),
+              child: Text(context.strings.send_chat_backup_screen_title),
+              onPressed: () {
+                openSendChatBackupScreen(context);
+              },
+            ),
+            MenuItemButton(
               child: Text(context.strings.email_login_screen_title),
               onPressed: () {
                 openEmailLoginScreen(context);
@@ -67,12 +74,6 @@ class LoginScreen extends StatelessWidget {
                     demoAccountBloc.add(DoDemoAccountLogin(value));
                   }
                 });
-              },
-            ),
-            MenuItemButton(
-              child: Text(context.strings.send_chat_backup_screen_title),
-              onPressed: () {
-                openSendChatBackupScreen(context);
               },
             ),
             if (kDebugMode || kProfileMode)

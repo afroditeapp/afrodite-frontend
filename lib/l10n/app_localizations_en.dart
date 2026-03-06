@@ -1533,7 +1533,8 @@ class AppLocalizationsEn extends AppLocalizations {
   }
 
   @override
-  String get receive_chat_backup_pairing_code_step2 => '2. Logout if login screen is not visible';
+  String get receive_chat_backup_pairing_code_step2 =>
+      '2. Logout from settings if login screen is not visible';
 
   @override
   String get receive_chat_backup_pairing_code_step3 =>

@@ -690,7 +690,7 @@
     <string name="receive_chat_backup_importing" description="Status text when importing backup">Importing backup…</string>
     <string name="receive_chat_backup_pairing_code_instruction" description="Instruction for using pairing code">On the source device:</string>
     <string name="receive_chat_backup_pairing_code_step1" description="First step for using pairing code">1. Open %s</string>
-    <string name="receive_chat_backup_pairing_code_step2" description="Second step for using pairing code">2. Logout if login screen is not visible</string>
+    <string name="receive_chat_backup_pairing_code_step2" description="Second step for using pairing code">2. Logout from settings if login screen is not visible</string>
     <string name="receive_chat_backup_pairing_code_step3" description="Third step for using pairing code">3. Tap the three dots in the top right corner</string>
     <string name="receive_chat_backup_pairing_code_step4" description="Fourth step for using pairing code">4. Select "Send chat backup"</string>
     <string name="receive_chat_backup_pairing_code_step5" description="Fifth step for using pairing code">5. Scan the QR code and start transfer</string>
