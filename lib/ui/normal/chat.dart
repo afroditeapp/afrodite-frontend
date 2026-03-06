@@ -21,7 +21,6 @@ import 'package:app/model/freezed/logic/main/bottom_navigation_state.dart';
 import 'package:app/ui/normal/chat/conversation_page.dart';
 import 'package:app/ui/normal/chat/utils.dart';
 import 'package:app/ui/normal/chat/select_match.dart';
-import 'package:app/ui_utils/app_bar/menu_actions.dart';
 import 'package:app/ui_utils/bottom_navigation.dart';
 import 'package:app/localizations.dart';
 import 'package:app/ui_utils/info_banners.dart';
@@ -44,12 +43,11 @@ class ChatView extends BottomNavigationScreen {
   @override
   List<Widget> actions(BuildContext context) {
     return [
-      menuActions([
-        MenuItemButton(
-          child: Text(context.strings.chat_list_screen_open_matches_screen_action),
-          onPressed: () => openSelectMatchView(context),
-        ),
-      ]),
+      IconButton(
+        icon: const Icon(Icons.contacts),
+        tooltip: context.strings.chat_list_screen_open_matches_screen_action,
+        onPressed: () => openSelectMatchView(context),
+      ),
     ];
   }
 
