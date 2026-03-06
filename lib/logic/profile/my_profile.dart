@@ -159,7 +159,7 @@ class MyProfileBloc extends Bloc<MyProfileEvent, MyProfileData>
       });
     });
     on<NewMyProfile>((data, emit) async {
-      emit(state.copyWith(profile: data.profile));
+      emit(state.copyWith(profile: data.profile, initialLoadingCompleted: true));
     });
     on<AddProcessedImage>((data, emit) {
       final pictures = state.valuePictures();

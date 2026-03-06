@@ -184,6 +184,10 @@ class PublicProfileViewingBlocker extends StatelessWidget {
             builder: (context, configData) {
               return BlocBuilder<MyProfileBloc, MyProfileData>(
                 builder: (context, myProfileState) {
+                  if (!myProfileState.initialLoadingCompleted) {
+                    return _handleBlocked(const SizedBox.shrink());
+                  }
+
                   final primaryContent = myProfileState.profile?.myContent.getAtOrNull(0);
 
                   final requireFace =

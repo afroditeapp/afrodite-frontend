@@ -24,6 +24,7 @@ mixin _$MyProfileData {
   UpdateState get updateState => throw _privateConstructorErrorMyProfileData;
   MyProfileEntry? get profile => throw _privateConstructorErrorMyProfileData;
   bool get loadingMyProfile => throw _privateConstructorErrorMyProfileData;
+  bool get initialLoadingCompleted => throw _privateConstructorErrorMyProfileData;
   InitialAgeInfo? get initialAgeInfo => throw _privateConstructorErrorMyProfileData;
   bool get openSelectImageScreen => throw _privateConstructorErrorMyProfileData;
   EditedMyProfileData get edited => throw _privateConstructorErrorMyProfileData;
@@ -32,6 +33,7 @@ mixin _$MyProfileData {
     UpdateState? updateState,
     MyProfileEntry? profile,
     bool? loadingMyProfile,
+    bool? initialLoadingCompleted,
     InitialAgeInfo? initialAgeInfo,
     bool? openSelectImageScreen,
     EditedMyProfileData? edited,
@@ -44,6 +46,7 @@ abstract class _MyProfileData extends MyProfileData {
     UpdateState updateState,
     MyProfileEntry? profile,
     bool loadingMyProfile,
+    bool initialLoadingCompleted,
     InitialAgeInfo? initialAgeInfo,
     bool openSelectImageScreen,
     required EditedMyProfileData edited,
@@ -55,12 +58,14 @@ abstract class _MyProfileData extends MyProfileData {
 class _$MyProfileDataImpl extends _MyProfileData with DiagnosticableTreeMixin {
   static const UpdateState _updateStateDefaultValue = UpdateIdle();
   static const bool _loadingMyProfileDefaultValue = false;
+  static const bool _initialLoadingCompletedDefaultValue = false;
   static const bool _openSelectImageScreenDefaultValue = false;
 
   _$MyProfileDataImpl({
     this.updateState = _updateStateDefaultValue,
     this.profile,
     this.loadingMyProfile = _loadingMyProfileDefaultValue,
+    this.initialLoadingCompleted = _initialLoadingCompletedDefaultValue,
     this.initialAgeInfo,
     this.openSelectImageScreen = _openSelectImageScreenDefaultValue,
     required this.edited,
@@ -73,6 +78,8 @@ class _$MyProfileDataImpl extends _MyProfileData with DiagnosticableTreeMixin {
   @override
   final bool loadingMyProfile;
   @override
+  final bool initialLoadingCompleted;
+  @override
   final InitialAgeInfo? initialAgeInfo;
   @override
   final bool openSelectImageScreen;
@@ -81,7 +88,7 @@ class _$MyProfileDataImpl extends _MyProfileData with DiagnosticableTreeMixin {
 
   @override
   String toString({DiagnosticLevel minLevel = DiagnosticLevel.info}) {
-    return 'MyProfileData(updateState: $updateState, profile: $profile, loadingMyProfile: $loadingMyProfile, initialAgeInfo: $initialAgeInfo, openSelectImageScreen: $openSelectImageScreen, edited: $edited)';
+    return 'MyProfileData(updateState: $updateState, profile: $profile, loadingMyProfile: $loadingMyProfile, initialLoadingCompleted: $initialLoadingCompleted, initialAgeInfo: $initialAgeInfo, openSelectImageScreen: $openSelectImageScreen, edited: $edited)';
   }
 
   @override
@@ -92,6 +99,7 @@ class _$MyProfileDataImpl extends _MyProfileData with DiagnosticableTreeMixin {
       ..add(DiagnosticsProperty('updateState', updateState))
       ..add(DiagnosticsProperty('profile', profile))
       ..add(DiagnosticsProperty('loadingMyProfile', loadingMyProfile))
+      ..add(DiagnosticsProperty('initialLoadingCompleted', initialLoadingCompleted))
       ..add(DiagnosticsProperty('initialAgeInfo', initialAgeInfo))
       ..add(DiagnosticsProperty('openSelectImageScreen', openSelectImageScreen))
       ..add(DiagnosticsProperty('edited', edited));
@@ -108,6 +116,8 @@ class _$MyProfileDataImpl extends _MyProfileData with DiagnosticableTreeMixin {
           other.profile == profile) &&
         (identical(other.loadingMyProfile, loadingMyProfile) ||
           other.loadingMyProfile == loadingMyProfile) &&
+        (identical(other.initialLoadingCompleted, initialLoadingCompleted) ||
+          other.initialLoadingCompleted == initialLoadingCompleted) &&
         (identical(other.initialAgeInfo, initialAgeInfo) ||
           other.initialAgeInfo == initialAgeInfo) &&
         (identical(other.openSelectImageScreen, openSelectImageScreen) ||
@@ -123,6 +133,7 @@ class _$MyProfileDataImpl extends _MyProfileData with DiagnosticableTreeMixin {
     updateState,
     profile,
     loadingMyProfile,
+    initialLoadingCompleted,
     initialAgeInfo,
     openSelectImageScreen,
     edited,
@@ -133,6 +144,7 @@ class _$MyProfileDataImpl extends _MyProfileData with DiagnosticableTreeMixin {
     Object? updateState,
     Object? profile = _detectDefaultValueInCopyWith,
     Object? loadingMyProfile,
+    Object? initialLoadingCompleted,
     Object? initialAgeInfo = _detectDefaultValueInCopyWith,
     Object? openSelectImageScreen,
     Object? edited,
@@ -140,6 +152,7 @@ class _$MyProfileDataImpl extends _MyProfileData with DiagnosticableTreeMixin {
     updateState: (updateState ?? this.updateState) as UpdateState,
     profile: (profile == _detectDefaultValueInCopyWith ? this.profile : profile) as MyProfileEntry?,
     loadingMyProfile: (loadingMyProfile ?? this.loadingMyProfile) as bool,
+    initialLoadingCompleted: (initialLoadingCompleted ?? this.initialLoadingCompleted) as bool,
     initialAgeInfo: (initialAgeInfo == _detectDefaultValueInCopyWith ? this.initialAgeInfo : initialAgeInfo) as InitialAgeInfo?,
     openSelectImageScreen: (openSelectImageScreen ?? this.openSelectImageScreen) as bool,
     edited: (edited ?? this.edited) as EditedMyProfileData,

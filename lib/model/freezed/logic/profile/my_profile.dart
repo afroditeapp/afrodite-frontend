@@ -22,6 +22,7 @@ class MyProfileData
     @Default(UpdateIdle()) UpdateState updateState,
     MyProfileEntry? profile,
     @Default(false) bool loadingMyProfile,
+    @Default(false) bool initialLoadingCompleted,
     InitialAgeInfo? initialAgeInfo,
     @Default(false) bool openSelectImageScreen,
     required EditedMyProfileData edited,
