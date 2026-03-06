@@ -255,7 +255,7 @@ class ProfileGridState extends State<ProfileGrid> {
       },
       physics: const AlwaysScrollableScrollPhysics(),
       scrollController: _scrollController,
-      padding: EdgeInsets.symmetric(horizontal: settings.valueHorizontalPadding()),
+      padding: EdgeInsets.symmetric(horizontal: settings.valueHorizontalPadding(), vertical: 4),
       builderDelegate: PagedChildBuilderDelegate<ProfileGridProfileEntry>(
         animateTransitions: animationResetLogic.animateTransitions,
         itemBuilder: (context, item, index) {

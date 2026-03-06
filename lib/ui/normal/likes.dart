@@ -330,7 +330,7 @@ class LikeViewContentState extends State<LikeViewContent> {
       },
       physics: const AlwaysScrollableScrollPhysics(),
       scrollController: _scrollController,
-      padding: EdgeInsets.symmetric(horizontal: settings.valueHorizontalPadding()),
+      padding: EdgeInsets.symmetric(horizontal: settings.valueHorizontalPadding(), vertical: 4),
       builderDelegate: PagedChildBuilderDelegate<ProfileGridProfileEntry>(
         animateTransitions: true,
         itemBuilder: (context, item, index) {
