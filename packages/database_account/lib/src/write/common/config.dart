@@ -13,6 +13,7 @@ part 'config.g.dart';
 @DriftAccessor(
   tables: [
     schema.ClientFeaturesConfig,
+    schema.DynamicClientFeaturesConfig,
     schema.CustomReportsConfig,
     schema.ProfileAttributesConfig,
     schema.ProfileAttributesConfigAttributes,
@@ -30,6 +31,19 @@ class DaoWriteConfig extends DatabaseAccessor<AccountDatabase> with _$DaoWriteCo
         id: SingleRowTable.ID,
         clientFeaturesConfigHash: Value(hash),
         clientFeaturesConfig: Value(config?.toJsonObject()),
+      ),
+    );
+  }
+
+  Future<void> updateDynamicClientFeaturesConfig(
+    api.DynamicClientFeaturesConfigHash? hash,
+    api.DynamicClientFeaturesConfig? config,
+  ) async {
+    await into(dynamicClientFeaturesConfig).insertOnConflictUpdate(
+      DynamicClientFeaturesConfigCompanion.insert(
+        id: SingleRowTable.ID,
+        dynamicClientFeaturesConfigHash: Value(hash),
+        dynamicClientFeaturesConfig: Value(config?.toJsonObject()),
       ),
     );
   }
@@ -70,6 +84,8 @@ class DaoWriteConfig extends DatabaseAccessor<AccountDatabase> with _$DaoWriteCo
     api.CustomReportsConfig? customReportsConfig,
     api.ClientFeaturesConfigHash? clientFeaturesConfigHash,
     api.ClientFeaturesConfig? clientFeaturesConfig,
+    api.DynamicClientFeaturesConfigHash? dynamicClientFeaturesConfigHash,
+    api.DynamicClientFeaturesConfig? dynamicClientFeaturesConfig,
   ) async {
     await transaction(() async {
       final currentAttributes = await db.read.config.watchAttributes().firstOrNull;
@@ -101,6 +117,10 @@ class DaoWriteConfig extends DatabaseAccessor<AccountDatabase> with _$DaoWriteCo
       await db.write.config.updateClientFeaturesConfig(
         clientFeaturesConfigHash,
         clientFeaturesConfig,
+      );
+      await db.write.config.updateDynamicClientFeaturesConfig(
+        dynamicClientFeaturesConfigHash,
+        dynamicClientFeaturesConfig,
       );
     });
   }

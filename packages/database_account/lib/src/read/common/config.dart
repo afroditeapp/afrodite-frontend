@@ -14,6 +14,7 @@ part 'config.g.dart';
 @DriftAccessor(
   tables: [
     schema.ClientFeaturesConfig,
+    schema.DynamicClientFeaturesConfig,
     schema.CustomReportsConfig,
     schema.ProfileAttributesConfig,
     schema.ProfileAttributesConfigAttributes,
@@ -32,6 +33,19 @@ class DaoReadConfig extends DatabaseAccessor<AccountDatabase> with _$DaoReadConf
   ) {
     return (select(
       clientFeaturesConfig,
+    )..where((t) => t.id.equals(SingleRowTable.ID.value))).map(extractColumn).watchSingleOrNull();
+  }
+
+  Stream<api.DynamicClientFeaturesConfigHash?> watchDynamicClientFeaturesConfigHash() =>
+      _watchColumnDynamicClientFeatures((r) => r.dynamicClientFeaturesConfigHash);
+  Stream<api.DynamicClientFeaturesConfig?> watchDynamicClientFeaturesConfig() =>
+      _watchColumnDynamicClientFeatures((r) => r.dynamicClientFeaturesConfig?.value);
+
+  Stream<T?> _watchColumnDynamicClientFeatures<T extends Object>(
+    T? Function(DynamicClientFeaturesConfigData) extractColumn,
+  ) {
+    return (select(
+      dynamicClientFeaturesConfig,
     )..where((t) => t.id.equals(SingleRowTable.ID.value))).map(extractColumn).watchSingleOrNull();
   }
 

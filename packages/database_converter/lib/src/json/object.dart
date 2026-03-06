@@ -145,6 +145,21 @@ class ClientFeaturesConfigConverter
   }
 }
 
+class DynamicClientFeaturesConfigConverter
+    extends TypeConverter<JsonObject<DynamicClientFeaturesConfig>, String> {
+  const DynamicClientFeaturesConfigConverter();
+
+  @override
+  JsonObject<DynamicClientFeaturesConfig> fromSql(fromDb) {
+    return JsonObject.create(() => DynamicClientFeaturesConfig.fromJson(jsonDecode(fromDb)));
+  }
+
+  @override
+  String toSql(value) {
+    return jsonEncode(value.value?.toJson());
+  }
+}
+
 class AutomaticProfileSearchSettingsConverter
     extends TypeConverter<JsonObject<AutomaticProfileSearchSettings>, String> {
   const AutomaticProfileSearchSettingsConverter();
@@ -210,6 +225,12 @@ extension CustomReportsConfigJson on CustomReportsConfig {
 
 extension ClientFeaturesConfigJson on ClientFeaturesConfig {
   JsonObject<ClientFeaturesConfig> toJsonObject() {
+    return JsonObject._(this);
+  }
+}
+
+extension DynamicClientFeaturesConfigJson on DynamicClientFeaturesConfig {
+  JsonObject<DynamicClientFeaturesConfig> toJsonObject() {
     return JsonObject._(this);
   }
 }

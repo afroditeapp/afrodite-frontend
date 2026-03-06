@@ -6,6 +6,8 @@ part of 'config.dart';
 mixin _$DaoReadConfigMixin on DatabaseAccessor<AccountDatabase> {
   $ClientFeaturesConfigTable get clientFeaturesConfig =>
       attachedDatabase.clientFeaturesConfig;
+  $DynamicClientFeaturesConfigTable get dynamicClientFeaturesConfig =>
+      attachedDatabase.dynamicClientFeaturesConfig;
   $CustomReportsConfigTable get customReportsConfig =>
       attachedDatabase.customReportsConfig;
   $ProfileAttributesConfigTable get profileAttributesConfig =>

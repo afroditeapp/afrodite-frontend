@@ -86,6 +86,21 @@ class ClientFeaturesConfigHashConverter extends TypeConverter<ClientFeaturesConf
   }
 }
 
+class DynamicClientFeaturesConfigHashConverter
+    extends TypeConverter<DynamicClientFeaturesConfigHash, String> {
+  const DynamicClientFeaturesConfigHashConverter();
+
+  @override
+  DynamicClientFeaturesConfigHash fromSql(fromDb) {
+    return DynamicClientFeaturesConfigHash(h: fromDb);
+  }
+
+  @override
+  String toSql(value) {
+    return value.h;
+  }
+}
+
 class UnreadNewsCountConverter extends TypeConverter<UnreadNewsCount, int> {
   const UnreadNewsCountConverter();
 

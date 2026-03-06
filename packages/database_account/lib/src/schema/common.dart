@@ -41,6 +41,15 @@ class ClientFeaturesConfig extends SingleRowTable {
       text().map(NullAwareTypeConverter.wrap(const ClientFeaturesConfigConverter())).nullable()();
 }
 
+class DynamicClientFeaturesConfig extends SingleRowTable {
+  TextColumn get dynamicClientFeaturesConfigHash => text()
+      .map(const NullAwareTypeConverter.wrap(DynamicClientFeaturesConfigHashConverter()))
+      .nullable()();
+  TextColumn get dynamicClientFeaturesConfig => text()
+      .map(NullAwareTypeConverter.wrap(const DynamicClientFeaturesConfigConverter()))
+      .nullable()();
+}
+
 class ProfileAttributesConfig extends SingleRowTable {
   TextColumn get jsonAvailableProfileAttributesOrderMode =>
       text().map(NullAwareTypeConverter.wrap(const AttributeOrderModeConverter())).nullable()();

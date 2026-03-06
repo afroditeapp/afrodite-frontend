@@ -3,6 +3,7 @@ import 'dart:io';
 
 import 'package:app/data/utils/repository_instances.dart';
 import 'package:app/logic/account/client_features_config.dart';
+import 'package:app/logic/account/dynamic_client_features_config.dart';
 import 'package:app/logic/account/custom_reports_config.dart';
 import 'package:app/logic/account/demo_account.dart';
 import 'package:app/logic/account/demo_account_login.dart';
@@ -293,6 +294,7 @@ class NavigatorNormal extends LoggedInRootScreen {
         BlocProvider(create: (_) => NewReceivedLikesAvailableBloc(r)),
         BlocProvider(create: (_) => CustomReportsConfigBloc(r)),
         BlocProvider(create: (_) => ClientFeaturesConfigBloc(r)),
+        BlocProvider(create: (_) => DynamicClientFeaturesConfigBloc(r)),
         BlocProvider(create: (_) => ChatEnabledBloc(r)),
 
         // Account data

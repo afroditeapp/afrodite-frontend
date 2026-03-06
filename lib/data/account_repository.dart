@@ -50,12 +50,16 @@ class AccountRepository extends DataRepositoryWithLifecycle {
   Stream<ProfileVisibility> get profileVisibility => _cachedValues._cachedProfileVisibility;
   Stream<ClientFeaturesConfig> get clientFeaturesConfig =>
       _cachedValues._cachedClientFeaturesConfig;
+  Stream<DynamicClientFeaturesConfig> get dynamicClientFeaturesConfig =>
+      _cachedValues._cachedDynamicClientFeaturesConfig;
 
   ProfileVisibility get profileVisibilityValue => _cachedValues._cachedProfileVisibility.value;
   String? get emailAddressValue => _cachedValues._cachedEmailAddress.value;
   AccountState? get accountStateValue => _cachedValues._cachedAccountState.value;
   ClientFeaturesConfig get clientFeaturesConfigValue =>
       _cachedValues._cachedClientFeaturesConfig.value;
+  DynamicClientFeaturesConfig get dynamicClientFeaturesConfigValue =>
+      _cachedValues._cachedDynamicClientFeaturesConfig.value;
 
   // WebSocket related event streams
   final _contentProcessingStateChanges = PublishSubject<ContentProcessingStateChanged>();
@@ -281,6 +285,10 @@ ClientFeaturesConfig emptyClientFeaturesConfig() {
   return ClientFeaturesConfig();
 }
 
+DynamicClientFeaturesConfig emptyDynamicClientFeaturesConfig() {
+  return DynamicClientFeaturesConfig();
+}
+
 class CachedValues {
   final BehaviorSubject<String?> _cachedEmailAddress = BehaviorSubject.seeded(null);
   StreamSubscription<String?>? _cachedEmailSubscription;
@@ -294,6 +302,9 @@ class CachedValues {
     emptyClientFeaturesConfig(),
   );
   StreamSubscription<ClientFeaturesConfig?>? _cachedClientFeaturesConfigSubscription;
+  final BehaviorSubject<DynamicClientFeaturesConfig> _cachedDynamicClientFeaturesConfig =
+      BehaviorSubject.seeded(emptyDynamicClientFeaturesConfig());
+  StreamSubscription<DynamicClientFeaturesConfig?>? _cachedDynamicClientFeaturesConfigSubscription;
 
   void _subscribe(AccountDatabaseManager db) {
     _cachedEmailSubscription = db.accountStream((db) => db.account.watchEmailAddress()).listen((v) {
@@ -323,6 +334,15 @@ class CachedValues {
         .listen((v) {
           _cachedClientFeaturesConfig.add(v);
         });
+
+    _cachedDynamicClientFeaturesConfigSubscription = db
+        .accountStreamOrDefault(
+          (db) => db.config.watchDynamicClientFeaturesConfig(),
+          emptyDynamicClientFeaturesConfig(),
+        )
+        .listen((v) {
+          _cachedDynamicClientFeaturesConfig.add(v);
+        });
   }
 
   Future<void> _dispose() async {
@@ -330,9 +350,11 @@ class CachedValues {
     await _cachedProfileVisibilitySubscription?.cancel();
     await _cachedAccountStateSubscription?.cancel();
     await _cachedClientFeaturesConfigSubscription?.cancel();
+    await _cachedDynamicClientFeaturesConfigSubscription?.cancel();
     await _cachedEmailAddress.close();
     await _cachedProfileVisibility.close();
     await _cachedAccountState.close();
     await _cachedClientFeaturesConfig.close();
+    await _cachedDynamicClientFeaturesConfig.close();
   }
 }

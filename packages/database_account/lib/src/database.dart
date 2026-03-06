@@ -71,6 +71,7 @@ part 'database.g.dart';
     schema.SyncVersion,
     schema.ReceivedLikesIteratorState,
     schema.ClientFeaturesConfig,
+    schema.DynamicClientFeaturesConfig,
     schema.CustomReportsConfig,
     schema.ProfileAttributesConfig,
     schema.ProfileAttributesConfigAttributes,

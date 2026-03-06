@@ -7544,6 +7544,350 @@ class ClientFeaturesConfigCompanion
   }
 }
 
+class $DynamicClientFeaturesConfigTable
+    extends schema.DynamicClientFeaturesConfig
+    with
+        TableInfo<
+          $DynamicClientFeaturesConfigTable,
+          DynamicClientFeaturesConfigData
+        > {
+  @override
+  final GeneratedDatabase attachedDatabase;
+  final String? _alias;
+  $DynamicClientFeaturesConfigTable(this.attachedDatabase, [this._alias]);
+  static const VerificationMeta _idMeta = const VerificationMeta('id');
+  @override
+  late final GeneratedColumn<int> id = GeneratedColumn<int>(
+    'id',
+    aliasedName,
+    false,
+    hasAutoIncrement: true,
+    type: DriftSqlType.int,
+    requiredDuringInsert: false,
+    defaultConstraints: GeneratedColumn.constraintIsAlways(
+      'PRIMARY KEY AUTOINCREMENT',
+    ),
+  );
+  @override
+  late final GeneratedColumnWithTypeConverter<
+    DynamicClientFeaturesConfigHash?,
+    String
+  >
+  dynamicClientFeaturesConfigHash =
+      GeneratedColumn<String>(
+        'dynamic_client_features_config_hash',
+        aliasedName,
+        true,
+        type: DriftSqlType.string,
+        requiredDuringInsert: false,
+      ).withConverter<DynamicClientFeaturesConfigHash?>(
+        $DynamicClientFeaturesConfigTable
+            .$converterdynamicClientFeaturesConfigHash,
+      );
+  @override
+  late final GeneratedColumnWithTypeConverter<
+    JsonObject<DynamicClientFeaturesConfig>?,
+    String
+  >
+  dynamicClientFeaturesConfig =
+      GeneratedColumn<String>(
+        'dynamic_client_features_config',
+        aliasedName,
+        true,
+        type: DriftSqlType.string,
+        requiredDuringInsert: false,
+      ).withConverter<JsonObject<DynamicClientFeaturesConfig>?>(
+        $DynamicClientFeaturesConfigTable.$converterdynamicClientFeaturesConfig,
+      );
+  @override
+  List<GeneratedColumn> get $columns => [
+    id,
+    dynamicClientFeaturesConfigHash,
+    dynamicClientFeaturesConfig,
+  ];
+  @override
+  String get aliasedName => _alias ?? actualTableName;
+  @override
+  String get actualTableName => $name;
+  static const String $name = 'dynamic_client_features_config';
+  @override
+  VerificationContext validateIntegrity(
+    Insertable<DynamicClientFeaturesConfigData> instance, {
+    bool isInserting = false,
+  }) {
+    final context = VerificationContext();
+    final data = instance.toColumns(true);
+    if (data.containsKey('id')) {
+      context.handle(_idMeta, id.isAcceptableOrUnknown(data['id']!, _idMeta));
+    }
+    return context;
+  }
+
+  @override
+  Set<GeneratedColumn> get $primaryKey => {id};
+  @override
+  DynamicClientFeaturesConfigData map(
+    Map<String, dynamic> data, {
+    String? tablePrefix,
+  }) {
+    final effectivePrefix = tablePrefix != null ? '$tablePrefix.' : '';
+    return DynamicClientFeaturesConfigData(
+      id: attachedDatabase.typeMapping.read(
+        DriftSqlType.int,
+        data['${effectivePrefix}id'],
+      )!,
+      dynamicClientFeaturesConfigHash: $DynamicClientFeaturesConfigTable
+          .$converterdynamicClientFeaturesConfigHash
+          .fromSql(
+            attachedDatabase.typeMapping.read(
+              DriftSqlType.string,
+              data['${effectivePrefix}dynamic_client_features_config_hash'],
+            ),
+          ),
+      dynamicClientFeaturesConfig: $DynamicClientFeaturesConfigTable
+          .$converterdynamicClientFeaturesConfig
+          .fromSql(
+            attachedDatabase.typeMapping.read(
+              DriftSqlType.string,
+              data['${effectivePrefix}dynamic_client_features_config'],
+            ),
+          ),
+    );
+  }
+
+  @override
+  $DynamicClientFeaturesConfigTable createAlias(String alias) {
+    return $DynamicClientFeaturesConfigTable(attachedDatabase, alias);
+  }
+
+  static TypeConverter<DynamicClientFeaturesConfigHash?, String?>
+  $converterdynamicClientFeaturesConfigHash = const NullAwareTypeConverter.wrap(
+    DynamicClientFeaturesConfigHashConverter(),
+  );
+  static TypeConverter<JsonObject<DynamicClientFeaturesConfig>?, String?>
+  $converterdynamicClientFeaturesConfig = NullAwareTypeConverter.wrap(
+    const DynamicClientFeaturesConfigConverter(),
+  );
+}
+
+class DynamicClientFeaturesConfigData extends DataClass
+    implements Insertable<DynamicClientFeaturesConfigData> {
+  final int id;
+  final DynamicClientFeaturesConfigHash? dynamicClientFeaturesConfigHash;
+  final JsonObject<DynamicClientFeaturesConfig>? dynamicClientFeaturesConfig;
+  const DynamicClientFeaturesConfigData({
+    required this.id,
+    this.dynamicClientFeaturesConfigHash,
+    this.dynamicClientFeaturesConfig,
+  });
+  @override
+  Map<String, Expression> toColumns(bool nullToAbsent) {
+    final map = <String, Expression>{};
+    map['id'] = Variable<int>(id);
+    if (!nullToAbsent || dynamicClientFeaturesConfigHash != null) {
+      map['dynamic_client_features_config_hash'] = Variable<String>(
+        $DynamicClientFeaturesConfigTable
+            .$converterdynamicClientFeaturesConfigHash
+            .toSql(dynamicClientFeaturesConfigHash),
+      );
+    }
+    if (!nullToAbsent || dynamicClientFeaturesConfig != null) {
+      map['dynamic_client_features_config'] = Variable<String>(
+        $DynamicClientFeaturesConfigTable.$converterdynamicClientFeaturesConfig
+            .toSql(dynamicClientFeaturesConfig),
+      );
+    }
+    return map;
+  }
+
+  DynamicClientFeaturesConfigCompanion toCompanion(bool nullToAbsent) {
+    return DynamicClientFeaturesConfigCompanion(
+      id: Value(id),
+      dynamicClientFeaturesConfigHash:
+          dynamicClientFeaturesConfigHash == null && nullToAbsent
+          ? const Value.absent()
+          : Value(dynamicClientFeaturesConfigHash),
+      dynamicClientFeaturesConfig:
+          dynamicClientFeaturesConfig == null && nullToAbsent
+          ? const Value.absent()
+          : Value(dynamicClientFeaturesConfig),
+    );
+  }
+
+  factory DynamicClientFeaturesConfigData.fromJson(
+    Map<String, dynamic> json, {
+    ValueSerializer? serializer,
+  }) {
+    serializer ??= driftRuntimeOptions.defaultSerializer;
+    return DynamicClientFeaturesConfigData(
+      id: serializer.fromJson<int>(json['id']),
+      dynamicClientFeaturesConfigHash: serializer
+          .fromJson<DynamicClientFeaturesConfigHash?>(
+            json['dynamicClientFeaturesConfigHash'],
+          ),
+      dynamicClientFeaturesConfig: serializer
+          .fromJson<JsonObject<DynamicClientFeaturesConfig>?>(
+            json['dynamicClientFeaturesConfig'],
+          ),
+    );
+  }
+  @override
+  Map<String, dynamic> toJson({ValueSerializer? serializer}) {
+    serializer ??= driftRuntimeOptions.defaultSerializer;
+    return <String, dynamic>{
+      'id': serializer.toJson<int>(id),
+      'dynamicClientFeaturesConfigHash': serializer
+          .toJson<DynamicClientFeaturesConfigHash?>(
+            dynamicClientFeaturesConfigHash,
+          ),
+      'dynamicClientFeaturesConfig': serializer
+          .toJson<JsonObject<DynamicClientFeaturesConfig>?>(
+            dynamicClientFeaturesConfig,
+          ),
+    };
+  }
+
+  DynamicClientFeaturesConfigData copyWith({
+    int? id,
+    Value<DynamicClientFeaturesConfigHash?> dynamicClientFeaturesConfigHash =
+        const Value.absent(),
+    Value<JsonObject<DynamicClientFeaturesConfig>?>
+        dynamicClientFeaturesConfig =
+        const Value.absent(),
+  }) => DynamicClientFeaturesConfigData(
+    id: id ?? this.id,
+    dynamicClientFeaturesConfigHash: dynamicClientFeaturesConfigHash.present
+        ? dynamicClientFeaturesConfigHash.value
+        : this.dynamicClientFeaturesConfigHash,
+    dynamicClientFeaturesConfig: dynamicClientFeaturesConfig.present
+        ? dynamicClientFeaturesConfig.value
+        : this.dynamicClientFeaturesConfig,
+  );
+  DynamicClientFeaturesConfigData copyWithCompanion(
+    DynamicClientFeaturesConfigCompanion data,
+  ) {
+    return DynamicClientFeaturesConfigData(
+      id: data.id.present ? data.id.value : this.id,
+      dynamicClientFeaturesConfigHash:
+          data.dynamicClientFeaturesConfigHash.present
+          ? data.dynamicClientFeaturesConfigHash.value
+          : this.dynamicClientFeaturesConfigHash,
+      dynamicClientFeaturesConfig: data.dynamicClientFeaturesConfig.present
+          ? data.dynamicClientFeaturesConfig.value
+          : this.dynamicClientFeaturesConfig,
+    );
+  }
+
+  @override
+  String toString() {
+    return (StringBuffer('DynamicClientFeaturesConfigData(')
+          ..write('id: $id, ')
+          ..write(
+            'dynamicClientFeaturesConfigHash: $dynamicClientFeaturesConfigHash, ',
+          )
+          ..write('dynamicClientFeaturesConfig: $dynamicClientFeaturesConfig')
+          ..write(')'))
+        .toString();
+  }
+
+  @override
+  int get hashCode => Object.hash(
+    id,
+    dynamicClientFeaturesConfigHash,
+    dynamicClientFeaturesConfig,
+  );
+  @override
+  bool operator ==(Object other) =>
+      identical(this, other) ||
+      (other is DynamicClientFeaturesConfigData &&
+          other.id == this.id &&
+          other.dynamicClientFeaturesConfigHash ==
+              this.dynamicClientFeaturesConfigHash &&
+          other.dynamicClientFeaturesConfig ==
+              this.dynamicClientFeaturesConfig);
+}
+
+class DynamicClientFeaturesConfigCompanion
+    extends UpdateCompanion<DynamicClientFeaturesConfigData> {
+  final Value<int> id;
+  final Value<DynamicClientFeaturesConfigHash?> dynamicClientFeaturesConfigHash;
+  final Value<JsonObject<DynamicClientFeaturesConfig>?>
+  dynamicClientFeaturesConfig;
+  const DynamicClientFeaturesConfigCompanion({
+    this.id = const Value.absent(),
+    this.dynamicClientFeaturesConfigHash = const Value.absent(),
+    this.dynamicClientFeaturesConfig = const Value.absent(),
+  });
+  DynamicClientFeaturesConfigCompanion.insert({
+    this.id = const Value.absent(),
+    this.dynamicClientFeaturesConfigHash = const Value.absent(),
+    this.dynamicClientFeaturesConfig = const Value.absent(),
+  });
+  static Insertable<DynamicClientFeaturesConfigData> custom({
+    Expression<int>? id,
+    Expression<String>? dynamicClientFeaturesConfigHash,
+    Expression<String>? dynamicClientFeaturesConfig,
+  }) {
+    return RawValuesInsertable({
+      if (id != null) 'id': id,
+      if (dynamicClientFeaturesConfigHash != null)
+        'dynamic_client_features_config_hash': dynamicClientFeaturesConfigHash,
+      if (dynamicClientFeaturesConfig != null)
+        'dynamic_client_features_config': dynamicClientFeaturesConfig,
+    });
+  }
+
+  DynamicClientFeaturesConfigCompanion copyWith({
+    Value<int>? id,
+    Value<DynamicClientFeaturesConfigHash?>? dynamicClientFeaturesConfigHash,
+    Value<JsonObject<DynamicClientFeaturesConfig>?>?
+    dynamicClientFeaturesConfig,
+  }) {
+    return DynamicClientFeaturesConfigCompanion(
+      id: id ?? this.id,
+      dynamicClientFeaturesConfigHash:
+          dynamicClientFeaturesConfigHash ??
+          this.dynamicClientFeaturesConfigHash,
+      dynamicClientFeaturesConfig:
+          dynamicClientFeaturesConfig ?? this.dynamicClientFeaturesConfig,
+    );
+  }
+
+  @override
+  Map<String, Expression> toColumns(bool nullToAbsent) {
+    final map = <String, Expression>{};
+    if (id.present) {
+      map['id'] = Variable<int>(id.value);
+    }
+    if (dynamicClientFeaturesConfigHash.present) {
+      map['dynamic_client_features_config_hash'] = Variable<String>(
+        $DynamicClientFeaturesConfigTable
+            .$converterdynamicClientFeaturesConfigHash
+            .toSql(dynamicClientFeaturesConfigHash.value),
+      );
+    }
+    if (dynamicClientFeaturesConfig.present) {
+      map['dynamic_client_features_config'] = Variable<String>(
+        $DynamicClientFeaturesConfigTable.$converterdynamicClientFeaturesConfig
+            .toSql(dynamicClientFeaturesConfig.value),
+      );
+    }
+    return map;
+  }
+
+  @override
+  String toString() {
+    return (StringBuffer('DynamicClientFeaturesConfigCompanion(')
+          ..write('id: $id, ')
+          ..write(
+            'dynamicClientFeaturesConfigHash: $dynamicClientFeaturesConfigHash, ',
+          )
+          ..write('dynamicClientFeaturesConfig: $dynamicClientFeaturesConfig')
+          ..write(')'))
+        .toString();
+  }
+}
+
 class $CustomReportsConfigTable extends schema.CustomReportsConfig
     with TableInfo<$CustomReportsConfigTable, CustomReportsConfigData> {
   @override
@@ -20084,6 +20428,8 @@ abstract class _$AccountDatabase extends GeneratedDatabase {
       $ReceivedLikesIteratorStateTable(this);
   late final $ClientFeaturesConfigTable clientFeaturesConfig =
       $ClientFeaturesConfigTable(this);
+  late final $DynamicClientFeaturesConfigTable dynamicClientFeaturesConfig =
+      $DynamicClientFeaturesConfigTable(this);
   late final $CustomReportsConfigTable customReportsConfig =
       $CustomReportsConfigTable(this);
   late final $ProfileAttributesConfigTable profileAttributesConfig =
@@ -20266,6 +20612,7 @@ abstract class _$AccountDatabase extends GeneratedDatabase {
     syncVersion,
     receivedLikesIteratorState,
     clientFeaturesConfig,
+    dynamicClientFeaturesConfig,
     customReportsConfig,
     profileAttributesConfig,
     profileAttributesConfigAttributes,

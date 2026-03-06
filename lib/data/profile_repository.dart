@@ -282,6 +282,16 @@ class ProfileRepository extends DataRepositoryWithLifecycle {
         clientFeaturesConfig = config;
     }
 
+    final DynamicClientFeaturesConfigHash? dynamicClientFeaturesConfigHash;
+    final DynamicClientFeaturesConfig? dynamicClientFeaturesConfig;
+    switch (await _downloadDynamicClientFeaturesIfNeeded(config.dynamicClientFeatures)) {
+      case Err():
+        return const Err(());
+      case Ok(v: (final hash, final config)):
+        dynamicClientFeaturesConfigHash = hash;
+        dynamicClientFeaturesConfig = config;
+    }
+
     await db.accountAction(
       (db) => db.config.updateClientConfig(
         attributeOrder,
@@ -292,6 +302,8 @@ class ProfileRepository extends DataRepositoryWithLifecycle {
         customReportsConfig,
         clientFeaturesConfigHash,
         clientFeaturesConfig,
+        dynamicClientFeaturesConfigHash,
+        dynamicClientFeaturesConfig,
       ),
     );
     return Ok(config);
@@ -360,6 +372,41 @@ class ProfileRepository extends DataRepositoryWithLifecycle {
       }
     } else {
       // Client features disabled
+      hash = null;
+      config = null;
+    }
+
+    return Ok((hash, config));
+  }
+
+  Future<Result<(DynamicClientFeaturesConfigHash?, DynamicClientFeaturesConfig?), ()>>
+  _downloadDynamicClientFeaturesIfNeeded(DynamicClientFeaturesConfigHash? latestHash) async {
+    final currentHash = await db
+        .accountStream((db) => db.config.watchDynamicClientFeaturesConfigHash())
+        .firstOrNull;
+    final currentConfig = await db
+        .accountStream((db) => db.config.watchDynamicClientFeaturesConfig())
+        .firstOrNull;
+
+    final DynamicClientFeaturesConfigHash? hash;
+    final DynamicClientFeaturesConfig? config;
+    if (latestHash != null) {
+      if (currentHash == latestHash && currentConfig != null) {
+        // Latest config already downloaded
+        hash = currentHash;
+        config = currentConfig;
+      } else {
+        final latestConfig = await _api
+            .account((api) => api.postGetDynamicClientFeaturesConfig(latestHash))
+            .ok();
+        if (latestConfig == null) {
+          return const Err(());
+        }
+        hash = latestHash;
+        config = latestConfig.config;
+      }
+    } else {
+      // Dynamic client features disabled
       hash = null;
       config = null;
     }
