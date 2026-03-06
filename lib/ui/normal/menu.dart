@@ -6,8 +6,6 @@ import 'package:app/model/freezed/logic/account/client_features_config.dart';
 import 'package:app/model/freezed/logic/profile/automatic_profile_search_badge.dart';
 import 'package:app/ui/normal/settings.dart';
 import 'package:app/ui/normal/settings/notifications/automatic_profile_search_results.dart';
-import 'package:app/utils/time.dart';
-import 'package:database/database.dart';
 import 'package:flutter/foundation.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
@@ -205,68 +203,10 @@ class _MenuViewState extends State<MenuView> {
       child: Column(
         crossAxisAlignment: CrossAxisAlignment.start,
         children: [
-          viewServerMaintenanceInfo(),
           const InfoBannersWidget(location: InfoBannerLocation.menu),
           ...settings.map((setting) => setting.toListTile()),
         ],
       ),
-    );
-  }
-
-  Widget viewServerMaintenanceInfo() {
-    return BlocBuilder<ServerMaintenanceBloc, ServerMaintenanceInfo>(
-      builder: (context, state) {
-        final startTime = state.startTime;
-        if (startTime == null) {
-          return const SizedBox.shrink();
-        }
-
-        if (context.read<BottomNavigationStateBloc>().state.screen ==
-            BottomNavigationScreenId.settings) {
-          context.read<ServerMaintenanceBloc>().add(ViewServerMaintenanceInfo());
-        }
-
-        final startTimeString = fullTimeString(startTime);
-        final endTime = state.endTime;
-        String endTimeString;
-        if (endTime == null) {
-          endTimeString = "";
-        } else {
-          endTimeString = fullTimeString(endTime);
-          final startDate = startTimeString.split(" ").firstOrNull;
-          if (startDate != null && endTimeString.startsWith(startDate)) {
-            endTimeString = endTimeString.replaceFirst(startDate, "").trimLeft();
-          }
-          endTimeString = " - $endTimeString";
-        }
-        return Container(
-          color: Theme.of(context).colorScheme.primaryContainer,
-          child: Padding(
-            padding: const EdgeInsets.symmetric(vertical: 16),
-            child: Row(
-              children: [
-                const Padding(padding: EdgeInsets.only(right: 16)),
-                Icon(Icons.info, color: Theme.of(context).colorScheme.onPrimaryContainer),
-                const Padding(padding: EdgeInsets.only(right: 16)),
-                Column(
-                  mainAxisSize: MainAxisSize.min,
-                  crossAxisAlignment: CrossAxisAlignment.start,
-                  children: [
-                    Text(
-                      state.maintenanceTarget == 1
-                          ? context.strings.menu_screen_admin_bot_maintenance_title
-                          : context.strings.menu_screen_server_maintenance_title,
-                    ),
-                    const Padding(padding: EdgeInsets.only(right: 8)),
-                    Text("$startTimeString$endTimeString"),
-                  ],
-                ),
-                const Padding(padding: EdgeInsets.only(right: 16)),
-              ],
-            ),
-          ),
-        );
-      },
     );
   }
 

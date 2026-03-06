@@ -1,6 +1,10 @@
 import 'package:app/logic/account/dynamic_client_features_config.dart';
+import 'package:app/logic/server/maintenance.dart';
+import 'package:app/localizations.dart';
 import 'package:app/ui_utils/attribute/icon.dart';
 import 'package:app/ui_utils/extensions/api.dart';
+import 'package:app/utils/time.dart';
+import 'package:database/database.dart';
 import 'package:flutter/foundation.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
@@ -23,24 +27,73 @@ class InfoBannersWidget extends StatelessWidget {
           state.infoBanners?.banners.values ?? const <InfoBanner>[],
           location,
         );
-        if (banners.isEmpty) {
-          return const SizedBox.shrink();
+
+        if (location == InfoBannerLocation.menu) {
+          return BlocBuilder<ServerMaintenanceBloc, ServerMaintenanceInfo>(
+            builder: (context, maintenanceInfo) {
+              return _bannerList(context, banners, maintenanceInfo);
+            },
+          );
         }
 
-        return Container(
-          color: Theme.of(context).colorScheme.primaryContainer,
-          child: Padding(
-            padding: const EdgeInsets.symmetric(vertical: 4),
-            child: Column(
-              mainAxisSize: MainAxisSize.min,
-              children: [
-                for (var i = 0; i < banners.length; i++) ...[_InfoBannerItem(banner: banners[i])],
-              ],
-            ),
-          ),
-        );
+        return _bannerList(context, banners, null);
       },
     );
+  }
+
+  Widget _bannerList(
+    BuildContext context,
+    List<TextInfoBanner> banners,
+    ServerMaintenanceInfo? maintenanceInfo,
+  ) {
+    final maintenanceBody = _maintenanceBody(context, maintenanceInfo);
+    if (maintenanceBody == null && banners.isEmpty) {
+      return const SizedBox.shrink();
+    }
+
+    return Container(
+      color: Theme.of(context).colorScheme.primaryContainer,
+      child: Padding(
+        padding: const EdgeInsets.symmetric(vertical: 4),
+        child: Column(
+          mainAxisSize: MainAxisSize.min,
+          children: [
+            if (maintenanceBody != null)
+              _InfoBannerItemLayout(
+                icon: Icon(Icons.info, color: Theme.of(context).colorScheme.onPrimaryContainer),
+                body: maintenanceBody,
+              ),
+            for (var i = 0; i < banners.length; i++) ...[_InfoBannerItem(banner: banners[i])],
+          ],
+        ),
+      ),
+    );
+  }
+
+  String? _maintenanceBody(BuildContext context, ServerMaintenanceInfo? state) {
+    final startTime = state?.startTime;
+    if (startTime == null) {
+      return null;
+    }
+
+    final startTimeString = fullTimeString(startTime);
+    final endTime = state?.endTime;
+    String endTimeString;
+    if (endTime == null) {
+      endTimeString = "";
+    } else {
+      endTimeString = fullTimeString(endTime);
+      final startDate = startTimeString.split(" ").firstOrNull;
+      if (startDate != null && endTimeString.startsWith(startDate)) {
+        endTimeString = endTimeString.replaceFirst(startDate, "").trimLeft();
+      }
+      endTimeString = " - $endTimeString";
+    }
+
+    final title = state?.maintenanceTarget == 1
+        ? context.strings.menu_screen_admin_bot_maintenance_title
+        : context.strings.menu_screen_server_maintenance_title;
+    return "$title\n$startTimeString$endTimeString";
   }
 
   List<TextInfoBanner> _visibleTextBanners(
@@ -104,7 +157,38 @@ class _InfoBannerItem extends StatelessWidget {
   Widget build(BuildContext context) {
     final colorScheme = Theme.of(context).colorScheme;
     final icon = AttributeIcons.parseIconResource(banner.icon);
-    final urlButton = banner.urlButton;
+    final button = banner.urlButton;
+    final urlButton = button == null
+        ? null
+        : _InfoBannerUrlButton(text: button.text.toLocalizedText(context), url: button.url);
+
+    return _InfoBannerItemLayout(
+      icon: icon == null
+          ? null
+          : AttributeIconWidget(icon: icon, color: colorScheme.onPrimaryContainer),
+      body: banner.body.toLocalizedText(context),
+      urlButton: urlButton,
+    );
+  }
+}
+
+class _InfoBannerUrlButton {
+  final String text;
+  final String url;
+
+  const _InfoBannerUrlButton({required this.text, required this.url});
+}
+
+class _InfoBannerItemLayout extends StatelessWidget {
+  final Widget? icon;
+  final String body;
+  final _InfoBannerUrlButton? urlButton;
+
+  const _InfoBannerItemLayout({required this.body, this.icon, this.urlButton});
+
+  @override
+  Widget build(BuildContext context) {
+    final colorScheme = Theme.of(context).colorScheme;
     final verticalPadding = EdgeInsets.symmetric(vertical: 4);
 
     return SizedBox(
@@ -114,17 +198,13 @@ class _InfoBannerItem extends StatelessWidget {
         child: Row(
           crossAxisAlignment: CrossAxisAlignment.center,
           children: [
-            if (icon != null)
-              Padding(
-                padding: verticalPadding,
-                child: AttributeIconWidget(icon: icon, color: colorScheme.onPrimaryContainer),
-              ),
+            if (icon != null) Padding(padding: verticalPadding, child: icon),
             if (icon != null) const Padding(padding: EdgeInsets.only(left: 8)),
             Expanded(
               child: Padding(
                 padding: verticalPadding,
                 child: Text(
-                  banner.body.toLocalizedText(context),
+                  body,
                   style: Theme.of(
                     context,
                   ).textTheme.bodyMedium?.copyWith(color: colorScheme.onPrimaryContainer),
@@ -134,8 +214,8 @@ class _InfoBannerItem extends StatelessWidget {
             if (urlButton != null) const Padding(padding: EdgeInsets.only(left: 8)),
             if (urlButton != null)
               TextButton(
-                onPressed: () => launchUrlString(urlButton.url),
-                child: Text(urlButton.text.toLocalizedText(context)),
+                onPressed: () => launchUrlString(urlButton!.url),
+                child: Text(urlButton!.text),
               ),
           ],
         ),
