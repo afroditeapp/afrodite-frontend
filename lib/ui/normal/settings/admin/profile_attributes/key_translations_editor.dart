@@ -141,9 +141,15 @@ class _KeyTranslationsEditorScreenState extends State<KeyTranslationsEditorScree
                 onChanged: (val) {
                   setState(() {
                     if (existingTranslationIndex != -1) {
-                      lang.values[existingTranslationIndex].name = val;
+                      if (val.trim().isEmpty) {
+                        lang.values.removeAt(existingTranslationIndex);
+                      } else {
+                        lang.values[existingTranslationIndex].name = val;
+                      }
                     } else {
-                      lang.values.add(Translation(key: widget.translationKey, name: val));
+                      if (val.trim().isNotEmpty) {
+                        lang.values.add(Translation(key: widget.translationKey, name: val));
+                      }
                     }
                   });
                 },
