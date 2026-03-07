@@ -362,6 +362,7 @@
     <string name="view_profile_screen_like_action_successful" description="Snackbar text for view profile screen like action successful">Chat request sent</string>
     <string name="view_profile_screen_like_action_try_again_tomorrow" description="Snackbar text for view profile screen like action failed because of like limit">No daily chat requests left. Try again tomorrow.</string>
     <string name="view_profile_screen_like_action_like_already_sent" description="Snackbar text for view profile screen like action failed because of like is already sent">Chat request already sent</string>
+    <string name="view_profile_screen_like_action_like_already_received" description="Snackbar text for view profile screen like action failed because of like is already received">Chat request already received</string>
     <string name="view_profile_screen_already_match" description="Snackbar text for view profile screen displayed when action failed because of the profile is already a match">Chatting is already possible</string>
     <string name="view_profile_screen_block_action_successful" description="Snackbar text for view profile screen block action successful">Profile blocked</string>
     <string name="view_profile_screen_profile_edit_failed" description="Snackbar text for notifying about failed profile edit">Profile editing failed</string>

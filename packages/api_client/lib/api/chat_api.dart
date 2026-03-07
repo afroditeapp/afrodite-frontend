@@ -432,7 +432,7 @@ class ChatApi {
 
   /// Get list of pending messages.
   ///
-  /// The returned bytes is - Hide notifications (u8, values: 0 or 1) - List of objects  Data for single object: - Binary data length as minimal i64 - Binary data  Minimal i64 has this format: - i64 byte count (u8, values: 1, 2, 4, 8) - i64 bytes (little-endian)  Binary data is binary PGP message which contains backend signed binary data. The binary data contains: - Version (u8, values: 1) - Sender AccountId UUID big-endian bytes (16 bytes) - Receiver AccountId UUID big-endian bytes (16 bytes) - Message MessageId UUID big-endian bytes (16 bytes) - Sender public key ID (minimal i64) - Receiver public key ID (minimal i64) - Message number (minimal i64) - Unix time (minimal i64) - Message data
+  /// The returned bytes is - Hide notifications (u8, values: 0 or 1) - List of objects  Data for single object: - Binary data length as minimal i64 - Binary data  Minimal i64 has this format: - i64 byte count (u8, values: 1, 2, 4, 8) - i64 bytes (little-endian)  Binary data is binary PGP message which contains backend signed binary data. The binary data contains: - Version (u8, values: 1) - Sender AccountId UUID big-endian bytes (16 bytes) - Recipient AccountId UUID big-endian bytes (16 bytes) - Message MessageId UUID big-endian bytes (16 bytes) - Sender public key ID (minimal i64) - Recipient public key ID (minimal i64) - Message number (minimal i64) - Unix time (minimal i64) - Message data
   ///
   /// Note: This method returns the HTTP [Response].
   Future<Response> getPendingMessagesWithHttpInfo() async {
@@ -462,7 +462,7 @@ class ChatApi {
 
   /// Get list of pending messages.
   ///
-  /// The returned bytes is - Hide notifications (u8, values: 0 or 1) - List of objects  Data for single object: - Binary data length as minimal i64 - Binary data  Minimal i64 has this format: - i64 byte count (u8, values: 1, 2, 4, 8) - i64 bytes (little-endian)  Binary data is binary PGP message which contains backend signed binary data. The binary data contains: - Version (u8, values: 1) - Sender AccountId UUID big-endian bytes (16 bytes) - Receiver AccountId UUID big-endian bytes (16 bytes) - Message MessageId UUID big-endian bytes (16 bytes) - Sender public key ID (minimal i64) - Receiver public key ID (minimal i64) - Message number (minimal i64) - Unix time (minimal i64) - Message data
+  /// The returned bytes is - Hide notifications (u8, values: 0 or 1) - List of objects  Data for single object: - Binary data length as minimal i64 - Binary data  Minimal i64 has this format: - i64 byte count (u8, values: 1, 2, 4, 8) - i64 bytes (little-endian)  Binary data is binary PGP message which contains backend signed binary data. The binary data contains: - Version (u8, values: 1) - Sender AccountId UUID big-endian bytes (16 bytes) - Recipient AccountId UUID big-endian bytes (16 bytes) - Message MessageId UUID big-endian bytes (16 bytes) - Sender public key ID (minimal i64) - Recipient public key ID (minimal i64) - Message number (minimal i64) - Unix time (minimal i64) - Message data
   Future<MultipartFile?> getPendingMessages() async {
     final response = await getPendingMessagesWithHttpInfo();
     if (response.statusCode >= HttpStatus.badRequest) {
@@ -745,13 +745,13 @@ class ChatApi {
     return null;
   }
 
-  /// Performs an HTTP 'POST /chat_api/add_receiver_acknowledgement' operation and returns the [Response].
+  /// Performs an HTTP 'POST /chat_api/add_recipient_acknowledgement' operation and returns the [Response].
   /// Parameters:
   ///
   /// * [PendingMessageAcknowledgementList] pendingMessageAcknowledgementList (required):
-  Future<Response> postAddReceiverAcknowledgementWithHttpInfo(PendingMessageAcknowledgementList pendingMessageAcknowledgementList,) async {
+  Future<Response> postAddRecipientAcknowledgementWithHttpInfo(PendingMessageAcknowledgementList pendingMessageAcknowledgementList,) async {
     // ignore: prefer_const_declarations
-    final path = r'/chat_api/add_receiver_acknowledgement';
+    final path = r'/chat_api/add_recipient_acknowledgement';
 
     // ignore: prefer_final_locals
     Object? postBody = pendingMessageAcknowledgementList;
@@ -777,8 +777,8 @@ class ChatApi {
   /// Parameters:
   ///
   /// * [PendingMessageAcknowledgementList] pendingMessageAcknowledgementList (required):
-  Future<void> postAddReceiverAcknowledgement(PendingMessageAcknowledgementList pendingMessageAcknowledgementList,) async {
-    final response = await postAddReceiverAcknowledgementWithHttpInfo(pendingMessageAcknowledgementList,);
+  Future<void> postAddRecipientAcknowledgement(PendingMessageAcknowledgementList pendingMessageAcknowledgementList,) async {
+    final response = await postAddRecipientAcknowledgementWithHttpInfo(pendingMessageAcknowledgementList,);
     if (response.statusCode >= HttpStatus.badRequest) {
       throw ApiException(response.statusCode, await _decodeBodyBytes(response));
     }
@@ -1560,7 +1560,7 @@ class ChatApi {
     return null;
   }
 
-  /// Send a like to some account. If both will like each other, then the accounts will be a match.
+  /// Send a like to some account. If both will like each other, then the accounts will be a match. The second account must set [SendLike::allow_matching] to true.
   ///
   /// This route might update [model_chat::DailyLikesLeft] and WebSocket event about the update is not sent because this route returns the new value.  The like sending is allowed even if accounts aren't a match when considering age and gender preferences. This is because changing the preferences isn't limited.  # Access * [AccountState::Normal]
   ///
@@ -1568,13 +1568,13 @@ class ChatApi {
   ///
   /// Parameters:
   ///
-  /// * [AccountId] accountId (required):
-  Future<Response> postSendLikeWithHttpInfo(AccountId accountId,) async {
+  /// * [SendLike] sendLike (required):
+  Future<Response> postSendLikeWithHttpInfo(SendLike sendLike,) async {
     // ignore: prefer_const_declarations
     final path = r'/chat_api/send_like';
 
     // ignore: prefer_final_locals
-    Object? postBody = accountId;
+    Object? postBody = sendLike;
 
     final queryParams = <QueryParam>[];
     final headerParams = <String, String>{};
@@ -1594,15 +1594,15 @@ class ChatApi {
     );
   }
 
-  /// Send a like to some account. If both will like each other, then the accounts will be a match.
+  /// Send a like to some account. If both will like each other, then the accounts will be a match. The second account must set [SendLike::allow_matching] to true.
   ///
   /// This route might update [model_chat::DailyLikesLeft] and WebSocket event about the update is not sent because this route returns the new value.  The like sending is allowed even if accounts aren't a match when considering age and gender preferences. This is because changing the preferences isn't limited.  # Access * [AccountState::Normal]
   ///
   /// Parameters:
   ///
-  /// * [AccountId] accountId (required):
-  Future<SendLikeResult?> postSendLike(AccountId accountId,) async {
-    final response = await postSendLikeWithHttpInfo(accountId,);
+  /// * [SendLike] sendLike (required):
+  Future<SendLikeResult?> postSendLike(SendLike sendLike,) async {
+    final response = await postSendLikeWithHttpInfo(sendLike,);
     if (response.statusCode >= HttpStatus.badRequest) {
       throw ApiException(response.statusCode, await _decodeBodyBytes(response));
     }
@@ -1618,7 +1618,7 @@ class ChatApi {
 
   /// Send message to a match.
   ///
-  /// Server config file defines max count for conversation pending messages. Max message size is u16::MAX.  Sending will fail if one or two way block exists.  Only the latest public key for sender and receiver can be used when sending a message.
+  /// Server config file defines max count for conversation pending messages. Max message size is u16::MAX.  Sending will fail if one or two way block exists.  Only the latest public key for sender and recipient can be used when sending a message.
   ///
   /// Note: This method returns the HTTP [Response].
   ///
@@ -1626,16 +1626,16 @@ class ChatApi {
   ///
   /// * [int] senderPublicKeyId (required):
   ///
-  /// * [String] receiver (required):
-  ///   Receiver of the message.
+  /// * [String] recipient (required):
+  ///   Recipient of the message.
   ///
-  /// * [int] receiverPublicKeyId (required):
-  ///   Message receiver's public key ID for check to prevent sending message encrypted with outdated public key.
+  /// * [int] recipientPublicKeyId (required):
+  ///   Message recipient's public key ID for check to prevent sending message encrypted with outdated public key.
   ///
   /// * [String] messageId (required):
   ///
   /// * [MultipartFile] body (required):
-  Future<Response> postSendMessageWithHttpInfo(int senderPublicKeyId, String receiver, int receiverPublicKeyId, String messageId, MultipartFile body,) async {
+  Future<Response> postSendMessageWithHttpInfo(int senderPublicKeyId, String recipient, int recipientPublicKeyId, String messageId, MultipartFile body,) async {
     // ignore: prefer_const_declarations
     final path = r'/chat_api/send_message';
 
@@ -1647,8 +1647,8 @@ class ChatApi {
     final formParams = <String, String>{};
 
       queryParams.addAll(_queryParams('', 'sender_public_key_id', senderPublicKeyId));
-      queryParams.addAll(_queryParams('', 'receiver', receiver));
-      queryParams.addAll(_queryParams('', 'receiver_public_key_id', receiverPublicKeyId));
+      queryParams.addAll(_queryParams('', 'recipient', recipient));
+      queryParams.addAll(_queryParams('', 'recipient_public_key_id', recipientPublicKeyId));
       queryParams.addAll(_queryParams('', 'message_id', messageId));
 
     const contentTypes = <String>['application/octet-stream'];
@@ -1667,23 +1667,23 @@ class ChatApi {
 
   /// Send message to a match.
   ///
-  /// Server config file defines max count for conversation pending messages. Max message size is u16::MAX.  Sending will fail if one or two way block exists.  Only the latest public key for sender and receiver can be used when sending a message.
+  /// Server config file defines max count for conversation pending messages. Max message size is u16::MAX.  Sending will fail if one or two way block exists.  Only the latest public key for sender and recipient can be used when sending a message.
   ///
   /// Parameters:
   ///
   /// * [int] senderPublicKeyId (required):
   ///
-  /// * [String] receiver (required):
-  ///   Receiver of the message.
+  /// * [String] recipient (required):
+  ///   Recipient of the message.
   ///
-  /// * [int] receiverPublicKeyId (required):
-  ///   Message receiver's public key ID for check to prevent sending message encrypted with outdated public key.
+  /// * [int] recipientPublicKeyId (required):
+  ///   Message recipient's public key ID for check to prevent sending message encrypted with outdated public key.
   ///
   /// * [String] messageId (required):
   ///
   /// * [MultipartFile] body (required):
-  Future<SendMessageResult?> postSendMessage(int senderPublicKeyId, String receiver, int receiverPublicKeyId, String messageId, MultipartFile body,) async {
-    final response = await postSendMessageWithHttpInfo(senderPublicKeyId, receiver, receiverPublicKeyId, messageId, body,);
+  Future<SendMessageResult?> postSendMessage(int senderPublicKeyId, String recipient, int recipientPublicKeyId, String messageId, MultipartFile body,) async {
+    final response = await postSendMessageWithHttpInfo(senderPublicKeyId, recipient, recipientPublicKeyId, messageId, body,);
     if (response.statusCode >= HttpStatus.badRequest) {
       throw ApiException(response.statusCode, await _decodeBodyBytes(response));
     }

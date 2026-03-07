@@ -141,7 +141,7 @@ Class | Method | HTTP request | Description
 *ChatApi* | [**getSentBlocks**](doc//ChatApi.md#getsentblocks) | **GET** /chat_api/sent_blocks | Get list of sent blocks
 *ChatApi* | [**getSentMessageIds**](doc//ChatApi.md#getsentmessageids) | **GET** /chat_api/sent_message_ids | 
 *ChatApi* | [**postAddPublicKey**](doc//ChatApi.md#postaddpublickey) | **POST** /chat_api/add_public_key | Add new public key.
-*ChatApi* | [**postAddReceiverAcknowledgement**](doc//ChatApi.md#postaddreceiveracknowledgement) | **POST** /chat_api/add_receiver_acknowledgement | 
+*ChatApi* | [**postAddRecipientAcknowledgement**](doc//ChatApi.md#postaddrecipientacknowledgement) | **POST** /chat_api/add_recipient_acknowledgement | 
 *ChatApi* | [**postAddSenderAcknowledgement**](doc//ChatApi.md#postaddsenderacknowledgement) | **POST** /chat_api/add_sender_acknowledgement | 
 *ChatApi* | [**postBlockProfile**](doc//ChatApi.md#postblockprofile) | **POST** /chat_api/block_profile | Block profile
 *ChatApi* | [**postChatAppNotificationSettings**](doc//ChatApi.md#postchatappnotificationsettings) | **POST** /chat_api/post_chat_app_notification_settings | 
@@ -159,7 +159,7 @@ Class | Method | HTTP request | Description
 *ChatApi* | [**postMarkReceivedLikesViewed**](doc//ChatApi.md#postmarkreceivedlikesviewed) | **POST** /chat_api/mark_received_likes_viewed | 
 *ChatApi* | [**postResetNewReceivedLikesCount**](doc//ChatApi.md#postresetnewreceivedlikescount) | **POST** /chat_api/reset_new_received_likes_count | 
 *ChatApi* | [**postResetReceivedLikesPaging**](doc//ChatApi.md#postresetreceivedlikespaging) | **POST** /chat_api/received_likes/reset | 
-*ChatApi* | [**postSendLike**](doc//ChatApi.md#postsendlike) | **POST** /chat_api/send_like | Send a like to some account. If both will like each other, then the accounts will be a match.
+*ChatApi* | [**postSendLike**](doc//ChatApi.md#postsendlike) | **POST** /chat_api/send_like | Send a like to some account. If both will like each other, then the accounts will be a match. The second account must set [SendLike::allow_matching] to true.
 *ChatApi* | [**postSendMessage**](doc//ChatApi.md#postsendmessage) | **POST** /chat_api/send_message | Send message to a match.
 *ChatApi* | [**postUnblockProfile**](doc//ChatApi.md#postunblockprofile) | **POST** /chat_api/unblock_profile | Unblock profile
 *ChatTransferApi* | [**getBackupTransfer**](doc//ChatTransferApi.md#getbackuptransfer) | **GET** /chat_api/backup_transfer | Transfer chat backup between clients using WebSocket.
@@ -177,6 +177,7 @@ Class | Method | HTTP request | Description
 *CommonAdminApi* | [**getAdminNotificationSettings**](doc//CommonAdminApi.md#getadminnotificationsettings) | **GET** /common_api/admin_notification_settings | Get admin notification settings.
 *CommonAdminApi* | [**getAdminNotificationSubscriptions**](doc//CommonAdminApi.md#getadminnotificationsubscriptions) | **GET** /common_api/admin_notification_subscriptions | Get admin notification subscriptions.
 *CommonAdminApi* | [**getBotConfig**](doc//CommonAdminApi.md#getbotconfig) | **GET** /common_api/bot_config | Get bot config.
+*CommonAdminApi* | [**getBotConfigWarnings**](doc//CommonAdminApi.md#getbotconfigwarnings) | **GET** /common_api/bot_config_warnings | Get bot config warnings.
 *CommonAdminApi* | [**getLatestReportIteratorStartPosition**](doc//CommonAdminApi.md#getlatestreportiteratorstartposition) | **GET** /common_api/latest_report_iterator_start_position | 
 *CommonAdminApi* | [**getMaintenanceNotification**](doc//CommonAdminApi.md#getmaintenancenotification) | **GET** /common_api/maintenance_notification | Get maintenance notification.
 *CommonAdminApi* | [**getManagerInstanceNames**](doc//CommonAdminApi.md#getmanagerinstancenames) | **GET** /common_api/manager_instance_names | Get available manager instances.
@@ -220,6 +221,7 @@ Class | Method | HTTP request | Description
 *MediaApi* | [**putProfileContent**](doc//MediaApi.md#putprofilecontent) | **PUT** /media_api/profile_content | Set new profile content for current account.
 *MediaApi* | [**putSecurityContentInfo**](doc//MediaApi.md#putsecuritycontentinfo) | **PUT** /media_api/security_content_info | Set current security content for current account.
 *MediaAdminApi* | [**getImageProcessingConfig**](doc//MediaAdminApi.md#getimageprocessingconfig) | **GET** /media_api/image_processing_config | Get image processing configuration
+*MediaAdminApi* | [**getImageProcessingConfigWarnings**](doc//MediaAdminApi.md#getimageprocessingconfigwarnings) | **GET** /media_api/image_processing_config_warnings | Get image processing config warnings
 *MediaAdminApi* | [**getMediaContentPendingModerationList**](doc//MediaAdminApi.md#getmediacontentpendingmoderationlist) | **GET** /media_api/media_content_pending_moderation | Get first page of pending media content moderations. Oldest item is first and count 25.
 *MediaAdminApi* | [**postImageProcessingConfig**](doc//MediaAdminApi.md#postimageprocessingconfig) | **POST** /media_api/image_processing_config | Update image processing configuration
 *MediaAdminApi* | [**postMediaContentFaceDetectedValue**](doc//MediaAdminApi.md#postmediacontentfacedetectedvalue) | **POST** /media_api/media_content_face_detected_value | Change media content face detected value
@@ -320,6 +322,7 @@ Class | Method | HTTP request | Description
  - [BooleanSetting](doc//BooleanSetting.md)
  - [BotAccount](doc//BotAccount.md)
  - [BotConfig](doc//BotConfig.md)
+ - [BotConfigWarnings](doc//BotConfigWarnings.md)
  - [ChatAppNotificationSettings](doc//ChatAppNotificationSettings.md)
  - [ChatConfig](doc//ChatConfig.md)
  - [ChatEmailNotificationSettings](doc//ChatEmailNotificationSettings.md)
@@ -423,6 +426,7 @@ Class | Method | HTTP request | Description
  - [GetReportList](doc//GetReportList.md)
  - [GetSentMessage](doc//GetSentMessage.md)
  - [ImageProcessingDynamicConfig](doc//ImageProcessingDynamicConfig.md)
+ - [ImageProcessingWarnings](doc//ImageProcessingWarnings.md)
  - [InfoBanner](doc//InfoBanner.md)
  - [InfoBannerMode](doc//InfoBannerMode.md)
  - [InfoBannerUrlButton](doc//InfoBannerUrlButton.md)
@@ -582,6 +586,7 @@ Class | Method | HTTP request | Description
  - [SearchGroups](doc//SearchGroups.md)
  - [SecurityContent](doc//SecurityContent.md)
  - [SeenMessage](doc//SeenMessage.md)
+ - [SendLike](doc//SendLike.md)
  - [SendLikeResult](doc//SendLikeResult.md)
  - [SendMessageResult](doc//SendMessageResult.md)
  - [SendVerifyEmailMessageResult](doc//SendVerifyEmailMessageResult.md)

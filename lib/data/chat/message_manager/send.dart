@@ -60,7 +60,9 @@ class SendMessageUtils {
   Stream<MessageSendingEvent> _sendMessageToInternal(AccountId accountId, Message message) async* {
     final isMatch = await _isInMatches(accountId);
     if (!isMatch) {
-      final resultSendLike = await api.chatAction((api) => api.postSendLike(accountId));
+      final resultSendLike = await api.chatAction(
+        (api) => api.postSendLike(SendLike(accountId: accountId, allowMatching: true)),
+      );
       if (resultSendLike.isErr()) {
         yield const ErrorBeforeMessageSaving();
         return;
@@ -181,7 +183,7 @@ class SendMessageUtils {
           return;
       }
 
-      if (result.errorReceiverBlockedSenderOrReceiverNotFound) {
+      if (result.errorRecipientBlockedSenderOrRecipientNotFound) {
         yield ErrorAfterMessageSaving(
           localId,
           MessageSendingErrorDetails.receiverBlockedSenderOrReceiverNotFound,
@@ -189,7 +191,7 @@ class SendMessageUtils {
         return;
       }
 
-      if (result.errorTooManyReceiverAcknowledgementsMissing) {
+      if (result.errorTooManyRecipientAcknowledgementsMissing) {
         yield ErrorAfterMessageSaving(localId, MessageSendingErrorDetails.tooManyPendingMessages);
         return;
       }
@@ -236,7 +238,7 @@ class SendMessageUtils {
         return;
       }
 
-      if (result.errorReceiverPublicKeyOutdated) {
+      if (result.errorRecipientPublicKeyOutdated) {
         _log.error("Send message error: receiver public key outdated");
 
         await publicKeyUtils.getLatestPublicKeyForForeignAccount(accountId);

@@ -15,11 +15,11 @@ class SendMessageResult {
   SendMessageResult({
     this.d,
     this.error = false,
-    this.errorReceiverBlockedSenderOrReceiverNotFound = false,
-    this.errorReceiverPublicKeyOutdated = false,
+    this.errorRecipientBlockedSenderOrRecipientNotFound = false,
+    this.errorRecipientPublicKeyOutdated = false,
     this.errorSenderPublicKeyOutdated = false,
     this.errorTooManyPendingDeliveryInfosExists = false,
-    this.errorTooManyReceiverAcknowledgementsMissing = false,
+    this.errorTooManyRecipientAcknowledgementsMissing = false,
     this.errorTooManySenderAcknowledgementsMissing = false,
     this.remainingConversationMessages,
     this.remainingMessages,
@@ -30,19 +30,19 @@ class SendMessageResult {
 
   bool error;
 
-  bool errorReceiverBlockedSenderOrReceiverNotFound;
+  bool errorRecipientBlockedSenderOrRecipientNotFound;
 
-  bool errorReceiverPublicKeyOutdated;
+  bool errorRecipientPublicKeyOutdated;
 
   bool errorSenderPublicKeyOutdated;
 
   bool errorTooManyPendingDeliveryInfosExists;
 
-  bool errorTooManyReceiverAcknowledgementsMissing;
+  bool errorTooManyRecipientAcknowledgementsMissing;
 
   bool errorTooManySenderAcknowledgementsMissing;
 
-  /// Remaining messages which can be sent to conversation before delivery to reciever or message sending acknowledgement must happen. The value will be returned only if there is 5 or less messages left.
+  /// Remaining messages which can be sent to conversation before delivery to recipient or message sending acknowledgement must happen. The value will be returned only if there is 5 or less messages left.
   ///
   /// Minimum value: 0
   int? remainingConversationMessages;
@@ -56,11 +56,11 @@ class SendMessageResult {
   bool operator ==(Object other) => identical(this, other) || other is SendMessageResult &&
     other.d == d &&
     other.error == error &&
-    other.errorReceiverBlockedSenderOrReceiverNotFound == errorReceiverBlockedSenderOrReceiverNotFound &&
-    other.errorReceiverPublicKeyOutdated == errorReceiverPublicKeyOutdated &&
+    other.errorRecipientBlockedSenderOrRecipientNotFound == errorRecipientBlockedSenderOrRecipientNotFound &&
+    other.errorRecipientPublicKeyOutdated == errorRecipientPublicKeyOutdated &&
     other.errorSenderPublicKeyOutdated == errorSenderPublicKeyOutdated &&
     other.errorTooManyPendingDeliveryInfosExists == errorTooManyPendingDeliveryInfosExists &&
-    other.errorTooManyReceiverAcknowledgementsMissing == errorTooManyReceiverAcknowledgementsMissing &&
+    other.errorTooManyRecipientAcknowledgementsMissing == errorTooManyRecipientAcknowledgementsMissing &&
     other.errorTooManySenderAcknowledgementsMissing == errorTooManySenderAcknowledgementsMissing &&
     other.remainingConversationMessages == remainingConversationMessages &&
     other.remainingMessages == remainingMessages;
@@ -70,17 +70,17 @@ class SendMessageResult {
     // ignore: unnecessary_parenthesis
     (d == null ? 0 : d!.hashCode) +
     (error.hashCode) +
-    (errorReceiverBlockedSenderOrReceiverNotFound.hashCode) +
-    (errorReceiverPublicKeyOutdated.hashCode) +
+    (errorRecipientBlockedSenderOrRecipientNotFound.hashCode) +
+    (errorRecipientPublicKeyOutdated.hashCode) +
     (errorSenderPublicKeyOutdated.hashCode) +
     (errorTooManyPendingDeliveryInfosExists.hashCode) +
-    (errorTooManyReceiverAcknowledgementsMissing.hashCode) +
+    (errorTooManyRecipientAcknowledgementsMissing.hashCode) +
     (errorTooManySenderAcknowledgementsMissing.hashCode) +
     (remainingConversationMessages == null ? 0 : remainingConversationMessages!.hashCode) +
     (remainingMessages == null ? 0 : remainingMessages!.hashCode);
 
   @override
-  String toString() => 'SendMessageResult[d=$d, error=$error, errorReceiverBlockedSenderOrReceiverNotFound=$errorReceiverBlockedSenderOrReceiverNotFound, errorReceiverPublicKeyOutdated=$errorReceiverPublicKeyOutdated, errorSenderPublicKeyOutdated=$errorSenderPublicKeyOutdated, errorTooManyPendingDeliveryInfosExists=$errorTooManyPendingDeliveryInfosExists, errorTooManyReceiverAcknowledgementsMissing=$errorTooManyReceiverAcknowledgementsMissing, errorTooManySenderAcknowledgementsMissing=$errorTooManySenderAcknowledgementsMissing, remainingConversationMessages=$remainingConversationMessages, remainingMessages=$remainingMessages]';
+  String toString() => 'SendMessageResult[d=$d, error=$error, errorRecipientBlockedSenderOrRecipientNotFound=$errorRecipientBlockedSenderOrRecipientNotFound, errorRecipientPublicKeyOutdated=$errorRecipientPublicKeyOutdated, errorSenderPublicKeyOutdated=$errorSenderPublicKeyOutdated, errorTooManyPendingDeliveryInfosExists=$errorTooManyPendingDeliveryInfosExists, errorTooManyRecipientAcknowledgementsMissing=$errorTooManyRecipientAcknowledgementsMissing, errorTooManySenderAcknowledgementsMissing=$errorTooManySenderAcknowledgementsMissing, remainingConversationMessages=$remainingConversationMessages, remainingMessages=$remainingMessages]';
 
   Map<String, dynamic> toJson() {
     final json = <String, dynamic>{};
@@ -90,11 +90,11 @@ class SendMessageResult {
       json[r'd'] = null;
     }
       json[r'error'] = this.error;
-      json[r'error_receiver_blocked_sender_or_receiver_not_found'] = this.errorReceiverBlockedSenderOrReceiverNotFound;
-      json[r'error_receiver_public_key_outdated'] = this.errorReceiverPublicKeyOutdated;
+      json[r'error_recipient_blocked_sender_or_recipient_not_found'] = this.errorRecipientBlockedSenderOrRecipientNotFound;
+      json[r'error_recipient_public_key_outdated'] = this.errorRecipientPublicKeyOutdated;
       json[r'error_sender_public_key_outdated'] = this.errorSenderPublicKeyOutdated;
       json[r'error_too_many_pending_delivery_infos_exists'] = this.errorTooManyPendingDeliveryInfosExists;
-      json[r'error_too_many_receiver_acknowledgements_missing'] = this.errorTooManyReceiverAcknowledgementsMissing;
+      json[r'error_too_many_recipient_acknowledgements_missing'] = this.errorTooManyRecipientAcknowledgementsMissing;
       json[r'error_too_many_sender_acknowledgements_missing'] = this.errorTooManySenderAcknowledgementsMissing;
     if (this.remainingConversationMessages != null) {
       json[r'remaining_conversation_messages'] = this.remainingConversationMessages;
@@ -130,11 +130,11 @@ class SendMessageResult {
       return SendMessageResult(
         d: mapValueOfType<String>(json, r'd'),
         error: mapValueOfType<bool>(json, r'error') ?? false,
-        errorReceiverBlockedSenderOrReceiverNotFound: mapValueOfType<bool>(json, r'error_receiver_blocked_sender_or_receiver_not_found') ?? false,
-        errorReceiverPublicKeyOutdated: mapValueOfType<bool>(json, r'error_receiver_public_key_outdated') ?? false,
+        errorRecipientBlockedSenderOrRecipientNotFound: mapValueOfType<bool>(json, r'error_recipient_blocked_sender_or_recipient_not_found') ?? false,
+        errorRecipientPublicKeyOutdated: mapValueOfType<bool>(json, r'error_recipient_public_key_outdated') ?? false,
         errorSenderPublicKeyOutdated: mapValueOfType<bool>(json, r'error_sender_public_key_outdated') ?? false,
         errorTooManyPendingDeliveryInfosExists: mapValueOfType<bool>(json, r'error_too_many_pending_delivery_infos_exists') ?? false,
-        errorTooManyReceiverAcknowledgementsMissing: mapValueOfType<bool>(json, r'error_too_many_receiver_acknowledgements_missing') ?? false,
+        errorTooManyRecipientAcknowledgementsMissing: mapValueOfType<bool>(json, r'error_too_many_recipient_acknowledgements_missing') ?? false,
         errorTooManySenderAcknowledgementsMissing: mapValueOfType<bool>(json, r'error_too_many_sender_acknowledgements_missing') ?? false,
         remainingConversationMessages: mapValueOfType<int>(json, r'remaining_conversation_messages'),
         remainingMessages: mapValueOfType<int>(json, r'remaining_messages'),

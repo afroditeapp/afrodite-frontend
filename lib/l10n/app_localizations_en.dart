@@ -1909,6 +1909,10 @@ class AppLocalizationsEn extends AppLocalizations {
   String get view_profile_screen_like_action_dialog_title => 'Send chat request?';
 
   @override
+  String get view_profile_screen_like_action_like_already_received =>
+      'Chat request already received';
+
+  @override
   String get view_profile_screen_like_action_like_already_sent => 'Chat request already sent';
 
   @override

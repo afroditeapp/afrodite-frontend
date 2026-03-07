@@ -3436,6 +3436,12 @@ abstract class AppLocalizations {
   /// **'Send chat request?'**
   String get view_profile_screen_like_action_dialog_title;
 
+  /// Snackbar text for view profile screen like action failed because of like is already received
+  ///
+  /// In en, this message translates to:
+  /// **'Chat request already received'**
+  String get view_profile_screen_like_action_like_already_received;
+
   /// Snackbar text for view profile screen like action failed because of like is already sent
   ///
   /// In en, this message translates to:

@@ -152,7 +152,7 @@ class ReceiveMessageUtils {
 
     if (toBeAcknowledged.isNotEmpty) {
       final result = await api.chatAction(
-        (api) => api.postAddReceiverAcknowledgement(
+        (api) => api.postAddRecipientAcknowledgement(
           PendingMessageAcknowledgementList(ids: toBeAcknowledged),
         ),
       );
@@ -163,7 +163,7 @@ class ReceiveMessageUtils {
 
     if (toBeAcknowledgedAsFailed.isNotEmpty) {
       final result = await api.chatAction(
-        (api) => api.postAddReceiverAcknowledgement(
+        (api) => api.postAddRecipientAcknowledgement(
           PendingMessageAcknowledgementList(ids: toBeAcknowledgedAsFailed, deliveryFailed: true),
         ),
       );

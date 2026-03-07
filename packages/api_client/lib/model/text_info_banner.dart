@@ -14,11 +14,14 @@ class TextInfoBanner {
   /// Returns a new [TextInfoBanner] instance.
   TextInfoBanner({
     required this.body,
+    this.dismissible = false,
     this.icon,
     this.urlButton,
   });
 
   StringResource body;
+
+  bool dismissible;
 
   String? icon;
 
@@ -27,6 +30,7 @@ class TextInfoBanner {
   @override
   bool operator ==(Object other) => identical(this, other) || other is TextInfoBanner &&
     other.body == body &&
+    other.dismissible == dismissible &&
     other.icon == icon &&
     other.urlButton == urlButton;
 
@@ -34,15 +38,17 @@ class TextInfoBanner {
   int get hashCode =>
     // ignore: unnecessary_parenthesis
     (body.hashCode) +
+    (dismissible.hashCode) +
     (icon == null ? 0 : icon!.hashCode) +
     (urlButton == null ? 0 : urlButton!.hashCode);
 
   @override
-  String toString() => 'TextInfoBanner[body=$body, icon=$icon, urlButton=$urlButton]';
+  String toString() => 'TextInfoBanner[body=$body, dismissible=$dismissible, icon=$icon, urlButton=$urlButton]';
 
   Map<String, dynamic> toJson() {
     final json = <String, dynamic>{};
       json[r'body'] = this.body;
+      json[r'dismissible'] = this.dismissible;
     if (this.icon != null) {
       json[r'icon'] = this.icon;
     } else {
@@ -76,6 +82,7 @@ class TextInfoBanner {
 
       return TextInfoBanner(
         body: StringResource.fromJson(json[r'body'])!,
+        dismissible: mapValueOfType<bool>(json, r'dismissible') ?? false,
         icon: mapValueOfType<String>(json, r'icon'),
         urlButton: InfoBannerUrlButton.fromJson(json[r'url_button']),
       );

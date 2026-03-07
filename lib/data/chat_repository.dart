@@ -145,7 +145,7 @@ class ChatRepository extends DataRepositoryWithLifecycle {
   }
 
   Future<Result<LimitedActionStatus, SendLikeError>> sendLikeTo(AccountId accountId) async {
-    final result = await api.chat((api) => api.postSendLike(accountId));
+    final result = await api.chat((api) => api.postSendLike(SendLike(accountId: accountId)));
     switch (result) {
       case Ok(:final v):
         final newState = v.errorAccountInteractionStateMismatch;
@@ -153,6 +153,8 @@ class ChatRepository extends DataRepositoryWithLifecycle {
           await _updateAccountInteractionState(accountId, newState);
           if (newState == CurrentAccountInteractionState.likeSent) {
             return const Err(SendLikeError.alreadyLiked);
+          } else if (newState == CurrentAccountInteractionState.likeReceived) {
+            return const Err(SendLikeError.alreadyLikeReceived);
           } else if (newState == CurrentAccountInteractionState.match) {
             return const Err(SendLikeError.alreadyMatch);
           } else {
@@ -362,4 +364,4 @@ class ChatRepository extends DataRepositoryWithLifecycle {
   }
 }
 
-enum SendLikeError { alreadyLiked, alreadyMatch, unspecifiedError }
+enum SendLikeError { alreadyLiked, alreadyLikeReceived, alreadyMatch, unspecifiedError }

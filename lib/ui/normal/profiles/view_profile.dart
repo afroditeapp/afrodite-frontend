@@ -278,6 +278,7 @@ class ViewProfileScreen extends StatelessWidget {
           state.showLikeCompleted ||
           state.showLikeFailedBecauseOfLimit ||
           state.showLikeFailedBecauseAlreadyLiked ||
+          state.showLikeFailedBecauseAlreadyLikeReceived ||
           state.showLikeFailedBecauseAlreadyMatch ||
           state.showGenericError) {
         if (state.showAddToFavoritesCompleted) {
@@ -308,6 +309,9 @@ class ViewProfileScreen extends StatelessWidget {
         }
         if (state.showLikeFailedBecauseAlreadyLiked) {
           showSnackBar(context.strings.view_profile_screen_like_action_like_already_sent);
+        }
+        if (state.showLikeFailedBecauseAlreadyLikeReceived) {
+          showSnackBar(context.strings.view_profile_screen_like_action_like_already_received);
         }
         if (state.showLikeFailedBecauseAlreadyMatch) {
           showSnackBar(context.strings.view_profile_screen_already_match);

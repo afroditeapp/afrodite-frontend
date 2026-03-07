@@ -29,7 +29,7 @@ class DeliveryInfoUtils {
       final message = await db
           .accountData(
             (db) =>
-                db.message.getMessageUsingMessageId(deliveryInfo.receiver, deliveryInfo.messageId),
+                db.message.getMessageUsingMessageId(deliveryInfo.recipient, deliveryInfo.messageId),
           )
           .ok();
 
@@ -56,7 +56,7 @@ class DeliveryInfoUtils {
           deliveredTime = deliveryInfo.unixTime.toUtcDateTime();
         }
       } else if (deliveryInfo.deliveryType == DeliveryInfoType.deliveryFailed) {
-        checkEncryptionKeyChanges.add(deliveryInfo.receiver);
+        checkEncryptionKeyChanges.add(deliveryInfo.recipient);
         if (currentState != SentMessageState.seen && currentState != SentMessageState.delivered) {
           newState = SentMessageState.deliveryFailed;
         }
@@ -77,7 +77,7 @@ class DeliveryInfoUtils {
           processedIds.add(deliveryInfo.id);
 
           await _setProfileOnlineIfDeliveryInfoIsRecent(
-            deliveryInfo.receiver,
+            deliveryInfo.recipient,
             deliveryInfo.unixTime.toUtcDateTime(),
           );
         }

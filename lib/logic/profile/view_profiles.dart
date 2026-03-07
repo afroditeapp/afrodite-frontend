@@ -140,6 +140,7 @@ class ViewProfileBloc extends Bloc<ViewProfileEvent, ViewProfilesData> with Acti
           showLikeCompleted: false,
           showLikeFailedBecauseOfLimit: false,
           showLikeFailedBecauseAlreadyLiked: false,
+          showLikeFailedBecauseAlreadyLikeReceived: false,
           showLikeFailedBecauseAlreadyMatch: false,
           showGenericError: false,
         ),
@@ -177,6 +178,13 @@ class ViewProfileBloc extends Bloc<ViewProfileEvent, ViewProfilesData> with Acti
                     state.copyWith(
                       profileActionState: newAction,
                       showLikeFailedBecauseAlreadyLiked: true,
+                    ),
+                  );
+                case Err(e: SendLikeError.alreadyLikeReceived):
+                  emit(
+                    state.copyWith(
+                      profileActionState: newAction,
+                      showLikeFailedBecauseAlreadyLikeReceived: true,
                     ),
                   );
                 case Err(e: SendLikeError.alreadyMatch):

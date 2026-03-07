@@ -276,6 +276,8 @@ class ApiClient {
           return BotAccount.fromJson(value);
         case 'BotConfig':
           return BotConfig.fromJson(value);
+        case 'BotConfigWarnings':
+          return BotConfigWarnings.fromJson(value);
         case 'ChatAppNotificationSettings':
           return ChatAppNotificationSettings.fromJson(value);
         case 'ChatConfig':
@@ -482,6 +484,8 @@ class ApiClient {
           return GetSentMessage.fromJson(value);
         case 'ImageProcessingDynamicConfig':
           return ImageProcessingDynamicConfig.fromJson(value);
+        case 'ImageProcessingWarnings':
+          return ImageProcessingWarnings.fromJson(value);
         case 'InfoBanner':
           return InfoBanner.fromJson(value);
         case 'InfoBannerMode':
@@ -800,6 +804,8 @@ class ApiClient {
           return SecurityContent.fromJson(value);
         case 'SeenMessage':
           return SeenMessage.fromJson(value);
+        case 'SendLike':
+          return SendLike.fromJson(value);
         case 'SendLikeResult':
           return SendLikeResult.fromJson(value);
         case 'SendMessageResult':

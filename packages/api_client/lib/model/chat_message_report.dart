@@ -16,7 +16,7 @@ class ChatMessageReport {
     required this.messageBase64,
     required this.messageNumber,
     required this.messageTime,
-    required this.receiver,
+    required this.recipient,
     required this.sender,
   });
 
@@ -27,7 +27,7 @@ class ChatMessageReport {
 
   UnixTime messageTime;
 
-  AccountId receiver;
+  AccountId recipient;
 
   AccountId sender;
 
@@ -36,7 +36,7 @@ class ChatMessageReport {
     other.messageBase64 == messageBase64 &&
     other.messageNumber == messageNumber &&
     other.messageTime == messageTime &&
-    other.receiver == receiver &&
+    other.recipient == recipient &&
     other.sender == sender;
 
   @override
@@ -45,18 +45,18 @@ class ChatMessageReport {
     (messageBase64.hashCode) +
     (messageNumber.hashCode) +
     (messageTime.hashCode) +
-    (receiver.hashCode) +
+    (recipient.hashCode) +
     (sender.hashCode);
 
   @override
-  String toString() => 'ChatMessageReport[messageBase64=$messageBase64, messageNumber=$messageNumber, messageTime=$messageTime, receiver=$receiver, sender=$sender]';
+  String toString() => 'ChatMessageReport[messageBase64=$messageBase64, messageNumber=$messageNumber, messageTime=$messageTime, recipient=$recipient, sender=$sender]';
 
   Map<String, dynamic> toJson() {
     final json = <String, dynamic>{};
       json[r'message_base64'] = this.messageBase64;
       json[r'message_number'] = this.messageNumber;
       json[r'message_time'] = this.messageTime;
-      json[r'receiver'] = this.receiver;
+      json[r'recipient'] = this.recipient;
       json[r'sender'] = this.sender;
     return json;
   }
@@ -83,7 +83,7 @@ class ChatMessageReport {
         messageBase64: mapValueOfType<String>(json, r'message_base64')!,
         messageNumber: MessageNumber.fromJson(json[r'message_number'])!,
         messageTime: UnixTime.fromJson(json[r'message_time'])!,
-        receiver: AccountId.fromJson(json[r'receiver'])!,
+        recipient: AccountId.fromJson(json[r'recipient'])!,
         sender: AccountId.fromJson(json[r'sender'])!,
       );
     }
@@ -135,7 +135,7 @@ class ChatMessageReport {
     'message_base64',
     'message_number',
     'message_time',
-    'receiver',
+    'recipient',
     'sender',
   };
 }

@@ -69,6 +69,7 @@ lib/model/banner_visibility.dart
 lib/model/boolean_setting.dart
 lib/model/bot_account.dart
 lib/model/bot_config.dart
+lib/model/bot_config_warnings.dart
 lib/model/chat_app_notification_settings.dart
 lib/model/chat_config.dart
 lib/model/chat_email_notification_settings.dart
@@ -172,6 +173,7 @@ lib/model/get_push_notification_info.dart
 lib/model/get_report_list.dart
 lib/model/get_sent_message.dart
 lib/model/image_processing_dynamic_config.dart
+lib/model/image_processing_warnings.dart
 lib/model/info_banner.dart
 lib/model/info_banner_mode.dart
 lib/model/info_banner_url_button.dart
@@ -331,6 +333,7 @@ lib/model/search_age_range.dart
 lib/model/search_groups.dart
 lib/model/security_content.dart
 lib/model/seen_message.dart
+lib/model/send_like.dart
 lib/model/send_like_result.dart
 lib/model/send_message_result.dart
 lib/model/send_verify_email_message_result.dart
