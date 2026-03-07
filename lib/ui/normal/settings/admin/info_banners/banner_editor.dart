@@ -407,6 +407,11 @@ class _TextInfoBannerEditorState extends State<TextInfoBannerEditor> {
         ),
         const Divider(height: 32),
         SwitchListTile(
+          title: const Text("Dismissible"),
+          value: _textBanner.dismissible,
+          onChanged: (value) => setState(() => _textBanner.dismissible = value),
+        ),
+        SwitchListTile(
           title: const Text("Enable URL button"),
           value: _hasUrlButton,
           onChanged: (value) => setState(() => _setHasUrlButton(value)),
