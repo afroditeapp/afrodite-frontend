@@ -56,6 +56,28 @@ class _ImageProcessingConfigScreenState extends State<ImageProcessingConfigScree
         _seetafaceThresholdController.text = _config?.seetafaceThreshold?.toString() ?? "";
       }
     });
+
+    if (data != null) {
+      await _showWarnings();
+    }
+  }
+
+  Future<void> _showWarnings() async {
+    final warnings = await widget.api
+        .mediaAdmin((api) => api.getImageProcessingConfigWarnings())
+        .ok();
+    if (warnings != null && mounted) {
+      final missing = [
+        if (warnings.nsfwDetectionFileConfigMissing) "- NSFW detection",
+        if (warnings.seetafaceFileConfigMissing) "- Seetaface (face detection)",
+      ];
+
+      if (missing.isNotEmpty) {
+        showSnackBar(
+          "Warning: simple backend config file is missing config for\n${missing.join("\n")}",
+        );
+      }
+    }
   }
 
   bool _hasUnsavedChanges() {
@@ -184,6 +206,7 @@ class _ImageProcessingConfigScreenState extends State<ImageProcessingConfigScree
     switch (result) {
       case Ok():
         showSnackBar("Config saved!");
+        await _showWarnings();
       case Err():
         showSnackBar("Config save failed!");
         return false;
