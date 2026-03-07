@@ -68,16 +68,16 @@ class NativeUtilsBindings {
   BinaryDataResult2 encrypt_message(
     ffi.Pointer<ffi.Uint8> sender_private_key,
     int sender_private_key_len,
-    ffi.Pointer<ffi.Uint8> receiver_public_key,
-    int receiver_public_key_len,
+    ffi.Pointer<ffi.Uint8> recipient_public_key,
+    int recipient_public_key_len,
     ffi.Pointer<ffi.Uint8> data,
     int data_len,
   ) {
     return _encrypt_message(
       sender_private_key,
       sender_private_key_len,
-      receiver_public_key,
-      receiver_public_key_len,
+      recipient_public_key,
+      recipient_public_key_len,
       data,
       data_len,
     );
@@ -116,16 +116,16 @@ class NativeUtilsBindings {
   BinaryDataResult2 decrypt_message(
     ffi.Pointer<ffi.Uint8> sender_public_key,
     int sender_public_key_len,
-    ffi.Pointer<ffi.Uint8> receiver_private_key,
-    int receiver_private_key_len,
+    ffi.Pointer<ffi.Uint8> recipient_private_key,
+    int recipient_private_key_len,
     ffi.Pointer<ffi.Uint8> pgp_message,
     int pgp_message_len,
   ) {
     return _decrypt_message(
       sender_public_key,
       sender_public_key_len,
-      receiver_private_key,
-      receiver_private_key_len,
+      recipient_private_key,
+      recipient_private_key_len,
       pgp_message,
       pgp_message_len,
     );

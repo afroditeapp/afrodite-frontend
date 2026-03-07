@@ -24,27 +24,27 @@ Future<(GeneratedMessageKeys?, int)> generateMessageKeys(String accountId) async
 /// If encrypting fails, null is returned
 Future<(EncryptResult?, int)> encryptMessage(
   Uint8List senderPrivateKey,
-  Uint8List receiverPublicKey,
+  Uint8List recipientPublicKey,
   Uint8List data,
 ) async {
   final Pointer<Uint8> cSender = malloc.allocate(senderPrivateKey.length);
   cSender.asTypedList(senderPrivateKey.length).setAll(0, senderPrivateKey);
-  final Pointer<Uint8> cReceiver = malloc.allocate(receiverPublicKey.length);
-  cReceiver.asTypedList(receiverPublicKey.length).setAll(0, receiverPublicKey);
+  final Pointer<Uint8> cRecipient = malloc.allocate(recipientPublicKey.length);
+  cRecipient.asTypedList(recipientPublicKey.length).setAll(0, recipientPublicKey);
   final Pointer<Uint8> cData = malloc.allocate(data.length);
   cData.asTypedList(data.length).setAll(0, data);
 
   final encryptResult = getBindings().encrypt_message(
     cSender,
     senderPrivateKey.length,
-    cReceiver,
-    receiverPublicKey.length,
+    cRecipient,
+    recipientPublicKey.length,
     cData,
     data.length,
   );
 
   malloc.free(cSender);
-  malloc.free(cReceiver);
+  malloc.free(cRecipient);
   malloc.free(cData);
 
   final (pgpMessage, sessionKey, result) = handleBinaryDataResult2(encryptResult);
@@ -58,27 +58,27 @@ Future<(EncryptResult?, int)> encryptMessage(
 /// If decrypting fails, null is returned
 Future<(DecryptResult?, int)> decryptMessage(
   Uint8List senderPublicKey,
-  Uint8List receiverPrivateKey,
+  Uint8List recipientPrivateKey,
   Uint8List pgpMessage,
 ) async {
   final Pointer<Uint8> cSenderPublicKey = malloc.allocate(senderPublicKey.length);
   cSenderPublicKey.asTypedList(senderPublicKey.length).setAll(0, senderPublicKey);
-  final Pointer<Uint8> cReceiverPrivateKey = malloc.allocate(receiverPrivateKey.length);
-  cReceiverPrivateKey.asTypedList(receiverPrivateKey.length).setAll(0, receiverPrivateKey);
+  final Pointer<Uint8> cRecipientPrivateKey = malloc.allocate(recipientPrivateKey.length);
+  cRecipientPrivateKey.asTypedList(recipientPrivateKey.length).setAll(0, recipientPrivateKey);
   final Pointer<Uint8> cMessageData = malloc.allocate(pgpMessage.length);
   cMessageData.asTypedList(pgpMessage.length).setAll(0, pgpMessage);
 
   final decryptResult = getBindings().decrypt_message(
     cSenderPublicKey,
     senderPublicKey.length,
-    cReceiverPrivateKey,
-    receiverPrivateKey.length,
+    cRecipientPrivateKey,
+    recipientPrivateKey.length,
     cMessageData,
     pgpMessage.length,
   );
 
   malloc.free(cSenderPublicKey);
-  malloc.free(cReceiverPrivateKey);
+  malloc.free(cRecipientPrivateKey);
   malloc.free(cMessageData);
 
   final (messageData, sessionKey, result) = handleBinaryDataResult2(decryptResult);

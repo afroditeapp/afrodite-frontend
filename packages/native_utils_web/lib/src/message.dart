@@ -50,7 +50,7 @@ Future<(GeneratedMessageKeys?, int)> generateMessageKeys(String accountId) async
 
 Future<(EncryptResult?, int)> encryptMessage(
   Uint8List senderPrivateKey,
-  Uint8List receiverPublicKey,
+  Uint8List recipientPublicKey,
   Uint8List data,
 ) async {
   try {
@@ -59,7 +59,7 @@ Future<(EncryptResult?, int)> encryptMessage(
         module.encryptDataRust.callAsFunction(
               null,
               senderPrivateKey.toJS,
-              receiverPublicKey.toJS,
+              recipientPublicKey.toJS,
               data.toJS,
             )
             as EncryptingOutput;
@@ -74,7 +74,7 @@ Future<(EncryptResult?, int)> encryptMessage(
 
 Future<(DecryptResult?, int)> decryptMessage(
   Uint8List senderPublicKey,
-  Uint8List receiverPrivateKey,
+  Uint8List recipientPrivateKey,
   Uint8List pgpMessage,
 ) async {
   try {
@@ -83,7 +83,7 @@ Future<(DecryptResult?, int)> decryptMessage(
         module.decryptDataRust.callAsFunction(
               null,
               senderPublicKey.toJS,
-              receiverPrivateKey.toJS,
+              recipientPrivateKey.toJS,
               pgpMessage.toJS,
             )
             as DecryptingOutput;

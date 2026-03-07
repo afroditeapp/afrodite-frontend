@@ -328,7 +328,7 @@ class ConversationScreenState extends State<ConversationScreen> {
             widget.oldMessagesIterator,
             widget.quotationCache,
             currentUser: r.accountId,
-            messageReceiver: widget.accountId,
+            messageRecipient: widget.accountId,
             db: r.accountDb,
             typingIndicatorManager: r.chat.typingIndicatorManager,
             typingIndicatorEnabled:

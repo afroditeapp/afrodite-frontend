@@ -170,27 +170,27 @@ pub unsafe extern "C" fn free_binary_data_result(
 pub unsafe extern "C" fn encrypt_message(
     sender_private_key: *const u8,
     sender_private_key_len: isize,
-    receiver_public_key: *const u8,
-    receiver_public_key_len: isize,
+    recipient_public_key: *const u8,
+    recipient_public_key_len: isize,
     data: *const u8,
     data_len: isize,
 ) -> BinaryDataResult2 {
     assert!(!sender_private_key.is_null());
-    assert!(!receiver_public_key.is_null());
+    assert!(!recipient_public_key.is_null());
 
     let sender_private_key = unsafe {
         std::slice::from_raw_parts(sender_private_key, sender_private_key_len as usize)
     };
 
-    let receiver_public_key = unsafe {
-        std::slice::from_raw_parts(receiver_public_key, receiver_public_key_len as usize)
+    let recipient_public_key = unsafe {
+        std::slice::from_raw_parts(recipient_public_key, recipient_public_key_len as usize)
     };
 
     let data = unsafe {
         std::slice::from_raw_parts(data, data_len as usize)
     };
 
-    match encrypt::encrypt_data_internal(sender_private_key, receiver_public_key, data) {
+    match encrypt::encrypt_data_internal(sender_private_key, recipient_public_key, data) {
         Ok(EncryptingOutput { message, session_key }) => {
             BinaryDataResult2::success(message, session_key)
         }
@@ -203,28 +203,28 @@ pub unsafe extern "C" fn encrypt_message(
 pub unsafe extern "C" fn decrypt_message(
     sender_public_key: *const u8,
     sender_public_key_len: isize,
-    receiver_private_key: *const u8,
-    receiver_private_key_len: isize,
+    recipient_private_key: *const u8,
+    recipient_private_key_len: isize,
     pgp_message: *const u8,
     pgp_message_len: isize,
 ) -> BinaryDataResult2 {
     assert!(!sender_public_key.is_null());
-    assert!(!receiver_private_key.is_null());
+    assert!(!recipient_private_key.is_null());
     assert!(!pgp_message.is_null());
 
     let sender_public_key = unsafe {
         std::slice::from_raw_parts(sender_public_key, sender_public_key_len as usize)
     };
 
-    let receiver_private_key = unsafe {
-        std::slice::from_raw_parts(receiver_private_key, receiver_private_key_len as usize)
+    let recipient_private_key = unsafe {
+        std::slice::from_raw_parts(recipient_private_key, recipient_private_key_len as usize)
     };
 
     let pgp_message = unsafe {
         std::slice::from_raw_parts(pgp_message, pgp_message_len as usize)
     };
 
-    match decrypt::decrypt_data_rust(sender_public_key, receiver_private_key, pgp_message) {
+    match decrypt::decrypt_data_rust(sender_public_key, recipient_private_key, pgp_message) {
         Ok(DecryptingOutput { data, session_key}) => BinaryDataResult2::success(data, session_key),
         Err(e) => BinaryDataResult2::error(e),
     }

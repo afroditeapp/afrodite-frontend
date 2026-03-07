@@ -682,11 +682,11 @@ abstract class AppLocalizations {
   /// **'The message is actually sent successfully'**
   String get conversation_screen_message_error_is_actually_sent_successfully;
 
-  /// Message send or resend error that receiver blocked sender or receiver not found
+  /// Message send or resend error that recipient blocked sender or recipient not found
   ///
   /// In en, this message translates to:
-  /// **'Receiver action prevented message sending'**
-  String get conversation_screen_message_error_receiver_blocked_sender_or_receiver_not_found;
+  /// **'Recipient action prevented message sending'**
+  String get conversation_screen_message_error_recipient_blocked_sender_or_recipient_not_found;
 
   /// Info text that encryption key changed
   ///
@@ -742,7 +742,7 @@ abstract class AppLocalizations {
   /// **'Decrypting failed. Ask resending.'**
   String get conversation_screen_message_state_decrypting_failed_detailed;
 
-  /// Message state text that message was delivered to receiver
+  /// Message state text that message was delivered to recipient
   ///
   /// In en, this message translates to:
   /// **'Delivered'**
@@ -784,7 +784,7 @@ abstract class AppLocalizations {
   /// **'Received successfully'**
   String get conversation_screen_message_state_received_successfully;
 
-  /// Message state text that message was seen by receiver
+  /// Message state text that message was seen by recipient
   ///
   /// In en, this message translates to:
   /// **'Seen'**

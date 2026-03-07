@@ -11,14 +11,14 @@ Future<(GeneratedMessageKeys?, int)> generateMessageKeys(String accountId) =>
 /// If encrypting fails, null is returned
 Future<(EncryptResult?, int)> encryptMessage(
   Uint8List senderPrivateKey,
-  Uint8List receiverPublicKey,
+  Uint8List recipientPublicKey,
   Uint8List data,
 ) => throw UnsupportedError("Not implemented");
 
 /// If decrypting fails, null is returned
 Future<(DecryptResult?, int)> decryptMessage(
   Uint8List senderPublicKey,
-  Uint8List receiverPrivateKey,
+  Uint8List recipientPrivateKey,
   Uint8List pgpMessage,
 ) => throw UnsupportedError("Not implemented");
 

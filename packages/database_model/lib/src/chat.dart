@@ -66,10 +66,10 @@ enum MessageState {
   /// Message sending failed.
   sentSendingError(_VALUE_SENT_SENDING_ERROR),
 
-  /// Message delivered to receiver.
+  /// Message delivered to recipient.
   sentDelivered(_VALUE_SENT_DELIVERED),
 
-  /// Message seen by receiver.
+  /// Message seen by recipient.
   sentSeen(_VALUE_SENT_SEEN),
 
   /// Message delivery failed.
@@ -237,10 +237,10 @@ enum SentMessageState {
   /// Sent to server, but not yet received by the other user.
   sent,
 
-  /// Delivered to receiver.
+  /// Delivered to recipient.
   delivered,
 
-  /// Seen by receiver.
+  /// Seen by recipient.
   seen,
 
   /// Message delivery failed.

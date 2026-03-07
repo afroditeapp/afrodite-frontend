@@ -16,21 +16,21 @@ pub struct EncryptingOutput {
 pub fn encrypt_data_rust(
     // The sender private key can be used for signing the message
     sender_private_key: &[u8],
-    receiver_public_key: &[u8],
+    recipient_public_key: &[u8],
     data: Vec<u8>,
 ) -> Result<EncryptingOutput, MessageEncryptionError> {
-    encrypt_data_internal(sender_private_key, receiver_public_key, data)
+    encrypt_data_internal(sender_private_key, recipient_public_key, data)
 }
 
 pub(crate) fn encrypt_data_internal(
     // The sender private key can be used for signing the message
     sender_private_key: &[u8],
-    receiver_public_key: &[u8],
+    recipient_public_key: &[u8],
     data: impl Into<Bytes>,
 ) -> Result<EncryptingOutput, MessageEncryptionError> {
     let my_private_key = SignedSecretKey::from_bytes(sender_private_key)
         .map_err(|_| MessageEncryptionError::EncryptDataPrivateKeyParse)?;
-    let other_person_public_key = SignedPublicKey::from_bytes(receiver_public_key)
+    let other_person_public_key = SignedPublicKey::from_bytes(recipient_public_key)
         .map_err(|_| MessageEncryptionError::EncryptDataPublicKeyParse)?;
 
     let encryption_public_subkey = other_person_public_key.public_subkeys

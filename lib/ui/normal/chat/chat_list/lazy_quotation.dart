@@ -32,13 +32,13 @@ class QuotationCache {
 class LazyQuotation extends StatefulWidget {
   final String replyToMessageId;
   final QuotationCache cache;
-  final AccountId messageReceiver;
+  final AccountId messageRecipient;
   final ProfileEntry? profileEntry;
 
   const LazyQuotation({
     required this.replyToMessageId,
     required this.cache,
-    required this.messageReceiver,
+    required this.messageRecipient,
     required this.profileEntry,
     super.key,
   });
@@ -57,7 +57,7 @@ class _LazyQuotationState extends State<LazyQuotation> {
     final messageId = MessageId(id: widget.replyToMessageId);
     _quotationStream = r.accountDb
         .accountStream(
-          (db) => db.message.getMessageUpdatesUsingMessageId(widget.messageReceiver, messageId),
+          (db) => db.message.getMessageUpdatesUsingMessageId(widget.messageRecipient, messageId),
         )
         .map((entry) {
           if (entry != null) {

@@ -74,7 +74,7 @@ class Message extends Table {
   IntColumn get seenUnixTime =>
       integer().map(const NullAwareTypeConverter.wrap(UtcDateTimeConverter())).nullable()();
 
-  // Message sender creates this locally. Message receiver gets this with
+  // Message sender creates this locally. Message recipient gets this with
   // the message.
   TextColumn get messageId =>
       text().map(const NullAwareTypeConverter.wrap(MessageIdConverter())).nullable()();

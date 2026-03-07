@@ -461,9 +461,9 @@
   "@conversation_screen_message_error_is_actually_sent_successfully": {
     "description": "Message remove or resend error that message is actually sent successfully"
   },
-  "conversation_screen_message_error_receiver_blocked_sender_or_receiver_not_found": "Receiver action prevented message sending",
-  "@conversation_screen_message_error_receiver_blocked_sender_or_receiver_not_found": {
-    "description": "Message send or resend error that receiver blocked sender or receiver not found"
+  "conversation_screen_message_error_recipient_blocked_sender_or_recipient_not_found": "Recipient action prevented message sending",
+  "@conversation_screen_message_error_recipient_blocked_sender_or_recipient_not_found": {
+    "description": "Message send or resend error that recipient blocked sender or recipient not found"
   },
   "conversation_screen_message_info_encryption_key_changed": "{p0}'s encryption key changed",
   "@conversation_screen_message_info_encryption_key_changed": {
@@ -516,7 +516,7 @@
   },
   "conversation_screen_message_state_delivered": "Delivered",
   "@conversation_screen_message_state_delivered": {
-    "description": "Message state text that message was delivered to receiver"
+    "description": "Message state text that message was delivered to recipient"
   },
   "conversation_screen_message_state_delivery_failed": "Delivery failed",
   "@conversation_screen_message_state_delivery_failed": {
@@ -544,7 +544,7 @@
   },
   "conversation_screen_message_state_seen": "Seen",
   "@conversation_screen_message_state_seen": {
-    "description": "Message state text that message was seen by receiver"
+    "description": "Message state text that message was seen by recipient"
   },
   "conversation_screen_message_state_sending_failed": "Sending failed",
   "@conversation_screen_message_state_sending_failed": {

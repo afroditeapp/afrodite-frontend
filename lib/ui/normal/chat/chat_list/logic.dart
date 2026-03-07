@@ -36,7 +36,7 @@ class ChatListLogic {
   final TypingIndicatorManager typingIndicatorManager;
   final MessageDatabaseIterator oldMessagesIterator;
   final AccountId currentUser;
-  final AccountId messageReceiver;
+  final AccountId messageRecipient;
   final AccountDatabaseManager db;
   final bool typingIndicatorEnabled;
   final bool messageStateSeenEnabled;
@@ -59,7 +59,7 @@ class ChatListLogic {
     required this.typingIndicatorManager,
     required this.oldMessagesIterator,
     required this.currentUser,
-    required this.messageReceiver,
+    required this.messageRecipient,
     required this.db,
     required this.typingIndicatorEnabled,
     required this.messageStateSeenEnabled,
@@ -69,12 +69,12 @@ class ChatListLogic {
 
   void _setupEventSubscription() {
     final messageEvents = chatRepository
-        .getMessageCount(messageReceiver)
+        .getMessageCount(messageRecipient)
         .map((_) => _MessageCountChanged());
 
     final typingEvents = typingIndicatorEnabled
         ? typingIndicatorManager
-              .getTypingState(messageReceiver)
+              .getTypingState(messageRecipient)
               .map((isTyping) => _TypingStateChanged(isTyping))
         : Stream<_TypingStateChanged>.empty();
 
@@ -117,7 +117,7 @@ class ChatListLogic {
     final newMessages = await _getNewMessages(
       latestMessageId,
       currentUser: currentUser,
-      messageReceiver: messageReceiver,
+      messageRecipient: messageRecipient,
       db: db,
     );
 
@@ -179,7 +179,7 @@ class ChatListLogic {
     if (isTyping && !existingTypingIndicator) {
       final typingMessage = chat_core.CustomMessage(
         id: _typingIndicatorMessageId,
-        authorId: messageReceiver.aid,
+        authorId: messageRecipient.aid,
         createdAt: DateTime.now(),
         metadata: const {'type': 'typing_indicator'},
       );
@@ -228,10 +228,10 @@ Future<List<IteratorMessage>> _getNewMessages(
   LocalMessageId? latestCurrentMessageLocalId, {
   required AccountDatabaseManager db,
   required AccountId currentUser,
-  required AccountId messageReceiver,
+  required AccountId messageRecipient,
 }) async {
   final messageIterator = MessageDatabaseIterator(db);
-  await messageIterator.switchConversation(currentUser, messageReceiver);
+  await messageIterator.switchConversation(currentUser, messageRecipient);
 
   final List<IteratorMessage> newMessages = [];
   bool readMessages = true;

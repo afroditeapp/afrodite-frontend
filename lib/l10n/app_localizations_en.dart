@@ -353,8 +353,8 @@ class AppLocalizationsEn extends AppLocalizations {
       'The message is actually sent successfully';
 
   @override
-  String get conversation_screen_message_error_receiver_blocked_sender_or_receiver_not_found =>
-      'Receiver action prevented message sending';
+  String get conversation_screen_message_error_recipient_blocked_sender_or_recipient_not_found =>
+      'Recipient action prevented message sending';
 
   @override
   String conversation_screen_message_info_encryption_key_changed(String p0) {

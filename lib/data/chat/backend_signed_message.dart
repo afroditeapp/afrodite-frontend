@@ -8,20 +8,20 @@ import 'package:openapi/api.dart';
 
 class BackendSignedMessage {
   final AccountId sender;
-  final AccountId receiver;
+  final AccountId recipient;
   final MessageId messageId;
   final PublicKeyId senderPublicKeyId;
-  final PublicKeyId receiverPublicKeyId;
+  final PublicKeyId recipientPublicKeyId;
   final MessageNumber messageNumber;
   final UnixTime serverTime;
   final Uint8List messageFromSender;
 
   BackendSignedMessage._({
     required this.sender,
-    required this.receiver,
+    required this.recipient,
     required this.messageId,
     required this.senderPublicKeyId,
-    required this.receiverPublicKeyId,
+    required this.recipientPublicKeyId,
     required this.messageNumber,
     required this.serverTime,
     required this.messageFromSender,
@@ -41,20 +41,20 @@ class BackendSignedMessage {
 
     final version = parseVersion(iterator).ok();
     final sender = parseAccountId(iterator).ok();
-    final receiver = parseAccountId(iterator).ok();
+    final recipient = parseAccountId(iterator).ok();
     final messageId = parseMessageId(iterator).ok();
     final senderPublicKeyId = parseMinimalI64(iterator).mapOk((v) => PublicKeyId(id: v)).ok();
-    final receiverPublicKeyId = parseMinimalI64(iterator).mapOk((v) => PublicKeyId(id: v)).ok();
+    final recipientPublicKeyId = parseMinimalI64(iterator).mapOk((v) => PublicKeyId(id: v)).ok();
     final messageNumber = parseMinimalI64(iterator).mapOk((v) => MessageNumber(mn: v)).ok();
     final serverTime = parseMinimalI64(iterator).mapOk((v) => UnixTime(ut: v)).ok();
     final messageFromSender = iterator.takeAllAsBytes();
 
     if (version != 1 ||
         sender == null ||
-        receiver == null ||
+        recipient == null ||
         messageId == null ||
         senderPublicKeyId == null ||
-        receiverPublicKeyId == null ||
+        recipientPublicKeyId == null ||
         messageNumber == null ||
         serverTime == null) {
       return null;
@@ -62,10 +62,10 @@ class BackendSignedMessage {
 
     return BackendSignedMessage._(
       sender: sender,
-      receiver: receiver,
+      recipient: recipient,
       messageId: messageId,
       senderPublicKeyId: senderPublicKeyId,
-      receiverPublicKeyId: receiverPublicKeyId,
+      recipientPublicKeyId: recipientPublicKeyId,
       messageNumber: messageNumber,
       serverTime: serverTime,
       messageFromSender: messageFromSender,

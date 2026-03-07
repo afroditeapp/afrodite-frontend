@@ -101,15 +101,15 @@ class SendMessageUtils {
         }
     }
 
-    final ForeignPublicKey receiverPublicKey;
-    final receiverPublicKeyOrNull = await publicKeyUtils
+    final ForeignPublicKey recipientPublicKey;
+    final recipientPublicKeyOrNull = await publicKeyUtils
         .getPublicKeyForForeignAccountFromDbOrDownloadIfNotExits(accountId)
         .ok();
-    if (receiverPublicKeyOrNull == null) {
+    if (recipientPublicKeyOrNull == null) {
       yield const ErrorBeforeMessageSaving();
       return;
     }
-    receiverPublicKey = receiverPublicKeyOrNull;
+    recipientPublicKey = recipientPublicKeyOrNull;
 
     final messageId = MessageId(id: base64UrlEncode(Uuid().v4obj().toBytes()).replaceAll("=", ""));
 
@@ -134,7 +134,7 @@ class SendMessageUtils {
 
     final (encryptedMessage, encryptingResult) = await encryptMessage(
       currentUserKeys.private.data,
-      receiverPublicKey.data,
+      recipientPublicKey.data,
       message.toMessagePacket(),
     );
 
@@ -164,7 +164,7 @@ class SendMessageUtils {
         (api) => api.postSendMessage(
           currentUserKeys.publicKeyId.id,
           accountId.aid,
-          receiverPublicKey.id.id,
+          recipientPublicKey.id.id,
           messageId.id,
           MultipartFile.fromBytes("", encryptedMessage.pgpMessage),
         ),
@@ -186,7 +186,7 @@ class SendMessageUtils {
       if (result.errorRecipientBlockedSenderOrRecipientNotFound) {
         yield ErrorAfterMessageSaving(
           localId,
-          MessageSendingErrorDetails.receiverBlockedSenderOrReceiverNotFound,
+          MessageSendingErrorDetails.recipientBlockedSenderOrRecipientNotFound,
         );
         return;
       }
@@ -239,7 +239,7 @@ class SendMessageUtils {
       }
 
       if (result.errorRecipientPublicKeyOutdated) {
-        _log.error("Send message error: receiver public key outdated");
+        _log.error("Send message error: recipient public key outdated");
 
         await publicKeyUtils.getLatestPublicKeyForForeignAccount(accountId);
         // Show possible key change info to user

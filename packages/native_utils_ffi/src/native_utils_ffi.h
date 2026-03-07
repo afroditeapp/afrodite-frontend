@@ -52,8 +52,8 @@ FFI_PLUGIN_EXPORT void free_binary_data_result(
 FFI_PLUGIN_EXPORT struct BinaryDataResult2 encrypt_message(
   const uint8_t* sender_private_key,
   intptr_t sender_private_key_len,
-  const uint8_t* receiver_public_key,
-  intptr_t receiver_public_key_len,
+  const uint8_t* recipient_public_key,
+  intptr_t recipient_public_key_len,
   const uint8_t* data,
   intptr_t data_len
 );
@@ -66,8 +66,8 @@ FFI_PLUGIN_EXPORT struct BinaryDataResult2 encrypt_message(
 FFI_PLUGIN_EXPORT struct BinaryDataResult2 decrypt_message(
   const uint8_t* sender_public_key,
   intptr_t sender_public_key_len,
-  const uint8_t* receiver_private_key,
-  intptr_t receiver_private_key_len,
+  const uint8_t* recipient_private_key,
+  intptr_t recipient_private_key_len,
   const uint8_t* pgp_message,
   intptr_t pgp_message_len
 );

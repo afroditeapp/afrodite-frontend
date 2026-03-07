@@ -207,11 +207,11 @@ class ConversationBloc extends Bloc<ConversationEvent, ConversationData> with Ac
                 showSnackBar(R.strings.generic_error_occurred);
               case MessageSendingErrorDetails.tooManyPendingMessages:
                 showSnackBar(R.strings.conversation_screen_message_too_many_pending_messages);
-              case MessageSendingErrorDetails.receiverBlockedSenderOrReceiverNotFound:
+              case MessageSendingErrorDetails.recipientBlockedSenderOrRecipientNotFound:
                 showSnackBar(
                   R
                       .strings
-                      .conversation_screen_message_error_receiver_blocked_sender_or_receiver_not_found,
+                      .conversation_screen_message_error_recipient_blocked_sender_or_recipient_not_found,
                 );
               case MessageSendingErrorDetails.rateLimit:
                 // Already handled by logError in ApiWrapper
@@ -258,11 +258,11 @@ class ConversationBloc extends Bloc<ConversationEvent, ConversationData> with Ac
               );
             case ResendFailedError.tooManyPendingMessages:
               showSnackBar(R.strings.conversation_screen_message_too_many_pending_messages);
-            case ResendFailedError.receiverBlockedSenderOrReceiverNotFound:
+            case ResendFailedError.recipientBlockedSenderOrRecipientNotFound:
               showSnackBar(
                 R
                     .strings
-                    .conversation_screen_message_error_receiver_blocked_sender_or_receiver_not_found,
+                    .conversation_screen_message_error_recipient_blocked_sender_or_recipient_not_found,
               );
             case ResendFailedError.rateLimit:
               // Already handled by logError in ApiWrapper
@@ -284,11 +284,11 @@ class ConversationBloc extends Bloc<ConversationEvent, ConversationData> with Ac
               showSnackBar(R.strings.generic_error_occurred);
             case ResendDeliveryFailedError.tooManyPendingMessages:
               showSnackBar(R.strings.conversation_screen_message_too_many_pending_messages);
-            case ResendDeliveryFailedError.receiverBlockedSenderOrReceiverNotFound:
+            case ResendDeliveryFailedError.recipientBlockedSenderOrRecipientNotFound:
               showSnackBar(
                 R
                     .strings
-                    .conversation_screen_message_error_receiver_blocked_sender_or_receiver_not_found,
+                    .conversation_screen_message_error_recipient_blocked_sender_or_recipient_not_found,
               );
             case ResendDeliveryFailedError.rateLimit:
               // Already handled by logError in ApiWrapper

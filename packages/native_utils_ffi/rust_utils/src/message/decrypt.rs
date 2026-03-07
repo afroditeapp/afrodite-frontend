@@ -14,14 +14,14 @@ pub struct DecryptingOutput {
 pub fn decrypt_data_rust(
     // Sender public key can be used for message verification
     sender_public_key: &[u8],
-    receiver_private_key: &[u8],
+    recipient_private_key: &[u8],
     pgp_message: &[u8],
 ) -> Result<DecryptingOutput, MessageEncryptionError> {
     let sender_public_key = SignedPublicKey::from_bytes(sender_public_key)
         .map_err(|_| MessageEncryptionError::DecryptDataPublicKeyParse)?;
-    let receiver_private_key = SignedSecretKey::from_bytes(receiver_private_key)
+    let recipient_private_key = SignedSecretKey::from_bytes(recipient_private_key)
         .map_err(|_| MessageEncryptionError::DecryptDataPrivateKeyParse)?;
-    let Some(receiver_private_subkey) = receiver_private_key.secret_subkeys.first() else {
+    let Some(recipient_private_subkey) = recipient_private_key.secret_subkeys.first() else {
         return Err(MessageEncryptionError::DecryptDataUnsupportedPrivateKey);
     };
 
@@ -32,7 +32,7 @@ pub fn decrypt_data_rust(
         if let Some(Esk::PublicKeyEncryptedSessionKey(
                 PublicKeyEncryptedSessionKey::V6 { values, .. }
         )) = esk.first() {
-            receiver_private_subkey.decrypt_session_key(&Password::empty(), values, EskType::V6)
+            recipient_private_subkey.decrypt_session_key(&Password::empty(), values, EskType::V6)
                 .map_err(|_| MessageEncryptionError::DecryptDataSessionKeyDecryptionError1)?
                 .map_err(|_| MessageEncryptionError::DecryptDataSessionKeyDecryptionError2)?
         } else {

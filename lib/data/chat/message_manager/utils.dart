@@ -10,7 +10,7 @@ class SavedToLocalDb extends MessageSendingEvent {
 
 enum MessageSendingErrorDetails {
   tooManyPendingMessages,
-  receiverBlockedSenderOrReceiverNotFound,
+  recipientBlockedSenderOrRecipientNotFound,
 
   /// HTTP 429 Too Many Requests (error is already shown to user)
   rateLimit;
@@ -19,8 +19,8 @@ enum MessageSendingErrorDetails {
     switch (this) {
       case tooManyPendingMessages:
         return ResendFailedError.tooManyPendingMessages;
-      case receiverBlockedSenderOrReceiverNotFound:
-        return ResendFailedError.receiverBlockedSenderOrReceiverNotFound;
+      case recipientBlockedSenderOrRecipientNotFound:
+        return ResendFailedError.recipientBlockedSenderOrRecipientNotFound;
       case rateLimit:
         return ResendFailedError.rateLimit;
     }
@@ -30,8 +30,8 @@ enum MessageSendingErrorDetails {
     switch (this) {
       case tooManyPendingMessages:
         return ResendDeliveryFailedError.tooManyPendingMessages;
-      case receiverBlockedSenderOrReceiverNotFound:
-        return ResendDeliveryFailedError.receiverBlockedSenderOrReceiverNotFound;
+      case recipientBlockedSenderOrRecipientNotFound:
+        return ResendDeliveryFailedError.recipientBlockedSenderOrRecipientNotFound;
       case rateLimit:
         return ResendDeliveryFailedError.rateLimit;
     }
@@ -53,7 +53,7 @@ enum ResendFailedError {
   unspecifiedError,
   isActuallySentSuccessfully,
   tooManyPendingMessages,
-  receiverBlockedSenderOrReceiverNotFound,
+  recipientBlockedSenderOrRecipientNotFound,
 
   /// HTTP 429 Too Many Requests (error is already shown to user)
   rateLimit,
@@ -62,7 +62,7 @@ enum ResendFailedError {
 enum ResendDeliveryFailedError {
   unspecifiedError,
   tooManyPendingMessages,
-  receiverBlockedSenderOrReceiverNotFound,
+  recipientBlockedSenderOrRecipientNotFound,
 
   /// HTTP 429 Too Many Requests (error is already shown to user)
   rateLimit,

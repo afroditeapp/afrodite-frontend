@@ -214,17 +214,17 @@ C = custom report""";
         },
       );
     } else if (chatMessage != null) {
-      final String senderReceiverInfo;
+      final String senderRecipientInfo;
       if (chatMessage.sender == content.target) {
-        senderReceiverInfo = "${targetInfo.name.toString()} -> ${creatorInfo.name.toString()}";
+        senderRecipientInfo = "${targetInfo.name.toString()} -> ${creatorInfo.name.toString()}";
       } else {
-        senderReceiverInfo = "${creatorInfo.name.toString()} -> ${targetInfo.name.toString()}";
+        senderRecipientInfo = "${creatorInfo.name.toString()} -> ${targetInfo.name.toString()}";
       }
       final time = timeString(chatMessage.messageTime.toUtcDateTime());
       final message = Message.parseFromBytes(base64Decode(chatMessage.messageBase64));
       final String messageText = "\n${messageToText(context, message)}";
       report = Text(
-        "M: $senderReceiverInfo, MN: ${chatMessage.messageNumber.mn}, $time$messageText",
+        "M: $senderRecipientInfo, MN: ${chatMessage.messageNumber.mn}, $time$messageText",
       );
     } else if (customReport) {
       report = BlocBuilder<CustomReportsConfigBloc, CustomReportsConfig>(

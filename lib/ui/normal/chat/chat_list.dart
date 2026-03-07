@@ -34,7 +34,7 @@ final _log = Logger("ChatList");
 /// that _reversed boolean will work correctly.
 class ChatList extends StatefulWidget {
   final AccountId currentUser;
-  final AccountId messageReceiver;
+  final AccountId messageRecipient;
   final ProfileEntry? profileEntry;
   final List<IteratorMessage> initialMessages;
   final MessageDatabaseIterator oldMessagesIterator;
@@ -50,7 +50,7 @@ class ChatList extends StatefulWidget {
     this.oldMessagesIterator,
     this.quotationCache, {
     required this.currentUser,
-    required this.messageReceiver,
+    required this.messageRecipient,
     required this.db,
     required this.typingIndicatorManager,
     required this.typingIndicatorEnabled,
@@ -80,7 +80,7 @@ class _ChatListState extends State<ChatList> {
     super.initState();
     _replyTargetController = ReplyTargetController(profileEntry: widget.profileEntry);
 
-    _log.finest("Opening conversation for account: ${widget.messageReceiver}");
+    _log.finest("Opening conversation for account: ${widget.messageRecipient}");
 
     final initialMessages = MessageAdapter.toFlutterChatMessages(
       widget.initialMessages,
@@ -109,7 +109,7 @@ class _ChatListState extends State<ChatList> {
       typingIndicatorManager: widget.typingIndicatorManager,
       oldMessagesIterator: widget.oldMessagesIterator,
       currentUser: widget.currentUser,
-      messageReceiver: widget.messageReceiver,
+      messageRecipient: widget.messageRecipient,
       db: widget.db,
       typingIndicatorEnabled: widget.typingIndicatorEnabled,
       messageStateSeenEnabled: widget.messageStateSeenEnabled,
@@ -120,7 +120,7 @@ class _ChatListState extends State<ChatList> {
 
   void _loadDraft() async {
     final result = await widget.db.accountData(
-      (db) => db.progress.getDraftMessage(widget.messageReceiver),
+      (db) => db.progress.getDraftMessage(widget.messageRecipient),
     );
     final draft = result.ok();
     if (draft != null && mounted) {
@@ -134,16 +134,17 @@ class _ChatListState extends State<ChatList> {
     if (widget.typingIndicatorEnabled) {
       final text = _textEditingController.text;
       if (text.isNotEmpty) {
-        widget.typingIndicatorManager.handleTypingEvent(widget.messageReceiver, true);
+        widget.typingIndicatorManager.handleTypingEvent(widget.messageRecipient, true);
       } else {
-        widget.typingIndicatorManager.handleTypingEvent(widget.messageReceiver, false);
+        widget.typingIndicatorManager.handleTypingEvent(widget.messageRecipient, false);
       }
     }
 
     _saveDraftTimer?.cancel();
     _saveDraftTimer = Timer(const Duration(seconds: 1), () {
       widget.db.accountDataWrite(
-        (db) => db.progress.updateDraftMessage(widget.messageReceiver, _textEditingController.text),
+        (db) =>
+            db.progress.updateDraftMessage(widget.messageRecipient, _textEditingController.text),
       );
     });
   }
@@ -388,7 +389,7 @@ class _ChatListState extends State<ChatList> {
                   isSentByMe: isSentByMe,
                   footerWidgets: _buildFooterWidgets(context, message, localMessageId, textColor),
                   child: ElevatedButton.icon(
-                    onPressed: () => joinVideoCall(ctx, widget.messageReceiver),
+                    onPressed: () => joinVideoCall(ctx, widget.messageRecipient),
                     icon: const Icon(Icons.videocam),
                     label: Text(context.strings.conversation_screen_join_video_call_button),
                   ),
@@ -475,7 +476,7 @@ class _ChatListState extends State<ChatList> {
                       child: LazyQuotation(
                         replyToMessageId: message.replyToMessageId!,
                         cache: widget.quotationCache,
-                        messageReceiver: widget.messageReceiver,
+                        messageRecipient: widget.messageRecipient,
                         profileEntry: widget.profileEntry,
                       ),
                     ),
@@ -602,13 +603,14 @@ class _ChatListState extends State<ChatList> {
   void dispose() {
     // Send typing stop event when leaving the chat
     if (widget.typingIndicatorEnabled) {
-      widget.typingIndicatorManager.handleTypingEvent(widget.messageReceiver, false);
+      widget.typingIndicatorManager.handleTypingEvent(widget.messageRecipient, false);
     }
 
     if (_saveDraftTimer?.isActive ?? false) {
       _saveDraftTimer?.cancel();
       widget.db.accountDataWrite(
-        (db) => db.progress.updateDraftMessage(widget.messageReceiver, _textEditingController.text),
+        (db) =>
+            db.progress.updateDraftMessage(widget.messageRecipient, _textEditingController.text),
       );
     }
 

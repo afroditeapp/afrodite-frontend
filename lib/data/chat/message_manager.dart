@@ -39,9 +39,9 @@ class ReceiveLatestSeenMessageInfo extends MessageManagerCmd<()> {}
 
 class SendMessage extends BaseMessageManagerCmd {
   final ReplaySubject<MessageSendingEvent?> _events = ReplaySubject();
-  final AccountId receiverAccount;
+  final AccountId recipientAccount;
   final Message message;
-  SendMessage(this.receiverAccount, this.message);
+  SendMessage(this.recipientAccount, this.message);
 
   Future<void> _sendNullAndDispose() async {
     _events.add(null);
@@ -139,8 +139,8 @@ class MessageManager extends LifecycleMethods {
             case ReceiveLatestSeenMessageInfo():
               await deliveryInfoUtils.receiveLatestSeenMessageInfo();
               cmd.completed.add(());
-            case SendMessage(:final _events, :final receiverAccount, :final message):
-              await for (final event in sendMessageUtils.sendMessageTo(receiverAccount, message)) {
+            case SendMessage(:final _events, :final recipientAccount, :final message):
+              await for (final event in sendMessageUtils.sendMessageTo(recipientAccount, message)) {
                 _events.add(event);
               }
               await cmd._sendNullAndDispose();
@@ -250,11 +250,11 @@ class MessageManager extends LifecycleMethods {
     if (!(toBeResent.messageState.toSentState()?.sendingFailed() ?? false)) {
       return const Err(ResendFailedError.isActuallySentSuccessfully);
     }
-    final receiverAccount = toBeResent.remoteAccountId;
+    final recipientAccount = toBeResent.remoteAccountId;
 
     ResendFailedError? sendingError;
     ResendFailedError? deleteError;
-    await for (var e in sendMessageUtils.sendMessageTo(receiverAccount, toBeResentMessage)) {
+    await for (var e in sendMessageUtils.sendMessageTo(recipientAccount, toBeResentMessage)) {
       switch (e) {
         case SavedToLocalDb():
           // actuallySentMessageCheck is false because the check is already done
