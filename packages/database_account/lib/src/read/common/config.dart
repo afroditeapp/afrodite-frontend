@@ -2,6 +2,7 @@ import 'package:async/async.dart';
 import 'package:collection/collection.dart';
 import 'package:database_account/src/database.dart';
 import 'package:database_model/database_model.dart';
+import 'package:database_model/database_model.dart' as model;
 import 'package:database_utils/database_utils.dart';
 import 'package:drift/drift.dart';
 import 'package:openapi/api.dart' as api;
@@ -15,6 +16,7 @@ part 'config.g.dart';
   tables: [
     schema.ClientFeaturesConfig,
     schema.DynamicClientFeaturesConfig,
+    schema.InfoBannerDismissState,
     schema.CustomReportsConfig,
     schema.ProfileAttributesConfig,
     schema.ProfileAttributesConfigAttributes,
@@ -53,6 +55,23 @@ class DaoReadConfig extends DatabaseAccessor<AccountDatabase> with _$DaoReadConf
       _watchColumnCustomReports((r) => r.customReportsConfigHash);
   Stream<api.CustomReportsConfig?> watchCustomReportsConfig() =>
       _watchColumnCustomReports((r) => r.customReportsConfig?.value);
+
+  Stream<List<model.InfoBannerDismissState>> watchInfoBannerDismissStates() {
+    return (select(infoBannerDismissState)
+          ..orderBy([(t) => OrderingTerm(expression: t.infoBannerKey, mode: OrderingMode.asc)]))
+        .watch()
+        .map((rows) {
+          return rows
+              .map(
+                (row) => model.InfoBannerDismissState(
+                  bannerKey: row.infoBannerKey,
+                  bannerVersion: row.infoBannerVersion,
+                  dismissed: row.dismissed,
+                ),
+              )
+              .toList();
+        });
+  }
 
   Stream<T?> _watchColumnCustomReports<T extends Object>(
     T? Function(CustomReportsConfigData) extractColumn,

@@ -52,6 +52,8 @@ class AccountRepository extends DataRepositoryWithLifecycle {
       _cachedValues._cachedClientFeaturesConfig;
   Stream<DynamicClientFeaturesConfig> get dynamicClientFeaturesConfig =>
       _cachedValues._cachedDynamicClientFeaturesConfig;
+  Stream<Map<String, InfoBannerDismissState>> get infoBannerDismissStates =>
+      _cachedValues._cachedInfoBannerDismissStates;
 
   ProfileVisibility get profileVisibilityValue => _cachedValues._cachedProfileVisibility.value;
   String? get emailAddressValue => _cachedValues._cachedEmailAddress.value;
@@ -60,6 +62,8 @@ class AccountRepository extends DataRepositoryWithLifecycle {
       _cachedValues._cachedClientFeaturesConfig.value;
   DynamicClientFeaturesConfig get dynamicClientFeaturesConfigValue =>
       _cachedValues._cachedDynamicClientFeaturesConfig.value;
+  Map<String, InfoBannerDismissState> get infoBannerDismissStatesValue =>
+      _cachedValues._cachedInfoBannerDismissStates.value;
 
   // WebSocket related event streams
   final _contentProcessingStateChanges = PublishSubject<ContentProcessingStateChanged>();
@@ -240,6 +244,21 @@ class AccountRepository extends DataRepositoryWithLifecycle {
         .emptyErr();
   }
 
+  Future<Result<(), ()>> dismissInfoBanner({
+    required String bannerKey,
+    required int bannerVersion,
+  }) {
+    return db
+        .accountAction(
+          (db) => db.config.upsertInfoBannerDismissState(
+            bannerKey: bannerKey,
+            bannerVersion: bannerVersion,
+            dismissed: true,
+          ),
+        )
+        .emptyErr();
+  }
+
   Future<Result<(), ()>> _reloadAccountNotificationSettings() async {
     return await api
         .account((api) => api.getAccountAppNotificationSettings())
@@ -305,6 +324,9 @@ class CachedValues {
   final BehaviorSubject<DynamicClientFeaturesConfig> _cachedDynamicClientFeaturesConfig =
       BehaviorSubject.seeded(emptyDynamicClientFeaturesConfig());
   StreamSubscription<DynamicClientFeaturesConfig?>? _cachedDynamicClientFeaturesConfigSubscription;
+  final BehaviorSubject<Map<String, InfoBannerDismissState>> _cachedInfoBannerDismissStates =
+      BehaviorSubject.seeded(const <String, InfoBannerDismissState>{});
+  StreamSubscription<List<InfoBannerDismissState>>? _cachedInfoBannerDismissStatesSubscription;
 
   void _subscribe(AccountDatabaseManager db) {
     _cachedEmailSubscription = db.accountStream((db) => db.account.watchEmailAddress()).listen((v) {
@@ -343,6 +365,15 @@ class CachedValues {
         .listen((v) {
           _cachedDynamicClientFeaturesConfig.add(v);
         });
+
+    _cachedInfoBannerDismissStatesSubscription = db
+        .accountStreamOrDefault(
+          (db) => db.config.watchInfoBannerDismissStates(),
+          const <InfoBannerDismissState>[],
+        )
+        .listen((v) {
+          _cachedInfoBannerDismissStates.add({for (final item in v) item.bannerKey: item});
+        });
   }
 
   Future<void> _dispose() async {
@@ -351,10 +382,12 @@ class CachedValues {
     await _cachedAccountStateSubscription?.cancel();
     await _cachedClientFeaturesConfigSubscription?.cancel();
     await _cachedDynamicClientFeaturesConfigSubscription?.cancel();
+    await _cachedInfoBannerDismissStatesSubscription?.cancel();
     await _cachedEmailAddress.close();
     await _cachedProfileVisibility.close();
     await _cachedAccountState.close();
     await _cachedClientFeaturesConfig.close();
     await _cachedDynamicClientFeaturesConfig.close();
+    await _cachedInfoBannerDismissStates.close();
   }
 }

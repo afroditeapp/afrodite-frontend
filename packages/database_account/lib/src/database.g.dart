@@ -7888,6 +7888,295 @@ class DynamicClientFeaturesConfigCompanion
   }
 }
 
+class $InfoBannerDismissStateTable extends schema.InfoBannerDismissState
+    with TableInfo<$InfoBannerDismissStateTable, InfoBannerDismissStateData> {
+  @override
+  final GeneratedDatabase attachedDatabase;
+  final String? _alias;
+  $InfoBannerDismissStateTable(this.attachedDatabase, [this._alias]);
+  static const VerificationMeta _infoBannerKeyMeta = const VerificationMeta(
+    'infoBannerKey',
+  );
+  @override
+  late final GeneratedColumn<String> infoBannerKey = GeneratedColumn<String>(
+    'info_banner_key',
+    aliasedName,
+    false,
+    type: DriftSqlType.string,
+    requiredDuringInsert: true,
+  );
+  static const VerificationMeta _infoBannerVersionMeta = const VerificationMeta(
+    'infoBannerVersion',
+  );
+  @override
+  late final GeneratedColumn<int> infoBannerVersion = GeneratedColumn<int>(
+    'info_banner_version',
+    aliasedName,
+    false,
+    type: DriftSqlType.int,
+    requiredDuringInsert: false,
+    defaultValue: const Constant(0),
+  );
+  static const VerificationMeta _dismissedMeta = const VerificationMeta(
+    'dismissed',
+  );
+  @override
+  late final GeneratedColumn<bool> dismissed = GeneratedColumn<bool>(
+    'dismissed',
+    aliasedName,
+    false,
+    type: DriftSqlType.bool,
+    requiredDuringInsert: false,
+    defaultConstraints: GeneratedColumn.constraintIsAlways(
+      'CHECK ("dismissed" IN (0, 1))',
+    ),
+    defaultValue: const Constant(false),
+  );
+  @override
+  List<GeneratedColumn> get $columns => [
+    infoBannerKey,
+    infoBannerVersion,
+    dismissed,
+  ];
+  @override
+  String get aliasedName => _alias ?? actualTableName;
+  @override
+  String get actualTableName => $name;
+  static const String $name = 'info_banner_dismiss_state';
+  @override
+  VerificationContext validateIntegrity(
+    Insertable<InfoBannerDismissStateData> instance, {
+    bool isInserting = false,
+  }) {
+    final context = VerificationContext();
+    final data = instance.toColumns(true);
+    if (data.containsKey('info_banner_key')) {
+      context.handle(
+        _infoBannerKeyMeta,
+        infoBannerKey.isAcceptableOrUnknown(
+          data['info_banner_key']!,
+          _infoBannerKeyMeta,
+        ),
+      );
+    } else if (isInserting) {
+      context.missing(_infoBannerKeyMeta);
+    }
+    if (data.containsKey('info_banner_version')) {
+      context.handle(
+        _infoBannerVersionMeta,
+        infoBannerVersion.isAcceptableOrUnknown(
+          data['info_banner_version']!,
+          _infoBannerVersionMeta,
+        ),
+      );
+    }
+    if (data.containsKey('dismissed')) {
+      context.handle(
+        _dismissedMeta,
+        dismissed.isAcceptableOrUnknown(data['dismissed']!, _dismissedMeta),
+      );
+    }
+    return context;
+  }
+
+  @override
+  Set<GeneratedColumn> get $primaryKey => {infoBannerKey};
+  @override
+  InfoBannerDismissStateData map(
+    Map<String, dynamic> data, {
+    String? tablePrefix,
+  }) {
+    final effectivePrefix = tablePrefix != null ? '$tablePrefix.' : '';
+    return InfoBannerDismissStateData(
+      infoBannerKey: attachedDatabase.typeMapping.read(
+        DriftSqlType.string,
+        data['${effectivePrefix}info_banner_key'],
+      )!,
+      infoBannerVersion: attachedDatabase.typeMapping.read(
+        DriftSqlType.int,
+        data['${effectivePrefix}info_banner_version'],
+      )!,
+      dismissed: attachedDatabase.typeMapping.read(
+        DriftSqlType.bool,
+        data['${effectivePrefix}dismissed'],
+      )!,
+    );
+  }
+
+  @override
+  $InfoBannerDismissStateTable createAlias(String alias) {
+    return $InfoBannerDismissStateTable(attachedDatabase, alias);
+  }
+}
+
+class InfoBannerDismissStateData extends DataClass
+    implements Insertable<InfoBannerDismissStateData> {
+  final String infoBannerKey;
+  final int infoBannerVersion;
+  final bool dismissed;
+  const InfoBannerDismissStateData({
+    required this.infoBannerKey,
+    required this.infoBannerVersion,
+    required this.dismissed,
+  });
+  @override
+  Map<String, Expression> toColumns(bool nullToAbsent) {
+    final map = <String, Expression>{};
+    map['info_banner_key'] = Variable<String>(infoBannerKey);
+    map['info_banner_version'] = Variable<int>(infoBannerVersion);
+    map['dismissed'] = Variable<bool>(dismissed);
+    return map;
+  }
+
+  InfoBannerDismissStateCompanion toCompanion(bool nullToAbsent) {
+    return InfoBannerDismissStateCompanion(
+      infoBannerKey: Value(infoBannerKey),
+      infoBannerVersion: Value(infoBannerVersion),
+      dismissed: Value(dismissed),
+    );
+  }
+
+  factory InfoBannerDismissStateData.fromJson(
+    Map<String, dynamic> json, {
+    ValueSerializer? serializer,
+  }) {
+    serializer ??= driftRuntimeOptions.defaultSerializer;
+    return InfoBannerDismissStateData(
+      infoBannerKey: serializer.fromJson<String>(json['infoBannerKey']),
+      infoBannerVersion: serializer.fromJson<int>(json['infoBannerVersion']),
+      dismissed: serializer.fromJson<bool>(json['dismissed']),
+    );
+  }
+  @override
+  Map<String, dynamic> toJson({ValueSerializer? serializer}) {
+    serializer ??= driftRuntimeOptions.defaultSerializer;
+    return <String, dynamic>{
+      'infoBannerKey': serializer.toJson<String>(infoBannerKey),
+      'infoBannerVersion': serializer.toJson<int>(infoBannerVersion),
+      'dismissed': serializer.toJson<bool>(dismissed),
+    };
+  }
+
+  InfoBannerDismissStateData copyWith({
+    String? infoBannerKey,
+    int? infoBannerVersion,
+    bool? dismissed,
+  }) => InfoBannerDismissStateData(
+    infoBannerKey: infoBannerKey ?? this.infoBannerKey,
+    infoBannerVersion: infoBannerVersion ?? this.infoBannerVersion,
+    dismissed: dismissed ?? this.dismissed,
+  );
+  InfoBannerDismissStateData copyWithCompanion(
+    InfoBannerDismissStateCompanion data,
+  ) {
+    return InfoBannerDismissStateData(
+      infoBannerKey: data.infoBannerKey.present
+          ? data.infoBannerKey.value
+          : this.infoBannerKey,
+      infoBannerVersion: data.infoBannerVersion.present
+          ? data.infoBannerVersion.value
+          : this.infoBannerVersion,
+      dismissed: data.dismissed.present ? data.dismissed.value : this.dismissed,
+    );
+  }
+
+  @override
+  String toString() {
+    return (StringBuffer('InfoBannerDismissStateData(')
+          ..write('infoBannerKey: $infoBannerKey, ')
+          ..write('infoBannerVersion: $infoBannerVersion, ')
+          ..write('dismissed: $dismissed')
+          ..write(')'))
+        .toString();
+  }
+
+  @override
+  int get hashCode => Object.hash(infoBannerKey, infoBannerVersion, dismissed);
+  @override
+  bool operator ==(Object other) =>
+      identical(this, other) ||
+      (other is InfoBannerDismissStateData &&
+          other.infoBannerKey == this.infoBannerKey &&
+          other.infoBannerVersion == this.infoBannerVersion &&
+          other.dismissed == this.dismissed);
+}
+
+class InfoBannerDismissStateCompanion
+    extends UpdateCompanion<InfoBannerDismissStateData> {
+  final Value<String> infoBannerKey;
+  final Value<int> infoBannerVersion;
+  final Value<bool> dismissed;
+  final Value<int> rowid;
+  const InfoBannerDismissStateCompanion({
+    this.infoBannerKey = const Value.absent(),
+    this.infoBannerVersion = const Value.absent(),
+    this.dismissed = const Value.absent(),
+    this.rowid = const Value.absent(),
+  });
+  InfoBannerDismissStateCompanion.insert({
+    required String infoBannerKey,
+    this.infoBannerVersion = const Value.absent(),
+    this.dismissed = const Value.absent(),
+    this.rowid = const Value.absent(),
+  }) : infoBannerKey = Value(infoBannerKey);
+  static Insertable<InfoBannerDismissStateData> custom({
+    Expression<String>? infoBannerKey,
+    Expression<int>? infoBannerVersion,
+    Expression<bool>? dismissed,
+    Expression<int>? rowid,
+  }) {
+    return RawValuesInsertable({
+      if (infoBannerKey != null) 'info_banner_key': infoBannerKey,
+      if (infoBannerVersion != null) 'info_banner_version': infoBannerVersion,
+      if (dismissed != null) 'dismissed': dismissed,
+      if (rowid != null) 'rowid': rowid,
+    });
+  }
+
+  InfoBannerDismissStateCompanion copyWith({
+    Value<String>? infoBannerKey,
+    Value<int>? infoBannerVersion,
+    Value<bool>? dismissed,
+    Value<int>? rowid,
+  }) {
+    return InfoBannerDismissStateCompanion(
+      infoBannerKey: infoBannerKey ?? this.infoBannerKey,
+      infoBannerVersion: infoBannerVersion ?? this.infoBannerVersion,
+      dismissed: dismissed ?? this.dismissed,
+      rowid: rowid ?? this.rowid,
+    );
+  }
+
+  @override
+  Map<String, Expression> toColumns(bool nullToAbsent) {
+    final map = <String, Expression>{};
+    if (infoBannerKey.present) {
+      map['info_banner_key'] = Variable<String>(infoBannerKey.value);
+    }
+    if (infoBannerVersion.present) {
+      map['info_banner_version'] = Variable<int>(infoBannerVersion.value);
+    }
+    if (dismissed.present) {
+      map['dismissed'] = Variable<bool>(dismissed.value);
+    }
+    if (rowid.present) {
+      map['rowid'] = Variable<int>(rowid.value);
+    }
+    return map;
+  }
+
+  @override
+  String toString() {
+    return (StringBuffer('InfoBannerDismissStateCompanion(')
+          ..write('infoBannerKey: $infoBannerKey, ')
+          ..write('infoBannerVersion: $infoBannerVersion, ')
+          ..write('dismissed: $dismissed, ')
+          ..write('rowid: $rowid')
+          ..write(')'))
+        .toString();
+  }
+}
+
 class $CustomReportsConfigTable extends schema.CustomReportsConfig
     with TableInfo<$CustomReportsConfigTable, CustomReportsConfigData> {
   @override
@@ -20430,6 +20719,8 @@ abstract class _$AccountDatabase extends GeneratedDatabase {
       $ClientFeaturesConfigTable(this);
   late final $DynamicClientFeaturesConfigTable dynamicClientFeaturesConfig =
       $DynamicClientFeaturesConfigTable(this);
+  late final $InfoBannerDismissStateTable infoBannerDismissState =
+      $InfoBannerDismissStateTable(this);
   late final $CustomReportsConfigTable customReportsConfig =
       $CustomReportsConfigTable(this);
   late final $ProfileAttributesConfigTable profileAttributesConfig =
@@ -20613,6 +20904,7 @@ abstract class _$AccountDatabase extends GeneratedDatabase {
     receivedLikesIteratorState,
     clientFeaturesConfig,
     dynamicClientFeaturesConfig,
+    infoBannerDismissState,
     customReportsConfig,
     profileAttributesConfig,
     profileAttributesConfigAttributes,

@@ -8,6 +8,7 @@ import 'package:app/logic/account/custom_reports_config.dart';
 import 'package:app/logic/account/demo_account.dart';
 import 'package:app/logic/account/demo_account_login.dart';
 import 'package:app/logic/account/email_login.dart';
+import 'package:app/logic/account/info_banners.dart';
 import 'package:app/logic/app/email_notification_settings.dart';
 import 'package:app/logic/app/like_grid_instance_manager.dart';
 import 'package:app/logic/app/main_state_types.dart';
@@ -295,6 +296,7 @@ class NavigatorNormal extends LoggedInRootScreen {
         BlocProvider(create: (_) => CustomReportsConfigBloc(r)),
         BlocProvider(create: (_) => ClientFeaturesConfigBloc(r)),
         BlocProvider(create: (_) => DynamicClientFeaturesConfigBloc(r)),
+        BlocProvider(create: (_) => InfoBannersBloc(r)),
         BlocProvider(create: (_) => ChatEnabledBloc(r)),
 
         // Account data

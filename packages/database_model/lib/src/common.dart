@@ -41,3 +41,26 @@ class ServerMaintenanceInfo {
   @override
   int get hashCode => Object.hash(runtimeType, startTime, endTime, infoViewed, maintenanceTarget);
 }
+
+class InfoBannerDismissState {
+  final String bannerKey;
+  final int bannerVersion;
+  final bool dismissed;
+
+  const InfoBannerDismissState({
+    required this.bannerKey,
+    required this.bannerVersion,
+    required this.dismissed,
+  });
+
+  @override
+  bool operator ==(Object other) {
+    return other is InfoBannerDismissState &&
+        bannerKey == other.bannerKey &&
+        bannerVersion == other.bannerVersion &&
+        dismissed == other.dismissed;
+  }
+
+  @override
+  int get hashCode => Object.hash(runtimeType, bannerKey, bannerVersion, dismissed);
+}

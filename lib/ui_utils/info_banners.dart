@@ -1,4 +1,5 @@
 import 'package:app/logic/account/dynamic_client_features_config.dart';
+import 'package:app/logic/account/info_banners.dart';
 import 'package:app/logic/server/maintenance.dart';
 import 'package:app/localizations.dart';
 import 'package:app/ui_utils/attribute/icon.dart';
@@ -23,27 +24,32 @@ class InfoBannersWidget extends StatelessWidget {
   Widget build(BuildContext context) {
     return BlocBuilder<DynamicClientFeaturesConfigBloc, DynamicClientFeaturesConfig>(
       builder: (context, state) {
-        final banners = _visibleTextBanners(
-          state.infoBanners?.banners.values ?? const <InfoBanner>[],
-          location,
+        return BlocBuilder<InfoBannersBloc, Map<String, InfoBannerDismissState>>(
+          builder: (context, dismissedBanners) {
+            final banners = _visibleTextBanners(
+              state.infoBanners?.banners ?? const <String, InfoBanner>{},
+              dismissedBanners,
+              location,
+            );
+
+            if (location == InfoBannerLocation.menu) {
+              return BlocBuilder<ServerMaintenanceBloc, ServerMaintenanceInfo>(
+                builder: (context, maintenanceInfo) {
+                  return _bannerList(context, banners, maintenanceInfo);
+                },
+              );
+            }
+
+            return _bannerList(context, banners, null);
+          },
         );
-
-        if (location == InfoBannerLocation.menu) {
-          return BlocBuilder<ServerMaintenanceBloc, ServerMaintenanceInfo>(
-            builder: (context, maintenanceInfo) {
-              return _bannerList(context, banners, maintenanceInfo);
-            },
-          );
-        }
-
-        return _bannerList(context, banners, null);
       },
     );
   }
 
   Widget _bannerList(
     BuildContext context,
-    List<TextInfoBanner> banners,
+    List<_VisibleTextInfoBanner> banners,
     ServerMaintenanceInfo? maintenanceInfo,
   ) {
     final maintenanceBody = _maintenanceBody(context, maintenanceInfo);
@@ -96,12 +102,15 @@ class InfoBannersWidget extends StatelessWidget {
     return "$title\n$startTimeString$endTimeString";
   }
 
-  List<TextInfoBanner> _visibleTextBanners(
-    Iterable<InfoBanner> source,
+  List<_VisibleTextInfoBanner> _visibleTextBanners(
+    Map<String, InfoBanner> source,
+    Map<String, InfoBannerDismissState> dismissedBanners,
     InfoBannerLocation location,
   ) {
-    final visible = <TextInfoBanner>[];
-    for (final banner in source) {
+    final visible = <_VisibleTextInfoBanner>[];
+    for (final entry in source.entries) {
+      final bannerKey = entry.key;
+      final banner = entry.value;
       if (!_isVisibleForCurrentPlatform(banner.platform)) {
         continue;
       }
@@ -111,12 +120,22 @@ class InfoBannersWidget extends StatelessWidget {
       if (banner.mode != InfoBannerMode.text) {
         continue;
       }
+
+      final dismissedState = dismissedBanners[bannerKey];
+      if (dismissedState != null &&
+          dismissedState.dismissed &&
+          dismissedState.bannerVersion == banner.version) {
+        continue;
+      }
+
       final text = banner.text;
       if (text == null) {
         continue;
       }
 
-      visible.add(text);
+      visible.add(
+        _VisibleTextInfoBanner(bannerKey: bannerKey, bannerVersion: banner.version, banner: text),
+      );
       if (visible.length >= _MAX_BANNERS) {
         break;
       }
@@ -149,25 +168,44 @@ class InfoBannersWidget extends StatelessWidget {
   }
 }
 
-class _InfoBannerItem extends StatelessWidget {
+class _VisibleTextInfoBanner {
+  final String bannerKey;
+  final int bannerVersion;
   final TextInfoBanner banner;
+
+  const _VisibleTextInfoBanner({
+    required this.bannerKey,
+    required this.bannerVersion,
+    required this.banner,
+  });
+}
+
+class _InfoBannerItem extends StatelessWidget {
+  final _VisibleTextInfoBanner banner;
   const _InfoBannerItem({required this.banner});
 
   @override
   Widget build(BuildContext context) {
     final colorScheme = Theme.of(context).colorScheme;
-    final icon = AttributeIcons.parseIconResource(banner.icon);
-    final button = banner.urlButton;
+    final infoBanner = banner.banner;
+    final icon = AttributeIcons.parseIconResource(infoBanner.icon);
+    final button = infoBanner.urlButton;
     final urlButton = button == null
         ? null
         : _InfoBannerUrlButton(text: button.text.toLocalizedText(context), url: button.url);
+    final onClose = infoBanner.dismissible
+        ? () => context.read<InfoBannersBloc>().add(
+            DismissInfoBanner(bannerKey: banner.bannerKey, bannerVersion: banner.bannerVersion),
+          )
+        : null;
 
     return _InfoBannerItemLayout(
       icon: icon == null
           ? null
           : AttributeIconWidget(icon: icon, color: colorScheme.onPrimaryContainer),
-      body: banner.body.toLocalizedText(context),
+      body: infoBanner.body.toLocalizedText(context),
       urlButton: urlButton,
+      onClose: onClose,
     );
   }
 }
@@ -183,8 +221,9 @@ class _InfoBannerItemLayout extends StatelessWidget {
   final Widget? icon;
   final String body;
   final _InfoBannerUrlButton? urlButton;
+  final VoidCallback? onClose;
 
-  const _InfoBannerItemLayout({required this.body, this.icon, this.urlButton});
+  const _InfoBannerItemLayout({required this.body, this.icon, this.urlButton, this.onClose});
 
   @override
   Widget build(BuildContext context) {
@@ -217,6 +256,8 @@ class _InfoBannerItemLayout extends StatelessWidget {
                 onPressed: () => launchUrlString(urlButton!.url),
                 child: Text(urlButton!.text),
               ),
+            if (onClose != null) const Padding(padding: EdgeInsets.only(left: 4)),
+            if (onClose != null) IconButton(onPressed: onClose, icon: Icon(Icons.close)),
           ],
         ),
       ),

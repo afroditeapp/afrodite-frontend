@@ -8,6 +8,8 @@ mixin _$DaoReadConfigMixin on DatabaseAccessor<AccountDatabase> {
       attachedDatabase.clientFeaturesConfig;
   $DynamicClientFeaturesConfigTable get dynamicClientFeaturesConfig =>
       attachedDatabase.dynamicClientFeaturesConfig;
+  $InfoBannerDismissStateTable get infoBannerDismissState =>
+      attachedDatabase.infoBannerDismissState;
   $CustomReportsConfigTable get customReportsConfig =>
       attachedDatabase.customReportsConfig;
   $ProfileAttributesConfigTable get profileAttributesConfig =>

@@ -72,6 +72,7 @@ part 'database.g.dart';
     schema.ReceivedLikesIteratorState,
     schema.ClientFeaturesConfig,
     schema.DynamicClientFeaturesConfig,
+    schema.InfoBannerDismissState,
     schema.CustomReportsConfig,
     schema.ProfileAttributesConfig,
     schema.ProfileAttributesConfigAttributes,

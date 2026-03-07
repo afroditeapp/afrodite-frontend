@@ -50,6 +50,15 @@ class DynamicClientFeaturesConfig extends SingleRowTable {
       .nullable()();
 }
 
+class InfoBannerDismissState extends Table {
+  TextColumn get infoBannerKey => text()();
+  IntColumn get infoBannerVersion => integer().withDefault(const Constant(0))();
+  BoolColumn get dismissed => boolean().withDefault(const Constant(false))();
+
+  @override
+  Set<Column<Object>> get primaryKey => {infoBannerKey};
+}
+
 class ProfileAttributesConfig extends SingleRowTable {
   TextColumn get jsonAvailableProfileAttributesOrderMode =>
       text().map(NullAwareTypeConverter.wrap(const AttributeOrderModeConverter())).nullable()();

@@ -14,6 +14,7 @@ part 'config.g.dart';
   tables: [
     schema.ClientFeaturesConfig,
     schema.DynamicClientFeaturesConfig,
+    schema.InfoBannerDismissState,
     schema.CustomReportsConfig,
     schema.ProfileAttributesConfig,
     schema.ProfileAttributesConfigAttributes,
@@ -57,6 +58,20 @@ class DaoWriteConfig extends DatabaseAccessor<AccountDatabase> with _$DaoWriteCo
         id: SingleRowTable.ID,
         customReportsConfigHash: Value(hash),
         customReportsConfig: Value(config?.toJsonObject()),
+      ),
+    );
+  }
+
+  Future<void> upsertInfoBannerDismissState({
+    required String bannerKey,
+    required int bannerVersion,
+    required bool dismissed,
+  }) async {
+    await into(infoBannerDismissState).insertOnConflictUpdate(
+      InfoBannerDismissStateCompanion.insert(
+        infoBannerKey: bannerKey,
+        infoBannerVersion: Value(bannerVersion),
+        dismissed: Value(dismissed),
       ),
     );
   }
