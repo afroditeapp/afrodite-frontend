@@ -19,6 +19,7 @@ import 'package:app/logic/app/bottom_navigation_state.dart';
 import 'package:app/logic/profile/profile_filters.dart';
 import 'package:app/model/freezed/logic/main/bottom_navigation_state.dart';
 import 'package:app/model/freezed/logic/profile/profile_filters.dart';
+import 'package:app/ui/normal/profiles/profile_filters.dart';
 import 'package:app/ui/normal/profiles/view_profile.dart';
 import 'package:infinite_scroll_pagination/infinite_scroll_pagination.dart';
 import 'package:app/ui_utils/common_update_logic.dart';
@@ -278,7 +279,6 @@ class ProfileGridState extends State<ProfileGrid> {
         },
         noItemsFoundIndicatorBuilder: (context) {
           final filterState = context.read<ProfileFiltersBloc>().state;
-          final String descriptionText;
           if (filterState.showOnlyFavorites) {
             return buildListReplacementMessage(
               child: Column(
@@ -296,16 +296,33 @@ class ProfileGridState extends State<ProfileGrid> {
               ),
             );
           } else if (filterState.isSomeFilterEnabled()) {
-            descriptionText =
-                context.strings.profile_grid_screen_no_profiles_found_description_filters_enabled;
+            return buildListReplacementMessage(
+              child: Column(
+                mainAxisSize: MainAxisSize.min,
+                children: [
+                  Text(
+                    context.strings.profile_grid_screen_no_profiles_found_title,
+                    style: Theme.of(context).textTheme.titleLarge,
+                  ),
+                  const Padding(padding: EdgeInsets.all(8)),
+                  Text(
+                    context
+                        .strings
+                        .profile_grid_screen_no_profiles_found_description_filters_enabled,
+                  ),
+                  const Padding(padding: EdgeInsets.all(8)),
+                  openFilterSettingsButton(context),
+                ],
+              ),
+            );
           } else {
-            descriptionText =
-                context.strings.profile_grid_screen_no_profiles_found_description_filters_disabled;
+            return ListReplacementMessage(
+              title: context.strings.profile_grid_screen_no_profiles_found_title,
+              body: context
+                  .strings
+                  .profile_grid_screen_no_profiles_found_description_filters_disabled,
+            );
           }
-          return ListReplacementMessage(
-            title: context.strings.profile_grid_screen_no_profiles_found_title,
-            body: descriptionText,
-          );
         },
         firstPageProgressIndicatorBuilder: (context) {
           return const Center(child: CircularProgressIndicator());
@@ -332,6 +349,14 @@ class ProfileGridState extends State<ProfileGrid> {
         context.read<ProfileFiltersBloc>().add(SetFavoriteProfilesFilter(false, true));
       },
       child: Text(context.strings.profile_grid_screen_show_all_profiles_action),
+    );
+  }
+
+  Widget openFilterSettingsButton(BuildContext context) {
+    return ElevatedButton.icon(
+      onPressed: () => openProfileFilters(context),
+      icon: const Icon(Icons.filter_alt),
+      label: Text(context.strings.generic_filters),
     );
   }
 

@@ -1276,6 +1276,12 @@ abstract class AppLocalizations {
   /// **'Error occurred'**
   String get generic_error_occurred;
 
+  /// Generic filters text
+  ///
+  /// In en, this message translates to:
+  /// **'Filters'**
+  String get generic_filters;
+
   /// Generic man gender text
   ///
   /// In en, this message translates to:

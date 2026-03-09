@@ -688,6 +688,9 @@ class AppLocalizationsSv extends AppLocalizations {
   String get generic_error_occurred => 'Error occurred';
 
   @override
+  String get generic_filters => 'Filters';
+
+  @override
   String get generic_gender_man => 'Man';
 
   @override

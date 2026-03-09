@@ -910,6 +910,10 @@
   "@generic_error_occurred": {
     "description": "Generic error occurred text"
   },
+  "generic_filters": "Filters",
+  "@generic_filters": {
+    "description": "Generic filters text"
+  },
   "generic_gender_man": "Man",
   "@generic_gender_man": {
     "description": "Generic man gender text"
