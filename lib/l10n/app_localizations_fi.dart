@@ -1436,7 +1436,7 @@ class AppLocalizationsFi extends AppLocalizations {
 
   @override
   String get profile_grid_screen_no_profiles_found_description_filters_enabled =>
-      'Change or disable filter settings';
+      'Change or disable filters';
 
   @override
   String get profile_grid_screen_no_profiles_found_title => 'No profiles found';
@@ -1454,8 +1454,7 @@ class AppLocalizationsFi extends AppLocalizations {
       'First profile picture is not accepted';
 
   @override
-  String get profile_grid_screen_profile_filter_settings_update_ongoing =>
-      'Profile filter settings update is ongoing';
+  String get profile_grid_screen_profile_filter_settings_update_ongoing => 'Updating filters…';
 
   @override
   String get profile_grid_screen_profile_is_private_info =>

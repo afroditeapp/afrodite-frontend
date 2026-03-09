@@ -2623,7 +2623,7 @@ abstract class AppLocalizations {
   /// Description displayed when there is no profiles and some filter is enabled
   ///
   /// In en, this message translates to:
-  /// **'Change or disable filter settings'**
+  /// **'Change or disable filters'**
   String get profile_grid_screen_no_profiles_found_description_filters_enabled;
 
   /// Title that no profiles were found
@@ -2653,7 +2653,7 @@ abstract class AppLocalizations {
   /// Snackbar text that profile filter settings update is ongoing
   ///
   /// In en, this message translates to:
-  /// **'Profile filter settings update is ongoing'**
+  /// **'Updating filters…'**
   String get profile_grid_screen_profile_filter_settings_update_ongoing;
 
   /// Info text which is shown when profile visibility is set to private

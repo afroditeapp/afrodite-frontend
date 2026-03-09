@@ -328,9 +328,9 @@
     <string name="profile_grid_screen_profile_is_private_info" description="Info text which is shown when profile visibility is set to private">To view profiles, set your profile visibility to public from app settings.</string>
     <string name="profile_grid_screen_initial_moderation_ongoing" description="Info text that initial moderation is ongoing">You can view profiles and others can see your profile after your profile images are moderated.</string>
     <string name="profile_grid_screen_no_profiles_found_title" description="Title that no profiles were found">No profiles found</string>
-    <string name="profile_grid_screen_no_profiles_found_description_filters_enabled" description="Description displayed when there is no profiles and some filter is enabled">Change or disable filter settings</string>
+    <string name="profile_grid_screen_no_profiles_found_description_filters_enabled" description="Description displayed when there is no profiles and some filter is enabled">Change or disable filters</string>
     <string name="profile_grid_screen_no_profiles_found_description_filters_disabled" description="Description displayed when there is no profiles and there is no filters enabled">Spread the word about the app in social media</string>
-    <string name="profile_grid_screen_profile_filter_settings_update_ongoing" description="Snackbar text that profile filter settings update is ongoing">Profile filter settings update is ongoing</string>
+    <string name="profile_grid_screen_profile_filter_settings_update_ongoing" description="Snackbar text that profile filter settings update is ongoing">Updating filters…</string>
     <string name="profile_grid_screen_security_content_is_not_accepted" description="Text displayed when security selfie is not accepted">Security selfie is not accepted</string>
     <string name="profile_grid_screen_security_content_does_not_exist" description="Text displayed when security selfie does not exist">Security selfie does not exist</string>
     <string name="profile_grid_screen_security_content_face_not_detected" description="Text displayed when face is not detected from security selfie">Face is not detected from security selfie</string>

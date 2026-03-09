@@ -1900,7 +1900,7 @@
   "@profile_grid_screen_no_profiles_found_description_filters_disabled": {
     "description": "Description displayed when there is no profiles and there is no filters enabled"
   },
-  "profile_grid_screen_no_profiles_found_description_filters_enabled": "Change or disable filter settings",
+  "profile_grid_screen_no_profiles_found_description_filters_enabled": "Change or disable filters",
   "@profile_grid_screen_no_profiles_found_description_filters_enabled": {
     "description": "Description displayed when there is no profiles and some filter is enabled"
   },
@@ -1920,7 +1920,7 @@
   "@profile_grid_screen_primary_profile_content_is_not_accepted": {
     "description": "Text displayed when primary profile content is not accepted"
   },
-  "profile_grid_screen_profile_filter_settings_update_ongoing": "Profile filter settings update is ongoing",
+  "profile_grid_screen_profile_filter_settings_update_ongoing": "Updating filters…",
   "@profile_grid_screen_profile_filter_settings_update_ongoing": {
     "description": "Snackbar text that profile filter settings update is ongoing"
   },
