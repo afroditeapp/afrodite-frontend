@@ -269,12 +269,32 @@ class ProfileGridState extends State<ProfileGrid> {
             },
           );
         },
+        noMoreItemsIndicatorBuilder: (context) {
+          final filterState = context.read<ProfileFiltersBloc>().state;
+          if (!filterState.showOnlyFavorites) {
+            return const SizedBox.shrink();
+          }
+          return Center(child: showAllProfilesButton(context));
+        },
         noItemsFoundIndicatorBuilder: (context) {
           final filterState = context.read<ProfileFiltersBloc>().state;
           final String descriptionText;
           if (filterState.showOnlyFavorites) {
-            descriptionText =
-                context.strings.profile_grid_screen_no_favorite_profiles_found_description;
+            return buildListReplacementMessage(
+              child: Column(
+                mainAxisSize: MainAxisSize.min,
+                children: [
+                  Text(
+                    context.strings.profile_grid_screen_no_favorite_profiles_found_title,
+                    style: Theme.of(context).textTheme.titleLarge,
+                  ),
+                  const Padding(padding: EdgeInsets.all(8)),
+                  Text(context.strings.profile_grid_screen_no_favorite_profiles_found_description),
+                  const Padding(padding: EdgeInsets.all(8)),
+                  showAllProfilesButton(context),
+                ],
+              ),
+            );
           } else if (filterState.isSomeFilterEnabled()) {
             descriptionText =
                 context.strings.profile_grid_screen_no_profiles_found_description_filters_enabled;
@@ -283,9 +303,7 @@ class ProfileGridState extends State<ProfileGrid> {
                 context.strings.profile_grid_screen_no_profiles_found_description_filters_disabled;
           }
           return ListReplacementMessage(
-            title: filterState.showOnlyFavorites
-                ? context.strings.profile_grid_screen_no_favorite_profiles_found_title
-                : context.strings.profile_grid_screen_no_profiles_found_title,
+            title: context.strings.profile_grid_screen_no_profiles_found_title,
             body: descriptionText,
           );
         },
@@ -305,6 +323,15 @@ class ProfileGridState extends State<ProfileGrid> {
         },
       ),
       gridDelegate: settings.toSliverGridDelegate(context, itemWidth: singleItemWidth),
+    );
+  }
+
+  Widget showAllProfilesButton(BuildContext context) {
+    return ElevatedButton(
+      onPressed: () {
+        context.read<ProfileFiltersBloc>().add(SetFavoriteProfilesFilter(false, true));
+      },
+      child: Text(context.strings.profile_grid_screen_show_all_profiles_action),
     );
   }
 
