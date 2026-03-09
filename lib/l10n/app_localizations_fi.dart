@@ -1473,6 +1473,11 @@ class AppLocalizationsFi extends AppLocalizations {
       'Security selfie is not accepted';
 
   @override
+  String profile_grid_screen_selected_age_range(String p0) {
+    return 'Selected age range: $p0';
+  }
+
+  @override
   String get profile_grid_screen_show_all_profiles_action => 'Show all profiles';
 
   @override

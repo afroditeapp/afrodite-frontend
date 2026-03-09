@@ -2680,6 +2680,12 @@ abstract class AppLocalizations {
   /// **'Security selfie is not accepted'**
   String get profile_grid_screen_security_content_is_not_accepted;
 
+  /// Text for selected age range shown in profile grid empty state
+  ///
+  /// In en, this message translates to:
+  /// **'Selected age range: {p0}'**
+  String profile_grid_screen_selected_age_range(String p0);
+
   /// Title for show all profiles action
   ///
   /// In en, this message translates to:

@@ -311,16 +311,34 @@ class ProfileGridState extends State<ProfileGrid> {
                         .profile_grid_screen_no_profiles_found_description_filters_enabled,
                   ),
                   const Padding(padding: EdgeInsets.all(8)),
-                  openFilterSettingsButton(context),
+                  openFilterSettingsButton(context, filterEnabledIcon: true),
                 ],
               ),
             );
           } else {
-            return ListReplacementMessage(
-              title: context.strings.profile_grid_screen_no_profiles_found_title,
-              body: context
-                  .strings
-                  .profile_grid_screen_no_profiles_found_description_filters_disabled,
+            final minAge = filterState.valueMinAge();
+            final maxAge = filterState.valueMaxAge();
+            final selectedAgeRange = minAge == maxAge ? "$minAge" : "$minAge-$maxAge";
+            return buildListReplacementMessage(
+              child: Column(
+                mainAxisSize: MainAxisSize.min,
+                children: [
+                  Text(
+                    context.strings.profile_grid_screen_no_profiles_found_title,
+                    style: Theme.of(context).textTheme.titleLarge,
+                  ),
+                  const Padding(padding: EdgeInsets.all(8)),
+                  Text(
+                    context
+                        .strings
+                        .profile_grid_screen_no_profiles_found_description_filters_disabled,
+                  ),
+                  const Padding(padding: EdgeInsets.all(8)),
+                  Text(context.strings.profile_grid_screen_selected_age_range(selectedAgeRange)),
+                  const Padding(padding: EdgeInsets.all(8)),
+                  openFilterSettingsButton(context, filterEnabledIcon: false),
+                ],
+              ),
             );
           }
         },
@@ -352,10 +370,10 @@ class ProfileGridState extends State<ProfileGrid> {
     );
   }
 
-  Widget openFilterSettingsButton(BuildContext context) {
+  Widget openFilterSettingsButton(BuildContext context, {required bool filterEnabledIcon}) {
     return ElevatedButton.icon(
       onPressed: () => openProfileFilters(context),
-      icon: const Icon(Icons.filter_alt),
+      icon: Icon(filterEnabledIcon ? Icons.filter_alt : Icons.filter_alt_outlined),
       label: Text(context.strings.generic_filters),
     );
   }
