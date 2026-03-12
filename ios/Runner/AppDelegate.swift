@@ -2,7 +2,7 @@ import UIKit
 import Flutter
 
 @main
-@objc class AppDelegate: FlutterAppDelegate {
+@objc class AppDelegate: FlutterAppDelegate, FlutterImplicitEngineDelegate {
   var delayAppSuspend: DelayAppSuspendTask?
   var allowDelayAppSuspend: Bool = false;
 
@@ -15,9 +15,16 @@ import Flutter
       UNUserNotificationCenter.current().delegate = self as? UNUserNotificationCenterDelegate
     }
 
-    let controller: FlutterViewController = window?.rootViewController as! FlutterViewController
-    let channel = FlutterMethodChannel(name: "delay_app_suspend_task",
-                                       binaryMessenger: controller.binaryMessenger)
+    return super.application(application, didFinishLaunchingWithOptions: launchOptions)
+  }
+
+  func didInitializeImplicitFlutterEngine(_ engineBridge: FlutterImplicitEngineBridge) {
+    GeneratedPluginRegistrant.register(with: engineBridge.pluginRegistry)
+
+    let channel = FlutterMethodChannel(
+      name: "delay_app_suspend_task",
+      binaryMessenger: engineBridge.applicationRegistrar.messenger()
+    )
 
     channel.setMethodCallHandler { (call, result) in
       if call.method == "allow" {
@@ -33,15 +40,12 @@ import Flutter
         result(FlutterMethodNotImplemented)
       }
     }
-
-    GeneratedPluginRegistrant.register(with: self)
-    return super.application(application, didFinishLaunchingWithOptions: launchOptions)
   }
 
-  override func applicationDidEnterBackground(_ application: UIApplication) {
+  func beginDelayAppSuspendTask() {
     delayAppSuspend?.dispose()
     if (allowDelayAppSuspend) {
-      delayAppSuspend = DelayAppSuspendTask(application)
+      delayAppSuspend = DelayAppSuspendTask(UIApplication.shared)
     }
   }
 }
