@@ -248,10 +248,6 @@ class ApiClient {
           return AttributionConfig.fromJson(value);
         case 'AuthPair':
           return AuthPair.fromJson(value);
-        case 'AutomaticProfileSearchCompletedNotification':
-          return AutomaticProfileSearchCompletedNotification.fromJson(value);
-        case 'AutomaticProfileSearchCompletedNotificationViewed':
-          return AutomaticProfileSearchCompletedNotificationViewed.fromJson(value);
         case 'AutomaticProfileSearchIteratorSessionId':
           return AutomaticProfileSearchIteratorSessionId.fromJson(value);
         case 'AutomaticProfileSearchSettings':
@@ -412,8 +408,6 @@ class ApiClient {
           return GetAccountDeletionRequestResult.fromJson(value);
         case 'GetAccountIdFromEmailResult':
           return GetAccountIdFromEmailResult.fromJson(value);
-        case 'GetAdminNotification':
-          return GetAdminNotification.fromJson(value);
         case 'GetAllAdminsResult':
           return GetAllAdminsResult.fromJson(value);
         case 'GetApiUsageStatisticsResult':
@@ -558,10 +552,6 @@ class ApiClient {
           return MaxDistanceKm.fromJson(value);
         case 'MediaAppNotificationSettings':
           return MediaAppNotificationSettings.fromJson(value);
-        case 'MediaContentModerationCompletedNotification':
-          return MediaContentModerationCompletedNotification.fromJson(value);
-        case 'MediaContentModerationCompletedNotificationViewed':
-          return MediaContentModerationCompletedNotificationViewed.fromJson(value);
         case 'MediaContentModerationRejectedReasonCategory':
           return MediaContentModerationRejectedReasonCategory.fromJson(value);
         case 'MediaContentModerationRejectedReasonDetails':
@@ -612,16 +602,20 @@ class ApiClient {
           return NewsSyncVersion.fromJson(value);
         case 'NewsTranslationVersion':
           return NewsTranslationVersion.fromJson(value);
-        case 'NotificationId':
-          return NotificationId.fromJson(value);
-        case 'NotificationIdViewed':
-          return NotificationIdViewed.fromJson(value);
-        case 'NotificationStatus':
-          return NotificationStatus.fromJson(value);
         case 'NsfwDetectionThresholds':
           return NsfwDetectionThresholds.fromJson(value);
         case 'PartialProfileAttributesConfig':
           return PartialProfileAttributesConfig.fromJson(value);
+        case 'PendingAppNotification':
+          return PendingAppNotification.fromJson(value);
+        case 'PendingAppNotificationList':
+          return PendingAppNotificationList.fromJson(value);
+        case 'PendingAppNotificationType':
+          return PendingAppNotificationTypeTypeTransformer().decode(value);
+        case 'PendingChatNotification':
+          return PendingChatNotification.fromJson(value);
+        case 'PendingChatNotificationList':
+          return PendingChatNotificationList.fromJson(value);
         case 'PendingMessageAcknowledgementList':
           return PendingMessageAcknowledgementList.fromJson(value);
         case 'PendingMessageId':
@@ -700,10 +694,6 @@ class ApiClient {
           return ProfileStatisticsHistoryValue.fromJson(value);
         case 'ProfileStatisticsHistoryValueType':
           return ProfileStatisticsHistoryValueTypeTypeTransformer().decode(value);
-        case 'ProfileStringModerationCompletedNotification':
-          return ProfileStringModerationCompletedNotification.fromJson(value);
-        case 'ProfileStringModerationCompletedNotificationViewed':
-          return ProfileStringModerationCompletedNotificationViewed.fromJson(value);
         case 'ProfileStringModerationContentType':
           return ProfileStringModerationContentTypeTypeTransformer().decode(value);
         case 'ProfileStringModerationInfo':

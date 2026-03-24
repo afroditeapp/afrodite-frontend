@@ -55,8 +55,6 @@ lib/model/attribute_value.dart
 lib/model/attribute_value_order_mode.dart
 lib/model/attribution_config.dart
 lib/model/auth_pair.dart
-lib/model/automatic_profile_search_completed_notification.dart
-lib/model/automatic_profile_search_completed_notification_viewed.dart
 lib/model/automatic_profile_search_iterator_session_id.dart
 lib/model/automatic_profile_search_settings.dart
 lib/model/backend_version.dart
@@ -137,7 +135,6 @@ lib/model/first_image_config.dart
 lib/model/get_account_ban_time_result.dart
 lib/model/get_account_deletion_request_result.dart
 lib/model/get_account_id_from_email_result.dart
-lib/model/get_admin_notification.dart
 lib/model/get_all_admins_result.dart
 lib/model/get_api_usage_statistics_result.dart
 lib/model/get_api_usage_statistics_settings.dart
@@ -210,8 +207,6 @@ lib/model/matches_iterator_state.dart
 lib/model/matches_page.dart
 lib/model/max_distance_km.dart
 lib/model/media_app_notification_settings.dart
-lib/model/media_content_moderation_completed_notification.dart
-lib/model/media_content_moderation_completed_notification_viewed.dart
 lib/model/media_content_moderation_rejected_reason_category.dart
 lib/model/media_content_moderation_rejected_reason_details.dart
 lib/model/media_content_pending_moderation.dart
@@ -237,11 +232,13 @@ lib/model/news_iterator_state.dart
 lib/model/news_page.dart
 lib/model/news_sync_version.dart
 lib/model/news_translation_version.dart
-lib/model/notification_id.dart
-lib/model/notification_id_viewed.dart
-lib/model/notification_status.dart
 lib/model/nsfw_detection_thresholds.dart
 lib/model/partial_profile_attributes_config.dart
+lib/model/pending_app_notification.dart
+lib/model/pending_app_notification_list.dart
+lib/model/pending_app_notification_type.dart
+lib/model/pending_chat_notification.dart
+lib/model/pending_chat_notification_list.dart
 lib/model/pending_message_acknowledgement_list.dart
 lib/model/pending_message_id.dart
 lib/model/perf_metric_query.dart
@@ -281,8 +278,6 @@ lib/model/profile_page.dart
 lib/model/profile_privacy_settings.dart
 lib/model/profile_statistics_history_value.dart
 lib/model/profile_statistics_history_value_type.dart
-lib/model/profile_string_moderation_completed_notification.dart
-lib/model/profile_string_moderation_completed_notification_viewed.dart
 lib/model/profile_string_moderation_content_type.dart
 lib/model/profile_string_moderation_info.dart
 lib/model/profile_string_moderation_rejected_reason_category.dart

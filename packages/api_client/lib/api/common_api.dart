@@ -277,6 +277,47 @@ class CommonApi {
     return null;
   }
 
+  /// Performs an HTTP 'GET /common_api/pending_app_notifications' operation and returns the [Response].
+  Future<Response> getPendingAppNotificationsWithHttpInfo() async {
+    // ignore: prefer_const_declarations
+    final path = r'/common_api/pending_app_notifications';
+
+    // ignore: prefer_final_locals
+    Object? postBody;
+
+    final queryParams = <QueryParam>[];
+    final headerParams = <String, String>{};
+    final formParams = <String, String>{};
+
+    const contentTypes = <String>[];
+
+
+    return apiClient.invokeAPI(
+      path,
+      'GET',
+      queryParams,
+      postBody,
+      headerParams,
+      formParams,
+      contentTypes.isEmpty ? null : contentTypes.first,
+    );
+  }
+
+  Future<PendingAppNotificationList?> getPendingAppNotifications() async {
+    final response = await getPendingAppNotificationsWithHttpInfo();
+    if (response.statusCode >= HttpStatus.badRequest) {
+      throw ApiException(response.statusCode, await _decodeBodyBytes(response));
+    }
+    // When a remote server returns no body with a status of 204, we shall not decode it.
+    // At the time of writing this, `dart:convert` will throw an "Unexpected end of input"
+    // FormatException when trying to decode an empty string.
+    if (response.body.isNotEmpty && response.statusCode != HttpStatus.noContent) {
+      return await apiClient.deserializeAsync(await _decodeBodyBytes(response), 'PendingAppNotificationList',) as PendingAppNotificationList;
+    
+    }
+    return null;
+  }
+
   /// Performs an HTTP 'GET /common_api/get_push_notification_info' operation and returns the [Response].
   Future<Response> getPushNotificationInfoWithHttpInfo() async {
     // ignore: prefer_const_declarations
@@ -396,6 +437,45 @@ class CommonApi {
   /// * [ClientLanguage] clientLanguage (required):
   Future<void> postClientLanguage(ClientLanguage clientLanguage,) async {
     final response = await postClientLanguageWithHttpInfo(clientLanguage,);
+    if (response.statusCode >= HttpStatus.badRequest) {
+      throw ApiException(response.statusCode, await _decodeBodyBytes(response));
+    }
+  }
+
+  /// Performs an HTTP 'POST /common_api/pending_app_notifications/delete' operation and returns the [Response].
+  /// Parameters:
+  ///
+  /// * [PendingAppNotificationList] pendingAppNotificationList (required):
+  Future<Response> postDeletePendingAppNotificationsWithHttpInfo(PendingAppNotificationList pendingAppNotificationList,) async {
+    // ignore: prefer_const_declarations
+    final path = r'/common_api/pending_app_notifications/delete';
+
+    // ignore: prefer_final_locals
+    Object? postBody = pendingAppNotificationList;
+
+    final queryParams = <QueryParam>[];
+    final headerParams = <String, String>{};
+    final formParams = <String, String>{};
+
+    const contentTypes = <String>['application/json'];
+
+
+    return apiClient.invokeAPI(
+      path,
+      'POST',
+      queryParams,
+      postBody,
+      headerParams,
+      formParams,
+      contentTypes.isEmpty ? null : contentTypes.first,
+    );
+  }
+
+  /// Parameters:
+  ///
+  /// * [PendingAppNotificationList] pendingAppNotificationList (required):
+  Future<void> postDeletePendingAppNotifications(PendingAppNotificationList pendingAppNotificationList,) async {
+    final response = await postDeletePendingAppNotificationsWithHttpInfo(pendingAppNotificationList,);
     if (response.statusCode >= HttpStatus.badRequest) {
       throw ApiException(response.statusCode, await _decodeBodyBytes(response));
     }

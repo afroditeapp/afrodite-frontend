@@ -882,47 +882,6 @@ class ProfileApi {
     return null;
   }
 
-  /// Performs an HTTP 'POST /profile_api/automatic_profile_search_completed_notification' operation and returns the [Response].
-  Future<Response> postGetAutomaticProfileSearchCompletedNotificationWithHttpInfo() async {
-    // ignore: prefer_const_declarations
-    final path = r'/profile_api/automatic_profile_search_completed_notification';
-
-    // ignore: prefer_final_locals
-    Object? postBody;
-
-    final queryParams = <QueryParam>[];
-    final headerParams = <String, String>{};
-    final formParams = <String, String>{};
-
-    const contentTypes = <String>[];
-
-
-    return apiClient.invokeAPI(
-      path,
-      'POST',
-      queryParams,
-      postBody,
-      headerParams,
-      formParams,
-      contentTypes.isEmpty ? null : contentTypes.first,
-    );
-  }
-
-  Future<AutomaticProfileSearchCompletedNotification?> postGetAutomaticProfileSearchCompletedNotification() async {
-    final response = await postGetAutomaticProfileSearchCompletedNotificationWithHttpInfo();
-    if (response.statusCode >= HttpStatus.badRequest) {
-      throw ApiException(response.statusCode, await _decodeBodyBytes(response));
-    }
-    // When a remote server returns no body with a status of 204, we shall not decode it.
-    // At the time of writing this, `dart:convert` will throw an "Unexpected end of input"
-    // FormatException when trying to decode an empty string.
-    if (response.body.isNotEmpty && response.statusCode != HttpStatus.noContent) {
-      return await apiClient.deserializeAsync(await _decodeBodyBytes(response), 'AutomaticProfileSearchCompletedNotification',) as AutomaticProfileSearchCompletedNotification;
-    
-    }
-    return null;
-  }
-
   /// Post (updates iterator) to get next page of profile list.
   ///
   /// Note: This method returns the HTTP [Response].
@@ -970,50 +929,6 @@ class ProfileApi {
     // FormatException when trying to decode an empty string.
     if (response.body.isNotEmpty && response.statusCode != HttpStatus.noContent) {
       return await apiClient.deserializeAsync(await _decodeBodyBytes(response), 'ProfilePage',) as ProfilePage;
-    
-    }
-    return null;
-  }
-
-  /// Get profile string moderation completed notification.
-  ///
-  /// Note: This method returns the HTTP [Response].
-  Future<Response> postGetProfileStringModerationCompletedNotificationWithHttpInfo() async {
-    // ignore: prefer_const_declarations
-    final path = r'/profile_api/profile_string_moderation_completed_notification';
-
-    // ignore: prefer_final_locals
-    Object? postBody;
-
-    final queryParams = <QueryParam>[];
-    final headerParams = <String, String>{};
-    final formParams = <String, String>{};
-
-    const contentTypes = <String>[];
-
-
-    return apiClient.invokeAPI(
-      path,
-      'POST',
-      queryParams,
-      postBody,
-      headerParams,
-      formParams,
-      contentTypes.isEmpty ? null : contentTypes.first,
-    );
-  }
-
-  /// Get profile string moderation completed notification.
-  Future<ProfileStringModerationCompletedNotification?> postGetProfileStringModerationCompletedNotification() async {
-    final response = await postGetProfileStringModerationCompletedNotificationWithHttpInfo();
-    if (response.statusCode >= HttpStatus.badRequest) {
-      throw ApiException(response.statusCode, await _decodeBodyBytes(response));
-    }
-    // When a remote server returns no body with a status of 204, we shall not decode it.
-    // At the time of writing this, `dart:convert` will throw an "Unexpected end of input"
-    // FormatException when trying to decode an empty string.
-    if (response.body.isNotEmpty && response.statusCode != HttpStatus.noContent) {
-      return await apiClient.deserializeAsync(await _decodeBodyBytes(response), 'ProfileStringModerationCompletedNotification',) as ProfileStringModerationCompletedNotification;
     
     }
     return null;
@@ -1073,94 +988,6 @@ class ProfileApi {
     
     }
     return null;
-  }
-
-  /// The viewed values must be updated to prevent WebSocket code from sending unnecessary event about new notification.
-  ///
-  /// Note: This method returns the HTTP [Response].
-  ///
-  /// Parameters:
-  ///
-  /// * [AutomaticProfileSearchCompletedNotificationViewed] automaticProfileSearchCompletedNotificationViewed (required):
-  Future<Response> postMarkAutomaticProfileSearchCompletedNotificationViewedWithHttpInfo(AutomaticProfileSearchCompletedNotificationViewed automaticProfileSearchCompletedNotificationViewed,) async {
-    // ignore: prefer_const_declarations
-    final path = r'/profile_api/mark_automatic_profile_search_completed_notification_viewed';
-
-    // ignore: prefer_final_locals
-    Object? postBody = automaticProfileSearchCompletedNotificationViewed;
-
-    final queryParams = <QueryParam>[];
-    final headerParams = <String, String>{};
-    final formParams = <String, String>{};
-
-    const contentTypes = <String>['application/json'];
-
-
-    return apiClient.invokeAPI(
-      path,
-      'POST',
-      queryParams,
-      postBody,
-      headerParams,
-      formParams,
-      contentTypes.isEmpty ? null : contentTypes.first,
-    );
-  }
-
-  /// The viewed values must be updated to prevent WebSocket code from sending unnecessary event about new notification.
-  ///
-  /// Parameters:
-  ///
-  /// * [AutomaticProfileSearchCompletedNotificationViewed] automaticProfileSearchCompletedNotificationViewed (required):
-  Future<void> postMarkAutomaticProfileSearchCompletedNotificationViewed(AutomaticProfileSearchCompletedNotificationViewed automaticProfileSearchCompletedNotificationViewed,) async {
-    final response = await postMarkAutomaticProfileSearchCompletedNotificationViewedWithHttpInfo(automaticProfileSearchCompletedNotificationViewed,);
-    if (response.statusCode >= HttpStatus.badRequest) {
-      throw ApiException(response.statusCode, await _decodeBodyBytes(response));
-    }
-  }
-
-  /// The viewed values must be updated to prevent WebSocket code from sending unnecessary event about new notification.
-  ///
-  /// Note: This method returns the HTTP [Response].
-  ///
-  /// Parameters:
-  ///
-  /// * [ProfileStringModerationCompletedNotificationViewed] profileStringModerationCompletedNotificationViewed (required):
-  Future<Response> postMarkProfileStringModerationCompletedNotificationViewedWithHttpInfo(ProfileStringModerationCompletedNotificationViewed profileStringModerationCompletedNotificationViewed,) async {
-    // ignore: prefer_const_declarations
-    final path = r'/profile_api/mark_profile_string_moderation_completed_notification_viewed';
-
-    // ignore: prefer_final_locals
-    Object? postBody = profileStringModerationCompletedNotificationViewed;
-
-    final queryParams = <QueryParam>[];
-    final headerParams = <String, String>{};
-    final formParams = <String, String>{};
-
-    const contentTypes = <String>['application/json'];
-
-
-    return apiClient.invokeAPI(
-      path,
-      'POST',
-      queryParams,
-      postBody,
-      headerParams,
-      formParams,
-      contentTypes.isEmpty ? null : contentTypes.first,
-    );
-  }
-
-  /// The viewed values must be updated to prevent WebSocket code from sending unnecessary event about new notification.
-  ///
-  /// Parameters:
-  ///
-  /// * [ProfileStringModerationCompletedNotificationViewed] profileStringModerationCompletedNotificationViewed (required):
-  Future<void> postMarkProfileStringModerationCompletedNotificationViewed(ProfileStringModerationCompletedNotificationViewed profileStringModerationCompletedNotificationViewed,) async {
-    final response = await postMarkProfileStringModerationCompletedNotificationViewedWithHttpInfo(profileStringModerationCompletedNotificationViewed,);
-    if (response.statusCode >= HttpStatus.badRequest) {
-      throw ApiException(response.statusCode, await _decodeBodyBytes(response));
-    }
   }
 
   /// Update profile information.

@@ -382,6 +382,47 @@ class ChatApi {
     return null;
   }
 
+  /// Performs an HTTP 'GET /chat_api/pending_notifications' operation and returns the [Response].
+  Future<Response> getPendingChatNotificationsWithHttpInfo() async {
+    // ignore: prefer_const_declarations
+    final path = r'/chat_api/pending_notifications';
+
+    // ignore: prefer_final_locals
+    Object? postBody;
+
+    final queryParams = <QueryParam>[];
+    final headerParams = <String, String>{};
+    final formParams = <String, String>{};
+
+    const contentTypes = <String>[];
+
+
+    return apiClient.invokeAPI(
+      path,
+      'GET',
+      queryParams,
+      postBody,
+      headerParams,
+      formParams,
+      contentTypes.isEmpty ? null : contentTypes.first,
+    );
+  }
+
+  Future<PendingChatNotificationList?> getPendingChatNotifications() async {
+    final response = await getPendingChatNotificationsWithHttpInfo();
+    if (response.statusCode >= HttpStatus.badRequest) {
+      throw ApiException(response.statusCode, await _decodeBodyBytes(response));
+    }
+    // When a remote server returns no body with a status of 204, we shall not decode it.
+    // At the time of writing this, `dart:convert` will throw an "Unexpected end of input"
+    // FormatException when trying to decode an empty string.
+    if (response.body.isNotEmpty && response.statusCode != HttpStatus.noContent) {
+      return await apiClient.deserializeAsync(await _decodeBodyBytes(response), 'PendingChatNotificationList',) as PendingChatNotificationList;
+    
+    }
+    return null;
+  }
+
   /// Get pending latest seen message numbers where the API caller is the message sender. Returns entries that the viewer has reported as seen but have not yet been delivered back to the sender.
   ///
   /// The received entries must be deleted using delete API.
@@ -432,7 +473,7 @@ class ChatApi {
 
   /// Get list of pending messages.
   ///
-  /// The returned bytes is - Hide notifications (u8, values: 0 or 1) - List of objects  Data for single object: - Binary data length as minimal i64 - Binary data  Minimal i64 has this format: - i64 byte count (u8, values: 1, 2, 4, 8) - i64 bytes (little-endian)  Binary data is binary PGP message which contains backend signed binary data. The binary data contains: - Version (u8, values: 1) - Sender AccountId UUID big-endian bytes (16 bytes) - Recipient AccountId UUID big-endian bytes (16 bytes) - Message MessageId UUID big-endian bytes (16 bytes) - Sender public key ID (minimal i64) - Recipient public key ID (minimal i64) - Message number (minimal i64) - Unix time (minimal i64) - Message data
+  /// The returned bytes is - List of objects  Data for single object: - Binary data length as minimal i64 - Binary data  Minimal i64 has this format: - i64 byte count (u8, values: 1, 2, 4, 8) - i64 bytes (little-endian)  Binary data is binary PGP message which contains backend signed binary data. The binary data contains: - Version (u8, values: 1) - Sender AccountId UUID big-endian bytes (16 bytes) - Recipient AccountId UUID big-endian bytes (16 bytes) - Message MessageId UUID big-endian bytes (16 bytes) - Sender public key ID (minimal i64) - Recipient public key ID (minimal i64) - Message number (minimal i64) - Unix time (minimal i64) - Message data
   ///
   /// Note: This method returns the HTTP [Response].
   Future<Response> getPendingMessagesWithHttpInfo() async {
@@ -462,7 +503,7 @@ class ChatApi {
 
   /// Get list of pending messages.
   ///
-  /// The returned bytes is - Hide notifications (u8, values: 0 or 1) - List of objects  Data for single object: - Binary data length as minimal i64 - Binary data  Minimal i64 has this format: - i64 byte count (u8, values: 1, 2, 4, 8) - i64 bytes (little-endian)  Binary data is binary PGP message which contains backend signed binary data. The binary data contains: - Version (u8, values: 1) - Sender AccountId UUID big-endian bytes (16 bytes) - Recipient AccountId UUID big-endian bytes (16 bytes) - Message MessageId UUID big-endian bytes (16 bytes) - Sender public key ID (minimal i64) - Recipient public key ID (minimal i64) - Message number (minimal i64) - Unix time (minimal i64) - Message data
+  /// The returned bytes is - List of objects  Data for single object: - Binary data length as minimal i64 - Binary data  Minimal i64 has this format: - i64 byte count (u8, values: 1, 2, 4, 8) - i64 bytes (little-endian)  Binary data is binary PGP message which contains backend signed binary data. The binary data contains: - Version (u8, values: 1) - Sender AccountId UUID big-endian bytes (16 bytes) - Recipient AccountId UUID big-endian bytes (16 bytes) - Message MessageId UUID big-endian bytes (16 bytes) - Sender public key ID (minimal i64) - Recipient public key ID (minimal i64) - Message number (minimal i64) - Unix time (minimal i64) - Message data
   Future<MultipartFile?> getPendingMessages() async {
     final response = await getPendingMessagesWithHttpInfo();
     if (response.statusCode >= HttpStatus.badRequest) {
@@ -1141,6 +1182,45 @@ class ChatApi {
   /// * [MessageDeliveryInfoIdList] messageDeliveryInfoIdList (required):
   Future<void> postDeleteMessageDeliveryInfo(MessageDeliveryInfoIdList messageDeliveryInfoIdList,) async {
     final response = await postDeleteMessageDeliveryInfoWithHttpInfo(messageDeliveryInfoIdList,);
+    if (response.statusCode >= HttpStatus.badRequest) {
+      throw ApiException(response.statusCode, await _decodeBodyBytes(response));
+    }
+  }
+
+  /// Performs an HTTP 'POST /chat_api/pending_notifications/delete' operation and returns the [Response].
+  /// Parameters:
+  ///
+  /// * [PendingChatNotificationList] pendingChatNotificationList (required):
+  Future<Response> postDeletePendingChatNotificationsWithHttpInfo(PendingChatNotificationList pendingChatNotificationList,) async {
+    // ignore: prefer_const_declarations
+    final path = r'/chat_api/pending_notifications/delete';
+
+    // ignore: prefer_final_locals
+    Object? postBody = pendingChatNotificationList;
+
+    final queryParams = <QueryParam>[];
+    final headerParams = <String, String>{};
+    final formParams = <String, String>{};
+
+    const contentTypes = <String>['application/json'];
+
+
+    return apiClient.invokeAPI(
+      path,
+      'POST',
+      queryParams,
+      postBody,
+      headerParams,
+      formParams,
+      contentTypes.isEmpty ? null : contentTypes.first,
+    );
+  }
+
+  /// Parameters:
+  ///
+  /// * [PendingChatNotificationList] pendingChatNotificationList (required):
+  Future<void> postDeletePendingChatNotifications(PendingChatNotificationList pendingChatNotificationList,) async {
+    final response = await postDeletePendingChatNotificationsWithHttpInfo(pendingChatNotificationList,);
     if (response.statusCode >= HttpStatus.badRequest) {
       throw ApiException(response.statusCode, await _decodeBodyBytes(response));
     }

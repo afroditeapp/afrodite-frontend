@@ -752,54 +752,6 @@ class CommonAdminApi {
     }
   }
 
-  /// Get admin notification data.
-  ///
-  /// Getting notification data is required when notification event is received from WebSocket. This prevents resending the notification as push notification when WebSocket connection closes.  # Access Requires [Permissions::admin_subscribe_admin_notifications].
-  ///
-  /// Note: This method returns the HTTP [Response].
-  Future<Response> postGetAdminNotificationWithHttpInfo() async {
-    // ignore: prefer_const_declarations
-    final path = r'/common_api/admin_notification';
-
-    // ignore: prefer_final_locals
-    Object? postBody;
-
-    final queryParams = <QueryParam>[];
-    final headerParams = <String, String>{};
-    final formParams = <String, String>{};
-
-    const contentTypes = <String>[];
-
-
-    return apiClient.invokeAPI(
-      path,
-      'POST',
-      queryParams,
-      postBody,
-      headerParams,
-      formParams,
-      contentTypes.isEmpty ? null : contentTypes.first,
-    );
-  }
-
-  /// Get admin notification data.
-  ///
-  /// Getting notification data is required when notification event is received from WebSocket. This prevents resending the notification as push notification when WebSocket connection closes.  # Access Requires [Permissions::admin_subscribe_admin_notifications].
-  Future<GetAdminNotification?> postGetAdminNotification() async {
-    final response = await postGetAdminNotificationWithHttpInfo();
-    if (response.statusCode >= HttpStatus.badRequest) {
-      throw ApiException(response.statusCode, await _decodeBodyBytes(response));
-    }
-    // When a remote server returns no body with a status of 204, we shall not decode it.
-    // At the time of writing this, `dart:convert` will throw an "Unexpected end of input"
-    // FormatException when trying to decode an empty string.
-    if (response.body.isNotEmpty && response.statusCode != HttpStatus.noContent) {
-      return await apiClient.deserializeAsync(await _decodeBodyBytes(response), 'GetAdminNotification',) as GetAdminNotification;
-    
-    }
-    return null;
-  }
-
   /// Get API usage data for account
   ///
   /// HTTP method is POST because JSON request body requires it.  # Permissions Requires [Permissions::admin_view_account_api_usage].

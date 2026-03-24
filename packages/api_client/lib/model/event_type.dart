@@ -25,18 +25,16 @@ class EventType {
 
   static const accountStateChanged = EventType._(r'AccountStateChanged');
   static const newMessageReceived = EventType._(r'NewMessageReceived');
+  static const pendingChatNotificationsChanged = EventType._(r'PendingChatNotificationsChanged');
+  static const pendingAppNotificationsChanged = EventType._(r'PendingAppNotificationsChanged');
   static const receivedLikesChanged = EventType._(r'ReceivedLikesChanged');
   static const contentProcessingStateChanged = EventType._(r'ContentProcessingStateChanged');
   static const clientConfigChanged = EventType._(r'ClientConfigChanged');
   static const profileChanged = EventType._(r'ProfileChanged');
   static const newsCountChanged = EventType._(r'NewsCountChanged');
-  static const mediaContentModerationCompleted = EventType._(r'MediaContentModerationCompleted');
   static const mediaContentChanged = EventType._(r'MediaContentChanged');
   static const dailyLikesLeftChanged = EventType._(r'DailyLikesLeftChanged');
   static const scheduledMaintenanceStatus = EventType._(r'ScheduledMaintenanceStatus');
-  static const profileStringModerationCompleted = EventType._(r'ProfileStringModerationCompleted');
-  static const automaticProfileSearchCompleted = EventType._(r'AutomaticProfileSearchCompleted');
-  static const adminNotification = EventType._(r'AdminNotification');
   static const adminBotNotification = EventType._(r'AdminBotNotification');
   static const pushNotificationInfoChanged = EventType._(r'PushNotificationInfoChanged');
   static const typingStart = EventType._(r'TypingStart');
@@ -49,18 +47,16 @@ class EventType {
   static const values = <EventType>[
     accountStateChanged,
     newMessageReceived,
+    pendingChatNotificationsChanged,
+    pendingAppNotificationsChanged,
     receivedLikesChanged,
     contentProcessingStateChanged,
     clientConfigChanged,
     profileChanged,
     newsCountChanged,
-    mediaContentModerationCompleted,
     mediaContentChanged,
     dailyLikesLeftChanged,
     scheduledMaintenanceStatus,
-    profileStringModerationCompleted,
-    automaticProfileSearchCompleted,
-    adminNotification,
     adminBotNotification,
     pushNotificationInfoChanged,
     typingStart,
@@ -108,18 +104,16 @@ class EventTypeTypeTransformer {
       switch (data) {
         case r'AccountStateChanged': return EventType.accountStateChanged;
         case r'NewMessageReceived': return EventType.newMessageReceived;
+        case r'PendingChatNotificationsChanged': return EventType.pendingChatNotificationsChanged;
+        case r'PendingAppNotificationsChanged': return EventType.pendingAppNotificationsChanged;
         case r'ReceivedLikesChanged': return EventType.receivedLikesChanged;
         case r'ContentProcessingStateChanged': return EventType.contentProcessingStateChanged;
         case r'ClientConfigChanged': return EventType.clientConfigChanged;
         case r'ProfileChanged': return EventType.profileChanged;
         case r'NewsCountChanged': return EventType.newsCountChanged;
-        case r'MediaContentModerationCompleted': return EventType.mediaContentModerationCompleted;
         case r'MediaContentChanged': return EventType.mediaContentChanged;
         case r'DailyLikesLeftChanged': return EventType.dailyLikesLeftChanged;
         case r'ScheduledMaintenanceStatus': return EventType.scheduledMaintenanceStatus;
-        case r'ProfileStringModerationCompleted': return EventType.profileStringModerationCompleted;
-        case r'AutomaticProfileSearchCompleted': return EventType.automaticProfileSearchCompleted;
-        case r'AdminNotification': return EventType.adminNotification;
         case r'AdminBotNotification': return EventType.adminBotNotification;
         case r'PushNotificationInfoChanged': return EventType.pushNotificationInfoChanged;
         case r'TypingStart': return EventType.typingStart;

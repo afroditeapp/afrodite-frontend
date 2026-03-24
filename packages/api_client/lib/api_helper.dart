@@ -124,6 +124,9 @@ String parameterToString(dynamic value) {
   if (value is ModerationQueueType) {
     return ModerationQueueTypeTypeTransformer().encode(value).toString();
   }
+  if (value is PendingAppNotificationType) {
+    return PendingAppNotificationTypeTypeTransformer().encode(value).toString();
+  }
   if (value is ProfileStatisticsHistoryValueType) {
     return ProfileStatisticsHistoryValueTypeTypeTransformer().encode(value).toString();
   }
