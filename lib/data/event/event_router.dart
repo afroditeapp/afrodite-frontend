@@ -79,26 +79,25 @@ class EventRouter {
         await chat.receivedLikesCountRefresh();
       case EventType.newMessageReceived:
         await chat.receiveNewMessages();
+      case EventType.pendingChatNotificationsChanged:
+        await chat.handlePendingChatNotificationsChangedEvent();
+      case EventType.pendingAppNotificationsChanged:
+        await account.handlePendingAppNotificationsChangedEvent();
       case EventType.clientConfigChanged:
         await profile.receiveClientConfig();
       case EventType.profileChanged:
         await profile.reloadMyProfile();
       case EventType.newsCountChanged:
         await account.receiveNewsCount();
-      case EventType.mediaContentModerationCompleted:
-        await media.handleMediaContentModerationCompletedEvent();
-      case EventType.profileStringModerationCompleted:
-        await profile.handleProfileStringModerationCompletedEvent();
-      case EventType.automaticProfileSearchCompleted:
-        await profile.handleAutomaticProfileSearchCompletedEvent();
       case EventType.mediaContentChanged:
         await media.reloadMyMediaContent();
       case EventType.dailyLikesLeftChanged:
         await chat.reloadDailyLikesLimit();
       case EventType.pushNotificationInfoChanged:
         await repositories.common.receivePushNotificationInfo();
-      case EventType.adminNotification:
-        await account.receiveAdminNotification();
+      case EventType.adminBotNotification:
+        // Ignore event as it's only for admin bot
+        break;
       case EventType.typingStart:
         final typingStart = event.typingStart;
         if (typingStart != null) {

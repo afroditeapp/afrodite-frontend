@@ -7,7 +7,6 @@ import 'package:app/logic/app/app_visibility_provider.dart';
 import 'package:app/logic/app/bottom_navigation_state.dart';
 import 'package:app/logic/app/navigator_state.dart';
 import 'package:app/ui/normal/likes.dart';
-import 'package:openapi/api.dart';
 import 'package:utils/utils.dart';
 
 class NotificationLikeReceived extends AppSingletonNoInit {
@@ -21,16 +20,9 @@ class NotificationLikeReceived extends AppSingletonNoInit {
 
   int _receivedCount = 0;
 
-  Future<void> handleNewReceivedLikesCount(
-    NewReceivedLikesCountResult notification,
-    AccountDatabaseManager db, {
-    bool onlyDbUpdate = false,
-  }) async {
-    await db.accountAction((db) => db.common.updateSyncVersionReceivedLikes(notification));
-    if (!onlyDbUpdate) {
-      _receivedCount = notification.c.c;
-      await _updateNotification(db);
-    }
+  Future<void> handleNewReceivedLikesCount(int currentCount, AccountDatabaseManager db) async {
+    _receivedCount = currentCount;
+    await _updateNotification(db);
   }
 
   Future<void> incrementReceivedLikesCount(AccountDatabaseManager db) async {

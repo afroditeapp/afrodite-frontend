@@ -1,11 +1,16 @@
 import 'dart:async';
 import 'dart:typed_data';
 
+import 'package:app/data/general/notification/state/automatic_profile_search.dart';
+import 'package:app/data/general/notification/state/media_content_moderation_completed.dart';
 import 'package:app/data/general/notification/state/news_item_available.dart';
+import 'package:app/data/general/notification/state/like_received.dart';
+import 'package:app/data/general/notification/state/profile_string_moderation_completed.dart';
 import 'package:app/data/event/event_router.dart';
 import 'package:app/data/utils/repository_instances.dart';
 import 'package:app/database/common_database_manager.dart';
 import 'package:database/database.dart';
+import 'package:logging/logging.dart';
 import 'package:openapi/api.dart';
 import 'package:app/api/server_connection_manager.dart';
 import 'package:app/data/account/initial_setup.dart';
@@ -15,6 +20,8 @@ import 'package:app/model/freezed/logic/account/initial_setup.dart';
 import 'package:app/utils/api.dart';
 import 'package:app/utils/result.dart';
 import 'package:rxdart/rxdart.dart';
+
+final _log = Logger("AccountRepository");
 
 enum AccountRepositoryState { initRequired, initComplete }
 
@@ -204,32 +211,120 @@ class AccountRepository extends DataRepositoryWithLifecycle {
   Future<Result<(), ()>> receiveNewsCount() async {
     final r = await api.account((api) => api.postGetUnreadNewsCount()).ok();
     if (r != null) {
-      return await NotificationNewsItemAvailable.getInstance().handleNewsCountUpdate(
-        r,
-        db,
-        onlyDbUpdate: r.h,
-      );
+      return await db
+          .accountAction((db) => db.app.setUnreadNewsCount(unreadNewsCount: r.c, version: r.v))
+          .emptyErr();
     }
     return const Err(());
   }
 
-  Future<Result<(), ()>> receiveAdminNotification() async {
-    final r = await api.commonAdmin((api) => api.postGetAdminNotification()).ok();
-    if (r != null) {
-      final viewedNotification = await db.accountData((db) => db.app.getAdminNotification()).ok();
-      if (viewedNotification != null && r.state == viewedNotification) {
-        // Prevent showing the same notification again when the notification
-        // is already received as push notification.
-      } else {
-        await NotificationNewsItemAvailable.getInstance().showAdminNotification(
-          r.state,
-          db,
-          onlyDbUpdate: r.hidden,
-        );
-      }
-      return await db.accountAction((db) => db.app.removeAdminNotification()).emptyErr();
+  Future<Result<(), ()>> handlePendingAppNotificationsChangedEvent() async {
+    final pending = await api.common((api) => api.getPendingAppNotifications()).ok();
+    if (pending == null) {
+      return const Err(());
     }
-    return const Err(());
+
+    if (pending.notifications.isEmpty) {
+      return const Ok(());
+    }
+
+    for (final notification in pending.notifications) {
+      await _handlePendingAppNotification(notification);
+    }
+
+    final handled = PendingAppNotificationList(notifications: pending.notifications);
+
+    return await api
+        .commonAction((api) => api.postDeletePendingAppNotifications(handled))
+        .emptyErr();
+  }
+
+  Future<void> _handlePendingAppNotification(PendingAppNotification notification) async {
+    if (notification.notificationType ==
+        PendingAppNotificationType.automaticProfileSearchCompleted) {
+      final profileCount = notification.dataInteger ?? 0;
+      if (profileCount <= 0) {
+        await db.accountAction((db) => db.search.hideAutomaticProfileSearchBadge());
+      } else {
+        await db.accountAction((db) => db.search.showAutomaticProfileSearchBadge(profileCount));
+      }
+    }
+
+    if (notification.pushNotificationSent) {
+      return;
+    }
+
+    switch (notification.notificationType) {
+      case PendingAppNotificationType.adminNotification:
+        final flags = notification.dataInteger;
+        if (flags == null) {
+          _log.warning("Missing dataInteger for ${notification.notificationType}");
+          return;
+        }
+        final adminNotification = _adminNotificationFromPendingData(flags);
+        await NotificationNewsItemAvailable.getInstance().showAdminNotification(
+          adminNotification,
+          db,
+        );
+      case PendingAppNotificationType.newsChanged:
+        final currentCount = notification.dataInteger;
+        if (currentCount == null) {
+          _log.warning("Missing dataInteger for ${notification.notificationType}");
+          return;
+        }
+        await NotificationNewsItemAvailable.getInstance().handleNewsCountUpdate(currentCount, db);
+      case PendingAppNotificationType.mediaContentModerationAccepted:
+        await NotificationMediaContentModerationCompleted.handleAccepted(db);
+      case PendingAppNotificationType.mediaContentModerationRejected:
+        await NotificationMediaContentModerationCompleted.handleRejected(db);
+      case PendingAppNotificationType.mediaContentModerationDeleted:
+        await NotificationMediaContentModerationCompleted.handleDeleted(db);
+      case PendingAppNotificationType.profileNameModerationAccepted:
+        await NotificationProfileStringModerationCompleted.handleNameAccepted(db);
+      case PendingAppNotificationType.profileNameModerationRejected:
+        await NotificationProfileStringModerationCompleted.handleNameRejected(db);
+      case PendingAppNotificationType.profileTextModerationAccepted:
+        await NotificationProfileStringModerationCompleted.handleTextAccepted(db);
+      case PendingAppNotificationType.profileTextModerationRejected:
+        await NotificationProfileStringModerationCompleted.handleTextRejected(db);
+      case PendingAppNotificationType.automaticProfileSearchCompleted:
+        final profileCount = notification.dataInteger;
+        if (profileCount == null) {
+          _log.warning("Missing dataInteger for ${notification.notificationType}");
+          return;
+        }
+        await NotificationAutomaticProfileSearch.handleAutomaticProfileSearchCompleted(
+          profileCount,
+          db,
+        );
+      case PendingAppNotificationType.receivedLikesChanged:
+        final currentCount = notification.dataInteger;
+        if (currentCount == null) {
+          _log.warning("Missing dataInteger for ${notification.notificationType}");
+          return;
+        }
+        await NotificationLikeReceived.getInstance().handleNewReceivedLikesCount(currentCount, db);
+      default:
+        _log.warning("Notification type is not supported: ${notification.notificationType}");
+    }
+  }
+
+  AdminNotification _adminNotificationFromPendingData(int flags) {
+    return AdminNotification(
+      moderateInitialMediaContentBot: _isFlagSet(flags, 1 << 0),
+      moderateInitialMediaContentHuman: _isFlagSet(flags, 1 << 1),
+      moderateMediaContentBot: _isFlagSet(flags, 1 << 2),
+      moderateMediaContentHuman: _isFlagSet(flags, 1 << 3),
+      moderateProfileTextsBot: _isFlagSet(flags, 1 << 4),
+      moderateProfileTextsHuman: _isFlagSet(flags, 1 << 5),
+      moderateProfileNamesBot: _isFlagSet(flags, 1 << 6),
+      moderateProfileNamesHuman: _isFlagSet(flags, 1 << 7),
+      processReports: _isFlagSet(flags, 1 << 8),
+    );
+  }
+
+  bool _isFlagSet(int value, int flag) {
+    return (value & flag) != 0;
   }
 
   Future<Result<(), ()>> handleServerMaintenanceStatusEvent(ScheduledMaintenanceStatus event) {

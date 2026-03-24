@@ -93,7 +93,6 @@ class NewMessageNotification extends Table {
   TextColumn get accountId => text().map(const AccountIdConverter())();
   IntColumn get conversationId =>
       integer().map(const NullAwareTypeConverter.wrap(ConversationIdConverter())).nullable()();
-  BoolColumn get notificationShown => boolean().withDefault(const Constant(false))();
 
   @override
   Set<Column<Object>> get primaryKey => {accountId};

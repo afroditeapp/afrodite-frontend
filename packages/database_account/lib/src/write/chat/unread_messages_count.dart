@@ -40,10 +40,4 @@ class DaoWriteChatUnreadMessagesCount extends DatabaseAccessor<AccountDatabase>
       NewMessageNotificationCompanion.insert(accountId: accountId, conversationId: Value(value)),
     );
   }
-
-  Future<void> setNewMessageNotificationShown(api.AccountId accountId, bool value) async {
-    await into(newMessageNotification).insertOnConflictUpdate(
-      NewMessageNotificationCompanion.insert(accountId: accountId, notificationShown: Value(value)),
-    );
-  }
 }

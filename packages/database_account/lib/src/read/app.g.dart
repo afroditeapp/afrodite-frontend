@@ -14,10 +14,6 @@ mixin _$DaoReadAppMixin on DatabaseAccessor<AccountDatabase> {
   $GridSettingsTable get gridSettings => attachedDatabase.gridSettings;
   $ChatBackupReminderTable get chatBackupReminder =>
       attachedDatabase.chatBackupReminder;
-  $AdminNotificationTable get adminNotification =>
-      attachedDatabase.adminNotification;
-  $NotificationStatusTable get notificationStatus =>
-      attachedDatabase.notificationStatus;
   $NewsTable get news => attachedDatabase.news;
   $PushNotificationTable get pushNotification =>
       attachedDatabase.pushNotification;

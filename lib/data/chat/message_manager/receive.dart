@@ -10,7 +10,6 @@ import 'package:openapi/api.dart';
 import 'package:openapi/manual_additions.dart';
 import 'package:app/api/server_connection_manager.dart';
 import 'package:app/data/chat/message_key_generator.dart';
-import 'package:app/data/general/notification/state/message_received.dart';
 import 'package:app/data/profile_repository.dart';
 import 'package:app/database/account_database_manager.dart';
 import 'package:app/utils/api.dart';
@@ -42,11 +41,7 @@ class ReceiveMessageUtils {
       return;
     }
 
-    final notificationHidden = newMessageBytes[0] == 1;
-
-    final newMessages = await _parsePendingMessagesResponse(
-      Uint8List.sublistView(newMessageBytes, 1),
-    );
+    final newMessages = await _parsePendingMessagesResponse(newMessageBytes);
     if (newMessages == null) {
       return;
     }
@@ -114,39 +109,8 @@ class ReceiveMessageUtils {
         }
       }
 
-      ConversationId? conversationId = await db
-          .accountData((db) => db.chatUnreadMessagesCount.getConversationId(message.parsed.sender))
-          .ok();
-      if (conversationId == null) {
-        final r = await api.chat((api) => api.getConversationId(message.parsed.sender.aid)).ok();
-        conversationId = r?.value;
-      }
-
-      final unreadMessagesCount = await db
-          .accountDataWrite(
-            (db) => db.chatUnreadMessagesCount.incrementUnreadMessagesCount(message.parsed.sender),
-          )
-          .ok();
-      if (unreadMessagesCount != null) {
-        if (conversationId == null) {
-          await NotificationMessageReceived.getInstance().showFallbackMessageReceivedNotification(
-            db,
-          );
-        } else {
-          await NotificationMessageReceived.getInstance().updateMessageReceivedCount(
-            message.parsed.sender,
-            unreadMessagesCount.count,
-            conversationId,
-            db,
-            onlyDbUpdate: notificationHidden,
-          );
-        }
-      }
-    }
-
-    for (final sender in newMessages.map((item) => item.parsed.sender).toSet()) {
-      await db.accountAction(
-        (db) => db.chatUnreadMessagesCount.setNewMessageNotificationShown(sender, false),
+      await db.accountDataWrite(
+        (db) => db.chatUnreadMessagesCount.incrementUnreadMessagesCount(message.parsed.sender),
       );
     }
 

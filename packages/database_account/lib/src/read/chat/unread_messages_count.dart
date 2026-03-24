@@ -56,11 +56,4 @@ class DaoReadChatUnreadMessagesCount extends DatabaseAccessor<AccountDatabase>
         .map((r) => r.accountId)
         .getSingleOrNull();
   }
-
-  Future<bool> getNewMessageNotificationShown(api.AccountId accountId) async {
-    final r = await (select(
-      newMessageNotification,
-    )..where((t) => t.accountId.equals(accountId.aid))).getSingleOrNull();
-    return r?.notificationShown ?? false;
-  }
 }

@@ -16,20 +16,12 @@ part 'app.g.dart';
     schema.InitialSetupSkipped,
     schema.GridSettings,
     schema.ChatBackupReminder,
-    schema.AdminNotification,
-    schema.NotificationStatus,
     schema.News,
     schema.PushNotification,
   ],
 )
 class DaoReadApp extends DatabaseAccessor<AccountDatabase> with _$DaoReadAppMixin {
   DaoReadApp(super.db);
-
-  Future<api.AdminNotification?> getAdminNotification() async {
-    return await (select(adminNotification)..where((t) => t.id.equals(SingleRowTable.ID.value)))
-        .map((r) => r.jsonViewedNotification?.value)
-        .getSingleOrNull();
-  }
 
   Stream<api.UnreadNewsCount?> watchUnreadNewsCount() {
     return (select(news)..where((t) => t.id.equals(SingleRowTable.ID.value))).map((r) {

@@ -3,8 +3,6 @@ import 'package:app/data/general/notification/utils/notification_id.dart';
 import 'package:app/data/notification_manager.dart';
 import 'package:app/database/account_database_manager.dart';
 import 'package:app/localizations.dart';
-import 'package:app/utils/result.dart';
-import 'package:openapi/api.dart';
 import 'package:utils/utils.dart';
 
 class NotificationMediaContentModerationCompleted extends AppSingletonNoInit {
@@ -16,61 +14,25 @@ class NotificationMediaContentModerationCompleted extends AppSingletonNoInit {
 
   final notifications = NotificationManager.getInstance();
 
-  static Future<void> handleAccepted(
-    NotificationStatus notification,
-    AccountDatabaseManager db, {
-    bool onlyDbUpdate = false,
-  }) async {
-    final showAccepted =
-        await db
-            .accountDataWrite((db) => db.app.mediaContentAccepted.shouldBeShown(notification))
-            .ok() ??
-        false;
-
-    if (!onlyDbUpdate && showAccepted) {
-      await NotificationMediaContentModerationCompleted.getInstance().show(
-        ModerationCompletedState.accepted,
-        db,
-      );
-    }
+  static Future<void> handleAccepted(AccountDatabaseManager db) async {
+    await NotificationMediaContentModerationCompleted.getInstance().show(
+      ModerationCompletedState.accepted,
+      db,
+    );
   }
 
-  static Future<void> handleRejected(
-    NotificationStatus notification,
-    AccountDatabaseManager db, {
-    bool onlyDbUpdate = false,
-  }) async {
-    final showRejected =
-        await db
-            .accountDataWrite((db) => db.app.mediaContentRejected.shouldBeShown(notification))
-            .ok() ??
-        false;
-
-    if (!onlyDbUpdate && showRejected) {
-      await NotificationMediaContentModerationCompleted.getInstance().show(
-        ModerationCompletedState.rejected,
-        db,
-      );
-    }
+  static Future<void> handleRejected(AccountDatabaseManager db) async {
+    await NotificationMediaContentModerationCompleted.getInstance().show(
+      ModerationCompletedState.rejected,
+      db,
+    );
   }
 
-  static Future<void> handleDeleted(
-    NotificationStatus notification,
-    AccountDatabaseManager db, {
-    bool onlyDbUpdate = false,
-  }) async {
-    final showDeleted =
-        await db
-            .accountDataWrite((db) => db.app.mediaContentDeleted.shouldBeShown(notification))
-            .ok() ??
-        false;
-
-    if (!onlyDbUpdate && showDeleted) {
-      await NotificationMediaContentModerationCompleted.getInstance().show(
-        ModerationCompletedState.deleted,
-        db,
-      );
-    }
+  static Future<void> handleDeleted(AccountDatabaseManager db) async {
+    await NotificationMediaContentModerationCompleted.getInstance().show(
+      ModerationCompletedState.deleted,
+      db,
+    );
   }
 
   Future<void> show(ModerationCompletedState state, AccountDatabaseManager db) async {

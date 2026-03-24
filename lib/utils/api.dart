@@ -154,12 +154,6 @@ class AutomaticProfileSearchSettingsDefaults {
   static const int weekdaysDefault = 0x7F;
 }
 
-extension NotificationIdExtension on NotificationId {
-  NotificationIdViewed toViewed() {
-    return NotificationIdViewed(id: id);
-  }
-}
-
 extension ClientFeaturesConfigExtensions on ClientFeaturesConfig {
   MapBounds mapBounds() {
     return map?.bounds ??

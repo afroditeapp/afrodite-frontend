@@ -1,5 +1,3 @@
-import 'package:app/utils/result.dart';
-import 'package:async/async.dart' show StreamExtensions;
 import 'package:app/data/general/notification/utils/notification_category.dart';
 import 'package:app/data/general/notification/utils/notification_id.dart';
 import 'package:app/data/notification_manager.dart';
@@ -17,22 +15,12 @@ class NotificationNewsItemAvailable extends AppSingletonNoInit {
 
   final notifications = NotificationManager.getInstance();
 
-  Future<Result<(), ()>> handleNewsCountUpdate(
-    UnreadNewsCountResult r,
-    AccountDatabaseManager db, {
-    bool onlyDbUpdate = false,
-  }) async {
-    final currentCount = await db.accountStream((db) => db.app.watchUnreadNewsCount()).firstOrNull;
-    final currentCountInt = currentCount?.c ?? 0;
-    if (!onlyDbUpdate && currentCountInt < r.c.c) {
+  Future<void> handleNewsCountUpdate(int currentCount, AccountDatabaseManager db) async {
+    if (currentCount > 0) {
       await _updateNotification(true, db);
-    } else if (!onlyDbUpdate && r.c.c == 0) {
+    } else {
       await _updateNotification(false, db);
     }
-
-    return await db
-        .accountAction((db) => db.app.setUnreadNewsCount(unreadNewsCount: r.c, version: r.v))
-        .emptyErr();
   }
 
   Future<void> hide(AccountDatabaseManager db) => _updateNotification(false, db);
@@ -51,11 +39,10 @@ class NotificationNewsItemAvailable extends AppSingletonNoInit {
     );
   }
 
-  Future<Result<(), ()>> showAdminNotification(
+  Future<void> showAdminNotification(
     AdminNotification notificationContent,
-    AccountDatabaseManager db, {
-    bool onlyDbUpdate = false,
-  }) async {
+    AccountDatabaseManager db,
+  ) async {
     Map<String, dynamic> booleanValues = notificationContent.toJson();
     List<String> trueValues = [];
     for (final e in booleanValues.entries) {
@@ -63,18 +50,12 @@ class NotificationNewsItemAvailable extends AppSingletonNoInit {
         trueValues.add(e.key);
       }
     }
-    if (!onlyDbUpdate) {
-      await notifications.sendNotification(
-        id: NotificationIdStatic.adminNotification.id,
-        title: "Admin notification",
-        body: trueValues.join("\n"),
-        category: const NotificationCategoryNewsItemAvailable(),
-        db: db,
-      );
-    }
-
-    return await db
-        .accountAction((db) => db.app.updateAdminNotification(notificationContent))
-        .emptyErr();
+    await notifications.sendNotification(
+      id: NotificationIdStatic.adminNotification.id,
+      title: "Admin notification",
+      body: trueValues.join("\n"),
+      category: const NotificationCategoryNewsItemAvailable(),
+      db: db,
+    );
   }
 }

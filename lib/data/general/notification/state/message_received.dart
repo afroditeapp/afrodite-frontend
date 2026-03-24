@@ -23,9 +23,8 @@ class NotificationMessageReceived extends AppSingletonNoInit {
     AccountId accountId,
     int count,
     ConversationId? conversation,
-    AccountDatabaseManager db, {
-    bool onlyDbUpdate = false,
-  }) async {
+    AccountDatabaseManager db,
+  ) async {
     final dbConversationId = await db
         .accountData((db) => db.chatUnreadMessagesCount.getConversationId(accountId))
         .ok();
@@ -45,17 +44,10 @@ class NotificationMessageReceived extends AppSingletonNoInit {
     final notificationId = NotificationIdStatic.calculateNotificationIdForNewMessageNotifications(
       conversationId,
     );
-    final notificationShown =
-        await db
-            .accountData(
-              (db) => db.chatUnreadMessagesCount.getNewMessageNotificationShown(accountId),
-            )
-            .ok() ??
-        false;
 
-    if (count <= 0 || _isConversationUiOpen(accountId) || notificationShown) {
+    if (count <= 0 || _isConversationUiOpen(accountId)) {
       await notifications.hideNotification(notificationId);
-    } else if (!onlyDbUpdate) {
+    } else {
       await _showNotification(accountId, notificationId, count, db);
     }
   }

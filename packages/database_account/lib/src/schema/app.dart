@@ -49,11 +49,6 @@ class ChatBackupReminder extends SingleRowTable {
       integer().map(NullAwareTypeConverter.wrap(const UtcDateTimeConverter())).nullable()();
 }
 
-class AdminNotification extends SingleRowTable {
-  TextColumn get jsonViewedNotification =>
-      text().map(NullAwareTypeConverter.wrap(const AdminNotificationConverter())).nullable()();
-}
-
 class AppNotificationSettings extends SingleRowTable {
   BoolColumn get messages => boolean().nullable()();
   BoolColumn get likes => boolean().nullable()();
@@ -61,26 +56,6 @@ class AppNotificationSettings extends SingleRowTable {
   BoolColumn get profileStringModerationCompleted => boolean().nullable()();
   BoolColumn get news => boolean().nullable()();
   BoolColumn get automaticProfileSearch => boolean().nullable()();
-}
-
-/// Notifications with NotificationStatus (ID and viewed ID) available.
-class NotificationStatus extends SingleRowTable {
-  TextColumn get jsonAutomaticProfileSearchFoundProfiles =>
-      text().map(NullAwareTypeConverter.wrap(const NotificationStatusConverter())).nullable()();
-  TextColumn get jsonMediaContentAccepted =>
-      text().map(NullAwareTypeConverter.wrap(const NotificationStatusConverter())).nullable()();
-  TextColumn get jsonMediaContentRejected =>
-      text().map(NullAwareTypeConverter.wrap(const NotificationStatusConverter())).nullable()();
-  TextColumn get jsonMediaContentDeleted =>
-      text().map(NullAwareTypeConverter.wrap(const NotificationStatusConverter())).nullable()();
-  TextColumn get jsonProfileNameAccepted =>
-      text().map(NullAwareTypeConverter.wrap(const NotificationStatusConverter())).nullable()();
-  TextColumn get jsonProfileNameRejected =>
-      text().map(NullAwareTypeConverter.wrap(const NotificationStatusConverter())).nullable()();
-  TextColumn get jsonProfileTextAccepted =>
-      text().map(NullAwareTypeConverter.wrap(const NotificationStatusConverter())).nullable()();
-  TextColumn get jsonProfileTextRejected =>
-      text().map(NullAwareTypeConverter.wrap(const NotificationStatusConverter())).nullable()();
 }
 
 class News extends SingleRowTable {

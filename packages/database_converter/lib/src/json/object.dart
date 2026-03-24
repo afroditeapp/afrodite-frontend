@@ -17,34 +17,6 @@ class JsonObject<T> {
   }
 }
 
-class NotificationStatusConverter extends TypeConverter<JsonObject<NotificationStatus>, String> {
-  const NotificationStatusConverter();
-
-  @override
-  JsonObject<NotificationStatus> fromSql(fromDb) {
-    return JsonObject.create(() => NotificationStatus.fromJson(jsonDecode(fromDb)));
-  }
-
-  @override
-  String toSql(value) {
-    return jsonEncode(value.value?.toJson());
-  }
-}
-
-class AdminNotificationConverter extends TypeConverter<JsonObject<AdminNotification>, String> {
-  const AdminNotificationConverter();
-
-  @override
-  JsonObject<AdminNotification> fromSql(fromDb) {
-    return JsonObject.create(() => AdminNotification.fromJson(jsonDecode(fromDb)));
-  }
-
-  @override
-  String toSql(value) {
-    return jsonEncode(value.value?.toJson());
-  }
-}
-
 class AccountStateContainerConverter
     extends TypeConverter<JsonObject<AccountStateContainer>, String> {
   const AccountStateContainerConverter();
@@ -172,18 +144,6 @@ class AutomaticProfileSearchSettingsConverter
   @override
   String toSql(value) {
     return jsonEncode(value.value?.toJson());
-  }
-}
-
-extension NotificationStatusJson on NotificationStatus {
-  JsonObject<NotificationStatus> toJsonObject() {
-    return JsonObject._(this);
-  }
-}
-
-extension AdminNotificationJson on AdminNotification {
-  JsonObject<AdminNotification> toJsonObject() {
-    return JsonObject._(this);
   }
 }
 

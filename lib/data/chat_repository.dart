@@ -5,12 +5,12 @@ import 'package:app/data/account_repository.dart';
 import 'package:app/data/chat/check_online_status_manager.dart';
 import 'package:app/data/chat/message_manager/utils.dart';
 import 'package:app/data/chat/typing_indicator_manager.dart';
+import 'package:app/data/general/notification/state/message_received.dart';
 import 'package:app/utils/app_error.dart';
 import 'package:openapi/api.dart';
 import 'package:app/api/server_connection_manager.dart';
 import 'package:app/data/chat/message_manager.dart';
 import 'package:app/data/chat/message_key_generator.dart';
-import 'package:app/data/general/notification/state/like_received.dart';
 import 'package:app/data/media_repository.dart';
 import 'package:app/data/profile/account_id_database_iterator.dart';
 import 'package:app/data/profile/profile_downloader.dart';
@@ -239,16 +239,13 @@ class ChatRepository extends DataRepositoryWithLifecycle {
         );
   }
 
-  Future<void> receivedLikesCountRefresh() async {
+  Future<Result<(), ()>> receivedLikesCountRefresh() async {
     final r = await api.chat((api) => api.postGetNewReceivedLikesCount()).ok();
     if (r == null) {
-      return;
+      return const Err(());
     }
-    await NotificationLikeReceived.getInstance().handleNewReceivedLikesCount(
-      r,
-      db,
-      onlyDbUpdate: r.h,
-    );
+    await db.accountAction((db) => db.common.updateSyncVersionReceivedLikes(r));
+    return const Ok(());
   }
 
   Future<void> receiveMessageDeliveryInfo() async {
@@ -307,6 +304,65 @@ class ChatRepository extends DataRepositoryWithLifecycle {
     return await api
         .chat((api) => api.getDailyLikesLeft())
         .andThenEmptyErr((v) => db.accountAction((db) => db.like.updateDailyLikesLeft(v)));
+  }
+
+  Future<Result<(), ()>> handlePendingChatNotificationsChangedEvent() async {
+    final pending = await api.chat((api) => api.getPendingChatNotifications()).ok();
+    if (pending == null) {
+      return const Err(());
+    }
+
+    if (pending.notifications.isEmpty) {
+      return const Ok(());
+    }
+
+    for (final notification in pending.notifications) {
+      await _handlePendingChatNotification(notification);
+    }
+
+    final handled = PendingChatNotificationList(notifications: pending.notifications);
+
+    return await api
+        .chatAction((api) => api.postDeletePendingChatNotifications(handled))
+        .emptyErr();
+  }
+
+  Future<void> _handlePendingChatNotification(PendingChatNotification notification) async {
+    final accountId = notification.accountIdSender;
+    final messageCount = notification.messageCount;
+
+    await db.accountAction(
+      (db) => db.chatUnreadMessagesCount.setUnreadMessagesCount(
+        accountId,
+        UnreadMessagesCount(messageCount),
+      ),
+    );
+
+    ConversationId? conversationId = await db
+        .accountData((db) => db.chatUnreadMessagesCount.getConversationId(accountId))
+        .ok();
+    if (conversationId == null) {
+      final result = await api.chat((api) => api.getConversationId(accountId.aid)).ok();
+      conversationId = result?.value;
+    }
+
+    if (notification.pushNotificationSent) {
+      return;
+    }
+
+    if (conversationId == null) {
+      if (messageCount > 0) {
+        await NotificationMessageReceived.getInstance().showFallbackMessageReceivedNotification(db);
+      }
+      return;
+    }
+
+    await NotificationMessageReceived.getInstance().updateMessageReceivedCount(
+      accountId,
+      messageCount,
+      conversationId,
+      db,
+    );
   }
 
   // Message manager API

@@ -1,7 +1,5 @@
 import 'dart:async';
 
-import 'package:app/data/general/notification/state/media_content_moderation_completed.dart';
-import 'package:app/utils/api.dart';
 import 'package:drift/drift.dart';
 import 'package:logging/logging.dart';
 import 'package:openapi/api.dart';
@@ -114,52 +112,6 @@ class MediaRepository extends DataRepositoryWithLifecycle {
     final task = SendImageToSlotTask(account, api);
     yield* task.sendImageToSlot(imgBytes, slot, secureCapture: secureCapture);
     await task.dispose();
-  }
-
-  Future<void> handleMediaContentModerationCompletedEvent() async {
-    final notification = await api
-        .media((api) => api.postGetMediaContentModerationCompletedNotification())
-        .ok();
-
-    if (notification == null) {
-      return;
-    }
-
-    await NotificationMediaContentModerationCompleted.handleAccepted(
-      notification.accepted,
-      db,
-      onlyDbUpdate: notification.hidden,
-    );
-    await NotificationMediaContentModerationCompleted.handleRejected(
-      notification.rejected,
-      db,
-      onlyDbUpdate: notification.hidden,
-    );
-    await NotificationMediaContentModerationCompleted.handleDeleted(
-      notification.deleted,
-      db,
-      onlyDbUpdate: notification.hidden,
-    );
-
-    final viewed = MediaContentModerationCompletedNotificationViewed(
-      accepted: notification.accepted.id.toViewed(),
-      rejected: notification.rejected.id.toViewed(),
-      deleted: notification.deleted.id.toViewed(),
-    );
-    await api
-        .mediaAction((api) => api.postMarkMediaContentModerationCompletedNotificationViewed(viewed))
-        .andThen(
-          (_) =>
-              db.accountAction((db) => db.app.mediaContentAccepted.updateViewedId(viewed.accepted)),
-        )
-        .andThen(
-          (_) =>
-              db.accountAction((db) => db.app.mediaContentRejected.updateViewedId(viewed.rejected)),
-        )
-        .andThen(
-          (_) =>
-              db.accountAction((db) => db.app.mediaContentDeleted.updateViewedId(viewed.deleted)),
-        );
   }
 
   Future<Result<(), ()>> setProfileContent(SetProfileContent imgInfo) => api

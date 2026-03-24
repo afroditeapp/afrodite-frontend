@@ -3136,241 +3136,6 @@ class ChatBackupReminderCompanion
   }
 }
 
-class $AdminNotificationTable extends schema.AdminNotification
-    with TableInfo<$AdminNotificationTable, AdminNotificationData> {
-  @override
-  final GeneratedDatabase attachedDatabase;
-  final String? _alias;
-  $AdminNotificationTable(this.attachedDatabase, [this._alias]);
-  static const VerificationMeta _idMeta = const VerificationMeta('id');
-  @override
-  late final GeneratedColumn<int> id = GeneratedColumn<int>(
-    'id',
-    aliasedName,
-    false,
-    hasAutoIncrement: true,
-    type: DriftSqlType.int,
-    requiredDuringInsert: false,
-    defaultConstraints: GeneratedColumn.constraintIsAlways(
-      'PRIMARY KEY AUTOINCREMENT',
-    ),
-  );
-  @override
-  late final GeneratedColumnWithTypeConverter<
-    JsonObject<AdminNotification>?,
-    String
-  >
-  jsonViewedNotification =
-      GeneratedColumn<String>(
-        'json_viewed_notification',
-        aliasedName,
-        true,
-        type: DriftSqlType.string,
-        requiredDuringInsert: false,
-      ).withConverter<JsonObject<AdminNotification>?>(
-        $AdminNotificationTable.$converterjsonViewedNotification,
-      );
-  @override
-  List<GeneratedColumn> get $columns => [id, jsonViewedNotification];
-  @override
-  String get aliasedName => _alias ?? actualTableName;
-  @override
-  String get actualTableName => $name;
-  static const String $name = 'admin_notification';
-  @override
-  VerificationContext validateIntegrity(
-    Insertable<AdminNotificationData> instance, {
-    bool isInserting = false,
-  }) {
-    final context = VerificationContext();
-    final data = instance.toColumns(true);
-    if (data.containsKey('id')) {
-      context.handle(_idMeta, id.isAcceptableOrUnknown(data['id']!, _idMeta));
-    }
-    return context;
-  }
-
-  @override
-  Set<GeneratedColumn> get $primaryKey => {id};
-  @override
-  AdminNotificationData map(Map<String, dynamic> data, {String? tablePrefix}) {
-    final effectivePrefix = tablePrefix != null ? '$tablePrefix.' : '';
-    return AdminNotificationData(
-      id: attachedDatabase.typeMapping.read(
-        DriftSqlType.int,
-        data['${effectivePrefix}id'],
-      )!,
-      jsonViewedNotification: $AdminNotificationTable
-          .$converterjsonViewedNotification
-          .fromSql(
-            attachedDatabase.typeMapping.read(
-              DriftSqlType.string,
-              data['${effectivePrefix}json_viewed_notification'],
-            ),
-          ),
-    );
-  }
-
-  @override
-  $AdminNotificationTable createAlias(String alias) {
-    return $AdminNotificationTable(attachedDatabase, alias);
-  }
-
-  static TypeConverter<JsonObject<AdminNotification>?, String?>
-  $converterjsonViewedNotification = NullAwareTypeConverter.wrap(
-    const AdminNotificationConverter(),
-  );
-}
-
-class AdminNotificationData extends DataClass
-    implements Insertable<AdminNotificationData> {
-  final int id;
-  final JsonObject<AdminNotification>? jsonViewedNotification;
-  const AdminNotificationData({required this.id, this.jsonViewedNotification});
-  @override
-  Map<String, Expression> toColumns(bool nullToAbsent) {
-    final map = <String, Expression>{};
-    map['id'] = Variable<int>(id);
-    if (!nullToAbsent || jsonViewedNotification != null) {
-      map['json_viewed_notification'] = Variable<String>(
-        $AdminNotificationTable.$converterjsonViewedNotification.toSql(
-          jsonViewedNotification,
-        ),
-      );
-    }
-    return map;
-  }
-
-  AdminNotificationCompanion toCompanion(bool nullToAbsent) {
-    return AdminNotificationCompanion(
-      id: Value(id),
-      jsonViewedNotification: jsonViewedNotification == null && nullToAbsent
-          ? const Value.absent()
-          : Value(jsonViewedNotification),
-    );
-  }
-
-  factory AdminNotificationData.fromJson(
-    Map<String, dynamic> json, {
-    ValueSerializer? serializer,
-  }) {
-    serializer ??= driftRuntimeOptions.defaultSerializer;
-    return AdminNotificationData(
-      id: serializer.fromJson<int>(json['id']),
-      jsonViewedNotification: serializer
-          .fromJson<JsonObject<AdminNotification>?>(
-            json['jsonViewedNotification'],
-          ),
-    );
-  }
-  @override
-  Map<String, dynamic> toJson({ValueSerializer? serializer}) {
-    serializer ??= driftRuntimeOptions.defaultSerializer;
-    return <String, dynamic>{
-      'id': serializer.toJson<int>(id),
-      'jsonViewedNotification': serializer
-          .toJson<JsonObject<AdminNotification>?>(jsonViewedNotification),
-    };
-  }
-
-  AdminNotificationData copyWith({
-    int? id,
-    Value<JsonObject<AdminNotification>?> jsonViewedNotification =
-        const Value.absent(),
-  }) => AdminNotificationData(
-    id: id ?? this.id,
-    jsonViewedNotification: jsonViewedNotification.present
-        ? jsonViewedNotification.value
-        : this.jsonViewedNotification,
-  );
-  AdminNotificationData copyWithCompanion(AdminNotificationCompanion data) {
-    return AdminNotificationData(
-      id: data.id.present ? data.id.value : this.id,
-      jsonViewedNotification: data.jsonViewedNotification.present
-          ? data.jsonViewedNotification.value
-          : this.jsonViewedNotification,
-    );
-  }
-
-  @override
-  String toString() {
-    return (StringBuffer('AdminNotificationData(')
-          ..write('id: $id, ')
-          ..write('jsonViewedNotification: $jsonViewedNotification')
-          ..write(')'))
-        .toString();
-  }
-
-  @override
-  int get hashCode => Object.hash(id, jsonViewedNotification);
-  @override
-  bool operator ==(Object other) =>
-      identical(this, other) ||
-      (other is AdminNotificationData &&
-          other.id == this.id &&
-          other.jsonViewedNotification == this.jsonViewedNotification);
-}
-
-class AdminNotificationCompanion
-    extends UpdateCompanion<AdminNotificationData> {
-  final Value<int> id;
-  final Value<JsonObject<AdminNotification>?> jsonViewedNotification;
-  const AdminNotificationCompanion({
-    this.id = const Value.absent(),
-    this.jsonViewedNotification = const Value.absent(),
-  });
-  AdminNotificationCompanion.insert({
-    this.id = const Value.absent(),
-    this.jsonViewedNotification = const Value.absent(),
-  });
-  static Insertable<AdminNotificationData> custom({
-    Expression<int>? id,
-    Expression<String>? jsonViewedNotification,
-  }) {
-    return RawValuesInsertable({
-      if (id != null) 'id': id,
-      if (jsonViewedNotification != null)
-        'json_viewed_notification': jsonViewedNotification,
-    });
-  }
-
-  AdminNotificationCompanion copyWith({
-    Value<int>? id,
-    Value<JsonObject<AdminNotification>?>? jsonViewedNotification,
-  }) {
-    return AdminNotificationCompanion(
-      id: id ?? this.id,
-      jsonViewedNotification:
-          jsonViewedNotification ?? this.jsonViewedNotification,
-    );
-  }
-
-  @override
-  Map<String, Expression> toColumns(bool nullToAbsent) {
-    final map = <String, Expression>{};
-    if (id.present) {
-      map['id'] = Variable<int>(id.value);
-    }
-    if (jsonViewedNotification.present) {
-      map['json_viewed_notification'] = Variable<String>(
-        $AdminNotificationTable.$converterjsonViewedNotification.toSql(
-          jsonViewedNotification.value,
-        ),
-      );
-    }
-    return map;
-  }
-
-  @override
-  String toString() {
-    return (StringBuffer('AdminNotificationCompanion(')
-          ..write('id: $id, ')
-          ..write('jsonViewedNotification: $jsonViewedNotification')
-          ..write(')'))
-        .toString();
-  }
-}
-
 class $AppNotificationSettingsTable extends schema.AppNotificationSettings
     with TableInfo<$AppNotificationSettingsTable, AppNotificationSetting> {
   @override
@@ -3908,783 +3673,6 @@ class AppNotificationSettingsCompanion
           )
           ..write('news: $news, ')
           ..write('automaticProfileSearch: $automaticProfileSearch')
-          ..write(')'))
-        .toString();
-  }
-}
-
-class $NotificationStatusTable extends schema.NotificationStatus
-    with TableInfo<$NotificationStatusTable, NotificationStatusData> {
-  @override
-  final GeneratedDatabase attachedDatabase;
-  final String? _alias;
-  $NotificationStatusTable(this.attachedDatabase, [this._alias]);
-  static const VerificationMeta _idMeta = const VerificationMeta('id');
-  @override
-  late final GeneratedColumn<int> id = GeneratedColumn<int>(
-    'id',
-    aliasedName,
-    false,
-    hasAutoIncrement: true,
-    type: DriftSqlType.int,
-    requiredDuringInsert: false,
-    defaultConstraints: GeneratedColumn.constraintIsAlways(
-      'PRIMARY KEY AUTOINCREMENT',
-    ),
-  );
-  @override
-  late final GeneratedColumnWithTypeConverter<
-    JsonObject<NotificationStatus>?,
-    String
-  >
-  jsonAutomaticProfileSearchFoundProfiles =
-      GeneratedColumn<String>(
-        'json_automatic_profile_search_found_profiles',
-        aliasedName,
-        true,
-        type: DriftSqlType.string,
-        requiredDuringInsert: false,
-      ).withConverter<JsonObject<NotificationStatus>?>(
-        $NotificationStatusTable
-            .$converterjsonAutomaticProfileSearchFoundProfiles,
-      );
-  @override
-  late final GeneratedColumnWithTypeConverter<
-    JsonObject<NotificationStatus>?,
-    String
-  >
-  jsonMediaContentAccepted =
-      GeneratedColumn<String>(
-        'json_media_content_accepted',
-        aliasedName,
-        true,
-        type: DriftSqlType.string,
-        requiredDuringInsert: false,
-      ).withConverter<JsonObject<NotificationStatus>?>(
-        $NotificationStatusTable.$converterjsonMediaContentAccepted,
-      );
-  @override
-  late final GeneratedColumnWithTypeConverter<
-    JsonObject<NotificationStatus>?,
-    String
-  >
-  jsonMediaContentRejected =
-      GeneratedColumn<String>(
-        'json_media_content_rejected',
-        aliasedName,
-        true,
-        type: DriftSqlType.string,
-        requiredDuringInsert: false,
-      ).withConverter<JsonObject<NotificationStatus>?>(
-        $NotificationStatusTable.$converterjsonMediaContentRejected,
-      );
-  @override
-  late final GeneratedColumnWithTypeConverter<
-    JsonObject<NotificationStatus>?,
-    String
-  >
-  jsonMediaContentDeleted =
-      GeneratedColumn<String>(
-        'json_media_content_deleted',
-        aliasedName,
-        true,
-        type: DriftSqlType.string,
-        requiredDuringInsert: false,
-      ).withConverter<JsonObject<NotificationStatus>?>(
-        $NotificationStatusTable.$converterjsonMediaContentDeleted,
-      );
-  @override
-  late final GeneratedColumnWithTypeConverter<
-    JsonObject<NotificationStatus>?,
-    String
-  >
-  jsonProfileNameAccepted =
-      GeneratedColumn<String>(
-        'json_profile_name_accepted',
-        aliasedName,
-        true,
-        type: DriftSqlType.string,
-        requiredDuringInsert: false,
-      ).withConverter<JsonObject<NotificationStatus>?>(
-        $NotificationStatusTable.$converterjsonProfileNameAccepted,
-      );
-  @override
-  late final GeneratedColumnWithTypeConverter<
-    JsonObject<NotificationStatus>?,
-    String
-  >
-  jsonProfileNameRejected =
-      GeneratedColumn<String>(
-        'json_profile_name_rejected',
-        aliasedName,
-        true,
-        type: DriftSqlType.string,
-        requiredDuringInsert: false,
-      ).withConverter<JsonObject<NotificationStatus>?>(
-        $NotificationStatusTable.$converterjsonProfileNameRejected,
-      );
-  @override
-  late final GeneratedColumnWithTypeConverter<
-    JsonObject<NotificationStatus>?,
-    String
-  >
-  jsonProfileTextAccepted =
-      GeneratedColumn<String>(
-        'json_profile_text_accepted',
-        aliasedName,
-        true,
-        type: DriftSqlType.string,
-        requiredDuringInsert: false,
-      ).withConverter<JsonObject<NotificationStatus>?>(
-        $NotificationStatusTable.$converterjsonProfileTextAccepted,
-      );
-  @override
-  late final GeneratedColumnWithTypeConverter<
-    JsonObject<NotificationStatus>?,
-    String
-  >
-  jsonProfileTextRejected =
-      GeneratedColumn<String>(
-        'json_profile_text_rejected',
-        aliasedName,
-        true,
-        type: DriftSqlType.string,
-        requiredDuringInsert: false,
-      ).withConverter<JsonObject<NotificationStatus>?>(
-        $NotificationStatusTable.$converterjsonProfileTextRejected,
-      );
-  @override
-  List<GeneratedColumn> get $columns => [
-    id,
-    jsonAutomaticProfileSearchFoundProfiles,
-    jsonMediaContentAccepted,
-    jsonMediaContentRejected,
-    jsonMediaContentDeleted,
-    jsonProfileNameAccepted,
-    jsonProfileNameRejected,
-    jsonProfileTextAccepted,
-    jsonProfileTextRejected,
-  ];
-  @override
-  String get aliasedName => _alias ?? actualTableName;
-  @override
-  String get actualTableName => $name;
-  static const String $name = 'notification_status';
-  @override
-  VerificationContext validateIntegrity(
-    Insertable<NotificationStatusData> instance, {
-    bool isInserting = false,
-  }) {
-    final context = VerificationContext();
-    final data = instance.toColumns(true);
-    if (data.containsKey('id')) {
-      context.handle(_idMeta, id.isAcceptableOrUnknown(data['id']!, _idMeta));
-    }
-    return context;
-  }
-
-  @override
-  Set<GeneratedColumn> get $primaryKey => {id};
-  @override
-  NotificationStatusData map(Map<String, dynamic> data, {String? tablePrefix}) {
-    final effectivePrefix = tablePrefix != null ? '$tablePrefix.' : '';
-    return NotificationStatusData(
-      id: attachedDatabase.typeMapping.read(
-        DriftSqlType.int,
-        data['${effectivePrefix}id'],
-      )!,
-      jsonAutomaticProfileSearchFoundProfiles: $NotificationStatusTable
-          .$converterjsonAutomaticProfileSearchFoundProfiles
-          .fromSql(
-            attachedDatabase.typeMapping.read(
-              DriftSqlType.string,
-              data['${effectivePrefix}json_automatic_profile_search_found_profiles'],
-            ),
-          ),
-      jsonMediaContentAccepted: $NotificationStatusTable
-          .$converterjsonMediaContentAccepted
-          .fromSql(
-            attachedDatabase.typeMapping.read(
-              DriftSqlType.string,
-              data['${effectivePrefix}json_media_content_accepted'],
-            ),
-          ),
-      jsonMediaContentRejected: $NotificationStatusTable
-          .$converterjsonMediaContentRejected
-          .fromSql(
-            attachedDatabase.typeMapping.read(
-              DriftSqlType.string,
-              data['${effectivePrefix}json_media_content_rejected'],
-            ),
-          ),
-      jsonMediaContentDeleted: $NotificationStatusTable
-          .$converterjsonMediaContentDeleted
-          .fromSql(
-            attachedDatabase.typeMapping.read(
-              DriftSqlType.string,
-              data['${effectivePrefix}json_media_content_deleted'],
-            ),
-          ),
-      jsonProfileNameAccepted: $NotificationStatusTable
-          .$converterjsonProfileNameAccepted
-          .fromSql(
-            attachedDatabase.typeMapping.read(
-              DriftSqlType.string,
-              data['${effectivePrefix}json_profile_name_accepted'],
-            ),
-          ),
-      jsonProfileNameRejected: $NotificationStatusTable
-          .$converterjsonProfileNameRejected
-          .fromSql(
-            attachedDatabase.typeMapping.read(
-              DriftSqlType.string,
-              data['${effectivePrefix}json_profile_name_rejected'],
-            ),
-          ),
-      jsonProfileTextAccepted: $NotificationStatusTable
-          .$converterjsonProfileTextAccepted
-          .fromSql(
-            attachedDatabase.typeMapping.read(
-              DriftSqlType.string,
-              data['${effectivePrefix}json_profile_text_accepted'],
-            ),
-          ),
-      jsonProfileTextRejected: $NotificationStatusTable
-          .$converterjsonProfileTextRejected
-          .fromSql(
-            attachedDatabase.typeMapping.read(
-              DriftSqlType.string,
-              data['${effectivePrefix}json_profile_text_rejected'],
-            ),
-          ),
-    );
-  }
-
-  @override
-  $NotificationStatusTable createAlias(String alias) {
-    return $NotificationStatusTable(attachedDatabase, alias);
-  }
-
-  static TypeConverter<JsonObject<NotificationStatus>?, String?>
-  $converterjsonAutomaticProfileSearchFoundProfiles =
-      NullAwareTypeConverter.wrap(const NotificationStatusConverter());
-  static TypeConverter<JsonObject<NotificationStatus>?, String?>
-  $converterjsonMediaContentAccepted = NullAwareTypeConverter.wrap(
-    const NotificationStatusConverter(),
-  );
-  static TypeConverter<JsonObject<NotificationStatus>?, String?>
-  $converterjsonMediaContentRejected = NullAwareTypeConverter.wrap(
-    const NotificationStatusConverter(),
-  );
-  static TypeConverter<JsonObject<NotificationStatus>?, String?>
-  $converterjsonMediaContentDeleted = NullAwareTypeConverter.wrap(
-    const NotificationStatusConverter(),
-  );
-  static TypeConverter<JsonObject<NotificationStatus>?, String?>
-  $converterjsonProfileNameAccepted = NullAwareTypeConverter.wrap(
-    const NotificationStatusConverter(),
-  );
-  static TypeConverter<JsonObject<NotificationStatus>?, String?>
-  $converterjsonProfileNameRejected = NullAwareTypeConverter.wrap(
-    const NotificationStatusConverter(),
-  );
-  static TypeConverter<JsonObject<NotificationStatus>?, String?>
-  $converterjsonProfileTextAccepted = NullAwareTypeConverter.wrap(
-    const NotificationStatusConverter(),
-  );
-  static TypeConverter<JsonObject<NotificationStatus>?, String?>
-  $converterjsonProfileTextRejected = NullAwareTypeConverter.wrap(
-    const NotificationStatusConverter(),
-  );
-}
-
-class NotificationStatusData extends DataClass
-    implements Insertable<NotificationStatusData> {
-  final int id;
-  final JsonObject<NotificationStatus>? jsonAutomaticProfileSearchFoundProfiles;
-  final JsonObject<NotificationStatus>? jsonMediaContentAccepted;
-  final JsonObject<NotificationStatus>? jsonMediaContentRejected;
-  final JsonObject<NotificationStatus>? jsonMediaContentDeleted;
-  final JsonObject<NotificationStatus>? jsonProfileNameAccepted;
-  final JsonObject<NotificationStatus>? jsonProfileNameRejected;
-  final JsonObject<NotificationStatus>? jsonProfileTextAccepted;
-  final JsonObject<NotificationStatus>? jsonProfileTextRejected;
-  const NotificationStatusData({
-    required this.id,
-    this.jsonAutomaticProfileSearchFoundProfiles,
-    this.jsonMediaContentAccepted,
-    this.jsonMediaContentRejected,
-    this.jsonMediaContentDeleted,
-    this.jsonProfileNameAccepted,
-    this.jsonProfileNameRejected,
-    this.jsonProfileTextAccepted,
-    this.jsonProfileTextRejected,
-  });
-  @override
-  Map<String, Expression> toColumns(bool nullToAbsent) {
-    final map = <String, Expression>{};
-    map['id'] = Variable<int>(id);
-    if (!nullToAbsent || jsonAutomaticProfileSearchFoundProfiles != null) {
-      map['json_automatic_profile_search_found_profiles'] = Variable<String>(
-        $NotificationStatusTable
-            .$converterjsonAutomaticProfileSearchFoundProfiles
-            .toSql(jsonAutomaticProfileSearchFoundProfiles),
-      );
-    }
-    if (!nullToAbsent || jsonMediaContentAccepted != null) {
-      map['json_media_content_accepted'] = Variable<String>(
-        $NotificationStatusTable.$converterjsonMediaContentAccepted.toSql(
-          jsonMediaContentAccepted,
-        ),
-      );
-    }
-    if (!nullToAbsent || jsonMediaContentRejected != null) {
-      map['json_media_content_rejected'] = Variable<String>(
-        $NotificationStatusTable.$converterjsonMediaContentRejected.toSql(
-          jsonMediaContentRejected,
-        ),
-      );
-    }
-    if (!nullToAbsent || jsonMediaContentDeleted != null) {
-      map['json_media_content_deleted'] = Variable<String>(
-        $NotificationStatusTable.$converterjsonMediaContentDeleted.toSql(
-          jsonMediaContentDeleted,
-        ),
-      );
-    }
-    if (!nullToAbsent || jsonProfileNameAccepted != null) {
-      map['json_profile_name_accepted'] = Variable<String>(
-        $NotificationStatusTable.$converterjsonProfileNameAccepted.toSql(
-          jsonProfileNameAccepted,
-        ),
-      );
-    }
-    if (!nullToAbsent || jsonProfileNameRejected != null) {
-      map['json_profile_name_rejected'] = Variable<String>(
-        $NotificationStatusTable.$converterjsonProfileNameRejected.toSql(
-          jsonProfileNameRejected,
-        ),
-      );
-    }
-    if (!nullToAbsent || jsonProfileTextAccepted != null) {
-      map['json_profile_text_accepted'] = Variable<String>(
-        $NotificationStatusTable.$converterjsonProfileTextAccepted.toSql(
-          jsonProfileTextAccepted,
-        ),
-      );
-    }
-    if (!nullToAbsent || jsonProfileTextRejected != null) {
-      map['json_profile_text_rejected'] = Variable<String>(
-        $NotificationStatusTable.$converterjsonProfileTextRejected.toSql(
-          jsonProfileTextRejected,
-        ),
-      );
-    }
-    return map;
-  }
-
-  NotificationStatusCompanion toCompanion(bool nullToAbsent) {
-    return NotificationStatusCompanion(
-      id: Value(id),
-      jsonAutomaticProfileSearchFoundProfiles:
-          jsonAutomaticProfileSearchFoundProfiles == null && nullToAbsent
-          ? const Value.absent()
-          : Value(jsonAutomaticProfileSearchFoundProfiles),
-      jsonMediaContentAccepted: jsonMediaContentAccepted == null && nullToAbsent
-          ? const Value.absent()
-          : Value(jsonMediaContentAccepted),
-      jsonMediaContentRejected: jsonMediaContentRejected == null && nullToAbsent
-          ? const Value.absent()
-          : Value(jsonMediaContentRejected),
-      jsonMediaContentDeleted: jsonMediaContentDeleted == null && nullToAbsent
-          ? const Value.absent()
-          : Value(jsonMediaContentDeleted),
-      jsonProfileNameAccepted: jsonProfileNameAccepted == null && nullToAbsent
-          ? const Value.absent()
-          : Value(jsonProfileNameAccepted),
-      jsonProfileNameRejected: jsonProfileNameRejected == null && nullToAbsent
-          ? const Value.absent()
-          : Value(jsonProfileNameRejected),
-      jsonProfileTextAccepted: jsonProfileTextAccepted == null && nullToAbsent
-          ? const Value.absent()
-          : Value(jsonProfileTextAccepted),
-      jsonProfileTextRejected: jsonProfileTextRejected == null && nullToAbsent
-          ? const Value.absent()
-          : Value(jsonProfileTextRejected),
-    );
-  }
-
-  factory NotificationStatusData.fromJson(
-    Map<String, dynamic> json, {
-    ValueSerializer? serializer,
-  }) {
-    serializer ??= driftRuntimeOptions.defaultSerializer;
-    return NotificationStatusData(
-      id: serializer.fromJson<int>(json['id']),
-      jsonAutomaticProfileSearchFoundProfiles: serializer
-          .fromJson<JsonObject<NotificationStatus>?>(
-            json['jsonAutomaticProfileSearchFoundProfiles'],
-          ),
-      jsonMediaContentAccepted: serializer
-          .fromJson<JsonObject<NotificationStatus>?>(
-            json['jsonMediaContentAccepted'],
-          ),
-      jsonMediaContentRejected: serializer
-          .fromJson<JsonObject<NotificationStatus>?>(
-            json['jsonMediaContentRejected'],
-          ),
-      jsonMediaContentDeleted: serializer
-          .fromJson<JsonObject<NotificationStatus>?>(
-            json['jsonMediaContentDeleted'],
-          ),
-      jsonProfileNameAccepted: serializer
-          .fromJson<JsonObject<NotificationStatus>?>(
-            json['jsonProfileNameAccepted'],
-          ),
-      jsonProfileNameRejected: serializer
-          .fromJson<JsonObject<NotificationStatus>?>(
-            json['jsonProfileNameRejected'],
-          ),
-      jsonProfileTextAccepted: serializer
-          .fromJson<JsonObject<NotificationStatus>?>(
-            json['jsonProfileTextAccepted'],
-          ),
-      jsonProfileTextRejected: serializer
-          .fromJson<JsonObject<NotificationStatus>?>(
-            json['jsonProfileTextRejected'],
-          ),
-    );
-  }
-  @override
-  Map<String, dynamic> toJson({ValueSerializer? serializer}) {
-    serializer ??= driftRuntimeOptions.defaultSerializer;
-    return <String, dynamic>{
-      'id': serializer.toJson<int>(id),
-      'jsonAutomaticProfileSearchFoundProfiles': serializer
-          .toJson<JsonObject<NotificationStatus>?>(
-            jsonAutomaticProfileSearchFoundProfiles,
-          ),
-      'jsonMediaContentAccepted': serializer
-          .toJson<JsonObject<NotificationStatus>?>(jsonMediaContentAccepted),
-      'jsonMediaContentRejected': serializer
-          .toJson<JsonObject<NotificationStatus>?>(jsonMediaContentRejected),
-      'jsonMediaContentDeleted': serializer
-          .toJson<JsonObject<NotificationStatus>?>(jsonMediaContentDeleted),
-      'jsonProfileNameAccepted': serializer
-          .toJson<JsonObject<NotificationStatus>?>(jsonProfileNameAccepted),
-      'jsonProfileNameRejected': serializer
-          .toJson<JsonObject<NotificationStatus>?>(jsonProfileNameRejected),
-      'jsonProfileTextAccepted': serializer
-          .toJson<JsonObject<NotificationStatus>?>(jsonProfileTextAccepted),
-      'jsonProfileTextRejected': serializer
-          .toJson<JsonObject<NotificationStatus>?>(jsonProfileTextRejected),
-    };
-  }
-
-  NotificationStatusData copyWith({
-    int? id,
-    Value<JsonObject<NotificationStatus>?>
-        jsonAutomaticProfileSearchFoundProfiles =
-        const Value.absent(),
-    Value<JsonObject<NotificationStatus>?> jsonMediaContentAccepted =
-        const Value.absent(),
-    Value<JsonObject<NotificationStatus>?> jsonMediaContentRejected =
-        const Value.absent(),
-    Value<JsonObject<NotificationStatus>?> jsonMediaContentDeleted =
-        const Value.absent(),
-    Value<JsonObject<NotificationStatus>?> jsonProfileNameAccepted =
-        const Value.absent(),
-    Value<JsonObject<NotificationStatus>?> jsonProfileNameRejected =
-        const Value.absent(),
-    Value<JsonObject<NotificationStatus>?> jsonProfileTextAccepted =
-        const Value.absent(),
-    Value<JsonObject<NotificationStatus>?> jsonProfileTextRejected =
-        const Value.absent(),
-  }) => NotificationStatusData(
-    id: id ?? this.id,
-    jsonAutomaticProfileSearchFoundProfiles:
-        jsonAutomaticProfileSearchFoundProfiles.present
-        ? jsonAutomaticProfileSearchFoundProfiles.value
-        : this.jsonAutomaticProfileSearchFoundProfiles,
-    jsonMediaContentAccepted: jsonMediaContentAccepted.present
-        ? jsonMediaContentAccepted.value
-        : this.jsonMediaContentAccepted,
-    jsonMediaContentRejected: jsonMediaContentRejected.present
-        ? jsonMediaContentRejected.value
-        : this.jsonMediaContentRejected,
-    jsonMediaContentDeleted: jsonMediaContentDeleted.present
-        ? jsonMediaContentDeleted.value
-        : this.jsonMediaContentDeleted,
-    jsonProfileNameAccepted: jsonProfileNameAccepted.present
-        ? jsonProfileNameAccepted.value
-        : this.jsonProfileNameAccepted,
-    jsonProfileNameRejected: jsonProfileNameRejected.present
-        ? jsonProfileNameRejected.value
-        : this.jsonProfileNameRejected,
-    jsonProfileTextAccepted: jsonProfileTextAccepted.present
-        ? jsonProfileTextAccepted.value
-        : this.jsonProfileTextAccepted,
-    jsonProfileTextRejected: jsonProfileTextRejected.present
-        ? jsonProfileTextRejected.value
-        : this.jsonProfileTextRejected,
-  );
-  NotificationStatusData copyWithCompanion(NotificationStatusCompanion data) {
-    return NotificationStatusData(
-      id: data.id.present ? data.id.value : this.id,
-      jsonAutomaticProfileSearchFoundProfiles:
-          data.jsonAutomaticProfileSearchFoundProfiles.present
-          ? data.jsonAutomaticProfileSearchFoundProfiles.value
-          : this.jsonAutomaticProfileSearchFoundProfiles,
-      jsonMediaContentAccepted: data.jsonMediaContentAccepted.present
-          ? data.jsonMediaContentAccepted.value
-          : this.jsonMediaContentAccepted,
-      jsonMediaContentRejected: data.jsonMediaContentRejected.present
-          ? data.jsonMediaContentRejected.value
-          : this.jsonMediaContentRejected,
-      jsonMediaContentDeleted: data.jsonMediaContentDeleted.present
-          ? data.jsonMediaContentDeleted.value
-          : this.jsonMediaContentDeleted,
-      jsonProfileNameAccepted: data.jsonProfileNameAccepted.present
-          ? data.jsonProfileNameAccepted.value
-          : this.jsonProfileNameAccepted,
-      jsonProfileNameRejected: data.jsonProfileNameRejected.present
-          ? data.jsonProfileNameRejected.value
-          : this.jsonProfileNameRejected,
-      jsonProfileTextAccepted: data.jsonProfileTextAccepted.present
-          ? data.jsonProfileTextAccepted.value
-          : this.jsonProfileTextAccepted,
-      jsonProfileTextRejected: data.jsonProfileTextRejected.present
-          ? data.jsonProfileTextRejected.value
-          : this.jsonProfileTextRejected,
-    );
-  }
-
-  @override
-  String toString() {
-    return (StringBuffer('NotificationStatusData(')
-          ..write('id: $id, ')
-          ..write(
-            'jsonAutomaticProfileSearchFoundProfiles: $jsonAutomaticProfileSearchFoundProfiles, ',
-          )
-          ..write('jsonMediaContentAccepted: $jsonMediaContentAccepted, ')
-          ..write('jsonMediaContentRejected: $jsonMediaContentRejected, ')
-          ..write('jsonMediaContentDeleted: $jsonMediaContentDeleted, ')
-          ..write('jsonProfileNameAccepted: $jsonProfileNameAccepted, ')
-          ..write('jsonProfileNameRejected: $jsonProfileNameRejected, ')
-          ..write('jsonProfileTextAccepted: $jsonProfileTextAccepted, ')
-          ..write('jsonProfileTextRejected: $jsonProfileTextRejected')
-          ..write(')'))
-        .toString();
-  }
-
-  @override
-  int get hashCode => Object.hash(
-    id,
-    jsonAutomaticProfileSearchFoundProfiles,
-    jsonMediaContentAccepted,
-    jsonMediaContentRejected,
-    jsonMediaContentDeleted,
-    jsonProfileNameAccepted,
-    jsonProfileNameRejected,
-    jsonProfileTextAccepted,
-    jsonProfileTextRejected,
-  );
-  @override
-  bool operator ==(Object other) =>
-      identical(this, other) ||
-      (other is NotificationStatusData &&
-          other.id == this.id &&
-          other.jsonAutomaticProfileSearchFoundProfiles ==
-              this.jsonAutomaticProfileSearchFoundProfiles &&
-          other.jsonMediaContentAccepted == this.jsonMediaContentAccepted &&
-          other.jsonMediaContentRejected == this.jsonMediaContentRejected &&
-          other.jsonMediaContentDeleted == this.jsonMediaContentDeleted &&
-          other.jsonProfileNameAccepted == this.jsonProfileNameAccepted &&
-          other.jsonProfileNameRejected == this.jsonProfileNameRejected &&
-          other.jsonProfileTextAccepted == this.jsonProfileTextAccepted &&
-          other.jsonProfileTextRejected == this.jsonProfileTextRejected);
-}
-
-class NotificationStatusCompanion
-    extends UpdateCompanion<NotificationStatusData> {
-  final Value<int> id;
-  final Value<JsonObject<NotificationStatus>?>
-  jsonAutomaticProfileSearchFoundProfiles;
-  final Value<JsonObject<NotificationStatus>?> jsonMediaContentAccepted;
-  final Value<JsonObject<NotificationStatus>?> jsonMediaContentRejected;
-  final Value<JsonObject<NotificationStatus>?> jsonMediaContentDeleted;
-  final Value<JsonObject<NotificationStatus>?> jsonProfileNameAccepted;
-  final Value<JsonObject<NotificationStatus>?> jsonProfileNameRejected;
-  final Value<JsonObject<NotificationStatus>?> jsonProfileTextAccepted;
-  final Value<JsonObject<NotificationStatus>?> jsonProfileTextRejected;
-  const NotificationStatusCompanion({
-    this.id = const Value.absent(),
-    this.jsonAutomaticProfileSearchFoundProfiles = const Value.absent(),
-    this.jsonMediaContentAccepted = const Value.absent(),
-    this.jsonMediaContentRejected = const Value.absent(),
-    this.jsonMediaContentDeleted = const Value.absent(),
-    this.jsonProfileNameAccepted = const Value.absent(),
-    this.jsonProfileNameRejected = const Value.absent(),
-    this.jsonProfileTextAccepted = const Value.absent(),
-    this.jsonProfileTextRejected = const Value.absent(),
-  });
-  NotificationStatusCompanion.insert({
-    this.id = const Value.absent(),
-    this.jsonAutomaticProfileSearchFoundProfiles = const Value.absent(),
-    this.jsonMediaContentAccepted = const Value.absent(),
-    this.jsonMediaContentRejected = const Value.absent(),
-    this.jsonMediaContentDeleted = const Value.absent(),
-    this.jsonProfileNameAccepted = const Value.absent(),
-    this.jsonProfileNameRejected = const Value.absent(),
-    this.jsonProfileTextAccepted = const Value.absent(),
-    this.jsonProfileTextRejected = const Value.absent(),
-  });
-  static Insertable<NotificationStatusData> custom({
-    Expression<int>? id,
-    Expression<String>? jsonAutomaticProfileSearchFoundProfiles,
-    Expression<String>? jsonMediaContentAccepted,
-    Expression<String>? jsonMediaContentRejected,
-    Expression<String>? jsonMediaContentDeleted,
-    Expression<String>? jsonProfileNameAccepted,
-    Expression<String>? jsonProfileNameRejected,
-    Expression<String>? jsonProfileTextAccepted,
-    Expression<String>? jsonProfileTextRejected,
-  }) {
-    return RawValuesInsertable({
-      if (id != null) 'id': id,
-      if (jsonAutomaticProfileSearchFoundProfiles != null)
-        'json_automatic_profile_search_found_profiles':
-            jsonAutomaticProfileSearchFoundProfiles,
-      if (jsonMediaContentAccepted != null)
-        'json_media_content_accepted': jsonMediaContentAccepted,
-      if (jsonMediaContentRejected != null)
-        'json_media_content_rejected': jsonMediaContentRejected,
-      if (jsonMediaContentDeleted != null)
-        'json_media_content_deleted': jsonMediaContentDeleted,
-      if (jsonProfileNameAccepted != null)
-        'json_profile_name_accepted': jsonProfileNameAccepted,
-      if (jsonProfileNameRejected != null)
-        'json_profile_name_rejected': jsonProfileNameRejected,
-      if (jsonProfileTextAccepted != null)
-        'json_profile_text_accepted': jsonProfileTextAccepted,
-      if (jsonProfileTextRejected != null)
-        'json_profile_text_rejected': jsonProfileTextRejected,
-    });
-  }
-
-  NotificationStatusCompanion copyWith({
-    Value<int>? id,
-    Value<JsonObject<NotificationStatus>?>?
-    jsonAutomaticProfileSearchFoundProfiles,
-    Value<JsonObject<NotificationStatus>?>? jsonMediaContentAccepted,
-    Value<JsonObject<NotificationStatus>?>? jsonMediaContentRejected,
-    Value<JsonObject<NotificationStatus>?>? jsonMediaContentDeleted,
-    Value<JsonObject<NotificationStatus>?>? jsonProfileNameAccepted,
-    Value<JsonObject<NotificationStatus>?>? jsonProfileNameRejected,
-    Value<JsonObject<NotificationStatus>?>? jsonProfileTextAccepted,
-    Value<JsonObject<NotificationStatus>?>? jsonProfileTextRejected,
-  }) {
-    return NotificationStatusCompanion(
-      id: id ?? this.id,
-      jsonAutomaticProfileSearchFoundProfiles:
-          jsonAutomaticProfileSearchFoundProfiles ??
-          this.jsonAutomaticProfileSearchFoundProfiles,
-      jsonMediaContentAccepted:
-          jsonMediaContentAccepted ?? this.jsonMediaContentAccepted,
-      jsonMediaContentRejected:
-          jsonMediaContentRejected ?? this.jsonMediaContentRejected,
-      jsonMediaContentDeleted:
-          jsonMediaContentDeleted ?? this.jsonMediaContentDeleted,
-      jsonProfileNameAccepted:
-          jsonProfileNameAccepted ?? this.jsonProfileNameAccepted,
-      jsonProfileNameRejected:
-          jsonProfileNameRejected ?? this.jsonProfileNameRejected,
-      jsonProfileTextAccepted:
-          jsonProfileTextAccepted ?? this.jsonProfileTextAccepted,
-      jsonProfileTextRejected:
-          jsonProfileTextRejected ?? this.jsonProfileTextRejected,
-    );
-  }
-
-  @override
-  Map<String, Expression> toColumns(bool nullToAbsent) {
-    final map = <String, Expression>{};
-    if (id.present) {
-      map['id'] = Variable<int>(id.value);
-    }
-    if (jsonAutomaticProfileSearchFoundProfiles.present) {
-      map['json_automatic_profile_search_found_profiles'] = Variable<String>(
-        $NotificationStatusTable
-            .$converterjsonAutomaticProfileSearchFoundProfiles
-            .toSql(jsonAutomaticProfileSearchFoundProfiles.value),
-      );
-    }
-    if (jsonMediaContentAccepted.present) {
-      map['json_media_content_accepted'] = Variable<String>(
-        $NotificationStatusTable.$converterjsonMediaContentAccepted.toSql(
-          jsonMediaContentAccepted.value,
-        ),
-      );
-    }
-    if (jsonMediaContentRejected.present) {
-      map['json_media_content_rejected'] = Variable<String>(
-        $NotificationStatusTable.$converterjsonMediaContentRejected.toSql(
-          jsonMediaContentRejected.value,
-        ),
-      );
-    }
-    if (jsonMediaContentDeleted.present) {
-      map['json_media_content_deleted'] = Variable<String>(
-        $NotificationStatusTable.$converterjsonMediaContentDeleted.toSql(
-          jsonMediaContentDeleted.value,
-        ),
-      );
-    }
-    if (jsonProfileNameAccepted.present) {
-      map['json_profile_name_accepted'] = Variable<String>(
-        $NotificationStatusTable.$converterjsonProfileNameAccepted.toSql(
-          jsonProfileNameAccepted.value,
-        ),
-      );
-    }
-    if (jsonProfileNameRejected.present) {
-      map['json_profile_name_rejected'] = Variable<String>(
-        $NotificationStatusTable.$converterjsonProfileNameRejected.toSql(
-          jsonProfileNameRejected.value,
-        ),
-      );
-    }
-    if (jsonProfileTextAccepted.present) {
-      map['json_profile_text_accepted'] = Variable<String>(
-        $NotificationStatusTable.$converterjsonProfileTextAccepted.toSql(
-          jsonProfileTextAccepted.value,
-        ),
-      );
-    }
-    if (jsonProfileTextRejected.present) {
-      map['json_profile_text_rejected'] = Variable<String>(
-        $NotificationStatusTable.$converterjsonProfileTextRejected.toSql(
-          jsonProfileTextRejected.value,
-        ),
-      );
-    }
-    return map;
-  }
-
-  @override
-  String toString() {
-    return (StringBuffer('NotificationStatusCompanion(')
-          ..write('id: $id, ')
-          ..write(
-            'jsonAutomaticProfileSearchFoundProfiles: $jsonAutomaticProfileSearchFoundProfiles, ',
-          )
-          ..write('jsonMediaContentAccepted: $jsonMediaContentAccepted, ')
-          ..write('jsonMediaContentRejected: $jsonMediaContentRejected, ')
-          ..write('jsonMediaContentDeleted: $jsonMediaContentDeleted, ')
-          ..write('jsonProfileNameAccepted: $jsonProfileNameAccepted, ')
-          ..write('jsonProfileNameRejected: $jsonProfileNameRejected, ')
-          ..write('jsonProfileTextAccepted: $jsonProfileTextAccepted, ')
-          ..write('jsonProfileTextRejected: $jsonProfileTextRejected')
           ..write(')'))
         .toString();
   }
@@ -20408,51 +19396,13 @@ class $NewMessageNotificationTable extends schema.NewMessageNotification
       ).withConverter<ConversationId?>(
         $NewMessageNotificationTable.$converterconversationId,
       );
-  static const VerificationMeta _notificationShownMeta = const VerificationMeta(
-    'notificationShown',
-  );
   @override
-  late final GeneratedColumn<bool> notificationShown = GeneratedColumn<bool>(
-    'notification_shown',
-    aliasedName,
-    false,
-    type: DriftSqlType.bool,
-    requiredDuringInsert: false,
-    defaultConstraints: GeneratedColumn.constraintIsAlways(
-      'CHECK ("notification_shown" IN (0, 1))',
-    ),
-    defaultValue: const Constant(false),
-  );
-  @override
-  List<GeneratedColumn> get $columns => [
-    accountId,
-    conversationId,
-    notificationShown,
-  ];
+  List<GeneratedColumn> get $columns => [accountId, conversationId];
   @override
   String get aliasedName => _alias ?? actualTableName;
   @override
   String get actualTableName => $name;
   static const String $name = 'new_message_notification';
-  @override
-  VerificationContext validateIntegrity(
-    Insertable<NewMessageNotificationData> instance, {
-    bool isInserting = false,
-  }) {
-    final context = VerificationContext();
-    final data = instance.toColumns(true);
-    if (data.containsKey('notification_shown')) {
-      context.handle(
-        _notificationShownMeta,
-        notificationShown.isAcceptableOrUnknown(
-          data['notification_shown']!,
-          _notificationShownMeta,
-        ),
-      );
-    }
-    return context;
-  }
-
   @override
   Set<GeneratedColumn> get $primaryKey => {accountId};
   @override
@@ -20475,10 +19425,6 @@ class $NewMessageNotificationTable extends schema.NewMessageNotification
               data['${effectivePrefix}conversation_id'],
             ),
           ),
-      notificationShown: attachedDatabase.typeMapping.read(
-        DriftSqlType.bool,
-        data['${effectivePrefix}notification_shown'],
-      )!,
     );
   }
 
@@ -20497,11 +19443,9 @@ class NewMessageNotificationData extends DataClass
     implements Insertable<NewMessageNotificationData> {
   final AccountId accountId;
   final ConversationId? conversationId;
-  final bool notificationShown;
   const NewMessageNotificationData({
     required this.accountId,
     this.conversationId,
-    required this.notificationShown,
   });
   @override
   Map<String, Expression> toColumns(bool nullToAbsent) {
@@ -20518,7 +19462,6 @@ class NewMessageNotificationData extends DataClass
         ),
       );
     }
-    map['notification_shown'] = Variable<bool>(notificationShown);
     return map;
   }
 
@@ -20528,7 +19471,6 @@ class NewMessageNotificationData extends DataClass
       conversationId: conversationId == null && nullToAbsent
           ? const Value.absent()
           : Value(conversationId),
-      notificationShown: Value(notificationShown),
     );
   }
 
@@ -20542,7 +19484,6 @@ class NewMessageNotificationData extends DataClass
       conversationId: serializer.fromJson<ConversationId?>(
         json['conversationId'],
       ),
-      notificationShown: serializer.fromJson<bool>(json['notificationShown']),
     );
   }
   @override
@@ -20551,20 +19492,17 @@ class NewMessageNotificationData extends DataClass
     return <String, dynamic>{
       'accountId': serializer.toJson<AccountId>(accountId),
       'conversationId': serializer.toJson<ConversationId?>(conversationId),
-      'notificationShown': serializer.toJson<bool>(notificationShown),
     };
   }
 
   NewMessageNotificationData copyWith({
     AccountId? accountId,
     Value<ConversationId?> conversationId = const Value.absent(),
-    bool? notificationShown,
   }) => NewMessageNotificationData(
     accountId: accountId ?? this.accountId,
     conversationId: conversationId.present
         ? conversationId.value
         : this.conversationId,
-    notificationShown: notificationShown ?? this.notificationShown,
   );
   NewMessageNotificationData copyWithCompanion(
     NewMessageNotificationCompanion data,
@@ -20574,9 +19512,6 @@ class NewMessageNotificationData extends DataClass
       conversationId: data.conversationId.present
           ? data.conversationId.value
           : this.conversationId,
-      notificationShown: data.notificationShown.present
-          ? data.notificationShown.value
-          : this.notificationShown,
     );
   }
 
@@ -20584,51 +19519,44 @@ class NewMessageNotificationData extends DataClass
   String toString() {
     return (StringBuffer('NewMessageNotificationData(')
           ..write('accountId: $accountId, ')
-          ..write('conversationId: $conversationId, ')
-          ..write('notificationShown: $notificationShown')
+          ..write('conversationId: $conversationId')
           ..write(')'))
         .toString();
   }
 
   @override
-  int get hashCode => Object.hash(accountId, conversationId, notificationShown);
+  int get hashCode => Object.hash(accountId, conversationId);
   @override
   bool operator ==(Object other) =>
       identical(this, other) ||
       (other is NewMessageNotificationData &&
           other.accountId == this.accountId &&
-          other.conversationId == this.conversationId &&
-          other.notificationShown == this.notificationShown);
+          other.conversationId == this.conversationId);
 }
 
 class NewMessageNotificationCompanion
     extends UpdateCompanion<NewMessageNotificationData> {
   final Value<AccountId> accountId;
   final Value<ConversationId?> conversationId;
-  final Value<bool> notificationShown;
   final Value<int> rowid;
   const NewMessageNotificationCompanion({
     this.accountId = const Value.absent(),
     this.conversationId = const Value.absent(),
-    this.notificationShown = const Value.absent(),
     this.rowid = const Value.absent(),
   });
   NewMessageNotificationCompanion.insert({
     required AccountId accountId,
     this.conversationId = const Value.absent(),
-    this.notificationShown = const Value.absent(),
     this.rowid = const Value.absent(),
   }) : accountId = Value(accountId);
   static Insertable<NewMessageNotificationData> custom({
     Expression<String>? accountId,
     Expression<int>? conversationId,
-    Expression<bool>? notificationShown,
     Expression<int>? rowid,
   }) {
     return RawValuesInsertable({
       if (accountId != null) 'account_id': accountId,
       if (conversationId != null) 'conversation_id': conversationId,
-      if (notificationShown != null) 'notification_shown': notificationShown,
       if (rowid != null) 'rowid': rowid,
     });
   }
@@ -20636,13 +19564,11 @@ class NewMessageNotificationCompanion
   NewMessageNotificationCompanion copyWith({
     Value<AccountId>? accountId,
     Value<ConversationId?>? conversationId,
-    Value<bool>? notificationShown,
     Value<int>? rowid,
   }) {
     return NewMessageNotificationCompanion(
       accountId: accountId ?? this.accountId,
       conversationId: conversationId ?? this.conversationId,
-      notificationShown: notificationShown ?? this.notificationShown,
       rowid: rowid ?? this.rowid,
     );
   }
@@ -20662,9 +19588,6 @@ class NewMessageNotificationCompanion
         ),
       );
     }
-    if (notificationShown.present) {
-      map['notification_shown'] = Variable<bool>(notificationShown.value);
-    }
     if (rowid.present) {
       map['rowid'] = Variable<int>(rowid.value);
     }
@@ -20676,7 +19599,6 @@ class NewMessageNotificationCompanion
     return (StringBuffer('NewMessageNotificationCompanion(')
           ..write('accountId: $accountId, ')
           ..write('conversationId: $conversationId, ')
-          ..write('notificationShown: $notificationShown, ')
           ..write('rowid: $rowid')
           ..write(')'))
         .toString();
@@ -20697,12 +19619,8 @@ abstract class _$AccountDatabase extends GeneratedDatabase {
   late final $GridSettingsTable gridSettings = $GridSettingsTable(this);
   late final $ChatBackupReminderTable chatBackupReminder =
       $ChatBackupReminderTable(this);
-  late final $AdminNotificationTable adminNotification =
-      $AdminNotificationTable(this);
   late final $AppNotificationSettingsTable appNotificationSettings =
       $AppNotificationSettingsTable(this);
-  late final $NotificationStatusTable notificationStatus =
-      $NotificationStatusTable(this);
   late final $NewsTable news = $NewsTable(this);
   late final $PushNotificationTable pushNotification = $PushNotificationTable(
     this,
@@ -20892,9 +19810,7 @@ abstract class _$AccountDatabase extends GeneratedDatabase {
     initialSetupProgress,
     gridSettings,
     chatBackupReminder,
-    adminNotification,
     appNotificationSettings,
-    notificationStatus,
     news,
     pushNotification,
     editProfileProgress,

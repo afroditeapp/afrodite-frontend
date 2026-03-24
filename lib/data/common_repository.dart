@@ -107,7 +107,6 @@ class CommonRepository extends DataRepositoryWithLifecycle {
       // Force sending the push notification device token to server.
       // This is needed if this login is for different account than previously.
       await db.app.updateDeviceToken(null);
-      await db.app.resetNotificationStatuses();
     });
   }
 

@@ -1,10 +1,7 @@
 import 'dart:async';
 
 import 'package:app/data/chat_repository.dart';
-import 'package:app/data/general/notification/state/automatic_profile_search.dart';
-import 'package:app/data/general/notification/state/profile_string_moderation_completed.dart';
 import 'package:app/logic/profile/profile_filters.dart';
-import 'package:app/utils/api.dart';
 import 'package:app/utils/stream.dart';
 import 'package:async/async.dart' show StreamExtensions;
 import 'package:openapi/api.dart';
@@ -617,96 +614,6 @@ class ProfileRepository extends DataRepositoryWithLifecycle {
           (v) => db.accountAction(
             (db) => db.appNotificationSettings.updateProfileNotificationSettings(v),
           ),
-        );
-  }
-
-  Future<void> handleProfileStringModerationCompletedEvent() async {
-    final notification = await _api
-        .profile((api) => api.postGetProfileStringModerationCompletedNotification())
-        .ok();
-
-    if (notification == null) {
-      return;
-    }
-
-    await NotificationProfileStringModerationCompleted.handleNameAccepted(
-      notification.nameAccepted,
-      db,
-      onlyDbUpdate: notification.hidden,
-    );
-    await NotificationProfileStringModerationCompleted.handleNameRejected(
-      notification.nameRejected,
-      db,
-      onlyDbUpdate: notification.hidden,
-    );
-    await NotificationProfileStringModerationCompleted.handleTextAccepted(
-      notification.textAccepted,
-      db,
-      onlyDbUpdate: notification.hidden,
-    );
-    await NotificationProfileStringModerationCompleted.handleTextRejected(
-      notification.textRejected,
-      db,
-      onlyDbUpdate: notification.hidden,
-    );
-
-    final viewed = ProfileStringModerationCompletedNotificationViewed(
-      nameAccepted: notification.nameAccepted.id.toViewed(),
-      nameRejected: notification.nameRejected.id.toViewed(),
-      textAccepted: notification.textAccepted.id.toViewed(),
-      textRejected: notification.textRejected.id.toViewed(),
-    );
-    await _api
-        .profileAction(
-          (api) => api.postMarkProfileStringModerationCompletedNotificationViewed(viewed),
-        )
-        .andThen(
-          (_) => db.accountAction(
-            (db) => db.app.profileNameAccepted.updateViewedId(viewed.nameAccepted),
-          ),
-        )
-        .andThen(
-          (_) => db.accountAction(
-            (db) => db.app.profileNameRejected.updateViewedId(viewed.nameRejected),
-          ),
-        )
-        .andThen(
-          (_) => db.accountAction(
-            (db) => db.app.profileTextAccepted.updateViewedId(viewed.textAccepted),
-          ),
-        )
-        .andThen(
-          (_) => db.accountAction(
-            (db) => db.app.profileTextRejected.updateViewedId(viewed.textRejected),
-          ),
-        );
-  }
-
-  Future<void> handleAutomaticProfileSearchCompletedEvent() async {
-    final notification = await _api
-        .profile((api) => api.postGetAutomaticProfileSearchCompletedNotification())
-        .ok();
-
-    if (notification == null) {
-      return;
-    }
-
-    await NotificationAutomaticProfileSearch.handleAutomaticProfileSearchCompleted(
-      notification,
-      db,
-      onlyDbUpdate: notification.hidden,
-    );
-
-    final viewed = AutomaticProfileSearchCompletedNotificationViewed(
-      profilesFound: notification.profilesFound.id.toViewed(),
-    );
-    await _api
-        .profileAction(
-          (api) => api.postMarkAutomaticProfileSearchCompletedNotificationViewed(viewed),
-        )
-        .andThen(
-          (_) =>
-              db.accountAction((db) => db.app.profilesFound.updateViewedId(viewed.profilesFound)),
         );
   }
 }
