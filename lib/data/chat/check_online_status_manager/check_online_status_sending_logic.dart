@@ -1,6 +1,7 @@
 import 'dart:async';
 
 import 'package:app/api/server_connection_manager.dart';
+import 'package:app/api/server_connection_protocol/client.dart';
 import 'package:app/database/account_database_manager.dart';
 import 'package:logging/logging.dart';
 import 'package:openapi/api.dart';
@@ -65,8 +66,9 @@ class CheckOnlineStatusSendingLogic {
     final isOnline = await _isAccountOnlineInDb(accountId);
 
     _log.fine("Sending check online status event to ${accountId.aid}, online status: $isOnline");
-    final event = EventToServer(a: accountId, o: isOnline, t: EventToServerType.checkOnlineStatus);
-    await _connectionManager.sendEventToServer(event);
+    await _connectionManager.sendMessageToServer(
+      ClientMessage.checkOnlineStatus(accountId, isOnlineHint: isOnline),
+    );
   }
 
   Future<bool> _isAccountOnlineInDb(AccountId accountId) async {

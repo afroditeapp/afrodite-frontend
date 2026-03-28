@@ -390,10 +390,6 @@ class ApiClient {
           return EmailLoginToken.fromJson(value);
         case 'EventToClient':
           return EventToClient.fromJson(value);
-        case 'EventToServer':
-          return EventToServer.fromJson(value);
-        case 'EventToServerType':
-          return EventToServerTypeTypeTransformer().decode(value);
         case 'EventType':
           return EventTypeTypeTransformer().decode(value);
         case 'FavoriteProfilesPage':

@@ -36,6 +36,7 @@ check-fmt:
 
 .PHONY: test
 test:
+	flutter test
 	cd packages/database_model && flutter test
 	cd packages/database_account && flutter test
 

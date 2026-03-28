@@ -376,8 +376,6 @@ Class | Method | HTTP request | Description
  - [EmailLogin](doc//EmailLogin.md)
  - [EmailLoginToken](doc//EmailLoginToken.md)
  - [EventToClient](doc//EventToClient.md)
- - [EventToServer](doc//EventToServer.md)
- - [EventToServerType](doc//EventToServerType.md)
  - [EventType](doc//EventType.md)
  - [FavoriteProfilesPage](doc//FavoriteProfilesPage.md)
  - [FeaturesConfig](doc//FeaturesConfig.md)

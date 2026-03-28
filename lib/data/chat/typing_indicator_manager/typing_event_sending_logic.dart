@@ -1,6 +1,7 @@
 import 'dart:async';
 
 import 'package:app/api/server_connection_manager.dart';
+import 'package:app/api/server_connection_protocol/client.dart';
 import 'package:logging/logging.dart';
 import 'package:openapi/api.dart';
 
@@ -68,12 +69,10 @@ class TypingEventSendingLogic {
 
     if (isTyping) {
       _log.fine("Sending typing start event to ${accountId.aid}");
-      final event = EventToServer(a: accountId, t: EventToServerType.typingStart);
-      _connectionManager.sendEventToServer(event);
+      _connectionManager.sendMessageToServer(ClientMessage.typingStart(accountId));
     } else {
       _log.fine("Sending typing stop event");
-      final event = EventToServer(t: EventToServerType.typingStop);
-      _connectionManager.sendEventToServer(event);
+      _connectionManager.sendMessageToServer(ClientMessage.typingStop());
     }
   }
 

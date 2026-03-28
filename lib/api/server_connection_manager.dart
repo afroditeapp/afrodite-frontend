@@ -8,6 +8,7 @@ import 'package:openapi/api.dart';
 import 'package:app/api/api_provider.dart';
 import 'package:app/api/api_wrapper.dart';
 import 'package:app/api/server_connection.dart';
+import 'package:app/api/server_connection_protocol/client.dart';
 import 'package:app/data/utils.dart';
 import 'package:app/database/account_database_manager.dart';
 import 'package:utils/utils.dart';
@@ -429,10 +430,10 @@ class ServerConnectionManager extends ApiManager
     return const Ok(());
   }
 
-  Future<void> sendEventToServer(EventToServer event) async {
+  Future<void> sendMessageToServer(ClientMessage event) async {
     final connection = _serverConnection;
     if (connection != null) {
-      connection.sendEventToServer(event);
+      connection.sendMessageToServer(event);
     } else {
       _log.warning("Cannot send event: no active connection");
     }

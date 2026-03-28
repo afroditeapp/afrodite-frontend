@@ -144,8 +144,6 @@ part 'model/email_address_state_admin.dart';
 part 'model/email_login.dart';
 part 'model/email_login_token.dart';
 part 'model/event_to_client.dart';
-part 'model/event_to_server.dart';
-part 'model/event_to_server_type.dart';
 part 'model/event_type.dart';
 part 'model/favorite_profiles_page.dart';
 part 'model/features_config.dart';

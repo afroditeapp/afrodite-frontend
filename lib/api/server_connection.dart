@@ -3,6 +3,7 @@ import 'dart:convert';
 import 'dart:io';
 
 import 'package:app/api/websocket_builder.dart';
+import 'package:app/api/server_connection_protocol/client.dart';
 import 'package:app/data/app_version.dart';
 import 'package:flutter/foundation.dart';
 import 'package:logging/logging.dart';
@@ -211,11 +212,24 @@ class ServerConnection {
   }
 
   Future<void> handleConnectionIsReadyForDataSync(AccessToken token) async {
-    final bytes = await syncDataBytes(db);
+    final syncVersionListPayload = await syncDataBytes(db);
+    final currentMaintenanceInfo = await db
+        .accountStreamSingle((db) => db.common.watchServerMaintenanceInfo())
+        .ok();
+    final sendClearMaintenanceStatusMessage = currentMaintenanceInfo?.startTime != null;
+
     if (_isClosed) {
       return;
     }
-    _connection.connection.sendBytes(bytes);
+
+    _connection.connection.sendBytes(
+      ClientMessage.syncVersionList(syncVersionListPayload).toBytes(),
+    );
+
+    if (sendClearMaintenanceStatusMessage) {
+      _connection.connection.sendBytes(ClientMessage.clearMaintenanceStatusIfPossible().toBytes());
+    }
+
     _protocolState = ConnectionProtocolState.receiveEvents;
     _log.info("Connection ready");
     _state.add(Ready(token));
@@ -251,16 +265,15 @@ class ServerConnection {
     await _state.close();
   }
 
-  void sendEventToServer(EventToServer event) {
+  void sendMessageToServer(ClientMessage message) {
     if (_isClosed) {
-      _log.warning("Cannot send event: connection is closed");
+      _log.warning("Cannot send message: connection is closed");
       return;
     }
     try {
-      final jsonString = jsonEncode(event.toJson());
-      _connection.connection.sendText(jsonString);
+      _connection.connection.sendBytes(message.toBytes());
     } catch (e) {
-      _log.warning("Failed to send event: $e");
+      _log.warning("Failed to send message: $e");
     }
   }
 }
@@ -283,19 +296,6 @@ String clientVersionInfoString() {
 }
 
 const forceSync = 255;
-/*
-    Account = 0,
-    ReveivedLikes = 1,
-    ClientConfig = 2,
-    Profile = 3,
-    News = 4,
-    MediaContent = 5,
-    DailyLikesLeft = 6,
-    PushNotificationInfo = 7,
-    /// Special value without valid [SyncVersionFromClient] informing
-    /// the server that client has info that server maintenance is scheduled.
-    ServerMaintenanceIsScheduled = 255,
-*/
 
 Future<Uint8List> syncDataBytes(AccountDatabaseManager db) async {
   final syncVersionAccount =
@@ -320,31 +320,16 @@ Future<Uint8List> syncDataBytes(AccountDatabaseManager db) async {
       await db.accountStreamSingle((db) => db.app.watchPushNotificationInfoSyncVersion()).ok() ??
       forceSync;
 
-  final currentMaintenanceInfo = await db
-      .accountStreamSingle((db) => db.common.watchServerMaintenanceInfo())
-      .ok();
-  final sendMaintenanceSyncVersion = currentMaintenanceInfo?.startTime != null;
-
-  final bytes = <int>[
-    0, // Account
-    syncVersionAccount,
-    1, // ReveivedLikes
-    syncVersionReceivedLikes,
-    2, // ClientConfig
-    syncVersionClientConfig,
-    3, // Profile
-    syncVersionProfile,
-    4, // News
-    syncVersionNews,
-    5, // Media content
-    syncVersionMediaContent,
-    6, // Daily likes left
-    syncVersionDailyLikesLeft,
-    7, // Push notification info
-    syncVersionPushNotificationInfo,
-    if (sendMaintenanceSyncVersion) 255,
-    if (sendMaintenanceSyncVersion) 0,
+  final syncVersions = <int>[
+    syncVersionAccount, // Account
+    syncVersionReceivedLikes, // ReceivedLikes
+    syncVersionClientConfig, // ClientConfig
+    syncVersionProfile, // Profile
+    syncVersionNews, // News
+    syncVersionMediaContent, // MediaContent
+    syncVersionDailyLikesLeft, // DailyLikesLeft
+    syncVersionPushNotificationInfo, // PushNotificationInfo
   ];
 
-  return Uint8List.fromList(bytes);
+  return Uint8List.fromList(syncVersions);
 }
