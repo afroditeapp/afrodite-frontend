@@ -2,6 +2,7 @@ import 'dart:async';
 
 import 'package:app/data/chat/backend_signed_message.dart';
 import 'package:app/data/chat/message_manager/delivery_info.dart';
+import 'package:app/data/chat/message_manager/pending_chat_notifications.dart';
 import 'package:app/data/chat/message_manager/receive.dart';
 import 'package:app/data/chat/message_manager/send.dart';
 import 'package:app/data/chat/message_manager/utils.dart';
@@ -32,6 +33,8 @@ sealed class MessageManagerCmd<T> extends BaseMessageManagerCmd {
 }
 
 class ReceiveNewMessages extends MessageManagerCmd<()> {}
+
+class ReceivePendingChatNotifications extends MessageManagerCmd<()> {}
 
 class ReceiveMessageDeliveryInfo extends MessageManagerCmd<()> {}
 
@@ -114,11 +117,13 @@ class MessageManager extends LifecycleMethods {
   final AccountId currentUser;
 
   final ReceiveMessageUtils receiveMessageUtils;
+  final PendingChatNotificationUtils pendingChatNotificationUtils;
   final SendMessageUtils sendMessageUtils;
   final DeliveryInfoUtils deliveryInfoUtils;
 
   MessageManager(this.messageKeyManager, this.api, this.db, this.profile, this.currentUser)
     : receiveMessageUtils = ReceiveMessageUtils(messageKeyManager, api, db, currentUser, profile),
+      pendingChatNotificationUtils = PendingChatNotificationUtils(messageKeyManager, api, db),
       sendMessageUtils = SendMessageUtils(messageKeyManager, api, db, currentUser, profile),
       deliveryInfoUtils = DeliveryInfoUtils(db, api, currentUser);
 
@@ -132,6 +137,9 @@ class MessageManager extends LifecycleMethods {
           switch (cmd) {
             case ReceiveNewMessages():
               await receiveMessageUtils.receiveNewMessages();
+              cmd.completed.add(());
+            case ReceivePendingChatNotifications():
+              await pendingChatNotificationUtils.receivePendingChatNotifications();
               cmd.completed.add(());
             case ReceiveMessageDeliveryInfo():
               await deliveryInfoUtils.receiveMessageDeliveryInfo();

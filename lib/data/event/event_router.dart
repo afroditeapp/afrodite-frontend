@@ -80,7 +80,7 @@ class EventRouter {
       case EventType.newMessageReceived:
         await chat.receiveNewMessages();
       case EventType.pendingChatNotificationsChanged:
-        await chat.handlePendingChatNotificationsChangedEvent();
+        await chat.receivePendingChatNotifications();
       case EventType.pendingAppNotificationsChanged:
         await account.handlePendingAppNotificationsChangedEvent();
       case EventType.clientConfigChanged:
