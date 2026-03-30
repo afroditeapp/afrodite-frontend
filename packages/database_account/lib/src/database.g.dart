@@ -5218,17 +5218,20 @@ class $ServerMaintenanceTable extends schema.ServerMaintenance
       ).withConverter<UtcDateTime?>(
         $ServerMaintenanceTable.$converterinfoViewed,
       );
-  static const VerificationMeta _maintenanceTargetMeta = const VerificationMeta(
-    'maintenanceTarget',
+  static const VerificationMeta _adminBotOfflineMeta = const VerificationMeta(
+    'adminBotOffline',
   );
   @override
-  late final GeneratedColumn<int> maintenanceTarget = GeneratedColumn<int>(
-    'maintenance_target',
+  late final GeneratedColumn<bool> adminBotOffline = GeneratedColumn<bool>(
+    'admin_bot_offline',
     aliasedName,
     false,
-    type: DriftSqlType.int,
+    type: DriftSqlType.bool,
     requiredDuringInsert: false,
-    defaultValue: const Constant(0),
+    defaultConstraints: GeneratedColumn.constraintIsAlways(
+      'CHECK ("admin_bot_offline" IN (0, 1))',
+    ),
+    defaultValue: const Constant(false),
   );
   @override
   List<GeneratedColumn> get $columns => [
@@ -5236,7 +5239,7 @@ class $ServerMaintenanceTable extends schema.ServerMaintenance
     startTime,
     endTime,
     infoViewed,
-    maintenanceTarget,
+    adminBotOffline,
   ];
   @override
   String get aliasedName => _alias ?? actualTableName;
@@ -5253,12 +5256,12 @@ class $ServerMaintenanceTable extends schema.ServerMaintenance
     if (data.containsKey('id')) {
       context.handle(_idMeta, id.isAcceptableOrUnknown(data['id']!, _idMeta));
     }
-    if (data.containsKey('maintenance_target')) {
+    if (data.containsKey('admin_bot_offline')) {
       context.handle(
-        _maintenanceTargetMeta,
-        maintenanceTarget.isAcceptableOrUnknown(
-          data['maintenance_target']!,
-          _maintenanceTargetMeta,
+        _adminBotOfflineMeta,
+        adminBotOffline.isAcceptableOrUnknown(
+          data['admin_bot_offline']!,
+          _adminBotOfflineMeta,
         ),
       );
     }
@@ -5293,9 +5296,9 @@ class $ServerMaintenanceTable extends schema.ServerMaintenance
           data['${effectivePrefix}info_viewed'],
         ),
       ),
-      maintenanceTarget: attachedDatabase.typeMapping.read(
-        DriftSqlType.int,
-        data['${effectivePrefix}maintenance_target'],
+      adminBotOffline: attachedDatabase.typeMapping.read(
+        DriftSqlType.bool,
+        data['${effectivePrefix}admin_bot_offline'],
       )!,
     );
   }
@@ -5319,13 +5322,13 @@ class ServerMaintenanceData extends DataClass
   final UtcDateTime? startTime;
   final UtcDateTime? endTime;
   final UtcDateTime? infoViewed;
-  final int maintenanceTarget;
+  final bool adminBotOffline;
   const ServerMaintenanceData({
     required this.id,
     this.startTime,
     this.endTime,
     this.infoViewed,
-    required this.maintenanceTarget,
+    required this.adminBotOffline,
   });
   @override
   Map<String, Expression> toColumns(bool nullToAbsent) {
@@ -5346,7 +5349,7 @@ class ServerMaintenanceData extends DataClass
         $ServerMaintenanceTable.$converterinfoViewed.toSql(infoViewed),
       );
     }
-    map['maintenance_target'] = Variable<int>(maintenanceTarget);
+    map['admin_bot_offline'] = Variable<bool>(adminBotOffline);
     return map;
   }
 
@@ -5362,7 +5365,7 @@ class ServerMaintenanceData extends DataClass
       infoViewed: infoViewed == null && nullToAbsent
           ? const Value.absent()
           : Value(infoViewed),
-      maintenanceTarget: Value(maintenanceTarget),
+      adminBotOffline: Value(adminBotOffline),
     );
   }
 
@@ -5376,7 +5379,7 @@ class ServerMaintenanceData extends DataClass
       startTime: serializer.fromJson<UtcDateTime?>(json['startTime']),
       endTime: serializer.fromJson<UtcDateTime?>(json['endTime']),
       infoViewed: serializer.fromJson<UtcDateTime?>(json['infoViewed']),
-      maintenanceTarget: serializer.fromJson<int>(json['maintenanceTarget']),
+      adminBotOffline: serializer.fromJson<bool>(json['adminBotOffline']),
     );
   }
   @override
@@ -5387,7 +5390,7 @@ class ServerMaintenanceData extends DataClass
       'startTime': serializer.toJson<UtcDateTime?>(startTime),
       'endTime': serializer.toJson<UtcDateTime?>(endTime),
       'infoViewed': serializer.toJson<UtcDateTime?>(infoViewed),
-      'maintenanceTarget': serializer.toJson<int>(maintenanceTarget),
+      'adminBotOffline': serializer.toJson<bool>(adminBotOffline),
     };
   }
 
@@ -5396,13 +5399,13 @@ class ServerMaintenanceData extends DataClass
     Value<UtcDateTime?> startTime = const Value.absent(),
     Value<UtcDateTime?> endTime = const Value.absent(),
     Value<UtcDateTime?> infoViewed = const Value.absent(),
-    int? maintenanceTarget,
+    bool? adminBotOffline,
   }) => ServerMaintenanceData(
     id: id ?? this.id,
     startTime: startTime.present ? startTime.value : this.startTime,
     endTime: endTime.present ? endTime.value : this.endTime,
     infoViewed: infoViewed.present ? infoViewed.value : this.infoViewed,
-    maintenanceTarget: maintenanceTarget ?? this.maintenanceTarget,
+    adminBotOffline: adminBotOffline ?? this.adminBotOffline,
   );
   ServerMaintenanceData copyWithCompanion(ServerMaintenanceCompanion data) {
     return ServerMaintenanceData(
@@ -5412,9 +5415,9 @@ class ServerMaintenanceData extends DataClass
       infoViewed: data.infoViewed.present
           ? data.infoViewed.value
           : this.infoViewed,
-      maintenanceTarget: data.maintenanceTarget.present
-          ? data.maintenanceTarget.value
-          : this.maintenanceTarget,
+      adminBotOffline: data.adminBotOffline.present
+          ? data.adminBotOffline.value
+          : this.adminBotOffline,
     );
   }
 
@@ -5425,14 +5428,14 @@ class ServerMaintenanceData extends DataClass
           ..write('startTime: $startTime, ')
           ..write('endTime: $endTime, ')
           ..write('infoViewed: $infoViewed, ')
-          ..write('maintenanceTarget: $maintenanceTarget')
+          ..write('adminBotOffline: $adminBotOffline')
           ..write(')'))
         .toString();
   }
 
   @override
   int get hashCode =>
-      Object.hash(id, startTime, endTime, infoViewed, maintenanceTarget);
+      Object.hash(id, startTime, endTime, infoViewed, adminBotOffline);
   @override
   bool operator ==(Object other) =>
       identical(this, other) ||
@@ -5441,7 +5444,7 @@ class ServerMaintenanceData extends DataClass
           other.startTime == this.startTime &&
           other.endTime == this.endTime &&
           other.infoViewed == this.infoViewed &&
-          other.maintenanceTarget == this.maintenanceTarget);
+          other.adminBotOffline == this.adminBotOffline);
 }
 
 class ServerMaintenanceCompanion
@@ -5450,34 +5453,34 @@ class ServerMaintenanceCompanion
   final Value<UtcDateTime?> startTime;
   final Value<UtcDateTime?> endTime;
   final Value<UtcDateTime?> infoViewed;
-  final Value<int> maintenanceTarget;
+  final Value<bool> adminBotOffline;
   const ServerMaintenanceCompanion({
     this.id = const Value.absent(),
     this.startTime = const Value.absent(),
     this.endTime = const Value.absent(),
     this.infoViewed = const Value.absent(),
-    this.maintenanceTarget = const Value.absent(),
+    this.adminBotOffline = const Value.absent(),
   });
   ServerMaintenanceCompanion.insert({
     this.id = const Value.absent(),
     this.startTime = const Value.absent(),
     this.endTime = const Value.absent(),
     this.infoViewed = const Value.absent(),
-    this.maintenanceTarget = const Value.absent(),
+    this.adminBotOffline = const Value.absent(),
   });
   static Insertable<ServerMaintenanceData> custom({
     Expression<int>? id,
     Expression<int>? startTime,
     Expression<int>? endTime,
     Expression<int>? infoViewed,
-    Expression<int>? maintenanceTarget,
+    Expression<bool>? adminBotOffline,
   }) {
     return RawValuesInsertable({
       if (id != null) 'id': id,
       if (startTime != null) 'start_time': startTime,
       if (endTime != null) 'end_time': endTime,
       if (infoViewed != null) 'info_viewed': infoViewed,
-      if (maintenanceTarget != null) 'maintenance_target': maintenanceTarget,
+      if (adminBotOffline != null) 'admin_bot_offline': adminBotOffline,
     });
   }
 
@@ -5486,14 +5489,14 @@ class ServerMaintenanceCompanion
     Value<UtcDateTime?>? startTime,
     Value<UtcDateTime?>? endTime,
     Value<UtcDateTime?>? infoViewed,
-    Value<int>? maintenanceTarget,
+    Value<bool>? adminBotOffline,
   }) {
     return ServerMaintenanceCompanion(
       id: id ?? this.id,
       startTime: startTime ?? this.startTime,
       endTime: endTime ?? this.endTime,
       infoViewed: infoViewed ?? this.infoViewed,
-      maintenanceTarget: maintenanceTarget ?? this.maintenanceTarget,
+      adminBotOffline: adminBotOffline ?? this.adminBotOffline,
     );
   }
 
@@ -5518,8 +5521,8 @@ class ServerMaintenanceCompanion
         $ServerMaintenanceTable.$converterinfoViewed.toSql(infoViewed.value),
       );
     }
-    if (maintenanceTarget.present) {
-      map['maintenance_target'] = Variable<int>(maintenanceTarget.value);
+    if (adminBotOffline.present) {
+      map['admin_bot_offline'] = Variable<bool>(adminBotOffline.value);
     }
     return map;
   }
@@ -5531,7 +5534,7 @@ class ServerMaintenanceCompanion
           ..write('startTime: $startTime, ')
           ..write('endTime: $endTime, ')
           ..write('infoViewed: $infoViewed, ')
-          ..write('maintenanceTarget: $maintenanceTarget')
+          ..write('adminBotOffline: $adminBotOffline')
           ..write(')'))
         .toString();
   }

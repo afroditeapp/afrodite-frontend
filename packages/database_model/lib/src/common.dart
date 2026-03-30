@@ -4,20 +4,20 @@ class ServerMaintenanceInfo {
   final UtcDateTime? startTime;
   final UtcDateTime? endTime;
   final UtcDateTime? infoViewed;
-  final int maintenanceTarget;
+  final bool adminBotOffline;
 
   const ServerMaintenanceInfo({
     required this.startTime,
     required this.endTime,
     required this.infoViewed,
-    required this.maintenanceTarget,
+    required this.adminBotOffline,
   });
 
   ServerMaintenanceInfo.empty()
     : startTime = null,
       endTime = null,
       infoViewed = null,
-      maintenanceTarget = 0;
+      adminBotOffline = false;
 
   int uiBadgeCount() {
     final latest = startTime?.toUnixEpochMilliseconds();
@@ -35,11 +35,11 @@ class ServerMaintenanceInfo {
         startTime == other.startTime &&
         endTime == other.endTime &&
         infoViewed == other.infoViewed &&
-        maintenanceTarget == other.maintenanceTarget;
+        adminBotOffline == other.adminBotOffline;
   }
 
   @override
-  int get hashCode => Object.hash(runtimeType, startTime, endTime, infoViewed, maintenanceTarget);
+  int get hashCode => Object.hash(runtimeType, startTime, endTime, infoViewed, adminBotOffline);
 }
 
 class InfoBannerDismissState {

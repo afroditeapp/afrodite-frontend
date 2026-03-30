@@ -2074,11 +2074,11 @@ abstract class AppLocalizations {
   /// **'Map tile error'**
   String get map_tile_error;
 
-  /// Title text for admin bot maintenance info
+  /// Title text for admin bot offline info
   ///
   /// In en, this message translates to:
-  /// **'Admin bot maintenance break'**
-  String get menu_screen_admin_bot_maintenance_title;
+  /// **'Automatic moderation is not working currently'**
+  String get menu_screen_admin_offline_title;
 
   /// Title text for server maintenance info
   ///

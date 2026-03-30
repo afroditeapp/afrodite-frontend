@@ -334,7 +334,7 @@ class AccountRepository extends DataRepositoryWithLifecycle {
           (db) => db.common.setMaintenanceTime(
             start: event.start?.toUtcDateTime(),
             end: event.end?.toUtcDateTime(),
-            maintenanceTarget: 0, // TODO: Update
+            adminBotOffline: event.adminBotOffline,
           ),
         )
         .emptyErr();

@@ -23,14 +23,14 @@ class DaoWriteCommon extends DatabaseAccessor<AccountDatabase> with _$DaoWriteCo
   Future<void> setMaintenanceTime({
     required UtcDateTime? start,
     required UtcDateTime? end,
-    required int maintenanceTarget,
+    required bool adminBotOffline,
   }) async {
     await into(serverMaintenance).insertOnConflictUpdate(
       ServerMaintenanceCompanion.insert(
         id: SingleRowTable.ID,
         startTime: Value(start),
         endTime: Value(end),
-        maintenanceTarget: Value(maintenanceTarget),
+        adminBotOffline: Value(adminBotOffline),
       ),
     );
   }

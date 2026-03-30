@@ -52,8 +52,8 @@ class InfoBannersWidget extends StatelessWidget {
     List<_VisibleTextInfoBanner> banners,
     ServerMaintenanceInfo? maintenanceInfo,
   ) {
-    final maintenanceBody = _maintenanceBody(context, maintenanceInfo);
-    if (maintenanceBody == null && banners.isEmpty) {
+    final maintenanceBodies = _maintenanceBodies(context, maintenanceInfo);
+    if (maintenanceBodies.isEmpty && banners.isEmpty) {
       return const SizedBox.shrink();
     }
 
@@ -64,7 +64,7 @@ class InfoBannersWidget extends StatelessWidget {
         child: Column(
           mainAxisSize: MainAxisSize.min,
           children: [
-            if (maintenanceBody != null)
+            for (final maintenanceBody in maintenanceBodies)
               _InfoBannerItemLayout(
                 icon: Icon(Icons.info, color: Theme.of(context).colorScheme.onPrimaryContainer),
                 body: maintenanceBody,
@@ -76,10 +76,16 @@ class InfoBannersWidget extends StatelessWidget {
     );
   }
 
-  String? _maintenanceBody(BuildContext context, ServerMaintenanceInfo? state) {
+  List<String> _maintenanceBodies(BuildContext context, ServerMaintenanceInfo? state) {
+    final bodies = <String>[];
+
+    if (state?.adminBotOffline == true) {
+      bodies.add(context.strings.menu_screen_admin_offline_title);
+    }
+
     final startTime = state?.startTime;
     if (startTime == null) {
-      return null;
+      return bodies;
     }
 
     final startTimeString = fullTimeString(startTime);
@@ -96,10 +102,9 @@ class InfoBannersWidget extends StatelessWidget {
       endTimeString = " - $endTimeString";
     }
 
-    final title = state?.maintenanceTarget == 1
-        ? context.strings.menu_screen_admin_bot_maintenance_title
-        : context.strings.menu_screen_server_maintenance_title;
-    return "$title\n$startTimeString$endTimeString";
+    final title = context.strings.menu_screen_server_maintenance_title;
+    bodies.add("$title\n$startTimeString$endTimeString");
+    return bodies;
   }
 
   List<_VisibleTextInfoBanner> _visibleTextBanners(

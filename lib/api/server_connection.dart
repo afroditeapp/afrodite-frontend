@@ -221,7 +221,9 @@ class ServerConnection {
     final currentMaintenanceInfo = await db
         .accountStreamSingle((db) => db.common.watchServerMaintenanceInfo())
         .ok();
-    final sendClearMaintenanceStatusMessage = currentMaintenanceInfo?.startTime != null;
+    final sendClearMaintenanceStatusMessage =
+        currentMaintenanceInfo?.startTime != null ||
+        currentMaintenanceInfo?.adminBotOffline == true;
 
     if (_isClosed) {
       return;

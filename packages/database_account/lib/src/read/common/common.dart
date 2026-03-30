@@ -48,7 +48,7 @@ class DaoReadCommon extends DatabaseAccessor<AccountDatabase> with _$DaoReadComm
         startTime: r.startTime,
         endTime: r.endTime,
         infoViewed: r.infoViewed,
-        maintenanceTarget: r.maintenanceTarget,
+        adminBotOffline: r.adminBotOffline,
       );
     }).watchSingleOrNull();
   }
