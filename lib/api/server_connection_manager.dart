@@ -9,6 +9,7 @@ import 'package:app/api/api_provider.dart';
 import 'package:app/api/api_wrapper.dart';
 import 'package:app/api/server_connection.dart';
 import 'package:app/api/server_connection_protocol/client.dart';
+import 'package:app/api/server_connection_protocol/server.dart';
 import 'package:app/data/utils.dart';
 import 'package:app/database/account_database_manager.dart';
 import 'package:utils/utils.dart';
@@ -150,9 +151,9 @@ class UnsupportedClientVersion extends ServerConnectionManagerState {}
 
 sealed class ServerWsEvent {}
 
-class EventToClientContainer implements ServerWsEvent {
-  final EventToClient event;
-  EventToClientContainer(this.event);
+class ServerMessageContainer implements ServerWsEvent {
+  final ServerMessage message;
+  ServerMessageContainer(this.message);
 }
 
 sealed class ServerConnectionManagerCmd<T> {

@@ -282,7 +282,7 @@ class CommonAdminApi {
   /// Get maintenance notification.
   ///
   /// # Permissions Requires admin_server_edit_maintenance_notification.
-  Future<ScheduledMaintenanceStatus?> getMaintenanceNotification() async {
+  Future<ServerMaintenanceStatus?> getMaintenanceNotification() async {
     final response = await getMaintenanceNotificationWithHttpInfo();
     if (response.statusCode >= HttpStatus.badRequest) {
       throw ApiException(response.statusCode, await _decodeBodyBytes(response));
@@ -291,7 +291,7 @@ class CommonAdminApi {
     // At the time of writing this, `dart:convert` will throw an "Unexpected end of input"
     // FormatException when trying to decode an empty string.
     if (response.body.isNotEmpty && response.statusCode != HttpStatus.noContent) {
-      return await apiClient.deserializeAsync(await _decodeBodyBytes(response), 'ScheduledMaintenanceStatus',) as ScheduledMaintenanceStatus;
+      return await apiClient.deserializeAsync(await _decodeBodyBytes(response), 'ServerMaintenanceStatus',) as ServerMaintenanceStatus;
     
     }
     return null;
@@ -712,13 +712,13 @@ class CommonAdminApi {
   ///
   /// Parameters:
   ///
-  /// * [ScheduledMaintenanceStatus] scheduledMaintenanceStatus (required):
-  Future<Response> postEditMaintenanceNotificationWithHttpInfo(ScheduledMaintenanceStatus scheduledMaintenanceStatus,) async {
+  /// * [ServerMaintenanceStatus] serverMaintenanceStatus (required):
+  Future<Response> postEditMaintenanceNotificationWithHttpInfo(ServerMaintenanceStatus serverMaintenanceStatus,) async {
     // ignore: prefer_const_declarations
     final path = r'/common_api/edit_maintenance_notification';
 
     // ignore: prefer_final_locals
-    Object? postBody = scheduledMaintenanceStatus;
+    Object? postBody = serverMaintenanceStatus;
 
     final queryParams = <QueryParam>[];
     final headerParams = <String, String>{};
@@ -744,9 +744,9 @@ class CommonAdminApi {
   ///
   /// Parameters:
   ///
-  /// * [ScheduledMaintenanceStatus] scheduledMaintenanceStatus (required):
-  Future<void> postEditMaintenanceNotification(ScheduledMaintenanceStatus scheduledMaintenanceStatus,) async {
-    final response = await postEditMaintenanceNotificationWithHttpInfo(scheduledMaintenanceStatus,);
+  /// * [ServerMaintenanceStatus] serverMaintenanceStatus (required):
+  Future<void> postEditMaintenanceNotification(ServerMaintenanceStatus serverMaintenanceStatus,) async {
+    final response = await postEditMaintenanceNotificationWithHttpInfo(serverMaintenanceStatus,);
     if (response.statusCode >= HttpStatus.badRequest) {
       throw ApiException(response.statusCode, await _decodeBodyBytes(response));
     }

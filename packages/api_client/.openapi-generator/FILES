@@ -38,7 +38,6 @@ lib/model/account_sync_version.dart
 lib/model/add_favorite_profile_result.dart
 lib/model/add_public_key_result.dart
 lib/model/admin_bot_config.dart
-lib/model/admin_bot_notification_types.dart
 lib/model/admin_content_moderation_config.dart
 lib/model/admin_info.dart
 lib/model/admin_notification.dart
@@ -74,13 +73,13 @@ lib/model/chat_email_notification_settings.dart
 lib/model/chat_message_report.dart
 lib/model/chat_privacy_settings.dart
 lib/model/check_online_status_config.dart
-lib/model/check_online_status_response.dart
 lib/model/client_config.dart
 lib/model/client_config_sync_version.dart
 lib/model/client_features_config.dart
 lib/model/client_features_config_hash.dart
 lib/model/client_info.dart
 lib/model/client_language.dart
+lib/model/client_message_type.dart
 lib/model/client_type.dart
 lib/model/client_version.dart
 lib/model/client_version_count.dart
@@ -94,7 +93,6 @@ lib/model/content_info_with_fd.dart
 lib/model/content_moderation_state.dart
 lib/model/content_processing_id.dart
 lib/model/content_processing_state.dart
-lib/model/content_processing_state_changed.dart
 lib/model/content_processing_state_type.dart
 lib/model/content_slot.dart
 lib/model/conversation_id.dart
@@ -125,8 +123,6 @@ lib/model/email_address_state.dart
 lib/model/email_address_state_admin.dart
 lib/model/email_login.dart
 lib/model/email_login_token.dart
-lib/model/event_to_client.dart
-lib/model/event_type.dart
 lib/model/favorite_profiles_page.dart
 lib/model/features_config.dart
 lib/model/first_image_config.dart
@@ -249,6 +245,7 @@ lib/model/post_moderate_media_content.dart
 lib/model/post_moderate_profile_string.dart
 lib/model/post_start_data_export.dart
 lib/model/post_video_call_url_result.dart
+lib/model/predefined_banner.dart
 lib/model/process_report.dart
 lib/model/profile.dart
 lib/model/profile_age_counts.dart
@@ -317,7 +314,6 @@ lib/model/request_email_login_token_result.dart
 lib/model/reset_news_iterator_result.dart
 lib/model/reset_received_likes_iterator_result.dart
 lib/model/save_info_banners.dart
-lib/model/scheduled_maintenance_status.dart
 lib/model/scheduled_task_status.dart
 lib/model/scheduled_task_type.dart
 lib/model/scheduled_task_type_value.dart
@@ -333,6 +329,8 @@ lib/model/send_verify_email_message_result.dart
 lib/model/sent_blocks_page.dart
 lib/model/sent_message_id_list.dart
 lib/model/server_config.dart
+lib/model/server_maintenance_status.dart
+lib/model/server_message_type.dart
 lib/model/set_account_ban_state.dart
 lib/model/set_account_setup.dart
 lib/model/set_email_login_enabled.dart

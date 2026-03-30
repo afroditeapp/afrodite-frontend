@@ -1,8 +1,8 @@
 import 'dart:async';
 
+import 'package:app/api/server_connection_protocol/server.dart';
 import 'package:app/data/utils/repository_instances.dart';
 import 'package:logging/logging.dart';
-import 'package:openapi/api.dart';
 import 'package:rxdart/rxdart.dart';
 import 'package:utils/utils.dart';
 
@@ -10,8 +10,8 @@ final _log = Logger("EventRouter");
 
 class EventRouter {
   EventRouter({required this.repositories}) {
-    for (final type in EventType.values) {
-      final subject = PublishSubject<EventToClient>();
+    for (final type in ServerMessageTypeCode.values) {
+      final subject = PublishSubject<ServerMessage>();
       _subjects[type] = subject;
       _subscriptions[type] = subject
           .asyncMap((event) async {
@@ -27,17 +27,17 @@ class EventRouter {
   }
 
   final RepositoryInstances repositories;
-  final Map<EventType, PublishSubject<EventToClient>> _subjects = {};
-  final Map<EventType, StreamSubscription<void>> _subscriptions = {};
+  final Map<ServerMessageTypeCode, PublishSubject<ServerMessage>> _subjects = {};
+  final Map<ServerMessageTypeCode, StreamSubscription<void>> _subscriptions = {};
 
-  void route(EventToClient event) {
-    final subject = _subjects[event.event];
+  void route(ServerMessage event) {
+    final subject = _subjects[event.type];
     if (subject == null) {
-      _log.error("Missing subject for ${event.event}");
+      _log.error("Missing subject for ${event.type}");
       return;
     }
     if (subject.isClosed) {
-      _log.error("Subject closed for ${event.event}");
+      _log.error("Subject closed for ${event.type}");
       return;
     }
     subject.add(event);
@@ -52,67 +52,67 @@ class EventRouter {
     }
   }
 
-  Future<void> _dispatch(EventType type, EventToClient event) async {
+  Future<void> _dispatch(ServerMessageTypeCode type, ServerMessage event) async {
     final chat = repositories.chat;
     final profile = repositories.profile;
     final media = repositories.media;
     final account = repositories.account;
 
     switch (type) {
-      case EventType.accountStateChanged:
+      case ServerMessageTypeCode.accountStateChanged:
         await account.receiveAccountState();
-      case EventType.contentProcessingStateChanged:
+      case ServerMessageTypeCode.contentProcessingStateChanged:
         final contentProcessingEvent = event.contentProcessingStateChanged;
         if (contentProcessingEvent != null) {
           account.emitContentProcessingStateChanged(contentProcessingEvent);
         } else {
           _log.error("Missing content processing state for $type");
         }
-      case EventType.scheduledMaintenanceStatus:
+      case ServerMessageTypeCode.scheduledMaintenanceStatus:
         final maintenanceEvent = event.scheduledMaintenanceStatus;
         if (maintenanceEvent != null) {
           await account.handleServerMaintenanceStatusEvent(maintenanceEvent);
         } else {
           _log.error("Missing maintenance status for $type");
         }
-      case EventType.receivedLikesChanged:
+      case ServerMessageTypeCode.receivedLikesChanged:
         await chat.receivedLikesCountRefresh();
-      case EventType.newMessageReceived:
+      case ServerMessageTypeCode.newMessageReceived:
         await chat.receiveNewMessages();
-      case EventType.pendingChatNotificationsChanged:
+      case ServerMessageTypeCode.pendingChatNotificationsChanged:
         await chat.receivePendingChatNotifications();
-      case EventType.pendingAppNotificationsChanged:
+      case ServerMessageTypeCode.pendingAppNotificationsChanged:
         await account.handlePendingAppNotificationsChangedEvent();
-      case EventType.clientConfigChanged:
+      case ServerMessageTypeCode.clientConfigChanged:
         await profile.receiveClientConfig();
-      case EventType.profileChanged:
+      case ServerMessageTypeCode.profileChanged:
         await profile.reloadMyProfile();
-      case EventType.newsCountChanged:
+      case ServerMessageTypeCode.newsCountChanged:
         await account.receiveNewsCount();
-      case EventType.mediaContentChanged:
+      case ServerMessageTypeCode.mediaContentChanged:
         await media.reloadMyMediaContent();
-      case EventType.dailyLikesLeftChanged:
+      case ServerMessageTypeCode.dailyLikesLeftChanged:
         await chat.reloadDailyLikesLimit();
-      case EventType.pushNotificationInfoChanged:
+      case ServerMessageTypeCode.pushNotificationInfoChanged:
         await repositories.common.receivePushNotificationInfo();
-      case EventType.adminBotNotification:
+      case ServerMessageTypeCode.adminBotNotification:
         // Ignore event as it's only for admin bot
         break;
-      case EventType.typingStart:
+      case ServerMessageTypeCode.typingStart:
         final typingStart = event.typingStart;
         if (typingStart != null) {
           chat.typingIndicatorManager.handleReceivedTypingStart(typingStart);
         } else {
           _log.error("Missing typing start for $type");
         }
-      case EventType.typingStop:
+      case ServerMessageTypeCode.typingStop:
         final typingStop = event.typingStop;
         if (typingStop != null) {
           chat.typingIndicatorManager.handleReceivedTypingStop(typingStop);
         } else {
           _log.error("Missing typing stop for $type");
         }
-      case EventType.checkOnlineStatusResponse:
+      case ServerMessageTypeCode.checkOnlineStatusResponse:
         final response = event.checkOnlineStatusResponse;
         if (response != null) {
           await chat.checkOnlineStatusManager.handleCheckOnlineStatusResponse(
@@ -122,12 +122,10 @@ class EventRouter {
         } else {
           _log.error("Missing check online status response for $type");
         }
-      case EventType.messageDeliveryInfoChanged:
+      case ServerMessageTypeCode.messageDeliveryInfoChanged:
         await chat.receiveMessageDeliveryInfo();
-      case EventType.latestSeenMessageChanged:
+      case ServerMessageTypeCode.latestSeenMessageChanged:
         await chat.receiveLatestSeenMessageInfo();
-      default:
-        _log.error("Unknown EventToClient type: $type");
     }
   }
 }

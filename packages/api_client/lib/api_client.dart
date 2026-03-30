@@ -214,8 +214,6 @@ class ApiClient {
           return AddPublicKeyResult.fromJson(value);
         case 'AdminBotConfig':
           return AdminBotConfig.fromJson(value);
-        case 'AdminBotNotificationTypes':
-          return AdminBotNotificationTypes.fromJson(value);
         case 'AdminContentModerationConfig':
           return AdminContentModerationConfig.fromJson(value);
         case 'AdminInfo':
@@ -286,8 +284,6 @@ class ApiClient {
           return ChatPrivacySettings.fromJson(value);
         case 'CheckOnlineStatusConfig':
           return CheckOnlineStatusConfig.fromJson(value);
-        case 'CheckOnlineStatusResponse':
-          return CheckOnlineStatusResponse.fromJson(value);
         case 'ClientConfig':
           return ClientConfig.fromJson(value);
         case 'ClientConfigSyncVersion':
@@ -300,6 +296,8 @@ class ApiClient {
           return ClientInfo.fromJson(value);
         case 'ClientLanguage':
           return ClientLanguage.fromJson(value);
+        case 'ClientMessageType':
+          return ClientMessageTypeTypeTransformer().decode(value);
         case 'ClientType':
           return ClientTypeTypeTransformer().decode(value);
         case 'ClientVersion':
@@ -326,8 +324,6 @@ class ApiClient {
           return ContentProcessingId.fromJson(value);
         case 'ContentProcessingState':
           return ContentProcessingState.fromJson(value);
-        case 'ContentProcessingStateChanged':
-          return ContentProcessingStateChanged.fromJson(value);
         case 'ContentProcessingStateType':
           return ContentProcessingStateTypeTypeTransformer().decode(value);
         case 'ContentSlot':
@@ -388,10 +384,6 @@ class ApiClient {
           return EmailLogin.fromJson(value);
         case 'EmailLoginToken':
           return EmailLoginToken.fromJson(value);
-        case 'EventToClient':
-          return EventToClient.fromJson(value);
-        case 'EventType':
-          return EventTypeTypeTransformer().decode(value);
         case 'FavoriteProfilesPage':
           return FavoriteProfilesPage.fromJson(value);
         case 'FeaturesConfig':
@@ -636,6 +628,8 @@ class ApiClient {
           return PostStartDataExport.fromJson(value);
         case 'PostVideoCallUrlResult':
           return PostVideoCallUrlResult.fromJson(value);
+        case 'PredefinedBanner':
+          return PredefinedBannerTypeTransformer().decode(value);
         case 'ProcessReport':
           return ProcessReport.fromJson(value);
         case 'Profile':
@@ -772,8 +766,6 @@ class ApiClient {
           return ResetReceivedLikesIteratorResult.fromJson(value);
         case 'SaveInfoBanners':
           return SaveInfoBanners.fromJson(value);
-        case 'ScheduledMaintenanceStatus':
-          return ScheduledMaintenanceStatus.fromJson(value);
         case 'ScheduledTaskStatus':
           return ScheduledTaskStatus.fromJson(value);
         case 'ScheduledTaskType':
@@ -804,6 +796,10 @@ class ApiClient {
           return SentMessageIdList.fromJson(value);
         case 'ServerConfig':
           return ServerConfig.fromJson(value);
+        case 'ServerMaintenanceStatus':
+          return ServerMaintenanceStatus.fromJson(value);
+        case 'ServerMessageType':
+          return ServerMessageTypeTypeTransformer().decode(value);
         case 'SetAccountBanState':
           return SetAccountBanState.fromJson(value);
         case 'SetAccountSetup':

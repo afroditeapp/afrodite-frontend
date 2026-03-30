@@ -4,6 +4,7 @@ import 'package:flutter/foundation.dart';
 import 'package:http/http.dart';
 import 'package:logging/logging.dart';
 import 'package:openapi/api.dart';
+import 'package:app/api/server_connection_protocol/server.dart';
 import 'package:app/api/server_connection_manager.dart';
 import 'package:app/data/account_repository.dart';
 import 'package:app/utils/cancellation_token.dart';

@@ -14,6 +14,7 @@ class InfoBanner {
   /// Returns a new [InfoBanner] instance.
   InfoBanner({
     required this.mode,
+    this.overridePredefinedBanner,
     required this.platform,
     this.text,
     this.version = 0,
@@ -21,6 +22,8 @@ class InfoBanner {
   });
 
   InfoBannerMode mode;
+
+  PredefinedBanner? overridePredefinedBanner;
 
   BannerPlatform platform;
 
@@ -36,6 +39,7 @@ class InfoBanner {
   @override
   bool operator ==(Object other) => identical(this, other) || other is InfoBanner &&
     other.mode == mode &&
+    other.overridePredefinedBanner == overridePredefinedBanner &&
     other.platform == platform &&
     other.text == text &&
     other.version == version &&
@@ -45,17 +49,23 @@ class InfoBanner {
   int get hashCode =>
     // ignore: unnecessary_parenthesis
     (mode.hashCode) +
+    (overridePredefinedBanner == null ? 0 : overridePredefinedBanner!.hashCode) +
     (platform.hashCode) +
     (text == null ? 0 : text!.hashCode) +
     (version.hashCode) +
     (visibility.hashCode);
 
   @override
-  String toString() => 'InfoBanner[mode=$mode, platform=$platform, text=$text, version=$version, visibility=$visibility]';
+  String toString() => 'InfoBanner[mode=$mode, overridePredefinedBanner=$overridePredefinedBanner, platform=$platform, text=$text, version=$version, visibility=$visibility]';
 
   Map<String, dynamic> toJson() {
     final json = <String, dynamic>{};
       json[r'mode'] = this.mode;
+    if (this.overridePredefinedBanner != null) {
+      json[r'override_predefined_banner'] = this.overridePredefinedBanner;
+    } else {
+      json[r'override_predefined_banner'] = null;
+    }
       json[r'platform'] = this.platform;
     if (this.text != null) {
       json[r'text'] = this.text;
@@ -87,6 +97,7 @@ class InfoBanner {
 
       return InfoBanner(
         mode: InfoBannerMode.fromJson(json[r'mode'])!,
+        overridePredefinedBanner: PredefinedBanner.fromJson(json[r'override_predefined_banner']),
         platform: BannerPlatform.fromJson(json[r'platform'])!,
         text: TextInfoBanner.fromJson(json[r'text']),
         version: mapValueOfType<int>(json, r'version') ?? 0,

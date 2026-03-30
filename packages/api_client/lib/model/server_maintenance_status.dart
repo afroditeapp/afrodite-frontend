@@ -10,39 +10,31 @@
 
 part of openapi.api;
 
-class ScheduledMaintenanceStatus {
-  /// Returns a new [ScheduledMaintenanceStatus] instance.
-  ScheduledMaintenanceStatus({
+class ServerMaintenanceStatus {
+  /// Returns a new [ServerMaintenanceStatus] instance.
+  ServerMaintenanceStatus({
     this.end,
-    this.maintenanceTarget = 0,
     this.start,
   });
 
   UnixTime? end;
 
-  /// Maintenance target  * 0 - Server * 1 - Admin bot
-  ///
-  /// Minimum value: 0
-  int maintenanceTarget;
-
   /// If None, ignore [Self::end].
   UnixTime? start;
 
   @override
-  bool operator ==(Object other) => identical(this, other) || other is ScheduledMaintenanceStatus &&
+  bool operator ==(Object other) => identical(this, other) || other is ServerMaintenanceStatus &&
     other.end == end &&
-    other.maintenanceTarget == maintenanceTarget &&
     other.start == start;
 
   @override
   int get hashCode =>
     // ignore: unnecessary_parenthesis
     (end == null ? 0 : end!.hashCode) +
-    (maintenanceTarget.hashCode) +
     (start == null ? 0 : start!.hashCode);
 
   @override
-  String toString() => 'ScheduledMaintenanceStatus[end=$end, maintenanceTarget=$maintenanceTarget, start=$start]';
+  String toString() => 'ServerMaintenanceStatus[end=$end, start=$start]';
 
   Map<String, dynamic> toJson() {
     final json = <String, dynamic>{};
@@ -51,7 +43,6 @@ class ScheduledMaintenanceStatus {
     } else {
       json[r'end'] = null;
     }
-      json[r'maintenance_target'] = this.maintenanceTarget;
     if (this.start != null) {
       json[r'start'] = this.start;
     } else {
@@ -60,10 +51,10 @@ class ScheduledMaintenanceStatus {
     return json;
   }
 
-  /// Returns a new [ScheduledMaintenanceStatus] instance and imports its values from
+  /// Returns a new [ServerMaintenanceStatus] instance and imports its values from
   /// [value] if it's a [Map], null otherwise.
   // ignore: prefer_constructors_over_static_methods
-  static ScheduledMaintenanceStatus? fromJson(dynamic value) {
+  static ServerMaintenanceStatus? fromJson(dynamic value) {
     if (value is Map) {
       final json = value.cast<String, dynamic>();
 
@@ -72,26 +63,25 @@ class ScheduledMaintenanceStatus {
       // Note 2: this code is stripped in release mode!
       assert(() {
         requiredKeys.forEach((key) {
-          assert(json.containsKey(key), 'Required key "ScheduledMaintenanceStatus[$key]" is missing from JSON.');
-          assert(json[key] != null, 'Required key "ScheduledMaintenanceStatus[$key]" has a null value in JSON.');
+          assert(json.containsKey(key), 'Required key "ServerMaintenanceStatus[$key]" is missing from JSON.');
+          assert(json[key] != null, 'Required key "ServerMaintenanceStatus[$key]" has a null value in JSON.');
         });
         return true;
       }());
 
-      return ScheduledMaintenanceStatus(
+      return ServerMaintenanceStatus(
         end: UnixTime.fromJson(json[r'end']),
-        maintenanceTarget: mapValueOfType<int>(json, r'maintenance_target') ?? 0,
         start: UnixTime.fromJson(json[r'start']),
       );
     }
     return null;
   }
 
-  static List<ScheduledMaintenanceStatus> listFromJson(dynamic json, {bool growable = false,}) {
-    final result = <ScheduledMaintenanceStatus>[];
+  static List<ServerMaintenanceStatus> listFromJson(dynamic json, {bool growable = false,}) {
+    final result = <ServerMaintenanceStatus>[];
     if (json is List && json.isNotEmpty) {
       for (final row in json) {
-        final value = ScheduledMaintenanceStatus.fromJson(row);
+        final value = ServerMaintenanceStatus.fromJson(row);
         if (value != null) {
           result.add(value);
         }
@@ -100,12 +90,12 @@ class ScheduledMaintenanceStatus {
     return result.toList(growable: growable);
   }
 
-  static Map<String, ScheduledMaintenanceStatus> mapFromJson(dynamic json) {
-    final map = <String, ScheduledMaintenanceStatus>{};
+  static Map<String, ServerMaintenanceStatus> mapFromJson(dynamic json) {
+    final map = <String, ServerMaintenanceStatus>{};
     if (json is Map && json.isNotEmpty) {
       json = json.cast<String, dynamic>(); // ignore: parameter_assignments
       for (final entry in json.entries) {
-        final value = ScheduledMaintenanceStatus.fromJson(entry.value);
+        final value = ServerMaintenanceStatus.fromJson(entry.value);
         if (value != null) {
           map[entry.key] = value;
         }
@@ -114,14 +104,14 @@ class ScheduledMaintenanceStatus {
     return map;
   }
 
-  // maps a json object with a list of ScheduledMaintenanceStatus-objects as value to a dart map
-  static Map<String, List<ScheduledMaintenanceStatus>> mapListFromJson(dynamic json, {bool growable = false,}) {
-    final map = <String, List<ScheduledMaintenanceStatus>>{};
+  // maps a json object with a list of ServerMaintenanceStatus-objects as value to a dart map
+  static Map<String, List<ServerMaintenanceStatus>> mapListFromJson(dynamic json, {bool growable = false,}) {
+    final map = <String, List<ServerMaintenanceStatus>>{};
     if (json is Map && json.isNotEmpty) {
       // ignore: parameter_assignments
       json = json.cast<String, dynamic>();
       for (final entry in json.entries) {
-        map[entry.key] = ScheduledMaintenanceStatus.listFromJson(entry.value, growable: growable,);
+        map[entry.key] = ServerMaintenanceStatus.listFromJson(entry.value, growable: growable,);
       }
     }
     return map;

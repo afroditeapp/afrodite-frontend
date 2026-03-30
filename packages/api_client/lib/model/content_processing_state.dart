@@ -27,9 +27,7 @@ class ContentProcessingState {
 
   ContentProcessingStateType state;
 
-  /// Current position in processing queue.  If ProcessingContentId is added to empty queue, then this will be 1.
-  ///
-  /// Minimum value: 0
+  /// Current position in processing queue.  If ProcessingContentId is added to empty queue, then this will be 1.  Use i64 as Dart has only signed integers.
   int? waitQueuePosition;
 
   @override

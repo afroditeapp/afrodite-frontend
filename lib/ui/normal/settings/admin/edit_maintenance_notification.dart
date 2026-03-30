@@ -15,9 +15,6 @@ import 'package:app/ui_utils/snack_bar.dart';
 import 'package:app/utils/result.dart';
 import 'package:utils/utils.dart';
 
-const _SERVER = "Server";
-const _ADMIN_BOT = "Admin bot";
-
 class EditMaintenanceNotificationPage extends MyScreenPageLimited<()> {
   EditMaintenanceNotificationPage(RepositoryInstances r)
     : super(builder: (_) => EditMaintenanceNotificationScreen(r));
@@ -38,8 +35,7 @@ class EditMaintenanceNotificationScreen extends StatefulWidget {
 class _EditMaintenanceNotificationScreenState extends State<EditMaintenanceNotificationScreen> {
   final EditDateAndTimeController _startTime = EditDateAndTimeController();
   final EditDateAndTimeController _endTime = EditDateAndTimeController();
-  ScheduledMaintenanceStatus? _currentState;
-  int _maintenanceTarget = 0;
+  ServerMaintenanceStatus? _currentState;
 
   bool saveInProgress = false;
   bool isLoading = true;
@@ -56,7 +52,6 @@ class _EditMaintenanceNotificationScreenState extends State<EditMaintenanceNotif
     setState(() {
       isLoading = false;
       _currentState = data;
-      _maintenanceTarget = data?.maintenanceTarget ?? 0;
     });
   }
 
@@ -81,17 +76,6 @@ class _EditMaintenanceNotificationScreenState extends State<EditMaintenanceNotif
     }
   }
 
-  String _maintenanceTargetText(int? target) {
-    switch (target) {
-      case 0:
-        return _SERVER;
-      case 1:
-        return _ADMIN_BOT;
-      default:
-        return target.toString();
-    }
-  }
-
   Widget showContent(BuildContext context) {
     return BlocBuilder<AccountBloc, AccountBlocData>(
       builder: (context, state) {
@@ -111,11 +95,7 @@ class _EditMaintenanceNotificationScreenState extends State<EditMaintenanceNotif
         }
 
         final widgets = [
-          hPad(
-            Text(
-              "Current target: ${_maintenanceTargetText(_currentState?.maintenanceTarget)}\nStart: $start\nEnd: $end",
-            ),
-          ),
+          hPad(Text("Start: $start\nEnd: $end")),
           const Padding(padding: EdgeInsets.all(8.0)),
           hPad(displayMaintenanceNotification(context)),
         ];
@@ -137,7 +117,6 @@ class _EditMaintenanceNotificationScreenState extends State<EditMaintenanceNotif
         setState(() {
           _startTime.clear();
           _endTime.clear();
-          _maintenanceTarget = 0;
         });
       },
       child: const Text("Clear"),
@@ -152,18 +131,13 @@ class _EditMaintenanceNotificationScreenState extends State<EditMaintenanceNotif
 
         final startTime = _startTime.timeInfo();
         final endTime = _endTime.timeInfo();
-        final maintenanceStatus = ScheduledMaintenanceStatus(
-          start: startTime?.$1,
-          end: endTime?.$1,
-          maintenanceTarget: _maintenanceTarget,
-        );
+        final maintenanceStatus = ServerMaintenanceStatus(start: startTime?.$1, end: endTime?.$1);
         final startTimeText = startTime?.$2 ?? "null";
         final endTimeText = endTime?.$2 ?? "null";
         showConfirmDialog(
           context,
           "Save selected times?",
-          details:
-              "New start: $startTimeText\nNew end: $endTimeText\nTarget: ${_maintenanceTargetText(_maintenanceTarget)}",
+          details: "New start: $startTimeText\nNew end: $endTimeText",
         ).then((value) async {
           if (value != true) {
             return;
@@ -189,28 +163,7 @@ class _EditMaintenanceNotificationScreenState extends State<EditMaintenanceNotif
       child: const Text("Save"),
     );
 
-    final targetSelector = Row(
-      children: [
-        const Text("Target:"),
-        const Padding(padding: EdgeInsets.all(8.0)),
-        DropdownButton<int>(
-          value: _maintenanceTarget,
-          items: const [
-            DropdownMenuItem(value: 0, child: Text(_SERVER)),
-            DropdownMenuItem(value: 1, child: Text(_ADMIN_BOT)),
-          ],
-          onChanged: (value) {
-            if (value != null) {
-              setState(() => _maintenanceTarget = value);
-            }
-          },
-        ),
-      ],
-    );
-
     final widgets = [
-      targetSelector,
-      const Padding(padding: EdgeInsets.all(8.0)),
       Text("Start time", style: Theme.of(context).textTheme.titleMedium),
       const Padding(padding: EdgeInsets.all(8.0)),
       EditDateAndTime(controller: _startTime),

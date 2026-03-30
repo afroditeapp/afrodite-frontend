@@ -67,6 +67,9 @@ String parameterToString(dynamic value) {
   if (value is BackupTransferClientRole) {
     return BackupTransferClientRoleTypeTransformer().encode(value).toString();
   }
+  if (value is ClientMessageType) {
+    return ClientMessageTypeTypeTransformer().encode(value).toString();
+  }
   if (value is ClientType) {
     return ClientTypeTypeTransformer().encode(value).toString();
   }
@@ -97,9 +100,6 @@ String parameterToString(dynamic value) {
   if (value is DeliveryInfoType) {
     return DeliveryInfoTypeTypeTransformer().encode(value).toString();
   }
-  if (value is EventType) {
-    return EventTypeTypeTransformer().encode(value).toString();
-  }
   if (value is InfoBannerMode) {
     return InfoBannerModeTypeTransformer().encode(value).toString();
   }
@@ -124,6 +124,9 @@ String parameterToString(dynamic value) {
   if (value is PendingAppNotificationType) {
     return PendingAppNotificationTypeTypeTransformer().encode(value).toString();
   }
+  if (value is PredefinedBanner) {
+    return PredefinedBannerTypeTransformer().encode(value).toString();
+  }
   if (value is ProfileStatisticsHistoryValueType) {
     return ProfileStatisticsHistoryValueTypeTypeTransformer().encode(value).toString();
   }
@@ -147,6 +150,9 @@ String parameterToString(dynamic value) {
   }
   if (value is ScheduledTaskType) {
     return ScheduledTaskTypeTypeTransformer().encode(value).toString();
+  }
+  if (value is ServerMessageType) {
+    return ServerMessageTypeTypeTransformer().encode(value).toString();
   }
   if (value is SoftwareUpdateState) {
     return SoftwareUpdateStateTypeTransformer().encode(value).toString();

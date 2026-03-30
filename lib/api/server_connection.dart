@@ -4,6 +4,7 @@ import 'dart:io';
 
 import 'package:app/api/websocket_builder.dart';
 import 'package:app/api/server_connection_protocol/client.dart';
+import 'package:app/api/server_connection_protocol/server.dart';
 import 'package:app/data/app_version.dart';
 import 'package:flutter/foundation.dart';
 import 'package:logging/logging.dart';
@@ -192,10 +193,14 @@ class ServerConnection {
                 await _endConnectionToGeneralError();
               }
             case ConnectionProtocolState.receiveEvents:
-              if (message is ws.TextDataReceived) {
-                final event = EventToClient.fromJson(jsonDecode(message.text));
-                if (event != null) {
-                  _serverEvents.add(EventToClientContainer(event));
+              if (message is ws.BinaryDataReceived && message.data.isNotEmpty) {
+                final parsedMessage = ServerMessage.fromBytes(message.data);
+                if (parsedMessage != null) {
+                  _serverEvents.add(ServerMessageContainer(parsedMessage));
+                } else {
+                  _log.warning(
+                    "Failed to parse server binary message. Message type: ${message.data[0]}",
+                  );
                 }
               }
           }

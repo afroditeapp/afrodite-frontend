@@ -13,6 +13,7 @@ import 'package:database/database.dart';
 import 'package:logging/logging.dart';
 import 'package:openapi/api.dart';
 import 'package:app/api/server_connection_manager.dart';
+import 'package:app/api/server_connection_protocol/server.dart';
 import 'package:app/data/account/initial_setup.dart';
 import 'package:app/data/utils.dart';
 import 'package:app/database/account_database_manager.dart';
@@ -90,8 +91,8 @@ class AccountRepository extends DataRepositoryWithLifecycle {
     _eventRouter ??= EventRouter(repositories: repositories);
     _serverEvents = connectionManager.serverEvents.listen((event) {
       switch (event) {
-        case EventToClientContainer e:
-          _eventRouter?.route(e.event);
+        case ServerMessageContainer m:
+          _eventRouter?.route(m.message);
       }
     });
   }
@@ -333,7 +334,7 @@ class AccountRepository extends DataRepositoryWithLifecycle {
           (db) => db.common.setMaintenanceTime(
             start: event.start?.toUtcDateTime(),
             end: event.end?.toUtcDateTime(),
-            maintenanceTarget: event.maintenanceTarget,
+            maintenanceTarget: 0, // TODO: Update
           ),
         )
         .emptyErr();
