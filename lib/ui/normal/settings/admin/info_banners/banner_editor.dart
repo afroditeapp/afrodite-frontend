@@ -89,6 +89,19 @@ class _InfoBannerEditorScreenState extends State<InfoBannerEditorScreen> {
           ),
           const Divider(height: 32),
           Text("Visibility", style: Theme.of(context).textTheme.titleMedium),
+          const SizedBox(height: 8),
+          DropdownButtonFormField<PredefinedBanner?>(
+            decoration: const InputDecoration(labelText: "Override predefined banner"),
+            initialValue: _banner.overridePredefinedBanner,
+            items: [
+              const DropdownMenuItem(value: null, child: Text("None")),
+              ...PredefinedBanner.values.map(
+                (e) => DropdownMenuItem(value: e, child: Text(e.value)),
+              ),
+            ],
+            onChanged: (value) => setState(() => _banner.overridePredefinedBanner = value),
+          ),
+          const SizedBox(height: 16),
           SwitchListTile(
             title: const Text("Profiles"),
             value: _banner.visibility.profiles,

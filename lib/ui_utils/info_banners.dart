@@ -26,21 +26,18 @@ class InfoBannersWidget extends StatelessWidget {
       builder: (context, state) {
         return BlocBuilder<InfoBannersBloc, Map<String, InfoBannerDismissState>>(
           builder: (context, dismissedBanners) {
-            final banners = _visibleTextBanners(
-              state.infoBanners?.banners ?? const <String, InfoBanner>{},
-              dismissedBanners,
-              location,
-            );
+            final allBanners = state.infoBanners?.banners ?? const <String, InfoBanner>{};
+            final banners = _visibleTextBanners(allBanners, dismissedBanners, location);
 
             if (location == InfoBannerLocation.menu) {
               return BlocBuilder<ServerMaintenanceBloc, ServerMaintenanceInfo>(
                 builder: (context, maintenanceInfo) {
-                  return _bannerList(context, banners, maintenanceInfo);
+                  return _bannerList(context, allBanners, banners, maintenanceInfo);
                 },
               );
             }
 
-            return _bannerList(context, banners, null);
+            return _bannerList(context, allBanners, banners, null);
           },
         );
       },
@@ -49,10 +46,11 @@ class InfoBannersWidget extends StatelessWidget {
 
   Widget _bannerList(
     BuildContext context,
+    Map<String, InfoBanner> allBanners,
     List<_VisibleTextInfoBanner> banners,
     ServerMaintenanceInfo? maintenanceInfo,
   ) {
-    final maintenanceBodies = _maintenanceBodies(context, maintenanceInfo);
+    final maintenanceBodies = _maintenanceBodies(context, allBanners, maintenanceInfo);
     if (maintenanceBodies.isEmpty && banners.isEmpty) {
       return const SizedBox.shrink();
     }
@@ -76,15 +74,25 @@ class InfoBannersWidget extends StatelessWidget {
     );
   }
 
-  List<String> _maintenanceBodies(BuildContext context, ServerMaintenanceInfo? state) {
+  List<String> _maintenanceBodies(
+    BuildContext context,
+    Map<String, InfoBanner> allBanners,
+    ServerMaintenanceInfo? state,
+  ) {
     final bodies = <String>[];
 
-    if (state?.adminBotOffline == true) {
+    final hideAdminBotOfflineBanner = allBanners.values.any(
+      (b) => b.overridePredefinedBanner == PredefinedBanner.adminBotOffline,
+    );
+    if (state?.adminBotOffline == true && !hideAdminBotOfflineBanner) {
       bodies.add(context.strings.menu_screen_admin_offline_title);
     }
 
+    final hideServerMaintenanceBanner = allBanners.values.any(
+      (b) => b.overridePredefinedBanner == PredefinedBanner.serverMaintenance,
+    );
     final startTime = state?.startTime;
-    if (startTime == null) {
+    if (startTime == null || hideServerMaintenanceBanner) {
       return bodies;
     }
 
