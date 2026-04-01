@@ -30,14 +30,15 @@ class DaoWriteCommon extends DatabaseAccessor<AccountDatabase> with _$DaoWriteCo
         id: SingleRowTable.ID,
         startTime: Value(start),
         endTime: Value(end),
+        showBadge: Value(start != null || adminBotOffline),
         adminBotOffline: Value(adminBotOffline),
       ),
     );
   }
 
-  Future<void> setMaintenanceTimeViewed({required UtcDateTime time}) async {
+  Future<void> setMaintenanceBadgeViewed() async {
     await into(serverMaintenance).insertOnConflictUpdate(
-      ServerMaintenanceCompanion.insert(id: SingleRowTable.ID, infoViewed: Value(time)),
+      ServerMaintenanceCompanion.insert(id: SingleRowTable.ID, showBadge: Value(false)),
     );
   }
 

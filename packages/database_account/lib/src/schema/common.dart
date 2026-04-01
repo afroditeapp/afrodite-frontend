@@ -20,8 +20,7 @@ class ServerMaintenance extends SingleRowTable {
       integer().map(const NullAwareTypeConverter.wrap(UtcDateTimeConverter())).nullable()();
   IntColumn get endTime =>
       integer().map(const NullAwareTypeConverter.wrap(UtcDateTimeConverter())).nullable()();
-  IntColumn get infoViewed =>
-      integer().map(const NullAwareTypeConverter.wrap(UtcDateTimeConverter())).nullable()();
+  BoolColumn get showBadge => boolean().withDefault(const Constant(false))();
   BoolColumn get adminBotOffline => boolean().withDefault(const Constant(false))();
 }
 

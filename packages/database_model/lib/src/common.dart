@@ -3,30 +3,30 @@ import 'package:utils/utils.dart';
 class ServerMaintenanceInfo {
   final UtcDateTime? startTime;
   final UtcDateTime? endTime;
-  final UtcDateTime? infoViewed;
+  final bool showBadge;
   final bool adminBotOffline;
 
   const ServerMaintenanceInfo({
     required this.startTime,
     required this.endTime,
-    required this.infoViewed,
+    required this.showBadge,
     required this.adminBotOffline,
   });
 
   ServerMaintenanceInfo.empty()
     : startTime = null,
       endTime = null,
-      infoViewed = null,
+      showBadge = false,
       adminBotOffline = false;
 
   int uiBadgeCount() {
-    final latest = startTime?.toUnixEpochMilliseconds();
-    final viewed = infoViewed?.toUnixEpochMilliseconds() ?? 0;
-    if (latest != null && latest > viewed) {
-      return 1;
-    } else {
+    if (!showBadge) {
       return 0;
     }
+    if (startTime == null && !adminBotOffline) {
+      return 0;
+    }
+    return 1;
   }
 
   @override
@@ -34,12 +34,12 @@ class ServerMaintenanceInfo {
     return other is ServerMaintenanceInfo &&
         startTime == other.startTime &&
         endTime == other.endTime &&
-        infoViewed == other.infoViewed &&
+        showBadge == other.showBadge &&
         adminBotOffline == other.adminBotOffline;
   }
 
   @override
-  int get hashCode => Object.hash(runtimeType, startTime, endTime, infoViewed, adminBotOffline);
+  int get hashCode => Object.hash(runtimeType, startTime, endTime, showBadge, adminBotOffline);
 }
 
 class InfoBannerDismissState {

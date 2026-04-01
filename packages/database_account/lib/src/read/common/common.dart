@@ -47,7 +47,7 @@ class DaoReadCommon extends DatabaseAccessor<AccountDatabase> with _$DaoReadComm
       return ServerMaintenanceInfo(
         startTime: r.startTime,
         endTime: r.endTime,
-        infoViewed: r.infoViewed,
+        showBadge: r.showBadge,
         adminBotOffline: r.adminBotOffline,
       );
     }).watchSingleOrNull();
