@@ -57,7 +57,7 @@ class InfoBannersBloc extends Bloc<InfoBannersEvent, InfoBannersData> {
       emit(state.copyWith(maintenanceInfo: data.value));
     });
     on<ViewServerMaintenanceInfo>((data, emit) async {
-      if (state.maintenanceInfo.uiBadgeCount() == 1) {
+      if (state.maintenanceInfo.showBadge) {
         await db.accountAction((db) => db.common.setMaintenanceBadgeViewed());
       }
     });
