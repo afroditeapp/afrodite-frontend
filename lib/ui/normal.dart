@@ -1,7 +1,8 @@
 import "package:app/data/utils/repository_instances.dart";
 import "package:app/logic/account/client_features_config.dart";
+import "package:app/logic/account/info_banners.dart";
+import "package:app/model/freezed/logic/account/info_banners.dart";
 import "package:app/logic/profile/automatic_profile_search_badge.dart";
-import "package:app/logic/server/maintenance.dart";
 import "package:app/model/freezed/logic/account/client_features_config.dart";
 import "package:app/model/freezed/logic/profile/automatic_profile_search_badge.dart";
 import "package:app/ui/normal/menu.dart";
@@ -206,8 +207,8 @@ class _NormalStateContentState extends State<NormalStateContent> {
       BottomNavigationBarItem(
         icon: BlocBuilder<ClientFeaturesConfigBloc, ClientFeaturesConfigData>(
           builder: (context, clientFeatures) {
-            return BlocBuilder<ServerMaintenanceBloc, ServerMaintenanceInfo>(
-              builder: (context, serverMaintenanceInfo) {
+            return BlocBuilder<InfoBannersBloc, InfoBannersData>(
+              builder: (context, infoBannersData) {
                 return BlocBuilder<NewsCountBloc, NewsCountData>(
                   builder: (context, newsState) {
                     return BlocBuilder<
@@ -217,7 +218,7 @@ class _NormalStateContentState extends State<NormalStateContent> {
                       builder: (context, searchState) {
                         final icon = Icon(selectedView == 3 ? Icons.menu : Icons.menu_outlined);
                         final count =
-                            serverMaintenanceInfo.uiBadgeCount() +
+                            infoBannersData.maintenanceInfo.uiBadgeCount() +
                             newsState.newsCountForUi(clientFeatures.config) +
                             searchState.profileCount();
                         if (count == 0) {

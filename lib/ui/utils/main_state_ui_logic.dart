@@ -17,7 +17,6 @@ import 'package:app/logic/chat/send_chat_backup.dart';
 import 'package:app/logic/login.dart';
 import 'package:app/logic/profile/automatic_profile_search_badge.dart';
 import 'package:app/logic/server/address.dart';
-import 'package:app/logic/server/maintenance.dart';
 import 'package:app/logic/settings/chat_backup.dart';
 import 'package:app/logic/settings/data_export.dart';
 import 'package:app/logic/sign_in_with.dart';
@@ -322,9 +321,6 @@ class NavigatorNormal extends LoggedInRootScreen {
 
         // News
         BlocProvider(create: (_) => NewsCountBloc(r)),
-
-        // Server maintenance
-        BlocProvider(create: (_) => ServerMaintenanceBloc(r)),
 
         // Likes
         BlocProvider(create: (_) => LikeGridInstanceManagerBloc()),

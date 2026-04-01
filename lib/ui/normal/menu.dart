@@ -1,7 +1,7 @@
 import 'package:app/data/utils/repository_instances.dart';
 import 'package:app/logic/account/client_features_config.dart';
+import 'package:app/logic/account/info_banners.dart';
 import 'package:app/logic/profile/automatic_profile_search_badge.dart';
-import 'package:app/logic/server/maintenance.dart';
 import 'package:app/model/freezed/logic/account/client_features_config.dart';
 import 'package:app/model/freezed/logic/profile/automatic_profile_search_badge.dart';
 import 'package:app/ui/normal/settings.dart';
@@ -106,7 +106,7 @@ class _MenuViewState extends State<MenuView> {
                   listenWhen: (previous, current) => previous.screen != current.screen,
                   listener: (context, state) {
                     if (state.screen == BottomNavigationScreenId.settings) {
-                      context.read<ServerMaintenanceBloc>().add(ViewServerMaintenanceInfo());
+                      context.read<InfoBannersBloc>().add(ViewServerMaintenanceInfo());
                     }
                   },
                   child: list(settings),

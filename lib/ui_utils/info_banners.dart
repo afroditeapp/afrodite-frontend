@@ -1,6 +1,6 @@
 import 'package:app/logic/account/dynamic_client_features_config.dart';
 import 'package:app/logic/account/info_banners.dart';
-import 'package:app/logic/server/maintenance.dart';
+import 'package:app/model/freezed/logic/account/info_banners.dart';
 import 'package:app/localizations.dart';
 import 'package:app/ui_utils/attribute/icon.dart';
 import 'package:app/ui_utils/extensions/api.dart';
@@ -23,21 +23,23 @@ class InfoBannersWidget extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
     return BlocBuilder<DynamicClientFeaturesConfigBloc, DynamicClientFeaturesConfig>(
-      builder: (context, state) {
-        return BlocBuilder<InfoBannersBloc, Map<String, InfoBannerDismissState>>(
-          builder: (context, dismissedBanners) {
-            final allBanners = state.infoBanners?.banners ?? const <String, InfoBanner>{};
-            final banners = _visibleTextBanners(allBanners, dismissedBanners, location);
+      builder: (context, clientFeaturesConfig) {
+        return BlocBuilder<InfoBannersBloc, InfoBannersData>(
+          builder: (context, infoBannersData) {
+            final allBanners =
+                clientFeaturesConfig.infoBanners?.banners ?? const <String, InfoBanner>{};
+            final banners = _visibleTextBanners(
+              allBanners,
+              infoBannersData.dismissStates,
+              location,
+            );
 
-            if (location == InfoBannerLocation.menu) {
-              return BlocBuilder<ServerMaintenanceBloc, ServerMaintenanceInfo>(
-                builder: (context, maintenanceInfo) {
-                  return _bannerList(context, allBanners, banners, maintenanceInfo);
-                },
-              );
-            }
-
-            return _bannerList(context, allBanners, banners, null);
+            return _bannerList(
+              context,
+              allBanners,
+              banners,
+              location == InfoBannerLocation.menu ? infoBannersData.maintenanceInfo : null,
+            );
           },
         );
       },
