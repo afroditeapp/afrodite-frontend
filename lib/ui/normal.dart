@@ -1,5 +1,6 @@
 import "package:app/data/utils/repository_instances.dart";
 import "package:app/logic/account/client_features_config.dart";
+import "package:app/logic/account/dynamic_client_features_config.dart";
 import "package:app/logic/account/info_banners.dart";
 import "package:app/model/freezed/logic/account/info_banners.dart";
 import "package:app/logic/profile/automatic_profile_search_badge.dart";
@@ -36,6 +37,7 @@ import "package:app/ui/normal/profiles.dart";
 import "package:app/ui/normal/settings/my_profile.dart";
 import "package:app/ui/utils/notification_payload_handler.dart";
 import "package:app/ui_utils/profile_thumbnail_image.dart";
+import "package:openapi/api.dart";
 
 class NormalStatePage extends MyScreenPage<()> with SimpleUrlParser<NormalStatePage> {
   NormalStatePage() : super(builder: (_) => NormalStateScreen());
@@ -207,25 +209,31 @@ class _NormalStateContentState extends State<NormalStateContent> {
       BottomNavigationBarItem(
         icon: BlocBuilder<ClientFeaturesConfigBloc, ClientFeaturesConfigData>(
           builder: (context, clientFeatures) {
-            return BlocBuilder<InfoBannersBloc, InfoBannersData>(
-              builder: (context, infoBannersData) {
-                return BlocBuilder<NewsCountBloc, NewsCountData>(
-                  builder: (context, newsState) {
-                    return BlocBuilder<
-                      AutomaticProfileSearchBadgeBloc,
-                      AutomaticProfileSearchBadgeData
-                    >(
-                      builder: (context, searchState) {
-                        final icon = Icon(selectedView == 3 ? Icons.menu : Icons.menu_outlined);
-                        final count =
-                            infoBannersData.maintenanceInfo.uiBadgeCount() +
-                            newsState.newsCountForUi(clientFeatures.config) +
-                            searchState.profileCount();
-                        if (count == 0) {
-                          return icon;
-                        } else {
-                          return Badge.count(count: count, child: icon);
-                        }
+            return BlocBuilder<DynamicClientFeaturesConfigBloc, DynamicClientFeaturesConfig>(
+              builder: (context, dynamicClientFeaturesConfig) {
+                return BlocBuilder<InfoBannersBloc, InfoBannersData>(
+                  builder: (context, infoBannersData) {
+                    return BlocBuilder<NewsCountBloc, NewsCountData>(
+                      builder: (context, newsState) {
+                        return BlocBuilder<
+                          AutomaticProfileSearchBadgeBloc,
+                          AutomaticProfileSearchBadgeData
+                        >(
+                          builder: (context, searchState) {
+                            final icon = Icon(selectedView == 3 ? Icons.menu : Icons.menu_outlined);
+                            final count =
+                                infoBannersData.serverMaintenanceUiBadgeCount(
+                                  dynamicClientFeaturesConfig,
+                                ) +
+                                newsState.newsCountForUi(clientFeatures.config) +
+                                searchState.profileCount();
+                            if (count == 0) {
+                              return icon;
+                            } else {
+                              return Badge.count(count: count, child: icon);
+                            }
+                          },
+                        );
                       },
                     );
                   },

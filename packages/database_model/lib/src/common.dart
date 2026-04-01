@@ -19,16 +19,6 @@ class ServerMaintenanceInfo {
       showBadge = false,
       adminBotOffline = false;
 
-  int uiBadgeCount() {
-    if (!showBadge) {
-      return 0;
-    }
-    if (startTime == null && !adminBotOffline) {
-      return 0;
-    }
-    return 1;
-  }
-
   @override
   bool operator ==(Object other) {
     return other is ServerMaintenanceInfo &&
