@@ -87,6 +87,12 @@ class EventRouter {
         await profile.receiveClientConfig();
       case ServerMessageTypeCode.profileChanged:
         await profile.reloadMyProfile();
+      case ServerMessageTypeCode.responseResetProfilePaging:
+      case ServerMessageTypeCode.responseNextProfilePage:
+      case ServerMessageTypeCode.responseAutomaticProfileSearchResetProfilePaging:
+      case ServerMessageTypeCode.responseAutomaticProfileSearchNextProfilePage:
+        // Iterator paging responses are currently handled via HTTP API calls.
+        break;
       case ServerMessageTypeCode.newsCountChanged:
         await account.receiveNewsCount();
       case ServerMessageTypeCode.mediaContentChanged:
@@ -112,7 +118,7 @@ class EventRouter {
         } else {
           _log.error("Missing typing stop for $type");
         }
-      case ServerMessageTypeCode.checkOnlineStatusResponse:
+      case ServerMessageTypeCode.responseCheckOnlineStatus:
         final response = event.checkOnlineStatusResponse;
         if (response != null) {
           await chat.checkOnlineStatusManager.handleCheckOnlineStatusResponse(

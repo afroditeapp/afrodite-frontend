@@ -20,6 +20,38 @@ import 'package:openapi/api.dart';
 /// - [ServerMessageTypeCode.pushNotificationInfoChanged] (5): payload is empty.
 /// - [ServerMessageTypeCode.accountStateChanged] (30): payload is empty.
 /// - [ServerMessageTypeCode.profileChanged] (60): payload is empty.
+/// - [ServerMessageTypeCode.responseResetProfilePaging] (61): payload format:
+///   - status byte:
+///     - 0: success
+///     - 1: rate limited
+///     - 2: internal server error
+///   - if status is 0:
+///     - profile iterator session id as minimal i64
+/// - [ServerMessageTypeCode.responseNextProfilePage] (62): payload format:
+///   - status byte:
+///     - 0: success
+///     - 1: invalid iterator session id
+///     - 2: rate limited
+///     - 3: internal server error
+///   - if status is 0:
+///     - repeated profile entries until payload ends
+/// - [ServerMessageTypeCode.responseAutomaticProfileSearchResetProfilePaging]
+///   (63): payload format:
+///   - status byte:
+///     - 0: success
+///     - 1: rate limited
+///     - 2: internal server error
+///   - if status is 0:
+///     - automatic profile search iterator session id as minimal i64
+/// - [ServerMessageTypeCode.responseAutomaticProfileSearchNextProfilePage]
+///   (64): payload format:
+///   - status byte:
+///     - 0: success
+///     - 1: invalid iterator session id
+///     - 2: rate limited
+///     - 3: internal server error
+///   - if status is 0:
+///     - repeated profile entries until payload ends
 /// - [ServerMessageTypeCode.contentProcessingStateChanged] (90): payload format:
 ///   - content processing server process ID as minimal i64
 ///   - content processing state byte:
@@ -44,9 +76,9 @@ import 'package:openapi/api.dart';
 ///   account UUID in big-endian byte order.
 /// - [ServerMessageTypeCode.typingStop] (125): payload is exactly 16 bytes
 ///   account UUID in big-endian byte order.
-/// - [ServerMessageTypeCode.checkOnlineStatusResponse] (126): payload is 16
-///   bytes account UUID, one byte value-presence flag and optional 8-byte
-///   big-endian i64 last seen time.
+/// - [ServerMessageTypeCode.responseCheckOnlineStatus] (126): payload is 16
+///   bytes account UUID, followed by null last seen time (0 byte) or last seen
+///   time as minimal i64.
 /// - [ServerMessageTypeCode.messageDeliveryInfoChanged] (127): payload is
 ///   empty.
 /// - [ServerMessageTypeCode.latestSeenMessageChanged] (128): payload is empty.
@@ -59,6 +91,10 @@ enum ServerMessageTypeCode {
   pushNotificationInfoChanged(5),
   accountStateChanged(30),
   profileChanged(60),
+  responseResetProfilePaging(61),
+  responseNextProfilePage(62),
+  responseAutomaticProfileSearchResetProfilePaging(63),
+  responseAutomaticProfileSearchNextProfilePage(64),
   contentProcessingStateChanged(90),
   mediaContentChanged(91),
   newMessageReceived(120),
@@ -67,7 +103,7 @@ enum ServerMessageTypeCode {
   dailyLikesLeftChanged(123),
   typingStart(124),
   typingStop(125),
-  checkOnlineStatusResponse(126),
+  responseCheckOnlineStatus(126),
   messageDeliveryInfoChanged(127),
   latestSeenMessageChanged(128);
 
@@ -164,6 +200,11 @@ class ServerMessage {
           return null;
         }
         return ServerMessage._(type: type, payload: payload);
+      case ServerMessageTypeCode.responseResetProfilePaging:
+      case ServerMessageTypeCode.responseNextProfilePage:
+      case ServerMessageTypeCode.responseAutomaticProfileSearchResetProfilePaging:
+      case ServerMessageTypeCode.responseAutomaticProfileSearchNextProfilePage:
+        return ServerMessage._(type: type, payload: payload);
       case ServerMessageTypeCode.scheduledMaintenanceStatus:
         final maintenance = _parseScheduledMaintenanceStatus(payload);
         if (maintenance == null) {
@@ -202,7 +243,7 @@ class ServerMessage {
           return null;
         }
         return ServerMessage._(type: type, payload: payload, typingStop: accountId);
-      case ServerMessageTypeCode.checkOnlineStatusResponse:
+      case ServerMessageTypeCode.responseCheckOnlineStatus:
         final response = _parseCheckOnlineStatusResponse(payload);
         if (response == null) {
           return null;
@@ -316,19 +357,17 @@ CheckOnlineStatusResponse? _parseCheckOnlineStatusResponse(Uint8List payload) {
   final reader = _ByteReader(payload);
   final accountIdBytes = reader.readBytes(16);
   final accountId = _accountIdFromUuidBytes(accountIdBytes);
-  final includeLastSeen = reader.readU8();
+  final marker = reader.readU8();
 
-  if (accountId == null || includeLastSeen == null) {
-    return null;
-  }
-
-  if (includeLastSeen != 0 && includeLastSeen != 1) {
+  if (accountId == null || marker == null) {
     return null;
   }
 
   int? lastSeen;
-  if (includeLastSeen == 1) {
-    lastSeen = reader.readI64BigEndian();
+  if (marker == 0) {
+    lastSeen = null;
+  } else {
+    lastSeen = reader.readMinimalI64WithKnownByteCount(marker);
     if (lastSeen == null) {
       return null;
     }
@@ -413,20 +452,16 @@ class _ByteReader {
     return value;
   }
 
-  int? readI64BigEndian() {
-    final bytes = readBytes(8);
-    if (bytes == null) {
-      return null;
-    }
-    return ByteData.sublistView(bytes).getInt64(0, Endian.big);
-  }
-
   int? readMinimalI64() {
     final byteCount = readU8();
     if (byteCount == null) {
       return null;
     }
 
+    return readMinimalI64WithKnownByteCount(byteCount);
+  }
+
+  int? readMinimalI64WithKnownByteCount(int byteCount) {
     if (byteCount != 1 && byteCount != 2 && byteCount != 4 && byteCount != 8) {
       failed = true;
       return null;

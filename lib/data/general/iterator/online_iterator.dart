@@ -187,7 +187,7 @@ class ProfileListOnlineIteratorIo extends OnlineIteratorIo {
 
   @override
   Future<Result<(), ()>> resetServerPaging() async {
-    switch (await api.profile((api) => api.postResetProfilePaging())) {
+    switch (await api.common((api) => api.postResetProfilePaging())) {
       case Ok(:final v):
         await db.accountAction(
           (db) => db.profile.setProfileGridStatusList(null, false, clear: true),
@@ -211,7 +211,7 @@ class ProfileListOnlineIteratorIo extends OnlineIteratorIo {
       return const Err(());
     }
     return await api
-        .profile((api) => api.postGetNextProfilePage(sessionId))
+        .common((api) => api.postGetNextProfilePage(sessionId))
         .mapOk(
           (value) => IteratorPage(
             value.profiles.map((v) => ProfileLink(a: v.a, p: v.p, c: v.c, l: v.l)),
@@ -435,7 +435,7 @@ class AutomaticProfileSearchOnlineIteratorIo extends OnlineIteratorIo {
 
   @override
   Future<Result<(), ()>> resetServerPaging() async {
-    switch (await api.profile((api) => api.postAutomaticProfileSearchResetProfilePaging())) {
+    switch (await api.common((api) => api.postAutomaticProfileSearchResetProfilePaging())) {
       case Ok(:final v):
         await db.accountAction(
           (db) => db.profile.setAutomaticProfileSearchGridStatusList(null, false, clear: true),
@@ -459,7 +459,7 @@ class AutomaticProfileSearchOnlineIteratorIo extends OnlineIteratorIo {
       return const Err(());
     }
     return await api
-        .profile((api) => api.postAutomaticProfileSearchGetNextProfilePage(sessionId))
+        .common((api) => api.postAutomaticProfileSearchGetNextProfilePage(sessionId))
         .mapOk(
           (value) => IteratorPage(
             value.profiles.map((v) => ProfileLink(a: v.a, p: v.p, c: v.c, l: v.l)),

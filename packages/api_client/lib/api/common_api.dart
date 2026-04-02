@@ -403,6 +403,106 @@ class CommonApi {
     return null;
   }
 
+  /// Post (updates iterator) to get next page of automatic profile search profile list.
+  ///
+  /// Note: This method returns the HTTP [Response].
+  ///
+  /// Parameters:
+  ///
+  /// * [AutomaticProfileSearchIteratorSessionId] automaticProfileSearchIteratorSessionId (required):
+  Future<Response> postAutomaticProfileSearchGetNextProfilePageWithHttpInfo(AutomaticProfileSearchIteratorSessionId automaticProfileSearchIteratorSessionId,) async {
+    // ignore: prefer_const_declarations
+    final path = r'/common_api/automatic_profile_search/next';
+
+    // ignore: prefer_final_locals
+    Object? postBody = automaticProfileSearchIteratorSessionId;
+
+    final queryParams = <QueryParam>[];
+    final headerParams = <String, String>{};
+    final formParams = <String, String>{};
+
+    const contentTypes = <String>['application/json'];
+
+
+    return apiClient.invokeAPI(
+      path,
+      'POST',
+      queryParams,
+      postBody,
+      headerParams,
+      formParams,
+      contentTypes.isEmpty ? null : contentTypes.first,
+    );
+  }
+
+  /// Post (updates iterator) to get next page of automatic profile search profile list.
+  ///
+  /// Parameters:
+  ///
+  /// * [AutomaticProfileSearchIteratorSessionId] automaticProfileSearchIteratorSessionId (required):
+  Future<ProfilePage?> postAutomaticProfileSearchGetNextProfilePage(AutomaticProfileSearchIteratorSessionId automaticProfileSearchIteratorSessionId,) async {
+    final response = await postAutomaticProfileSearchGetNextProfilePageWithHttpInfo(automaticProfileSearchIteratorSessionId,);
+    if (response.statusCode >= HttpStatus.badRequest) {
+      throw ApiException(response.statusCode, await _decodeBodyBytes(response));
+    }
+    // When a remote server returns no body with a status of 204, we shall not decode it.
+    // At the time of writing this, `dart:convert` will throw an "Unexpected end of input"
+    // FormatException when trying to decode an empty string.
+    if (response.body.isNotEmpty && response.statusCode != HttpStatus.noContent) {
+      return await apiClient.deserializeAsync(await _decodeBodyBytes(response), 'ProfilePage',) as ProfilePage;
+    
+    }
+    return null;
+  }
+
+  /// Reset automatic profile search profile paging.
+  ///
+  /// After this request getting next profiles will continue from the nearest profiles.
+  ///
+  /// Note: This method returns the HTTP [Response].
+  Future<Response> postAutomaticProfileSearchResetProfilePagingWithHttpInfo() async {
+    // ignore: prefer_const_declarations
+    final path = r'/common_api/automatic_profile_search/reset';
+
+    // ignore: prefer_final_locals
+    Object? postBody;
+
+    final queryParams = <QueryParam>[];
+    final headerParams = <String, String>{};
+    final formParams = <String, String>{};
+
+    const contentTypes = <String>[];
+
+
+    return apiClient.invokeAPI(
+      path,
+      'POST',
+      queryParams,
+      postBody,
+      headerParams,
+      formParams,
+      contentTypes.isEmpty ? null : contentTypes.first,
+    );
+  }
+
+  /// Reset automatic profile search profile paging.
+  ///
+  /// After this request getting next profiles will continue from the nearest profiles.
+  Future<AutomaticProfileSearchIteratorSessionId?> postAutomaticProfileSearchResetProfilePaging() async {
+    final response = await postAutomaticProfileSearchResetProfilePagingWithHttpInfo();
+    if (response.statusCode >= HttpStatus.badRequest) {
+      throw ApiException(response.statusCode, await _decodeBodyBytes(response));
+    }
+    // When a remote server returns no body with a status of 204, we shall not decode it.
+    // At the time of writing this, `dart:convert` will throw an "Unexpected end of input"
+    // FormatException when trying to decode an empty string.
+    if (response.body.isNotEmpty && response.statusCode != HttpStatus.noContent) {
+      return await apiClient.deserializeAsync(await _decodeBodyBytes(response), 'AutomaticProfileSearchIteratorSessionId',) as AutomaticProfileSearchIteratorSessionId;
+    
+    }
+    return null;
+  }
+
   /// Performs an HTTP 'POST /common_api/client_language' operation and returns the [Response].
   /// Parameters:
   ///
@@ -479,6 +579,106 @@ class CommonApi {
     if (response.statusCode >= HttpStatus.badRequest) {
       throw ApiException(response.statusCode, await _decodeBodyBytes(response));
     }
+  }
+
+  /// Post (updates iterator) to get next page of profile list.
+  ///
+  /// Note: This method returns the HTTP [Response].
+  ///
+  /// Parameters:
+  ///
+  /// * [ProfileIteratorSessionId] profileIteratorSessionId (required):
+  Future<Response> postGetNextProfilePageWithHttpInfo(ProfileIteratorSessionId profileIteratorSessionId,) async {
+    // ignore: prefer_const_declarations
+    final path = r'/common_api/profile/page/next';
+
+    // ignore: prefer_final_locals
+    Object? postBody = profileIteratorSessionId;
+
+    final queryParams = <QueryParam>[];
+    final headerParams = <String, String>{};
+    final formParams = <String, String>{};
+
+    const contentTypes = <String>['application/json'];
+
+
+    return apiClient.invokeAPI(
+      path,
+      'POST',
+      queryParams,
+      postBody,
+      headerParams,
+      formParams,
+      contentTypes.isEmpty ? null : contentTypes.first,
+    );
+  }
+
+  /// Post (updates iterator) to get next page of profile list.
+  ///
+  /// Parameters:
+  ///
+  /// * [ProfileIteratorSessionId] profileIteratorSessionId (required):
+  Future<ProfilePage?> postGetNextProfilePage(ProfileIteratorSessionId profileIteratorSessionId,) async {
+    final response = await postGetNextProfilePageWithHttpInfo(profileIteratorSessionId,);
+    if (response.statusCode >= HttpStatus.badRequest) {
+      throw ApiException(response.statusCode, await _decodeBodyBytes(response));
+    }
+    // When a remote server returns no body with a status of 204, we shall not decode it.
+    // At the time of writing this, `dart:convert` will throw an "Unexpected end of input"
+    // FormatException when trying to decode an empty string.
+    if (response.body.isNotEmpty && response.statusCode != HttpStatus.noContent) {
+      return await apiClient.deserializeAsync(await _decodeBodyBytes(response), 'ProfilePage',) as ProfilePage;
+    
+    }
+    return null;
+  }
+
+  /// Reset profile paging.
+  ///
+  /// After this request getting next profiles will continue from the nearest profiles.
+  ///
+  /// Note: This method returns the HTTP [Response].
+  Future<Response> postResetProfilePagingWithHttpInfo() async {
+    // ignore: prefer_const_declarations
+    final path = r'/common_api/profile/page/reset';
+
+    // ignore: prefer_final_locals
+    Object? postBody;
+
+    final queryParams = <QueryParam>[];
+    final headerParams = <String, String>{};
+    final formParams = <String, String>{};
+
+    const contentTypes = <String>[];
+
+
+    return apiClient.invokeAPI(
+      path,
+      'POST',
+      queryParams,
+      postBody,
+      headerParams,
+      formParams,
+      contentTypes.isEmpty ? null : contentTypes.first,
+    );
+  }
+
+  /// Reset profile paging.
+  ///
+  /// After this request getting next profiles will continue from the nearest profiles.
+  Future<ProfileIteratorSessionId?> postResetProfilePaging() async {
+    final response = await postResetProfilePagingWithHttpInfo();
+    if (response.statusCode >= HttpStatus.badRequest) {
+      throw ApiException(response.statusCode, await _decodeBodyBytes(response));
+    }
+    // When a remote server returns no body with a status of 204, we shall not decode it.
+    // At the time of writing this, `dart:convert` will throw an "Unexpected end of input"
+    // FormatException when trying to decode an empty string.
+    if (response.body.isNotEmpty && response.statusCode != HttpStatus.noContent) {
+      return await apiClient.deserializeAsync(await _decodeBodyBytes(response), 'ProfileIteratorSessionId',) as ProfileIteratorSessionId;
+    
+    }
+    return null;
   }
 
   /// Performs an HTTP 'POST /common_api/set_device_token' operation and returns the [Response].

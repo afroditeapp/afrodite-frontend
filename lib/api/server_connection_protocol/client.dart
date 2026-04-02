@@ -14,18 +14,29 @@ import 'package:openapi/api.dart';
 ///   version number must be 255.
 /// - [ClientMessageType.clearMaintenanceStatusIfPossible] (1): payload is
 ///   empty.
+/// - [ClientMessageType.requestResetProfilePaging] (60): payload is empty.
+/// - [ClientMessageType.requestGetNextProfilePage] (61): payload is profile
+///   iterator session id as minimal i64.
+/// - [ClientMessageType.requestAutomaticProfileSearchResetProfilePaging] (62):
+///   payload is empty.
+/// - [ClientMessageType.requestAutomaticProfileSearchGetNextProfilePage] (63):
+///   payload is automatic profile search iterator session id as minimal i64.
 /// - [ClientMessageType.typingStart] (120): payload is exactly 16 bytes account
 ///   UUID in big-endian byte order.
 /// - [ClientMessageType.typingStop] (121): payload is empty.
-/// - [ClientMessageType.checkOnlineStatus] (122): payload is 16 bytes account
-///   UUID. Optional 17th byte can be included for online status hint
+/// - [ClientMessageType.requestCheckOnlineStatus] (122): payload is 16 bytes
+///   account UUID. Optional 17th byte can be included for online status hint
 ///   (0 = false, non-zero = true).
 enum ClientMessageType {
   syncVersionList(0),
   clearMaintenanceStatusIfPossible(1),
+  requestResetProfilePaging(60),
+  requestGetNextProfilePage(61),
+  requestAutomaticProfileSearchResetProfilePaging(62),
+  requestAutomaticProfileSearchGetNextProfilePage(63),
   typingStart(120),
   typingStop(121),
-  checkOnlineStatus(122);
+  requestCheckOnlineStatus(122);
 
   final int code;
   const ClientMessageType(this.code);
@@ -62,13 +73,16 @@ class ClientMessage {
   factory ClientMessage.checkOnlineStatus(AccountId accountId, {bool? isOnlineHint}) {
     final accountIdBytes = _uuidBytesFromAccountId(accountId);
     if (isOnlineHint == null) {
-      return ClientMessage._(type: ClientMessageType.checkOnlineStatus, payload: accountIdBytes);
+      return ClientMessage._(
+        type: ClientMessageType.requestCheckOnlineStatus,
+        payload: accountIdBytes,
+      );
     }
 
     final payload = Uint8List(17);
     payload.setRange(0, 16, accountIdBytes);
     payload[16] = isOnlineHint ? 1 : 0;
-    return ClientMessage._(type: ClientMessageType.checkOnlineStatus, payload: payload);
+    return ClientMessage._(type: ClientMessageType.requestCheckOnlineStatus, payload: payload);
   }
 
   Uint8List toBytes() {

@@ -87,13 +87,7 @@ void main() {
       final accountIdUuid = Uint8List.fromList(List<int>.generate(16, (index) => 100 + index));
       final expectedAid = base64UrlEncode(accountIdUuid).replaceAll('=', '');
 
-      final byteData = ByteData(8)..setInt64(0, -1, Endian.big);
-      final bytes = Uint8List.fromList([
-        126,
-        ...accountIdUuid,
-        1,
-        ...byteData.buffer.asUint8List(),
-      ]);
+      final bytes = Uint8List.fromList([126, ...accountIdUuid, ..._minimalI64(-1)]);
 
       final parsed = ServerMessage.fromBytes(bytes);
 
@@ -102,6 +96,22 @@ void main() {
       expect(response, isNotNull);
       expect(response!.a.aid, expectedAid);
       expect(response.l, -1);
+    });
+
+    test('parses check online status response with null last seen', () {
+      final accountIdUuid = Uint8List.fromList(List<int>.generate(16, (index) => 50 + index));
+      final expectedAid = base64UrlEncode(accountIdUuid).replaceAll('=', '');
+
+      final bytes = Uint8List.fromList([126, ...accountIdUuid, 0]);
+
+      final parsed = ServerMessage.fromBytes(bytes);
+
+      expect(parsed, isNotNull);
+      expect(parsed!.type, ServerMessageTypeCode.responseCheckOnlineStatus);
+      final response = parsed.checkOnlineStatusResponse;
+      expect(response, isNotNull);
+      expect(response!.a.aid, expectedAid);
+      expect(response.l, isNull);
     });
 
     test('returns null for invalid payload for no-payload type', () {
