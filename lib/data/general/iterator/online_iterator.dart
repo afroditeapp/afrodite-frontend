@@ -166,11 +166,11 @@ abstract class OnlineIteratorIo {
 /// are loaded from server every time when matches screen opens.
 class ProfileListOnlineIteratorIo extends OnlineIteratorIo {
   final AccountDatabaseManager db;
-  final ApiManager api;
+  final ServerConnectionManager connectionManager;
   IteratorType? iteratorValue;
   ProfileIteratorSessionId? currentSessionId;
 
-  ProfileListOnlineIteratorIo(this.db, this.api);
+  ProfileListOnlineIteratorIo(this.db, this.connectionManager);
 
   @override
   IteratorType? get databaseIterator => iteratorValue;
@@ -187,7 +187,10 @@ class ProfileListOnlineIteratorIo extends OnlineIteratorIo {
 
   @override
   Future<Result<(), ()>> resetServerPaging() async {
-    switch (await api.common((api) => api.postResetProfilePaging())) {
+    final resetResult = await connectionManager.webSocketApiRequestManager
+        .requestResetProfilePaging();
+
+    switch (resetResult) {
       case Ok(:final v):
         await db.accountAction(
           (db) => db.profile.setProfileGridStatusList(null, false, clear: true),
@@ -210,16 +213,18 @@ class ProfileListOnlineIteratorIo extends OnlineIteratorIo {
     if (sessionId == null) {
       return const Err(());
     }
-    return await api
-        .common((api) => api.postGetNextProfilePage(sessionId))
-        .mapOk(
-          (value) => IteratorPage(
-            value.profiles.map((v) => ProfileLink(a: v.a, p: v.p, c: v.c, l: v.l)),
-            otherError: value.error,
-            errorInvalidIteratorSessionId: value.errorInvalidIteratorSessionId,
-          ),
-        )
-        .emptyErr();
+
+    final pageResult = await connectionManager.webSocketApiRequestManager.requestGetNextProfilePage(
+      sessionId,
+    );
+
+    return pageResult.mapOk(
+      (value) => IteratorPage(
+        value.profiles.map((v) => ProfileLink(a: v.a, p: v.p, c: v.c, l: v.l)),
+        otherError: value.error,
+        errorInvalidIteratorSessionId: value.errorInvalidIteratorSessionId,
+      ),
+    );
   }
 
   @override
@@ -414,11 +419,11 @@ class MatchesOnlineIteratorIo extends OnlineIteratorIo {
 /// are loaded from server every time when matches screen opens.
 class AutomaticProfileSearchOnlineIteratorIo extends OnlineIteratorIo {
   final AccountDatabaseManager db;
-  final ApiManager api;
+  final ServerConnectionManager connectionManager;
   IteratorType? iteratorValue;
   AutomaticProfileSearchIteratorSessionId? currentSessionId;
 
-  AutomaticProfileSearchOnlineIteratorIo(this.db, this.api);
+  AutomaticProfileSearchOnlineIteratorIo(this.db, this.connectionManager);
 
   @override
   IteratorType? get databaseIterator => iteratorValue;
@@ -435,7 +440,10 @@ class AutomaticProfileSearchOnlineIteratorIo extends OnlineIteratorIo {
 
   @override
   Future<Result<(), ()>> resetServerPaging() async {
-    switch (await api.common((api) => api.postAutomaticProfileSearchResetProfilePaging())) {
+    final resetResult = await connectionManager.webSocketApiRequestManager
+        .requestAutomaticProfileSearchResetProfilePaging();
+
+    switch (resetResult) {
       case Ok(:final v):
         await db.accountAction(
           (db) => db.profile.setAutomaticProfileSearchGridStatusList(null, false, clear: true),
@@ -458,16 +466,17 @@ class AutomaticProfileSearchOnlineIteratorIo extends OnlineIteratorIo {
     if (sessionId == null) {
       return const Err(());
     }
-    return await api
-        .common((api) => api.postAutomaticProfileSearchGetNextProfilePage(sessionId))
-        .mapOk(
-          (value) => IteratorPage(
-            value.profiles.map((v) => ProfileLink(a: v.a, p: v.p, c: v.c, l: v.l)),
-            otherError: value.error,
-            errorInvalidIteratorSessionId: value.errorInvalidIteratorSessionId,
-          ),
-        )
-        .emptyErr();
+
+    final pageResult = await connectionManager.webSocketApiRequestManager
+        .requestAutomaticProfileSearchGetNextProfilePage(sessionId);
+
+    return pageResult.mapOk(
+      (value) => IteratorPage(
+        value.profiles.map((v) => ProfileLink(a: v.a, p: v.p, c: v.c, l: v.l)),
+        otherError: value.error,
+        errorInvalidIteratorSessionId: value.errorInvalidIteratorSessionId,
+      ),
+    );
   }
 
   @override

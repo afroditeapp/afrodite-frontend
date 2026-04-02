@@ -10,6 +10,7 @@ import 'package:app/api/api_wrapper.dart';
 import 'package:app/api/server_connection.dart';
 import 'package:app/api/server_connection_protocol/client.dart';
 import 'package:app/api/server_connection_protocol/server.dart';
+import 'package:app/api/websocket_api_request_manager.dart';
 import 'package:app/data/utils.dart';
 import 'package:app/database/account_database_manager.dart';
 import 'package:utils/utils.dart';
@@ -234,6 +235,7 @@ class ServerConnectionManager extends ApiManager
   late final ReconnectionTimer _reconnectionTimer;
   late final ConnectionRetryManager _retryManager;
   late final ServerConnectionBannerLogic _bannerLogic;
+  late final WebSocketApiRequestManager webSocketApiRequestManager;
 
   bool _restartOngoing = false;
 
@@ -241,6 +243,14 @@ class ServerConnectionManager extends ApiManager
   Future<void> init() async {
     await _apiProvider.init();
     _retryManager = ConnectionRetryManager();
+    webSocketApiRequestManager = WebSocketApiRequestManager(
+      serverMessages: _serverEvents.whereType<ServerMessageContainer>().map(
+        (event) => event.message,
+      ),
+      connectionStates: _state,
+      sendMessageToServer: sendMessageToServer,
+    );
+    webSocketApiRequestManager.init();
     _reconnectionTimer = ReconnectionTimer(
       onTick: (remainingSeconds) {
         _state.add(ReconnectWaitTime(remainingSeconds));
@@ -260,6 +270,7 @@ class ServerConnectionManager extends ApiManager
     await _serverConnection?.close();
     _serverConnection = null;
     await _serverConnectionEventsSubscription?.cancel();
+    await webSocketApiRequestManager.dispose();
     await _bannerLogic.dispose();
     _reconnectionTimer.cancel();
     await _cmds.close();

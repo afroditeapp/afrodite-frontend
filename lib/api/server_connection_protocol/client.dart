@@ -59,6 +59,36 @@ class ClientMessage {
     );
   }
 
+  factory ClientMessage.requestResetProfilePaging() {
+    return ClientMessage._(
+      type: ClientMessageType.requestResetProfilePaging,
+      payload: Uint8List(0),
+    );
+  }
+
+  factory ClientMessage.requestGetNextProfilePage(ProfileIteratorSessionId sessionId) {
+    return ClientMessage._(
+      type: ClientMessageType.requestGetNextProfilePage,
+      payload: _minimalI64Bytes(sessionId.id),
+    );
+  }
+
+  factory ClientMessage.requestAutomaticProfileSearchResetProfilePaging() {
+    return ClientMessage._(
+      type: ClientMessageType.requestAutomaticProfileSearchResetProfilePaging,
+      payload: Uint8List(0),
+    );
+  }
+
+  factory ClientMessage.requestAutomaticProfileSearchGetNextProfilePage(
+    AutomaticProfileSearchIteratorSessionId sessionId,
+  ) {
+    return ClientMessage._(
+      type: ClientMessageType.requestAutomaticProfileSearchGetNextProfilePage,
+      payload: _minimalI64Bytes(sessionId.id),
+    );
+  }
+
   factory ClientMessage.typingStart(AccountId accountId) {
     return ClientMessage._(
       type: ClientMessageType.typingStart,
@@ -98,4 +128,34 @@ Uint8List _uuidBytesFromAccountId(AccountId accountId) {
   final requiredPadding = (4 - aid.length % 4) % 4;
   final paddedAid = aid.padRight(aid.length + requiredPadding, "=");
   return base64Url.decode(paddedAid);
+}
+
+Uint8List _minimalI64Bytes(int value) {
+  int byteCount;
+  if (value >= -128 && value <= 127) {
+    byteCount = 1;
+  } else if (value >= -32768 && value <= 32767) {
+    byteCount = 2;
+  } else if (value >= -2147483648 && value <= 2147483647) {
+    byteCount = 4;
+  } else {
+    byteCount = 8;
+  }
+
+  final payload = Uint8List(1 + byteCount);
+  payload[0] = byteCount;
+
+  final data = ByteData.sublistView(payload, 1);
+  switch (byteCount) {
+    case 1:
+      data.setInt8(0, value);
+    case 2:
+      data.setInt16(0, value, Endian.little);
+    case 4:
+      data.setInt32(0, value, Endian.little);
+    case 8:
+      data.setInt64(0, value, Endian.little);
+  }
+
+  return payload;
 }

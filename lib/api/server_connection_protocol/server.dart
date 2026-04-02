@@ -151,6 +151,18 @@ class CheckOnlineStatusResponse {
   const CheckOnlineStatusResponse({required this.a, this.l});
 }
 
+class _ResponseResetProfilePagingPayload {
+  final ProfileIteratorSessionId? sessionId;
+
+  const _ResponseResetProfilePagingPayload({this.sessionId});
+}
+
+class _ResponseAutomaticProfileSearchResetProfilePagingPayload {
+  final AutomaticProfileSearchIteratorSessionId? sessionId;
+
+  const _ResponseAutomaticProfileSearchResetProfilePagingPayload({this.sessionId});
+}
+
 class ServerMessage {
   final ServerMessageTypeCode type;
   final Uint8List payload;
@@ -158,6 +170,10 @@ class ServerMessage {
   final int? adminBotNotification;
   final CheckOnlineStatusResponse? checkOnlineStatusResponse;
   final ContentProcessingStateChanged? contentProcessingStateChanged;
+  final ProfileIteratorSessionId? responseResetProfilePaging;
+  final ProfilePage? responseNextProfilePage;
+  final AutomaticProfileSearchIteratorSessionId? responseAutomaticProfileSearchResetProfilePaging;
+  final ProfilePage? responseAutomaticProfileSearchNextProfilePage;
   final ScheduledMaintenanceStatus? scheduledMaintenanceStatus;
   final AccountId? typingStart;
   final AccountId? typingStop;
@@ -168,6 +184,10 @@ class ServerMessage {
     this.adminBotNotification,
     this.checkOnlineStatusResponse,
     this.contentProcessingStateChanged,
+    this.responseResetProfilePaging,
+    this.responseNextProfilePage,
+    this.responseAutomaticProfileSearchResetProfilePaging,
+    this.responseAutomaticProfileSearchNextProfilePage,
     this.scheduledMaintenanceStatus,
     this.typingStart,
     this.typingStop,
@@ -201,10 +221,41 @@ class ServerMessage {
         }
         return ServerMessage._(type: type, payload: payload);
       case ServerMessageTypeCode.responseResetProfilePaging:
+        final response = _parseResponseResetProfilePaging(payload);
+        if (response == null) {
+          return null;
+        }
+        return ServerMessage._(
+          type: type,
+          payload: payload,
+          responseResetProfilePaging: response.sessionId,
+        );
       case ServerMessageTypeCode.responseNextProfilePage:
+        final response = _parseResponseNextProfilePage(payload);
+        if (response == null) {
+          return null;
+        }
+        return ServerMessage._(type: type, payload: payload, responseNextProfilePage: response);
       case ServerMessageTypeCode.responseAutomaticProfileSearchResetProfilePaging:
+        final response = _parseResponseAutomaticProfileSearchResetProfilePaging(payload);
+        if (response == null) {
+          return null;
+        }
+        return ServerMessage._(
+          type: type,
+          payload: payload,
+          responseAutomaticProfileSearchResetProfilePaging: response.sessionId,
+        );
       case ServerMessageTypeCode.responseAutomaticProfileSearchNextProfilePage:
-        return ServerMessage._(type: type, payload: payload);
+        final response = _parseResponseNextProfilePage(payload);
+        if (response == null) {
+          return null;
+        }
+        return ServerMessage._(
+          type: type,
+          payload: payload,
+          responseAutomaticProfileSearchNextProfilePage: response,
+        );
       case ServerMessageTypeCode.scheduledMaintenanceStatus:
         final maintenance = _parseScheduledMaintenanceStatus(payload);
         if (maintenance == null) {
@@ -251,6 +302,147 @@ class ServerMessage {
         return ServerMessage._(type: type, payload: payload, checkOnlineStatusResponse: response);
     }
   }
+}
+
+/// Parses [ServerMessageTypeCode.responseResetProfilePaging] payload.
+///
+/// Returns null for malformed payloads.
+///
+/// Non-success statuses (1 and 2) are valid and returned with null session id.
+_ResponseResetProfilePagingPayload? _parseResponseResetProfilePaging(Uint8List payload) {
+  final reader = _ByteReader(payload);
+
+  final status = reader.readU8();
+  if (status == null) {
+    return null;
+  }
+
+  switch (status) {
+    case 0:
+      final sessionId = reader.readMinimalI64();
+      if (sessionId == null || reader.failed || !reader.isAtEnd) {
+        return null;
+      }
+      return _ResponseResetProfilePagingPayload(sessionId: ProfileIteratorSessionId(id: sessionId));
+    case 1:
+    case 2:
+      if (!reader.isAtEnd) {
+        return null;
+      }
+      return const _ResponseResetProfilePagingPayload();
+    default:
+      return null;
+  }
+}
+
+/// Parses profile paging payloads:
+/// - [ServerMessageTypeCode.responseNextProfilePage]
+/// - [ServerMessageTypeCode.responseAutomaticProfileSearchNextProfilePage]
+///
+/// Returns null for malformed payloads.
+ProfilePage? _parseResponseNextProfilePage(Uint8List payload) {
+  final reader = _ByteReader(payload);
+
+  final status = reader.readU8();
+  if (status == null) {
+    return null;
+  }
+
+  switch (status) {
+    case 0:
+      final profiles = <ProfileLink>[];
+      while (!reader.isAtEnd) {
+        final profile = _parseProfileLinkForPaging(reader);
+        if (profile == null) {
+          return null;
+        }
+        profiles.add(profile);
+      }
+      if (reader.failed) {
+        return null;
+      }
+      return ProfilePage(profiles: profiles);
+    case 1:
+      if (!reader.isAtEnd) {
+        return null;
+      }
+      return ProfilePage(errorInvalidIteratorSessionId: true);
+    case 2:
+    case 3:
+      if (!reader.isAtEnd) {
+        return null;
+      }
+      return ProfilePage(error: true);
+    default:
+      return null;
+  }
+}
+
+/// Parses [ServerMessageTypeCode.responseAutomaticProfileSearchResetProfilePaging]
+/// payload.
+///
+/// Returns null for malformed payloads.
+///
+/// Non-success statuses (1 and 2) are valid and returned with null session id.
+_ResponseAutomaticProfileSearchResetProfilePagingPayload?
+_parseResponseAutomaticProfileSearchResetProfilePaging(Uint8List payload) {
+  final reader = _ByteReader(payload);
+
+  final status = reader.readU8();
+  if (status == null) {
+    return null;
+  }
+
+  switch (status) {
+    case 0:
+      final sessionId = reader.readMinimalI64();
+      if (sessionId == null || reader.failed || !reader.isAtEnd) {
+        return null;
+      }
+      return _ResponseAutomaticProfileSearchResetProfilePagingPayload(
+        sessionId: AutomaticProfileSearchIteratorSessionId(id: sessionId),
+      );
+    case 1:
+    case 2:
+      if (!reader.isAtEnd) {
+        return null;
+      }
+      return const _ResponseAutomaticProfileSearchResetProfilePagingPayload();
+    default:
+      return null;
+  }
+}
+
+ProfileLink? _parseProfileLinkForPaging(_ByteReader reader) {
+  final accountIdBytes = reader.readBytes(16);
+  final profileVersionBytes = reader.readBytes(16);
+  final profileContentVersionBytes = reader.readBytes(16);
+  final lastSeenMarker = reader.readU8();
+
+  if (reader.failed ||
+      accountIdBytes == null ||
+      profileVersionBytes == null ||
+      profileContentVersionBytes == null ||
+      lastSeenMarker == null) {
+    return null;
+  }
+
+  int? lastSeen;
+  if (lastSeenMarker == 0) {
+    lastSeen = null;
+  } else {
+    lastSeen = reader.readMinimalI64WithKnownByteCount(lastSeenMarker);
+    if (reader.failed || lastSeen == null) {
+      return null;
+    }
+  }
+
+  return ProfileLink(
+    a: AccountId(aid: _base64UrlWithoutPadding(accountIdBytes)),
+    c: ProfileContentVersion(v: _base64UrlWithoutPadding(profileContentVersionBytes)),
+    l: lastSeen,
+    p: ProfileVersion(v: _base64UrlWithoutPadding(profileVersionBytes)),
+  );
 }
 
 ScheduledMaintenanceStatus? _parseScheduledMaintenanceStatus(Uint8List payload) {

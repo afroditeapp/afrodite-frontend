@@ -114,6 +114,37 @@ void main() {
       expect(response.l, isNull);
     });
 
+    test('parses reset profile paging response with session id', () {
+      final parsed = ServerMessage.fromBytes(Uint8List.fromList([61, 0, ..._minimalI64(12)]));
+
+      expect(parsed, isNotNull);
+      expect(parsed!.type, ServerMessageTypeCode.responseResetProfilePaging);
+      expect(parsed.responseResetProfilePaging, isNotNull);
+      expect(parsed.responseResetProfilePaging!.id, 12);
+    });
+
+    test('parses reset profile paging response with error status', () {
+      final parsed = ServerMessage.fromBytes(Uint8List.fromList([61, 1]));
+
+      expect(parsed, isNotNull);
+      expect(parsed!.type, ServerMessageTypeCode.responseResetProfilePaging);
+      expect(parsed.responseResetProfilePaging, isNull);
+    });
+
+    test('parses next profile page response with invalid session status', () {
+      final parsed = ServerMessage.fromBytes(Uint8List.fromList([62, 1]));
+
+      expect(parsed, isNotNull);
+      expect(parsed!.type, ServerMessageTypeCode.responseNextProfilePage);
+      expect(parsed.responseNextProfilePage, isNotNull);
+      expect(parsed.responseNextProfilePage!.errorInvalidIteratorSessionId, isTrue);
+    });
+
+    test('returns null for malformed reset profile paging response payload', () {
+      final parsed = ServerMessage.fromBytes(Uint8List.fromList([61, 1, 0]));
+      expect(parsed, isNull);
+    });
+
     test('returns null for invalid payload for no-payload type', () {
       final parsed = ServerMessage.fromBytes(Uint8List.fromList([120, 1]));
       expect(parsed, isNull);

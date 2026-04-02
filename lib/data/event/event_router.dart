@@ -91,7 +91,7 @@ class EventRouter {
       case ServerMessageTypeCode.responseNextProfilePage:
       case ServerMessageTypeCode.responseAutomaticProfileSearchResetProfilePaging:
       case ServerMessageTypeCode.responseAutomaticProfileSearchNextProfilePage:
-        // Iterator paging responses are currently handled via HTTP API calls.
+        // WebSocketApiRequestManager handles these
         break;
       case ServerMessageTypeCode.newsCountChanged:
         await account.receiveNewsCount();
