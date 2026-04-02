@@ -1,5 +1,6 @@
 import 'dart:async';
 
+import 'package:app/utils/app_error.dart';
 import 'package:flutter/foundation.dart';
 import 'package:http/http.dart';
 import 'package:logging/logging.dart';
@@ -33,21 +34,23 @@ class ProcessingCompleted extends SendToSlotEvent {
 }
 
 class SendToSlotError extends SendToSlotEvent {
+  bool imageDataUploadTimeout;
   bool nsfwDetected;
-  SendToSlotError({this.nsfwDetected = false});
+  SendToSlotError({this.imageDataUploadTimeout = false, this.nsfwDetected = false});
 }
 
 /// Asynchronous system for sending image to a slot
 class SendImageToSlotTask {
   final ApiManager api;
   final token = CancellationToken();
-  final uploadDone = BehaviorSubject<ContentProcessingId?>.seeded(null);
+  final latestStates = BehaviorSubject<Map<int, ContentProcessingState>>.seeded({});
 
   final AccountRepository account;
   SendImageToSlotTask(this.account, this.api);
 
   Future<void> dispose() async {
-    await uploadDone.close();
+    token.cancel();
+    await latestStates.close();
   }
 
   Stream<SendToSlotEvent> sendImageToSlot(
@@ -56,12 +59,28 @@ class SendImageToSlotTask {
     bool secureCapture = false,
   }) {
     return Rx.merge([
+      _trackWebSocketEvents(),
       _uploadImageToSlot(imgBytes, slot, secureCapture: secureCapture),
-      _trackEvents(slot),
     ]);
   }
 
-  /// Only uploading part of the sendImageToSlot method
+  Stream<SendToSlotEvent> _trackWebSocketEvents() async* {
+    final stream = Rx.merge([
+      account.contentProcessingStateChanges.map((event) => StateChangeEvent(event)),
+      token.cancellationStatusStream.where((event) => event).map((_) => StateChangeQuit()),
+    ]);
+    await for (final event in stream) {
+      switch (event) {
+        case StateChangeEvent():
+          final current = latestStates.value;
+          current[event.value.id.id] = event.value.newState;
+          latestStates.add(current);
+        case StateChangeQuit():
+          return;
+      }
+    }
+  }
+
   Stream<SendToSlotEvent> _uploadImageToSlot(
     Uint8List imgBytes,
     int slot, {
@@ -69,73 +88,55 @@ class SendImageToSlotTask {
   }) async* {
     yield Uploading();
     final MultipartFile data = MultipartFile.fromBytes("", imgBytes);
-    final processingId = await api.media(
-      (api) => api.putContentToContentSlot(slot, secureCapture, MediaContentUploadType.image, data),
-    );
-    switch (processingId) {
+    final Result<ContentProcessingId, ApiError> r;
+    try {
+      r = await api
+          .media(
+            (api) => api.putContentToContentSlot(
+              slot,
+              secureCapture,
+              MediaContentUploadType.image,
+              data,
+            ),
+          )
+          .timeout(Duration(minutes: 2));
+    } on TimeoutException {
+      yield SendToSlotError(imageDataUploadTimeout: true);
+      token.cancel();
+      return;
+    }
+
+    final int processingId;
+    switch (r) {
       case Ok(:final v):
-        uploadDone.add(v);
+        processingId = v.id;
       case Err():
         yield SendToSlotError();
         token.cancel();
+        return;
     }
-  }
 
-  /// Only processing part of the sendImageToSlot method
-  Stream<SendToSlotEvent> _trackEvents(int slot) async* {
-    // Keep track of events as there might be race conditions where the event
-    // is received before processing ID is received.
-    final eventHistory = <ContentProcessingStateChanged>[];
-    ContentProcessingId? receivedId;
     while (true) {
       if (token.isCancelled) {
         return;
       }
 
       try {
-        await for (final event in _eventsAndContentProcessingIdWithTimeout()) {
+        await for (final states in latestStates.timeout(Duration(seconds: 10))) {
           if (token.isCancelled) {
-            // (Checking Quit event is kinda redundant because of this...)
             return;
           }
 
-          SendToSlotEvent? converted;
-
-          if (receivedId != null) {
-            if (event is Event && event.value.id.id == receivedId.id) {
-              converted = _convertState(event.value.newState);
-            } else if (event is Quit) {
-              return;
-            }
-          } else {
-            switch (event) {
-              case Id(:final id):
-                {
-                  final latestIndex = eventHistory.lastIndexWhere(
-                    (element) => element.id.id == id.id,
-                  );
-                  if (latestIndex != -1) {
-                    converted = _convertState(eventHistory[latestIndex].newState);
-                  }
-                  receivedId = id;
-                }
-              case Event(:final value):
-                {
-                  eventHistory.add(value);
-                }
-              case Quit():
-                {
-                  return;
-                }
-            }
+          final processingState = states[processingId];
+          if (processingState == null) {
+            continue;
           }
 
-          if (converted != null) {
-            yield converted;
-            if (converted is ProcessingCompleted || converted is SendToSlotError) {
-              token.cancel();
-              return;
-            }
+          final SendToSlotEvent converted = _convertState(processingState);
+          yield converted;
+          if (converted is ProcessingCompleted || converted is SendToSlotError) {
+            token.cancel();
+            return;
           }
         }
       } on TimeoutException {
@@ -144,9 +145,7 @@ class SendImageToSlotTask {
           return;
         }
 
-        // Events might be lost because of network issues so
-        // timeout is needed.
-        final currentState = await _getStateFromServer(slot);
+        final currentState = await _getStateFromServerManually(slot, processingId);
         yield currentState;
         if (currentState is ProcessingCompleted || currentState is SendToSlotError) {
           token.cancel();
@@ -156,22 +155,22 @@ class SendImageToSlotTask {
     }
   }
 
-  Stream<IdOrEvent> _eventsAndContentProcessingIdWithTimeout() {
-    final e = account.contentProcessingStateChanges;
-    return Rx.merge([
-      e.map((event) => Event(event)),
-      uploadDone.mapNotNull((v) => v).map((id) => Id(id)),
-      token.cancellationStatusStream.where((event) => event).map((_) => Quit()),
-    ]).timeout(const Duration(seconds: 10));
-  }
-
-  Future<SendToSlotEvent> _getStateFromServer(int slot) async {
-    final state = await api.media((api) => api.getContentSlotState(slot));
-    switch (state) {
-      case Ok(:final v):
-        return _convertState(v);
-      case Err():
-        return SendToSlotError();
+  Future<SendToSlotEvent> _getStateFromServerManually(int slot, int processingId) async {
+    try {
+      final state = await api
+          .media((api) => api.getContentSlotState(slot))
+          .timeout(Duration(seconds: 10));
+      switch (state) {
+        case Ok(:final v):
+          final current = latestStates.value;
+          current[processingId] = v;
+          latestStates.add(current);
+          return _convertState(v);
+        case Err():
+          return SendToSlotError();
+      }
+    } on TimeoutException {
+      return SendToSlotError();
     }
   }
 
@@ -212,16 +211,11 @@ class SendImageToSlotTask {
   }
 }
 
-sealed class IdOrEvent {}
+sealed class StateChangeOrQuit {}
 
-class Id extends IdOrEvent {
-  final ContentProcessingId id;
-  Id(this.id);
-}
-
-class Event extends IdOrEvent {
+class StateChangeEvent extends StateChangeOrQuit {
   final ContentProcessingStateChanged value;
-  Event(this.value);
+  StateChangeEvent(this.value);
 }
 
-class Quit extends IdOrEvent {}
+class StateChangeQuit extends StateChangeOrQuit {}

@@ -103,7 +103,14 @@ class ImageProcessingBloc extends Bloc<ImageProcessingEvent, ImageProcessingData
             }
           case SendToSlotError():
             {
-              emit(state.copyWith(processingState: SendingFailed(nsfwDetected: e.nsfwDetected)));
+              emit(
+                state.copyWith(
+                  processingState: SendingFailed(
+                    nsfwDetected: e.nsfwDetected,
+                    imageDataUploadTimeout: e.imageDataUploadTimeout,
+                  ),
+                ),
+              );
             }
         }
       }

@@ -128,6 +128,11 @@ Widget uploadErrorDialogOpener<B extends Bloc<ImageProcessingEvent, ImageProcess
             context,
             context.strings.image_processing_ui_nsfw_detected_dialog_title,
           );
+        } else if (processingState.imageDataUploadTimeout) {
+          await showInfoDialog(
+            context,
+            context.strings.image_processing_ui_upload_timeout_dialog_title,
+          );
         } else {
           await showInfoDialog(
             context,

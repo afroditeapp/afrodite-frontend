@@ -897,6 +897,9 @@ class AppLocalizationsEn extends AppLocalizations {
   String get image_processing_ui_upload_processing_ongoing_description => 'Processing ongoing';
 
   @override
+  String get image_processing_ui_upload_timeout_dialog_title => 'Upload timed out';
+
+  @override
   String get initial_setup_screen_age_confirmation_checkbox => 'I\'m at least 18 years old';
 
   @override

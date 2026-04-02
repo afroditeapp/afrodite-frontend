@@ -1192,6 +1192,10 @@
   "@image_processing_ui_upload_processing_ongoing_description": {
     "description": "Progress dialog info text that image processing is ongoing"
   },
+  "image_processing_ui_upload_timeout_dialog_title": "Upload timed out",
+  "@image_processing_ui_upload_timeout_dialog_title": {
+    "description": "Progress dialog info text that image upload timed out"
+  },
   "initial_setup_screen_age_confirmation_checkbox": "I'm at least 18 years old",
   "@initial_setup_screen_age_confirmation_checkbox": {
     "description": "Title for age confirmation checkbox"

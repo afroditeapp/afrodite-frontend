@@ -1684,6 +1684,12 @@ abstract class AppLocalizations {
   /// **'Processing ongoing'**
   String get image_processing_ui_upload_processing_ongoing_description;
 
+  /// Progress dialog info text that image upload timed out
+  ///
+  /// In en, this message translates to:
+  /// **'Upload timed out'**
+  String get image_processing_ui_upload_timeout_dialog_title;
+
   /// Title for age confirmation checkbox
   ///
   /// In en, this message translates to:
