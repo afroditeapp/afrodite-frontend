@@ -45,6 +45,8 @@ class _EditProfileProgressSaverState extends State<EditProfileProgressSaver> {
                       slot: p.slot,
                       faceDetected: p.id.faceDetected,
                       moderationState: p.id.moderationState,
+                      rejectedCategory: p.id.rejectedCategory,
+                      rejectedDetails: p.id.rejectedDetails,
                       cropSize: p.cropArea.gridCropSize,
                       cropX: p.cropArea.gridCropX,
                       cropY: p.cropArea.gridCropY,

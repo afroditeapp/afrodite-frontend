@@ -158,6 +158,14 @@ class ProfilePictureEntry {
   /// Null when picture selection happens in initial setup or
   /// ContentModerationState deserialization fails.
   final ContentModerationState? moderationState;
+
+  /// Null when picture selection happens in initial setup or
+  /// MediaContentModerationRejectedReasonCategory deserialization fails.
+  final MediaContentModerationRejectedReasonCategory? rejectedCategory;
+
+  /// Null when picture selection happens in initial setup or
+  /// MediaContentModerationRejectedReasonDetails deserialization fails.
+  final MediaContentModerationRejectedReasonDetails? rejectedDetails;
   final double cropSize;
   final double cropX;
   final double cropY;
@@ -167,6 +175,8 @@ class ProfilePictureEntry {
     required this.slot,
     required this.faceDetected,
     required this.moderationState,
+    required this.rejectedCategory,
+    required this.rejectedDetails,
     required this.cropSize,
     required this.cropX,
     required this.cropY,
@@ -178,6 +188,8 @@ class ProfilePictureEntry {
       'slot': slot,
       'faceDetected': faceDetected,
       'moderationState': moderationState?.toJson(),
+      'rejectedCategory': rejectedCategory?.toJson(),
+      'rejectedDetails': rejectedDetails?.toJson(),
       'cropSize': cropSize,
       'cropX': cropX,
       'cropY': cropY,
@@ -191,6 +203,12 @@ class ProfilePictureEntry {
       faceDetected: json['faceDetected'] as bool,
       moderationState: json['moderationState'] != null
           ? ContentModerationState.fromJson(json['moderationState'] as String?)
+          : null,
+      rejectedCategory: json['rejectedCategory'] != null
+          ? MediaContentModerationRejectedReasonCategory.fromJson(json['rejectedCategory'])
+          : null,
+      rejectedDetails: json['rejectedDetails'] != null
+          ? MediaContentModerationRejectedReasonDetails.fromJson(json['rejectedDetails'])
           : null,
       cropSize: (json['cropSize'] as num).toDouble(),
       cropX: (json['cropX'] as num).toDouble(),

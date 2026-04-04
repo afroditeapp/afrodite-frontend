@@ -794,19 +794,23 @@ class ProfileImageRejectionWidget extends StatelessWidget {
         final firstImage = profile.myContent
             .where((image) => image.id == currentPicture0.id.contentId)
             .firstOrNull;
-        if (firstImage == null || !firstImage.state.isRejected()) {
+        final moderationState = firstImage?.state ?? currentPicture0.id.moderationState;
+        if (!(moderationState?.isRejected() ?? false)) {
           return const SizedBox.shrink();
         }
 
-        final stateText = firstImage.state.toUiString(context);
+        final stateText = moderationState?.toUiString(context);
+        final rejectedCategory =
+            firstImage?.rejectedCategory ?? currentPicture0.id.rejectedCategory;
+        final rejectedDetails = firstImage?.rejectedDetails ?? currentPicture0.id.rejectedDetails;
         return Padding(
           padding: const EdgeInsets.only(top: 8.0),
           child: hPad(
             rejectionDetailsText(
               context,
               preliminaryText: stateText,
-              category: firstImage.rejectedCategory?.value,
-              details: firstImage.rejectedDetails?.value,
+              category: rejectedCategory?.value,
+              details: rejectedDetails?.value,
               containerColor: Theme.of(context).colorScheme.primaryContainer,
               textColor: Theme.of(context).colorScheme.onPrimaryContainer,
             ),
@@ -839,14 +843,17 @@ class ProfileImageBottomRowRejectionWidget extends StatelessWidget {
         final image = profile.myContent
             .where((content) => content.id == currentPicture.id.contentId)
             .firstOrNull;
-        if (image == null || !image.state.isRejected()) {
+        final moderationState = image?.state ?? currentPicture.id.moderationState;
+        if (!(moderationState?.isRejected() ?? false)) {
           return const SizedBox.shrink();
         }
 
-        final stateText = image.state.toUiString(context) ?? "";
+        final stateText = moderationState?.toUiString(context) ?? "";
+        final rejectedCategory = image?.rejectedCategory ?? currentPicture.id.rejectedCategory;
+        final rejectedDetails = image?.rejectedDetails ?? currentPicture.id.rejectedDetails;
         final hasInfo =
-            (image.rejectedCategory != null) ||
-            (image.rejectedDetails != null && image.rejectedDetails!.value.isNotEmpty);
+            rejectedCategory != null ||
+            (rejectedDetails != null && rejectedDetails.value.isNotEmpty);
 
         return Column(
           mainAxisSize: MainAxisSize.min,
@@ -879,13 +886,9 @@ class ProfileImageBottomRowRejectionWidget extends StatelessWidget {
                         infoText = addRejectedCategoryRow(
                           context,
                           infoText,
-                          image.rejectedCategory?.value,
+                          rejectedCategory?.value,
                         );
-                        infoText = addRejectedDetailsRow(
-                          context,
-                          infoText,
-                          image.rejectedDetails?.value,
-                        );
+                        infoText = addRejectedDetailsRow(context, infoText, rejectedDetails?.value);
                         showInfoDialog(context, infoText.trim());
                       },
                       icon: const Icon(Icons.info),

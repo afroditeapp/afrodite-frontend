@@ -181,8 +181,17 @@ class _SelectContentScreenState extends State<SelectContentScreen> {
           accountId,
           e.cid,
           e.fd,
-          onTap: () =>
-              widget.closer.close(context, AccountImageId(accountId, e.cid, e.fd, e.state)),
+          onTap: () => widget.closer.close(
+            context,
+            AccountImageId(
+              accountId,
+              e.cid,
+              e.fd,
+              e.state,
+              rejectedCategory: e.rejectedReasonCategory,
+              rejectedDetails: e.rejectedReasonDetails,
+            ),
+          ),
           identifyFaceImages: widget.identifyFaceImages,
         ),
       ),

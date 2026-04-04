@@ -256,6 +256,8 @@ class MyProfileBloc extends Bloc<MyProfileEvent, MyProfileData>
               ContentId(cid: imgEntry.contentId),
               imgEntry.faceDetected,
               imgEntry.moderationState,
+              rejectedCategory: imgEntry.rejectedCategory,
+              rejectedDetails: imgEntry.rejectedDetails,
             );
             final cropArea = CropArea.fromValues(imgEntry.cropSize, imgEntry.cropX, imgEntry.cropY);
             add(AddProcessedImage(ImageSelected(imgId, null, cropArea: cropArea), i));

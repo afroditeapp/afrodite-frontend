@@ -47,7 +47,14 @@ class ImageSelected extends ImgState {
 
   ImageSelected copyWithFaceDetected(bool faceDetected) {
     return ImageSelected(
-      AccountImageId(id.accountId, id.contentId, faceDetected, id.moderationState),
+      AccountImageId(
+        id.accountId,
+        id.contentId,
+        faceDetected,
+        id.moderationState,
+        rejectedCategory: id.rejectedCategory,
+        rejectedDetails: id.rejectedDetails,
+      ),
       slot,
       cropArea: cropArea,
     );
@@ -78,7 +85,20 @@ class AccountImageId {
 
   /// Null when picture selection happens in initial setup.
   final ContentModerationState? moderationState;
-  AccountImageId(this.accountId, this.contentId, this.faceDetected, this.moderationState);
+
+  /// Null when picture selection happens in initial setup.
+  final MediaContentModerationRejectedReasonCategory? rejectedCategory;
+
+  /// Null when picture selection happens in initial setup.
+  final MediaContentModerationRejectedReasonDetails? rejectedDetails;
+  AccountImageId(
+    this.accountId,
+    this.contentId,
+    this.faceDetected,
+    this.moderationState, {
+    this.rejectedCategory,
+    this.rejectedDetails,
+  });
 
   @override
   bool operator ==(Object other) =>
@@ -87,10 +107,19 @@ class AccountImageId {
           other.accountId == accountId &&
           other.contentId == contentId &&
           other.faceDetected == faceDetected &&
-          other.moderationState == moderationState;
+          other.moderationState == moderationState &&
+          other.rejectedCategory == rejectedCategory &&
+          other.rejectedDetails == rejectedDetails;
 
   @override
-  int get hashCode => Object.hash(accountId, contentId, faceDetected, moderationState);
+  int get hashCode => Object.hash(
+    accountId,
+    contentId,
+    faceDetected,
+    moderationState,
+    rejectedCategory,
+    rejectedDetails,
+  );
 }
 
 List<ImgState> compactProfilePictureSlots(List<ImgState> pictures, {int slotCount = 4}) {
