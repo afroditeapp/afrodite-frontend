@@ -22,10 +22,7 @@ class EditMaintenanceNotificationPage extends MyScreenPageLimited<()> {
 
 class EditMaintenanceNotificationScreen extends StatefulWidget {
   final ApiManager api;
-  final ServerConnectionManager connectionManager;
-  EditMaintenanceNotificationScreen(RepositoryInstances r, {super.key})
-    : api = r.api,
-      connectionManager = r.connectionManager;
+  EditMaintenanceNotificationScreen(RepositoryInstances r, {super.key}) : api = r.api;
 
   @override
   State<EditMaintenanceNotificationScreen> createState() =>
@@ -147,7 +144,6 @@ class _EditMaintenanceNotificationScreenState extends State<EditMaintenanceNotif
             (api) => api.postEditMaintenanceNotification(maintenanceStatus),
           );
           if (context.mounted) {
-            await widget.connectionManager.restartIfRestartNotOngoing();
             await _refreshData();
           }
           switch (result) {
