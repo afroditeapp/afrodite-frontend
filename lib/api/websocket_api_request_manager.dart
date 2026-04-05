@@ -7,6 +7,7 @@ import 'package:logging/logging.dart';
 import 'package:openapi/api.dart';
 import 'package:app/utils/result.dart';
 import 'package:rxdart/rxdart.dart';
+import 'package:utils/utils.dart';
 
 final _log = Logger("WebSocketApiRequestManager");
 
@@ -204,6 +205,7 @@ class WebSocketApiRequestManager {
     required Future<Result<T, ()>> Function() waitResponse,
   }) async {
     if (!await _waitForConnected()) {
+      _log.error("Connection waiting failed");
       return const Err(());
     }
 
@@ -218,11 +220,16 @@ class WebSocketApiRequestManager {
 
     waitResponseOrError.complete(outcome);
 
-    return switch (outcome) {
-      _RequestResponse(:final response) => response,
-      _RequestConnectivityChanged() => const Err(()),
-      _RequestTimeout() => const Err(()),
-    };
+    switch (outcome) {
+      case _RequestResponse(:final response):
+        return response;
+      case _RequestConnectivityChanged():
+        _log.error("Connectivity changed");
+        return const Err(());
+      case _RequestTimeout():
+        _log.error("Request timeout");
+        return const Err(());
+    }
   }
 
   Future<Result<T, ()>> _waitForResponse<T>({
