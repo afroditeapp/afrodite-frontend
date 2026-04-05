@@ -41,7 +41,7 @@ class _PendingDeletionScreenState extends State<PendingDeletionScreen> {
   UnixTime? data;
 
   Future<void> _refreshData() async {
-    await widget.connectionManager.tryWaitUntilConnected(waitTimeoutSeconds: 5);
+    await widget.connectionManager.tryWaitUntilConnected();
 
     final result = await widget.api
         .account((api) => api.getAccountDeletionRequestState(widget.currentUser.aid))

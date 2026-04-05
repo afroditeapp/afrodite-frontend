@@ -409,7 +409,12 @@ class ServerConnectionManager extends ApiManager
   }
 
   /// Returns true if connected, false if not connected within the timeout.
-  Future<bool> tryWaitUntilConnected({required int waitTimeoutSeconds}) async {
+  ///
+  /// It's a good practise to wait WebSocket connection at those locations
+  /// which are directly opened from notification for example and use API
+  /// as WebSocket connection will replace invalid API access token with
+  /// new token.
+  Future<bool> tryWaitUntilConnected({int waitTimeoutSeconds = 3}) async {
     return await Future.any([
       Future.delayed(Duration(seconds: waitTimeoutSeconds), () => false),
       state

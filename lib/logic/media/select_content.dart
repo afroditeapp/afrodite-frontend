@@ -58,11 +58,6 @@ class SelectContentBloc extends Bloc<SelectContentEvent, SelectContentData> with
     if (stateResetAndShowLoadingState) {
       // Reset to loading state
       emit(SelectContentData().copyWith(isLoading: true));
-
-      if (!await connectionManager.tryWaitUntilConnected(waitTimeoutSeconds: 5)) {
-        emit(state.copyWith(isLoading: false, isError: true));
-        return;
-      }
     }
 
     final value = await api.media((api) => api.getAllAccountMediaContent(currentUser.aid)).ok();

@@ -50,10 +50,7 @@ class OnlineIterator extends IteratorType {
   @override
   Future<Result<List<ProfileEntry>, ()>> nextList() async {
     if (_resetServerIterator) {
-      if (!await connectionManager.tryWaitUntilConnected(waitTimeoutSeconds: 5)) {
-        _log.error("Connection waiting failed");
-        return const Err(());
-      }
+      await connectionManager.tryWaitUntilConnected();
 
       switch (await io.resetServerPaging()) {
         case Ok():
@@ -88,10 +85,8 @@ class OnlineIterator extends IteratorType {
 
     final List<ProfileEntry> list = List.empty(growable: true);
     while (true) {
-      if (!await connectionManager.tryWaitUntilConnected(waitTimeoutSeconds: 5)) {
-        _log.error("Connection waiting failed");
-        return const Err(());
-      }
+      await connectionManager.tryWaitUntilConnected();
+
       switch (await io.nextServerPage()) {
         case Ok(value: final profiles):
           if (profiles.errorInvalidIteratorSessionId) {

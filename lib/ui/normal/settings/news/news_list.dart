@@ -109,10 +109,7 @@ class NewsListScreenState extends State<NewsListScreen> {
     updatePagingState((s) => s.copyAndShowLoading());
 
     if (_pagingState.isInitialPage()) {
-      if (!await widget.connectionManager.tryWaitUntilConnected(waitTimeoutSeconds: 5)) {
-        showLoadingError();
-        return;
-      }
+      await widget.connectionManager.tryWaitUntilConnected();
 
       final r = await widget.api.account((api) => api.postResetNewsPaging()).ok();
       if (r == null) {

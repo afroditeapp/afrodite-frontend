@@ -58,10 +58,6 @@ class ImageProcessingBloc extends Bloc<ImageProcessingEvent, ImageProcessingData
 
       final currentUser = media.currentUser;
 
-      // Server connection might not exist for example if
-      // image selection takes too long.
-      await connection.tryWaitUntilConnected(waitTimeoutSeconds: 5);
-
       await for (final e in media.sendImageToSlot(
         data.imgBytes,
         data.slot,

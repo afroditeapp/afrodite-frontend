@@ -148,7 +148,6 @@ class _EditMaintenanceNotificationScreenState extends State<EditMaintenanceNotif
           );
           if (context.mounted) {
             await widget.connectionManager.restartIfRestartNotOngoing();
-            await widget.connectionManager.tryWaitUntilConnected(waitTimeoutSeconds: 5);
             await _refreshData();
           }
           switch (result) {

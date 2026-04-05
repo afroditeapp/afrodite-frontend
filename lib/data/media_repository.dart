@@ -55,9 +55,7 @@ class MediaRepository extends DataRepositoryWithLifecycle {
   }
 
   Future<Uint8List?> getImage(AccountId imageOwner, ContentId id, {bool isMatch = false}) async {
-    if (!await connectionManager.tryWaitUntilConnected(waitTimeoutSeconds: 2)) {
-      return null;
-    }
+    await connectionManager.tryWaitUntilConnected();
 
     return await api
         .media((api) => api.getContentFixed(imageOwner.aid, id.cid, isMatch))
@@ -66,9 +64,7 @@ class MediaRepository extends DataRepositoryWithLifecycle {
   }
 
   Future<MapTileResult> getMapTile(int z, int x, int y, int version) async {
-    if (!await connectionManager.tryWaitUntilConnected(waitTimeoutSeconds: 2)) {
-      return MapTileError();
-    }
+    await connectionManager.tryWaitUntilConnected();
 
     final data = await api.mediaWrapper().requestValue(
       (api) => api.getMapTileFixed(z, x, y.toString(), version),

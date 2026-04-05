@@ -109,9 +109,7 @@ class ProfileRepository extends DataRepositoryWithLifecycle {
     return requestSuccessful;
   }
 
-  /// Waits connection before downloading starts.
   Future<ProfileEntry?> downloadProfile(AccountId id) async {
-    await connectionManager.tryWaitUntilConnected(waitTimeoutSeconds: 5);
     final entry = await ProfileEntryDownloader(media, db, _api).download(id).ok();
     return entry;
   }
@@ -147,7 +145,7 @@ class ProfileRepository extends DataRepositoryWithLifecycle {
     }
 
     if (download) {
-      download = await connectionManager.tryWaitUntilConnected(waitTimeoutSeconds: 10);
+      download = await connectionManager.tryWaitUntilConnected();
     }
 
     if (download) {
