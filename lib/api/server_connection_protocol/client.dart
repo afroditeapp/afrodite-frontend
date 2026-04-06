@@ -14,17 +14,22 @@ import 'package:openapi/api.dart';
 ///   version number must be 255.
 /// - [ClientMessageType.clearMaintenanceStatusIfPossible] (1): payload is
 ///   empty.
-/// - [ClientMessageType.requestResetProfilePaging] (60): payload is empty.
-/// - [ClientMessageType.requestGetNextProfilePage] (61): payload is profile
-///   iterator session id as minimal i64.
+/// - [ClientMessageType.requestResetProfilePaging] (60): payload format:
+///   - request id byte (u8)
+/// - [ClientMessageType.requestGetNextProfilePage] (61): payload format:
+///   - request id byte (u8)
+///   - profile iterator session id as minimal i64.
 /// - [ClientMessageType.requestAutomaticProfileSearchResetProfilePaging] (62):
-///   payload is empty.
+///   payload format:
+///   - request id byte (u8)
 /// - [ClientMessageType.requestAutomaticProfileSearchGetNextProfilePage] (63):
-///   payload is automatic profile search iterator session id as minimal i64.
+///   payload format:
+///   - request id byte (u8)
+///   - automatic profile search iterator session id as minimal i64.
 /// - [ClientMessageType.typingStart] (120): payload is exactly 16 bytes account
 ///   UUID in big-endian byte order.
 /// - [ClientMessageType.typingStop] (121): payload is empty.
-/// - [ClientMessageType.requestCheckOnlineStatus] (122): payload is 16 bytes
+/// - [ClientMessageType.checkOnlineStatus] (122): payload is 16 bytes
 ///   account UUID. Optional 17th byte can be included for online status hint
 ///   (0 = false, non-zero = true).
 enum ClientMessageType {
@@ -36,7 +41,7 @@ enum ClientMessageType {
   requestAutomaticProfileSearchGetNextProfilePage(63),
   typingStart(120),
   typingStop(121),
-  requestCheckOnlineStatus(122);
+  checkOnlineStatus(122);
 
   final int code;
   const ClientMessageType(this.code);
@@ -59,33 +64,37 @@ class ClientMessage {
     );
   }
 
-  factory ClientMessage.requestResetProfilePaging() {
+  factory ClientMessage.requestResetProfilePaging(int requestId) {
     return ClientMessage._(
       type: ClientMessageType.requestResetProfilePaging,
-      payload: Uint8List(0),
+      payload: Uint8List.fromList([requestId]),
     );
   }
 
-  factory ClientMessage.requestGetNextProfilePage(ProfileIteratorSessionId sessionId) {
+  factory ClientMessage.requestGetNextProfilePage(
+    int requestId,
+    ProfileIteratorSessionId sessionId,
+  ) {
     return ClientMessage._(
       type: ClientMessageType.requestGetNextProfilePage,
-      payload: _minimalI64Bytes(sessionId.id),
+      payload: Uint8List.fromList([requestId, ...minimalI64Bytes(sessionId.id)]),
     );
   }
 
-  factory ClientMessage.requestAutomaticProfileSearchResetProfilePaging() {
+  factory ClientMessage.requestAutomaticProfileSearchResetProfilePaging(int requestId) {
     return ClientMessage._(
       type: ClientMessageType.requestAutomaticProfileSearchResetProfilePaging,
-      payload: Uint8List(0),
+      payload: Uint8List.fromList([requestId]),
     );
   }
 
   factory ClientMessage.requestAutomaticProfileSearchGetNextProfilePage(
+    int requestId,
     AutomaticProfileSearchIteratorSessionId sessionId,
   ) {
     return ClientMessage._(
       type: ClientMessageType.requestAutomaticProfileSearchGetNextProfilePage,
-      payload: _minimalI64Bytes(sessionId.id),
+      payload: Uint8List.fromList([requestId, ...minimalI64Bytes(sessionId.id)]),
     );
   }
 
@@ -103,16 +112,13 @@ class ClientMessage {
   factory ClientMessage.checkOnlineStatus(AccountId accountId, {bool? isOnlineHint}) {
     final accountIdBytes = _uuidBytesFromAccountId(accountId);
     if (isOnlineHint == null) {
-      return ClientMessage._(
-        type: ClientMessageType.requestCheckOnlineStatus,
-        payload: accountIdBytes,
-      );
+      return ClientMessage._(type: ClientMessageType.checkOnlineStatus, payload: accountIdBytes);
     }
 
     final payload = Uint8List(17);
     payload.setRange(0, 16, accountIdBytes);
     payload[16] = isOnlineHint ? 1 : 0;
-    return ClientMessage._(type: ClientMessageType.requestCheckOnlineStatus, payload: payload);
+    return ClientMessage._(type: ClientMessageType.checkOnlineStatus, payload: payload);
   }
 
   Uint8List toBytes() {
@@ -130,7 +136,7 @@ Uint8List _uuidBytesFromAccountId(AccountId accountId) {
   return base64Url.decode(paddedAid);
 }
 
-Uint8List _minimalI64Bytes(int value) {
+Uint8List minimalI64Bytes(int value) {
   int byteCount;
   if (value >= -128 && value <= 127) {
     byteCount = 1;

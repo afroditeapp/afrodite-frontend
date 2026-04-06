@@ -1,6 +1,7 @@
 import 'dart:convert';
 import 'dart:typed_data';
 
+import 'package:app/api/server_connection_protocol/client.dart';
 import 'package:app/api/server_connection_protocol/server.dart';
 import 'package:flutter_test/flutter_test.dart';
 import 'package:openapi/api.dart';
@@ -31,7 +32,7 @@ void main() {
       const start = 1700000000;
       const end = 1700000600;
 
-      final bytes = Uint8List.fromList([3, 1, ..._minimalI64(start), ..._minimalI64(end)]);
+      final bytes = Uint8List.fromList([3, 1, ...minimalI64Bytes(start), ...minimalI64Bytes(end)]);
 
       final parsed = ServerMessage.fromBytes(bytes);
 
@@ -55,7 +56,7 @@ void main() {
       final contentIdUuid = Uint8List.fromList(List<int>.generate(16, (index) => 255 - index));
       final expectedContentId = base64UrlEncode(contentIdUuid).replaceAll('=', '');
 
-      final bytes = Uint8List.fromList([90, ..._minimalI64(42), 3, ...contentIdUuid, 1]);
+      final bytes = Uint8List.fromList([90, ...minimalI64Bytes(42), 3, ...contentIdUuid, 1]);
 
       final parsed = ServerMessage.fromBytes(bytes);
 
@@ -69,7 +70,7 @@ void main() {
     });
 
     test('parses content processing in queue payload', () {
-      final bytes = Uint8List.fromList([90, ..._minimalI64(11), 1, ..._minimalI64(7)]);
+      final bytes = Uint8List.fromList([90, ...minimalI64Bytes(11), 1, ...minimalI64Bytes(7)]);
 
       final parsed = ServerMessage.fromBytes(bytes);
 
@@ -87,7 +88,7 @@ void main() {
       final accountIdUuid = Uint8List.fromList(List<int>.generate(16, (index) => 100 + index));
       final expectedAid = base64UrlEncode(accountIdUuid).replaceAll('=', '');
 
-      final bytes = Uint8List.fromList([126, ...accountIdUuid, ..._minimalI64(-1)]);
+      final bytes = Uint8List.fromList([126, ...accountIdUuid, ...minimalI64Bytes(-1)]);
 
       final parsed = ServerMessage.fromBytes(bytes);
 
@@ -107,7 +108,7 @@ void main() {
       final parsed = ServerMessage.fromBytes(bytes);
 
       expect(parsed, isNotNull);
-      expect(parsed!.type, ServerMessageTypeCode.responseCheckOnlineStatus);
+      expect(parsed!.type, ServerMessageTypeCode.onlineStatusUpdated);
       final response = parsed.checkOnlineStatusResponse;
       expect(response, isNotNull);
       expect(response!.a.aid, expectedAid);
@@ -115,33 +116,38 @@ void main() {
     });
 
     test('parses reset profile paging response with session id', () {
-      final parsed = ServerMessage.fromBytes(Uint8List.fromList([61, 0, ..._minimalI64(12)]));
+      final parsed = ServerMessage.fromBytes(
+        Uint8List.fromList([61, 7, 0, ...minimalI64Bytes(12)]),
+      );
 
       expect(parsed, isNotNull);
       expect(parsed!.type, ServerMessageTypeCode.responseResetProfilePaging);
+      expect(parsed.responseId, 7);
       expect(parsed.responseResetProfilePaging, isNotNull);
       expect(parsed.responseResetProfilePaging!.id, 12);
     });
 
     test('parses reset profile paging response with error status', () {
-      final parsed = ServerMessage.fromBytes(Uint8List.fromList([61, 1]));
+      final parsed = ServerMessage.fromBytes(Uint8List.fromList([61, 8, 1]));
 
       expect(parsed, isNotNull);
       expect(parsed!.type, ServerMessageTypeCode.responseResetProfilePaging);
+      expect(parsed.responseId, 8);
       expect(parsed.responseResetProfilePaging, isNull);
     });
 
     test('parses next profile page response with invalid session status', () {
-      final parsed = ServerMessage.fromBytes(Uint8List.fromList([62, 1]));
+      final parsed = ServerMessage.fromBytes(Uint8List.fromList([62, 9, 1]));
 
       expect(parsed, isNotNull);
       expect(parsed!.type, ServerMessageTypeCode.responseNextProfilePage);
+      expect(parsed.responseId, 9);
       expect(parsed.responseNextProfilePage, isNotNull);
       expect(parsed.responseNextProfilePage!.errorInvalidIteratorSessionId, isTrue);
     });
 
     test('returns null for malformed reset profile paging response payload', () {
-      final parsed = ServerMessage.fromBytes(Uint8List.fromList([61, 1, 0]));
+      final parsed = ServerMessage.fromBytes(Uint8List.fromList([61, 1, 1, 0]));
       expect(parsed, isNull);
     });
 
@@ -150,24 +156,4 @@ void main() {
       expect(parsed, isNull);
     });
   });
-}
-
-List<int> _minimalI64(int value) {
-  if (value >= -128 && value <= 127) {
-    final data = ByteData(1)..setInt8(0, value);
-    return [1, ...data.buffer.asUint8List()];
-  }
-
-  if (value >= -32768 && value <= 32767) {
-    final data = ByteData(2)..setInt16(0, value, Endian.little);
-    return [2, ...data.buffer.asUint8List()];
-  }
-
-  if (value >= -2147483648 && value <= 2147483647) {
-    final data = ByteData(4)..setInt32(0, value, Endian.little);
-    return [4, ...data.buffer.asUint8List()];
-  }
-
-  final data = ByteData(8)..setInt64(0, value, Endian.little);
-  return [8, ...data.buffer.asUint8List()];
 }

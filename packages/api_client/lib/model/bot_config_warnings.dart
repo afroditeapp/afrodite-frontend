@@ -13,12 +13,19 @@ part of openapi.api;
 class BotConfigWarnings {
   /// Returns a new [BotConfigWarnings] instance.
   BotConfigWarnings({
-    required this.contentModerationFileConfigMissing,
-    required this.profileNameModerationFileConfigMissing,
-    required this.profileTextModerationFileConfigMissing,
+    this.contentModerationFileConfigMissing = false,
+    this.error = false,
+    this.errorAdminBotOffline = false,
+    this.profileNameModerationFileConfigMissing = false,
+    this.profileTextModerationFileConfigMissing = false,
   });
 
   bool contentModerationFileConfigMissing;
+
+  bool error;
+
+  /// True, when getting warnings fails because admin bot is offline
+  bool errorAdminBotOffline;
 
   bool profileNameModerationFileConfigMissing;
 
@@ -27,6 +34,8 @@ class BotConfigWarnings {
   @override
   bool operator ==(Object other) => identical(this, other) || other is BotConfigWarnings &&
     other.contentModerationFileConfigMissing == contentModerationFileConfigMissing &&
+    other.error == error &&
+    other.errorAdminBotOffline == errorAdminBotOffline &&
     other.profileNameModerationFileConfigMissing == profileNameModerationFileConfigMissing &&
     other.profileTextModerationFileConfigMissing == profileTextModerationFileConfigMissing;
 
@@ -34,15 +43,19 @@ class BotConfigWarnings {
   int get hashCode =>
     // ignore: unnecessary_parenthesis
     (contentModerationFileConfigMissing.hashCode) +
+    (error.hashCode) +
+    (errorAdminBotOffline.hashCode) +
     (profileNameModerationFileConfigMissing.hashCode) +
     (profileTextModerationFileConfigMissing.hashCode);
 
   @override
-  String toString() => 'BotConfigWarnings[contentModerationFileConfigMissing=$contentModerationFileConfigMissing, profileNameModerationFileConfigMissing=$profileNameModerationFileConfigMissing, profileTextModerationFileConfigMissing=$profileTextModerationFileConfigMissing]';
+  String toString() => 'BotConfigWarnings[contentModerationFileConfigMissing=$contentModerationFileConfigMissing, error=$error, errorAdminBotOffline=$errorAdminBotOffline, profileNameModerationFileConfigMissing=$profileNameModerationFileConfigMissing, profileTextModerationFileConfigMissing=$profileTextModerationFileConfigMissing]';
 
   Map<String, dynamic> toJson() {
     final json = <String, dynamic>{};
       json[r'content_moderation_file_config_missing'] = this.contentModerationFileConfigMissing;
+      json[r'error'] = this.error;
+      json[r'error_admin_bot_offline'] = this.errorAdminBotOffline;
       json[r'profile_name_moderation_file_config_missing'] = this.profileNameModerationFileConfigMissing;
       json[r'profile_text_moderation_file_config_missing'] = this.profileTextModerationFileConfigMissing;
     return json;
@@ -67,9 +80,11 @@ class BotConfigWarnings {
       }());
 
       return BotConfigWarnings(
-        contentModerationFileConfigMissing: mapValueOfType<bool>(json, r'content_moderation_file_config_missing')!,
-        profileNameModerationFileConfigMissing: mapValueOfType<bool>(json, r'profile_name_moderation_file_config_missing')!,
-        profileTextModerationFileConfigMissing: mapValueOfType<bool>(json, r'profile_text_moderation_file_config_missing')!,
+        contentModerationFileConfigMissing: mapValueOfType<bool>(json, r'content_moderation_file_config_missing') ?? false,
+        error: mapValueOfType<bool>(json, r'error') ?? false,
+        errorAdminBotOffline: mapValueOfType<bool>(json, r'error_admin_bot_offline') ?? false,
+        profileNameModerationFileConfigMissing: mapValueOfType<bool>(json, r'profile_name_moderation_file_config_missing') ?? false,
+        profileTextModerationFileConfigMissing: mapValueOfType<bool>(json, r'profile_text_moderation_file_config_missing') ?? false,
       );
     }
     return null;
@@ -117,9 +132,6 @@ class BotConfigWarnings {
 
   /// The list of required keys that must be present in a JSON.
   static const requiredKeys = <String>{
-    'content_moderation_file_config_missing',
-    'profile_name_moderation_file_config_missing',
-    'profile_text_moderation_file_config_missing',
   };
 }
 

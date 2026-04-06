@@ -118,7 +118,7 @@ class EventRouter {
         } else {
           _log.error("Missing typing stop for $type");
         }
-      case ServerMessageTypeCode.responseCheckOnlineStatus:
+      case ServerMessageTypeCode.onlineStatusUpdated:
         final response = event.checkOnlineStatusResponse;
         if (response != null) {
           await chat.checkOnlineStatusManager.handleCheckOnlineStatusResponse(

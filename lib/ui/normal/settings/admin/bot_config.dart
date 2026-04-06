@@ -73,6 +73,14 @@ class _BotConfigScreenState extends State<BotConfigScreen> {
   Future<void> _showWarnings() async {
     final warnings = await widget.api.commonAdmin((api) => api.getBotConfigWarnings()).ok();
     if (warnings != null && mounted) {
+      if (warnings.errorAdminBotOffline) {
+        showSnackBar("Error: getting bot config file warnings failed because admin bot is offline");
+        return;
+      } else if (warnings.error) {
+        showSnackBar("Error: getting bot config file warnings failed");
+        return;
+      }
+
       final missing = [
         if (warnings.contentModerationFileConfigMissing) "- content moderation",
         if (warnings.profileNameModerationFileConfigMissing) "- profile name moderation",

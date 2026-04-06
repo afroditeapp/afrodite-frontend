@@ -26,4 +26,33 @@ void main() {
       expect(message.payload, equals(uuidBytes));
     });
   });
+
+  group('ClientMessage profile iterator request payloads', () {
+    test('requestResetProfilePaging includes request id byte', () {
+      final message = ClientMessage.requestResetProfilePaging(17);
+
+      expect(message.payload, equals(Uint8List.fromList([17])));
+    });
+
+    test('requestGetNextProfilePage includes request id and session id', () {
+      final message = ClientMessage.requestGetNextProfilePage(18, ProfileIteratorSessionId(id: 12));
+
+      expect(message.payload, equals(Uint8List.fromList([18, ...minimalI64Bytes(12)])));
+    });
+
+    test('requestAutomaticProfileSearchResetProfilePaging includes request id byte', () {
+      final message = ClientMessage.requestAutomaticProfileSearchResetProfilePaging(19);
+
+      expect(message.payload, equals(Uint8List.fromList([19])));
+    });
+
+    test('requestAutomaticProfileSearchGetNextProfilePage includes request id and session id', () {
+      final message = ClientMessage.requestAutomaticProfileSearchGetNextProfilePage(
+        20,
+        AutomaticProfileSearchIteratorSessionId(id: 13),
+      );
+
+      expect(message.payload, equals(Uint8List.fromList([20, ...minimalI64Bytes(13)])));
+    });
+  });
 }

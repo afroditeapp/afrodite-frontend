@@ -65,6 +65,7 @@ class RequestAutomaticProfileSearchGetNextProfilePage
 class WebSocketApiRequestManager {
   static const Duration _connectTimeout = Duration(seconds: 3);
   static const Duration _requestTimeout = Duration(seconds: 60);
+  static const int _requestIdMaxValue = 255;
 
   final Stream<ServerMessage> _serverMessages;
   final ValueStream<ServerConnectionManagerState> _connectionStates;
@@ -72,6 +73,7 @@ class WebSocketApiRequestManager {
 
   final PublishSubject<WebSocketApiRequestCmd<Object>> _cmds = PublishSubject();
   StreamSubscription<void>? _cmdsSubscription;
+  int _nextRequestId = 0;
 
   bool get _isConnected => _connectionStates.value is ConnectedToServer;
 
@@ -101,10 +103,11 @@ class WebSocketApiRequestManager {
               case RequestResetProfilePaging():
                 cmd.completed.add(
                   await _requestWithConnectivityTracking(
-                    sendRequest: () =>
-                        _sendMessageToServer(ClientMessage.requestResetProfilePaging()),
-                    waitResponse: () => _waitForResponse(
+                    sendRequest: (requestId) =>
+                        _sendMessageToServer(ClientMessage.requestResetProfilePaging(requestId)),
+                    waitResponse: (requestId) => _waitForResponse(
                       type: ServerMessageTypeCode.responseResetProfilePaging,
+                      requestId: requestId,
                       parser: (message) => _okIfNotNull(message.responseResetProfilePaging),
                     ),
                   ),
@@ -112,11 +115,12 @@ class WebSocketApiRequestManager {
               case RequestGetNextProfilePage():
                 cmd.completed.add(
                   await _requestWithConnectivityTracking(
-                    sendRequest: () => _sendMessageToServer(
-                      ClientMessage.requestGetNextProfilePage(cmd.sessionId),
+                    sendRequest: (requestId) => _sendMessageToServer(
+                      ClientMessage.requestGetNextProfilePage(requestId, cmd.sessionId),
                     ),
-                    waitResponse: () => _waitForResponse(
+                    waitResponse: (requestId) => _waitForResponse(
                       type: ServerMessageTypeCode.responseNextProfilePage,
+                      requestId: requestId,
                       parser: (message) => _okIfNotNull(message.responseNextProfilePage),
                     ),
                   ),
@@ -124,11 +128,12 @@ class WebSocketApiRequestManager {
               case RequestAutomaticProfileSearchResetProfilePaging():
                 cmd.completed.add(
                   await _requestWithConnectivityTracking(
-                    sendRequest: () => _sendMessageToServer(
-                      ClientMessage.requestAutomaticProfileSearchResetProfilePaging(),
+                    sendRequest: (requestId) => _sendMessageToServer(
+                      ClientMessage.requestAutomaticProfileSearchResetProfilePaging(requestId),
                     ),
-                    waitResponse: () => _waitForResponse(
+                    waitResponse: (requestId) => _waitForResponse(
                       type: ServerMessageTypeCode.responseAutomaticProfileSearchResetProfilePaging,
+                      requestId: requestId,
                       parser: (message) =>
                           _okIfNotNull(message.responseAutomaticProfileSearchResetProfilePaging),
                     ),
@@ -137,11 +142,15 @@ class WebSocketApiRequestManager {
               case RequestAutomaticProfileSearchGetNextProfilePage():
                 cmd.completed.add(
                   await _requestWithConnectivityTracking(
-                    sendRequest: () => _sendMessageToServer(
-                      ClientMessage.requestAutomaticProfileSearchGetNextProfilePage(cmd.sessionId),
+                    sendRequest: (requestId) => _sendMessageToServer(
+                      ClientMessage.requestAutomaticProfileSearchGetNextProfilePage(
+                        requestId,
+                        cmd.sessionId,
+                      ),
                     ),
-                    waitResponse: () => _waitForResponse(
+                    waitResponse: (requestId) => _waitForResponse(
                       type: ServerMessageTypeCode.responseAutomaticProfileSearchNextProfilePage,
+                      requestId: requestId,
                       parser: (message) =>
                           _okIfNotNull(message.responseAutomaticProfileSearchNextProfilePage),
                     ),
@@ -200,22 +209,30 @@ class WebSocketApiRequestManager {
     return Ok(value);
   }
 
+  int _takeNextRequestId() {
+    final requestId = _nextRequestId;
+    _nextRequestId = (_nextRequestId + 1) & _requestIdMaxValue;
+    return requestId;
+  }
+
   Future<Result<T, ()>> _requestWithConnectivityTracking<T>({
-    required Future<void> Function() sendRequest,
-    required Future<Result<T, ()>> Function() waitResponse,
+    required Future<void> Function(int requestId) sendRequest,
+    required Future<Result<T, ()>> Function(int requestId) waitResponse,
   }) async {
     if (!await _waitForConnected()) {
       _log.error("Connection waiting failed");
       return const Err(());
     }
 
+    final requestId = _takeNextRequestId();
+
     final waitResponseOrError = Completer<_RequestOutcome<T>>();
 
     final outcome = await Future.any<_RequestOutcome<T>>([
-      waitResponse().then((value) => _RequestResponse(value)),
+      waitResponse(requestId).then((value) => _RequestResponse(value)),
       _waitForDisconnected().then((_) => _RequestConnectivityChanged()),
       Future.delayed(_requestTimeout, () => _RequestTimeout()),
-      sendRequest().then((_) => waitResponseOrError.future),
+      sendRequest(requestId).then((_) => waitResponseOrError.future),
     ]);
 
     waitResponseOrError.complete(outcome);
@@ -234,9 +251,12 @@ class WebSocketApiRequestManager {
 
   Future<Result<T, ()>> _waitForResponse<T>({
     required ServerMessageTypeCode type,
+    required int requestId,
     required Result<T, ()> Function(ServerMessage message) parser,
   }) async {
-    final event = await _serverMessages.firstWhere((message) => message.type == type);
+    final event = await _serverMessages.firstWhere((message) {
+      return message.type == type && message.responseId == requestId;
+    });
     return parser(event);
   }
 

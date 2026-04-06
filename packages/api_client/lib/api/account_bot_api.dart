@@ -74,7 +74,7 @@ class AccountBotApi {
 
   /// Register a new bot account. Returns new account ID which is UUID.
   ///
-  /// Available only from local bot API port.
+  /// Available only from local bot API port.  Registered account is by default user bot account. Changing the account to admin bot account can be done by changing email address of the account to `admin@example.com` when the account is in initial setup state.
   ///
   /// Note: This method returns the HTTP [Response].
   Future<Response> postBotRegisterWithHttpInfo() async {
@@ -104,7 +104,7 @@ class AccountBotApi {
 
   /// Register a new bot account. Returns new account ID which is UUID.
   ///
-  /// Available only from local bot API port.
+  /// Available only from local bot API port.  Registered account is by default user bot account. Changing the account to admin bot account can be done by changing email address of the account to `admin@example.com` when the account is in initial setup state.
   Future<AccountId?> postBotRegister() async {
     final response = await postBotRegisterWithHttpInfo();
     if (response.statusCode >= HttpStatus.badRequest) {
