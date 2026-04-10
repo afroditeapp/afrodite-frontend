@@ -64,6 +64,11 @@ class ProfileStringIo extends ContentIo<WrappedProfileStringModeration> {
   ProfileStringIo(this.api, this.contentType, this.showTextsWhichBotsCanModerate);
 
   @override
+  String? initialRejectedDetails(WrappedProfileStringModeration content) {
+    return content.rejectedDetails?.value;
+  }
+
+  @override
   Future<Result<List<WrappedProfileStringModeration>, ()>> getNextContent() async {
     return await api
         .profileAdmin(
@@ -86,13 +91,21 @@ class ProfileStringIo extends ContentIo<WrappedProfileStringModeration> {
   }
 
   @override
-  Future<void> sendToServer(WrappedProfileStringModeration content, bool accept) async {
+  Future<void> sendToServer(
+    WrappedProfileStringModeration content,
+    bool accept, {
+    String? rejectedDetails,
+  }) async {
+    final normalizedDetails = rejectedDetails?.trim();
+    final details = !accept && normalizedDetails != null && normalizedDetails.isNotEmpty
+        ? ProfileStringModerationRejectedReasonDetails(value: normalizedDetails)
+        : null;
     final info = PostModerateProfileString(
       contentType: contentType,
       accept: accept,
       id: content.id,
       value: content.value,
-      rejectedDetails: null,
+      rejectedDetails: details,
     );
     await api.profileAdminAction((api) => api.postModerateProfileString(info));
   }
@@ -100,7 +113,11 @@ class ProfileStringIo extends ContentIo<WrappedProfileStringModeration> {
 
 class ProfileTextUiBuilder extends ContentUiBuilder<WrappedProfileStringModeration> {
   @override
-  Widget buildRowContent(BuildContext context, WrappedProfileStringModeration content) {
+  Widget buildRowContent(
+    BuildContext context,
+    WrappedProfileStringModeration content, {
+    String? rejectedDetails,
+  }) {
     return Column(
       mainAxisSize: MainAxisSize.min,
       crossAxisAlignment: CrossAxisAlignment.start,
@@ -109,7 +126,7 @@ class ProfileTextUiBuilder extends ContentUiBuilder<WrappedProfileStringModerati
         rejectionDetailsText(
           context,
           category: content.rejectedCategory?.value,
-          details: content.rejectedDetails?.value,
+          details: rejectedDetails,
           containerColor: Colors.transparent,
           textColor: Theme.of(context).colorScheme.onSurface,
         ),

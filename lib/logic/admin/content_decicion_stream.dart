@@ -20,11 +20,21 @@ class ContentRow<C> implements RowState<C> {
   final C content;
   final RowStatus status;
   final bool sentToServer;
+  final String? rejectedDetails;
 
-  ContentRow(this.content, {required this.status, this.sentToServer = false});
+  ContentRow(this.content, {required this.status, this.sentToServer = false, this.rejectedDetails});
 
-  ContentRow<C> copyWith(RowStatus status, bool sentToServer) {
-    return ContentRow(content, status: status, sentToServer: sentToServer);
+  ContentRow<C> copyWith({
+    required RowStatus status,
+    required bool sentToServer,
+    required String? rejectedDetails,
+  }) {
+    return ContentRow(
+      content,
+      status: status,
+      sentToServer: sentToServer,
+      rejectedDetails: rejectedDetails,
+    );
   }
 
   Future<ContentRow<C>?> sendToServer(ContentIo<C> io) async {
@@ -36,9 +46,9 @@ class ContentRow<C> implements RowState<C> {
       return null;
     }
 
-    await io.sendToServer(content, status == RowStatus.accepted);
+    await io.sendToServer(content, status == RowStatus.accepted, rejectedDetails: rejectedDetails);
 
-    return copyWith(status, true);
+    return copyWith(status: status, sentToServer: true, rejectedDetails: rejectedDetails);
   }
 }
 
@@ -89,7 +99,7 @@ class ContentDecicionStreamLogic<C> {
     yield* loadManager.getRow(index, cacher, io);
   }
 
-  void moderateRow(int index, bool accept) async {
+  void moderateRow(int index, bool accept, {String? rejectedDetails}) async {
     final relay = loadManager.rows[index];
     if (relay == null) {
       return;
@@ -98,7 +108,12 @@ class ContentDecicionStreamLogic<C> {
     final currentState = relay.value;
     if (currentState is ContentRow<C> && currentState.status == RowStatus.decicionNeeded) {
       final status = accept ? RowStatus.accepted : RowStatus.rejected;
-      final newState = currentState.copyWith(status, currentState.sentToServer);
+      final newRejectedDetails = status == RowStatus.rejected ? rejectedDetails : null;
+      final newState = currentState.copyWith(
+        status: status,
+        sentToServer: currentState.sentToServer,
+        rejectedDetails: newRejectedDetails,
+      );
       relay.add(newState);
       final newerState = await newState.sendToServer(io);
       if (newerState != null) {
@@ -211,7 +226,13 @@ class ModerationCacher<C> {
         continue;
       }
 
-      newStates.add(ContentRow(m, status: RowStatus.decicionNeeded));
+      newStates.add(
+        ContentRow(
+          m,
+          status: RowStatus.decicionNeeded,
+          rejectedDetails: io.initialRejectedDetails(m),
+        ),
+      );
 
       alreadyStoredContent.add(m);
     }
@@ -230,5 +251,9 @@ abstract class ContentIo<C> {
   /// be returned.
   Future<Result<List<C>, ()>> getNextContent();
 
-  Future<void> sendToServer(C content, bool accept);
+  String? initialRejectedDetails(C content) {
+    return null;
+  }
+
+  Future<void> sendToServer(C content, bool accept, {String? rejectedDetails});
 }

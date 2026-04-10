@@ -85,7 +85,11 @@ class ViewReportReportIo extends ContentIo<WrappedReportDetailed> {
   }
 
   @override
-  Future<void> sendToServer(WrappedReportDetailed content, bool accept) async {
+  Future<void> sendToServer(
+    WrappedReportDetailed content,
+    bool accept, {
+    String? rejectedDetails,
+  }) async {
     return;
   }
 }

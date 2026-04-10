@@ -192,19 +192,19 @@ class _UpdatingContentDecicionListItemState<C extends ContentInfoGetter>
       color: color,
       child: Row(
         mainAxisAlignment: MainAxisAlignment.start,
-        children: [Expanded(child: buildContent(context, r.content, index))],
+        children: [Expanded(child: buildContent(context, r.content, index, r.rejectedDetails))],
       ),
     );
   }
 
-  Widget buildContent(BuildContext context, C content, int? index) {
+  Widget buildContent(BuildContext context, C content, int? index, String? rejectedDetails) {
     return InkWell(
       onLongPress: () {
         if (index != null) {
           showActionDialog(context, content, index);
         }
       },
-      child: widget.builder.buildRowContent(context, content),
+      child: widget.builder.buildRowContent(context, content, rejectedDetails: rejectedDetails),
     );
   }
 
@@ -222,6 +222,23 @@ class _UpdatingContentDecicionListItemState<C extends ContentInfoGetter>
         child: const Text("Reject"),
       );
 
+      final rejectWithDetailsAction = SimpleDialogOption(
+        onPressed: () {
+          closer.close(dialogContext, ());
+          showRejectWithDetailsDialog(context).then((details) {
+            if (details != null) {
+              final trimmed = details.trim();
+              widget.logic.moderateRow(
+                index,
+                false,
+                rejectedDetails: trimmed.isEmpty ? null : trimmed,
+              );
+            }
+          });
+        },
+        child: const Text("Reject (new details)"),
+      );
+
       final target = info.target;
 
       return SimpleDialog(
@@ -229,6 +246,10 @@ class _UpdatingContentDecicionListItemState<C extends ContentInfoGetter>
         children: <Widget>[
           if (widget.logic.rejectingIsPossible(index) && widget.builder.allowRejecting)
             rejectAction,
+          if (widget.logic.rejectingIsPossible(index) &&
+              widget.builder.allowRejecting &&
+              widget.builder.rejectionDetailsSupported)
+            rejectWithDetailsAction,
           if (target == null)
             openAdminSettingsAction(
               context,
@@ -263,6 +284,54 @@ class _UpdatingContentDecicionListItemState<C extends ContentInfoGetter>
     );
   }
 
+  Future<String?> showRejectWithDetailsDialog(BuildContext context) {
+    final detailsController = TextEditingController();
+
+    return MyNavigator.showDialog<RejectWithDetailsDialogResult>(
+          context: context,
+          page: RejectWithDetailsDialog(
+            builder: (dialogContext, closer) {
+              return AlertDialog(
+                title: const Text("Reject"),
+                content: TextField(
+                  controller: detailsController,
+                  autofocus: true,
+                  minLines: 1,
+                  maxLines: 4,
+                  decoration: const InputDecoration(hintText: "Rejection details"),
+                ),
+                actions: [
+                  TextButton(
+                    onPressed: () => closer.close(
+                      dialogContext,
+                      const RejectWithDetailsDialogResult(submit: false, details: ''),
+                    ),
+                    child: Text(dialogContext.strings.generic_cancel),
+                  ),
+                  TextButton(
+                    onPressed: () => closer.close(
+                      dialogContext,
+                      RejectWithDetailsDialogResult(submit: true, details: detailsController.text),
+                    ),
+                    child: Text(dialogContext.strings.generic_ok),
+                  ),
+                ],
+              );
+            },
+          ),
+        )
+        .then((value) {
+          if (value == null) {
+            return null;
+          }
+          if (value.submit) {
+            return value.details;
+          }
+          return null;
+        })
+        .whenComplete(detailsController.dispose);
+  }
+
   Widget openAdminSettingsAction(
     BuildContext context,
     BuildContext dialogContext,
@@ -282,6 +351,16 @@ class _UpdatingContentDecicionListItemState<C extends ContentInfoGetter>
 
 class ContentDecicionDialog extends MyDialogPage<()> {
   ContentDecicionDialog({required super.builder});
+}
+
+class RejectWithDetailsDialog extends MyDialogPage<RejectWithDetailsDialogResult> {
+  RejectWithDetailsDialog({required super.builder});
+}
+
+class RejectWithDetailsDialogResult {
+  final bool submit;
+  final String details;
+  const RejectWithDetailsDialogResult({required this.submit, required this.details});
 }
 
 Widget buildEmptyText(BuildContext context, double height) {
@@ -307,7 +386,8 @@ Widget buildProgressIndicator(double height) {
 abstract class ContentUiBuilder<C extends ContentInfoGetter> {
   bool get allowRejecting => true;
   bool get allowAccepting => true;
-  Widget buildRowContent(BuildContext context, C content);
+  bool get rejectionDetailsSupported => true;
+  Widget buildRowContent(BuildContext context, C content, {String? rejectedDetails});
 }
 
 abstract class ContentInfoGetter {

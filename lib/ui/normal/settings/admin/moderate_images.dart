@@ -73,6 +73,11 @@ class MediaContentIo extends ContentIo<WrappedMediaContentPendingModeration> {
   MediaContentIo(this.api, this.media, this.showContentWhichBotsCanModerate, this.queue);
 
   @override
+  String? initialRejectedDetails(WrappedMediaContentPendingModeration content) {
+    return content.rejectedDetails?.value;
+  }
+
+  @override
   Future<Result<List<WrappedMediaContentPendingModeration>, ()>> getNextContent() async {
     final r = await api.mediaAdmin(
       (api) => api.getMediaContentPendingModerationList(
@@ -109,12 +114,20 @@ class MediaContentIo extends ContentIo<WrappedMediaContentPendingModeration> {
   }
 
   @override
-  Future<void> sendToServer(WrappedMediaContentPendingModeration content, bool accept) async {
+  Future<void> sendToServer(
+    WrappedMediaContentPendingModeration content,
+    bool accept, {
+    String? rejectedDetails,
+  }) async {
+    final normalizedDetails = rejectedDetails?.trim();
+    final details = !accept && normalizedDetails != null && normalizedDetails.isNotEmpty
+        ? MediaContentModerationRejectedReasonDetails(value: normalizedDetails)
+        : null;
     final info = PostModerateMediaContent(
       accept: accept,
       accountId: content.accountId,
       contentId: content.contentId,
-      rejectedDetails: null,
+      rejectedDetails: details,
     );
     await api.mediaAdminAction((api) => api.postModerateMediaContent(info));
   }
@@ -122,7 +135,11 @@ class MediaContentIo extends ContentIo<WrappedMediaContentPendingModeration> {
 
 class MediaContentUiBuilder extends ContentUiBuilder<WrappedMediaContentPendingModeration> {
   @override
-  Widget buildRowContent(BuildContext context, WrappedMediaContentPendingModeration content) {
+  Widget buildRowContent(
+    BuildContext context,
+    WrappedMediaContentPendingModeration content, {
+    String? rejectedDetails,
+  }) {
     return LayoutBuilder(
       builder: (context, constraints) {
         return Column(
@@ -132,7 +149,7 @@ class MediaContentUiBuilder extends ContentUiBuilder<WrappedMediaContentPendingM
             rejectionDetailsText(
               context,
               category: content.rejectedCategory?.value,
-              details: content.rejectedDetails?.value,
+              details: rejectedDetails,
               containerColor: Colors.transparent,
               textColor: Theme.of(context).colorScheme.onSurface,
             ),

@@ -73,7 +73,11 @@ class ReportIo extends ContentIo<WrappedReportDetailed> {
   }
 
   @override
-  Future<void> sendToServer(WrappedReportDetailed content, bool accept) async {
+  Future<void> sendToServer(
+    WrappedReportDetailed content,
+    bool accept, {
+    String? rejectedDetails,
+  }) async {
     final info = ProcessReport(
       creator: content.info.creator,
       target: content.info.target,
@@ -131,6 +135,9 @@ class ReportUiBuilder extends ContentUiBuilder<WrappedReportDetailed> {
   @override
   bool get allowRejecting => false;
 
+  @override
+  bool get rejectionDetailsSupported => false;
+
   static String instructions = """
 B = block received
 L = like received
@@ -143,7 +150,11 @@ M = chat message
 C = custom report""";
 
   @override
-  Widget buildRowContent(BuildContext context, WrappedReportDetailed content) {
+  Widget buildRowContent(
+    BuildContext context,
+    WrappedReportDetailed content, {
+    String? rejectedDetails,
+  }) {
     final creatorInfo = content.creatorInfo;
     final targetInfo = content.targetInfo;
     final chatInfo = content.chatInfo;
