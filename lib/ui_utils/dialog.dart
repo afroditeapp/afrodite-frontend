@@ -175,6 +175,7 @@ class LoadingDialogPage extends MyDialogPage<()> {
 Future<()?> showLoadingDialogWithAutoDismiss<B extends StateStreamable<S>, S>(
   BuildContext context, {
   required bool Function(S) dialogVisibilityGetter,
+  required bool Function(S) updateSuccessGetter,
   PageKey? removeAlsoThisPage,
 }) async {
   final page = LoadingDialogPage(
@@ -183,6 +184,7 @@ Future<()?> showLoadingDialogWithAutoDismiss<B extends StateStreamable<S>, S>(
         context,
         pageKey: closer.key,
         dialogVisibilityGetter: dialogVisibilityGetter,
+        updateSuccessGetter: updateSuccessGetter,
         removeAlsoThisPage: removeAlsoThisPage,
       );
     },
@@ -194,6 +196,7 @@ Widget _loadingDialogContent<B extends StateStreamable<S>, S>(
   BuildContext context, {
   required PageKey pageKey,
   required bool Function(S) dialogVisibilityGetter,
+  required bool Function(S) updateSuccessGetter,
   required PageKey? removeAlsoThisPage,
 }) {
   return PopScope(
@@ -207,7 +210,11 @@ Widget _loadingDialogContent<B extends StateStreamable<S>, S>(
                 dialogVisibilityGetter(previous) != dialogVisibilityGetter(current),
             builder: (context, state) {
               if (!dialogVisibilityGetter(state)) {
-                MyNavigator.removeMultiplePages(context, [?removeAlsoThisPage, pageKey]);
+                if (updateSuccessGetter(state)) {
+                  MyNavigator.removeMultiplePages(context, [?removeAlsoThisPage, pageKey]);
+                } else {
+                  MyNavigator.removeMultiplePages(context, [pageKey]);
+                }
               }
               return commonLoadingDialogIndicator();
             },

@@ -153,9 +153,11 @@ class MyProfileBloc extends Bloc<MyProfileEvent, MyProfileData>
 
         await waitTime.waitIfNeeded();
 
-        emit(state.copyWith(updateState: const UpdateIdle()));
+        emit(state.copyWith(updateState: UpdateIdle(updateFailed: failureDetected)));
 
-        resetEditedValues(emit);
+        if (!failureDetected) {
+          resetEditedValues(emit);
+        }
       });
     });
     on<NewMyProfile>((data, emit) async {

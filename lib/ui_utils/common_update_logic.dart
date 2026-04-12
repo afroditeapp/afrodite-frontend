@@ -11,7 +11,8 @@ class UpdateIdle extends UpdateState {
   /// There is no update ongoing.
   ///
   /// Next event is [UpdateStarted].
-  const UpdateIdle();
+  final bool updateFailed;
+  const UpdateIdle({this.updateFailed = false});
 }
 
 class UpdateStarted extends UpdateState {
@@ -34,7 +35,8 @@ abstract mixin class UpdateStateProvider {
   UpdateState get updateState;
 }
 
-/// If pageKey is not null, that page is removed when dialog is removed.
+/// If pageKey is not null and update is successful, the pageKey related page
+/// is removed when dialog is removed.
 Widget updateStateHandler<B extends StateStreamable<S>, S extends UpdateStateProvider>({
   required BuildContext context,
   required PageKey? pageKey,
@@ -49,6 +51,10 @@ Widget updateStateHandler<B extends StateStreamable<S>, S extends UpdateStatePro
           context,
           dialogVisibilityGetter: (s) =>
               s.updateState is UpdateStarted || s.updateState is UpdateInProgress,
+          updateSuccessGetter: (s) {
+            final updateState = s.updateState;
+            return updateState is UpdateIdle && !updateState.updateFailed;
+          },
           removeAlsoThisPage: pageKey,
         );
       }
