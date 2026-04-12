@@ -201,14 +201,19 @@ class _UpdatingContentDecicionListItemState<C extends ContentInfoGetter>
     return InkWell(
       onLongPress: () {
         if (index != null) {
-          showActionDialog(context, content, index);
+          showActionDialog(context, content, index, rejectedDetails);
         }
       },
       child: widget.builder.buildRowContent(context, content, rejectedDetails: rejectedDetails),
     );
   }
 
-  Future<void> showActionDialog(BuildContext context, ContentInfoGetter info, int index) {
+  Future<void> showActionDialog(
+    BuildContext context,
+    ContentInfoGetter info,
+    int index,
+    String? currentRejectedDetails,
+  ) {
     Widget builder(BuildContext dialogContext, PageCloser<()> closer) {
       final rejectAction = SimpleDialogOption(
         onPressed: () {
@@ -221,6 +226,17 @@ class _UpdatingContentDecicionListItemState<C extends ContentInfoGetter>
         },
         child: const Text("Reject"),
       );
+
+      final rejectWithCurrentDetailsAction = SimpleDialogOption(
+        onPressed: () {
+          closer.close(dialogContext, ());
+          widget.logic.moderateRow(index, false, rejectedDetails: currentRejectedDetails);
+        },
+        child: const Text("Reject (current details)"),
+      );
+
+      final hasCurrentRejectedDetails =
+          currentRejectedDetails != null && currentRejectedDetails.trim().isNotEmpty;
 
       final rejectWithDetailsAction = SimpleDialogOption(
         onPressed: () {
@@ -246,6 +262,11 @@ class _UpdatingContentDecicionListItemState<C extends ContentInfoGetter>
         children: <Widget>[
           if (widget.logic.rejectingIsPossible(index) && widget.builder.allowRejecting)
             rejectAction,
+          if (widget.logic.rejectingIsPossible(index) &&
+              widget.builder.allowRejecting &&
+              widget.builder.rejectionDetailsSupported &&
+              hasCurrentRejectedDetails)
+            rejectWithCurrentDetailsAction,
           if (widget.logic.rejectingIsPossible(index) &&
               widget.builder.allowRejecting &&
               widget.builder.rejectionDetailsSupported)
