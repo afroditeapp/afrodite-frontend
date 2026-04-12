@@ -2628,6 +2628,15 @@
   "@view_profile_screen_profile_edit_failed": {
     "description": "Snackbar text for notifying about failed profile edit"
   },
+  "view_profile_screen_profile_image_does_not_exist": "Profile image {p0} does not exist",
+  "@view_profile_screen_profile_image_does_not_exist": {
+    "description": "Snackbar text for notifying that selected profile image does not exist when saving profile edits",
+    "placeholders": {
+      "p0": {
+        "type": "String"
+      }
+    }
+  },
   "view_profile_screen_profile_last_seen_day": "Last seen {p0} day ago",
   "@view_profile_screen_profile_last_seen_day": {
     "description": "View profile screen text that profile is last seen day ago",

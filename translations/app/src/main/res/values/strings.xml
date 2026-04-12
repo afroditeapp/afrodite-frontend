@@ -371,6 +371,7 @@
     <string name="view_profile_screen_already_match" description="Snackbar text for view profile screen displayed when action failed because of the profile is already a match">Chatting is already possible</string>
     <string name="view_profile_screen_block_action_successful" description="Snackbar text for view profile screen block action successful">Profile blocked</string>
     <string name="view_profile_screen_profile_edit_failed" description="Snackbar text for notifying about failed profile edit">Profile editing failed</string>
+    <string name="view_profile_screen_profile_image_does_not_exist" description="Snackbar text for notifying that selected profile image does not exist when saving profile edits">Profile image %s does not exist</string>
     <string name="view_profile_screen_profile_currently_online" description="View profile screen text that profile is currently online">Online</string>
     <string name="view_profile_screen_profile_last_seen_second" description="View profile screen text that profile is last seen second ago">Last seen %s second ago</string>
     <string name="view_profile_screen_profile_last_seen_seconds" description="View profile screen text that profile is last seen multiple seconds ago">Last seen %s seconds ago</string>

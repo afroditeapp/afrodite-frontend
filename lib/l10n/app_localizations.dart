@@ -3544,6 +3544,12 @@ abstract class AppLocalizations {
   /// **'Profile editing failed'**
   String get view_profile_screen_profile_edit_failed;
 
+  /// Snackbar text for notifying that selected profile image does not exist when saving profile edits
+  ///
+  /// In en, this message translates to:
+  /// **'Profile image {p0} does not exist'**
+  String view_profile_screen_profile_image_does_not_exist(String p0);
+
   /// View profile screen text that profile is last seen day ago
   ///
   /// In en, this message translates to:

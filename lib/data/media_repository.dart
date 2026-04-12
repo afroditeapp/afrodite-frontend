@@ -110,10 +110,25 @@ class MediaRepository extends DataRepositoryWithLifecycle {
     await task.dispose();
   }
 
-  Future<Result<(), ()>> setProfileContent(SetProfileContent imgInfo) => api
-      .mediaAction((api) => api.putProfileContent(imgInfo))
-      .onOk(() => reloadMyMediaContent())
-      .emptyErr();
+  Future<Result<UpdateProfileContentResult, ()>> setProfileContent(
+    SetProfileContent imgInfo,
+  ) async {
+    final result = await api
+        .media((api) => api.putProfileContent(imgInfo))
+        .errorIfNull()
+        .emptyErr();
+
+    switch (result) {
+      case Ok(:final v):
+        if (!v.error && await reloadMyMediaContent().isErr()) {
+          return const Err(());
+        } else {
+          return Ok(v);
+        }
+      case Err():
+        return const Err(());
+    }
+  }
 
   Future<Result<AccountContent, ()>> loadAllContent() =>
       api.media((api) => api.getAllAccountMediaContent(currentUser.aid)).emptyErr();

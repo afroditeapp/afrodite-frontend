@@ -1977,6 +1977,11 @@ class AppLocalizationsSv extends AppLocalizations {
   String get view_profile_screen_profile_edit_failed => 'Profile editing failed';
 
   @override
+  String view_profile_screen_profile_image_does_not_exist(String p0) {
+    return 'Profile image $p0 does not exist';
+  }
+
+  @override
   String view_profile_screen_profile_last_seen_day(String p0) {
     return 'Last seen $p0 day ago';
   }

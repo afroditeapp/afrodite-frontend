@@ -131,6 +131,7 @@ class MyProfileBloc extends Bloc<MyProfileEvent, MyProfileData>
         final waitTime = WantedWaitingTimeManager();
 
         var failureDetected = false;
+        var failureSnackBarShown = false;
 
         emit(state.copyWith(updateState: const UpdateInProgress()));
 
@@ -143,11 +144,27 @@ class MyProfileBloc extends Bloc<MyProfileEvent, MyProfileData>
           failureDetected = true;
         }
 
-        if (await media.setProfileContent(data.pictures).isErr()) {
-          failureDetected = true;
+        final setProfileContentResult = await media.setProfileContent(data.pictures);
+        switch (setProfileContentResult) {
+          case Ok(:final v):
+            if (v.error) {
+              failureDetected = true;
+
+              final errorContentIndex = v.errorContentAtIndexDoesNotExist;
+              if (errorContentIndex != null) {
+                showSnackBar(
+                  R.strings.view_profile_screen_profile_image_does_not_exist(
+                    (errorContentIndex + 1).toString(),
+                  ),
+                );
+                failureSnackBarShown = true;
+              }
+            }
+          case Err():
+            failureDetected = true;
         }
 
-        if (failureDetected) {
+        if (failureDetected && !failureSnackBarShown) {
           showSnackBar(R.strings.view_profile_screen_profile_edit_failed);
         }
 
