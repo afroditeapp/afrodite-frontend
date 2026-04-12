@@ -16,6 +16,7 @@ class ContentInfoWithFd {
     required this.cid,
     required this.ctype,
     required this.fd,
+    this.fv,
     this.rejectedReasonCategory,
     this.rejectedReasonDetails,
     required this.state,
@@ -28,6 +29,9 @@ class ContentInfoWithFd {
   /// Face detected (automatic or manual)
   bool fd;
 
+  /// Face verified against current security content (automatic or manual)
+  bool? fv;
+
   MediaContentModerationRejectedReasonCategory? rejectedReasonCategory;
 
   MediaContentModerationRejectedReasonDetails? rejectedReasonDetails;
@@ -39,6 +43,7 @@ class ContentInfoWithFd {
     other.cid == cid &&
     other.ctype == ctype &&
     other.fd == fd &&
+    other.fv == fv &&
     other.rejectedReasonCategory == rejectedReasonCategory &&
     other.rejectedReasonDetails == rejectedReasonDetails &&
     other.state == state;
@@ -49,18 +54,24 @@ class ContentInfoWithFd {
     (cid.hashCode) +
     (ctype.hashCode) +
     (fd.hashCode) +
+    (fv == null ? 0 : fv!.hashCode) +
     (rejectedReasonCategory == null ? 0 : rejectedReasonCategory!.hashCode) +
     (rejectedReasonDetails == null ? 0 : rejectedReasonDetails!.hashCode) +
     (state.hashCode);
 
   @override
-  String toString() => 'ContentInfoWithFd[cid=$cid, ctype=$ctype, fd=$fd, rejectedReasonCategory=$rejectedReasonCategory, rejectedReasonDetails=$rejectedReasonDetails, state=$state]';
+  String toString() => 'ContentInfoWithFd[cid=$cid, ctype=$ctype, fd=$fd, fv=$fv, rejectedReasonCategory=$rejectedReasonCategory, rejectedReasonDetails=$rejectedReasonDetails, state=$state]';
 
   Map<String, dynamic> toJson() {
     final json = <String, dynamic>{};
       json[r'cid'] = this.cid;
       json[r'ctype'] = this.ctype;
       json[r'fd'] = this.fd;
+    if (this.fv != null) {
+      json[r'fv'] = this.fv;
+    } else {
+      json[r'fv'] = null;
+    }
     if (this.rejectedReasonCategory != null) {
       json[r'rejected_reason_category'] = this.rejectedReasonCategory;
     } else {
@@ -97,6 +108,7 @@ class ContentInfoWithFd {
         cid: ContentId.fromJson(json[r'cid'])!,
         ctype: MediaContentType.fromJson(json[r'ctype'])!,
         fd: mapValueOfType<bool>(json, r'fd')!,
+        fv: mapValueOfType<bool>(json, r'fv'),
         rejectedReasonCategory: MediaContentModerationRejectedReasonCategory.fromJson(json[r'rejected_reason_category']),
         rejectedReasonDetails: MediaContentModerationRejectedReasonDetails.fromJson(json[r'rejected_reason_details']),
         state: ContentModerationState.fromJson(json[r'state'])!,

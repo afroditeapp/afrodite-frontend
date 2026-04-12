@@ -112,6 +112,50 @@ class MediaAdminApi {
     return null;
   }
 
+  /// Get first page of accounts with security selfie and content where `face_verified` is NULL and `face_detected` is true or `face_detected_manual` is true. Oldest security content set time is first and count 25.
+  ///
+  /// Note: This method returns the HTTP [Response].
+  Future<Response> getMediaContentFaceVerifiedNullListWithHttpInfo() async {
+    // ignore: prefer_const_declarations
+    final path = r'/media_api/media_content_face_verified_null_list';
+
+    // ignore: prefer_final_locals
+    Object? postBody;
+
+    final queryParams = <QueryParam>[];
+    final headerParams = <String, String>{};
+    final formParams = <String, String>{};
+
+    const contentTypes = <String>[];
+
+
+    return apiClient.invokeAPI(
+      path,
+      'GET',
+      queryParams,
+      postBody,
+      headerParams,
+      formParams,
+      contentTypes.isEmpty ? null : contentTypes.first,
+    );
+  }
+
+  /// Get first page of accounts with security selfie and content where `face_verified` is NULL and `face_detected` is true or `face_detected_manual` is true. Oldest security content set time is first and count 25.
+  Future<GetMediaContentFaceVerifiedNullList?> getMediaContentFaceVerifiedNullList() async {
+    final response = await getMediaContentFaceVerifiedNullListWithHttpInfo();
+    if (response.statusCode >= HttpStatus.badRequest) {
+      throw ApiException(response.statusCode, await _decodeBodyBytes(response));
+    }
+    // When a remote server returns no body with a status of 204, we shall not decode it.
+    // At the time of writing this, `dart:convert` will throw an "Unexpected end of input"
+    // FormatException when trying to decode an empty string.
+    if (response.body.isNotEmpty && response.statusCode != HttpStatus.noContent) {
+      return await apiClient.deserializeAsync(await _decodeBodyBytes(response), 'GetMediaContentFaceVerifiedNullList',) as GetMediaContentFaceVerifiedNullList;
+    
+    }
+    return null;
+  }
+
   /// Get first page of pending media content moderations. Oldest item is first and count 25.
   ///
   /// Note: This method returns the HTTP [Response].
@@ -267,6 +311,54 @@ class MediaAdminApi {
   /// * [PostMediaContentFaceDetectedValue] postMediaContentFaceDetectedValue (required):
   Future<void> postMediaContentFaceDetectedValue(PostMediaContentFaceDetectedValue postMediaContentFaceDetectedValue,) async {
     final response = await postMediaContentFaceDetectedValueWithHttpInfo(postMediaContentFaceDetectedValue,);
+    if (response.statusCode >= HttpStatus.badRequest) {
+      throw ApiException(response.statusCode, await _decodeBodyBytes(response));
+    }
+  }
+
+  /// Change media content face verified value
+  ///
+  /// Bot account sets automatic value and human admin account sets manual override value.  # Access * Permission [model::Permissions::admin_edit_media_content_face_verified_value]
+  ///
+  /// Note: This method returns the HTTP [Response].
+  ///
+  /// Parameters:
+  ///
+  /// * [PostMediaContentFaceVerifiedValue] postMediaContentFaceVerifiedValue (required):
+  Future<Response> postMediaContentFaceVerifiedValueWithHttpInfo(PostMediaContentFaceVerifiedValue postMediaContentFaceVerifiedValue,) async {
+    // ignore: prefer_const_declarations
+    final path = r'/media_api/media_content_face_verified_value';
+
+    // ignore: prefer_final_locals
+    Object? postBody = postMediaContentFaceVerifiedValue;
+
+    final queryParams = <QueryParam>[];
+    final headerParams = <String, String>{};
+    final formParams = <String, String>{};
+
+    const contentTypes = <String>['application/json'];
+
+
+    return apiClient.invokeAPI(
+      path,
+      'POST',
+      queryParams,
+      postBody,
+      headerParams,
+      formParams,
+      contentTypes.isEmpty ? null : contentTypes.first,
+    );
+  }
+
+  /// Change media content face verified value
+  ///
+  /// Bot account sets automatic value and human admin account sets manual override value.  # Access * Permission [model::Permissions::admin_edit_media_content_face_verified_value]
+  ///
+  /// Parameters:
+  ///
+  /// * [PostMediaContentFaceVerifiedValue] postMediaContentFaceVerifiedValue (required):
+  Future<void> postMediaContentFaceVerifiedValue(PostMediaContentFaceVerifiedValue postMediaContentFaceVerifiedValue,) async {
+    final response = await postMediaContentFaceVerifiedValueWithHttpInfo(postMediaContentFaceVerifiedValue,);
     if (response.statusCode >= HttpStatus.badRequest) {
       throw ApiException(response.statusCode, await _decodeBodyBytes(response));
     }

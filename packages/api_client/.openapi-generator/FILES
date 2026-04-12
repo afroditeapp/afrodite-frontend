@@ -39,6 +39,7 @@ lib/model/add_favorite_profile_result.dart
 lib/model/add_public_key_result.dart
 lib/model/admin_bot_config.dart
 lib/model/admin_content_moderation_config.dart
+lib/model/admin_face_verification_config.dart
 lib/model/admin_info.dart
 lib/model/admin_notification.dart
 lib/model/admin_notification_settings.dart
@@ -147,6 +148,7 @@ lib/model/get_ip_address_statistics_settings.dart
 lib/model/get_ip_country_statistics_result.dart
 lib/model/get_ip_country_statistics_settings.dart
 lib/model/get_latest_public_key_id.dart
+lib/model/get_media_content_face_verified_null_list.dart
 lib/model/get_media_content_pending_moderation_list.dart
 lib/model/get_media_content_result.dart
 lib/model/get_my_profile_result.dart
@@ -186,6 +188,7 @@ lib/model/latest_seen_message_info_list.dart
 lib/model/likes_config.dart
 lib/model/limited_action_status.dart
 lib/model/llm_content_moderation_config.dart
+lib/model/llm_face_verification_config.dart
 lib/model/llm_string_moderation_config.dart
 lib/model/location.dart
 lib/model/login_result.dart
@@ -201,6 +204,7 @@ lib/model/matches_iterator_state.dart
 lib/model/matches_page.dart
 lib/model/max_distance_km.dart
 lib/model/media_app_notification_settings.dart
+lib/model/media_content_face_verified_null_by_account.dart
 lib/model/media_content_moderation_rejected_reason_category.dart
 lib/model/media_content_moderation_rejected_reason_details.dart
 lib/model/media_content_pending_moderation.dart
@@ -241,6 +245,8 @@ lib/model/perf_metric_value_area.dart
 lib/model/perf_metric_values.dart
 lib/model/permissions.dart
 lib/model/post_media_content_face_detected_value.dart
+lib/model/post_media_content_face_verified_value.dart
+lib/model/post_media_content_face_verified_value_item.dart
 lib/model/post_moderate_media_content.dart
 lib/model/post_moderate_profile_string.dart
 lib/model/post_start_data_export.dart
@@ -360,7 +366,9 @@ lib/model/update_news_translation.dart
 lib/model/update_news_translation_result.dart
 lib/model/update_profile_attributes_schema.dart
 lib/model/update_profile_content_report.dart
+lib/model/update_profile_content_result.dart
 lib/model/update_profile_name_report.dart
 lib/model/update_profile_text_report.dart
 lib/model/update_report_result.dart
 lib/model/vapid_public_key.dart
+lib/model/verification_action.dart

@@ -227,9 +227,11 @@ Class | Method | HTTP request | Description
 *MediaApi* | [**putSecurityContentInfo**](doc//MediaApi.md#putsecuritycontentinfo) | **PUT** /media_api/security_content_info | Set current security content for current account.
 *MediaAdminApi* | [**getImageProcessingConfig**](doc//MediaAdminApi.md#getimageprocessingconfig) | **GET** /media_api/image_processing_config | Get image processing configuration
 *MediaAdminApi* | [**getImageProcessingConfigWarnings**](doc//MediaAdminApi.md#getimageprocessingconfigwarnings) | **GET** /media_api/image_processing_config_warnings | Get image processing config warnings
+*MediaAdminApi* | [**getMediaContentFaceVerifiedNullList**](doc//MediaAdminApi.md#getmediacontentfaceverifiednulllist) | **GET** /media_api/media_content_face_verified_null_list | Get first page of accounts with security selfie and content where `face_verified` is NULL and `face_detected` is true or `face_detected_manual` is true. Oldest security content set time is first and count 25.
 *MediaAdminApi* | [**getMediaContentPendingModerationList**](doc//MediaAdminApi.md#getmediacontentpendingmoderationlist) | **GET** /media_api/media_content_pending_moderation | Get first page of pending media content moderations. Oldest item is first and count 25.
 *MediaAdminApi* | [**postImageProcessingConfig**](doc//MediaAdminApi.md#postimageprocessingconfig) | **POST** /media_api/image_processing_config | Update image processing configuration
 *MediaAdminApi* | [**postMediaContentFaceDetectedValue**](doc//MediaAdminApi.md#postmediacontentfacedetectedvalue) | **POST** /media_api/media_content_face_detected_value | Change media content face detected value
+*MediaAdminApi* | [**postMediaContentFaceVerifiedValue**](doc//MediaAdminApi.md#postmediacontentfaceverifiedvalue) | **POST** /media_api/media_content_face_verified_value | Change media content face verified value
 *MediaAdminApi* | [**postModerateMediaContent**](doc//MediaAdminApi.md#postmoderatemediacontent) | **POST** /media_api/moderate_media_content | Rejected category and details can be set only when the content is rejected.
 *ProfileApi* | [**deleteFavoriteProfile**](doc//ProfileApi.md#deletefavoriteprofile) | **DELETE** /profile_api/favorite_profile | Delete favorite profile
 *ProfileApi* | [**getAutomaticProfileSearchSettings**](doc//ProfileApi.md#getautomaticprofilesearchsettings) | **GET** /profile_api/automatic_profile_search_settings | 
@@ -289,6 +291,7 @@ Class | Method | HTTP request | Description
  - [AddPublicKeyResult](doc//AddPublicKeyResult.md)
  - [AdminBotConfig](doc//AdminBotConfig.md)
  - [AdminContentModerationConfig](doc//AdminContentModerationConfig.md)
+ - [AdminFaceVerificationConfig](doc//AdminFaceVerificationConfig.md)
  - [AdminInfo](doc//AdminInfo.md)
  - [AdminNotification](doc//AdminNotification.md)
  - [AdminNotificationSettings](doc//AdminNotificationSettings.md)
@@ -397,6 +400,7 @@ Class | Method | HTTP request | Description
  - [GetIpCountryStatisticsResult](doc//GetIpCountryStatisticsResult.md)
  - [GetIpCountryStatisticsSettings](doc//GetIpCountryStatisticsSettings.md)
  - [GetLatestPublicKeyId](doc//GetLatestPublicKeyId.md)
+ - [GetMediaContentFaceVerifiedNullList](doc//GetMediaContentFaceVerifiedNullList.md)
  - [GetMediaContentPendingModerationList](doc//GetMediaContentPendingModerationList.md)
  - [GetMediaContentResult](doc//GetMediaContentResult.md)
  - [GetMyProfileResult](doc//GetMyProfileResult.md)
@@ -436,6 +440,7 @@ Class | Method | HTTP request | Description
  - [LikesConfig](doc//LikesConfig.md)
  - [LimitedActionStatus](doc//LimitedActionStatus.md)
  - [LlmContentModerationConfig](doc//LlmContentModerationConfig.md)
+ - [LlmFaceVerificationConfig](doc//LlmFaceVerificationConfig.md)
  - [LlmStringModerationConfig](doc//LlmStringModerationConfig.md)
  - [Location](doc//Location.md)
  - [LoginResult](doc//LoginResult.md)
@@ -451,6 +456,7 @@ Class | Method | HTTP request | Description
  - [MatchesPage](doc//MatchesPage.md)
  - [MaxDistanceKm](doc//MaxDistanceKm.md)
  - [MediaAppNotificationSettings](doc//MediaAppNotificationSettings.md)
+ - [MediaContentFaceVerifiedNullByAccount](doc//MediaContentFaceVerifiedNullByAccount.md)
  - [MediaContentModerationRejectedReasonCategory](doc//MediaContentModerationRejectedReasonCategory.md)
  - [MediaContentModerationRejectedReasonDetails](doc//MediaContentModerationRejectedReasonDetails.md)
  - [MediaContentPendingModeration](doc//MediaContentPendingModeration.md)
@@ -491,6 +497,8 @@ Class | Method | HTTP request | Description
  - [PerfMetricValues](doc//PerfMetricValues.md)
  - [Permissions](doc//Permissions.md)
  - [PostMediaContentFaceDetectedValue](doc//PostMediaContentFaceDetectedValue.md)
+ - [PostMediaContentFaceVerifiedValue](doc//PostMediaContentFaceVerifiedValue.md)
+ - [PostMediaContentFaceVerifiedValueItem](doc//PostMediaContentFaceVerifiedValueItem.md)
  - [PostModerateMediaContent](doc//PostModerateMediaContent.md)
  - [PostModerateProfileString](doc//PostModerateProfileString.md)
  - [PostStartDataExport](doc//PostStartDataExport.md)
@@ -610,10 +618,12 @@ Class | Method | HTTP request | Description
  - [UpdateNewsTranslationResult](doc//UpdateNewsTranslationResult.md)
  - [UpdateProfileAttributesSchema](doc//UpdateProfileAttributesSchema.md)
  - [UpdateProfileContentReport](doc//UpdateProfileContentReport.md)
+ - [UpdateProfileContentResult](doc//UpdateProfileContentResult.md)
  - [UpdateProfileNameReport](doc//UpdateProfileNameReport.md)
  - [UpdateProfileTextReport](doc//UpdateProfileTextReport.md)
  - [UpdateReportResult](doc//UpdateReportResult.md)
  - [VapidPublicKey](doc//VapidPublicKey.md)
+ - [VerificationAction](doc//VerificationAction.md)
 
 
 ## Documentation For Authorization

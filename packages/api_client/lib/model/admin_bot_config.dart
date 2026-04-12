@@ -15,6 +15,8 @@ class AdminBotConfig {
   AdminBotConfig({
     required this.contentModeration,
     this.contentModerationEnabled = false,
+    this.faceVerification,
+    this.faceVerificationEnabled = false,
     required this.profileNameModeration,
     this.profileNameModerationEnabled = false,
     required this.profileTextModeration,
@@ -24,6 +26,16 @@ class AdminBotConfig {
   AdminContentModerationConfig contentModeration;
 
   bool contentModerationEnabled;
+
+  ///
+  /// Please note: This property should have been non-nullable! Since the specification file
+  /// does not include a default value (using the "default:" property), however, the generated
+  /// source code must fall back to having a nullable type.
+  /// Consider adding a "default:" property in the specification file to hide this note.
+  ///
+  AdminFaceVerificationConfig? faceVerification;
+
+  bool faceVerificationEnabled;
 
   AdminProfileStringModerationConfig profileNameModeration;
 
@@ -37,6 +49,8 @@ class AdminBotConfig {
   bool operator ==(Object other) => identical(this, other) || other is AdminBotConfig &&
     other.contentModeration == contentModeration &&
     other.contentModerationEnabled == contentModerationEnabled &&
+    other.faceVerification == faceVerification &&
+    other.faceVerificationEnabled == faceVerificationEnabled &&
     other.profileNameModeration == profileNameModeration &&
     other.profileNameModerationEnabled == profileNameModerationEnabled &&
     other.profileTextModeration == profileTextModeration &&
@@ -47,18 +61,26 @@ class AdminBotConfig {
     // ignore: unnecessary_parenthesis
     (contentModeration.hashCode) +
     (contentModerationEnabled.hashCode) +
+    (faceVerification == null ? 0 : faceVerification!.hashCode) +
+    (faceVerificationEnabled.hashCode) +
     (profileNameModeration.hashCode) +
     (profileNameModerationEnabled.hashCode) +
     (profileTextModeration.hashCode) +
     (profileTextModerationEnabled.hashCode);
 
   @override
-  String toString() => 'AdminBotConfig[contentModeration=$contentModeration, contentModerationEnabled=$contentModerationEnabled, profileNameModeration=$profileNameModeration, profileNameModerationEnabled=$profileNameModerationEnabled, profileTextModeration=$profileTextModeration, profileTextModerationEnabled=$profileTextModerationEnabled]';
+  String toString() => 'AdminBotConfig[contentModeration=$contentModeration, contentModerationEnabled=$contentModerationEnabled, faceVerification=$faceVerification, faceVerificationEnabled=$faceVerificationEnabled, profileNameModeration=$profileNameModeration, profileNameModerationEnabled=$profileNameModerationEnabled, profileTextModeration=$profileTextModeration, profileTextModerationEnabled=$profileTextModerationEnabled]';
 
   Map<String, dynamic> toJson() {
     final json = <String, dynamic>{};
       json[r'content_moderation'] = this.contentModeration;
       json[r'content_moderation_enabled'] = this.contentModerationEnabled;
+    if (this.faceVerification != null) {
+      json[r'face_verification'] = this.faceVerification;
+    } else {
+      json[r'face_verification'] = null;
+    }
+      json[r'face_verification_enabled'] = this.faceVerificationEnabled;
       json[r'profile_name_moderation'] = this.profileNameModeration;
       json[r'profile_name_moderation_enabled'] = this.profileNameModerationEnabled;
       json[r'profile_text_moderation'] = this.profileTextModeration;
@@ -87,6 +109,8 @@ class AdminBotConfig {
       return AdminBotConfig(
         contentModeration: AdminContentModerationConfig.fromJson(json[r'content_moderation'])!,
         contentModerationEnabled: mapValueOfType<bool>(json, r'content_moderation_enabled') ?? false,
+        faceVerification: AdminFaceVerificationConfig.fromJson(json[r'face_verification']),
+        faceVerificationEnabled: mapValueOfType<bool>(json, r'face_verification_enabled') ?? false,
         profileNameModeration: AdminProfileStringModerationConfig.fromJson(json[r'profile_name_moderation'])!,
         profileNameModerationEnabled: mapValueOfType<bool>(json, r'profile_name_moderation_enabled') ?? false,
         profileTextModeration: AdminProfileStringModerationConfig.fromJson(json[r'profile_text_moderation'])!,

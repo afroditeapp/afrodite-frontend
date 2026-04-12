@@ -216,6 +216,8 @@ class ApiClient {
           return AdminBotConfig.fromJson(value);
         case 'AdminContentModerationConfig':
           return AdminContentModerationConfig.fromJson(value);
+        case 'AdminFaceVerificationConfig':
+          return AdminFaceVerificationConfig.fromJson(value);
         case 'AdminInfo':
           return AdminInfo.fromJson(value);
         case 'AdminNotification':
@@ -432,6 +434,8 @@ class ApiClient {
           return GetIpCountryStatisticsSettings.fromJson(value);
         case 'GetLatestPublicKeyId':
           return GetLatestPublicKeyId.fromJson(value);
+        case 'GetMediaContentFaceVerifiedNullList':
+          return GetMediaContentFaceVerifiedNullList.fromJson(value);
         case 'GetMediaContentPendingModerationList':
           return GetMediaContentPendingModerationList.fromJson(value);
         case 'GetMediaContentResult':
@@ -510,6 +514,8 @@ class ApiClient {
           return LimitedActionStatusTypeTransformer().decode(value);
         case 'LlmContentModerationConfig':
           return LlmContentModerationConfig.fromJson(value);
+        case 'LlmFaceVerificationConfig':
+          return LlmFaceVerificationConfig.fromJson(value);
         case 'LlmStringModerationConfig':
           return LlmStringModerationConfig.fromJson(value);
         case 'Location':
@@ -540,6 +546,8 @@ class ApiClient {
           return MaxDistanceKm.fromJson(value);
         case 'MediaAppNotificationSettings':
           return MediaAppNotificationSettings.fromJson(value);
+        case 'MediaContentFaceVerifiedNullByAccount':
+          return MediaContentFaceVerifiedNullByAccount.fromJson(value);
         case 'MediaContentModerationRejectedReasonCategory':
           return MediaContentModerationRejectedReasonCategory.fromJson(value);
         case 'MediaContentModerationRejectedReasonDetails':
@@ -620,6 +628,10 @@ class ApiClient {
           return Permissions.fromJson(value);
         case 'PostMediaContentFaceDetectedValue':
           return PostMediaContentFaceDetectedValue.fromJson(value);
+        case 'PostMediaContentFaceVerifiedValue':
+          return PostMediaContentFaceVerifiedValue.fromJson(value);
+        case 'PostMediaContentFaceVerifiedValueItem':
+          return PostMediaContentFaceVerifiedValueItem.fromJson(value);
         case 'PostModerateMediaContent':
           return PostModerateMediaContent.fromJson(value);
         case 'PostModerateProfileString':
@@ -858,6 +870,8 @@ class ApiClient {
           return UpdateProfileAttributesSchema.fromJson(value);
         case 'UpdateProfileContentReport':
           return UpdateProfileContentReport.fromJson(value);
+        case 'UpdateProfileContentResult':
+          return UpdateProfileContentResult.fromJson(value);
         case 'UpdateProfileNameReport':
           return UpdateProfileNameReport.fromJson(value);
         case 'UpdateProfileTextReport':
@@ -866,6 +880,8 @@ class ApiClient {
           return UpdateReportResult.fromJson(value);
         case 'VapidPublicKey':
           return VapidPublicKey.fromJson(value);
+        case 'VerificationAction':
+          return VerificationActionTypeTransformer().decode(value);
         default:
           dynamic match;
           if (value is List && (match = _regList.firstMatch(targetType)?.group(1)) != null) {

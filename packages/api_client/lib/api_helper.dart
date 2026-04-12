@@ -163,6 +163,9 @@ String parameterToString(dynamic value) {
   if (value is TimeGranularity) {
     return TimeGranularityTypeTransformer().encode(value).toString();
   }
+  if (value is VerificationAction) {
+    return VerificationActionTypeTransformer().encode(value).toString();
+  }
   return value.toString();
 }
 

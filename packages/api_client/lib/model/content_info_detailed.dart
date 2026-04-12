@@ -17,6 +17,8 @@ class ContentInfoDetailed {
     required this.ctype,
     required this.fd,
     this.fdManual,
+    this.fv,
+    this.fvManual,
     this.rejectedReasonCategory,
     this.rejectedReasonDetails,
     required this.secureCapture,
@@ -35,6 +37,12 @@ class ContentInfoDetailed {
 
   /// Manual face detected value set by admin
   bool? fdManual;
+
+  /// Face verified against current security content (automatic or manual)
+  bool? fv;
+
+  /// Manual face verified value set by admin
+  bool? fvManual;
 
   MediaContentModerationRejectedReasonCategory? rejectedReasonCategory;
 
@@ -56,6 +64,8 @@ class ContentInfoDetailed {
     other.ctype == ctype &&
     other.fd == fd &&
     other.fdManual == fdManual &&
+    other.fv == fv &&
+    other.fvManual == fvManual &&
     other.rejectedReasonCategory == rejectedReasonCategory &&
     other.rejectedReasonDetails == rejectedReasonDetails &&
     other.secureCapture == secureCapture &&
@@ -71,6 +81,8 @@ class ContentInfoDetailed {
     (ctype.hashCode) +
     (fd.hashCode) +
     (fdManual == null ? 0 : fdManual!.hashCode) +
+    (fv == null ? 0 : fv!.hashCode) +
+    (fvManual == null ? 0 : fvManual!.hashCode) +
     (rejectedReasonCategory == null ? 0 : rejectedReasonCategory!.hashCode) +
     (rejectedReasonDetails == null ? 0 : rejectedReasonDetails!.hashCode) +
     (secureCapture.hashCode) +
@@ -80,7 +92,7 @@ class ContentInfoDetailed {
     (usageStartTime == null ? 0 : usageStartTime!.hashCode);
 
   @override
-  String toString() => 'ContentInfoDetailed[cid=$cid, ctype=$ctype, fd=$fd, fdManual=$fdManual, rejectedReasonCategory=$rejectedReasonCategory, rejectedReasonDetails=$rejectedReasonDetails, secureCapture=$secureCapture, slot=$slot, state=$state, usageEndTime=$usageEndTime, usageStartTime=$usageStartTime]';
+  String toString() => 'ContentInfoDetailed[cid=$cid, ctype=$ctype, fd=$fd, fdManual=$fdManual, fv=$fv, fvManual=$fvManual, rejectedReasonCategory=$rejectedReasonCategory, rejectedReasonDetails=$rejectedReasonDetails, secureCapture=$secureCapture, slot=$slot, state=$state, usageEndTime=$usageEndTime, usageStartTime=$usageStartTime]';
 
   Map<String, dynamic> toJson() {
     final json = <String, dynamic>{};
@@ -91,6 +103,16 @@ class ContentInfoDetailed {
       json[r'fd_manual'] = this.fdManual;
     } else {
       json[r'fd_manual'] = null;
+    }
+    if (this.fv != null) {
+      json[r'fv'] = this.fv;
+    } else {
+      json[r'fv'] = null;
+    }
+    if (this.fvManual != null) {
+      json[r'fv_manual'] = this.fvManual;
+    } else {
+      json[r'fv_manual'] = null;
     }
     if (this.rejectedReasonCategory != null) {
       json[r'rejected_reason_category'] = this.rejectedReasonCategory;
@@ -145,6 +167,8 @@ class ContentInfoDetailed {
         ctype: MediaContentType.fromJson(json[r'ctype'])!,
         fd: mapValueOfType<bool>(json, r'fd')!,
         fdManual: mapValueOfType<bool>(json, r'fd_manual'),
+        fv: mapValueOfType<bool>(json, r'fv'),
+        fvManual: mapValueOfType<bool>(json, r'fv_manual'),
         rejectedReasonCategory: MediaContentModerationRejectedReasonCategory.fromJson(json[r'rejected_reason_category']),
         rejectedReasonDetails: MediaContentModerationRejectedReasonDetails.fromJson(json[r'rejected_reason_details']),
         secureCapture: mapValueOfType<bool>(json, r'secure_capture')!,

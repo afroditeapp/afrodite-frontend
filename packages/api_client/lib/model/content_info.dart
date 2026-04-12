@@ -17,6 +17,7 @@ class ContentInfo {
     required this.cid,
     this.ctype,
     this.fd = true,
+    this.fv,
   });
 
   /// Accepted
@@ -30,12 +31,16 @@ class ContentInfo {
   /// Face detected (automatic or manual)
   bool fd;
 
+  /// Face verified against current security content (automatic or manual)
+  bool? fv;
+
   @override
   bool operator ==(Object other) => identical(this, other) || other is ContentInfo &&
     other.a == a &&
     other.cid == cid &&
     other.ctype == ctype &&
-    other.fd == fd;
+    other.fd == fd &&
+    other.fv == fv;
 
   @override
   int get hashCode =>
@@ -43,10 +48,11 @@ class ContentInfo {
     (a.hashCode) +
     (cid.hashCode) +
     (ctype == null ? 0 : ctype!.hashCode) +
-    (fd.hashCode);
+    (fd.hashCode) +
+    (fv == null ? 0 : fv!.hashCode);
 
   @override
-  String toString() => 'ContentInfo[a=$a, cid=$cid, ctype=$ctype, fd=$fd]';
+  String toString() => 'ContentInfo[a=$a, cid=$cid, ctype=$ctype, fd=$fd, fv=$fv]';
 
   Map<String, dynamic> toJson() {
     final json = <String, dynamic>{};
@@ -58,6 +64,11 @@ class ContentInfo {
       json[r'ctype'] = null;
     }
       json[r'fd'] = this.fd;
+    if (this.fv != null) {
+      json[r'fv'] = this.fv;
+    } else {
+      json[r'fv'] = null;
+    }
     return json;
   }
 
@@ -84,6 +95,7 @@ class ContentInfo {
         cid: ContentId.fromJson(json[r'cid'])!,
         ctype: MediaContentType.fromJson(json[r'ctype']),
         fd: mapValueOfType<bool>(json, r'fd') ?? true,
+        fv: mapValueOfType<bool>(json, r'fv'),
       );
     }
     return null;

@@ -16,6 +16,7 @@ class BotConfigWarnings {
     this.contentModerationFileConfigMissing = false,
     this.error = false,
     this.errorAdminBotOffline = false,
+    this.faceVerificationFileConfigMissing = false,
     this.profileNameModerationFileConfigMissing = false,
     this.profileTextModerationFileConfigMissing = false,
   });
@@ -27,6 +28,8 @@ class BotConfigWarnings {
   /// True, when getting warnings fails because admin bot is offline
   bool errorAdminBotOffline;
 
+  bool faceVerificationFileConfigMissing;
+
   bool profileNameModerationFileConfigMissing;
 
   bool profileTextModerationFileConfigMissing;
@@ -36,6 +39,7 @@ class BotConfigWarnings {
     other.contentModerationFileConfigMissing == contentModerationFileConfigMissing &&
     other.error == error &&
     other.errorAdminBotOffline == errorAdminBotOffline &&
+    other.faceVerificationFileConfigMissing == faceVerificationFileConfigMissing &&
     other.profileNameModerationFileConfigMissing == profileNameModerationFileConfigMissing &&
     other.profileTextModerationFileConfigMissing == profileTextModerationFileConfigMissing;
 
@@ -45,17 +49,19 @@ class BotConfigWarnings {
     (contentModerationFileConfigMissing.hashCode) +
     (error.hashCode) +
     (errorAdminBotOffline.hashCode) +
+    (faceVerificationFileConfigMissing.hashCode) +
     (profileNameModerationFileConfigMissing.hashCode) +
     (profileTextModerationFileConfigMissing.hashCode);
 
   @override
-  String toString() => 'BotConfigWarnings[contentModerationFileConfigMissing=$contentModerationFileConfigMissing, error=$error, errorAdminBotOffline=$errorAdminBotOffline, profileNameModerationFileConfigMissing=$profileNameModerationFileConfigMissing, profileTextModerationFileConfigMissing=$profileTextModerationFileConfigMissing]';
+  String toString() => 'BotConfigWarnings[contentModerationFileConfigMissing=$contentModerationFileConfigMissing, error=$error, errorAdminBotOffline=$errorAdminBotOffline, faceVerificationFileConfigMissing=$faceVerificationFileConfigMissing, profileNameModerationFileConfigMissing=$profileNameModerationFileConfigMissing, profileTextModerationFileConfigMissing=$profileTextModerationFileConfigMissing]';
 
   Map<String, dynamic> toJson() {
     final json = <String, dynamic>{};
       json[r'content_moderation_file_config_missing'] = this.contentModerationFileConfigMissing;
       json[r'error'] = this.error;
       json[r'error_admin_bot_offline'] = this.errorAdminBotOffline;
+      json[r'face_verification_file_config_missing'] = this.faceVerificationFileConfigMissing;
       json[r'profile_name_moderation_file_config_missing'] = this.profileNameModerationFileConfigMissing;
       json[r'profile_text_moderation_file_config_missing'] = this.profileTextModerationFileConfigMissing;
     return json;
@@ -83,6 +89,7 @@ class BotConfigWarnings {
         contentModerationFileConfigMissing: mapValueOfType<bool>(json, r'content_moderation_file_config_missing') ?? false,
         error: mapValueOfType<bool>(json, r'error') ?? false,
         errorAdminBotOffline: mapValueOfType<bool>(json, r'error_admin_bot_offline') ?? false,
+        faceVerificationFileConfigMissing: mapValueOfType<bool>(json, r'face_verification_file_config_missing') ?? false,
         profileNameModerationFileConfigMissing: mapValueOfType<bool>(json, r'profile_name_moderation_file_config_missing') ?? false,
         profileTextModerationFileConfigMissing: mapValueOfType<bool>(json, r'profile_text_moderation_file_config_missing') ?? false,
       );
