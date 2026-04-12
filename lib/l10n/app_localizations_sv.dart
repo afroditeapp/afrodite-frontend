@@ -1733,6 +1733,15 @@ class AppLocalizationsSv extends AppLocalizations {
   }
 
   @override
+  String server_connection_indicator_websocket_attempts_remaining_today(String p0) {
+    return 'You have $p0 connection attempts left today.';
+  }
+
+  @override
+  String get server_connection_indicator_websocket_daily_limit_reached =>
+      'Too many connection attempts today. Please try again tomorrow.';
+
+  @override
   String get settings_screen_data_category => 'Data';
 
   @override

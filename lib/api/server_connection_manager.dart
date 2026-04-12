@@ -2,7 +2,9 @@ import 'dart:async';
 import 'dart:math';
 
 import 'package:app/data/login_repository.dart';
+import 'package:app/localizations.dart';
 import 'package:app/ui/utils/server_connection_indicator.dart';
+import 'package:app/ui_utils/snack_bar.dart';
 import 'package:logging/logging.dart';
 import 'package:openapi/api.dart';
 import 'package:app/api/api_provider.dart';
@@ -340,6 +342,9 @@ class ServerConnectionManager extends ApiManager
         _state.add(WaitingRefreshToken());
       case ServerConnectionError.unsupportedClientVersion:
         _state.add(UnsupportedClientVersion());
+      case ServerConnectionError.webSocketConnectionAttemptsDailyLimitReached:
+        _state.add(NoServerConnection(showRetryActionBanner: true));
+        showSnackBar(R.strings.server_connection_indicator_websocket_daily_limit_reached);
       case null:
         _state.add(NoServerConnection(showRetryActionBanner: false));
     }

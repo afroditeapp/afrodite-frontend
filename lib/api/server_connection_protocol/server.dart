@@ -18,6 +18,8 @@ import 'package:openapi/api.dart';
 /// - [ServerMessageTypeCode.adminBotNotification] (4): payload is unsigned
 ///   integer with little-endian byte order for admin bot notification bitflags.
 /// - [ServerMessageTypeCode.pushNotificationInfoChanged] (5): payload is empty.
+/// - [ServerMessageTypeCode.webSocketConnectionAttemptsRemaining] (7): payload
+///   is remaining daily websocket connection attempts as u8.
 /// - [ServerMessageTypeCode.accountStateChanged] (30): payload is empty.
 /// - [ServerMessageTypeCode.profileChanged] (60): payload is empty.
 /// - [ServerMessageTypeCode.responseResetProfilePaging] (61): payload format:
@@ -93,6 +95,7 @@ enum ServerMessageTypeCode {
   scheduledMaintenanceStatus(3),
   adminBotNotification(4),
   pushNotificationInfoChanged(5),
+  webSocketConnectionAttemptsRemaining(7),
   accountStateChanged(30),
   profileChanged(60),
   responseResetProfilePaging(61),
@@ -185,6 +188,7 @@ class ServerMessage {
   final int? responseId;
 
   final int? adminBotNotification;
+  final int? webSocketConnectionAttemptsRemaining;
   final CheckOnlineStatusResponse? checkOnlineStatusResponse;
   final ContentProcessingStateChanged? contentProcessingStateChanged;
   final ProfileIteratorSessionId? responseResetProfilePaging;
@@ -200,6 +204,7 @@ class ServerMessage {
     required this.payload,
     this.responseId,
     this.adminBotNotification,
+    this.webSocketConnectionAttemptsRemaining,
     this.checkOnlineStatusResponse,
     this.contentProcessingStateChanged,
     this.responseResetProfilePaging,
@@ -298,6 +303,15 @@ class ServerMessage {
           return null;
         }
         return ServerMessage._(type: type, payload: payload, adminBotNotification: value);
+      case ServerMessageTypeCode.webSocketConnectionAttemptsRemaining:
+        if (payload.length != 1) {
+          return null;
+        }
+        return ServerMessage._(
+          type: type,
+          payload: payload,
+          webSocketConnectionAttemptsRemaining: payload[0],
+        );
       case ServerMessageTypeCode.contentProcessingStateChanged:
         final contentProcessingState = _parseContentProcessingStateChanged(payload);
         if (contentProcessingState == null) {

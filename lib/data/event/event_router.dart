@@ -1,6 +1,8 @@
 import 'dart:async';
 
 import 'package:app/api/server_connection_protocol/server.dart';
+import 'package:app/localizations.dart';
+import 'package:app/ui_utils/snack_bar.dart';
 import 'package:app/data/utils/repository_instances.dart';
 import 'package:logging/logging.dart';
 import 'package:rxdart/rxdart.dart';
@@ -104,6 +106,17 @@ class EventRouter {
       case ServerMessageTypeCode.adminBotNotification:
         // Ignore event as it's only for admin bot
         break;
+      case ServerMessageTypeCode.webSocketConnectionAttemptsRemaining:
+        final remaining = event.webSocketConnectionAttemptsRemaining;
+        if (remaining != null) {
+          showSnackBar(
+            R.strings.server_connection_indicator_websocket_attempts_remaining_today(
+              remaining.toString(),
+            ),
+          );
+        } else {
+          _log.error("Missing remaining websocket attempts for $type");
+        }
       case ServerMessageTypeCode.typingStart:
         final typingStart = event.typingStart;
         if (typingStart != null) {

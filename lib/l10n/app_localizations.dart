@@ -3154,6 +3154,18 @@ abstract class AppLocalizations {
   /// **'Reconnecting in {p0}s'**
   String server_connection_indicator_reconnecting_in_seconds(String p0);
 
+  /// Snackbar text showing remaining daily websocket connection attempts
+  ///
+  /// In en, this message translates to:
+  /// **'You have {p0} connection attempts left today.'**
+  String server_connection_indicator_websocket_attempts_remaining_today(String p0);
+
+  /// Snackbar text when daily websocket connection attempt limit is reached
+  ///
+  /// In en, this message translates to:
+  /// **'Too many connection attempts today. Please try again tomorrow.'**
+  String get server_connection_indicator_websocket_daily_limit_reached;
+
   /// Title for data settings category
   ///
   /// In en, this message translates to:

@@ -2289,6 +2289,19 @@
       }
     }
   },
+  "server_connection_indicator_websocket_attempts_remaining_today": "You have {p0} connection attempts left today.",
+  "@server_connection_indicator_websocket_attempts_remaining_today": {
+    "description": "Snackbar text showing remaining daily websocket connection attempts",
+    "placeholders": {
+      "p0": {
+        "type": "String"
+      }
+    }
+  },
+  "server_connection_indicator_websocket_daily_limit_reached": "Too many connection attempts today. Please try again tomorrow.",
+  "@server_connection_indicator_websocket_daily_limit_reached": {
+    "description": "Snackbar text when daily websocket connection attempt limit is reached"
+  },
   "settings_screen_data_category": "Data",
   "@settings_screen_data_category": {
     "description": "Title for data settings category"

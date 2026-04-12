@@ -28,6 +28,9 @@ enum ServerConnectionError {
   /// Server unreachable, server connection broke or protocol error.
   connectionFailure,
 
+  /// WebSocket connection attempts daily limit reached.
+  webSocketConnectionAttemptsDailyLimitReached,
+
   /// Unsupported client version.
   unsupportedClientVersion,
 }
@@ -168,6 +171,10 @@ class ServerConnection {
                     );
                   case [3]:
                     await _endConnectionToGeneralError(error: ServerConnectionError.invalidToken);
+                  case [4]:
+                    await _endConnectionToGeneralError(
+                      error: ServerConnectionError.webSocketConnectionAttemptsDailyLimitReached,
+                    );
                   default:
                     await _endConnectionToGeneralError();
                 }

@@ -52,6 +52,14 @@ void main() {
       expect(parsed.adminBotNotification, 513);
     });
 
+    test('parses websocket connection attempts remaining payload', () {
+      final parsed = ServerMessage.fromBytes(Uint8List.fromList([7, 9]));
+
+      expect(parsed, isNotNull);
+      expect(parsed!.type, ServerMessageTypeCode.webSocketConnectionAttemptsRemaining);
+      expect(parsed.webSocketConnectionAttemptsRemaining, 9);
+    });
+
     test('parses content processing completed payload', () {
       final contentIdUuid = Uint8List.fromList(List<int>.generate(16, (index) => 255 - index));
       final expectedContentId = base64UrlEncode(contentIdUuid).replaceAll('=', '');
@@ -153,6 +161,11 @@ void main() {
 
     test('returns null for invalid payload for no-payload type', () {
       final parsed = ServerMessage.fromBytes(Uint8List.fromList([120, 1]));
+      expect(parsed, isNull);
+    });
+
+    test('returns null for malformed websocket attempts payload', () {
+      final parsed = ServerMessage.fromBytes(Uint8List.fromList([7, 1, 2]));
       expect(parsed, isNull);
     });
   });
