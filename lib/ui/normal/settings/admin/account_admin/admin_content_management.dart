@@ -123,6 +123,7 @@ class _AdminContentManagementScreenState extends State<AdminContentManagementScr
           permissions.adminDeleteMediaContent ? deleteAction : null,
           changeModerationStateAction,
           permissions.adminEditMediaContentFaceDetectedValue ? changeFaceDetectedValue : null,
+          permissions.adminEditMediaContentFaceVerifiedValue ? changeFaceVerifiedValue : null,
         ),
       ),
     );
@@ -212,6 +213,27 @@ class _AdminContentManagementScreenState extends State<AdminContentManagementScr
 
     await _getData();
   }
+
+  void changeFaceVerifiedValue(AccountId account, ContentId content, bool? value) async {
+    final result = await widget.api.mediaAdminAction(
+      (api) => api.postMediaContentFaceVerifiedValue(
+        PostMediaContentFaceVerifiedValue(
+          accountId: account,
+          values: [PostMediaContentFaceVerifiedValueItem(contentId: content, value: value)],
+        ),
+      ),
+    );
+
+    if (!context.mounted) {
+      return;
+    }
+
+    if (result.isErr()) {
+      showSnackBar(R.strings.generic_error);
+    }
+
+    await _getData();
+  }
 }
 
 Widget _buildAvailableImg(
@@ -221,6 +243,7 @@ Widget _buildAvailableImg(
   void Function(AccountId, ContentId)? deleteImgAction,
   void Function(AccountId, ContentId, bool accepted) changeModerationStateAction,
   void Function(AccountId, ContentId, bool? accepted)? changeFaceDetectedValueAction,
+  void Function(AccountId, ContentId, bool? accepted)? changeFaceVerifiedValueAction,
 ) {
   return Padding(
     padding: const EdgeInsets.only(
@@ -260,6 +283,7 @@ Widget _buildAvailableImg(
               deleteImgAction,
               changeModerationStateAction,
               changeFaceDetectedValueAction,
+              changeFaceVerifiedValueAction,
             ),
           ),
         ),
@@ -276,6 +300,7 @@ Widget _statusInfo(
   void Function(AccountId, ContentId)? deleteImgAction,
   void Function(AccountId, ContentId, bool accepted) changeModerationStateAction,
   void Function(AccountId, ContentId, bool? accepted)? changeFaceDetectedValueAction,
+  void Function(AccountId, ContentId, bool? accepted)? changeFaceVerifiedValueAction,
 ) {
   final String moderationState = switch (content.state) {
     ContentModerationState.inSlot => "In slot",
@@ -289,9 +314,6 @@ Widget _statusInfo(
     ContentModerationState.rejectedByHuman => context.strings.moderation_state_rejected_by_human,
     _ => "null",
   };
-
-  final List<String> stateTexts = [];
-  stateTexts.add(moderationState);
 
   final Widget? moderationStateChangeButton;
   if (content.state == ContentModerationState.acceptedByBot ||
@@ -377,6 +399,61 @@ Widget _statusInfo(
     faceDetectedText = content.fd ? "Face detected (auto)" : "Face not detected (auto)";
   }
 
+  final faceDetected = content.fdManual ?? content.fd;
+  final List<Widget> faceVerifiedButtons = [];
+  if (faceDetected && changeFaceVerifiedValueAction != null) {
+    if (content.fvManual != true) {
+      faceVerifiedButtons.add(
+        _createFaceVerifiedValueChangeButton(
+          context,
+          accountId,
+          content.cid,
+          "Verify face",
+          "Verify face?",
+          true,
+          changeFaceVerifiedValueAction,
+        ),
+      );
+    }
+    if (content.fvManual != false) {
+      faceVerifiedButtons.add(
+        _createFaceVerifiedValueChangeButton(
+          context,
+          accountId,
+          content.cid,
+          "Unverify face",
+          "Unverify face?",
+          false,
+          changeFaceVerifiedValueAction,
+        ),
+      );
+    }
+    if (content.fvManual != null) {
+      faceVerifiedButtons.add(
+        _createFaceVerifiedValueChangeButton(
+          context,
+          accountId,
+          content.cid,
+          "Clear face verification override",
+          "Clear face verification override?",
+          null,
+          changeFaceVerifiedValueAction,
+        ),
+      );
+    }
+  }
+
+  final String? faceVerifiedText;
+  if (faceDetected && content.fvManual != null) {
+    faceVerifiedText = content.fvManual! ? "Face verified (manual)" : "Face not verified (manual)";
+  } else if (faceDetected && content.fv != null) {
+    faceVerifiedText = content.fv! ? "Face verified (auto)" : "Face not verified (auto)";
+  } else if (faceDetected) {
+    faceVerifiedText = "Face verification pending";
+  } else {
+    faceVerifiedText = null;
+  }
+
   return Column(
     crossAxisAlignment: CrossAxisAlignment.center,
     mainAxisAlignment: MainAxisAlignment.center,
@@ -385,12 +462,18 @@ Widget _statusInfo(
       Text(moderationState, textAlign: TextAlign.center),
       const Padding(padding: EdgeInsets.symmetric(vertical: 4)),
       Text(faceDetectedText, textAlign: TextAlign.center),
+      if (faceVerifiedText != null) const Padding(padding: EdgeInsets.symmetric(vertical: 4)),
+      if (faceVerifiedText != null) Text(faceVerifiedText, textAlign: TextAlign.center),
       if (moderationStateChangeButton != null)
         const Padding(padding: EdgeInsets.symmetric(vertical: 4)),
       if (moderationStateChangeButton != null) moderationStateChangeButton,
       if (deleteButton != null) const Padding(padding: EdgeInsets.symmetric(vertical: 4)),
       if (deleteButton != null) deleteButton,
       for (final button in faceDetectedButtons) ...[
+        const Padding(padding: EdgeInsets.symmetric(vertical: 4)),
+        button,
+      ],
+      for (final button in faceVerifiedButtons) ...[
         const Padding(padding: EdgeInsets.symmetric(vertical: 4)),
         button,
       ],
@@ -439,6 +522,26 @@ Widget _createDeleteButton(
 }
 
 Widget _createFaceDetectedValueChangeButton(
+  BuildContext context,
+  AccountId accountId,
+  ContentId content,
+  String buttonText,
+  String dialogTitle,
+  bool? value,
+  void Function(AccountId, ContentId, bool?) action,
+) {
+  return ElevatedButton(
+    child: Text(buttonText),
+    onPressed: () async {
+      final result = await confirmDialogForImage(context, accountId, content, dialogTitle);
+      if (result == true) {
+        action(accountId, content, value);
+      }
+    },
+  );
+}
+
+Widget _createFaceVerifiedValueChangeButton(
   BuildContext context,
   AccountId accountId,
   ContentId content,
