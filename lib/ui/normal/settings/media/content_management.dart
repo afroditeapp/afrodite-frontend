@@ -231,6 +231,25 @@ Widget _statusInfo(
     stateTexts.add(moderationState);
   }
 
+  final faceDetected = content.fdManual ?? content.fd;
+  if (faceDetected) {
+    if (content.fvManual != null) {
+      stateTexts.add(
+        content.fvManual!
+            ? context.strings.content_management_screen_content_face_verified
+            : context.strings.content_management_screen_content_face_not_verified,
+      );
+    } else if (content.fv != null) {
+      stateTexts.add(
+        content.fv!
+            ? context.strings.content_management_screen_content_face_verified
+            : context.strings.content_management_screen_content_face_not_verified,
+      );
+    } else {
+      stateTexts.add(context.strings.content_management_screen_content_face_verification_pending);
+    }
+  }
+
   final Widget? deleteButton;
   final usageStart = content.usageStartTime;
   final usageEnd = content.usageEndTime;

@@ -404,6 +404,18 @@
       }
     }
   },
+  "content_management_screen_content_face_not_verified": "Face not verified",
+  "@content_management_screen_content_face_not_verified": {
+    "description": "Text for face not verified status"
+  },
+  "content_management_screen_content_face_verification_pending": "Face verification pending",
+  "@content_management_screen_content_face_verification_pending": {
+    "description": "Text for pending face verification status"
+  },
+  "content_management_screen_content_face_verified": "Face verified",
+  "@content_management_screen_content_face_verified": {
+    "description": "Text for face verified status"
+  },
   "content_management_screen_content_profile_content": "Profile image {p0}",
   "@content_management_screen_content_profile_content": {
     "description": "Text for profile content",

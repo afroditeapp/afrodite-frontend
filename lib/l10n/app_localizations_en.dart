@@ -308,6 +308,16 @@ class AppLocalizationsEn extends AppLocalizations {
   }
 
   @override
+  String get content_management_screen_content_face_not_verified => 'Face not verified';
+
+  @override
+  String get content_management_screen_content_face_verification_pending =>
+      'Face verification pending';
+
+  @override
+  String get content_management_screen_content_face_verified => 'Face verified';
+
+  @override
   String content_management_screen_content_profile_content(String p0) {
     return 'Profile image $p0';
   }

@@ -604,6 +604,24 @@ abstract class AppLocalizations {
   /// **'Deletion possible starting at {p0}'**
   String content_management_screen_content_deletion_allowed_wait_time(String p0);
 
+  /// Text for face not verified status
+  ///
+  /// In en, this message translates to:
+  /// **'Face not verified'**
+  String get content_management_screen_content_face_not_verified;
+
+  /// Text for pending face verification status
+  ///
+  /// In en, this message translates to:
+  /// **'Face verification pending'**
+  String get content_management_screen_content_face_verification_pending;
+
+  /// Text for face verified status
+  ///
+  /// In en, this message translates to:
+  /// **'Face verified'**
+  String get content_management_screen_content_face_verified;
+
   /// Text for profile content
   ///
   /// In en, this message translates to:
