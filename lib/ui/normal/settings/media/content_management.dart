@@ -284,7 +284,7 @@ Widget _statusInfo(
     deleteButton = _createDeleteButton(context, accountId, content.cid);
   }
 
-  final String totalText = stateTexts.join(", ");
+  final String totalText = stateTexts.join("\n");
   return Column(
     crossAxisAlignment: CrossAxisAlignment.center,
     mainAxisAlignment: MainAxisAlignment.center,
