@@ -27,6 +27,7 @@ class DaoWriteMedia extends DatabaseAccessor<AccountDatabase> with _$DaoWriteMed
     api.ContentId contentId,
     bool accepted,
     bool faceDetected,
+    bool? faceVerified,
   ) async {
     await into(profileContent).insertOnConflictUpdate(
       ProfileContentCompanion.insert(
@@ -35,6 +36,7 @@ class DaoWriteMedia extends DatabaseAccessor<AccountDatabase> with _$DaoWriteMed
         contentId: contentId,
         contentAccepted: accepted,
         faceDetected: faceDetected,
+        faceVerified: Value(faceVerified),
       ),
     );
   }

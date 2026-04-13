@@ -43,6 +43,7 @@ class DaoReadMyMedia extends DatabaseAccessor<AccountDatabase> with _$DaoReadMyM
     return MyContent(
       r.contentId,
       r.faceDetected,
+      r.faceVerified,
       state,
       r.contentModerationRejectedCategory,
       r.contentModerationRejectedDetails,

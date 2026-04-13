@@ -8,18 +8,20 @@ class ContentIdAndAccepted {
   final ContentId id;
   final bool accepted;
   final bool faceDetected;
-  ContentIdAndAccepted(this.id, this.accepted, this.faceDetected);
+  final bool? faceVerified;
+  ContentIdAndAccepted(this.id, this.accepted, this.faceDetected, {this.faceVerified});
 
   @override
   bool operator ==(Object other) {
     return other is ContentIdAndAccepted &&
         id == other.id &&
         accepted == other.accepted &&
-        faceDetected == other.faceDetected;
+        faceDetected == other.faceDetected &&
+        faceVerified == other.faceVerified;
   }
 
   @override
-  int get hashCode => Object.hash(runtimeType, id, accepted, faceDetected);
+  int get hashCode => Object.hash(runtimeType, id, accepted, faceDetected, faceVerified);
 }
 
 abstract class MyContentProvider {
@@ -33,6 +35,7 @@ class MyContent extends ContentIdAndAccepted {
   MyContent(
     ContentId id,
     bool faceDetected,
+    bool? faceVerified,
     this.state,
     this.rejectedCategory,
     this.rejectedDetails,
@@ -41,6 +44,7 @@ class MyContent extends ContentIdAndAccepted {
         state == ContentModerationState.acceptedByBot ||
             state == ContentModerationState.acceptedByHuman,
         faceDetected,
+        faceVerified: faceVerified,
       );
 
   @override

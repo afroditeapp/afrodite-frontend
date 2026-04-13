@@ -7,6 +7,7 @@ class MyMediaContent extends Table {
 
   TextColumn get contentId => text().map(const ContentIdConverter())();
   BoolColumn get faceDetected => boolean()();
+  BoolColumn get faceVerified => boolean().nullable()();
   TextColumn get moderationState =>
       text().map(NullAwareTypeConverter.wrap(const ContentModerationStateConverter())).nullable()();
   IntColumn get contentModerationRejectedCategory => integer()
@@ -31,6 +32,7 @@ class ProfileContent extends Table {
   TextColumn get contentId => text().map(const ContentIdConverter())();
   BoolColumn get contentAccepted => boolean()();
   BoolColumn get faceDetected => boolean()();
+  BoolColumn get faceVerified => boolean().nullable()();
 
   @override
   Set<Column<Object>> get primaryKey => {accountId, contentIndex};

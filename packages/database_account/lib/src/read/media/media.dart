@@ -41,6 +41,11 @@ class DaoReadMedia extends DatabaseAccessor<AccountDatabase> with _$DaoReadMedia
       return null;
     }
 
-    return ContentIdAndAccepted(r.contentId, r.contentAccepted, r.faceDetected);
+    return ContentIdAndAccepted(
+      r.contentId,
+      r.contentAccepted,
+      r.faceDetected,
+      faceVerified: r.faceVerified,
+    );
   }
 }

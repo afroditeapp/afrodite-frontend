@@ -10463,6 +10463,20 @@ class $MyMediaContentTable extends schema.MyMediaContent
       'CHECK ("face_detected" IN (0, 1))',
     ),
   );
+  static const VerificationMeta _faceVerifiedMeta = const VerificationMeta(
+    'faceVerified',
+  );
+  @override
+  late final GeneratedColumn<bool> faceVerified = GeneratedColumn<bool>(
+    'face_verified',
+    aliasedName,
+    true,
+    type: DriftSqlType.bool,
+    requiredDuringInsert: false,
+    defaultConstraints: GeneratedColumn.constraintIsAlways(
+      'CHECK ("face_verified" IN (0, 1))',
+    ),
+  );
   @override
   late final GeneratedColumnWithTypeConverter<
     EnumString<ContentModerationState>?,
@@ -10513,6 +10527,7 @@ class $MyMediaContentTable extends schema.MyMediaContent
     contentIndex,
     contentId,
     faceDetected,
+    faceVerified,
     moderationState,
     contentModerationRejectedCategory,
     contentModerationRejectedDetails,
@@ -10549,6 +10564,15 @@ class $MyMediaContentTable extends schema.MyMediaContent
     } else if (isInserting) {
       context.missing(_faceDetectedMeta);
     }
+    if (data.containsKey('face_verified')) {
+      context.handle(
+        _faceVerifiedMeta,
+        faceVerified.isAcceptableOrUnknown(
+          data['face_verified']!,
+          _faceVerifiedMeta,
+        ),
+      );
+    }
     return context;
   }
 
@@ -10572,6 +10596,10 @@ class $MyMediaContentTable extends schema.MyMediaContent
         DriftSqlType.bool,
         data['${effectivePrefix}face_detected'],
       )!,
+      faceVerified: attachedDatabase.typeMapping.read(
+        DriftSqlType.bool,
+        data['${effectivePrefix}face_verified'],
+      ),
       moderationState: $MyMediaContentTable.$convertermoderationState.fromSql(
         attachedDatabase.typeMapping.read(
           DriftSqlType.string,
@@ -10626,6 +10654,7 @@ class MyMediaContentData extends DataClass
   final int contentIndex;
   final ContentId contentId;
   final bool faceDetected;
+  final bool? faceVerified;
   final EnumString<ContentModerationState>? moderationState;
   final MediaContentModerationRejectedReasonCategory?
   contentModerationRejectedCategory;
@@ -10635,6 +10664,7 @@ class MyMediaContentData extends DataClass
     required this.contentIndex,
     required this.contentId,
     required this.faceDetected,
+    this.faceVerified,
     this.moderationState,
     this.contentModerationRejectedCategory,
     this.contentModerationRejectedDetails,
@@ -10649,6 +10679,9 @@ class MyMediaContentData extends DataClass
       );
     }
     map['face_detected'] = Variable<bool>(faceDetected);
+    if (!nullToAbsent || faceVerified != null) {
+      map['face_verified'] = Variable<bool>(faceVerified);
+    }
     if (!nullToAbsent || moderationState != null) {
       map['moderation_state'] = Variable<String>(
         $MyMediaContentTable.$convertermoderationState.toSql(moderationState),
@@ -10676,6 +10709,9 @@ class MyMediaContentData extends DataClass
       contentIndex: Value(contentIndex),
       contentId: Value(contentId),
       faceDetected: Value(faceDetected),
+      faceVerified: faceVerified == null && nullToAbsent
+          ? const Value.absent()
+          : Value(faceVerified),
       moderationState: moderationState == null && nullToAbsent
           ? const Value.absent()
           : Value(moderationState),
@@ -10699,6 +10735,7 @@ class MyMediaContentData extends DataClass
       contentIndex: serializer.fromJson<int>(json['contentIndex']),
       contentId: serializer.fromJson<ContentId>(json['contentId']),
       faceDetected: serializer.fromJson<bool>(json['faceDetected']),
+      faceVerified: serializer.fromJson<bool?>(json['faceVerified']),
       moderationState: serializer.fromJson<EnumString<ContentModerationState>?>(
         json['moderationState'],
       ),
@@ -10719,6 +10756,7 @@ class MyMediaContentData extends DataClass
       'contentIndex': serializer.toJson<int>(contentIndex),
       'contentId': serializer.toJson<ContentId>(contentId),
       'faceDetected': serializer.toJson<bool>(faceDetected),
+      'faceVerified': serializer.toJson<bool?>(faceVerified),
       'moderationState': serializer.toJson<EnumString<ContentModerationState>?>(
         moderationState,
       ),
@@ -10737,6 +10775,7 @@ class MyMediaContentData extends DataClass
     int? contentIndex,
     ContentId? contentId,
     bool? faceDetected,
+    Value<bool?> faceVerified = const Value.absent(),
     Value<EnumString<ContentModerationState>?> moderationState =
         const Value.absent(),
     Value<MediaContentModerationRejectedReasonCategory?>
@@ -10749,6 +10788,7 @@ class MyMediaContentData extends DataClass
     contentIndex: contentIndex ?? this.contentIndex,
     contentId: contentId ?? this.contentId,
     faceDetected: faceDetected ?? this.faceDetected,
+    faceVerified: faceVerified.present ? faceVerified.value : this.faceVerified,
     moderationState: moderationState.present
         ? moderationState.value
         : this.moderationState,
@@ -10768,6 +10808,9 @@ class MyMediaContentData extends DataClass
       faceDetected: data.faceDetected.present
           ? data.faceDetected.value
           : this.faceDetected,
+      faceVerified: data.faceVerified.present
+          ? data.faceVerified.value
+          : this.faceVerified,
       moderationState: data.moderationState.present
           ? data.moderationState.value
           : this.moderationState,
@@ -10788,6 +10831,7 @@ class MyMediaContentData extends DataClass
           ..write('contentIndex: $contentIndex, ')
           ..write('contentId: $contentId, ')
           ..write('faceDetected: $faceDetected, ')
+          ..write('faceVerified: $faceVerified, ')
           ..write('moderationState: $moderationState, ')
           ..write(
             'contentModerationRejectedCategory: $contentModerationRejectedCategory, ',
@@ -10804,6 +10848,7 @@ class MyMediaContentData extends DataClass
     contentIndex,
     contentId,
     faceDetected,
+    faceVerified,
     moderationState,
     contentModerationRejectedCategory,
     contentModerationRejectedDetails,
@@ -10815,6 +10860,7 @@ class MyMediaContentData extends DataClass
           other.contentIndex == this.contentIndex &&
           other.contentId == this.contentId &&
           other.faceDetected == this.faceDetected &&
+          other.faceVerified == this.faceVerified &&
           other.moderationState == this.moderationState &&
           other.contentModerationRejectedCategory ==
               this.contentModerationRejectedCategory &&
@@ -10826,6 +10872,7 @@ class MyMediaContentCompanion extends UpdateCompanion<MyMediaContentData> {
   final Value<int> contentIndex;
   final Value<ContentId> contentId;
   final Value<bool> faceDetected;
+  final Value<bool?> faceVerified;
   final Value<EnumString<ContentModerationState>?> moderationState;
   final Value<MediaContentModerationRejectedReasonCategory?>
   contentModerationRejectedCategory;
@@ -10835,6 +10882,7 @@ class MyMediaContentCompanion extends UpdateCompanion<MyMediaContentData> {
     this.contentIndex = const Value.absent(),
     this.contentId = const Value.absent(),
     this.faceDetected = const Value.absent(),
+    this.faceVerified = const Value.absent(),
     this.moderationState = const Value.absent(),
     this.contentModerationRejectedCategory = const Value.absent(),
     this.contentModerationRejectedDetails = const Value.absent(),
@@ -10843,6 +10891,7 @@ class MyMediaContentCompanion extends UpdateCompanion<MyMediaContentData> {
     this.contentIndex = const Value.absent(),
     required ContentId contentId,
     required bool faceDetected,
+    this.faceVerified = const Value.absent(),
     this.moderationState = const Value.absent(),
     this.contentModerationRejectedCategory = const Value.absent(),
     this.contentModerationRejectedDetails = const Value.absent(),
@@ -10852,6 +10901,7 @@ class MyMediaContentCompanion extends UpdateCompanion<MyMediaContentData> {
     Expression<int>? contentIndex,
     Expression<String>? contentId,
     Expression<bool>? faceDetected,
+    Expression<bool>? faceVerified,
     Expression<String>? moderationState,
     Expression<int>? contentModerationRejectedCategory,
     Expression<String>? contentModerationRejectedDetails,
@@ -10860,6 +10910,7 @@ class MyMediaContentCompanion extends UpdateCompanion<MyMediaContentData> {
       if (contentIndex != null) 'content_index': contentIndex,
       if (contentId != null) 'content_id': contentId,
       if (faceDetected != null) 'face_detected': faceDetected,
+      if (faceVerified != null) 'face_verified': faceVerified,
       if (moderationState != null) 'moderation_state': moderationState,
       if (contentModerationRejectedCategory != null)
         'content_moderation_rejected_category':
@@ -10873,6 +10924,7 @@ class MyMediaContentCompanion extends UpdateCompanion<MyMediaContentData> {
     Value<int>? contentIndex,
     Value<ContentId>? contentId,
     Value<bool>? faceDetected,
+    Value<bool?>? faceVerified,
     Value<EnumString<ContentModerationState>?>? moderationState,
     Value<MediaContentModerationRejectedReasonCategory?>?
     contentModerationRejectedCategory,
@@ -10883,6 +10935,7 @@ class MyMediaContentCompanion extends UpdateCompanion<MyMediaContentData> {
       contentIndex: contentIndex ?? this.contentIndex,
       contentId: contentId ?? this.contentId,
       faceDetected: faceDetected ?? this.faceDetected,
+      faceVerified: faceVerified ?? this.faceVerified,
       moderationState: moderationState ?? this.moderationState,
       contentModerationRejectedCategory:
           contentModerationRejectedCategory ??
@@ -10906,6 +10959,9 @@ class MyMediaContentCompanion extends UpdateCompanion<MyMediaContentData> {
     }
     if (faceDetected.present) {
       map['face_detected'] = Variable<bool>(faceDetected.value);
+    }
+    if (faceVerified.present) {
+      map['face_verified'] = Variable<bool>(faceVerified.value);
     }
     if (moderationState.present) {
       map['moderation_state'] = Variable<String>(
@@ -10937,6 +10993,7 @@ class MyMediaContentCompanion extends UpdateCompanion<MyMediaContentData> {
           ..write('contentIndex: $contentIndex, ')
           ..write('contentId: $contentId, ')
           ..write('faceDetected: $faceDetected, ')
+          ..write('faceVerified: $faceVerified, ')
           ..write('moderationState: $moderationState, ')
           ..write(
             'contentModerationRejectedCategory: $contentModerationRejectedCategory, ',
@@ -11012,6 +11069,20 @@ class $ProfileContentTable extends schema.ProfileContent
       'CHECK ("face_detected" IN (0, 1))',
     ),
   );
+  static const VerificationMeta _faceVerifiedMeta = const VerificationMeta(
+    'faceVerified',
+  );
+  @override
+  late final GeneratedColumn<bool> faceVerified = GeneratedColumn<bool>(
+    'face_verified',
+    aliasedName,
+    true,
+    type: DriftSqlType.bool,
+    requiredDuringInsert: false,
+    defaultConstraints: GeneratedColumn.constraintIsAlways(
+      'CHECK ("face_verified" IN (0, 1))',
+    ),
+  );
   @override
   List<GeneratedColumn> get $columns => [
     accountId,
@@ -11019,6 +11090,7 @@ class $ProfileContentTable extends schema.ProfileContent
     contentId,
     contentAccepted,
     faceDetected,
+    faceVerified,
   ];
   @override
   String get aliasedName => _alias ?? actualTableName;
@@ -11065,6 +11137,15 @@ class $ProfileContentTable extends schema.ProfileContent
     } else if (isInserting) {
       context.missing(_faceDetectedMeta);
     }
+    if (data.containsKey('face_verified')) {
+      context.handle(
+        _faceVerifiedMeta,
+        faceVerified.isAcceptableOrUnknown(
+          data['face_verified']!,
+          _faceVerifiedMeta,
+        ),
+      );
+    }
     return context;
   }
 
@@ -11098,6 +11179,10 @@ class $ProfileContentTable extends schema.ProfileContent
         DriftSqlType.bool,
         data['${effectivePrefix}face_detected'],
       )!,
+      faceVerified: attachedDatabase.typeMapping.read(
+        DriftSqlType.bool,
+        data['${effectivePrefix}face_verified'],
+      ),
     );
   }
 
@@ -11119,12 +11204,14 @@ class ProfileContentData extends DataClass
   final ContentId contentId;
   final bool contentAccepted;
   final bool faceDetected;
+  final bool? faceVerified;
   const ProfileContentData({
     required this.accountId,
     required this.contentIndex,
     required this.contentId,
     required this.contentAccepted,
     required this.faceDetected,
+    this.faceVerified,
   });
   @override
   Map<String, Expression> toColumns(bool nullToAbsent) {
@@ -11142,6 +11229,9 @@ class ProfileContentData extends DataClass
     }
     map['content_accepted'] = Variable<bool>(contentAccepted);
     map['face_detected'] = Variable<bool>(faceDetected);
+    if (!nullToAbsent || faceVerified != null) {
+      map['face_verified'] = Variable<bool>(faceVerified);
+    }
     return map;
   }
 
@@ -11152,6 +11242,9 @@ class ProfileContentData extends DataClass
       contentId: Value(contentId),
       contentAccepted: Value(contentAccepted),
       faceDetected: Value(faceDetected),
+      faceVerified: faceVerified == null && nullToAbsent
+          ? const Value.absent()
+          : Value(faceVerified),
     );
   }
 
@@ -11166,6 +11259,7 @@ class ProfileContentData extends DataClass
       contentId: serializer.fromJson<ContentId>(json['contentId']),
       contentAccepted: serializer.fromJson<bool>(json['contentAccepted']),
       faceDetected: serializer.fromJson<bool>(json['faceDetected']),
+      faceVerified: serializer.fromJson<bool?>(json['faceVerified']),
     );
   }
   @override
@@ -11177,6 +11271,7 @@ class ProfileContentData extends DataClass
       'contentId': serializer.toJson<ContentId>(contentId),
       'contentAccepted': serializer.toJson<bool>(contentAccepted),
       'faceDetected': serializer.toJson<bool>(faceDetected),
+      'faceVerified': serializer.toJson<bool?>(faceVerified),
     };
   }
 
@@ -11186,12 +11281,14 @@ class ProfileContentData extends DataClass
     ContentId? contentId,
     bool? contentAccepted,
     bool? faceDetected,
+    Value<bool?> faceVerified = const Value.absent(),
   }) => ProfileContentData(
     accountId: accountId ?? this.accountId,
     contentIndex: contentIndex ?? this.contentIndex,
     contentId: contentId ?? this.contentId,
     contentAccepted: contentAccepted ?? this.contentAccepted,
     faceDetected: faceDetected ?? this.faceDetected,
+    faceVerified: faceVerified.present ? faceVerified.value : this.faceVerified,
   );
   ProfileContentData copyWithCompanion(ProfileContentCompanion data) {
     return ProfileContentData(
@@ -11206,6 +11303,9 @@ class ProfileContentData extends DataClass
       faceDetected: data.faceDetected.present
           ? data.faceDetected.value
           : this.faceDetected,
+      faceVerified: data.faceVerified.present
+          ? data.faceVerified.value
+          : this.faceVerified,
     );
   }
 
@@ -11216,7 +11316,8 @@ class ProfileContentData extends DataClass
           ..write('contentIndex: $contentIndex, ')
           ..write('contentId: $contentId, ')
           ..write('contentAccepted: $contentAccepted, ')
-          ..write('faceDetected: $faceDetected')
+          ..write('faceDetected: $faceDetected, ')
+          ..write('faceVerified: $faceVerified')
           ..write(')'))
         .toString();
   }
@@ -11228,6 +11329,7 @@ class ProfileContentData extends DataClass
     contentId,
     contentAccepted,
     faceDetected,
+    faceVerified,
   );
   @override
   bool operator ==(Object other) =>
@@ -11237,7 +11339,8 @@ class ProfileContentData extends DataClass
           other.contentIndex == this.contentIndex &&
           other.contentId == this.contentId &&
           other.contentAccepted == this.contentAccepted &&
-          other.faceDetected == this.faceDetected);
+          other.faceDetected == this.faceDetected &&
+          other.faceVerified == this.faceVerified);
 }
 
 class ProfileContentCompanion extends UpdateCompanion<ProfileContentData> {
@@ -11246,6 +11349,7 @@ class ProfileContentCompanion extends UpdateCompanion<ProfileContentData> {
   final Value<ContentId> contentId;
   final Value<bool> contentAccepted;
   final Value<bool> faceDetected;
+  final Value<bool?> faceVerified;
   final Value<int> rowid;
   const ProfileContentCompanion({
     this.accountId = const Value.absent(),
@@ -11253,6 +11357,7 @@ class ProfileContentCompanion extends UpdateCompanion<ProfileContentData> {
     this.contentId = const Value.absent(),
     this.contentAccepted = const Value.absent(),
     this.faceDetected = const Value.absent(),
+    this.faceVerified = const Value.absent(),
     this.rowid = const Value.absent(),
   });
   ProfileContentCompanion.insert({
@@ -11261,6 +11366,7 @@ class ProfileContentCompanion extends UpdateCompanion<ProfileContentData> {
     required ContentId contentId,
     required bool contentAccepted,
     required bool faceDetected,
+    this.faceVerified = const Value.absent(),
     this.rowid = const Value.absent(),
   }) : accountId = Value(accountId),
        contentIndex = Value(contentIndex),
@@ -11273,6 +11379,7 @@ class ProfileContentCompanion extends UpdateCompanion<ProfileContentData> {
     Expression<String>? contentId,
     Expression<bool>? contentAccepted,
     Expression<bool>? faceDetected,
+    Expression<bool>? faceVerified,
     Expression<int>? rowid,
   }) {
     return RawValuesInsertable({
@@ -11281,6 +11388,7 @@ class ProfileContentCompanion extends UpdateCompanion<ProfileContentData> {
       if (contentId != null) 'content_id': contentId,
       if (contentAccepted != null) 'content_accepted': contentAccepted,
       if (faceDetected != null) 'face_detected': faceDetected,
+      if (faceVerified != null) 'face_verified': faceVerified,
       if (rowid != null) 'rowid': rowid,
     });
   }
@@ -11291,6 +11399,7 @@ class ProfileContentCompanion extends UpdateCompanion<ProfileContentData> {
     Value<ContentId>? contentId,
     Value<bool>? contentAccepted,
     Value<bool>? faceDetected,
+    Value<bool?>? faceVerified,
     Value<int>? rowid,
   }) {
     return ProfileContentCompanion(
@@ -11299,6 +11408,7 @@ class ProfileContentCompanion extends UpdateCompanion<ProfileContentData> {
       contentId: contentId ?? this.contentId,
       contentAccepted: contentAccepted ?? this.contentAccepted,
       faceDetected: faceDetected ?? this.faceDetected,
+      faceVerified: faceVerified ?? this.faceVerified,
       rowid: rowid ?? this.rowid,
     );
   }
@@ -11325,6 +11435,9 @@ class ProfileContentCompanion extends UpdateCompanion<ProfileContentData> {
     if (faceDetected.present) {
       map['face_detected'] = Variable<bool>(faceDetected.value);
     }
+    if (faceVerified.present) {
+      map['face_verified'] = Variable<bool>(faceVerified.value);
+    }
     if (rowid.present) {
       map['rowid'] = Variable<int>(rowid.value);
     }
@@ -11339,6 +11452,7 @@ class ProfileContentCompanion extends UpdateCompanion<ProfileContentData> {
           ..write('contentId: $contentId, ')
           ..write('contentAccepted: $contentAccepted, ')
           ..write('faceDetected: $faceDetected, ')
+          ..write('faceVerified: $faceVerified, ')
           ..write('rowid: $rowid')
           ..write(')'))
         .toString();

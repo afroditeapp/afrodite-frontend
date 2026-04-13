@@ -25,6 +25,7 @@ class DaoWriteMyMedia extends DatabaseAccessor<AccountDatabase> with _$DaoWriteM
         contentIndex: Value(index),
         contentId: content.cid,
         faceDetected: content.fd,
+        faceVerified: Value(content.fv),
         moderationState: Value(content.state.toEnumString()),
         contentModerationRejectedCategory: Value(content.rejectedReasonCategory),
         contentModerationRejectedDetails: Value(content.rejectedReasonDetails),
