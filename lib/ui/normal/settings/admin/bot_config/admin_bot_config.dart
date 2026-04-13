@@ -1,6 +1,7 @@
 import 'package:app/logic/app/navigator_state.dart';
 import 'package:app/model/freezed/logic/main/navigator_state.dart';
 import 'package:app/ui/normal/settings/admin/bot_config/content_moderation_config.dart';
+import 'package:app/ui/normal/settings/admin/bot_config/face_verification_config.dart';
 import 'package:app/ui/normal/settings/admin/bot_config/profile_string_moderation_config.dart';
 import 'package:flutter/material.dart';
 import 'package:openapi/api.dart';
@@ -62,6 +63,29 @@ class _EditAdminBotConfigScreenState extends State<EditAdminBotConfigScreen> {
                     );
                     if (result != null) {
                       setState(() => _config.contentModeration = result);
+                    }
+                  }
+                : null,
+          ),
+          const Divider(),
+          SwitchListTile(
+            title: const Text("Face Verification"),
+            value: _config.faceVerificationEnabled,
+            onChanged: (v) => setState(() => _config.faceVerificationEnabled = v),
+          ),
+          ListTile(
+            title: const Text("Configure face verification"),
+            trailing: const Icon(Icons.chevron_right),
+            enabled: _config.faceVerificationEnabled,
+            onTap: _config.faceVerificationEnabled
+                ? () async {
+                    final result = await MyNavigator.pushLimited(
+                      context,
+                      EditFaceVerificationConfigPage(_config.faceVerification),
+                    );
+
+                    if (result != null) {
+                      setState(() => _config.faceVerification = result);
                     }
                   }
                 : null,

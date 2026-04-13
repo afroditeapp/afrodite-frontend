@@ -83,6 +83,7 @@ class _BotConfigScreenState extends State<BotConfigScreen> {
 
       final missing = [
         if (warnings.contentModerationFileConfigMissing) "- content moderation",
+        if (warnings.faceVerificationFileConfigMissing) "- face verification",
         if (warnings.profileNameModerationFileConfigMissing) "- profile name moderation",
         if (warnings.profileTextModerationFileConfigMissing) "- profile text moderation",
       ];
@@ -307,6 +308,7 @@ class _BotConfigScreenState extends State<BotConfigScreen> {
 
   bool _isAdminBotConfigEnabled(AdminBotConfig config) {
     return config.contentModerationEnabled ||
+        config.faceVerificationEnabled ||
         config.profileNameModerationEnabled ||
         config.profileTextModerationEnabled;
   }
