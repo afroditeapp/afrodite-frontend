@@ -10,6 +10,7 @@ import 'package:app/logic/app/navigator_state.dart';
 import 'package:app/model/freezed/logic/account/account.dart';
 import 'package:app/ui/normal/settings.dart';
 import 'package:app/ui/normal/settings/admin/bot_config.dart';
+import 'package:app/ui/normal/settings/admin/dynamic_server_config.dart';
 import 'package:app/ui/normal/settings/admin/image_processing_config.dart';
 import 'package:app/ui/normal/settings/admin/server_software_update.dart';
 import 'package:app/ui/normal/settings/admin/server_system_info.dart';
@@ -63,6 +64,15 @@ class ServerScreen extends StatelessWidget {
           Icons.image,
           "Image processing",
           () => MyNavigator.pushLimited(context, ImageProcessingConfigPage(r)),
+        ),
+      );
+    }
+    if (permissions.adminServerEditServerConfig || permissions.adminServerViewServerConfig) {
+      settings.add(
+        Setting.createSetting(
+          Icons.tune,
+          "Server config",
+          () => MyNavigator.pushLimited(context, DynamicServerConfigPage(r)),
         ),
       );
     }
