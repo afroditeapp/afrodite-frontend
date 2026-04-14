@@ -292,6 +292,9 @@ class LoginRepository extends AppSingleton {
     if (loginResult.errorUnsupportedClient) {
       return const Err(CommonSignInError.unsupportedClient);
     }
+    if (loginResult.errorAccountRegistrationDisabled) {
+      return const Err(CommonSignInError.accountRegistrationDisabled);
+    }
     if (loginResult.errorSignInWithEmailUnverified) {
       return const Err(CommonSignInError.signInWithEmailUnverified);
     }
@@ -552,6 +555,7 @@ class SignInWithSignInError extends SignInWithEvent {
 enum CommonSignInError {
   loginApiRequestFailed,
   unsupportedClient,
+  accountRegistrationDisabled,
   signInWithEmailUnverified,
   emailAlreadyUsed,
   accountLocked,

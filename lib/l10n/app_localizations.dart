@@ -1936,6 +1936,12 @@ abstract class AppLocalizations {
   /// **'Requests'**
   String get likes_screen_title;
 
+  /// Snackbar error message when registering new accounts is disabled
+  ///
+  /// In en, this message translates to:
+  /// **'Registering new accounts is currently disabled'**
+  String get login_screen_account_registration_disabled;
+
   /// Snackbar text for connecting WebSocket failed
   ///
   /// In en, this message translates to:

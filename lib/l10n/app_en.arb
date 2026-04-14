@@ -1360,6 +1360,10 @@
   "@likes_screen_title": {
     "description": "Title for likes screen"
   },
+  "login_screen_account_registration_disabled": "Registering new accounts is currently disabled",
+  "@login_screen_account_registration_disabled": {
+    "description": "Snackbar error message when registering new accounts is disabled"
+  },
   "login_screen_connecting_websocket_failed": "Connecting WebSocket failed. Try again later.",
   "@login_screen_connecting_websocket_failed": {
     "description": "Snackbar text for connecting WebSocket failed"

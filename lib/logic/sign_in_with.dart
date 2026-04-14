@@ -58,6 +58,8 @@ String signInErrorToString(CommonSignInError error) {
       return R.strings.login_screen_login_api_request_failed;
     case CommonSignInError.unsupportedClient:
       return R.strings.generic_error_app_version_is_unsupported;
+    case CommonSignInError.accountRegistrationDisabled:
+      return R.strings.login_screen_account_registration_disabled;
     case CommonSignInError.signInWithEmailUnverified:
       return R.strings.login_screen_sign_in_with_email_unverified;
     case CommonSignInError.emailAlreadyUsed:

@@ -1041,6 +1041,10 @@ class AppLocalizationsEn extends AppLocalizations {
   String get likes_screen_title => 'Requests';
 
   @override
+  String get login_screen_account_registration_disabled =>
+      'Registering new accounts is currently disabled';
+
+  @override
   String get login_screen_connecting_websocket_failed =>
       'Connecting WebSocket failed. Try again later.';
 

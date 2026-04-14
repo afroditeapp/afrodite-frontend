@@ -223,6 +223,7 @@
 
     <!-- Login screen -->
     <string name="login_screen_login_note_text_beginning" description="Text about agreeing terms of service and privacy policy">By signing in, you agree to our</string>
+    <string name="login_screen_account_registration_disabled" description="Snackbar error message when registering new accounts is disabled">Registering new accounts is currently disabled</string>
     <string name="login_screen_sign_in_with_email_unverified" description="Snackbar error message when sign in with account email is not verified">Email address of the selected account is not verified</string>
     <string name="login_screen_email_already_used" description="Snackbar error message when email is already used by another account">Email address is already in use by another account</string>
     <string name="login_screen_login_note_text_tos" description="Text for terms of service link">Terms of Service</string>
