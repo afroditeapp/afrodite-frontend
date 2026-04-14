@@ -8,6 +8,7 @@ import 'package:database_utils/database_utils.dart';
 import 'package:logging/logging.dart';
 import 'package:openapi/api.dart';
 import 'package:app/database/account_database_manager.dart';
+import 'package:app/data/app_version.dart';
 import 'package:app/utils/app_error.dart';
 import 'package:app/utils/result.dart';
 import 'package:rxdart/rxdart.dart';
@@ -136,6 +137,9 @@ class CommonDatabaseManager extends AppSingleton {
     _log.info("AccountDatabase ensureOpen result: $ensureOpenResult");
     final manager = AccountDatabaseManager(db);
     await manager.accountAction((db) => db.loginSession.setAccountIdIfNull(accountId));
+    await manager.accountAction(
+      (db) => db.app.updateClientVersionInfo(AppVersionManager.getInstance().clientVersion),
+    );
     _log.info("AccountDatabase init completed");
     return manager;
   }

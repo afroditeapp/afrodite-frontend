@@ -19,10 +19,33 @@ part 'app.g.dart';
     schema.ChatBackupReminder,
     schema.News,
     schema.PushNotification,
+    schema.ClientVersionInfo,
   ],
 )
 class DaoWriteApp extends DatabaseAccessor<AccountDatabase> with _$DaoWriteAppMixin {
   DaoWriteApp(super.db);
+
+  Future<void> updateClientVersionInfo(api.ClientVersion value) async {
+    final existingVersion = await (select(
+      clientVersionInfo,
+    )..where((table) => table.id.equals(SingleRowTable.ID.value))).getSingleOrNull();
+
+    if (existingVersion != null &&
+        existingVersion.majorVersion == value.major &&
+        existingVersion.minorVersion == value.minor &&
+        existingVersion.patchVersion == value.patch_) {
+      return;
+    }
+
+    await into(clientVersionInfo).insertOnConflictUpdate(
+      ClientVersionInfoCompanion.insert(
+        id: SingleRowTable.ID,
+        majorVersion: value.major,
+        minorVersion: value.minor,
+        patchVersion: value.patch_,
+      ),
+    );
+  }
 
   Future<void> setUnreadNewsCount({
     required api.NewsSyncVersion version,

@@ -72,3 +72,9 @@ class PushNotification extends SingleRowTable {
       text().map(const NullAwareTypeConverter.wrap(VapidPublicKeyConverter())).nullable()();
   IntColumn get syncVersionPushNotificationInfo => integer().nullable()();
 }
+
+class ClientVersionInfo extends SingleRowTable {
+  IntColumn get majorVersion => integer()();
+  IntColumn get minorVersion => integer()();
+  IntColumn get patchVersion => integer()();
+}

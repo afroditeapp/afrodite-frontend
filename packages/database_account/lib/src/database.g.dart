@@ -4317,6 +4317,328 @@ class PushNotificationCompanion extends UpdateCompanion<PushNotificationData> {
   }
 }
 
+class $ClientVersionInfoTable extends schema.ClientVersionInfo
+    with TableInfo<$ClientVersionInfoTable, ClientVersionInfoData> {
+  @override
+  final GeneratedDatabase attachedDatabase;
+  final String? _alias;
+  $ClientVersionInfoTable(this.attachedDatabase, [this._alias]);
+  static const VerificationMeta _idMeta = const VerificationMeta('id');
+  @override
+  late final GeneratedColumn<int> id = GeneratedColumn<int>(
+    'id',
+    aliasedName,
+    false,
+    hasAutoIncrement: true,
+    type: DriftSqlType.int,
+    requiredDuringInsert: false,
+    defaultConstraints: GeneratedColumn.constraintIsAlways(
+      'PRIMARY KEY AUTOINCREMENT',
+    ),
+  );
+  static const VerificationMeta _majorVersionMeta = const VerificationMeta(
+    'majorVersion',
+  );
+  @override
+  late final GeneratedColumn<int> majorVersion = GeneratedColumn<int>(
+    'major_version',
+    aliasedName,
+    false,
+    type: DriftSqlType.int,
+    requiredDuringInsert: true,
+  );
+  static const VerificationMeta _minorVersionMeta = const VerificationMeta(
+    'minorVersion',
+  );
+  @override
+  late final GeneratedColumn<int> minorVersion = GeneratedColumn<int>(
+    'minor_version',
+    aliasedName,
+    false,
+    type: DriftSqlType.int,
+    requiredDuringInsert: true,
+  );
+  static const VerificationMeta _patchVersionMeta = const VerificationMeta(
+    'patchVersion',
+  );
+  @override
+  late final GeneratedColumn<int> patchVersion = GeneratedColumn<int>(
+    'patch_version',
+    aliasedName,
+    false,
+    type: DriftSqlType.int,
+    requiredDuringInsert: true,
+  );
+  @override
+  List<GeneratedColumn> get $columns => [
+    id,
+    majorVersion,
+    minorVersion,
+    patchVersion,
+  ];
+  @override
+  String get aliasedName => _alias ?? actualTableName;
+  @override
+  String get actualTableName => $name;
+  static const String $name = 'client_version_info';
+  @override
+  VerificationContext validateIntegrity(
+    Insertable<ClientVersionInfoData> instance, {
+    bool isInserting = false,
+  }) {
+    final context = VerificationContext();
+    final data = instance.toColumns(true);
+    if (data.containsKey('id')) {
+      context.handle(_idMeta, id.isAcceptableOrUnknown(data['id']!, _idMeta));
+    }
+    if (data.containsKey('major_version')) {
+      context.handle(
+        _majorVersionMeta,
+        majorVersion.isAcceptableOrUnknown(
+          data['major_version']!,
+          _majorVersionMeta,
+        ),
+      );
+    } else if (isInserting) {
+      context.missing(_majorVersionMeta);
+    }
+    if (data.containsKey('minor_version')) {
+      context.handle(
+        _minorVersionMeta,
+        minorVersion.isAcceptableOrUnknown(
+          data['minor_version']!,
+          _minorVersionMeta,
+        ),
+      );
+    } else if (isInserting) {
+      context.missing(_minorVersionMeta);
+    }
+    if (data.containsKey('patch_version')) {
+      context.handle(
+        _patchVersionMeta,
+        patchVersion.isAcceptableOrUnknown(
+          data['patch_version']!,
+          _patchVersionMeta,
+        ),
+      );
+    } else if (isInserting) {
+      context.missing(_patchVersionMeta);
+    }
+    return context;
+  }
+
+  @override
+  Set<GeneratedColumn> get $primaryKey => {id};
+  @override
+  ClientVersionInfoData map(Map<String, dynamic> data, {String? tablePrefix}) {
+    final effectivePrefix = tablePrefix != null ? '$tablePrefix.' : '';
+    return ClientVersionInfoData(
+      id: attachedDatabase.typeMapping.read(
+        DriftSqlType.int,
+        data['${effectivePrefix}id'],
+      )!,
+      majorVersion: attachedDatabase.typeMapping.read(
+        DriftSqlType.int,
+        data['${effectivePrefix}major_version'],
+      )!,
+      minorVersion: attachedDatabase.typeMapping.read(
+        DriftSqlType.int,
+        data['${effectivePrefix}minor_version'],
+      )!,
+      patchVersion: attachedDatabase.typeMapping.read(
+        DriftSqlType.int,
+        data['${effectivePrefix}patch_version'],
+      )!,
+    );
+  }
+
+  @override
+  $ClientVersionInfoTable createAlias(String alias) {
+    return $ClientVersionInfoTable(attachedDatabase, alias);
+  }
+}
+
+class ClientVersionInfoData extends DataClass
+    implements Insertable<ClientVersionInfoData> {
+  final int id;
+  final int majorVersion;
+  final int minorVersion;
+  final int patchVersion;
+  const ClientVersionInfoData({
+    required this.id,
+    required this.majorVersion,
+    required this.minorVersion,
+    required this.patchVersion,
+  });
+  @override
+  Map<String, Expression> toColumns(bool nullToAbsent) {
+    final map = <String, Expression>{};
+    map['id'] = Variable<int>(id);
+    map['major_version'] = Variable<int>(majorVersion);
+    map['minor_version'] = Variable<int>(minorVersion);
+    map['patch_version'] = Variable<int>(patchVersion);
+    return map;
+  }
+
+  ClientVersionInfoCompanion toCompanion(bool nullToAbsent) {
+    return ClientVersionInfoCompanion(
+      id: Value(id),
+      majorVersion: Value(majorVersion),
+      minorVersion: Value(minorVersion),
+      patchVersion: Value(patchVersion),
+    );
+  }
+
+  factory ClientVersionInfoData.fromJson(
+    Map<String, dynamic> json, {
+    ValueSerializer? serializer,
+  }) {
+    serializer ??= driftRuntimeOptions.defaultSerializer;
+    return ClientVersionInfoData(
+      id: serializer.fromJson<int>(json['id']),
+      majorVersion: serializer.fromJson<int>(json['majorVersion']),
+      minorVersion: serializer.fromJson<int>(json['minorVersion']),
+      patchVersion: serializer.fromJson<int>(json['patchVersion']),
+    );
+  }
+  @override
+  Map<String, dynamic> toJson({ValueSerializer? serializer}) {
+    serializer ??= driftRuntimeOptions.defaultSerializer;
+    return <String, dynamic>{
+      'id': serializer.toJson<int>(id),
+      'majorVersion': serializer.toJson<int>(majorVersion),
+      'minorVersion': serializer.toJson<int>(minorVersion),
+      'patchVersion': serializer.toJson<int>(patchVersion),
+    };
+  }
+
+  ClientVersionInfoData copyWith({
+    int? id,
+    int? majorVersion,
+    int? minorVersion,
+    int? patchVersion,
+  }) => ClientVersionInfoData(
+    id: id ?? this.id,
+    majorVersion: majorVersion ?? this.majorVersion,
+    minorVersion: minorVersion ?? this.minorVersion,
+    patchVersion: patchVersion ?? this.patchVersion,
+  );
+  ClientVersionInfoData copyWithCompanion(ClientVersionInfoCompanion data) {
+    return ClientVersionInfoData(
+      id: data.id.present ? data.id.value : this.id,
+      majorVersion: data.majorVersion.present
+          ? data.majorVersion.value
+          : this.majorVersion,
+      minorVersion: data.minorVersion.present
+          ? data.minorVersion.value
+          : this.minorVersion,
+      patchVersion: data.patchVersion.present
+          ? data.patchVersion.value
+          : this.patchVersion,
+    );
+  }
+
+  @override
+  String toString() {
+    return (StringBuffer('ClientVersionInfoData(')
+          ..write('id: $id, ')
+          ..write('majorVersion: $majorVersion, ')
+          ..write('minorVersion: $minorVersion, ')
+          ..write('patchVersion: $patchVersion')
+          ..write(')'))
+        .toString();
+  }
+
+  @override
+  int get hashCode => Object.hash(id, majorVersion, minorVersion, patchVersion);
+  @override
+  bool operator ==(Object other) =>
+      identical(this, other) ||
+      (other is ClientVersionInfoData &&
+          other.id == this.id &&
+          other.majorVersion == this.majorVersion &&
+          other.minorVersion == this.minorVersion &&
+          other.patchVersion == this.patchVersion);
+}
+
+class ClientVersionInfoCompanion
+    extends UpdateCompanion<ClientVersionInfoData> {
+  final Value<int> id;
+  final Value<int> majorVersion;
+  final Value<int> minorVersion;
+  final Value<int> patchVersion;
+  const ClientVersionInfoCompanion({
+    this.id = const Value.absent(),
+    this.majorVersion = const Value.absent(),
+    this.minorVersion = const Value.absent(),
+    this.patchVersion = const Value.absent(),
+  });
+  ClientVersionInfoCompanion.insert({
+    this.id = const Value.absent(),
+    required int majorVersion,
+    required int minorVersion,
+    required int patchVersion,
+  }) : majorVersion = Value(majorVersion),
+       minorVersion = Value(minorVersion),
+       patchVersion = Value(patchVersion);
+  static Insertable<ClientVersionInfoData> custom({
+    Expression<int>? id,
+    Expression<int>? majorVersion,
+    Expression<int>? minorVersion,
+    Expression<int>? patchVersion,
+  }) {
+    return RawValuesInsertable({
+      if (id != null) 'id': id,
+      if (majorVersion != null) 'major_version': majorVersion,
+      if (minorVersion != null) 'minor_version': minorVersion,
+      if (patchVersion != null) 'patch_version': patchVersion,
+    });
+  }
+
+  ClientVersionInfoCompanion copyWith({
+    Value<int>? id,
+    Value<int>? majorVersion,
+    Value<int>? minorVersion,
+    Value<int>? patchVersion,
+  }) {
+    return ClientVersionInfoCompanion(
+      id: id ?? this.id,
+      majorVersion: majorVersion ?? this.majorVersion,
+      minorVersion: minorVersion ?? this.minorVersion,
+      patchVersion: patchVersion ?? this.patchVersion,
+    );
+  }
+
+  @override
+  Map<String, Expression> toColumns(bool nullToAbsent) {
+    final map = <String, Expression>{};
+    if (id.present) {
+      map['id'] = Variable<int>(id.value);
+    }
+    if (majorVersion.present) {
+      map['major_version'] = Variable<int>(majorVersion.value);
+    }
+    if (minorVersion.present) {
+      map['minor_version'] = Variable<int>(minorVersion.value);
+    }
+    if (patchVersion.present) {
+      map['patch_version'] = Variable<int>(patchVersion.value);
+    }
+    return map;
+  }
+
+  @override
+  String toString() {
+    return (StringBuffer('ClientVersionInfoCompanion(')
+          ..write('id: $id, ')
+          ..write('majorVersion: $majorVersion, ')
+          ..write('minorVersion: $minorVersion, ')
+          ..write('patchVersion: $patchVersion')
+          ..write(')'))
+        .toString();
+  }
+}
+
 class $EditProfileProgressTable extends schema.EditProfileProgress
     with TableInfo<$EditProfileProgressTable, EditProfileProgressData> {
   @override
@@ -19738,6 +20060,8 @@ abstract class _$AccountDatabase extends GeneratedDatabase {
   late final $PushNotificationTable pushNotification = $PushNotificationTable(
     this,
   );
+  late final $ClientVersionInfoTable clientVersionInfo =
+      $ClientVersionInfoTable(this);
   late final $EditProfileProgressTable editProfileProgress =
       $EditProfileProgressTable(this);
   late final $DraftMessageTable draftMessage = $DraftMessageTable(this);
@@ -19926,6 +20250,7 @@ abstract class _$AccountDatabase extends GeneratedDatabase {
     appNotificationSettings,
     news,
     pushNotification,
+    clientVersionInfo,
     editProfileProgress,
     draftMessage,
     serverMaintenance,

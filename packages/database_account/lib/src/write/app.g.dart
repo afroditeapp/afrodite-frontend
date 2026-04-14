@@ -17,4 +17,6 @@ mixin _$DaoWriteAppMixin on DatabaseAccessor<AccountDatabase> {
   $NewsTable get news => attachedDatabase.news;
   $PushNotificationTable get pushNotification =>
       attachedDatabase.pushNotification;
+  $ClientVersionInfoTable get clientVersionInfo =>
+      attachedDatabase.clientVersionInfo;
 }
