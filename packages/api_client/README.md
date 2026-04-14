@@ -186,6 +186,7 @@ Class | Method | HTTP request | Description
 *CommonAdminApi* | [**getAdminNotificationSubscriptions**](doc//CommonAdminApi.md#getadminnotificationsubscriptions) | **GET** /common_api/admin_notification_subscriptions | Get admin notification subscriptions.
 *CommonAdminApi* | [**getBotConfig**](doc//CommonAdminApi.md#getbotconfig) | **GET** /common_api/bot_config | Get bot config.
 *CommonAdminApi* | [**getBotConfigWarnings**](doc//CommonAdminApi.md#getbotconfigwarnings) | **GET** /common_api/bot_config_warnings | Get bot config warnings.
+*CommonAdminApi* | [**getDynamicServerConfig**](doc//CommonAdminApi.md#getdynamicserverconfig) | **GET** /common_api/dynamic_server_config | Get server config.
 *CommonAdminApi* | [**getLatestReportIteratorStartPosition**](doc//CommonAdminApi.md#getlatestreportiteratorstartposition) | **GET** /common_api/latest_report_iterator_start_position | 
 *CommonAdminApi* | [**getMaintenanceNotification**](doc//CommonAdminApi.md#getmaintenancenotification) | **GET** /common_api/maintenance_notification | Get maintenance notification.
 *CommonAdminApi* | [**getManagerInstanceNames**](doc//CommonAdminApi.md#getmanagerinstancenames) | **GET** /common_api/manager_instance_names | Get available manager instances.
@@ -196,6 +197,7 @@ Class | Method | HTTP request | Description
 *CommonAdminApi* | [**postAdminNotificationSettings**](doc//CommonAdminApi.md#postadminnotificationsettings) | **POST** /common_api/admin_notification_settings | Save admin notification settings.
 *CommonAdminApi* | [**postAdminNotificationSubscriptions**](doc//CommonAdminApi.md#postadminnotificationsubscriptions) | **POST** /common_api/admin_notification_subscriptions | Save admin notification subscriptions.
 *CommonAdminApi* | [**postBotConfig**](doc//CommonAdminApi.md#postbotconfig) | **POST** /common_api/bot_config | Save bot config.
+*CommonAdminApi* | [**postDynamicServerConfig**](doc//CommonAdminApi.md#postdynamicserverconfig) | **POST** /common_api/dynamic_server_config | Save server config.
 *CommonAdminApi* | [**postEditMaintenanceNotification**](doc//CommonAdminApi.md#posteditmaintenancenotification) | **POST** /common_api/edit_maintenance_notification | Edit maintenance notification
 *CommonAdminApi* | [**postGetApiUsageData**](doc//CommonAdminApi.md#postgetapiusagedata) | **POST** /common_api/api_usage_data | Get API usage data for account
 *CommonAdminApi* | [**postGetChatMessageReports**](doc//CommonAdminApi.md#postgetchatmessagereports) | **POST** /chat_api/get_chat_message_reports | Get all chat message reports. The reports are ordered by message sending order from oldest to latest.
@@ -284,6 +286,7 @@ Class | Method | HTTP request | Description
  - [AccountId](doc//AccountId.md)
  - [AccountIdDbValue](doc//AccountIdDbValue.md)
  - [AccountLockedState](doc//AccountLockedState.md)
+ - [AccountRegistrationPlatforms](doc//AccountRegistrationPlatforms.md)
  - [AccountSetup](doc//AccountSetup.md)
  - [AccountStateContainer](doc//AccountStateContainer.md)
  - [AccountSyncVersion](doc//AccountSyncVersion.md)
@@ -372,6 +375,7 @@ Class | Method | HTTP request | Description
  - [DemoAccountToken](doc//DemoAccountToken.md)
  - [DynamicClientFeaturesConfig](doc//DynamicClientFeaturesConfig.md)
  - [DynamicClientFeaturesConfigHash](doc//DynamicClientFeaturesConfigHash.md)
+ - [DynamicServerConfig](doc//DynamicServerConfig.md)
  - [EmailAddressState](doc//EmailAddressState.md)
  - [EmailAddressStateAdmin](doc//EmailAddressStateAdmin.md)
  - [EmailLogin](doc//EmailLogin.md)

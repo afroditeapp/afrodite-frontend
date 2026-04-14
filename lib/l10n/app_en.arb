@@ -1436,10 +1436,6 @@
   "@login_screen_login_note_text_tos": {
     "description": "Text for terms of service link"
   },
-  "login_screen_registering_disabled_on_web": "Registering new accounts is not possible using a web browser.",
-  "@login_screen_registering_disabled_on_web": {
-    "description": "Text that registering new accounts is disabled on web"
-  },
   "login_screen_sign_in_with_email_unverified": "Email address of the selected account is not verified",
   "@login_screen_sign_in_with_email_unverified": {
     "description": "Snackbar error message when sign in with account email is not verified"

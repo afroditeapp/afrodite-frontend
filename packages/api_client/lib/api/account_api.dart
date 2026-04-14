@@ -1640,7 +1640,7 @@ class AccountApi {
 
   /// Start new session with sign in with Apple or Google.
   ///
-  /// Registers new account if it does not exists. That can be disabled using [SignInWithLoginInfo::disable_registering].
+  /// Registers new account if it does not exist, when registration is enabled for the current client platform in dynamic server config.
   ///
   /// Note: This method returns the HTTP [Response].
   ///
@@ -1674,7 +1674,7 @@ class AccountApi {
 
   /// Start new session with sign in with Apple or Google.
   ///
-  /// Registers new account if it does not exists. That can be disabled using [SignInWithLoginInfo::disable_registering].
+  /// Registers new account if it does not exist, when registration is enabled for the current client platform in dynamic server config.
   ///
   /// Parameters:
   ///

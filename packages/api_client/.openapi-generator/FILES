@@ -32,6 +32,7 @@ lib/model/account_content.dart
 lib/model/account_id.dart
 lib/model/account_id_db_value.dart
 lib/model/account_locked_state.dart
+lib/model/account_registration_platforms.dart
 lib/model/account_setup.dart
 lib/model/account_state_container.dart
 lib/model/account_sync_version.dart
@@ -120,6 +121,7 @@ lib/model/demo_account_register_account_result.dart
 lib/model/demo_account_token.dart
 lib/model/dynamic_client_features_config.dart
 lib/model/dynamic_client_features_config_hash.dart
+lib/model/dynamic_server_config.dart
 lib/model/email_address_state.dart
 lib/model/email_address_state_admin.dart
 lib/model/email_login.dart

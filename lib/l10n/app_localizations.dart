@@ -2050,12 +2050,6 @@ abstract class AppLocalizations {
   /// **'Terms of Service'**
   String get login_screen_login_note_text_tos;
 
-  /// Text that registering new accounts is disabled on web
-  ///
-  /// In en, this message translates to:
-  /// **'Registering new accounts is not possible using a web browser.'**
-  String get login_screen_registering_disabled_on_web;
-
   /// Snackbar error message when sign in with account email is not verified
   ///
   /// In en, this message translates to:

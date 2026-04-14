@@ -202,6 +202,8 @@ class ApiClient {
           return AccountIdDbValue.fromJson(value);
         case 'AccountLockedState':
           return AccountLockedState.fromJson(value);
+        case 'AccountRegistrationPlatforms':
+          return AccountRegistrationPlatforms.fromJson(value);
         case 'AccountSetup':
           return AccountSetup.fromJson(value);
         case 'AccountStateContainer':
@@ -378,6 +380,8 @@ class ApiClient {
           return DynamicClientFeaturesConfig.fromJson(value);
         case 'DynamicClientFeaturesConfigHash':
           return DynamicClientFeaturesConfigHash.fromJson(value);
+        case 'DynamicServerConfig':
+          return DynamicServerConfig.fromJson(value);
         case 'EmailAddressState':
           return EmailAddressState.fromJson(value);
         case 'EmailAddressStateAdmin':

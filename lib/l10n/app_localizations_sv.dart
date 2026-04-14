@@ -1102,10 +1102,6 @@ class AppLocalizationsSv extends AppLocalizations {
   String get login_screen_login_note_text_tos => 'Terms of Service';
 
   @override
-  String get login_screen_registering_disabled_on_web =>
-      'Registering new accounts is not possible using a web browser.';
-
-  @override
   String get login_screen_sign_in_with_email_unverified =>
       'Email address of the selected account is not verified';
 

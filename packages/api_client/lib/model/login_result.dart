@@ -17,6 +17,7 @@ class LoginResult {
     this.email,
     this.error = false,
     this.errorAccountLocked = false,
+    this.errorAccountRegistrationDisabled = false,
     this.errorEmailAlreadyUsed = false,
     this.errorInvalidEmailLoginToken = false,
     this.errorSignInWithEmailUnverified = false,
@@ -39,6 +40,8 @@ class LoginResult {
 
   bool errorAccountLocked;
 
+  bool errorAccountRegistrationDisabled;
+
   /// This might be true, when registering new account using sign in with login method.
   bool errorEmailAlreadyUsed;
 
@@ -57,6 +60,7 @@ class LoginResult {
     other.email == email &&
     other.error == error &&
     other.errorAccountLocked == errorAccountLocked &&
+    other.errorAccountRegistrationDisabled == errorAccountRegistrationDisabled &&
     other.errorEmailAlreadyUsed == errorEmailAlreadyUsed &&
     other.errorInvalidEmailLoginToken == errorInvalidEmailLoginToken &&
     other.errorSignInWithEmailUnverified == errorSignInWithEmailUnverified &&
@@ -70,6 +74,7 @@ class LoginResult {
     (email == null ? 0 : email!.hashCode) +
     (error.hashCode) +
     (errorAccountLocked.hashCode) +
+    (errorAccountRegistrationDisabled.hashCode) +
     (errorEmailAlreadyUsed.hashCode) +
     (errorInvalidEmailLoginToken.hashCode) +
     (errorSignInWithEmailUnverified.hashCode) +
@@ -77,7 +82,7 @@ class LoginResult {
     (tokens == null ? 0 : tokens!.hashCode);
 
   @override
-  String toString() => 'LoginResult[aid=$aid, email=$email, error=$error, errorAccountLocked=$errorAccountLocked, errorEmailAlreadyUsed=$errorEmailAlreadyUsed, errorInvalidEmailLoginToken=$errorInvalidEmailLoginToken, errorSignInWithEmailUnverified=$errorSignInWithEmailUnverified, errorUnsupportedClient=$errorUnsupportedClient, tokens=$tokens]';
+  String toString() => 'LoginResult[aid=$aid, email=$email, error=$error, errorAccountLocked=$errorAccountLocked, errorAccountRegistrationDisabled=$errorAccountRegistrationDisabled, errorEmailAlreadyUsed=$errorEmailAlreadyUsed, errorInvalidEmailLoginToken=$errorInvalidEmailLoginToken, errorSignInWithEmailUnverified=$errorSignInWithEmailUnverified, errorUnsupportedClient=$errorUnsupportedClient, tokens=$tokens]';
 
   Map<String, dynamic> toJson() {
     final json = <String, dynamic>{};
@@ -93,6 +98,7 @@ class LoginResult {
     }
       json[r'error'] = this.error;
       json[r'error_account_locked'] = this.errorAccountLocked;
+      json[r'error_account_registration_disabled'] = this.errorAccountRegistrationDisabled;
       json[r'error_email_already_used'] = this.errorEmailAlreadyUsed;
       json[r'error_invalid_email_login_token'] = this.errorInvalidEmailLoginToken;
       json[r'error_sign_in_with_email_unverified'] = this.errorSignInWithEmailUnverified;
@@ -128,6 +134,7 @@ class LoginResult {
         email: mapValueOfType<String>(json, r'email'),
         error: mapValueOfType<bool>(json, r'error') ?? false,
         errorAccountLocked: mapValueOfType<bool>(json, r'error_account_locked') ?? false,
+        errorAccountRegistrationDisabled: mapValueOfType<bool>(json, r'error_account_registration_disabled') ?? false,
         errorEmailAlreadyUsed: mapValueOfType<bool>(json, r'error_email_already_used') ?? false,
         errorInvalidEmailLoginToken: mapValueOfType<bool>(json, r'error_invalid_email_login_token') ?? false,
         errorSignInWithEmailUnverified: mapValueOfType<bool>(json, r'error_sign_in_with_email_unverified') ?? false,
