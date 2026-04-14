@@ -1,6 +1,8 @@
 import 'package:app/data/image_cache.dart';
+import 'package:app/logic/account/client_features_config.dart';
 import 'package:app/logic/media/content.dart';
 import 'package:app/logic/media/select_content.dart';
+import 'package:app/model/freezed/logic/account/client_features_config.dart';
 import 'package:app/logic/profile/my_profile.dart';
 import 'package:app/model/freezed/logic/main/navigator_state.dart';
 import 'package:app/model/freezed/logic/media/content.dart';
@@ -73,22 +75,34 @@ class _ContentManagementScreenState extends State<ContentManagementScreen> {
         icon: const Icon(Icons.account_box),
         label: Text(context.strings.view_profile_screen_my_profile_title),
       ),
-      body: BlocBuilder<ContentBloc, ContentData>(
-        builder: (context, contentState) {
-          final securityContent = contentState.currentSecurityContent;
-          return BlocBuilder<MyProfileBloc, MyProfileData>(
-            builder: (context, myProfileState) {
-              final myProfile = myProfileState.profile;
-              return BlocBuilder<SelectContentBloc, SelectContentData>(
-                builder: (context, state) {
-                  final content = state.accountContent;
-                  if (state.isLoading) {
-                    return const Center(child: CircularProgressIndicator());
-                  } else if (content == null || securityContent == null || myProfile == null) {
-                    return Center(child: Text(context.strings.generic_error));
-                  } else {
-                    return selectContentPage(context, content, securityContent, myProfile);
-                  }
+      body: BlocBuilder<ClientFeaturesConfigBloc, ClientFeaturesConfigData>(
+        builder: (context, clientFeaturesConfigState) {
+          final faceVerificationEnabled =
+              clientFeaturesConfigState.config.profile?.verification?.face ?? false;
+          return BlocBuilder<ContentBloc, ContentData>(
+            builder: (context, contentState) {
+              final securityContent = contentState.currentSecurityContent;
+              return BlocBuilder<MyProfileBloc, MyProfileData>(
+                builder: (context, myProfileState) {
+                  final myProfile = myProfileState.profile;
+                  return BlocBuilder<SelectContentBloc, SelectContentData>(
+                    builder: (context, state) {
+                      final content = state.accountContent;
+                      if (state.isLoading) {
+                        return const Center(child: CircularProgressIndicator());
+                      } else if (content == null || securityContent == null || myProfile == null) {
+                        return Center(child: Text(context.strings.generic_error));
+                      } else {
+                        return selectContentPage(
+                          context,
+                          content,
+                          securityContent,
+                          myProfile,
+                          faceVerificationEnabled,
+                        );
+                      }
+                    },
+                  );
                 },
               );
             },
@@ -103,6 +117,7 @@ class _ContentManagementScreenState extends State<ContentManagementScreen> {
     AccountContent content,
     ContentId securityContent,
     MyProfileEntry myProfile,
+    bool faceVerificationEnabled,
   ) {
     final List<Widget> listWidgets = [];
 
@@ -115,6 +130,7 @@ class _ContentManagementScreenState extends State<ContentManagementScreen> {
           content.unusedContentWaitSeconds,
           securityContent,
           myProfile,
+          faceVerificationEnabled,
         ),
       ),
     );
@@ -155,6 +171,7 @@ Widget _buildAvailableImg(
   int unusedContentWaitSeconds,
   ContentId securityContent,
   MyProfileEntry myProfile,
+  bool faceVerificationEnabled,
 ) {
   return Padding(
     padding: const EdgeInsets.only(
@@ -198,6 +215,7 @@ Widget _buildAvailableImg(
                   unusedContentWaitSeconds,
                   securityContent,
                   myProfile,
+                  faceVerificationEnabled,
                 ),
               ),
             ),
@@ -223,6 +241,7 @@ Widget _statusInfo(
   int unusedContentWaitSeconds,
   ContentId securityContent,
   MyProfileEntry myProfile,
+  bool faceVerificationEnabled,
 ) {
   final String? moderationState = content.state.toUiString(context);
 
@@ -232,7 +251,7 @@ Widget _statusInfo(
   }
 
   final faceDetected = content.fdManual ?? content.fd;
-  if (faceDetected) {
+  if (faceVerificationEnabled && faceDetected) {
     if (content.fvManual != null) {
       stateTexts.add(
         content.fvManual!
