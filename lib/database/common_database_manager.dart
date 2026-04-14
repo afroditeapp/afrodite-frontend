@@ -47,8 +47,9 @@ class CommonDatabaseManager extends AppSingleton {
       _commonDatabase,
     );
     _log.info("CommonDatabase ensureOpen result: $ensureOpenResult");
-    // Test query
-    await commonStream((db) => db.loginSession.watchAccountId()).first;
+    await commonAction(
+      (db) => db.app.updateClientVersionInfo(AppVersionManager.getInstance().clientVersion),
+    );
 
     _log.info("Init completed");
   }

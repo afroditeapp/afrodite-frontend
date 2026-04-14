@@ -20,6 +20,7 @@ part 'database.g.dart';
     schema.DemoAccount,
     schema.NotificationPermissionAsked,
     schema.VideoCallTipShown,
+    schema.ClientVersionInfo,
     schema.AccountId,
     schema.ServerUrl,
     schema.CurrentLocale,

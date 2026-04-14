@@ -10,4 +10,6 @@ mixin _$DaoWriteAppMixin on DatabaseAccessor<CommonDatabase> {
       attachedDatabase.videoCallTipShown;
   $CurrentLocaleTable get currentLocale => attachedDatabase.currentLocale;
   $ServerUrlTable get serverUrl => attachedDatabase.serverUrl;
+  $ClientVersionInfoTable get clientVersionInfo =>
+      attachedDatabase.clientVersionInfo;
 }

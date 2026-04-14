@@ -32,6 +32,12 @@ class CurrentLocale extends SingleRowTable {
   TextColumn get currentLocale => text().nullable()();
 }
 
+class ClientVersionInfo extends SingleRowTable {
+  IntColumn get majorVersion => integer()();
+  IntColumn get minorVersion => integer()();
+  IntColumn get patchVersion => integer()();
+}
+
 /// General cache table for storing cached data
 class GeneralCache extends Table {
   IntColumn get id => integer().autoIncrement()();
