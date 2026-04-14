@@ -564,6 +564,8 @@ class ApiClient {
           return MediaContentTypeTypeTransformer().decode(value);
         case 'MediaContentUploadType':
           return MediaContentUploadTypeTypeTransformer().decode(value);
+        case 'MediaVerificationStatus':
+          return MediaVerificationStatus.fromJson(value);
         case 'MessageDeliveryInfo':
           return MessageDeliveryInfo.fromJson(value);
         case 'MessageDeliveryInfoIdList':
@@ -608,14 +610,14 @@ class ApiClient {
           return PartialProfileAttributesConfig.fromJson(value);
         case 'PendingAppNotification':
           return PendingAppNotification.fromJson(value);
-        case 'PendingAppNotificationList':
-          return PendingAppNotificationList.fromJson(value);
+        case 'PendingAppNotificationToDelete':
+          return PendingAppNotificationToDelete.fromJson(value);
         case 'PendingAppNotificationType':
           return PendingAppNotificationTypeTypeTransformer().decode(value);
         case 'PendingChatNotification':
           return PendingChatNotification.fromJson(value);
-        case 'PendingChatNotificationList':
-          return PendingChatNotificationList.fromJson(value);
+        case 'PendingChatNotificationToDelete':
+          return PendingChatNotificationToDelete.fromJson(value);
         case 'PendingMessageAcknowledgementList':
           return PendingMessageAcknowledgementList.fromJson(value);
         case 'PendingMessageId':
@@ -720,6 +722,8 @@ class ApiClient {
           return ProfileTextMinCharactersFilter.fromJson(value);
         case 'ProfileUpdate':
           return ProfileUpdate.fromJson(value);
+        case 'ProfileVerificationStatusFilter':
+          return ProfileVerificationStatusFilter.fromJson(value);
         case 'ProfileVersion':
           return ProfileVersion.fromJson(value);
         case 'ProfileVisibility':
@@ -886,6 +890,8 @@ class ApiClient {
           return VapidPublicKey.fromJson(value);
         case 'VerificationAction':
           return VerificationActionTypeTransformer().decode(value);
+        case 'VerificationConfig':
+          return VerificationConfig.fromJson(value);
         default:
           dynamic match;
           if (value is List && (match = _regList.firstMatch(targetType)?.group(1)) != null) {

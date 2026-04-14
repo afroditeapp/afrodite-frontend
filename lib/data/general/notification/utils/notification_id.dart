@@ -24,11 +24,9 @@ enum NotificationIdStatic {
   newsItemAvailable(id: LocalNotificationId(20)),
 
   // Profile
-  profileNameModerationAccepted(id: LocalNotificationId(30)),
-  profileNameModerationRejected(id: LocalNotificationId(31)),
-  profileTextModerationAccepted(id: LocalNotificationId(32)),
-  profileTextModerationRejected(id: LocalNotificationId(33)),
-  automaticProfileSearchCompleted(id: LocalNotificationId(34)),
+  profileNameModerationCompleted(id: LocalNotificationId(30)),
+  profileTextModerationCompleted(id: LocalNotificationId(31)),
+  automaticProfileSearchCompleted(id: LocalNotificationId(32)),
 
   // Media
   mediaContentModerationAccepted(id: LocalNotificationId(40)),

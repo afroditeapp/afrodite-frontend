@@ -303,7 +303,7 @@ class CommonApi {
     );
   }
 
-  Future<PendingAppNotificationList?> getPendingAppNotifications() async {
+  Future<List<PendingAppNotification>?> getPendingAppNotifications() async {
     final response = await getPendingAppNotificationsWithHttpInfo();
     if (response.statusCode >= HttpStatus.badRequest) {
       throw ApiException(response.statusCode, await _decodeBodyBytes(response));
@@ -312,8 +312,11 @@ class CommonApi {
     // At the time of writing this, `dart:convert` will throw an "Unexpected end of input"
     // FormatException when trying to decode an empty string.
     if (response.body.isNotEmpty && response.statusCode != HttpStatus.noContent) {
-      return await apiClient.deserializeAsync(await _decodeBodyBytes(response), 'PendingAppNotificationList',) as PendingAppNotificationList;
-    
+      final responseBody = await _decodeBodyBytes(response);
+      return (await apiClient.deserializeAsync(responseBody, 'List<PendingAppNotification>') as List)
+        .cast<PendingAppNotification>()
+        .toList(growable: false);
+
     }
     return null;
   }
@@ -545,13 +548,13 @@ class CommonApi {
   /// Performs an HTTP 'POST /common_api/pending_app_notifications/delete' operation and returns the [Response].
   /// Parameters:
   ///
-  /// * [PendingAppNotificationList] pendingAppNotificationList (required):
-  Future<Response> postDeletePendingAppNotificationsWithHttpInfo(PendingAppNotificationList pendingAppNotificationList,) async {
+  /// * [List<PendingAppNotificationToDelete>] pendingAppNotificationToDelete (required):
+  Future<Response> postDeletePendingAppNotificationsWithHttpInfo(List<PendingAppNotificationToDelete> pendingAppNotificationToDelete,) async {
     // ignore: prefer_const_declarations
     final path = r'/common_api/pending_app_notifications/delete';
 
     // ignore: prefer_final_locals
-    Object? postBody = pendingAppNotificationList;
+    Object? postBody = pendingAppNotificationToDelete;
 
     final queryParams = <QueryParam>[];
     final headerParams = <String, String>{};
@@ -573,9 +576,9 @@ class CommonApi {
 
   /// Parameters:
   ///
-  /// * [PendingAppNotificationList] pendingAppNotificationList (required):
-  Future<void> postDeletePendingAppNotifications(PendingAppNotificationList pendingAppNotificationList,) async {
-    final response = await postDeletePendingAppNotificationsWithHttpInfo(pendingAppNotificationList,);
+  /// * [List<PendingAppNotificationToDelete>] pendingAppNotificationToDelete (required):
+  Future<void> postDeletePendingAppNotifications(List<PendingAppNotificationToDelete> pendingAppNotificationToDelete,) async {
+    final response = await postDeletePendingAppNotificationsWithHttpInfo(pendingAppNotificationToDelete,);
     if (response.statusCode >= HttpStatus.badRequest) {
       throw ApiException(response.statusCode, await _decodeBodyBytes(response));
     }

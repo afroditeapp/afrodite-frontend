@@ -25,10 +25,8 @@ class PendingAppNotificationType {
 
   static const adminNotification = PendingAppNotificationType._(r'AdminNotification');
   static const newsChanged = PendingAppNotificationType._(r'NewsChanged');
-  static const profileNameModerationAccepted = PendingAppNotificationType._(r'ProfileNameModerationAccepted');
-  static const profileNameModerationRejected = PendingAppNotificationType._(r'ProfileNameModerationRejected');
-  static const profileTextModerationAccepted = PendingAppNotificationType._(r'ProfileTextModerationAccepted');
-  static const profileTextModerationRejected = PendingAppNotificationType._(r'ProfileTextModerationRejected');
+  static const profileNameModerationCompleted = PendingAppNotificationType._(r'ProfileNameModerationCompleted');
+  static const profileTextModerationCompleted = PendingAppNotificationType._(r'ProfileTextModerationCompleted');
   static const automaticProfileSearchCompleted = PendingAppNotificationType._(r'AutomaticProfileSearchCompleted');
   static const mediaContentModerationAccepted = PendingAppNotificationType._(r'MediaContentModerationAccepted');
   static const mediaContentModerationRejected = PendingAppNotificationType._(r'MediaContentModerationRejected');
@@ -39,10 +37,8 @@ class PendingAppNotificationType {
   static const values = <PendingAppNotificationType>[
     adminNotification,
     newsChanged,
-    profileNameModerationAccepted,
-    profileNameModerationRejected,
-    profileTextModerationAccepted,
-    profileTextModerationRejected,
+    profileNameModerationCompleted,
+    profileTextModerationCompleted,
     automaticProfileSearchCompleted,
     mediaContentModerationAccepted,
     mediaContentModerationRejected,
@@ -88,10 +84,8 @@ class PendingAppNotificationTypeTypeTransformer {
       switch (data) {
         case r'AdminNotification': return PendingAppNotificationType.adminNotification;
         case r'NewsChanged': return PendingAppNotificationType.newsChanged;
-        case r'ProfileNameModerationAccepted': return PendingAppNotificationType.profileNameModerationAccepted;
-        case r'ProfileNameModerationRejected': return PendingAppNotificationType.profileNameModerationRejected;
-        case r'ProfileTextModerationAccepted': return PendingAppNotificationType.profileTextModerationAccepted;
-        case r'ProfileTextModerationRejected': return PendingAppNotificationType.profileTextModerationRejected;
+        case r'ProfileNameModerationCompleted': return PendingAppNotificationType.profileNameModerationCompleted;
+        case r'ProfileTextModerationCompleted': return PendingAppNotificationType.profileTextModerationCompleted;
         case r'AutomaticProfileSearchCompleted': return PendingAppNotificationType.automaticProfileSearchCompleted;
         case r'MediaContentModerationAccepted': return PendingAppNotificationType.mediaContentModerationAccepted;
         case r'MediaContentModerationRejected': return PendingAppNotificationType.mediaContentModerationRejected;

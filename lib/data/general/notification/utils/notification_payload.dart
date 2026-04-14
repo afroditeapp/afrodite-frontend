@@ -65,11 +65,8 @@ class NotificationPayload extends Immutable {
         notificationId == NotificationIdStatic.mediaContentModerationRejected.id ||
         notificationId == NotificationIdStatic.mediaContentModerationDeleted.id) {
       action = NavigateToContentManagement();
-    } else if (notificationId == NotificationIdStatic.profileNameModerationAccepted.id ||
-        notificationId == NotificationIdStatic.profileTextModerationAccepted.id) {
-      action = NavigateToMyProfile();
-    } else if (notificationId == NotificationIdStatic.profileNameModerationRejected.id ||
-        notificationId == NotificationIdStatic.profileTextModerationRejected.id) {
+    } else if (notificationId == NotificationIdStatic.profileNameModerationCompleted.id ||
+        notificationId == NotificationIdStatic.profileTextModerationCompleted.id) {
       action = NavigateToEditProfile();
     } else if (notificationId == NotificationIdStatic.automaticProfileSearchCompleted.id) {
       action = NavigateToAutomaticProfileSearchResults();

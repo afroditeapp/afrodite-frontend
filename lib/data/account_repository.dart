@@ -220,20 +220,27 @@ class AccountRepository extends DataRepositoryWithLifecycle {
   }
 
   Future<Result<(), ()>> handlePendingAppNotificationsChangedEvent() async {
-    final pending = await api.common((api) => api.getPendingAppNotifications()).ok();
-    if (pending == null) {
+    final notifications = await api.common((api) => api.getPendingAppNotifications()).ok();
+    if (notifications == null) {
       return const Err(());
     }
 
-    if (pending.notifications.isEmpty) {
+    if (notifications.isEmpty) {
       return const Ok(());
     }
 
-    for (final notification in pending.notifications) {
+    for (final notification in notifications) {
       await _handlePendingAppNotification(notification);
     }
 
-    final handled = PendingAppNotificationList(notifications: pending.notifications);
+    final handled = notifications
+        .map(
+          (v) => PendingAppNotificationToDelete(
+            notificationType: v.notificationType,
+            dataInteger: v.dataInteger,
+          ),
+        )
+        .toList();
 
     return await api
         .commonAction((api) => api.postDeletePendingAppNotifications(handled))
@@ -280,14 +287,22 @@ class AccountRepository extends DataRepositoryWithLifecycle {
         await NotificationMediaContentModerationCompleted.handleRejected(db);
       case PendingAppNotificationType.mediaContentModerationDeleted:
         await NotificationMediaContentModerationCompleted.handleDeleted(db);
-      case PendingAppNotificationType.profileNameModerationAccepted:
-        await NotificationProfileStringModerationCompleted.handleNameAccepted(db);
-      case PendingAppNotificationType.profileNameModerationRejected:
-        await NotificationProfileStringModerationCompleted.handleNameRejected(db);
-      case PendingAppNotificationType.profileTextModerationAccepted:
-        await NotificationProfileStringModerationCompleted.handleTextAccepted(db);
-      case PendingAppNotificationType.profileTextModerationRejected:
-        await NotificationProfileStringModerationCompleted.handleTextRejected(db);
+      case PendingAppNotificationType.profileNameModerationCompleted:
+        if (notification.dataInteger == 0) {
+          await NotificationProfileStringModerationCompleted.handleNameRejected(db);
+        } else if (notification.dataInteger == 1) {
+          await NotificationProfileStringModerationCompleted.handleNameAccepted(db);
+        } else {
+          _log.warning("Unknown dataInteger for ${notification.notificationType}");
+        }
+      case PendingAppNotificationType.profileTextModerationCompleted:
+        if (notification.dataInteger == 0) {
+          await NotificationProfileStringModerationCompleted.handleTextRejected(db);
+        } else if (notification.dataInteger == 1) {
+          await NotificationProfileStringModerationCompleted.handleTextAccepted(db);
+        } else {
+          _log.warning("Unknown dataInteger for ${notification.notificationType}");
+        }
       case PendingAppNotificationType.automaticProfileSearchCompleted:
         final profileCount = notification.dataInteger;
         if (profileCount == null) {

@@ -467,6 +467,7 @@ Class | Method | HTTP request | Description
  - [MediaContentSyncVersion](doc//MediaContentSyncVersion.md)
  - [MediaContentType](doc//MediaContentType.md)
  - [MediaContentUploadType](doc//MediaContentUploadType.md)
+ - [MediaVerificationStatus](doc//MediaVerificationStatus.md)
  - [MessageDeliveryInfo](doc//MessageDeliveryInfo.md)
  - [MessageDeliveryInfoIdList](doc//MessageDeliveryInfoIdList.md)
  - [MessageDeliveryInfoList](doc//MessageDeliveryInfoList.md)
@@ -489,10 +490,10 @@ Class | Method | HTTP request | Description
  - [NsfwDetectionThresholds](doc//NsfwDetectionThresholds.md)
  - [PartialProfileAttributesConfig](doc//PartialProfileAttributesConfig.md)
  - [PendingAppNotification](doc//PendingAppNotification.md)
- - [PendingAppNotificationList](doc//PendingAppNotificationList.md)
+ - [PendingAppNotificationToDelete](doc//PendingAppNotificationToDelete.md)
  - [PendingAppNotificationType](doc//PendingAppNotificationType.md)
  - [PendingChatNotification](doc//PendingChatNotification.md)
- - [PendingChatNotificationList](doc//PendingChatNotificationList.md)
+ - [PendingChatNotificationToDelete](doc//PendingChatNotificationToDelete.md)
  - [PendingMessageAcknowledgementList](doc//PendingMessageAcknowledgementList.md)
  - [PendingMessageId](doc//PendingMessageId.md)
  - [PerfMetricQuery](doc//PerfMetricQuery.md)
@@ -545,6 +546,7 @@ Class | Method | HTTP request | Description
  - [ProfileTextMaxCharactersFilter](doc//ProfileTextMaxCharactersFilter.md)
  - [ProfileTextMinCharactersFilter](doc//ProfileTextMinCharactersFilter.md)
  - [ProfileUpdate](doc//ProfileUpdate.md)
+ - [ProfileVerificationStatusFilter](doc//ProfileVerificationStatusFilter.md)
  - [ProfileVersion](doc//ProfileVersion.md)
  - [ProfileVisibility](doc//ProfileVisibility.md)
  - [PublicKeyId](doc//PublicKeyId.md)
@@ -628,6 +630,7 @@ Class | Method | HTTP request | Description
  - [UpdateReportResult](doc//UpdateReportResult.md)
  - [VapidPublicKey](doc//VapidPublicKey.md)
  - [VerificationAction](doc//VerificationAction.md)
+ - [VerificationConfig](doc//VerificationConfig.md)
 
 
 ## Documentation For Authorization

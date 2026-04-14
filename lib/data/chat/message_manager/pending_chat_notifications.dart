@@ -19,16 +19,23 @@ class PendingChatNotificationUtils {
       return;
     }
 
-    final pending = await api.chat((api) => api.getPendingChatNotifications()).ok();
-    if (pending == null || pending.notifications.isEmpty) {
+    final notifications = await api.chat((api) => api.getPendingChatNotifications()).ok();
+    if (notifications == null || notifications.isEmpty) {
       return;
     }
 
-    for (final notification in pending.notifications) {
+    for (final notification in notifications) {
       await _handlePendingChatNotification(notification);
     }
 
-    final handled = PendingChatNotificationList(notifications: pending.notifications);
+    final handled = notifications
+        .map(
+          (v) => PendingChatNotificationToDelete(
+            accountIdSender: v.accountIdSender,
+            messageCount: v.messageCount,
+          ),
+        )
+        .toList();
     await api.chatAction((api) => api.postDeletePendingChatNotifications(handled));
   }
 

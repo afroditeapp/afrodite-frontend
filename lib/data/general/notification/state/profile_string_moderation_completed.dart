@@ -15,10 +15,8 @@ class NotificationProfileStringModerationCompleted extends AppSingletonNoInit {
   final notifications = NotificationManager.getInstance();
 
   Future<void> hideAll() async {
-    await notifications.hideNotification(NotificationIdStatic.profileNameModerationAccepted.id);
-    await notifications.hideNotification(NotificationIdStatic.profileNameModerationRejected.id);
-    await notifications.hideNotification(NotificationIdStatic.profileTextModerationAccepted.id);
-    await notifications.hideNotification(NotificationIdStatic.profileTextModerationRejected.id);
+    await notifications.hideNotification(NotificationIdStatic.profileNameModerationCompleted.id);
+    await notifications.hideNotification(NotificationIdStatic.profileTextModerationCompleted.id);
   }
 
   static Future<void> handleNameAccepted(AccountDatabaseManager db) async {
@@ -53,10 +51,7 @@ class NotificationProfileStringModerationCompleted extends AppSingletonNoInit {
     ModerationCompletedState state,
     AccountDatabaseManager db,
   ) async {
-    final LocalNotificationId id = switch (state) {
-      ModerationCompletedState.accepted => NotificationIdStatic.profileNameModerationAccepted.id,
-      ModerationCompletedState.rejected => NotificationIdStatic.profileNameModerationRejected.id,
-    };
+    final LocalNotificationId id = NotificationIdStatic.profileNameModerationCompleted.id;
     final String title = switch (state) {
       ModerationCompletedState.accepted => R.strings.notification_profile_name_accepted,
       ModerationCompletedState.rejected => R.strings.notification_profile_name_rejected,
@@ -74,10 +69,7 @@ class NotificationProfileStringModerationCompleted extends AppSingletonNoInit {
     ModerationCompletedState state,
     AccountDatabaseManager db,
   ) async {
-    final LocalNotificationId id = switch (state) {
-      ModerationCompletedState.accepted => NotificationIdStatic.profileTextModerationAccepted.id,
-      ModerationCompletedState.rejected => NotificationIdStatic.profileTextModerationRejected.id,
-    };
+    final LocalNotificationId id = NotificationIdStatic.profileTextModerationCompleted.id;
     final String title = switch (state) {
       ModerationCompletedState.accepted => R.strings.notification_profile_text_accepted,
       ModerationCompletedState.rejected => R.strings.notification_profile_text_rejected,

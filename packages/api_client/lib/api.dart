@@ -231,6 +231,7 @@ part 'model/media_content_pending_moderation.dart';
 part 'model/media_content_sync_version.dart';
 part 'model/media_content_type.dart';
 part 'model/media_content_upload_type.dart';
+part 'model/media_verification_status.dart';
 part 'model/message_delivery_info.dart';
 part 'model/message_delivery_info_id_list.dart';
 part 'model/message_delivery_info_list.dart';
@@ -253,10 +254,10 @@ part 'model/news_translation_version.dart';
 part 'model/nsfw_detection_thresholds.dart';
 part 'model/partial_profile_attributes_config.dart';
 part 'model/pending_app_notification.dart';
-part 'model/pending_app_notification_list.dart';
+part 'model/pending_app_notification_to_delete.dart';
 part 'model/pending_app_notification_type.dart';
 part 'model/pending_chat_notification.dart';
-part 'model/pending_chat_notification_list.dart';
+part 'model/pending_chat_notification_to_delete.dart';
 part 'model/pending_message_acknowledgement_list.dart';
 part 'model/pending_message_id.dart';
 part 'model/perf_metric_query.dart';
@@ -309,6 +310,7 @@ part 'model/profile_sync_version.dart';
 part 'model/profile_text_max_characters_filter.dart';
 part 'model/profile_text_min_characters_filter.dart';
 part 'model/profile_update.dart';
+part 'model/profile_verification_status_filter.dart';
 part 'model/profile_version.dart';
 part 'model/profile_visibility.dart';
 part 'model/public_key_id.dart';
@@ -392,6 +394,7 @@ part 'model/update_profile_text_report.dart';
 part 'model/update_report_result.dart';
 part 'model/vapid_public_key.dart';
 part 'model/verification_action.dart';
+part 'model/verification_config.dart';
 
 
 /// An [ApiClient] instance that uses the default values obtained from

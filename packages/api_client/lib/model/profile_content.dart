@@ -17,6 +17,7 @@ class ProfileContent {
     this.gridCropSize,
     this.gridCropX,
     this.gridCropY,
+    required this.vs,
   });
 
   /// Primary profile image which is shown in grid view.
@@ -28,12 +29,15 @@ class ProfileContent {
 
   double? gridCropY;
 
+  MediaVerificationStatus vs;
+
   @override
   bool operator ==(Object other) => identical(this, other) || other is ProfileContent &&
     _deepEquality.equals(other.c, c) &&
     other.gridCropSize == gridCropSize &&
     other.gridCropX == gridCropX &&
-    other.gridCropY == gridCropY;
+    other.gridCropY == gridCropY &&
+    other.vs == vs;
 
   @override
   int get hashCode =>
@@ -41,10 +45,11 @@ class ProfileContent {
     (c.hashCode) +
     (gridCropSize == null ? 0 : gridCropSize!.hashCode) +
     (gridCropX == null ? 0 : gridCropX!.hashCode) +
-    (gridCropY == null ? 0 : gridCropY!.hashCode);
+    (gridCropY == null ? 0 : gridCropY!.hashCode) +
+    (vs.hashCode);
 
   @override
-  String toString() => 'ProfileContent[c=$c, gridCropSize=$gridCropSize, gridCropX=$gridCropX, gridCropY=$gridCropY]';
+  String toString() => 'ProfileContent[c=$c, gridCropSize=$gridCropSize, gridCropX=$gridCropX, gridCropY=$gridCropY, vs=$vs]';
 
   Map<String, dynamic> toJson() {
     final json = <String, dynamic>{};
@@ -64,6 +69,7 @@ class ProfileContent {
     } else {
       json[r'grid_crop_y'] = null;
     }
+      json[r'vs'] = this.vs;
     return json;
   }
 
@@ -90,6 +96,7 @@ class ProfileContent {
         gridCropSize: mapValueOfType<double>(json, r'grid_crop_size'),
         gridCropX: mapValueOfType<double>(json, r'grid_crop_x'),
         gridCropY: mapValueOfType<double>(json, r'grid_crop_y'),
+        vs: MediaVerificationStatus.fromJson(json[r'vs'])!,
       );
     }
     return null;
@@ -138,6 +145,7 @@ class ProfileContent {
   /// The list of required keys that must be present in a JSON.
   static const requiredKeys = <String>{
     'c',
+    'vs',
   };
 }
 

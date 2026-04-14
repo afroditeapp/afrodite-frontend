@@ -15,25 +15,30 @@ class ProfileConfig {
   ProfileConfig({
     this.firstImage,
     this.profileNameRegex,
+    this.verification,
   });
 
   FirstImageConfig? firstImage;
 
   String? profileNameRegex;
 
+  VerificationConfig? verification;
+
   @override
   bool operator ==(Object other) => identical(this, other) || other is ProfileConfig &&
     other.firstImage == firstImage &&
-    other.profileNameRegex == profileNameRegex;
+    other.profileNameRegex == profileNameRegex &&
+    other.verification == verification;
 
   @override
   int get hashCode =>
     // ignore: unnecessary_parenthesis
     (firstImage == null ? 0 : firstImage!.hashCode) +
-    (profileNameRegex == null ? 0 : profileNameRegex!.hashCode);
+    (profileNameRegex == null ? 0 : profileNameRegex!.hashCode) +
+    (verification == null ? 0 : verification!.hashCode);
 
   @override
-  String toString() => 'ProfileConfig[firstImage=$firstImage, profileNameRegex=$profileNameRegex]';
+  String toString() => 'ProfileConfig[firstImage=$firstImage, profileNameRegex=$profileNameRegex, verification=$verification]';
 
   Map<String, dynamic> toJson() {
     final json = <String, dynamic>{};
@@ -46,6 +51,11 @@ class ProfileConfig {
       json[r'profile_name_regex'] = this.profileNameRegex;
     } else {
       json[r'profile_name_regex'] = null;
+    }
+    if (this.verification != null) {
+      json[r'verification'] = this.verification;
+    } else {
+      json[r'verification'] = null;
     }
     return json;
   }
@@ -71,6 +81,7 @@ class ProfileConfig {
       return ProfileConfig(
         firstImage: FirstImageConfig.fromJson(json[r'first_image']),
         profileNameRegex: mapValueOfType<String>(json, r'profile_name_regex'),
+        verification: VerificationConfig.fromJson(json[r'verification']),
       );
     }
     return null;

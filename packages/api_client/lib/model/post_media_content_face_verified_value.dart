@@ -14,30 +14,36 @@ class PostMediaContentFaceVerifiedValue {
   /// Returns a new [PostMediaContentFaceVerifiedValue] instance.
   PostMediaContentFaceVerifiedValue({
     required this.accountId,
+    required this.securityContent,
     this.values = const [],
   });
 
   AccountId accountId;
+
+  ContentId securityContent;
 
   List<PostMediaContentFaceVerifiedValueItem> values;
 
   @override
   bool operator ==(Object other) => identical(this, other) || other is PostMediaContentFaceVerifiedValue &&
     other.accountId == accountId &&
+    other.securityContent == securityContent &&
     _deepEquality.equals(other.values, values);
 
   @override
   int get hashCode =>
     // ignore: unnecessary_parenthesis
     (accountId.hashCode) +
+    (securityContent.hashCode) +
     (values.hashCode);
 
   @override
-  String toString() => 'PostMediaContentFaceVerifiedValue[accountId=$accountId, values=$values]';
+  String toString() => 'PostMediaContentFaceVerifiedValue[accountId=$accountId, securityContent=$securityContent, values=$values]';
 
   Map<String, dynamic> toJson() {
     final json = <String, dynamic>{};
       json[r'account_id'] = this.accountId;
+      json[r'security_content'] = this.securityContent;
       json[r'values'] = this.values;
     return json;
   }
@@ -62,6 +68,7 @@ class PostMediaContentFaceVerifiedValue {
 
       return PostMediaContentFaceVerifiedValue(
         accountId: AccountId.fromJson(json[r'account_id'])!,
+        securityContent: ContentId.fromJson(json[r'security_content'])!,
         values: PostMediaContentFaceVerifiedValueItem.listFromJson(json[r'values']),
       );
     }
@@ -111,6 +118,7 @@ class PostMediaContentFaceVerifiedValue {
   /// The list of required keys that must be present in a JSON.
   static const requiredKeys = <String>{
     'account_id',
+    'security_content',
     'values',
   };
 }

@@ -213,6 +213,7 @@ lib/model/media_content_pending_moderation.dart
 lib/model/media_content_sync_version.dart
 lib/model/media_content_type.dart
 lib/model/media_content_upload_type.dart
+lib/model/media_verification_status.dart
 lib/model/message_delivery_info.dart
 lib/model/message_delivery_info_id_list.dart
 lib/model/message_delivery_info_list.dart
@@ -235,10 +236,10 @@ lib/model/news_translation_version.dart
 lib/model/nsfw_detection_thresholds.dart
 lib/model/partial_profile_attributes_config.dart
 lib/model/pending_app_notification.dart
-lib/model/pending_app_notification_list.dart
+lib/model/pending_app_notification_to_delete.dart
 lib/model/pending_app_notification_type.dart
 lib/model/pending_chat_notification.dart
-lib/model/pending_chat_notification_list.dart
+lib/model/pending_chat_notification_to_delete.dart
 lib/model/pending_message_acknowledgement_list.dart
 lib/model/pending_message_id.dart
 lib/model/perf_metric_query.dart
@@ -291,6 +292,7 @@ lib/model/profile_sync_version.dart
 lib/model/profile_text_max_characters_filter.dart
 lib/model/profile_text_min_characters_filter.dart
 lib/model/profile_update.dart
+lib/model/profile_verification_status_filter.dart
 lib/model/profile_version.dart
 lib/model/profile_visibility.dart
 lib/model/public_key_id.dart
@@ -374,3 +376,4 @@ lib/model/update_profile_text_report.dart
 lib/model/update_report_result.dart
 lib/model/vapid_public_key.dart
 lib/model/verification_action.dart
+lib/model/verification_config.dart

@@ -21,7 +21,8 @@ import 'package:openapi/api.dart';
 
 class RequiredData {
   final AccountContent accountContent;
-  RequiredData(this.accountContent);
+  final ContentId? securityContent;
+  RequiredData(this.accountContent, this.securityContent);
 }
 
 class AdminContentManagementPage extends MyScreenPageLimited<()> {
@@ -54,11 +55,15 @@ class _AdminContentManagementScreenState extends State<AdminContentManagementScr
         .media((api) => api.getAllAccountMediaContent(widget.accountId.aid))
         .ok();
 
+    final securityContent = await widget.api
+        .media((api) => api.getSecurityContentInfo(widget.accountId.aid))
+        .ok();
+
     if (!context.mounted) {
       return;
     }
 
-    if (result == null) {
+    if (result == null || securityContent == null) {
       showSnackBar(R.strings.generic_error);
       setState(() {
         isLoading = false;
@@ -67,7 +72,7 @@ class _AdminContentManagementScreenState extends State<AdminContentManagementScr
     } else {
       setState(() {
         isLoading = false;
-        data = RequiredData(result);
+        data = RequiredData(result, securityContent.c?.cid);
       });
     }
   }
@@ -215,10 +220,18 @@ class _AdminContentManagementScreenState extends State<AdminContentManagementScr
   }
 
   void changeFaceVerifiedValue(AccountId account, ContentId content, bool? value) async {
+    final securityContent = data?.securityContent;
+
+    if (securityContent == null) {
+      showSnackBar("Error: security content empty");
+      return;
+    }
+
     final result = await widget.api.mediaAdminAction(
       (api) => api.postMediaContentFaceVerifiedValue(
         PostMediaContentFaceVerifiedValue(
           accountId: account,
+          securityContent: securityContent,
           values: [PostMediaContentFaceVerifiedValueItem(contentId: content, value: value)],
         ),
       ),

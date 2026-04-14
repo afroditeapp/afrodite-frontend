@@ -408,7 +408,7 @@ class ChatApi {
     );
   }
 
-  Future<PendingChatNotificationList?> getPendingChatNotifications() async {
+  Future<List<PendingChatNotification>?> getPendingChatNotifications() async {
     final response = await getPendingChatNotificationsWithHttpInfo();
     if (response.statusCode >= HttpStatus.badRequest) {
       throw ApiException(response.statusCode, await _decodeBodyBytes(response));
@@ -417,8 +417,11 @@ class ChatApi {
     // At the time of writing this, `dart:convert` will throw an "Unexpected end of input"
     // FormatException when trying to decode an empty string.
     if (response.body.isNotEmpty && response.statusCode != HttpStatus.noContent) {
-      return await apiClient.deserializeAsync(await _decodeBodyBytes(response), 'PendingChatNotificationList',) as PendingChatNotificationList;
-    
+      final responseBody = await _decodeBodyBytes(response);
+      return (await apiClient.deserializeAsync(responseBody, 'List<PendingChatNotification>') as List)
+        .cast<PendingChatNotification>()
+        .toList(growable: false);
+
     }
     return null;
   }
@@ -1190,13 +1193,13 @@ class ChatApi {
   /// Performs an HTTP 'POST /chat_api/pending_notifications/delete' operation and returns the [Response].
   /// Parameters:
   ///
-  /// * [PendingChatNotificationList] pendingChatNotificationList (required):
-  Future<Response> postDeletePendingChatNotificationsWithHttpInfo(PendingChatNotificationList pendingChatNotificationList,) async {
+  /// * [List<PendingChatNotificationToDelete>] pendingChatNotificationToDelete (required):
+  Future<Response> postDeletePendingChatNotificationsWithHttpInfo(List<PendingChatNotificationToDelete> pendingChatNotificationToDelete,) async {
     // ignore: prefer_const_declarations
     final path = r'/chat_api/pending_notifications/delete';
 
     // ignore: prefer_final_locals
-    Object? postBody = pendingChatNotificationList;
+    Object? postBody = pendingChatNotificationToDelete;
 
     final queryParams = <QueryParam>[];
     final headerParams = <String, String>{};
@@ -1218,9 +1221,9 @@ class ChatApi {
 
   /// Parameters:
   ///
-  /// * [PendingChatNotificationList] pendingChatNotificationList (required):
-  Future<void> postDeletePendingChatNotifications(PendingChatNotificationList pendingChatNotificationList,) async {
-    final response = await postDeletePendingChatNotificationsWithHttpInfo(pendingChatNotificationList,);
+  /// * [List<PendingChatNotificationToDelete>] pendingChatNotificationToDelete (required):
+  Future<void> postDeletePendingChatNotifications(List<PendingChatNotificationToDelete> pendingChatNotificationToDelete,) async {
+    final response = await postDeletePendingChatNotificationsWithHttpInfo(pendingChatNotificationToDelete,);
     if (response.statusCode >= HttpStatus.badRequest) {
       throw ApiException(response.statusCode, await _decodeBodyBytes(response));
     }

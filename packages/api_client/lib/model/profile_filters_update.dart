@@ -21,6 +21,7 @@ class ProfileFiltersUpdate {
     this.profileEditedFilter,
     this.profileTextMaxCharactersFilter,
     this.profileTextMinCharactersFilter,
+    this.profileVerificationStatusFilter,
     this.randomProfileOrder = false,
     this.unlimitedLikesFilter,
   });
@@ -41,6 +42,8 @@ class ProfileFiltersUpdate {
 
   ProfileTextMinCharactersFilter? profileTextMinCharactersFilter;
 
+  ProfileVerificationStatusFilter? profileVerificationStatusFilter;
+
   bool randomProfileOrder;
 
   bool? unlimitedLikesFilter;
@@ -55,6 +58,7 @@ class ProfileFiltersUpdate {
     other.profileEditedFilter == profileEditedFilter &&
     other.profileTextMaxCharactersFilter == profileTextMaxCharactersFilter &&
     other.profileTextMinCharactersFilter == profileTextMinCharactersFilter &&
+    other.profileVerificationStatusFilter == profileVerificationStatusFilter &&
     other.randomProfileOrder == randomProfileOrder &&
     other.unlimitedLikesFilter == unlimitedLikesFilter;
 
@@ -69,11 +73,12 @@ class ProfileFiltersUpdate {
     (profileEditedFilter == null ? 0 : profileEditedFilter!.hashCode) +
     (profileTextMaxCharactersFilter == null ? 0 : profileTextMaxCharactersFilter!.hashCode) +
     (profileTextMinCharactersFilter == null ? 0 : profileTextMinCharactersFilter!.hashCode) +
+    (profileVerificationStatusFilter == null ? 0 : profileVerificationStatusFilter!.hashCode) +
     (randomProfileOrder.hashCode) +
     (unlimitedLikesFilter == null ? 0 : unlimitedLikesFilter!.hashCode);
 
   @override
-  String toString() => 'ProfileFiltersUpdate[attributeFilters=$attributeFilters, lastSeenTimeFilter=$lastSeenTimeFilter, maxDistanceKmFilter=$maxDistanceKmFilter, minDistanceKmFilter=$minDistanceKmFilter, profileCreatedFilter=$profileCreatedFilter, profileEditedFilter=$profileEditedFilter, profileTextMaxCharactersFilter=$profileTextMaxCharactersFilter, profileTextMinCharactersFilter=$profileTextMinCharactersFilter, randomProfileOrder=$randomProfileOrder, unlimitedLikesFilter=$unlimitedLikesFilter]';
+  String toString() => 'ProfileFiltersUpdate[attributeFilters=$attributeFilters, lastSeenTimeFilter=$lastSeenTimeFilter, maxDistanceKmFilter=$maxDistanceKmFilter, minDistanceKmFilter=$minDistanceKmFilter, profileCreatedFilter=$profileCreatedFilter, profileEditedFilter=$profileEditedFilter, profileTextMaxCharactersFilter=$profileTextMaxCharactersFilter, profileTextMinCharactersFilter=$profileTextMinCharactersFilter, profileVerificationStatusFilter=$profileVerificationStatusFilter, randomProfileOrder=$randomProfileOrder, unlimitedLikesFilter=$unlimitedLikesFilter]';
 
   Map<String, dynamic> toJson() {
     final json = <String, dynamic>{};
@@ -113,6 +118,11 @@ class ProfileFiltersUpdate {
     } else {
       json[r'profile_text_min_characters_filter'] = null;
     }
+    if (this.profileVerificationStatusFilter != null) {
+      json[r'profile_verification_status_filter'] = this.profileVerificationStatusFilter;
+    } else {
+      json[r'profile_verification_status_filter'] = null;
+    }
       json[r'random_profile_order'] = this.randomProfileOrder;
     if (this.unlimitedLikesFilter != null) {
       json[r'unlimited_likes_filter'] = this.unlimitedLikesFilter;
@@ -149,6 +159,7 @@ class ProfileFiltersUpdate {
         profileEditedFilter: ProfileEditedTimeFilter.fromJson(json[r'profile_edited_filter']),
         profileTextMaxCharactersFilter: ProfileTextMaxCharactersFilter.fromJson(json[r'profile_text_max_characters_filter']),
         profileTextMinCharactersFilter: ProfileTextMinCharactersFilter.fromJson(json[r'profile_text_min_characters_filter']),
+        profileVerificationStatusFilter: ProfileVerificationStatusFilter.fromJson(json[r'profile_verification_status_filter']),
         randomProfileOrder: mapValueOfType<bool>(json, r'random_profile_order') ?? false,
         unlimitedLikesFilter: mapValueOfType<bool>(json, r'unlimited_likes_filter'),
       );
