@@ -101,8 +101,6 @@ class NavigateToConversation extends NavigationAction {
 
 class NavigateToContentManagement extends NavigationAction {}
 
-class NavigateToMyProfile extends NavigationAction {}
-
 class NavigateToEditProfile extends NavigationAction {}
 
 // TODO(quality): Opening another automatic profile search result screen

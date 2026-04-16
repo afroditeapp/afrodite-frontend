@@ -4,7 +4,6 @@ import 'package:app/data/utils/repository_instances.dart';
 import 'package:app/model/freezed/logic/main/bottom_navigation_state.dart';
 import 'package:app/ui/normal.dart';
 import 'package:app/ui/normal/settings/admin/moderator_tasks.dart';
-import 'package:app/ui/normal/settings/my_profile.dart';
 import 'package:app/ui/normal/settings/news/news_list.dart';
 import 'package:app/ui/normal/settings/notifications/automatic_profile_search_results.dart';
 import 'package:app/ui/normal/settings/profile/edit_profile.dart';
@@ -130,12 +129,6 @@ Future<NotificationNavigationAction> _handlePayload(
         return DoNothing();
       } else {
         return NewScreen(ContentManagementPage());
-      }
-    case NavigateToMyProfile():
-      if (lastPage is MyProfilePage) {
-        return DoNothing();
-      } else {
-        return NewScreen(MyProfilePage());
       }
     case NavigateToEditProfile():
       if (lastPage is EditProfilePage) {
