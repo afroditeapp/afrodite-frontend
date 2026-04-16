@@ -188,6 +188,7 @@ mixin _$EditedFiltersData {
   EditValue<ProfileEditedTimeFilter> get profileEditedFilter => throw _privateConstructorErrorEditedFiltersData;
   EditValue<ProfileTextMinCharactersFilter> get profileTextMinCharactersFilter => throw _privateConstructorErrorEditedFiltersData;
   EditValue<ProfileTextMaxCharactersFilter> get profileTextMaxCharactersFilter => throw _privateConstructorErrorEditedFiltersData;
+  EditValue<ProfileVerificationStatusFilter> get profileVerificationStatusFilter => throw _privateConstructorErrorEditedFiltersData;
   bool? get randomProfileOrder => throw _privateConstructorErrorEditedFiltersData;
   int? get minAge => throw _privateConstructorErrorEditedFiltersData;
   int? get maxAge => throw _privateConstructorErrorEditedFiltersData;
@@ -202,6 +203,7 @@ mixin _$EditedFiltersData {
     EditValue<ProfileEditedTimeFilter>? profileEditedFilter,
     EditValue<ProfileTextMinCharactersFilter>? profileTextMinCharactersFilter,
     EditValue<ProfileTextMaxCharactersFilter>? profileTextMaxCharactersFilter,
+    EditValue<ProfileVerificationStatusFilter>? profileVerificationStatusFilter,
     bool? randomProfileOrder,
     int? minAge,
     int? maxAge,
@@ -220,6 +222,7 @@ abstract class _EditedFiltersData extends EditedFiltersData {
     EditValue<ProfileEditedTimeFilter> profileEditedFilter,
     EditValue<ProfileTextMinCharactersFilter> profileTextMinCharactersFilter,
     EditValue<ProfileTextMaxCharactersFilter> profileTextMaxCharactersFilter,
+    EditValue<ProfileVerificationStatusFilter> profileVerificationStatusFilter,
     bool? randomProfileOrder,
     int? minAge,
     int? maxAge,
@@ -237,6 +240,7 @@ class _$EditedFiltersDataImpl extends _EditedFiltersData with DiagnosticableTree
   static const EditValue<ProfileEditedTimeFilter> _profileEditedFilterDefaultValue = NoEdit();
   static const EditValue<ProfileTextMinCharactersFilter> _profileTextMinCharactersFilterDefaultValue = NoEdit();
   static const EditValue<ProfileTextMaxCharactersFilter> _profileTextMaxCharactersFilterDefaultValue = NoEdit();
+  static const EditValue<ProfileVerificationStatusFilter> _profileVerificationStatusFilterDefaultValue = NoEdit();
 
   _$EditedFiltersDataImpl({
     this.attributeIdAndAttributeFilterMap,
@@ -248,6 +252,7 @@ class _$EditedFiltersDataImpl extends _EditedFiltersData with DiagnosticableTree
     this.profileEditedFilter = _profileEditedFilterDefaultValue,
     this.profileTextMinCharactersFilter = _profileTextMinCharactersFilterDefaultValue,
     this.profileTextMaxCharactersFilter = _profileTextMaxCharactersFilterDefaultValue,
+    this.profileVerificationStatusFilter = _profileVerificationStatusFilterDefaultValue,
     this.randomProfileOrder,
     this.minAge,
     this.maxAge,
@@ -272,6 +277,8 @@ class _$EditedFiltersDataImpl extends _EditedFiltersData with DiagnosticableTree
   @override
   final EditValue<ProfileTextMaxCharactersFilter> profileTextMaxCharactersFilter;
   @override
+  final EditValue<ProfileVerificationStatusFilter> profileVerificationStatusFilter;
+  @override
   final bool? randomProfileOrder;
   @override
   final int? minAge;
@@ -280,7 +287,7 @@ class _$EditedFiltersDataImpl extends _EditedFiltersData with DiagnosticableTree
 
   @override
   String toString({DiagnosticLevel minLevel = DiagnosticLevel.info}) {
-    return 'EditedFiltersData(attributeIdAndAttributeFilterMap: $attributeIdAndAttributeFilterMap, lastSeenTimeFilter: $lastSeenTimeFilter, unlimitedLikesFilter: $unlimitedLikesFilter, minDistanceKmFilter: $minDistanceKmFilter, maxDistanceKmFilter: $maxDistanceKmFilter, profileCreatedFilter: $profileCreatedFilter, profileEditedFilter: $profileEditedFilter, profileTextMinCharactersFilter: $profileTextMinCharactersFilter, profileTextMaxCharactersFilter: $profileTextMaxCharactersFilter, randomProfileOrder: $randomProfileOrder, minAge: $minAge, maxAge: $maxAge)';
+    return 'EditedFiltersData(attributeIdAndAttributeFilterMap: $attributeIdAndAttributeFilterMap, lastSeenTimeFilter: $lastSeenTimeFilter, unlimitedLikesFilter: $unlimitedLikesFilter, minDistanceKmFilter: $minDistanceKmFilter, maxDistanceKmFilter: $maxDistanceKmFilter, profileCreatedFilter: $profileCreatedFilter, profileEditedFilter: $profileEditedFilter, profileTextMinCharactersFilter: $profileTextMinCharactersFilter, profileTextMaxCharactersFilter: $profileTextMaxCharactersFilter, profileVerificationStatusFilter: $profileVerificationStatusFilter, randomProfileOrder: $randomProfileOrder, minAge: $minAge, maxAge: $maxAge)';
   }
 
   @override
@@ -297,6 +304,7 @@ class _$EditedFiltersDataImpl extends _EditedFiltersData with DiagnosticableTree
       ..add(DiagnosticsProperty('profileEditedFilter', profileEditedFilter))
       ..add(DiagnosticsProperty('profileTextMinCharactersFilter', profileTextMinCharactersFilter))
       ..add(DiagnosticsProperty('profileTextMaxCharactersFilter', profileTextMaxCharactersFilter))
+      ..add(DiagnosticsProperty('profileVerificationStatusFilter', profileVerificationStatusFilter))
       ..add(DiagnosticsProperty('randomProfileOrder', randomProfileOrder))
       ..add(DiagnosticsProperty('minAge', minAge))
       ..add(DiagnosticsProperty('maxAge', maxAge));
@@ -325,6 +333,8 @@ class _$EditedFiltersDataImpl extends _EditedFiltersData with DiagnosticableTree
           other.profileTextMinCharactersFilter == profileTextMinCharactersFilter) &&
         (identical(other.profileTextMaxCharactersFilter, profileTextMaxCharactersFilter) ||
           other.profileTextMaxCharactersFilter == profileTextMaxCharactersFilter) &&
+        (identical(other.profileVerificationStatusFilter, profileVerificationStatusFilter) ||
+          other.profileVerificationStatusFilter == profileVerificationStatusFilter) &&
         (identical(other.randomProfileOrder, randomProfileOrder) ||
           other.randomProfileOrder == randomProfileOrder) &&
         (identical(other.minAge, minAge) ||
@@ -346,6 +356,7 @@ class _$EditedFiltersDataImpl extends _EditedFiltersData with DiagnosticableTree
     profileEditedFilter,
     profileTextMinCharactersFilter,
     profileTextMaxCharactersFilter,
+    profileVerificationStatusFilter,
     randomProfileOrder,
     minAge,
     maxAge,
@@ -362,6 +373,7 @@ class _$EditedFiltersDataImpl extends _EditedFiltersData with DiagnosticableTree
     Object? profileEditedFilter,
     Object? profileTextMinCharactersFilter,
     Object? profileTextMaxCharactersFilter,
+    Object? profileVerificationStatusFilter,
     Object? randomProfileOrder = _detectDefaultValueInCopyWith,
     Object? minAge = _detectDefaultValueInCopyWith,
     Object? maxAge = _detectDefaultValueInCopyWith,
@@ -375,6 +387,7 @@ class _$EditedFiltersDataImpl extends _EditedFiltersData with DiagnosticableTree
     profileEditedFilter: (profileEditedFilter ?? this.profileEditedFilter) as EditValue<ProfileEditedTimeFilter>,
     profileTextMinCharactersFilter: (profileTextMinCharactersFilter ?? this.profileTextMinCharactersFilter) as EditValue<ProfileTextMinCharactersFilter>,
     profileTextMaxCharactersFilter: (profileTextMaxCharactersFilter ?? this.profileTextMaxCharactersFilter) as EditValue<ProfileTextMaxCharactersFilter>,
+    profileVerificationStatusFilter: (profileVerificationStatusFilter ?? this.profileVerificationStatusFilter) as EditValue<ProfileVerificationStatusFilter>,
     randomProfileOrder: (randomProfileOrder == _detectDefaultValueInCopyWith ? this.randomProfileOrder : randomProfileOrder) as bool?,
     minAge: (minAge == _detectDefaultValueInCopyWith ? this.minAge : minAge) as int?,
     maxAge: (maxAge == _detectDefaultValueInCopyWith ? this.maxAge : maxAge) as int?,

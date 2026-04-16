@@ -199,6 +199,7 @@ class PrivacySettingsBloc extends Bloc<PrivacySettingsEvent, PrivacySettingsData
       currentFilters?.profileEditedFilter,
       currentFilters?.profileTextMinCharactersFilter,
       currentFilters?.profileTextMaxCharactersFilter,
+      currentFilters?.profileVerificationStatusFilter,
       currentFilters?.randomProfileOrder ?? false,
     );
     await profile.resetMainProfileIterator();

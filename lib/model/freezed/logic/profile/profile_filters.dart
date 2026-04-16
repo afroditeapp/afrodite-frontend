@@ -32,7 +32,8 @@ class ProfileFiltersData with _$ProfileFiltersData, UpdateStateProvider {
         valueProfileCreatedTime() != null ||
         valueProfileEditedTime() != null ||
         valueProfileTextMinCharacters() != null ||
-        valueProfileTextMaxCharacters() != null;
+        valueProfileTextMaxCharacters() != null ||
+        valueProfileVerificationStatusFilter() != null;
   }
 
   IconData icon() {
@@ -53,6 +54,7 @@ class ProfileFiltersData with _$ProfileFiltersData, UpdateStateProvider {
       edited.profileEditedFilter.unsavedChanges() ||
       edited.profileTextMinCharactersFilter.unsavedChanges() ||
       edited.profileTextMaxCharactersFilter.unsavedChanges() ||
+      edited.profileVerificationStatusFilter.unsavedChanges() ||
       edited.randomProfileOrder != null ||
       edited.minAge != null ||
       edited.maxAge != null;
@@ -75,6 +77,8 @@ class ProfileFiltersData with _$ProfileFiltersData, UpdateStateProvider {
       edited.profileTextMinCharactersFilter.editedValue(filters?.profileTextMinCharactersFilter);
   ProfileTextMaxCharactersFilter? valueProfileTextMaxCharacters() =>
       edited.profileTextMaxCharactersFilter.editedValue(filters?.profileTextMaxCharactersFilter);
+  ProfileVerificationStatusFilter? valueProfileVerificationStatusFilter() =>
+      edited.profileVerificationStatusFilter.editedValue(filters?.profileVerificationStatusFilter);
   bool valueRandomProfileOrder() =>
       edited.randomProfileOrder ?? filters?.randomProfileOrder ?? false;
   int valueMinAge() => edited.minAge ?? minAge;
@@ -94,6 +98,7 @@ class EditedFiltersData with _$EditedFiltersData {
     @Default(NoEdit()) EditValue<ProfileEditedTimeFilter> profileEditedFilter,
     @Default(NoEdit()) EditValue<ProfileTextMinCharactersFilter> profileTextMinCharactersFilter,
     @Default(NoEdit()) EditValue<ProfileTextMaxCharactersFilter> profileTextMaxCharactersFilter,
+    @Default(NoEdit()) EditValue<ProfileVerificationStatusFilter> profileVerificationStatusFilter,
     bool? randomProfileOrder,
     int? minAge,
     int? maxAge,
@@ -109,6 +114,7 @@ class EditedFiltersData with _$EditedFiltersData {
       profileEditedFilter.unsavedChanges() ||
       profileTextMinCharactersFilter.unsavedChanges() ||
       profileTextMaxCharactersFilter.unsavedChanges() ||
+      profileVerificationStatusFilter.unsavedChanges() ||
       randomProfileOrder != null;
 
   bool isAgeRangeUpdateNeeded() => minAge != null || maxAge != null;

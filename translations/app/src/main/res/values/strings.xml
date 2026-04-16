@@ -445,6 +445,9 @@
     <string name="profile_filters_screen_profile_text_filter_min_value" description="Value text for profile text filter when only min value is selected">Min %s characters</string>
     <string name="profile_filters_screen_profile_text_filter_max_value" description="Value text for profile text filter when only max value is selected">Max %s characters</string>
     <string name="profile_filters_screen_profile_text_filter_min_and_max_value" description="Value text for profile text filter when both min and max values are selected">%s-%s characters</string>
+    <string name="profile_filters_screen_profile_verification_status_filter" description="Title for profile verification status filter">Profile verification</string>
+    <string name="profile_filters_screen_profile_verification_status_filter_face_verified_any" description="Option text for profile verification status filter face verified any">Face pictures (any)</string>
+    <string name="profile_filters_screen_profile_verification_status_filter_face_verified_all" description="Option text for profile verification status filter face verified all">Face pictures (all)</string>
     <string name="profile_filters_screen_updating_filters_failed" description="Snackbar text for notifying about failed profile filters update">Updating profile filters failed</string>
 
     <!-- Edit profile attribute filter value screen -->

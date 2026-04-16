@@ -24,6 +24,7 @@ import 'package:app/model/freezed/logic/profile/attributes.dart';
 import 'package:app/model/freezed/logic/profile/profile_filters.dart';
 import 'package:app/model/freezed/logic/settings/privacy_settings.dart';
 import 'package:app/ui/normal/profiles/edit_profile_attribute_filter.dart';
+import 'package:app/ui/normal/profiles/profile_filters/profile_verification.dart';
 import 'package:app/ui/normal/settings/profile/edit_profile.dart';
 import 'package:app/ui_utils/consts/padding.dart';
 import 'package:app/ui_utils/common_update_logic.dart';
@@ -175,6 +176,7 @@ class _ProfileFiltersScreenState extends State<ProfileFiltersScreen> {
           unlimitedLikesSetting(context),
           const Divider(),
           const EditAttributeFilters(),
+          const ProfileVerificationStatusFilterSection(),
           const Padding(padding: EdgeInsets.only(top: LIST_END_EMPTY_AREA)),
         ],
       ),

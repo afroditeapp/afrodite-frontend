@@ -96,6 +96,11 @@ class SetProfileTextFilter extends ProfileFiltersEvent {
   SetProfileTextFilter(this.min, this.max);
 }
 
+class SetProfileVerificationStatusFilter extends ProfileFiltersEvent {
+  final ProfileVerificationStatusFilter? value;
+  SetProfileVerificationStatusFilter(this.value);
+}
+
 class SetRandomProfileOrderAndSaveSettings extends ProfileFiltersEvent {
   final bool value;
   SetRandomProfileOrderAndSaveSettings(this.value);
@@ -175,6 +180,7 @@ class ProfileFiltersBloc extends Bloc<ProfileFiltersEvent, ProfileFiltersData> w
                 s.valueProfileEditedTime(),
                 s.valueProfileTextMinCharacters(),
                 s.valueProfileTextMaxCharacters(),
+                s.valueProfileVerificationStatusFilter(),
                 s.valueRandomProfileOrder(),
               )
               .isErr()) {
@@ -228,6 +234,7 @@ class ProfileFiltersBloc extends Bloc<ProfileFiltersEvent, ProfileFiltersData> w
       add(SetProfileCreatedFilter(null));
       add(SetProfileEditedFilter(null));
       add(SetProfileTextFilter(null, null));
+      add(SetProfileVerificationStatusFilter(null));
     });
     on<NewShowAdvancedFiltersValue>((data, emit) {
       emit(state.copyWith(showAdvancedFilters: data.value));
@@ -323,6 +330,14 @@ class ProfileFiltersBloc extends Bloc<ProfileFiltersEvent, ProfileFiltersData> w
       modifyEdited(
         emit,
         (e) => e.copyWith(profileTextMinCharactersFilter: min, profileTextMaxCharactersFilter: max),
+      );
+    });
+    on<SetProfileVerificationStatusFilter>((data, emit) {
+      modifyEdited(
+        emit,
+        (e) => state.filters?.profileVerificationStatusFilter == data.value
+            ? e.copyWith(profileVerificationStatusFilter: const NoEdit())
+            : e.copyWith(profileVerificationStatusFilter: editValue(data.value)),
       );
     });
     on<SetRandomProfileOrderAndSaveSettings>((data, emit) {

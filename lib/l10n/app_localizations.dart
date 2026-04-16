@@ -2572,6 +2572,24 @@ abstract class AppLocalizations {
   /// **'Min {p0} characters'**
   String profile_filters_screen_profile_text_filter_min_value(String p0);
 
+  /// Title for profile verification status filter
+  ///
+  /// In en, this message translates to:
+  /// **'Profile verification'**
+  String get profile_filters_screen_profile_verification_status_filter;
+
+  /// Option text for profile verification status filter face verified all
+  ///
+  /// In en, this message translates to:
+  /// **'Face pictures (all)'**
+  String get profile_filters_screen_profile_verification_status_filter_face_verified_all;
+
+  /// Option text for profile verification status filter face verified any
+  ///
+  /// In en, this message translates to:
+  /// **'Face pictures (any)'**
+  String get profile_filters_screen_profile_verification_status_filter_face_verified_any;
+
   /// Title for profile filters screen
   ///
   /// In en, this message translates to:

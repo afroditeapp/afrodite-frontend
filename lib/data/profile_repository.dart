@@ -462,6 +462,7 @@ class ProfileRepository extends DataRepositoryWithLifecycle {
     ProfileEditedTimeFilter? profileEditedFilter,
     ProfileTextMinCharactersFilter? profileTextMinCharactersFilter,
     ProfileTextMaxCharactersFilter? profileTextMaxCharactersFilter,
+    ProfileVerificationStatusFilter? profileVerificationStatusFilter,
     bool randomProfileOrder,
   ) async {
     final update = ProfileFiltersUpdate(
@@ -474,6 +475,7 @@ class ProfileRepository extends DataRepositoryWithLifecycle {
       profileEditedFilter: profileEditedFilter,
       profileTextMinCharactersFilter: profileTextMinCharactersFilter,
       profileTextMaxCharactersFilter: profileTextMaxCharactersFilter,
+      profileVerificationStatusFilter: profileVerificationStatusFilter,
       randomProfileOrder: randomProfileOrder,
     );
     return await _api
