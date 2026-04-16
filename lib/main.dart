@@ -60,6 +60,8 @@ Future<void> main() async {
 
   await SystemChrome.setPreferredOrientations(DEFAULT_ORIENTATIONS);
 
+  // CommonDatabaseManager requires initialized AppVersionManager
+  await AppVersionManager.getInstance().init();
   // Locale saving needs database so init here
   await CommonDatabaseManager.getInstance().init();
 
@@ -196,8 +198,6 @@ class GlobalInitManager extends AppSingletonNoInit {
       _globalInitState.add(GlobalInitState.appIsAlreadyRunning);
       return;
     }
-
-    await AppVersionManager.getInstance().init();
 
     if (AppVersionManager.getInstance()
         .previewVersionMinorVersionChangedOrTransitionToStableVersionsHappened()) {
