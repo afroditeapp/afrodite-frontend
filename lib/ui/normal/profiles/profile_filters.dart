@@ -23,7 +23,7 @@ import 'package:app/model/freezed/logic/main/navigator_state.dart';
 import 'package:app/model/freezed/logic/profile/attributes.dart';
 import 'package:app/model/freezed/logic/profile/profile_filters.dart';
 import 'package:app/model/freezed/logic/settings/privacy_settings.dart';
-import 'package:app/ui/normal/profiles/edit_profile_attribute_filter.dart';
+import 'package:app/ui/normal/profiles/profile_filters/edit_profile_attribute_filter.dart';
 import 'package:app/ui/normal/profiles/profile_filters/profile_verification.dart';
 import 'package:app/ui/normal/settings/profile/edit_profile.dart';
 import 'package:app/ui_utils/consts/padding.dart';
