@@ -285,16 +285,17 @@ class _ViewProfileEntryState extends State<ViewProfileEntry> {
     );
   }
 
-  Widget profileVerificationStatus(BuildContext context) {
+  Widget profileVerificationStatus(BuildContext context, VerificationConfig verificationConfig) {
     final verificationStatus = widget.profile.mediaVerificationStatus;
     final hasAllVerified = verificationStatus & ProfileVerificationStatusFlags.faceVerifiedAll != 0;
-    final selectedOptions = profileVerificationStatusOptions(context)
-        .where(
-          (option) =>
-              verificationStatus & option.$1 != 0 &&
-              (!hasAllVerified || option.$1 != ProfileVerificationStatusFlags.faceVerifiedAny),
-        )
-        .toList();
+    final selectedOptions =
+        profileVerificationStatusOptions(context, verification: verificationConfig)
+            .where(
+              (option) =>
+                  verificationStatus & option.$1 != 0 &&
+                  (!hasAllVerified || option.$1 != ProfileVerificationStatusFlags.faceVerifiedAny),
+            )
+            .toList();
 
     return Column(
       crossAxisAlignment: CrossAxisAlignment.start,
@@ -321,8 +322,9 @@ class _ViewProfileEntryState extends State<ViewProfileEntry> {
   Widget profileVerificationStatusSection() {
     return BlocBuilder<ClientFeaturesConfigBloc, ClientFeaturesConfigData>(
       builder: (context, state) {
-        final verificationDisabled = state.config.profile?.verification == VerificationConfig();
-        if (verificationDisabled || widget.profile.mediaVerificationStatus == 0) {
+        final verificationConfig = state.verificationConfig();
+        if (verificationConfig == VerificationConfig() ||
+            widget.profile.mediaVerificationStatus == 0) {
           return const SizedBox.shrink();
         }
 
@@ -330,7 +332,7 @@ class _ViewProfileEntryState extends State<ViewProfileEntry> {
           mainAxisSize: MainAxisSize.min,
           children: [
             const Padding(padding: EdgeInsets.only(top: 8)),
-            profileVerificationStatus(context),
+            profileVerificationStatus(context, verificationConfig),
           ],
         );
       },

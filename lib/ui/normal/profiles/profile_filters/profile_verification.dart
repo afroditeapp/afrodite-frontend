@@ -21,17 +21,30 @@ const _PROFILE_VERIFICATION_STATUS_ICON = MaterialAttributeIcon(Icons.verified_u
 
 MaterialAttributeIcon profileVerificationStatusIcon() => _PROFILE_VERIFICATION_STATUS_ICON;
 
-List<(int, String)> profileVerificationStatusOptions(BuildContext context) {
-  return [
+typedef _ProfileVerificationStatusOption = ((int, String), bool Function(VerificationConfig));
+
+List<(int, String)> profileVerificationStatusOptions(
+  BuildContext context, {
+  required VerificationConfig verification,
+}) {
+  final options = <_ProfileVerificationStatusOption>[
     (
-      ProfileVerificationStatusFlags.faceVerifiedAny,
-      context.strings.profile_filters_screen_profile_verification_status_filter_face_verified_any,
+      (
+        ProfileVerificationStatusFlags.faceVerifiedAny,
+        context.strings.profile_filters_screen_profile_verification_status_filter_face_verified_any,
+      ),
+      (verification) => verification.face,
     ),
     (
-      ProfileVerificationStatusFlags.faceVerifiedAll,
-      context.strings.profile_filters_screen_profile_verification_status_filter_face_verified_all,
+      (
+        ProfileVerificationStatusFlags.faceVerifiedAll,
+        context.strings.profile_filters_screen_profile_verification_status_filter_face_verified_all,
+      ),
+      (verification) => verification.face,
     ),
   ];
+
+  return options.where((option) => option.$2(verification)).map((option) => option.$1).toList();
 }
 
 class ProfileVerificationStatusFilterSection extends StatelessWidget {
@@ -41,13 +54,17 @@ class ProfileVerificationStatusFilterSection extends StatelessWidget {
   Widget build(BuildContext context) {
     return BlocBuilder<ClientFeaturesConfigBloc, ClientFeaturesConfigData>(
       builder: (context, clientFeaturesConfigState) {
-        if (clientFeaturesConfigState.config.profile?.verification == VerificationConfig()) {
+        final config = clientFeaturesConfigState.verificationConfig();
+        if (config == VerificationConfig()) {
           return const SizedBox.shrink();
         }
 
         return Column(
           mainAxisSize: MainAxisSize.min,
-          children: const [Divider(), _ProfileVerificationStatusFilter()],
+          children: [
+            const Divider(),
+            _ProfileVerificationStatusFilter(verificationConfig: config),
+          ],
         );
       },
     );
@@ -55,19 +72,20 @@ class ProfileVerificationStatusFilterSection extends StatelessWidget {
 }
 
 class _ProfileVerificationStatusFilter extends StatelessWidget {
-  const _ProfileVerificationStatusFilter();
+  final VerificationConfig verificationConfig;
+  const _ProfileVerificationStatusFilter({required this.verificationConfig});
 
   @override
   Widget build(BuildContext context) {
     return BlocBuilder<ProfileFiltersBloc, ProfileFiltersData>(
       builder: (context, state) {
         final value = state.valueProfileVerificationStatusFilter()?.value;
-        final options = profileVerificationStatusOptions(context);
+        final options = profileVerificationStatusOptions(context, verification: verificationConfig);
         final selectedOptions = options.where((option) => (value ?? 0) & option.$1 != 0).toList();
 
         return InkWell(
           onTap: () {
-            MyNavigator.pushLimited(context, ProfileVerificationFilterPage());
+            MyNavigator.pushLimited(context, ProfileVerificationFilterPage(verificationConfig));
           },
           child: Row(
             children: [
@@ -108,14 +126,19 @@ class _ProfileVerificationStatusFilter extends StatelessWidget {
 }
 
 class ProfileVerificationFilterPage extends MyScreenPageLimited<()> {
-  ProfileVerificationFilterPage() : super(builder: (_) => const ProfileVerificationFilterScreen());
+  final VerificationConfig verificationConfig;
+  ProfileVerificationFilterPage(this.verificationConfig)
+    : super(builder: (_) => ProfileVerificationFilterScreen(verificationConfig));
 }
 
 class ProfileVerificationFilterScreen extends StatelessWidget {
-  const ProfileVerificationFilterScreen({super.key});
+  final VerificationConfig verificationConfig;
+  const ProfileVerificationFilterScreen(this.verificationConfig, {super.key});
 
   @override
   Widget build(BuildContext context) {
+    final options = profileVerificationStatusOptions(context, verification: verificationConfig);
+
     return Scaffold(
       appBar: AppBar(
         title: Text(context.strings.profile_filters_screen_profile_verification_status_filter),
@@ -125,42 +148,14 @@ class ProfileVerificationFilterScreen extends StatelessWidget {
           final currentValue = state.valueProfileVerificationStatusFilter()?.value ?? 0;
           return ListView(
             children: [
-              CheckboxListTile(
-                title: Text(
-                  context
-                      .strings
-                      .profile_filters_screen_profile_verification_status_filter_face_verified_any,
+              for (final option in options)
+                CheckboxListTile(
+                  title: Text(option.$2),
+                  value: (currentValue & option.$1) != 0,
+                  onChanged: (enabled) {
+                    setValue(context, toggleBit(currentValue, option.$1, enabled == true));
+                  },
                 ),
-                value: (currentValue & ProfileVerificationStatusFlags.faceVerifiedAny) != 0,
-                onChanged: (enabled) {
-                  setValue(
-                    context,
-                    toggleBit(
-                      currentValue,
-                      ProfileVerificationStatusFlags.faceVerifiedAny,
-                      enabled == true,
-                    ),
-                  );
-                },
-              ),
-              CheckboxListTile(
-                title: Text(
-                  context
-                      .strings
-                      .profile_filters_screen_profile_verification_status_filter_face_verified_all,
-                ),
-                value: (currentValue & ProfileVerificationStatusFlags.faceVerifiedAll) != 0,
-                onChanged: (enabled) {
-                  setValue(
-                    context,
-                    toggleBit(
-                      currentValue,
-                      ProfileVerificationStatusFlags.faceVerifiedAll,
-                      enabled == true,
-                    ),
-                  );
-                },
-              ),
             ],
           );
         },

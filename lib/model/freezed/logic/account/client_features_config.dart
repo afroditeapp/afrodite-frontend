@@ -73,6 +73,10 @@ class ClientFeaturesConfigData with _$ClientFeaturesConfigData {
   String? ipCountryDataAttribution(BuildContext context) {
     return config.attribution?.ipCountry?.toLocalizedText(context);
   }
+
+  VerificationConfig verificationConfig() {
+    return config.profile?.verification ?? VerificationConfig();
+  }
 }
 
 class Time {

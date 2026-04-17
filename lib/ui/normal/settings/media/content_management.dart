@@ -77,8 +77,7 @@ class _ContentManagementScreenState extends State<ContentManagementScreen> {
       ),
       body: BlocBuilder<ClientFeaturesConfigBloc, ClientFeaturesConfigData>(
         builder: (context, clientFeaturesConfigState) {
-          final faceVerificationEnabled =
-              clientFeaturesConfigState.config.profile?.verification?.face ?? false;
+          final faceVerificationEnabled = clientFeaturesConfigState.verificationConfig().face;
           return BlocBuilder<ContentBloc, ContentData>(
             builder: (context, contentState) {
               final securityContent = contentState.currentSecurityContent;
