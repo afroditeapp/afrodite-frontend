@@ -23,8 +23,6 @@ class AppVersionManager extends AppSingleton {
   late int minor;
   late int patch;
 
-  String? _previousVersion;
-
   ClientVersion get clientVersion => ClientVersion(major: major, minor: minor, patch_: patch);
 
   @override
@@ -37,21 +35,22 @@ class AppVersionManager extends AppSingleton {
     major = int.parse(numbers[0]);
     minor = int.parse(numbers[1]);
     patch = int.parse(numbers[2]);
-
-    // Load previous version from shared preferences
-    final prefs = SharedPreferencesAsync();
-    _previousVersion = await prefs.getString(_keyPreviousVersion);
-
-    // Save current version for next launch
-    await prefs.setString(_keyPreviousVersion, appVersion);
   }
 
   /// Returns true if the app major version is 0 and the minor version has changed
   /// since the last run, or if the app transitioned from major version 0 to 1+.
   /// This is useful for preview versions where breaking changes may
   /// require database resets.
-  bool previewVersionMinorVersionChangedOrTransitionToStableVersionsHappened() {
-    final previousVersion = _previousVersion;
+  Future<bool> previewVersionMinorVersionChangedOrTransitionToStableVersionsHappened() async {
+    // Load previous version from shared preferences
+    final prefs = SharedPreferencesAsync();
+    final previousVersion = await prefs.getString(_keyPreviousVersion);
+
+    if (previousVersion != appVersion) {
+      // Save current version for next launch
+      await prefs.setString(_keyPreviousVersion, appVersion);
+    }
+
     if (previousVersion == null) {
       return false;
     }

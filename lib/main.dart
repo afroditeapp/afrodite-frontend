@@ -199,7 +199,7 @@ class GlobalInitManager extends AppSingletonNoInit {
       return;
     }
 
-    if (AppVersionManager.getInstance()
+    if (await AppVersionManager.getInstance()
         .previewVersionMinorVersionChangedOrTransitionToStableVersionsHappened()) {
       _log.info("Running preview version related automatic database removal");
       await _removeAllDatabases();
