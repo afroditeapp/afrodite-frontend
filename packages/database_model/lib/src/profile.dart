@@ -23,6 +23,7 @@ class ProfileEntry implements PublicContentProvider {
   final bool profileTextAccepted;
   final int age;
   final bool unlimitedLikes;
+  final int mediaVerificationStatus;
 
   /// Possible values:
   /// When -1, the user is currently online.
@@ -48,6 +49,7 @@ class ProfileEntry implements PublicContentProvider {
     required this.profileTextAccepted,
     required this.age,
     required this.unlimitedLikes,
+    required this.mediaVerificationStatus,
     required this.attributeIdAndStateMap,
     required this.version,
     required this.contentVersion,
@@ -121,6 +123,7 @@ class MyProfileEntry extends ProfileEntry implements MyContentProvider {
     required super.profileTextAccepted,
     required super.age,
     required super.unlimitedLikes,
+    required super.mediaVerificationStatus,
     required super.attributeIdAndStateMap,
     required super.version,
     required super.contentVersion,

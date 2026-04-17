@@ -12,8 +12,27 @@ import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:openapi/api.dart';
 
-const _FACE_VERIFIED_ANY = 1;
-const _FACE_VERIFIED_ALL = 2;
+class ProfileVerificationStatusFlags {
+  static const int faceVerifiedAny = 1;
+  static const int faceVerifiedAll = 2;
+}
+
+const _PROFILE_VERIFICATION_STATUS_ICON = MaterialAttributeIcon(Icons.verified_user_outlined);
+
+MaterialAttributeIcon profileVerificationStatusIcon() => _PROFILE_VERIFICATION_STATUS_ICON;
+
+List<(int, String)> profileVerificationStatusOptions(BuildContext context) {
+  return [
+    (
+      ProfileVerificationStatusFlags.faceVerifiedAny,
+      context.strings.profile_filters_screen_profile_verification_status_filter_face_verified_any,
+    ),
+    (
+      ProfileVerificationStatusFlags.faceVerifiedAll,
+      context.strings.profile_filters_screen_profile_verification_status_filter_face_verified_all,
+    ),
+  ];
+}
 
 class ProfileVerificationStatusFilterSection extends StatelessWidget {
   const ProfileVerificationStatusFilterSection({super.key});
@@ -43,7 +62,7 @@ class _ProfileVerificationStatusFilter extends StatelessWidget {
     return BlocBuilder<ProfileFiltersBloc, ProfileFiltersData>(
       builder: (context, state) {
         final value = state.valueProfileVerificationStatusFilter()?.value;
-        final options = _profileVerificationFilterOptions(context);
+        final options = profileVerificationStatusOptions(context);
         final selectedOptions = options.where((option) => (value ?? 0) & option.$1 != 0).toList();
 
         return InkWell(
@@ -59,7 +78,7 @@ class _ProfileVerificationStatusFilter extends StatelessWidget {
                     const Padding(padding: EdgeInsets.all(4)),
                     ViewAttributeTitle(
                       context.strings.profile_filters_screen_profile_verification_status_filter,
-                      icon: const MaterialAttributeIcon(Icons.verified_user_outlined),
+                      icon: profileVerificationStatusIcon(),
                     ),
                     Padding(
                       padding: const EdgeInsets.only(left: 16.0, top: 4.0, right: 8.0, bottom: 4.0),
@@ -85,19 +104,6 @@ class _ProfileVerificationStatusFilter extends StatelessWidget {
         );
       },
     );
-  }
-
-  List<(int, String)> _profileVerificationFilterOptions(BuildContext context) {
-    return [
-      (
-        _FACE_VERIFIED_ANY,
-        context.strings.profile_filters_screen_profile_verification_status_filter_face_verified_any,
-      ),
-      (
-        _FACE_VERIFIED_ALL,
-        context.strings.profile_filters_screen_profile_verification_status_filter_face_verified_all,
-      ),
-    ];
   }
 }
 
@@ -125,9 +131,16 @@ class ProfileVerificationFilterScreen extends StatelessWidget {
                       .strings
                       .profile_filters_screen_profile_verification_status_filter_face_verified_any,
                 ),
-                value: (currentValue & _FACE_VERIFIED_ANY) != 0,
+                value: (currentValue & ProfileVerificationStatusFlags.faceVerifiedAny) != 0,
                 onChanged: (enabled) {
-                  setValue(context, toggleBit(currentValue, _FACE_VERIFIED_ANY, enabled == true));
+                  setValue(
+                    context,
+                    toggleBit(
+                      currentValue,
+                      ProfileVerificationStatusFlags.faceVerifiedAny,
+                      enabled == true,
+                    ),
+                  );
                 },
               ),
               CheckboxListTile(
@@ -136,9 +149,16 @@ class ProfileVerificationFilterScreen extends StatelessWidget {
                       .strings
                       .profile_filters_screen_profile_verification_status_filter_face_verified_all,
                 ),
-                value: (currentValue & _FACE_VERIFIED_ALL) != 0,
+                value: (currentValue & ProfileVerificationStatusFlags.faceVerifiedAll) != 0,
                 onChanged: (enabled) {
-                  setValue(context, toggleBit(currentValue, _FACE_VERIFIED_ALL, enabled == true));
+                  setValue(
+                    context,
+                    toggleBit(
+                      currentValue,
+                      ProfileVerificationStatusFlags.faceVerifiedAll,
+                      enabled == true,
+                    ),
+                  );
                 },
               ),
             ],

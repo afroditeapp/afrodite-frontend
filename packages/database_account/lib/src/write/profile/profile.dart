@@ -25,6 +25,7 @@ class DaoWriteProfile extends DatabaseAccessor<AccountDatabase> with _$DaoWriteP
         profileVersion: Value(null),
         profileLastSeenTimeValue: Value(null),
         profileUnlimitedLikes: Value(null),
+        mediaVerificationStatus: Value(null),
         jsonProfileAttributes: Value(null),
         primaryContentGridCropSize: Value(null),
         primaryContentGridCropX: Value(null),
@@ -108,6 +109,7 @@ class DaoWriteProfile extends DatabaseAccessor<AccountDatabase> with _$DaoWriteP
           primaryContentGridCropSize: Value(content.gridCropSize),
           primaryContentGridCropX: Value(content.gridCropX),
           primaryContentGridCropY: Value(content.gridCropY),
+          mediaVerificationStatus: Value(content.vs.v),
           profileContentVersion: Value(contentVersion),
         ),
       );

@@ -14,11 +14,14 @@ import 'package:app/ui_utils/dialog.dart';
 import 'package:utils/utils.dart';
 import 'package:app/data/image_cache.dart';
 import 'package:app/localizations.dart';
+import 'package:app/logic/account/client_features_config.dart';
 import 'package:app/logic/profile/attributes.dart';
 import 'package:app/logic/settings/privacy_settings.dart';
+import 'package:app/model/freezed/logic/account/client_features_config.dart';
 import 'package:app/model/freezed/logic/profile/attributes.dart';
 import 'package:app/model/freezed/logic/settings/privacy_settings.dart';
 import 'package:app/ui/normal/settings/profile/edit_profile.dart';
+import 'package:app/ui/normal/profiles/profile_filters/profile_verification.dart';
 import 'package:app/ui_utils/consts/corners.dart';
 import 'package:app/ui_utils/consts/padding.dart';
 
@@ -65,6 +68,7 @@ class _ViewProfileEntryState extends State<ViewProfileEntry> {
               if (profileText != null) profileTextWidget(context, profileText),
               if (profileText != null) const Padding(padding: EdgeInsets.only(top: 16)),
               attributes(),
+              profileVerificationStatusSection(),
               const Padding(padding: EdgeInsets.only(top: FLOATING_ACTION_BUTTON_EMPTY_AREA)),
             ],
           ),
@@ -277,6 +281,58 @@ class _ViewProfileEntryState extends State<ViewProfileEntry> {
         } else {
           return AttributeList(manager: manager, attributes: widget.profile.attributeIdAndStateMap);
         }
+      },
+    );
+  }
+
+  Widget profileVerificationStatus(BuildContext context) {
+    final verificationStatus = widget.profile.mediaVerificationStatus;
+    final hasAllVerified = verificationStatus & ProfileVerificationStatusFlags.faceVerifiedAll != 0;
+    final selectedOptions = profileVerificationStatusOptions(context)
+        .where(
+          (option) =>
+              verificationStatus & option.$1 != 0 &&
+              (!hasAllVerified || option.$1 != ProfileVerificationStatusFlags.faceVerifiedAny),
+        )
+        .toList();
+
+    return Column(
+      crossAxisAlignment: CrossAxisAlignment.start,
+      children: [
+        const Padding(padding: EdgeInsets.all(4)),
+        ViewAttributeTitle(
+          context.strings.profile_filters_screen_profile_verification_status_filter,
+          icon: profileVerificationStatusIcon(),
+        ),
+        const Padding(padding: EdgeInsets.all(4)),
+        Padding(
+          padding: const EdgeInsets.symmetric(horizontal: COMMON_SCREEN_EDGE_PADDING),
+          child: selectedOptions.isEmpty
+              ? Text(context.strings.generic_empty)
+              : Wrap(
+                  spacing: 8,
+                  children: [for (final option in selectedOptions) Chip(label: Text(option.$2))],
+                ),
+        ),
+      ],
+    );
+  }
+
+  Widget profileVerificationStatusSection() {
+    return BlocBuilder<ClientFeaturesConfigBloc, ClientFeaturesConfigData>(
+      builder: (context, state) {
+        final verificationDisabled = state.config.profile?.verification == VerificationConfig();
+        if (verificationDisabled || widget.profile.mediaVerificationStatus == 0) {
+          return const SizedBox.shrink();
+        }
+
+        return Column(
+          mainAxisSize: MainAxisSize.min,
+          children: [
+            const Padding(padding: EdgeInsets.only(top: 8)),
+            profileVerificationStatus(context),
+          ],
+        );
       },
     );
   }

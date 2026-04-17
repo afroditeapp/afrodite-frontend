@@ -52,6 +52,7 @@ class DaoWriteMyProfile extends DatabaseAccessor<AccountDatabase> with _$DaoWrit
         primaryContentGridCropSize: Value(content.gridCropSize),
         primaryContentGridCropX: Value(content.gridCropX),
         primaryContentGridCropY: Value(content.gridCropY),
+        mediaVerificationStatus: Value(content.vs.v),
         profileContentVersion: Value(info.profileContentVersion),
       ),
     );

@@ -11963,6 +11963,17 @@ class $MyProfileTable extends schema.MyProfile
           'CHECK ("profile_unlimited_likes" IN (0, 1))',
         ),
       );
+  static const VerificationMeta _mediaVerificationStatusMeta =
+      const VerificationMeta('mediaVerificationStatus');
+  @override
+  late final GeneratedColumn<int> mediaVerificationStatus =
+      GeneratedColumn<int>(
+        'media_verification_status_flags',
+        aliasedName,
+        true,
+        type: DriftSqlType.int,
+        requiredDuringInsert: false,
+      );
   @override
   late final GeneratedColumnWithTypeConverter<ProfileVersion?, String>
   profileVersion = GeneratedColumn<String>(
@@ -12047,6 +12058,7 @@ class $MyProfileTable extends schema.MyProfile
     profileTextModerationRejectedDetails,
     profileAge,
     profileUnlimitedLikes,
+    mediaVerificationStatus,
     profileVersion,
     jsonProfileAttributes,
     primaryContentGridCropSize,
@@ -12117,6 +12129,15 @@ class $MyProfileTable extends schema.MyProfile
         profileUnlimitedLikes.isAcceptableOrUnknown(
           data['profile_unlimited_likes']!,
           _profileUnlimitedLikesMeta,
+        ),
+      );
+    }
+    if (data.containsKey('media_verification_status_flags')) {
+      context.handle(
+        _mediaVerificationStatusMeta,
+        mediaVerificationStatus.isAcceptableOrUnknown(
+          data['media_verification_status_flags']!,
+          _mediaVerificationStatusMeta,
         ),
       );
     }
@@ -12232,6 +12253,10 @@ class $MyProfileTable extends schema.MyProfile
         DriftSqlType.bool,
         data['${effectivePrefix}profile_unlimited_likes'],
       ),
+      mediaVerificationStatus: attachedDatabase.typeMapping.read(
+        DriftSqlType.int,
+        data['${effectivePrefix}media_verification_status_flags'],
+      ),
       profileVersion: $MyProfileTable.$converterprofileVersion.fromSql(
         attachedDatabase.typeMapping.read(
           DriftSqlType.string,
@@ -12330,6 +12355,7 @@ class MyProfileData extends DataClass implements Insertable<MyProfileData> {
   profileTextModerationRejectedDetails;
   final int? profileAge;
   final bool? profileUnlimitedLikes;
+  final int? mediaVerificationStatus;
   final ProfileVersion? profileVersion;
   final JsonList<ProfileAttributeValue>? jsonProfileAttributes;
   final double? primaryContentGridCropSize;
@@ -12350,6 +12376,7 @@ class MyProfileData extends DataClass implements Insertable<MyProfileData> {
     this.profileTextModerationRejectedDetails,
     this.profileAge,
     this.profileUnlimitedLikes,
+    this.mediaVerificationStatus,
     this.profileVersion,
     this.jsonProfileAttributes,
     this.primaryContentGridCropSize,
@@ -12420,6 +12447,11 @@ class MyProfileData extends DataClass implements Insertable<MyProfileData> {
     }
     if (!nullToAbsent || profileUnlimitedLikes != null) {
       map['profile_unlimited_likes'] = Variable<bool>(profileUnlimitedLikes);
+    }
+    if (!nullToAbsent || mediaVerificationStatus != null) {
+      map['media_verification_status_flags'] = Variable<int>(
+        mediaVerificationStatus,
+      );
     }
     if (!nullToAbsent || profileVersion != null) {
       map['profile_version'] = Variable<String>(
@@ -12503,6 +12535,10 @@ class MyProfileData extends DataClass implements Insertable<MyProfileData> {
       profileUnlimitedLikes: profileUnlimitedLikes == null && nullToAbsent
           ? const Value.absent()
           : Value(profileUnlimitedLikes),
+      mediaVerificationStatus:
+          mediaVerificationStatus == null && nullToAbsent
+          ? const Value.absent()
+          : Value(mediaVerificationStatus),
       profileVersion: profileVersion == null && nullToAbsent
           ? const Value.absent()
           : Value(profileVersion),
@@ -12568,6 +12604,9 @@ class MyProfileData extends DataClass implements Insertable<MyProfileData> {
       profileUnlimitedLikes: serializer.fromJson<bool?>(
         json['profileUnlimitedLikes'],
       ),
+      mediaVerificationStatus: serializer.fromJson<int?>(
+        json['mediaVerificationStatus'],
+      ),
       profileVersion: serializer.fromJson<ProfileVersion?>(
         json['profileVersion'],
       ),
@@ -12624,6 +12663,9 @@ class MyProfileData extends DataClass implements Insertable<MyProfileData> {
           ),
       'profileAge': serializer.toJson<int?>(profileAge),
       'profileUnlimitedLikes': serializer.toJson<bool?>(profileUnlimitedLikes),
+      'mediaVerificationStatus': serializer.toJson<int?>(
+        mediaVerificationStatus,
+      ),
       'profileVersion': serializer.toJson<ProfileVersion?>(profileVersion),
       'jsonProfileAttributes': serializer
           .toJson<JsonList<ProfileAttributeValue>?>(jsonProfileAttributes),
@@ -12668,6 +12710,7 @@ class MyProfileData extends DataClass implements Insertable<MyProfileData> {
         const Value.absent(),
     Value<int?> profileAge = const Value.absent(),
     Value<bool?> profileUnlimitedLikes = const Value.absent(),
+    Value<int?> mediaVerificationStatus = const Value.absent(),
     Value<ProfileVersion?> profileVersion = const Value.absent(),
     Value<JsonList<ProfileAttributeValue>?> jsonProfileAttributes =
         const Value.absent(),
@@ -12711,6 +12754,9 @@ class MyProfileData extends DataClass implements Insertable<MyProfileData> {
     profileUnlimitedLikes: profileUnlimitedLikes.present
         ? profileUnlimitedLikes.value
         : this.profileUnlimitedLikes,
+    mediaVerificationStatus: mediaVerificationStatus.present
+        ? mediaVerificationStatus.value
+        : this.mediaVerificationStatus,
     profileVersion: profileVersion.present
         ? profileVersion.value
         : this.profileVersion,
@@ -12773,6 +12819,9 @@ class MyProfileData extends DataClass implements Insertable<MyProfileData> {
       profileUnlimitedLikes: data.profileUnlimitedLikes.present
           ? data.profileUnlimitedLikes.value
           : this.profileUnlimitedLikes,
+      mediaVerificationStatus: data.mediaVerificationStatus.present
+          ? data.mediaVerificationStatus.value
+          : this.mediaVerificationStatus,
       profileVersion: data.profileVersion.present
           ? data.profileVersion.value
           : this.profileVersion,
@@ -12818,6 +12867,9 @@ class MyProfileData extends DataClass implements Insertable<MyProfileData> {
           )
           ..write('profileAge: $profileAge, ')
           ..write('profileUnlimitedLikes: $profileUnlimitedLikes, ')
+          ..write(
+            'mediaVerificationStatus: $mediaVerificationStatus, ',
+          )
           ..write('profileVersion: $profileVersion, ')
           ..write('jsonProfileAttributes: $jsonProfileAttributes, ')
           ..write('primaryContentGridCropSize: $primaryContentGridCropSize, ')
@@ -12843,6 +12895,7 @@ class MyProfileData extends DataClass implements Insertable<MyProfileData> {
     profileTextModerationRejectedDetails,
     profileAge,
     profileUnlimitedLikes,
+    mediaVerificationStatus,
     profileVersion,
     jsonProfileAttributes,
     primaryContentGridCropSize,
@@ -12871,6 +12924,8 @@ class MyProfileData extends DataClass implements Insertable<MyProfileData> {
               this.profileTextModerationRejectedDetails &&
           other.profileAge == this.profileAge &&
           other.profileUnlimitedLikes == this.profileUnlimitedLikes &&
+          other.mediaVerificationStatus ==
+              this.mediaVerificationStatus &&
           other.profileVersion == this.profileVersion &&
           other.jsonProfileAttributes == this.jsonProfileAttributes &&
           other.primaryContentGridCropSize == this.primaryContentGridCropSize &&
@@ -12899,6 +12954,7 @@ class MyProfileCompanion extends UpdateCompanion<MyProfileData> {
   profileTextModerationRejectedDetails;
   final Value<int?> profileAge;
   final Value<bool?> profileUnlimitedLikes;
+  final Value<int?> mediaVerificationStatus;
   final Value<ProfileVersion?> profileVersion;
   final Value<JsonList<ProfileAttributeValue>?> jsonProfileAttributes;
   final Value<double?> primaryContentGridCropSize;
@@ -12919,6 +12975,7 @@ class MyProfileCompanion extends UpdateCompanion<MyProfileData> {
     this.profileTextModerationRejectedDetails = const Value.absent(),
     this.profileAge = const Value.absent(),
     this.profileUnlimitedLikes = const Value.absent(),
+    this.mediaVerificationStatus = const Value.absent(),
     this.profileVersion = const Value.absent(),
     this.jsonProfileAttributes = const Value.absent(),
     this.primaryContentGridCropSize = const Value.absent(),
@@ -12940,6 +12997,7 @@ class MyProfileCompanion extends UpdateCompanion<MyProfileData> {
     this.profileTextModerationRejectedDetails = const Value.absent(),
     this.profileAge = const Value.absent(),
     this.profileUnlimitedLikes = const Value.absent(),
+    this.mediaVerificationStatus = const Value.absent(),
     this.profileVersion = const Value.absent(),
     this.jsonProfileAttributes = const Value.absent(),
     this.primaryContentGridCropSize = const Value.absent(),
@@ -12961,6 +13019,7 @@ class MyProfileCompanion extends UpdateCompanion<MyProfileData> {
     Expression<String>? profileTextModerationRejectedDetails,
     Expression<int>? profileAge,
     Expression<bool>? profileUnlimitedLikes,
+    Expression<int>? mediaVerificationStatus,
     Expression<String>? profileVersion,
     Expression<String>? jsonProfileAttributes,
     Expression<double>? primaryContentGridCropSize,
@@ -12995,6 +13054,8 @@ class MyProfileCompanion extends UpdateCompanion<MyProfileData> {
       if (profileAge != null) 'profile_age': profileAge,
       if (profileUnlimitedLikes != null)
         'profile_unlimited_likes': profileUnlimitedLikes,
+      if (mediaVerificationStatus != null)
+        'media_verification_status_flags': mediaVerificationStatus,
       if (profileVersion != null) 'profile_version': profileVersion,
       if (jsonProfileAttributes != null)
         'json_profile_attributes': jsonProfileAttributes,
@@ -13029,6 +13090,7 @@ class MyProfileCompanion extends UpdateCompanion<MyProfileData> {
     profileTextModerationRejectedDetails,
     Value<int?>? profileAge,
     Value<bool?>? profileUnlimitedLikes,
+    Value<int?>? mediaVerificationStatus,
     Value<ProfileVersion?>? profileVersion,
     Value<JsonList<ProfileAttributeValue>?>? jsonProfileAttributes,
     Value<double?>? primaryContentGridCropSize,
@@ -13061,6 +13123,8 @@ class MyProfileCompanion extends UpdateCompanion<MyProfileData> {
       profileAge: profileAge ?? this.profileAge,
       profileUnlimitedLikes:
           profileUnlimitedLikes ?? this.profileUnlimitedLikes,
+      mediaVerificationStatus:
+          mediaVerificationStatus ?? this.mediaVerificationStatus,
       profileVersion: profileVersion ?? this.profileVersion,
       jsonProfileAttributes:
           jsonProfileAttributes ?? this.jsonProfileAttributes,
@@ -13143,6 +13207,11 @@ class MyProfileCompanion extends UpdateCompanion<MyProfileData> {
         profileUnlimitedLikes.value,
       );
     }
+    if (mediaVerificationStatus.present) {
+      map['media_verification_status_flags'] = Variable<int>(
+        mediaVerificationStatus.value,
+      );
+    }
     if (profileVersion.present) {
       map['profile_version'] = Variable<String>(
         $MyProfileTable.$converterprofileVersion.toSql(profileVersion.value),
@@ -13204,6 +13273,9 @@ class MyProfileCompanion extends UpdateCompanion<MyProfileData> {
           )
           ..write('profileAge: $profileAge, ')
           ..write('profileUnlimitedLikes: $profileUnlimitedLikes, ')
+          ..write(
+            'mediaVerificationStatus: $mediaVerificationStatus, ',
+          )
           ..write('profileVersion: $profileVersion, ')
           ..write('jsonProfileAttributes: $jsonProfileAttributes, ')
           ..write('primaryContentGridCropSize: $primaryContentGridCropSize, ')
@@ -13335,6 +13407,17 @@ class $ProfileTable extends schema.Profile
           'CHECK ("profile_unlimited_likes" IN (0, 1))',
         ),
       );
+  static const VerificationMeta _mediaVerificationStatusMeta =
+      const VerificationMeta('mediaVerificationStatus');
+  @override
+  late final GeneratedColumn<int> mediaVerificationStatus =
+      GeneratedColumn<int>(
+        'media_verification_status_flags',
+        aliasedName,
+        true,
+        type: DriftSqlType.int,
+        requiredDuringInsert: false,
+      );
   @override
   late final GeneratedColumnWithTypeConverter<
     JsonList<ProfileAttributeValue>?,
@@ -13416,6 +13499,7 @@ class $ProfileTable extends schema.Profile
     profileAge,
     profileLastSeenTimeValue,
     profileUnlimitedLikes,
+    mediaVerificationStatus,
     jsonProfileAttributes,
     primaryContentGridCropSize,
     primaryContentGridCropX,
@@ -13492,6 +13576,15 @@ class $ProfileTable extends schema.Profile
         profileUnlimitedLikes.isAcceptableOrUnknown(
           data['profile_unlimited_likes']!,
           _profileUnlimitedLikesMeta,
+        ),
+      );
+    }
+    if (data.containsKey('media_verification_status_flags')) {
+      context.handle(
+        _mediaVerificationStatusMeta,
+        mediaVerificationStatus.isAcceptableOrUnknown(
+          data['media_verification_status_flags']!,
+          _mediaVerificationStatusMeta,
         ),
       );
     }
@@ -13578,6 +13671,10 @@ class $ProfileTable extends schema.Profile
         DriftSqlType.bool,
         data['${effectivePrefix}profile_unlimited_likes'],
       ),
+      mediaVerificationStatus: attachedDatabase.typeMapping.read(
+        DriftSqlType.int,
+        data['${effectivePrefix}media_verification_status_flags'],
+      ),
       jsonProfileAttributes: $ProfileTable.$converterjsonProfileAttributes
           .fromSql(
             attachedDatabase.typeMapping.read(
@@ -13648,6 +13745,7 @@ class ProfileData extends DataClass implements Insertable<ProfileData> {
   final int? profileAge;
   final int? profileLastSeenTimeValue;
   final bool? profileUnlimitedLikes;
+  final int? mediaVerificationStatus;
   final JsonList<ProfileAttributeValue>? jsonProfileAttributes;
   final double? primaryContentGridCropSize;
   final double? primaryContentGridCropX;
@@ -13665,6 +13763,7 @@ class ProfileData extends DataClass implements Insertable<ProfileData> {
     this.profileAge,
     this.profileLastSeenTimeValue,
     this.profileUnlimitedLikes,
+    this.mediaVerificationStatus,
     this.jsonProfileAttributes,
     this.primaryContentGridCropSize,
     this.primaryContentGridCropX,
@@ -13714,6 +13813,11 @@ class ProfileData extends DataClass implements Insertable<ProfileData> {
     }
     if (!nullToAbsent || profileUnlimitedLikes != null) {
       map['profile_unlimited_likes'] = Variable<bool>(profileUnlimitedLikes);
+    }
+    if (!nullToAbsent || mediaVerificationStatus != null) {
+      map['media_verification_status_flags'] = Variable<int>(
+        mediaVerificationStatus,
+      );
     }
     if (!nullToAbsent || jsonProfileAttributes != null) {
       map['json_profile_attributes'] = Variable<String>(
@@ -13784,6 +13888,10 @@ class ProfileData extends DataClass implements Insertable<ProfileData> {
       profileUnlimitedLikes: profileUnlimitedLikes == null && nullToAbsent
           ? const Value.absent()
           : Value(profileUnlimitedLikes),
+      mediaVerificationStatus:
+          mediaVerificationStatus == null && nullToAbsent
+          ? const Value.absent()
+          : Value(mediaVerificationStatus),
       jsonProfileAttributes: jsonProfileAttributes == null && nullToAbsent
           ? const Value.absent()
           : Value(jsonProfileAttributes),
@@ -13834,6 +13942,9 @@ class ProfileData extends DataClass implements Insertable<ProfileData> {
       profileUnlimitedLikes: serializer.fromJson<bool?>(
         json['profileUnlimitedLikes'],
       ),
+      mediaVerificationStatus: serializer.fromJson<int?>(
+        json['mediaVerificationStatus'],
+      ),
       jsonProfileAttributes: serializer
           .fromJson<JsonList<ProfileAttributeValue>?>(
             json['jsonProfileAttributes'],
@@ -13873,6 +13984,9 @@ class ProfileData extends DataClass implements Insertable<ProfileData> {
         profileLastSeenTimeValue,
       ),
       'profileUnlimitedLikes': serializer.toJson<bool?>(profileUnlimitedLikes),
+      'mediaVerificationStatus': serializer.toJson<int?>(
+        mediaVerificationStatus,
+      ),
       'jsonProfileAttributes': serializer
           .toJson<JsonList<ProfileAttributeValue>?>(jsonProfileAttributes),
       'primaryContentGridCropSize': serializer.toJson<double?>(
@@ -13904,6 +14018,7 @@ class ProfileData extends DataClass implements Insertable<ProfileData> {
     Value<int?> profileAge = const Value.absent(),
     Value<int?> profileLastSeenTimeValue = const Value.absent(),
     Value<bool?> profileUnlimitedLikes = const Value.absent(),
+    Value<int?> mediaVerificationStatus = const Value.absent(),
     Value<JsonList<ProfileAttributeValue>?> jsonProfileAttributes =
         const Value.absent(),
     Value<double?> primaryContentGridCropSize = const Value.absent(),
@@ -13934,6 +14049,9 @@ class ProfileData extends DataClass implements Insertable<ProfileData> {
     profileUnlimitedLikes: profileUnlimitedLikes.present
         ? profileUnlimitedLikes.value
         : this.profileUnlimitedLikes,
+    mediaVerificationStatus: mediaVerificationStatus.present
+        ? mediaVerificationStatus.value
+        : this.mediaVerificationStatus,
     jsonProfileAttributes: jsonProfileAttributes.present
         ? jsonProfileAttributes.value
         : this.jsonProfileAttributes,
@@ -13983,6 +14101,9 @@ class ProfileData extends DataClass implements Insertable<ProfileData> {
       profileUnlimitedLikes: data.profileUnlimitedLikes.present
           ? data.profileUnlimitedLikes.value
           : this.profileUnlimitedLikes,
+      mediaVerificationStatus: data.mediaVerificationStatus.present
+          ? data.mediaVerificationStatus.value
+          : this.mediaVerificationStatus,
       jsonProfileAttributes: data.jsonProfileAttributes.present
           ? data.jsonProfileAttributes.value
           : this.jsonProfileAttributes,
@@ -14017,6 +14138,9 @@ class ProfileData extends DataClass implements Insertable<ProfileData> {
           ..write('profileAge: $profileAge, ')
           ..write('profileLastSeenTimeValue: $profileLastSeenTimeValue, ')
           ..write('profileUnlimitedLikes: $profileUnlimitedLikes, ')
+          ..write(
+            'mediaVerificationStatus: $mediaVerificationStatus, ',
+          )
           ..write('jsonProfileAttributes: $jsonProfileAttributes, ')
           ..write('primaryContentGridCropSize: $primaryContentGridCropSize, ')
           ..write('primaryContentGridCropX: $primaryContentGridCropX, ')
@@ -14039,6 +14163,7 @@ class ProfileData extends DataClass implements Insertable<ProfileData> {
     profileAge,
     profileLastSeenTimeValue,
     profileUnlimitedLikes,
+    mediaVerificationStatus,
     jsonProfileAttributes,
     primaryContentGridCropSize,
     primaryContentGridCropX,
@@ -14060,6 +14185,8 @@ class ProfileData extends DataClass implements Insertable<ProfileData> {
           other.profileAge == this.profileAge &&
           other.profileLastSeenTimeValue == this.profileLastSeenTimeValue &&
           other.profileUnlimitedLikes == this.profileUnlimitedLikes &&
+          other.mediaVerificationStatus ==
+              this.mediaVerificationStatus &&
           other.jsonProfileAttributes == this.jsonProfileAttributes &&
           other.primaryContentGridCropSize == this.primaryContentGridCropSize &&
           other.primaryContentGridCropX == this.primaryContentGridCropX &&
@@ -14079,6 +14206,7 @@ class ProfileCompanion extends UpdateCompanion<ProfileData> {
   final Value<int?> profileAge;
   final Value<int?> profileLastSeenTimeValue;
   final Value<bool?> profileUnlimitedLikes;
+  final Value<int?> mediaVerificationStatus;
   final Value<JsonList<ProfileAttributeValue>?> jsonProfileAttributes;
   final Value<double?> primaryContentGridCropSize;
   final Value<double?> primaryContentGridCropX;
@@ -14097,6 +14225,7 @@ class ProfileCompanion extends UpdateCompanion<ProfileData> {
     this.profileAge = const Value.absent(),
     this.profileLastSeenTimeValue = const Value.absent(),
     this.profileUnlimitedLikes = const Value.absent(),
+    this.mediaVerificationStatus = const Value.absent(),
     this.jsonProfileAttributes = const Value.absent(),
     this.primaryContentGridCropSize = const Value.absent(),
     this.primaryContentGridCropX = const Value.absent(),
@@ -14116,6 +14245,7 @@ class ProfileCompanion extends UpdateCompanion<ProfileData> {
     this.profileAge = const Value.absent(),
     this.profileLastSeenTimeValue = const Value.absent(),
     this.profileUnlimitedLikes = const Value.absent(),
+    this.mediaVerificationStatus = const Value.absent(),
     this.jsonProfileAttributes = const Value.absent(),
     this.primaryContentGridCropSize = const Value.absent(),
     this.primaryContentGridCropX = const Value.absent(),
@@ -14135,6 +14265,7 @@ class ProfileCompanion extends UpdateCompanion<ProfileData> {
     Expression<int>? profileAge,
     Expression<int>? profileLastSeenTimeValue,
     Expression<bool>? profileUnlimitedLikes,
+    Expression<int>? mediaVerificationStatus,
     Expression<String>? jsonProfileAttributes,
     Expression<double>? primaryContentGridCropSize,
     Expression<double>? primaryContentGridCropX,
@@ -14159,6 +14290,8 @@ class ProfileCompanion extends UpdateCompanion<ProfileData> {
         'profile_last_seen_time_value': profileLastSeenTimeValue,
       if (profileUnlimitedLikes != null)
         'profile_unlimited_likes': profileUnlimitedLikes,
+      if (mediaVerificationStatus != null)
+        'media_verification_status_flags': mediaVerificationStatus,
       if (jsonProfileAttributes != null)
         'json_profile_attributes': jsonProfileAttributes,
       if (primaryContentGridCropSize != null)
@@ -14186,6 +14319,7 @@ class ProfileCompanion extends UpdateCompanion<ProfileData> {
     Value<int?>? profileAge,
     Value<int?>? profileLastSeenTimeValue,
     Value<bool?>? profileUnlimitedLikes,
+    Value<int?>? mediaVerificationStatus,
     Value<JsonList<ProfileAttributeValue>?>? jsonProfileAttributes,
     Value<double?>? primaryContentGridCropSize,
     Value<double?>? primaryContentGridCropX,
@@ -14208,6 +14342,8 @@ class ProfileCompanion extends UpdateCompanion<ProfileData> {
           profileLastSeenTimeValue ?? this.profileLastSeenTimeValue,
       profileUnlimitedLikes:
           profileUnlimitedLikes ?? this.profileUnlimitedLikes,
+      mediaVerificationStatus:
+          mediaVerificationStatus ?? this.mediaVerificationStatus,
       jsonProfileAttributes:
           jsonProfileAttributes ?? this.jsonProfileAttributes,
       primaryContentGridCropSize:
@@ -14269,6 +14405,11 @@ class ProfileCompanion extends UpdateCompanion<ProfileData> {
         profileUnlimitedLikes.value,
       );
     }
+    if (mediaVerificationStatus.present) {
+      map['media_verification_status_flags'] = Variable<int>(
+        mediaVerificationStatus.value,
+      );
+    }
     if (jsonProfileAttributes.present) {
       map['json_profile_attributes'] = Variable<String>(
         $ProfileTable.$converterjsonProfileAttributes.toSql(
@@ -14324,6 +14465,9 @@ class ProfileCompanion extends UpdateCompanion<ProfileData> {
           ..write('profileAge: $profileAge, ')
           ..write('profileLastSeenTimeValue: $profileLastSeenTimeValue, ')
           ..write('profileUnlimitedLikes: $profileUnlimitedLikes, ')
+          ..write(
+            'mediaVerificationStatus: $mediaVerificationStatus, ',
+          )
           ..write('jsonProfileAttributes: $jsonProfileAttributes, ')
           ..write('primaryContentGridCropSize: $primaryContentGridCropSize, ')
           ..write('primaryContentGridCropX: $primaryContentGridCropX, ')
