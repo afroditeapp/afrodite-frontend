@@ -191,7 +191,13 @@ class ProfileGridState extends State<ProfileGrid> {
             builder: (context, state) {
               if (state.updateState is UpdateIdle && !state.unsavedChanges()) {
                 animationResetLogic.disable();
-                return showGrid(context, uiSettings.gridSettings, pagingState, true);
+                return showGrid(
+                  context,
+                  uiSettings.gridSettings,
+                  pagingState,
+                  true,
+                  state.showOnlyFavorites,
+                );
               } else {
                 animationResetLogic.enable(() {
                   if (context.mounted) {
@@ -203,6 +209,7 @@ class ProfileGridState extends State<ProfileGrid> {
                   uiSettings.gridSettings,
                   PagingState(isLoading: true),
                   false,
+                  state.showOnlyFavorites,
                 );
               }
             },
@@ -217,6 +224,7 @@ class ProfileGridState extends State<ProfileGrid> {
     GridSettings settings,
     PagingState<int, ProfileGridProfileEntry> pagingState,
     bool fetchPages,
+    bool favoritesFilterEnabled,
   ) {
     return NotificationListener<ScrollMetricsNotification>(
       onNotification: (notification) {
@@ -235,7 +243,7 @@ class ProfileGridState extends State<ProfileGrid> {
             _scrollController.bottomNavigationRelatedJumpToBeginningIfClientsConnected();
           }
         },
-        child: grid(context, settings, pagingState, fetchPages),
+        child: grid(context, settings, pagingState, fetchPages, favoritesFilterEnabled),
       ),
     );
   }
@@ -245,6 +253,7 @@ class ProfileGridState extends State<ProfileGrid> {
     GridSettings settings,
     PagingState<int, ProfileGridProfileEntry> pagingState,
     bool fetchPages,
+    bool favoritesFilterEnabled,
   ) {
     final singleItemWidth = settings.singleItemWidth(context);
     return PagedGridView(
@@ -257,6 +266,7 @@ class ProfileGridState extends State<ProfileGrid> {
       physics: const AlwaysScrollableScrollPhysics(),
       scrollController: _scrollController,
       padding: EdgeInsets.symmetric(horizontal: settings.valueHorizontalPadding(), vertical: 4),
+      showNoMoreItemsIndicatorAsGridChild: favoritesFilterEnabled,
       builderDelegate: PagedChildBuilderDelegate<ProfileGridProfileEntry>(
         animateTransitions: animationResetLogic.animateTransitions,
         itemBuilder: (context, item, index) {
