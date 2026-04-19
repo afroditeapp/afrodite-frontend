@@ -204,4 +204,9 @@ extension ContentModerationStateExtensions on ContentModerationState {
     return this == ContentModerationState.acceptedByBot ||
         this == ContentModerationState.acceptedByHuman;
   }
+
+  bool waitingModeration() {
+    return this == ContentModerationState.waitingBotOrHumanModeration ||
+        this == ContentModerationState.waitingHumanModeration;
+  }
 }

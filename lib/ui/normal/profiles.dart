@@ -14,6 +14,7 @@ import 'package:app/ui_utils/info_banners.dart';
 import 'package:app/ui_utils/moderation.dart';
 import 'package:app/ui_utils/extensions/api.dart';
 import 'package:app/ui_utils/snack_bar.dart';
+import 'package:app/utils/api.dart';
 import 'package:app/utils/list.dart';
 import 'package:database/database.dart';
 import 'package:flutter/material.dart';
@@ -179,7 +180,10 @@ class PublicProfileViewingBlocker extends StatelessWidget {
         }
 
         final securityContent = contentState.securityContent;
-        if (securityContent?.accepted == true && securityContent?.faceDetected == true) {
+        if (visiblity == ProfileVisibility.pendingPublic &&
+            securityContent?.state.waitingModeration() == true) {
+          return _handleBlocked(profileIsInModerationInfo(context));
+        } else if (securityContent?.accepted == true && securityContent?.faceDetected == true) {
           return BlocBuilder<ClientFeaturesConfigBloc, ClientFeaturesConfigData>(
             builder: (context, configData) {
               return BlocBuilder<MyProfileBloc, MyProfileData>(
@@ -195,13 +199,12 @@ class PublicProfileViewingBlocker extends StatelessWidget {
                       false;
                   final faceDetected = primaryContent?.faceDetected == true;
 
-                  if (primaryContent?.accepted == true && (!requireFace || faceDetected)) {
-                    if (visiblity == ProfileVisibility.pendingPublic) {
-                      return _handleBlocked(profileIsInModerationInfo(context));
-                    } else {
-                      // Public profile viewing allowed
-                      return _handleBlocked(ChatViewingBlocker(child: child));
-                    }
+                  if (visiblity == ProfileVisibility.pendingPublic &&
+                      primaryContent?.state.waitingModeration() == true) {
+                    return _handleBlocked(profileIsInModerationInfo(context));
+                  } else if (primaryContent?.accepted == true && (!requireFace || faceDetected)) {
+                    // Public profile viewing allowed
+                    return _handleBlocked(ChatViewingBlocker(child: child));
                   } else {
                     return _handleBlocked(
                       primaryProfileContentIsNotAccepted(context, primaryContent, requireFace),
