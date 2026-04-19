@@ -35,7 +35,8 @@ sealed class ActionApiError extends ApiError {
 
 class ActionApiErrorException extends ActionApiError {
   final ApiException e;
-  const ActionApiErrorException(this.e);
+  final StackTrace? stackTrace;
+  const ActionApiErrorException(this.e, {this.stackTrace});
 
   @override
   bool isTooManyRequests() {
@@ -44,39 +45,38 @@ class ActionApiErrorException extends ActionApiError {
 
   @override
   void logError(Logger log) {
-    log.error("Action API error, code: ${e.code}");
-    log.fine(e.toString());
-    log.fine(StackTrace.current);
     // HTTP 429 Too Many Requests
     if (e.code == 429) {
       showSnackBar(R.strings.snackbar_api_usage_limit_reached);
     } else {
+      log.error("Action API error, code: ${e.code}", null, stackTrace);
+      log.fine(e.toString());
       ErrorManager.getInstance().show(this);
     }
   }
 }
 
 class ActionApiErrorUnknownException extends ActionApiError {
-  const ActionApiErrorUnknownException();
+  final StackTrace? stackTrace;
+  const ActionApiErrorUnknownException({this.stackTrace});
 
   @override
   void logError(Logger log) {
-    log.error("Action API returned unknown exception");
-    log.fine(StackTrace.current);
+    log.error("Action API returned unknown exception", null, stackTrace);
     ErrorManager.getInstance().show(this);
   }
 }
 
 class ActionApiTimeoutError extends ActionApiError {
-  const ActionApiTimeoutError();
+  final StackTrace? stackTrace;
+  const ActionApiTimeoutError({this.stackTrace});
 
   @override
   String title() => R.strings.snackbar_error_api_timeout;
 
   @override
   void logError(Logger log) {
-    log.error("Action API request timed out");
-    log.fine(StackTrace.current);
+    log.error("Action API request timed out", null, stackTrace);
     ErrorManager.getInstance().show(this);
   }
 }
@@ -111,44 +111,45 @@ sealed class ValueApiError extends ApiError {
 }
 
 class NullError extends ValueApiError {
-  const NullError();
+  final StackTrace? stackTrace;
+  const NullError({this.stackTrace});
 
   @override
   void logError(Logger log) {
-    log.error("API function returned null");
-    log.fine(StackTrace.current);
+    log.error("API function returned null", null, stackTrace);
     ErrorManager.getInstance().show(this);
   }
 }
 
 class ValueApiUnknownException extends ValueApiError {
-  const ValueApiUnknownException();
+  final StackTrace? stackTrace;
+  const ValueApiUnknownException({this.stackTrace});
 
   @override
   void logError(Logger log) {
-    log.error("API function returned unknown exception");
-    log.fine(StackTrace.current);
+    log.error("API function returned unknown exception", null, stackTrace);
     ErrorManager.getInstance().show(this);
   }
 }
 
 class ValueApiTimeoutError extends ValueApiError {
-  const ValueApiTimeoutError();
+  final StackTrace? stackTrace;
+  const ValueApiTimeoutError({this.stackTrace});
 
   @override
   String title() => R.strings.snackbar_error_api_timeout;
 
   @override
   void logError(Logger log) {
-    log.error("Value API request timed out");
-    log.fine(StackTrace.current);
+    log.error("Value API request timed out", null, stackTrace);
     ErrorManager.getInstance().show(this);
   }
 }
 
 class ValueApiException extends ValueApiError {
   final ApiException e;
-  const ValueApiException(this.e);
+  final StackTrace? stackTrace;
+  const ValueApiException(this.e, {this.stackTrace});
 
   @override
   bool isNotModified() {
@@ -177,13 +178,12 @@ class ValueApiException extends ValueApiError {
 
   @override
   void logError(Logger log) {
-    log.error("Value API error, code: ${e.code}");
-    log.fine(e.toString());
-    log.fine(StackTrace.current);
     // HTTP 429 Too Many Requests
     if (e.code == 429) {
       showSnackBar(R.strings.snackbar_api_usage_limit_reached);
     } else {
+      log.error("Value API error, code: ${e.code}", null, stackTrace);
+      log.fine(e.toString());
       ErrorManager.getInstance().show(this);
     }
   }
@@ -208,36 +208,36 @@ sealed class DatabaseError extends AppError {
 
 class DatabaseException extends DatabaseError {
   final Exception e;
-  const DatabaseException(this.e);
+  final StackTrace? stackTrace;
+  const DatabaseException(this.e, {this.stackTrace});
 
   @override
   void logError(Logger log) {
-    log.error("Database exception");
-    log.fine(e);
-    log.fine(StackTrace.current);
+    log.error("Database exception: ${e.runtimeType}", null, stackTrace);
+    log.fine(e.toString());
     ErrorManager.getInstance().show(this);
   }
 }
 
 class MissingAccountId extends DatabaseError {
-  const MissingAccountId();
+  final StackTrace? stackTrace;
+  const MissingAccountId({this.stackTrace});
 
   @override
   void logError(Logger log) {
-    log.error("Database error: missing account ID");
-    log.fine(StackTrace.current);
+    log.error("Database error: missing account ID", null, stackTrace);
 
     ErrorManager.getInstance().show(this);
   }
 }
 
 class MissingRequiredValue extends DatabaseError {
-  const MissingRequiredValue();
+  final StackTrace? stackTrace;
+  const MissingRequiredValue({this.stackTrace});
 
   @override
   void logError(Logger log) {
-    log.error("Database error: missing required value");
-    log.fine(StackTrace.current);
+    log.error("Database error: missing required value", null, stackTrace);
 
     ErrorManager.getInstance().show(this);
   }
@@ -251,12 +251,12 @@ sealed class LogicError extends AppError {
 }
 
 class MissingValue extends LogicError {
-  const MissingValue();
+  final StackTrace? stackTrace;
+  const MissingValue({this.stackTrace});
 
   @override
   void logError(Logger log) {
-    log.error("Logic error: missing value");
-    log.fine(StackTrace.current);
+    log.error("Logic error: missing value", null, stackTrace);
 
     ErrorManager.getInstance().show(this);
   }

@@ -23,9 +23,9 @@ class AccountDatabaseManager {
     yield* mapper(accountDatabase.read)
     // try-catch does not work with *yield, so await for would be required, but
     // events seem not to flow properly with that.
-    .doOnError((e, _) {
+    .doOnError((e, stackTrace) {
       if (e is DriftWrappedException) {
-        _handleDbException<void>(e);
+        _handleDbException<void>(e, stackTrace);
       }
     });
   }
@@ -68,14 +68,14 @@ class AccountDatabaseManager {
   ) async {
     try {
       return Ok(await action(_db.read));
-    } on CouldNotRollBackException catch (e) {
-      return Err(DatabaseException(e));
-    } on DriftWrappedException catch (e) {
-      return _handleDbException(e);
-    } on InvalidDataException catch (e) {
-      return _handleDbException(e);
-    } on DriftRemoteException catch (e) {
-      return _handleDbException(e);
+    } on CouldNotRollBackException catch (e, stackTrace) {
+      return Err(DatabaseException(e, stackTrace: stackTrace));
+    } on DriftWrappedException catch (e, stackTrace) {
+      return _handleDbException(e, stackTrace);
+    } on InvalidDataException catch (e, stackTrace) {
+      return _handleDbException(e, stackTrace);
+    } on DriftRemoteException catch (e, stackTrace) {
+      return _handleDbException(e, stackTrace);
     }
   }
 
@@ -84,14 +84,14 @@ class AccountDatabaseManager {
   ) async {
     try {
       return Ok(await action(_db.write));
-    } on CouldNotRollBackException catch (e) {
-      return Err(DatabaseException(e));
-    } on DriftWrappedException catch (e) {
-      return _handleDbException(e);
-    } on InvalidDataException catch (e) {
-      return _handleDbException(e);
-    } on DriftRemoteException catch (e) {
-      return _handleDbException(e);
+    } on CouldNotRollBackException catch (e, stackTrace) {
+      return Err(DatabaseException(e, stackTrace: stackTrace));
+    } on DriftWrappedException catch (e, stackTrace) {
+      return _handleDbException(e, stackTrace);
+    } on InvalidDataException catch (e, stackTrace) {
+      return _handleDbException(e, stackTrace);
+    } on DriftRemoteException catch (e, stackTrace) {
+      return _handleDbException(e, stackTrace);
     }
   }
 
@@ -101,14 +101,14 @@ class AccountDatabaseManager {
     try {
       await action(_db.write);
       return const Ok(());
-    } on CouldNotRollBackException catch (e) {
-      return _handleDbException(e);
-    } on DriftWrappedException catch (e) {
-      return _handleDbException(e);
-    } on InvalidDataException catch (e) {
-      return _handleDbException(e);
-    } on DriftRemoteException catch (e) {
-      return _handleDbException(e);
+    } on CouldNotRollBackException catch (e, stackTrace) {
+      return _handleDbException(e, stackTrace);
+    } on DriftWrappedException catch (e, stackTrace) {
+      return _handleDbException(e, stackTrace);
+    } on InvalidDataException catch (e, stackTrace) {
+      return _handleDbException(e, stackTrace);
+    } on DriftRemoteException catch (e, stackTrace) {
+      return _handleDbException(e, stackTrace);
     }
   }
 
@@ -117,8 +117,11 @@ class AccountDatabaseManager {
   }
 }
 
-Result<Success, DatabaseException> _handleDbException<Success>(Exception e) {
-  final dbException = DatabaseException(e);
+Result<Success, DatabaseException> _handleDbException<Success>(
+  Exception e,
+  StackTrace? stackTrace,
+) {
+  final dbException = DatabaseException(e, stackTrace: stackTrace);
   dbException.logError(_log);
   return Err(dbException);
 }

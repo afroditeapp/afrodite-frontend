@@ -20,8 +20,12 @@ class EventRouter {
             try {
               await _dispatch(type, event);
             } catch (error, stackTrace) {
-              _log.error("Event stream error for $type, error: $error");
-              _log.finest(stackTrace);
+              _log.error(
+                "Event stream error for $type, errorType: ${error.runtimeType}",
+                null,
+                stackTrace,
+              );
+              _log.fine(error.toString());
             }
           })
           .listen(null);

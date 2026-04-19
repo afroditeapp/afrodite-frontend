@@ -48,8 +48,10 @@ void _initLogging() {
   }
 
   Logger.root.onRecord.listen((record) {
+    final stackTrace = record.stackTrace;
+    final stackTraceString = stackTrace != null ? "\n$stackTrace" : "";
     // ignore: avoid_print
-    print('[${record.level.name}][${record.loggerName}] ${record.message}');
+    print('[${record.level.name}][${record.loggerName}] ${record.message}$stackTraceString');
   });
 }
 

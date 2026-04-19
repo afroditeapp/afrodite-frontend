@@ -61,9 +61,9 @@ class CommonDatabaseManager extends AppSingleton {
     yield* stream
     // try-catch does not work with *yield, so await for would be required, but
     // events seem not to flow properly with that.
-    .doOnError((e, _) {
+    .doOnError((e, stackTrace) {
       if (e is DriftWrappedException) {
-        handleDbException<void>(e);
+        handleDbException<void>(e, stackTrace);
       }
     });
   }
@@ -100,14 +100,14 @@ class CommonDatabaseManager extends AppSingleton {
   ) async {
     try {
       return Ok(await action(_commonDatabase.read));
-    } on CouldNotRollBackException catch (e) {
-      return Err(DatabaseException(e));
-    } on DriftWrappedException catch (e) {
-      return handleDbException(e);
-    } on InvalidDataException catch (e) {
-      return handleDbException(e);
-    } on DriftRemoteException catch (e) {
-      return handleDbException(e);
+    } on CouldNotRollBackException catch (e, stackTrace) {
+      return Err(DatabaseException(e, stackTrace: stackTrace));
+    } on DriftWrappedException catch (e, stackTrace) {
+      return handleDbException(e, stackTrace);
+    } on InvalidDataException catch (e, stackTrace) {
+      return handleDbException(e, stackTrace);
+    } on DriftRemoteException catch (e, stackTrace) {
+      return handleDbException(e, stackTrace);
     }
   }
 
@@ -117,14 +117,14 @@ class CommonDatabaseManager extends AppSingleton {
     try {
       await action(_commonDatabase.write);
       return const Ok(());
-    } on CouldNotRollBackException catch (e) {
-      return handleDbException(e);
-    } on DriftWrappedException catch (e) {
-      return handleDbException(e);
-    } on InvalidDataException catch (e) {
-      return handleDbException(e);
-    } on DriftRemoteException catch (e) {
-      return handleDbException(e);
+    } on CouldNotRollBackException catch (e, stackTrace) {
+      return handleDbException(e, stackTrace);
+    } on DriftWrappedException catch (e, stackTrace) {
+      return handleDbException(e, stackTrace);
+    } on InvalidDataException catch (e, stackTrace) {
+      return handleDbException(e, stackTrace);
+    } on DriftRemoteException catch (e, stackTrace) {
+      return handleDbException(e, stackTrace);
     }
   }
 
@@ -152,8 +152,8 @@ Stream<T?> oneValueAndWaitForever<T>(T? value) async* {
   await completer.future;
 }
 
-Result<Success, DatabaseException> handleDbException<Success>(Exception e) {
-  final dbException = DatabaseException(e);
+Result<Success, DatabaseException> handleDbException<Success>(Exception e, StackTrace? stackTrace) {
+  final dbException = DatabaseException(e, stackTrace: stackTrace);
   dbException.logError(_log);
   return Err(dbException);
 }

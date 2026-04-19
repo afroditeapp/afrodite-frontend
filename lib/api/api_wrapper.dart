@@ -31,23 +31,23 @@ class ApiWrapper<T> {
       } else {
         return Ok(value);
       }
-    } on ApiException catch (e) {
+    } on ApiException catch (e, stackTrace) {
       await restartConnectionIfNeeded(e);
-      final err = ValueApiException(e);
+      final err = ValueApiException(e, stackTrace: stackTrace);
       if (logError) {
         err.logError(_log);
       }
       return Err(err);
-    } on TimeoutException {
-      const err = ValueApiTimeoutError();
+    } on TimeoutException catch (_, stackTrace) {
+      final err = ValueApiTimeoutError(stackTrace: stackTrace);
       if (logError) {
         err.logError(_log);
       }
-      return const Err(err);
-    } catch (e) {
-      const err = ValueApiUnknownException();
+      return Err(err);
+    } catch (_, stackTrace) {
+      final err = ValueApiUnknownException(stackTrace: stackTrace);
       err.logError(_log);
-      return const Err(err);
+      return Err(err);
     }
   }
 
@@ -60,23 +60,23 @@ class ApiWrapper<T> {
     try {
       await action(api).timeout(timeout);
       return Ok(());
-    } on ApiException catch (e) {
+    } on ApiException catch (e, stackTrace) {
       await restartConnectionIfNeeded(e);
-      final err = ActionApiErrorException(e);
+      final err = ActionApiErrorException(e, stackTrace: stackTrace);
       if (logError) {
         err.logError(_log);
       }
       return Err(err);
-    } on TimeoutException {
-      const err = ActionApiTimeoutError();
+    } on TimeoutException catch (_, stackTrace) {
+      final err = ActionApiTimeoutError(stackTrace: stackTrace);
       if (logError) {
         err.logError(_log);
       }
-      return const Err(err);
-    } catch (e) {
-      const err = ActionApiErrorUnknownException();
+      return Err(err);
+    } catch (_, stackTrace) {
+      final err = ActionApiErrorUnknownException(stackTrace: stackTrace);
       err.logError(_log);
-      return const Err(err);
+      return Err(err);
     }
   }
 
