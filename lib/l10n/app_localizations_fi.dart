@@ -393,6 +393,10 @@ class AppLocalizationsFi extends AppLocalizations {
   }
 
   @override
+  String get conversation_screen_message_send_requires_connection =>
+      'Try again after app connects to server';
+
+  @override
   String get conversation_screen_message_state_decrypting_failed => 'Decrypting failed';
 
   @override

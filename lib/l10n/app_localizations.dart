@@ -748,6 +748,12 @@ abstract class AppLocalizations {
   /// **'Resent (originally sent {p0}, message {p1})'**
   String conversation_screen_message_resent_info(String p0, String p1);
 
+  /// Snackbar text when message sending is blocked until app reconnects to server
+  ///
+  /// In en, this message translates to:
+  /// **'Try again after app connects to server'**
+  String get conversation_screen_message_send_requires_connection;
+
   /// Message state text that message decrypting failed
   ///
   /// In en, this message translates to:

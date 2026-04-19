@@ -518,6 +518,10 @@
       }
     }
   },
+  "conversation_screen_message_send_requires_connection": "Try again after app connects to server",
+  "@conversation_screen_message_send_requires_connection": {
+    "description": "Snackbar text when message sending is blocked until app reconnects to server"
+  },
   "conversation_screen_message_state_decrypting_failed": "Decrypting failed",
   "@conversation_screen_message_state_decrypting_failed": {
     "description": "Message state text that message decrypting failed"

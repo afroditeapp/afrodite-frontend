@@ -3,6 +3,7 @@ import 'dart:async';
 import 'package:app/data/chat/message_database_iterator.dart';
 import 'package:app/data/utils/repository_instances.dart';
 import 'package:app/database/common_database_manager.dart';
+import 'package:app/api/server_connection_manager.dart';
 import 'package:app/logic/account/client_features_config.dart';
 import 'package:app/logic/chat/chat_enabled.dart';
 import 'package:app/ui/normal/chat/chat_data_outdated_widget.dart';
@@ -367,6 +368,18 @@ class ConversationScreenState extends State<ConversationScreen> {
 }
 
 Future<bool> sendMessage(BuildContext context, Message message) {
+  final r = context.read<RepositoryInstances>();
+  if (!r.connectionManager.isConnected) {
+    final currentState = r.connectionManager.currentState;
+    final showRetryActionBanner =
+        currentState is NoServerConnection && currentState.showRetryActionBanner;
+    if (showRetryActionBanner) {
+      unawaited(r.connectionManager.restartIfRestartNotOngoing());
+    }
+    showSnackBar(context.strings.conversation_screen_message_send_requires_connection);
+    return Future.value(false);
+  }
+
   final bloc = context.read<ConversationBloc>();
   if (bloc.state.isMessageSendingInProgress) {
     showSnackBar(context.strings.generic_previous_action_in_progress);
