@@ -191,13 +191,7 @@ class ProfileGridState extends State<ProfileGrid> {
             builder: (context, state) {
               if (state.updateState is UpdateIdle && !state.unsavedChanges()) {
                 animationResetLogic.disable();
-                return showGrid(
-                  context,
-                  uiSettings.gridSettings,
-                  pagingState,
-                  true,
-                  state.showOnlyFavorites,
-                );
+                return showGrid(context, uiSettings.gridSettings, pagingState, true);
               } else {
                 animationResetLogic.enable(() {
                   if (context.mounted) {
@@ -209,7 +203,6 @@ class ProfileGridState extends State<ProfileGrid> {
                   uiSettings.gridSettings,
                   PagingState(isLoading: true),
                   false,
-                  state.showOnlyFavorites,
                 );
               }
             },
@@ -224,7 +217,6 @@ class ProfileGridState extends State<ProfileGrid> {
     GridSettings settings,
     PagingState<int, ProfileGridProfileEntry> pagingState,
     bool fetchPages,
-    bool favoritesFilterEnabled,
   ) {
     return NotificationListener<ScrollMetricsNotification>(
       onNotification: (notification) {
@@ -243,7 +235,7 @@ class ProfileGridState extends State<ProfileGrid> {
             _scrollController.bottomNavigationRelatedJumpToBeginningIfClientsConnected();
           }
         },
-        child: grid(context, settings, pagingState, fetchPages, favoritesFilterEnabled),
+        child: grid(context, settings, pagingState, fetchPages),
       ),
     );
   }
@@ -253,7 +245,6 @@ class ProfileGridState extends State<ProfileGrid> {
     GridSettings settings,
     PagingState<int, ProfileGridProfileEntry> pagingState,
     bool fetchPages,
-    bool favoritesFilterEnabled,
   ) {
     final singleItemWidth = settings.singleItemWidth(context);
     return PagedGridView(
@@ -266,7 +257,7 @@ class ProfileGridState extends State<ProfileGrid> {
       physics: const AlwaysScrollableScrollPhysics(),
       scrollController: _scrollController,
       padding: EdgeInsets.symmetric(horizontal: settings.valueHorizontalPadding(), vertical: 4),
-      showNoMoreItemsIndicatorAsGridChild: favoritesFilterEnabled,
+      showNoMoreItemsIndicatorAsGridChild: false,
       builderDelegate: PagedChildBuilderDelegate<ProfileGridProfileEntry>(
         animateTransitions: animationResetLogic.animateTransitions,
         itemBuilder: (context, item, index) {
@@ -282,10 +273,44 @@ class ProfileGridState extends State<ProfileGrid> {
         },
         noMoreItemsIndicatorBuilder: (context) {
           final filterState = context.read<ProfileFiltersBloc>().state;
-          if (!filterState.showOnlyFavorites) {
-            return const SizedBox.shrink();
+          if (filterState.showOnlyFavorites) {
+            return Center(
+              child: Column(
+                mainAxisSize: MainAxisSize.min,
+                children: [
+                  const Padding(padding: EdgeInsets.all(8)),
+                  showAllProfilesButton(context),
+                ],
+              ),
+            );
+          } else {
+            if (filterState.isSomeFilterEnabled()) {
+              return Center(
+                child: Column(
+                  mainAxisSize: MainAxisSize.min,
+                  children: [
+                    const Padding(padding: EdgeInsets.all(8)),
+                    openFilterSettingsButton(context, filterEnabledIcon: true),
+                  ],
+                ),
+              );
+            }
+
+            final minAge = filterState.valueMinAge();
+            final maxAge = filterState.valueMaxAge();
+            final selectedAgeRange = minAge == maxAge ? "$minAge" : "$minAge-$maxAge";
+            return Center(
+              child: Column(
+                mainAxisSize: MainAxisSize.min,
+                children: [
+                  const Padding(padding: EdgeInsets.all(8)),
+                  Text(context.strings.profile_grid_screen_selected_age_range(selectedAgeRange)),
+                  const Padding(padding: EdgeInsets.all(8)),
+                  openFilterSettingsButton(context, filterEnabledIcon: false),
+                ],
+              ),
+            );
           }
-          return Center(child: showAllProfilesButton(context));
         },
         noItemsFoundIndicatorBuilder: (context) {
           final filterState = context.read<ProfileFiltersBloc>().state;
