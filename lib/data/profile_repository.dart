@@ -414,7 +414,9 @@ class ProfileRepository extends DataRepositoryWithLifecycle {
       return db
           .accountAction((db) => db.myProfile.setApiProfile(result: info))
           .andThenEmptyErr(
-            (_) => db.accountAction((db) => db.common.updateSyncVersionProfile(info.sv)),
+            (_) => db.accountAction(
+              (db) => db.common.updateSyncVersionProfile(info.profileSyncVersion),
+            ),
           );
     });
   }

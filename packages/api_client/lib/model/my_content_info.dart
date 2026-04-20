@@ -10,13 +10,13 @@
 
 part of openapi.api;
 
-class ContentInfoWithFd {
-  /// Returns a new [ContentInfoWithFd] instance.
-  ContentInfoWithFd({
+class MyContentInfo {
+  /// Returns a new [MyContentInfo] instance.
+  MyContentInfo({
     required this.cid,
     required this.ctype,
-    required this.fd,
-    this.fv,
+    required this.faceDetected,
+    this.faceVerified,
     this.rejectedReasonCategory,
     this.rejectedReasonDetails,
     required this.state,
@@ -27,10 +27,10 @@ class ContentInfoWithFd {
   MediaContentType ctype;
 
   /// Face detected (automatic or manual)
-  bool fd;
+  bool faceDetected;
 
   /// Face verified against current security content (automatic or manual)
-  bool? fv;
+  bool? faceVerified;
 
   MediaContentModerationRejectedReasonCategory? rejectedReasonCategory;
 
@@ -39,11 +39,11 @@ class ContentInfoWithFd {
   ContentModerationState state;
 
   @override
-  bool operator ==(Object other) => identical(this, other) || other is ContentInfoWithFd &&
+  bool operator ==(Object other) => identical(this, other) || other is MyContentInfo &&
     other.cid == cid &&
     other.ctype == ctype &&
-    other.fd == fd &&
-    other.fv == fv &&
+    other.faceDetected == faceDetected &&
+    other.faceVerified == faceVerified &&
     other.rejectedReasonCategory == rejectedReasonCategory &&
     other.rejectedReasonDetails == rejectedReasonDetails &&
     other.state == state;
@@ -53,24 +53,24 @@ class ContentInfoWithFd {
     // ignore: unnecessary_parenthesis
     (cid.hashCode) +
     (ctype.hashCode) +
-    (fd.hashCode) +
-    (fv == null ? 0 : fv!.hashCode) +
+    (faceDetected.hashCode) +
+    (faceVerified == null ? 0 : faceVerified!.hashCode) +
     (rejectedReasonCategory == null ? 0 : rejectedReasonCategory!.hashCode) +
     (rejectedReasonDetails == null ? 0 : rejectedReasonDetails!.hashCode) +
     (state.hashCode);
 
   @override
-  String toString() => 'ContentInfoWithFd[cid=$cid, ctype=$ctype, fd=$fd, fv=$fv, rejectedReasonCategory=$rejectedReasonCategory, rejectedReasonDetails=$rejectedReasonDetails, state=$state]';
+  String toString() => 'MyContentInfo[cid=$cid, ctype=$ctype, faceDetected=$faceDetected, faceVerified=$faceVerified, rejectedReasonCategory=$rejectedReasonCategory, rejectedReasonDetails=$rejectedReasonDetails, state=$state]';
 
   Map<String, dynamic> toJson() {
     final json = <String, dynamic>{};
       json[r'cid'] = this.cid;
       json[r'ctype'] = this.ctype;
-      json[r'fd'] = this.fd;
-    if (this.fv != null) {
-      json[r'fv'] = this.fv;
+      json[r'face_detected'] = this.faceDetected;
+    if (this.faceVerified != null) {
+      json[r'face_verified'] = this.faceVerified;
     } else {
-      json[r'fv'] = null;
+      json[r'face_verified'] = null;
     }
     if (this.rejectedReasonCategory != null) {
       json[r'rejected_reason_category'] = this.rejectedReasonCategory;
@@ -86,10 +86,10 @@ class ContentInfoWithFd {
     return json;
   }
 
-  /// Returns a new [ContentInfoWithFd] instance and imports its values from
+  /// Returns a new [MyContentInfo] instance and imports its values from
   /// [value] if it's a [Map], null otherwise.
   // ignore: prefer_constructors_over_static_methods
-  static ContentInfoWithFd? fromJson(dynamic value) {
+  static MyContentInfo? fromJson(dynamic value) {
     if (value is Map) {
       final json = value.cast<String, dynamic>();
 
@@ -98,17 +98,17 @@ class ContentInfoWithFd {
       // Note 2: this code is stripped in release mode!
       assert(() {
         requiredKeys.forEach((key) {
-          assert(json.containsKey(key), 'Required key "ContentInfoWithFd[$key]" is missing from JSON.');
-          assert(json[key] != null, 'Required key "ContentInfoWithFd[$key]" has a null value in JSON.');
+          assert(json.containsKey(key), 'Required key "MyContentInfo[$key]" is missing from JSON.');
+          assert(json[key] != null, 'Required key "MyContentInfo[$key]" has a null value in JSON.');
         });
         return true;
       }());
 
-      return ContentInfoWithFd(
+      return MyContentInfo(
         cid: ContentId.fromJson(json[r'cid'])!,
         ctype: MediaContentType.fromJson(json[r'ctype'])!,
-        fd: mapValueOfType<bool>(json, r'fd')!,
-        fv: mapValueOfType<bool>(json, r'fv'),
+        faceDetected: mapValueOfType<bool>(json, r'face_detected')!,
+        faceVerified: mapValueOfType<bool>(json, r'face_verified'),
         rejectedReasonCategory: MediaContentModerationRejectedReasonCategory.fromJson(json[r'rejected_reason_category']),
         rejectedReasonDetails: MediaContentModerationRejectedReasonDetails.fromJson(json[r'rejected_reason_details']),
         state: ContentModerationState.fromJson(json[r'state'])!,
@@ -117,11 +117,11 @@ class ContentInfoWithFd {
     return null;
   }
 
-  static List<ContentInfoWithFd> listFromJson(dynamic json, {bool growable = false,}) {
-    final result = <ContentInfoWithFd>[];
+  static List<MyContentInfo> listFromJson(dynamic json, {bool growable = false,}) {
+    final result = <MyContentInfo>[];
     if (json is List && json.isNotEmpty) {
       for (final row in json) {
-        final value = ContentInfoWithFd.fromJson(row);
+        final value = MyContentInfo.fromJson(row);
         if (value != null) {
           result.add(value);
         }
@@ -130,12 +130,12 @@ class ContentInfoWithFd {
     return result.toList(growable: growable);
   }
 
-  static Map<String, ContentInfoWithFd> mapFromJson(dynamic json) {
-    final map = <String, ContentInfoWithFd>{};
+  static Map<String, MyContentInfo> mapFromJson(dynamic json) {
+    final map = <String, MyContentInfo>{};
     if (json is Map && json.isNotEmpty) {
       json = json.cast<String, dynamic>(); // ignore: parameter_assignments
       for (final entry in json.entries) {
-        final value = ContentInfoWithFd.fromJson(entry.value);
+        final value = MyContentInfo.fromJson(entry.value);
         if (value != null) {
           map[entry.key] = value;
         }
@@ -144,14 +144,14 @@ class ContentInfoWithFd {
     return map;
   }
 
-  // maps a json object with a list of ContentInfoWithFd-objects as value to a dart map
-  static Map<String, List<ContentInfoWithFd>> mapListFromJson(dynamic json, {bool growable = false,}) {
-    final map = <String, List<ContentInfoWithFd>>{};
+  // maps a json object with a list of MyContentInfo-objects as value to a dart map
+  static Map<String, List<MyContentInfo>> mapListFromJson(dynamic json, {bool growable = false,}) {
+    final map = <String, List<MyContentInfo>>{};
     if (json is Map && json.isNotEmpty) {
       // ignore: parameter_assignments
       json = json.cast<String, dynamic>();
       for (final entry in json.entries) {
-        map[entry.key] = ContentInfoWithFd.listFromJson(entry.value, growable: growable,);
+        map[entry.key] = MyContentInfo.listFromJson(entry.value, growable: growable,);
       }
     }
     return map;
@@ -161,7 +161,7 @@ class ContentInfoWithFd {
   static const requiredKeys = <String>{
     'cid',
     'ctype',
-    'fd',
+    'face_detected',
     'state',
   };
 }

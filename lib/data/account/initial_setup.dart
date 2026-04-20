@@ -94,7 +94,9 @@ class InitialSetupUtils {
       case ProcessingSuccess():
         contentId1 = result2.contentId;
     }
-    await _api.mediaAction((api) => api.putProfileContent(SetProfileContent(c: [contentId1])));
+    await _api.mediaAction(
+      (api) => api.putProfileContent(SetProfileContent(content: [contentId1])),
+    );
 
     // Other setup
 
@@ -265,7 +267,12 @@ Result<SetProfileContent, ()> createProfileContent(Iterable<ImgState> imgs) {
   final c = List<ContentId>.from([contentId0, contentId1, contentId2, contentId3].nonNulls);
 
   return Ok(
-    SetProfileContent(c: c, gridCropSize: gridCropSize, gridCropX: gridCropX, gridCropY: gridCropY),
+    SetProfileContent(
+      content: c,
+      gridCropSize: gridCropSize,
+      gridCropX: gridCropX,
+      gridCropY: gridCropY,
+    ),
   );
 }
 

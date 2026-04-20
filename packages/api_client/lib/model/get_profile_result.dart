@@ -13,9 +13,9 @@ part of openapi.api;
 class GetProfileResult {
   /// Returns a new [GetProfileResult] instance.
   GetProfileResult({
-    this.lst,
-    this.p,
-    this.v,
+    this.lastSeenTime,
+    this.profile,
+    this.profileVersion,
   });
 
   /// Account's most recent disconnect time.  If the last seen time is not None, then it is Unix timestamp or -1 if the profile is currently online.
@@ -25,46 +25,46 @@ class GetProfileResult {
   /// source code must fall back to having a nullable type.
   /// Consider adding a "default:" property in the specification file to hide this note.
   ///
-  int? lst;
+  int? lastSeenTime;
 
   /// Profile data if it is newer than the version in the query.
-  Profile? p;
+  Profile? profile;
 
   /// If empty then profile does not exist or current account does not have access to the profile.
-  ProfileVersion? v;
+  ProfileVersion? profileVersion;
 
   @override
   bool operator ==(Object other) => identical(this, other) || other is GetProfileResult &&
-    other.lst == lst &&
-    other.p == p &&
-    other.v == v;
+    other.lastSeenTime == lastSeenTime &&
+    other.profile == profile &&
+    other.profileVersion == profileVersion;
 
   @override
   int get hashCode =>
     // ignore: unnecessary_parenthesis
-    (lst == null ? 0 : lst!.hashCode) +
-    (p == null ? 0 : p!.hashCode) +
-    (v == null ? 0 : v!.hashCode);
+    (lastSeenTime == null ? 0 : lastSeenTime!.hashCode) +
+    (profile == null ? 0 : profile!.hashCode) +
+    (profileVersion == null ? 0 : profileVersion!.hashCode);
 
   @override
-  String toString() => 'GetProfileResult[lst=$lst, p=$p, v=$v]';
+  String toString() => 'GetProfileResult[lastSeenTime=$lastSeenTime, profile=$profile, profileVersion=$profileVersion]';
 
   Map<String, dynamic> toJson() {
     final json = <String, dynamic>{};
-    if (this.lst != null) {
-      json[r'lst'] = this.lst;
+    if (this.lastSeenTime != null) {
+      json[r'last_seen_time'] = this.lastSeenTime;
     } else {
-      json[r'lst'] = null;
+      json[r'last_seen_time'] = null;
     }
-    if (this.p != null) {
-      json[r'p'] = this.p;
+    if (this.profile != null) {
+      json[r'profile'] = this.profile;
     } else {
-      json[r'p'] = null;
+      json[r'profile'] = null;
     }
-    if (this.v != null) {
-      json[r'v'] = this.v;
+    if (this.profileVersion != null) {
+      json[r'profile_version'] = this.profileVersion;
     } else {
-      json[r'v'] = null;
+      json[r'profile_version'] = null;
     }
     return json;
   }
@@ -88,9 +88,9 @@ class GetProfileResult {
       }());
 
       return GetProfileResult(
-        lst: mapValueOfType<int>(json, r'lst'),
-        p: Profile.fromJson(json[r'p']),
-        v: ProfileVersion.fromJson(json[r'v']),
+        lastSeenTime: mapValueOfType<int>(json, r'last_seen_time'),
+        profile: Profile.fromJson(json[r'profile']),
+        profileVersion: ProfileVersion.fromJson(json[r'profile_version']),
       );
     }
     return null;

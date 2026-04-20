@@ -249,17 +249,17 @@ Widget _statusInfo(
     stateTexts.add(moderationState);
   }
 
-  final faceDetected = content.fdManual ?? content.fd;
+  final faceDetected = content.faceDetectedManual ?? content.faceDetected;
   if (faceVerificationEnabled && faceDetected) {
-    if (content.fvManual != null) {
+    if (content.faceVerifiedManual != null) {
       stateTexts.add(
-        content.fvManual!
+        content.faceVerifiedManual!
             ? context.strings.content_management_screen_content_face_verified
             : context.strings.content_management_screen_content_face_not_verified,
       );
-    } else if (content.fv != null) {
+    } else if (content.faceVerified != null) {
       stateTexts.add(
-        content.fv!
+        content.faceVerified!
             ? context.strings.content_management_screen_content_face_verified
             : context.strings.content_management_screen_content_face_not_verified,
       );

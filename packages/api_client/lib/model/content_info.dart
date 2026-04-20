@@ -13,15 +13,15 @@ part of openapi.api;
 class ContentInfo {
   /// Returns a new [ContentInfo] instance.
   ContentInfo({
-    this.a = true,
+    this.accepted = true,
     required this.cid,
     this.ctype,
-    this.fd = true,
-    this.fv,
+    this.faceDetected = true,
+    this.faceVerified,
   });
 
   /// Accepted
-  bool a;
+  bool accepted;
 
   ContentId cid;
 
@@ -29,45 +29,45 @@ class ContentInfo {
   MediaContentType? ctype;
 
   /// Face detected (automatic or manual)
-  bool fd;
+  bool faceDetected;
 
   /// Face verified against current security content (automatic or manual)
-  bool? fv;
+  bool? faceVerified;
 
   @override
   bool operator ==(Object other) => identical(this, other) || other is ContentInfo &&
-    other.a == a &&
+    other.accepted == accepted &&
     other.cid == cid &&
     other.ctype == ctype &&
-    other.fd == fd &&
-    other.fv == fv;
+    other.faceDetected == faceDetected &&
+    other.faceVerified == faceVerified;
 
   @override
   int get hashCode =>
     // ignore: unnecessary_parenthesis
-    (a.hashCode) +
+    (accepted.hashCode) +
     (cid.hashCode) +
     (ctype == null ? 0 : ctype!.hashCode) +
-    (fd.hashCode) +
-    (fv == null ? 0 : fv!.hashCode);
+    (faceDetected.hashCode) +
+    (faceVerified == null ? 0 : faceVerified!.hashCode);
 
   @override
-  String toString() => 'ContentInfo[a=$a, cid=$cid, ctype=$ctype, fd=$fd, fv=$fv]';
+  String toString() => 'ContentInfo[accepted=$accepted, cid=$cid, ctype=$ctype, faceDetected=$faceDetected, faceVerified=$faceVerified]';
 
   Map<String, dynamic> toJson() {
     final json = <String, dynamic>{};
-      json[r'a'] = this.a;
+      json[r'accepted'] = this.accepted;
       json[r'cid'] = this.cid;
     if (this.ctype != null) {
       json[r'ctype'] = this.ctype;
     } else {
       json[r'ctype'] = null;
     }
-      json[r'fd'] = this.fd;
-    if (this.fv != null) {
-      json[r'fv'] = this.fv;
+      json[r'face_detected'] = this.faceDetected;
+    if (this.faceVerified != null) {
+      json[r'face_verified'] = this.faceVerified;
     } else {
-      json[r'fv'] = null;
+      json[r'face_verified'] = null;
     }
     return json;
   }
@@ -91,11 +91,11 @@ class ContentInfo {
       }());
 
       return ContentInfo(
-        a: mapValueOfType<bool>(json, r'a') ?? true,
+        accepted: mapValueOfType<bool>(json, r'accepted') ?? true,
         cid: ContentId.fromJson(json[r'cid'])!,
         ctype: MediaContentType.fromJson(json[r'ctype']),
-        fd: mapValueOfType<bool>(json, r'fd') ?? true,
-        fv: mapValueOfType<bool>(json, r'fv'),
+        faceDetected: mapValueOfType<bool>(json, r'face_detected') ?? true,
+        faceVerified: mapValueOfType<bool>(json, r'face_verified'),
       );
     }
     return null;

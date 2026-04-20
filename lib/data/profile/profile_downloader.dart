@@ -39,18 +39,18 @@ class ProfileEntryDownloader {
     );
     switch (contentInfoResult) {
       case Ok(:final v):
-        final contentVersion = v.v;
+        final contentVersion = v.version;
         if (contentVersion == null) {
           // Profile private (or account state might not be Normal)
           return Err(PrivateProfile());
         }
-        final contentInfo = v.c;
+        final contentInfo = v.content;
         if (contentInfo != null) {
           await db.accountAction(
             (db) => db.profile.updateProfileContent(accountId, contentInfo, contentVersion),
           );
 
-          final primaryContentId = contentInfo.c.firstOrNull?.cid;
+          final primaryContentId = contentInfo.content.firstOrNull?.cid;
           if (primaryContentId == null) {
             _log.warning("Profile content info is missing");
             return Err(OtherProfileDownloadError());
@@ -79,24 +79,24 @@ class ProfileEntryDownloader {
 
     switch (profileDetailsResult) {
       case Ok(:final v):
-        final version = v.v;
+        final version = v.profileVersion;
         if (version == null) {
           // Profile not accessible (or account state might not be Normal)
           return Err(PrivateProfile());
         }
 
-        final profile = v.p;
+        final profile = v.profile;
         if (profile != null) {
           // Sent profile version didn't match the latest profile version, so
           // server sent the latest profile.
           await db.accountAction(
-            (db) => db.profile.updateProfileData(accountId, profile, version, v.lst),
+            (db) => db.profile.updateProfileData(accountId, profile, version, v.lastSeenTime),
           );
         } else {
           // Current profile version is the latest.
           // Only updating last seen time to database is latest.
           await db.accountAction(
-            (db) => db.profile.updateProfileLastSeenTimeIfNeeded(accountId, v.lst),
+            (db) => db.profile.updateProfileLastSeenTimeIfNeeded(accountId, v.lastSeenTime),
           );
         }
       case Err(:final e):

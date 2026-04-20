@@ -14,7 +14,7 @@ class DaoWriteMyProfile extends DatabaseAccessor<AccountDatabase> with _$DaoWrit
   DaoWriteMyProfile(super.db);
 
   Future<void> setApiProfile({required api.GetMyProfileResult result}) async {
-    final profile = result.p;
+    final profile = result.profile;
     await into(myProfile).insertOnConflictUpdate(
       MyProfileCompanion.insert(
         id: SingleRowTable.ID,
@@ -28,7 +28,7 @@ class DaoWriteMyProfile extends DatabaseAccessor<AccountDatabase> with _$DaoWrit
           result.nameModerationInfo?.rejectedReasonDetails,
         ),
         profileText: Value(profile.ptext),
-        profileTextAccepted: Value(result.p.ptextAccepted),
+        profileTextAccepted: Value(result.profile.ptextAccepted),
         profileTextModerationState: Value(result.textModerationInfo?.state.toEnumString()),
         profileTextModerationRejectedCategory: Value(
           result.textModerationInfo?.rejectedReasonCategory,
@@ -37,7 +37,7 @@ class DaoWriteMyProfile extends DatabaseAccessor<AccountDatabase> with _$DaoWrit
           result.textModerationInfo?.rejectedReasonDetails,
         ),
         profileAge: Value(profile.age),
-        profileVersion: Value(result.v),
+        profileVersion: Value(result.profileVersion),
         profileUnlimitedLikes: Value(profile.unlimitedLikes),
         jsonProfileAttributes: Value(profile.attributes.toJsonList()),
       ),
@@ -52,7 +52,7 @@ class DaoWriteMyProfile extends DatabaseAccessor<AccountDatabase> with _$DaoWrit
         primaryContentGridCropSize: Value(content.gridCropSize),
         primaryContentGridCropX: Value(content.gridCropX),
         primaryContentGridCropY: Value(content.gridCropY),
-        mediaVerificationStatus: Value(content.vs.v),
+        mediaVerificationStatus: Value(content.verificationStatus.v),
         profileContentVersion: Value(info.profileContentVersion),
       ),
     );

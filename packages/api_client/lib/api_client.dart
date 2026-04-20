@@ -320,8 +320,6 @@ class ApiClient {
           return ContentInfo.fromJson(value);
         case 'ContentInfoDetailed':
           return ContentInfoDetailed.fromJson(value);
-        case 'ContentInfoWithFd':
-          return ContentInfoWithFd.fromJson(value);
         case 'ContentModerationState':
           return ContentModerationStateTypeTransformer().decode(value);
         case 'ContentProcessingId':
@@ -582,6 +580,8 @@ class ApiClient {
           return ModerationActionTypeTransformer().decode(value);
         case 'ModerationQueueType':
           return ModerationQueueTypeTypeTransformer().decode(value);
+        case 'MyContentInfo':
+          return MyContentInfo.fromJson(value);
         case 'MyProfileContent':
           return MyProfileContent.fromJson(value);
         case 'NewReceivedLikesCount':

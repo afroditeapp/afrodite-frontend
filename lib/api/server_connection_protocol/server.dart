@@ -587,7 +587,7 @@ ContentProcessingStateChanged? _parseContentProcessingStateChanged(Uint8List pay
 
   final state = ContentProcessingState(
     cid: contentId,
-    fd: faceDetected,
+    faceDetected: faceDetected,
     state: stateType,
     waitQueuePosition: waitQueuePosition,
   );

@@ -198,7 +198,7 @@ class SendImageToSlotTask {
       case ContentProcessingStateType.completed:
         {
           final contentId = state.cid;
-          final faceDetected = state.fd;
+          final faceDetected = state.faceDetected;
           if (contentId == null || faceDetected == null) {
             return SendToSlotError();
           } else {

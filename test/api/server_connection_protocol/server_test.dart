@@ -74,7 +74,7 @@ void main() {
       expect(stateChanged!.id.id, 42);
       expect(stateChanged.newState.state, ContentProcessingStateType.completed);
       expect(stateChanged.newState.cid!.cid, expectedContentId);
-      expect(stateChanged.newState.fd, isTrue);
+      expect(stateChanged.newState.faceDetected, isTrue);
     });
 
     test('parses content processing in queue payload', () {
@@ -89,7 +89,7 @@ void main() {
       expect(stateChanged.newState.state, ContentProcessingStateType.inQueue);
       expect(stateChanged.newState.waitQueuePosition, 7);
       expect(stateChanged.newState.cid, isNull);
-      expect(stateChanged.newState.fd, isNull);
+      expect(stateChanged.newState.faceDetected, isNull);
     });
 
     test('parses check online status response with last seen', () {

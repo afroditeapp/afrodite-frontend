@@ -442,7 +442,7 @@ class InitialSetupBloc extends Bloc<InitialSetupEvent, InitialSetupData>
           await db.accountAction(
             (db) => db.progress.updateInitialSetupSecuritySelfie(
               contentId: securitySelfie.contentId.cid,
-              faceDetected: newSecuritySelfieState.fd,
+              faceDetected: newSecuritySelfieState.faceDetected,
             ),
           );
         }
@@ -462,8 +462,8 @@ class InitialSetupBloc extends Bloc<InitialSetupEvent, InitialSetupData>
       for (final (i, img) in profileImages.indexed) {
         if (img is ImageSelected) {
           final newImgState = r.data.firstWhereOrNull((v) => v.cid == img.id.contentId);
-          if (newImgState != null && newImgState.fd != img.id.faceDetected) {
-            profileImages[i] = img.copyWithFaceDetected(newImgState.fd);
+          if (newImgState != null && newImgState.faceDetected != img.id.faceDetected) {
+            profileImages[i] = img.copyWithFaceDetected(newImgState.faceDetected);
             changed = true;
           }
         }

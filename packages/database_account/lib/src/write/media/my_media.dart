@@ -19,13 +19,13 @@ class DaoWriteMyMedia extends DatabaseAccessor<AccountDatabase> with _$DaoWriteM
     await (delete(myMediaContent)..where((t) => t.contentIndex.isBiggerOrEqualValue(index))).go();
   }
 
-  Future<void> updateMyProfileContent(int index, api.ContentInfoWithFd content) async {
+  Future<void> updateMyProfileContent(int index, api.MyContentInfo content) async {
     await into(myMediaContent).insertOnConflictUpdate(
       MyMediaContentCompanion.insert(
         contentIndex: Value(index),
         contentId: content.cid,
-        faceDetected: content.fd,
-        faceVerified: Value(content.fv),
+        faceDetected: content.faceDetected,
+        faceVerified: Value(content.faceVerified),
         moderationState: Value(content.state.toEnumString()),
         contentModerationRejectedCategory: Value(content.rejectedReasonCategory),
         contentModerationRejectedDetails: Value(content.rejectedReasonDetails),
@@ -42,11 +42,11 @@ class DaoWriteMyMedia extends DatabaseAccessor<AccountDatabase> with _$DaoWriteM
         await removeMySecurityContent();
       }
 
-      for (final (i, c) in info.profileContent.c.indexed) {
+      for (final (i, c) in info.profileContent.content.indexed) {
         await updateMyProfileContent(i, c);
       }
 
-      await removeMyContentStartingFrom(info.profileContent.c.length);
+      await removeMyContentStartingFrom(info.profileContent.content.length);
 
       await db.write.myProfile.dbInternalMethodUpdateContentInfo(info: info);
       await db.write.common.updateSyncVersionMediaContent(info.syncVersion);

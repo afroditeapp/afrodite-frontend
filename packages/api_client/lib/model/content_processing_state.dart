@@ -14,7 +14,7 @@ class ContentProcessingState {
   /// Returns a new [ContentProcessingState] instance.
   ContentProcessingState({
     this.cid,
-    this.fd,
+    this.faceDetected,
     required this.state,
     this.waitQueuePosition,
   });
@@ -23,7 +23,7 @@ class ContentProcessingState {
   ContentId? cid;
 
   /// Face detected info of the processed content.
-  bool? fd;
+  bool? faceDetected;
 
   ContentProcessingStateType state;
 
@@ -33,7 +33,7 @@ class ContentProcessingState {
   @override
   bool operator ==(Object other) => identical(this, other) || other is ContentProcessingState &&
     other.cid == cid &&
-    other.fd == fd &&
+    other.faceDetected == faceDetected &&
     other.state == state &&
     other.waitQueuePosition == waitQueuePosition;
 
@@ -41,12 +41,12 @@ class ContentProcessingState {
   int get hashCode =>
     // ignore: unnecessary_parenthesis
     (cid == null ? 0 : cid!.hashCode) +
-    (fd == null ? 0 : fd!.hashCode) +
+    (faceDetected == null ? 0 : faceDetected!.hashCode) +
     (state.hashCode) +
     (waitQueuePosition == null ? 0 : waitQueuePosition!.hashCode);
 
   @override
-  String toString() => 'ContentProcessingState[cid=$cid, fd=$fd, state=$state, waitQueuePosition=$waitQueuePosition]';
+  String toString() => 'ContentProcessingState[cid=$cid, faceDetected=$faceDetected, state=$state, waitQueuePosition=$waitQueuePosition]';
 
   Map<String, dynamic> toJson() {
     final json = <String, dynamic>{};
@@ -55,10 +55,10 @@ class ContentProcessingState {
     } else {
       json[r'cid'] = null;
     }
-    if (this.fd != null) {
-      json[r'fd'] = this.fd;
+    if (this.faceDetected != null) {
+      json[r'face_detected'] = this.faceDetected;
     } else {
-      json[r'fd'] = null;
+      json[r'face_detected'] = null;
     }
       json[r'state'] = this.state;
     if (this.waitQueuePosition != null) {
@@ -89,7 +89,7 @@ class ContentProcessingState {
 
       return ContentProcessingState(
         cid: ContentId.fromJson(json[r'cid']),
-        fd: mapValueOfType<bool>(json, r'fd'),
+        faceDetected: mapValueOfType<bool>(json, r'face_detected'),
         state: ContentProcessingStateType.fromJson(json[r'state'])!,
         waitQueuePosition: mapValueOfType<int>(json, r'wait_queue_position'),
       );

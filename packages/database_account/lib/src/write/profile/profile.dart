@@ -97,11 +97,18 @@ class DaoWriteProfile extends DatabaseAccessor<AccountDatabase> with _$DaoWriteP
     api.ProfileContentVersion contentVersion,
   ) async {
     await transaction(() async {
-      for (final (i, c) in content.c.indexed) {
-        await db.write.media.updateProfileContent(accountId, i, c.cid, c.a, c.fd, c.fv);
+      for (final (i, c) in content.content.indexed) {
+        await db.write.media.updateProfileContent(
+          accountId,
+          i,
+          c.cid,
+          c.accepted,
+          c.faceDetected,
+          c.faceVerified,
+        );
       }
 
-      await db.write.media.removeContentStartingFrom(accountId, content.c.length);
+      await db.write.media.removeContentStartingFrom(accountId, content.content.length);
 
       await into(profile).insertOnConflictUpdate(
         ProfileCompanion.insert(
@@ -109,7 +116,7 @@ class DaoWriteProfile extends DatabaseAccessor<AccountDatabase> with _$DaoWriteP
           primaryContentGridCropSize: Value(content.gridCropSize),
           primaryContentGridCropX: Value(content.gridCropX),
           primaryContentGridCropY: Value(content.gridCropY),
-          mediaVerificationStatus: Value(content.vs.v),
+          mediaVerificationStatus: Value(content.verificationStatus.v),
           profileContentVersion: Value(contentVersion),
         ),
       );

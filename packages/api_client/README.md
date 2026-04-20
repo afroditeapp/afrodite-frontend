@@ -212,6 +212,7 @@ Class | Method | HTTP request | Description
 *CommonAdminApi* | [**postTriggerSoftwareUpdateDownload**](doc//CommonAdminApi.md#posttriggersoftwareupdatedownload) | **POST** /common_api/trigger_software_update_download | Trigger software update download.
 *CommonAdminApi* | [**postTriggerSoftwareUpdateInstall**](doc//CommonAdminApi.md#posttriggersoftwareupdateinstall) | **POST** /common_api/trigger_software_update_install | Trigger software update install.
 *CommonAdminApi* | [**postTriggerSystemReboot**](doc//CommonAdminApi.md#posttriggersystemreboot) | **POST** /common_api/trigger_system_reboot | Trigger system reboot.
+*CommonAdminApi* | [**postTriggerSystemShutdown**](doc//CommonAdminApi.md#posttriggersystemshutdown) | **POST** /common_api/trigger_system_shutdown | Trigger system shutdown.
 *CommonAdminApi* | [**postUnscheduleTask**](doc//CommonAdminApi.md#postunscheduletask) | **POST** /common_api/unschedule_task | Unschedule task.
 *MediaApi* | [**deleteContent**](doc//MediaApi.md#deletecontent) | **DELETE** /media_api/content/{aid}/{cid} | Delete content data.
 *MediaApi* | [**getAllAccountMediaContent**](doc//MediaApi.md#getallaccountmediacontent) | **GET** /media_api/all_account_media_content/{aid} | Get list of all media content on the server for one account.
@@ -345,7 +346,6 @@ Class | Method | HTTP request | Description
  - [ContentId](doc//ContentId.md)
  - [ContentInfo](doc//ContentInfo.md)
  - [ContentInfoDetailed](doc//ContentInfoDetailed.md)
- - [ContentInfoWithFd](doc//ContentInfoWithFd.md)
  - [ContentModerationState](doc//ContentModerationState.md)
  - [ContentProcessingId](doc//ContentProcessingId.md)
  - [ContentProcessingState](doc//ContentProcessingState.md)
@@ -476,6 +476,7 @@ Class | Method | HTTP request | Description
  - [MinDistanceKm](doc//MinDistanceKm.md)
  - [ModerationAction](doc//ModerationAction.md)
  - [ModerationQueueType](doc//ModerationQueueType.md)
+ - [MyContentInfo](doc//MyContentInfo.md)
  - [MyProfileContent](doc//MyProfileContent.md)
  - [NewReceivedLikesCount](doc//NewReceivedLikesCount.md)
  - [NewReceivedLikesCountResult](doc//NewReceivedLikesCountResult.md)

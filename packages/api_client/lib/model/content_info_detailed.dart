@@ -15,10 +15,10 @@ class ContentInfoDetailed {
   ContentInfoDetailed({
     required this.cid,
     required this.ctype,
-    required this.fd,
-    this.fdManual,
-    this.fv,
-    this.fvManual,
+    required this.faceDetected,
+    this.faceDetectedManual,
+    this.faceVerified,
+    this.faceVerifiedManual,
     this.rejectedReasonCategory,
     this.rejectedReasonDetails,
     required this.secureCapture,
@@ -33,16 +33,16 @@ class ContentInfoDetailed {
   MediaContentType ctype;
 
   /// Face detected (automatic)
-  bool fd;
+  bool faceDetected;
 
   /// Manual face detected value set by admin
-  bool? fdManual;
+  bool? faceDetectedManual;
 
   /// Face verified against current security content (automatic or manual)
-  bool? fv;
+  bool? faceVerified;
 
   /// Manual face verified value set by admin
-  bool? fvManual;
+  bool? faceVerifiedManual;
 
   MediaContentModerationRejectedReasonCategory? rejectedReasonCategory;
 
@@ -62,10 +62,10 @@ class ContentInfoDetailed {
   bool operator ==(Object other) => identical(this, other) || other is ContentInfoDetailed &&
     other.cid == cid &&
     other.ctype == ctype &&
-    other.fd == fd &&
-    other.fdManual == fdManual &&
-    other.fv == fv &&
-    other.fvManual == fvManual &&
+    other.faceDetected == faceDetected &&
+    other.faceDetectedManual == faceDetectedManual &&
+    other.faceVerified == faceVerified &&
+    other.faceVerifiedManual == faceVerifiedManual &&
     other.rejectedReasonCategory == rejectedReasonCategory &&
     other.rejectedReasonDetails == rejectedReasonDetails &&
     other.secureCapture == secureCapture &&
@@ -79,10 +79,10 @@ class ContentInfoDetailed {
     // ignore: unnecessary_parenthesis
     (cid.hashCode) +
     (ctype.hashCode) +
-    (fd.hashCode) +
-    (fdManual == null ? 0 : fdManual!.hashCode) +
-    (fv == null ? 0 : fv!.hashCode) +
-    (fvManual == null ? 0 : fvManual!.hashCode) +
+    (faceDetected.hashCode) +
+    (faceDetectedManual == null ? 0 : faceDetectedManual!.hashCode) +
+    (faceVerified == null ? 0 : faceVerified!.hashCode) +
+    (faceVerifiedManual == null ? 0 : faceVerifiedManual!.hashCode) +
     (rejectedReasonCategory == null ? 0 : rejectedReasonCategory!.hashCode) +
     (rejectedReasonDetails == null ? 0 : rejectedReasonDetails!.hashCode) +
     (secureCapture.hashCode) +
@@ -92,27 +92,27 @@ class ContentInfoDetailed {
     (usageStartTime == null ? 0 : usageStartTime!.hashCode);
 
   @override
-  String toString() => 'ContentInfoDetailed[cid=$cid, ctype=$ctype, fd=$fd, fdManual=$fdManual, fv=$fv, fvManual=$fvManual, rejectedReasonCategory=$rejectedReasonCategory, rejectedReasonDetails=$rejectedReasonDetails, secureCapture=$secureCapture, slot=$slot, state=$state, usageEndTime=$usageEndTime, usageStartTime=$usageStartTime]';
+  String toString() => 'ContentInfoDetailed[cid=$cid, ctype=$ctype, faceDetected=$faceDetected, faceDetectedManual=$faceDetectedManual, faceVerified=$faceVerified, faceVerifiedManual=$faceVerifiedManual, rejectedReasonCategory=$rejectedReasonCategory, rejectedReasonDetails=$rejectedReasonDetails, secureCapture=$secureCapture, slot=$slot, state=$state, usageEndTime=$usageEndTime, usageStartTime=$usageStartTime]';
 
   Map<String, dynamic> toJson() {
     final json = <String, dynamic>{};
       json[r'cid'] = this.cid;
       json[r'ctype'] = this.ctype;
-      json[r'fd'] = this.fd;
-    if (this.fdManual != null) {
-      json[r'fd_manual'] = this.fdManual;
+      json[r'face_detected'] = this.faceDetected;
+    if (this.faceDetectedManual != null) {
+      json[r'face_detected_manual'] = this.faceDetectedManual;
     } else {
-      json[r'fd_manual'] = null;
+      json[r'face_detected_manual'] = null;
     }
-    if (this.fv != null) {
-      json[r'fv'] = this.fv;
+    if (this.faceVerified != null) {
+      json[r'face_verified'] = this.faceVerified;
     } else {
-      json[r'fv'] = null;
+      json[r'face_verified'] = null;
     }
-    if (this.fvManual != null) {
-      json[r'fv_manual'] = this.fvManual;
+    if (this.faceVerifiedManual != null) {
+      json[r'face_verified_manual'] = this.faceVerifiedManual;
     } else {
-      json[r'fv_manual'] = null;
+      json[r'face_verified_manual'] = null;
     }
     if (this.rejectedReasonCategory != null) {
       json[r'rejected_reason_category'] = this.rejectedReasonCategory;
@@ -165,10 +165,10 @@ class ContentInfoDetailed {
       return ContentInfoDetailed(
         cid: ContentId.fromJson(json[r'cid'])!,
         ctype: MediaContentType.fromJson(json[r'ctype'])!,
-        fd: mapValueOfType<bool>(json, r'fd')!,
-        fdManual: mapValueOfType<bool>(json, r'fd_manual'),
-        fv: mapValueOfType<bool>(json, r'fv'),
-        fvManual: mapValueOfType<bool>(json, r'fv_manual'),
+        faceDetected: mapValueOfType<bool>(json, r'face_detected')!,
+        faceDetectedManual: mapValueOfType<bool>(json, r'face_detected_manual'),
+        faceVerified: mapValueOfType<bool>(json, r'face_verified'),
+        faceVerifiedManual: mapValueOfType<bool>(json, r'face_verified_manual'),
         rejectedReasonCategory: MediaContentModerationRejectedReasonCategory.fromJson(json[r'rejected_reason_category']),
         rejectedReasonDetails: MediaContentModerationRejectedReasonDetails.fromJson(json[r'rejected_reason_details']),
         secureCapture: mapValueOfType<bool>(json, r'secure_capture')!,
@@ -225,7 +225,7 @@ class ContentInfoDetailed {
   static const requiredKeys = <String>{
     'cid',
     'ctype',
-    'fd',
+    'face_detected',
     'secure_capture',
     'state',
   };

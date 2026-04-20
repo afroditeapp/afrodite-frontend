@@ -91,7 +91,6 @@ lib/model/connection_statistics.dart
 lib/model/content_id.dart
 lib/model/content_info.dart
 lib/model/content_info_detailed.dart
-lib/model/content_info_with_fd.dart
 lib/model/content_moderation_state.dart
 lib/model/content_processing_id.dart
 lib/model/content_processing_state.dart
@@ -222,6 +221,7 @@ lib/model/message_number.dart
 lib/model/min_distance_km.dart
 lib/model/moderation_action.dart
 lib/model/moderation_queue_type.dart
+lib/model/my_content_info.dart
 lib/model/my_profile_content.dart
 lib/model/new_received_likes_count.dart
 lib/model/new_received_likes_count_result.dart

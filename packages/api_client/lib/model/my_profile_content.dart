@@ -13,15 +13,15 @@ part of openapi.api;
 class MyProfileContent {
   /// Returns a new [MyProfileContent] instance.
   MyProfileContent({
-    this.c = const [],
+    this.content = const [],
     this.gridCropSize,
     this.gridCropX,
     this.gridCropY,
-    required this.vs,
+    required this.verificationStatus,
   });
 
-  /// Primary profile image which is shown in grid view.
-  List<ContentInfoWithFd> c;
+  /// First image is primary profile image which is shown in grid view.
+  List<MyContentInfo> content;
 
   double? gridCropSize;
 
@@ -29,31 +29,31 @@ class MyProfileContent {
 
   double? gridCropY;
 
-  MediaVerificationStatus vs;
+  MediaVerificationStatus verificationStatus;
 
   @override
   bool operator ==(Object other) => identical(this, other) || other is MyProfileContent &&
-    _deepEquality.equals(other.c, c) &&
+    _deepEquality.equals(other.content, content) &&
     other.gridCropSize == gridCropSize &&
     other.gridCropX == gridCropX &&
     other.gridCropY == gridCropY &&
-    other.vs == vs;
+    other.verificationStatus == verificationStatus;
 
   @override
   int get hashCode =>
     // ignore: unnecessary_parenthesis
-    (c.hashCode) +
+    (content.hashCode) +
     (gridCropSize == null ? 0 : gridCropSize!.hashCode) +
     (gridCropX == null ? 0 : gridCropX!.hashCode) +
     (gridCropY == null ? 0 : gridCropY!.hashCode) +
-    (vs.hashCode);
+    (verificationStatus.hashCode);
 
   @override
-  String toString() => 'MyProfileContent[c=$c, gridCropSize=$gridCropSize, gridCropX=$gridCropX, gridCropY=$gridCropY, vs=$vs]';
+  String toString() => 'MyProfileContent[content=$content, gridCropSize=$gridCropSize, gridCropX=$gridCropX, gridCropY=$gridCropY, verificationStatus=$verificationStatus]';
 
   Map<String, dynamic> toJson() {
     final json = <String, dynamic>{};
-      json[r'c'] = this.c;
+      json[r'content'] = this.content;
     if (this.gridCropSize != null) {
       json[r'grid_crop_size'] = this.gridCropSize;
     } else {
@@ -69,7 +69,7 @@ class MyProfileContent {
     } else {
       json[r'grid_crop_y'] = null;
     }
-      json[r'vs'] = this.vs;
+      json[r'verification_status'] = this.verificationStatus;
     return json;
   }
 
@@ -92,11 +92,11 @@ class MyProfileContent {
       }());
 
       return MyProfileContent(
-        c: ContentInfoWithFd.listFromJson(json[r'c']),
+        content: MyContentInfo.listFromJson(json[r'content']),
         gridCropSize: mapValueOfType<double>(json, r'grid_crop_size'),
         gridCropX: mapValueOfType<double>(json, r'grid_crop_x'),
         gridCropY: mapValueOfType<double>(json, r'grid_crop_y'),
-        vs: MediaVerificationStatus.fromJson(json[r'vs'])!,
+        verificationStatus: MediaVerificationStatus.fromJson(json[r'verification_status'])!,
       );
     }
     return null;
@@ -144,8 +144,8 @@ class MyProfileContent {
 
   /// The list of required keys that must be present in a JSON.
   static const requiredKeys = <String>{
-    'c',
-    'vs',
+    'content',
+    'verification_status',
   };
 }
 

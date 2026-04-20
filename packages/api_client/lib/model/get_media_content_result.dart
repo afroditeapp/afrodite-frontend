@@ -23,7 +23,7 @@ class GetMediaContentResult {
 
   ProfileContentVersion profileContentVersion;
 
-  ContentInfoWithFd? securityContent;
+  MyContentInfo? securityContent;
 
   MediaContentSyncVersion syncVersion;
 
@@ -79,7 +79,7 @@ class GetMediaContentResult {
       return GetMediaContentResult(
         profileContent: MyProfileContent.fromJson(json[r'profile_content'])!,
         profileContentVersion: ProfileContentVersion.fromJson(json[r'profile_content_version'])!,
-        securityContent: ContentInfoWithFd.fromJson(json[r'security_content']),
+        securityContent: MyContentInfo.fromJson(json[r'security_content']),
         syncVersion: MediaContentSyncVersion.fromJson(json[r'sync_version'])!,
       );
     }

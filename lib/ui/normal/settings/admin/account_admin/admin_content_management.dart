@@ -364,7 +364,7 @@ Widget _statusInfo(
 
   final List<Widget> faceDetectedButtons = [];
   if (changeFaceDetectedValueAction != null) {
-    if (content.fdManual != true) {
+    if (content.faceDetectedManual != true) {
       faceDetectedButtons.add(
         _createFaceDetectedValueChangeButton(
           context,
@@ -377,7 +377,7 @@ Widget _statusInfo(
         ),
       );
     }
-    if (content.fdManual != false) {
+    if (content.faceDetectedManual != false) {
       faceDetectedButtons.add(
         _createFaceDetectedValueChangeButton(
           context,
@@ -390,7 +390,7 @@ Widget _statusInfo(
         ),
       );
     }
-    if (content.fdManual != null) {
+    if (content.faceDetectedManual != null) {
       faceDetectedButtons.add(
         _createFaceDetectedValueChangeButton(
           context,
@@ -406,16 +406,18 @@ Widget _statusInfo(
   }
 
   final String faceDetectedText;
-  if (content.fdManual != null) {
-    faceDetectedText = content.fdManual! ? "Face detected (manual)" : "Face not detected (manual)";
+  if (content.faceDetectedManual != null) {
+    faceDetectedText = content.faceDetectedManual!
+        ? "Face detected (manual)"
+        : "Face not detected (manual)";
   } else {
-    faceDetectedText = content.fd ? "Face detected (auto)" : "Face not detected (auto)";
+    faceDetectedText = content.faceDetected ? "Face detected (auto)" : "Face not detected (auto)";
   }
 
-  final faceDetected = content.fdManual ?? content.fd;
+  final faceDetected = content.faceDetectedManual ?? content.faceDetected;
   final List<Widget> faceVerifiedButtons = [];
   if (faceDetected && changeFaceVerifiedValueAction != null) {
-    if (content.fvManual != true) {
+    if (content.faceVerifiedManual != true) {
       faceVerifiedButtons.add(
         _createFaceVerifiedValueChangeButton(
           context,
@@ -428,7 +430,7 @@ Widget _statusInfo(
         ),
       );
     }
-    if (content.fvManual != false) {
+    if (content.faceVerifiedManual != false) {
       faceVerifiedButtons.add(
         _createFaceVerifiedValueChangeButton(
           context,
@@ -441,7 +443,7 @@ Widget _statusInfo(
         ),
       );
     }
-    if (content.fvManual != null) {
+    if (content.faceVerifiedManual != null) {
       faceVerifiedButtons.add(
         _createFaceVerifiedValueChangeButton(
           context,
@@ -457,10 +459,12 @@ Widget _statusInfo(
   }
 
   final String? faceVerifiedText;
-  if (faceDetected && content.fvManual != null) {
-    faceVerifiedText = content.fvManual! ? "Face verified (manual)" : "Face not verified (manual)";
-  } else if (faceDetected && content.fv != null) {
-    faceVerifiedText = content.fv! ? "Face verified (auto)" : "Face not verified (auto)";
+  if (faceDetected && content.faceVerifiedManual != null) {
+    faceVerifiedText = content.faceVerifiedManual!
+        ? "Face verified (manual)"
+        : "Face not verified (manual)";
+  } else if (faceDetected && content.faceVerified != null) {
+    faceVerifiedText = content.faceVerified! ? "Face verified (auto)" : "Face not verified (auto)";
   } else if (faceDetected) {
     faceVerifiedText = "Face verification pending";
   } else {

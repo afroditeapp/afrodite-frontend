@@ -347,7 +347,7 @@ class CommonAdminApi {
 
   /// Get available manager instances.
   ///
-  /// # Access * Permission [model::Permissions::admin_server_view_info] * Permission [model::Permissions::admin_server_software_update] * Permission [model::Permissions::admin_server_data_reset] * Permission [model::Permissions::admin_server_restart] * Permission [model::Permissions::admin_server_reboot] * Permission [model::Permissions::admin_server_scheduled_restart] * Permission [model::Permissions::admin_server_scheduled_reboot]
+  /// # Access * Permission [model::Permissions::admin_server_view_info] * Permission [model::Permissions::admin_server_software_update] * Permission [model::Permissions::admin_server_data_reset] * Permission [model::Permissions::admin_server_restart] * Permission [model::Permissions::admin_server_reboot] * Permission [model::Permissions::admin_server_shutdown] * Permission [model::Permissions::admin_server_scheduled_restart] * Permission [model::Permissions::admin_server_scheduled_reboot]
   ///
   /// Note: This method returns the HTTP [Response].
   Future<Response> getManagerInstanceNamesWithHttpInfo() async {
@@ -377,7 +377,7 @@ class CommonAdminApi {
 
   /// Get available manager instances.
   ///
-  /// # Access * Permission [model::Permissions::admin_server_view_info] * Permission [model::Permissions::admin_server_software_update] * Permission [model::Permissions::admin_server_data_reset] * Permission [model::Permissions::admin_server_restart] * Permission [model::Permissions::admin_server_reboot] * Permission [model::Permissions::admin_server_scheduled_restart] * Permission [model::Permissions::admin_server_scheduled_reboot]
+  /// # Access * Permission [model::Permissions::admin_server_view_info] * Permission [model::Permissions::admin_server_software_update] * Permission [model::Permissions::admin_server_data_reset] * Permission [model::Permissions::admin_server_restart] * Permission [model::Permissions::admin_server_reboot] * Permission [model::Permissions::admin_server_shutdown] * Permission [model::Permissions::admin_server_scheduled_restart] * Permission [model::Permissions::admin_server_scheduled_reboot]
   Future<ManagerInstanceNameList?> getManagerInstanceNames() async {
     final response = await getManagerInstanceNamesWithHttpInfo();
     if (response.statusCode >= HttpStatus.badRequest) {
@@ -1534,6 +1534,56 @@ class CommonAdminApi {
   /// * [String] managerName (required):
   Future<void> postTriggerSystemReboot(String managerName,) async {
     final response = await postTriggerSystemRebootWithHttpInfo(managerName,);
+    if (response.statusCode >= HttpStatus.badRequest) {
+      throw ApiException(response.statusCode, await _decodeBodyBytes(response));
+    }
+  }
+
+  /// Trigger system shutdown.
+  ///
+  /// # Access * Permission [model::Permissions::admin_server_shutdown]
+  ///
+  /// Note: This method returns the HTTP [Response].
+  ///
+  /// Parameters:
+  ///
+  /// * [String] managerName (required):
+  Future<Response> postTriggerSystemShutdownWithHttpInfo(String managerName,) async {
+    // ignore: prefer_const_declarations
+    final path = r'/common_api/trigger_system_shutdown';
+
+    // ignore: prefer_final_locals
+    Object? postBody;
+
+    final queryParams = <QueryParam>[];
+    final headerParams = <String, String>{};
+    final formParams = <String, String>{};
+
+      queryParams.addAll(_queryParams('', 'manager_name', managerName));
+
+    const contentTypes = <String>[];
+
+
+    return apiClient.invokeAPI(
+      path,
+      'POST',
+      queryParams,
+      postBody,
+      headerParams,
+      formParams,
+      contentTypes.isEmpty ? null : contentTypes.first,
+    );
+  }
+
+  /// Trigger system shutdown.
+  ///
+  /// # Access * Permission [model::Permissions::admin_server_shutdown]
+  ///
+  /// Parameters:
+  ///
+  /// * [String] managerName (required):
+  Future<void> postTriggerSystemShutdown(String managerName,) async {
+    final response = await postTriggerSystemShutdownWithHttpInfo(managerName,);
     if (response.statusCode >= HttpStatus.badRequest) {
       throw ApiException(response.statusCode, await _decodeBodyBytes(response));
     }

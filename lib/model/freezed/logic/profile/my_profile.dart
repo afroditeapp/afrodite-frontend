@@ -104,7 +104,7 @@ class MyProfileData
     final c = [img0.contentId(), pics[1].contentId(), pics[2].contentId(), pics[3].contentId()];
 
     return SetProfileContent(
-      c: c.nonNulls.toList(),
+      content: c.nonNulls.toList(),
       gridCropSize: img0.cropArea.gridCropSize,
       gridCropX: img0.cropArea.gridCropX,
       gridCropY: img0.cropArea.gridCropY,

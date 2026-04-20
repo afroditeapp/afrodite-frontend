@@ -13,14 +13,14 @@ part of openapi.api;
 class SetProfileContent {
   /// Returns a new [SetProfileContent] instance.
   SetProfileContent({
-    this.c = const [],
+    this.content = const [],
     this.gridCropSize,
     this.gridCropX,
     this.gridCropY,
   });
 
-  /// Primary profile image which is shown in grid view.  One content ID is required.  Max item count is 6. Extra items are ignored.
-  List<ContentId> c;
+  /// First image is primary profile image which is shown in grid view.  One content ID is required.  Max item count is 6. Extra items are ignored.
+  List<ContentId> content;
 
   double? gridCropSize;
 
@@ -30,7 +30,7 @@ class SetProfileContent {
 
   @override
   bool operator ==(Object other) => identical(this, other) || other is SetProfileContent &&
-    _deepEquality.equals(other.c, c) &&
+    _deepEquality.equals(other.content, content) &&
     other.gridCropSize == gridCropSize &&
     other.gridCropX == gridCropX &&
     other.gridCropY == gridCropY;
@@ -38,17 +38,17 @@ class SetProfileContent {
   @override
   int get hashCode =>
     // ignore: unnecessary_parenthesis
-    (c.hashCode) +
+    (content.hashCode) +
     (gridCropSize == null ? 0 : gridCropSize!.hashCode) +
     (gridCropX == null ? 0 : gridCropX!.hashCode) +
     (gridCropY == null ? 0 : gridCropY!.hashCode);
 
   @override
-  String toString() => 'SetProfileContent[c=$c, gridCropSize=$gridCropSize, gridCropX=$gridCropX, gridCropY=$gridCropY]';
+  String toString() => 'SetProfileContent[content=$content, gridCropSize=$gridCropSize, gridCropX=$gridCropX, gridCropY=$gridCropY]';
 
   Map<String, dynamic> toJson() {
     final json = <String, dynamic>{};
-      json[r'c'] = this.c;
+      json[r'content'] = this.content;
     if (this.gridCropSize != null) {
       json[r'grid_crop_size'] = this.gridCropSize;
     } else {
@@ -86,7 +86,7 @@ class SetProfileContent {
       }());
 
       return SetProfileContent(
-        c: ContentId.listFromJson(json[r'c']),
+        content: ContentId.listFromJson(json[r'content']),
         gridCropSize: mapValueOfType<double>(json, r'grid_crop_size'),
         gridCropX: mapValueOfType<double>(json, r'grid_crop_x'),
         gridCropY: mapValueOfType<double>(json, r'grid_crop_y'),
@@ -137,7 +137,7 @@ class SetProfileContent {
 
   /// The list of required keys that must be present in a JSON.
   static const requiredKeys = <String>{
-    'c',
+    'content',
   };
 }
 
