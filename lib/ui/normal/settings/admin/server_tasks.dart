@@ -135,6 +135,16 @@ class _ServerTasksScreenState extends State<ServerTasksScreen> {
               (api) => api.postTriggerSystemReboot(data.manager),
             ),
           ),
+        if (widget.permissions.adminServerShutdown)
+          hPad(
+            actionButton(
+              context,
+              data,
+              "System shutdown",
+              null,
+              (api) => api.postTriggerSystemShutdown(data.manager),
+            ),
+          ),
         if (widget.permissions.adminServerDataReset)
           hPad(
             actionButton(
