@@ -17,6 +17,7 @@ import 'package:app/logic/app/notification_payload_handler.dart';
 import 'package:app/model/freezed/logic/main/navigator_state.dart';
 import 'package:app/model/freezed/logic/main/notification_payload_handler.dart';
 import 'package:app/ui/normal/chat/conversation_page.dart';
+import 'package:app/ui/normal/chat/conversation_list_page.dart';
 import 'package:app/ui/normal/likes.dart';
 import 'package:app/ui/normal/settings/media/content_management.dart';
 import 'package:app/utils/result.dart';
@@ -161,9 +162,7 @@ NotificationNavigationAction _conversationListFallbackNavigation(
   if (navigatorState.pages.length == 1) {
     return BottomNavigationChange(BottomNavigationScreenId.chats);
   } else {
-    // This action is for fallback conversation notification so
-    // it is not worth to implement a separate screen for conversations.
-    return DoNothing();
+    return NewScreen(ConversationListPage());
   }
 }
 

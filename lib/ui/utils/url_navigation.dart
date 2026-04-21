@@ -14,6 +14,7 @@ import 'package:app/ui/initial_setup/search_settings.dart';
 import 'package:app/ui/initial_setup/security_selfie.dart';
 import 'package:app/ui/login_new.dart';
 import 'package:app/ui/normal.dart';
+import 'package:app/ui/normal/chat/conversation_list_page.dart';
 import 'package:app/ui/normal/chat/conversation_page.dart';
 import 'package:app/ui/normal/chat/select_match.dart';
 import 'package:app/ui/normal/profiles/profile_filters.dart';
@@ -153,6 +154,7 @@ List<UrlParser<MyScreenPage<Object>>> loggedInPages(RepositoryInstances r) => [
 
   // Chat
   SelectMatchPage(),
+  ConversationListPage(),
   ConversationPageUrlParser(r),
 
   // Profile and chat

@@ -16,6 +16,8 @@ import 'package:openapi/api.dart';
 import 'package:app/data/general/notification/state/like_received.dart';
 import 'package:app/data/general/notification/state/message_received.dart';
 import 'package:app/database/account_database_manager.dart';
+import 'package:app/logic/app/navigator_state.dart';
+import 'package:app/ui/normal/chat/conversation_list_page.dart';
 import 'package:app/ui/normal/settings.dart';
 import 'package:app/ui_utils/snack_bar.dart';
 import 'package:app/utils/result.dart';
@@ -85,6 +87,14 @@ class _DebugSettingsScreenState extends State<DebugSettingsScreen> {
         Icons.notification_add,
         "Notification: New message (chats 1-5)",
         () => showConversationNotifications(take: 5),
+      ),
+    );
+
+    settings.add(
+      Setting.createSetting(
+        Icons.chat,
+        "Chats",
+        () => MyNavigator.push(context, ConversationListPage()),
       ),
     );
 
