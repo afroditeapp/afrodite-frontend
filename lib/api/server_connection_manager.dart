@@ -23,10 +23,10 @@ import 'package:rxdart/rxdart.dart';
 final _log = Logger("ServerConnectionManager");
 
 class ConnectionRetryManager {
-  static const int maxRetries = 2;
-  static const List<int> baseWaitSeconds = [0, 20];
-  static const int minJitterSeconds = 1;
-  static const int maxJitterSeconds = 10;
+  static const int maxRetries = 1;
+  static const List<int> baseWaitSeconds = [10];
+  static const int minJitterSeconds = 0;
+  static const int maxJitterSeconds = 20;
 
   int _retryCount = 0;
   final Random _random = Random();
