@@ -195,6 +195,7 @@ lib/model/location.dart
 lib/model/login_result.dart
 lib/model/maintenance_task.dart
 lib/model/manager_instance_name_list.dart
+lib/model/manual_server_maintenance_info_for_another_server.dart
 lib/model/map_bounds.dart
 lib/model/map_config.dart
 lib/model/map_coordinate.dart
@@ -252,6 +253,7 @@ lib/model/post_media_content_face_verified_value.dart
 lib/model/post_media_content_face_verified_value_item.dart
 lib/model/post_moderate_media_content.dart
 lib/model/post_moderate_profile_string.dart
+lib/model/post_security_content_verified_value.dart
 lib/model/post_start_data_export.dart
 lib/model/post_video_call_url_result.dart
 lib/model/predefined_banner.dart
@@ -327,10 +329,9 @@ lib/model/save_info_banners.dart
 lib/model/scheduled_task_status.dart
 lib/model/scheduled_task_type.dart
 lib/model/scheduled_task_type_value.dart
-lib/model/scheduled_tasks_config.dart
 lib/model/search_age_range.dart
 lib/model/search_groups.dart
-lib/model/security_content.dart
+lib/model/security_content_admin_info.dart
 lib/model/seen_message.dart
 lib/model/send_like.dart
 lib/model/send_like_result.dart
@@ -338,7 +339,6 @@ lib/model/send_message_result.dart
 lib/model/send_verify_email_message_result.dart
 lib/model/sent_blocks_page.dart
 lib/model/sent_message_id_list.dart
-lib/model/server_config.dart
 lib/model/server_maintenance_status.dart
 lib/model/server_message_type.dart
 lib/model/set_account_ban_state.dart

@@ -84,8 +84,10 @@ class MediaRepository extends DataRepositoryWithLifecycle {
     }
   }
 
-  Future<ContentId?> getSecuritySelfie(AccountId account) =>
-      api.media((api) => api.getSecurityContentInfo(account.aid)).ok().map((img) => img.c?.cid);
+  Future<ContentId?> getSecuritySelfie(AccountId account) => api
+      .mediaAdmin((api) => api.getSecurityContentInfo(account.aid))
+      .ok()
+      .map((img) => img.content?.cid);
 
   /// Reload current profile and security content.
   Future<Result<(), ()>> reloadMyMediaContent() async {

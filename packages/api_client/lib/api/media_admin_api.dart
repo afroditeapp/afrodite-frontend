@@ -220,6 +220,63 @@ class MediaAdminApi {
     return null;
   }
 
+  /// Get current security content for selected profile.
+  ///
+  /// # Access  - Permission [model::Permissions::admin_moderate_media_content] - Permission [model::Permissions::admin_edit_media_content_face_verified_value] - Permission [model::Permissions::admin_edit_security_content_verified_value]
+  ///
+  /// Note: This method returns the HTTP [Response].
+  ///
+  /// Parameters:
+  ///
+  /// * [String] aid (required):
+  Future<Response> getSecurityContentInfoWithHttpInfo(String aid,) async {
+    // ignore: prefer_const_declarations
+    final path = r'/media_api/security_content_info/{aid}'
+      .replaceAll('{aid}', aid);
+
+    // ignore: prefer_final_locals
+    Object? postBody;
+
+    final queryParams = <QueryParam>[];
+    final headerParams = <String, String>{};
+    final formParams = <String, String>{};
+
+    const contentTypes = <String>[];
+
+
+    return apiClient.invokeAPI(
+      path,
+      'GET',
+      queryParams,
+      postBody,
+      headerParams,
+      formParams,
+      contentTypes.isEmpty ? null : contentTypes.first,
+    );
+  }
+
+  /// Get current security content for selected profile.
+  ///
+  /// # Access  - Permission [model::Permissions::admin_moderate_media_content] - Permission [model::Permissions::admin_edit_media_content_face_verified_value] - Permission [model::Permissions::admin_edit_security_content_verified_value]
+  ///
+  /// Parameters:
+  ///
+  /// * [String] aid (required):
+  Future<SecurityContentAdminInfo?> getSecurityContentInfo(String aid,) async {
+    final response = await getSecurityContentInfoWithHttpInfo(aid,);
+    if (response.statusCode >= HttpStatus.badRequest) {
+      throw ApiException(response.statusCode, await _decodeBodyBytes(response));
+    }
+    // When a remote server returns no body with a status of 204, we shall not decode it.
+    // At the time of writing this, `dart:convert` will throw an "Unexpected end of input"
+    // FormatException when trying to decode an empty string.
+    if (response.body.isNotEmpty && response.statusCode != HttpStatus.noContent) {
+      return await apiClient.deserializeAsync(await _decodeBodyBytes(response), 'SecurityContentAdminInfo',) as SecurityContentAdminInfo;
+    
+    }
+    return null;
+  }
+
   /// Update image processing configuration
   ///
   /// # Permissions Requires admin_server_edit_image_processing_config.
@@ -407,6 +464,54 @@ class MediaAdminApi {
   /// * [PostModerateMediaContent] postModerateMediaContent (required):
   Future<void> postModerateMediaContent(PostModerateMediaContent postModerateMediaContent,) async {
     final response = await postModerateMediaContentWithHttpInfo(postModerateMediaContent,);
+    if (response.statusCode >= HttpStatus.badRequest) {
+      throw ApiException(response.statusCode, await _decodeBodyBytes(response));
+    }
+  }
+
+  /// Change security content verified value
+  ///
+  /// Bot account sets automatic value and human admin account sets manual override value.  # Access * Permission [model::Permissions::admin_edit_security_content_verified_value]
+  ///
+  /// Note: This method returns the HTTP [Response].
+  ///
+  /// Parameters:
+  ///
+  /// * [PostSecurityContentVerifiedValue] postSecurityContentVerifiedValue (required):
+  Future<Response> postSecurityContentVerifiedValueWithHttpInfo(PostSecurityContentVerifiedValue postSecurityContentVerifiedValue,) async {
+    // ignore: prefer_const_declarations
+    final path = r'/media_api/security_content_verified_value';
+
+    // ignore: prefer_final_locals
+    Object? postBody = postSecurityContentVerifiedValue;
+
+    final queryParams = <QueryParam>[];
+    final headerParams = <String, String>{};
+    final formParams = <String, String>{};
+
+    const contentTypes = <String>['application/json'];
+
+
+    return apiClient.invokeAPI(
+      path,
+      'POST',
+      queryParams,
+      postBody,
+      headerParams,
+      formParams,
+      contentTypes.isEmpty ? null : contentTypes.first,
+    );
+  }
+
+  /// Change security content verified value
+  ///
+  /// Bot account sets automatic value and human admin account sets manual override value.  # Access * Permission [model::Permissions::admin_edit_security_content_verified_value]
+  ///
+  /// Parameters:
+  ///
+  /// * [PostSecurityContentVerifiedValue] postSecurityContentVerifiedValue (required):
+  Future<void> postSecurityContentVerifiedValue(PostSecurityContentVerifiedValue postSecurityContentVerifiedValue,) async {
+    final response = await postSecurityContentVerifiedValueWithHttpInfo(postSecurityContentVerifiedValue,);
     if (response.statusCode >= HttpStatus.badRequest) {
       throw ApiException(response.statusCode, await _decodeBodyBytes(response));
     }

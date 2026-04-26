@@ -488,18 +488,23 @@ class MediaApi {
     return null;
   }
 
-  /// Get current security content for selected profile.
+  /// Get current profile content for selected profile as compact binary payload.
   ///
-  /// # Access  - Own account - Permission [model::Permissions::admin_moderate_media_content]
+  /// The first byte is result variant: - 0 = Empty - 1 = VersionOnly - 2 = ContentWithVersion  Variant payloads: - Empty: no payload - VersionOnly: 16-byte profile content version UUID - ContentWithVersion:   - 16-byte profile content version UUID   - 1-byte verification status (low 8 bits of internal flags)   - 1-byte content count (max 6)   - repeated content entries:     - 16-byte content UUID     - 1-byte packed content info   - 4-byte crop size as little-endian f32   - 4-byte crop x as little-endian f32   - 4-byte crop y as little-endian f32  Packed content info byte layout: - bits 0..2: face verified (0 None, 1 false, 2 true) - bit 3: face detected - bit 4: accepted - bits 5..7: media content type
   ///
   /// Note: This method returns the HTTP [Response].
   ///
   /// Parameters:
   ///
   /// * [String] aid (required):
-  Future<Response> getSecurityContentInfoWithHttpInfo(String aid,) async {
+  ///
+  /// * [String] version:
+  ///
+  /// * [bool] isMatch:
+  ///   If false profile content access is allowed when profile is set as public. If true profile content access is allowed when users are a match.
+  Future<Response> getProfileContentInfoBinaryWithHttpInfo(String aid, { String? version, bool? isMatch, }) async {
     // ignore: prefer_const_declarations
-    final path = r'/media_api/security_content_info/{aid}'
+    final path = r'/media_api/profile_content_info_binary/{aid}'
       .replaceAll('{aid}', aid);
 
     // ignore: prefer_final_locals
@@ -508,6 +513,13 @@ class MediaApi {
     final queryParams = <QueryParam>[];
     final headerParams = <String, String>{};
     final formParams = <String, String>{};
+
+    if (version != null) {
+      queryParams.addAll(_queryParams('', 'version', version));
+    }
+    if (isMatch != null) {
+      queryParams.addAll(_queryParams('', 'is_match', isMatch));
+    }
 
     const contentTypes = <String>[];
 
@@ -523,15 +535,20 @@ class MediaApi {
     );
   }
 
-  /// Get current security content for selected profile.
+  /// Get current profile content for selected profile as compact binary payload.
   ///
-  /// # Access  - Own account - Permission [model::Permissions::admin_moderate_media_content]
+  /// The first byte is result variant: - 0 = Empty - 1 = VersionOnly - 2 = ContentWithVersion  Variant payloads: - Empty: no payload - VersionOnly: 16-byte profile content version UUID - ContentWithVersion:   - 16-byte profile content version UUID   - 1-byte verification status (low 8 bits of internal flags)   - 1-byte content count (max 6)   - repeated content entries:     - 16-byte content UUID     - 1-byte packed content info   - 4-byte crop size as little-endian f32   - 4-byte crop x as little-endian f32   - 4-byte crop y as little-endian f32  Packed content info byte layout: - bits 0..2: face verified (0 None, 1 false, 2 true) - bit 3: face detected - bit 4: accepted - bits 5..7: media content type
   ///
   /// Parameters:
   ///
   /// * [String] aid (required):
-  Future<SecurityContent?> getSecurityContentInfo(String aid,) async {
-    final response = await getSecurityContentInfoWithHttpInfo(aid,);
+  ///
+  /// * [String] version:
+  ///
+  /// * [bool] isMatch:
+  ///   If false profile content access is allowed when profile is set as public. If true profile content access is allowed when users are a match.
+  Future<MultipartFile?> getProfileContentInfoBinary(String aid, { String? version, bool? isMatch, }) async {
+    final response = await getProfileContentInfoBinaryWithHttpInfo(aid,  version: version, isMatch: isMatch, );
     if (response.statusCode >= HttpStatus.badRequest) {
       throw ApiException(response.statusCode, await _decodeBodyBytes(response));
     }
@@ -539,7 +556,7 @@ class MediaApi {
     // At the time of writing this, `dart:convert` will throw an "Unexpected end of input"
     // FormatException when trying to decode an empty string.
     if (response.body.isNotEmpty && response.statusCode != HttpStatus.noContent) {
-      return await apiClient.deserializeAsync(await _decodeBodyBytes(response), 'SecurityContent',) as SecurityContent;
+      return await apiClient.deserializeAsync(await _decodeBodyBytes(response), 'MultipartFile',) as MultipartFile;
     
     }
     return null;

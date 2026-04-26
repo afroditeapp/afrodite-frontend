@@ -14,26 +14,33 @@ class VerificationConfig {
   /// Returns a new [VerificationConfig] instance.
   VerificationConfig({
     this.face = false,
+    this.securityContent = false,
   });
 
   /// Show face verification status and filters.
   bool face;
 
+  /// Show security content verification status and filters.
+  bool securityContent;
+
   @override
   bool operator ==(Object other) => identical(this, other) || other is VerificationConfig &&
-    other.face == face;
+    other.face == face &&
+    other.securityContent == securityContent;
 
   @override
   int get hashCode =>
     // ignore: unnecessary_parenthesis
-    (face.hashCode);
+    (face.hashCode) +
+    (securityContent.hashCode);
 
   @override
-  String toString() => 'VerificationConfig[face=$face]';
+  String toString() => 'VerificationConfig[face=$face, securityContent=$securityContent]';
 
   Map<String, dynamic> toJson() {
     final json = <String, dynamic>{};
       json[r'face'] = this.face;
+      json[r'security_content'] = this.securityContent;
     return json;
   }
 
@@ -57,6 +64,7 @@ class VerificationConfig {
 
       return VerificationConfig(
         face: mapValueOfType<bool>(json, r'face') ?? false,
+        securityContent: mapValueOfType<bool>(json, r'security_content') ?? false,
       );
     }
     return null;

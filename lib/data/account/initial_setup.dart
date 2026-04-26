@@ -264,14 +264,16 @@ Result<SetProfileContent, ()> createProfileContent(Iterable<ImgState> imgs) {
 
   if (contentId0 == null) return errAndLog("First profile image is not selected");
 
-  final c = List<ContentId>.from([contentId0, contentId1, contentId2, contentId3].nonNulls);
+  final content = List<ContentId>.from([contentId0, contentId1, contentId2, contentId3].nonNulls);
+
+  final defaultValues = SetProfileContent();
 
   return Ok(
     SetProfileContent(
-      content: c,
-      gridCropSize: gridCropSize,
-      gridCropX: gridCropX,
-      gridCropY: gridCropY,
+      content: content,
+      gridCropSize: gridCropSize ?? defaultValues.gridCropSize,
+      gridCropX: gridCropX ?? defaultValues.gridCropX,
+      gridCropY: gridCropY ?? defaultValues.gridCropY,
     ),
   );
 }

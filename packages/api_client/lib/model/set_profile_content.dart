@@ -14,19 +14,19 @@ class SetProfileContent {
   /// Returns a new [SetProfileContent] instance.
   SetProfileContent({
     this.content = const [],
-    this.gridCropSize,
-    this.gridCropX,
-    this.gridCropY,
+    this.gridCropSize = 1.0,
+    this.gridCropX = 0.0,
+    this.gridCropY = 0.0,
   });
 
   /// First image is primary profile image which is shown in grid view.  One content ID is required.  Max item count is 6. Extra items are ignored.
   List<ContentId> content;
 
-  double? gridCropSize;
+  double gridCropSize;
 
-  double? gridCropX;
+  double gridCropX;
 
-  double? gridCropY;
+  double gridCropY;
 
   @override
   bool operator ==(Object other) => identical(this, other) || other is SetProfileContent &&
@@ -39,9 +39,9 @@ class SetProfileContent {
   int get hashCode =>
     // ignore: unnecessary_parenthesis
     (content.hashCode) +
-    (gridCropSize == null ? 0 : gridCropSize!.hashCode) +
-    (gridCropX == null ? 0 : gridCropX!.hashCode) +
-    (gridCropY == null ? 0 : gridCropY!.hashCode);
+    (gridCropSize.hashCode) +
+    (gridCropX.hashCode) +
+    (gridCropY.hashCode);
 
   @override
   String toString() => 'SetProfileContent[content=$content, gridCropSize=$gridCropSize, gridCropX=$gridCropX, gridCropY=$gridCropY]';
@@ -49,21 +49,9 @@ class SetProfileContent {
   Map<String, dynamic> toJson() {
     final json = <String, dynamic>{};
       json[r'content'] = this.content;
-    if (this.gridCropSize != null) {
       json[r'grid_crop_size'] = this.gridCropSize;
-    } else {
-      json[r'grid_crop_size'] = null;
-    }
-    if (this.gridCropX != null) {
       json[r'grid_crop_x'] = this.gridCropX;
-    } else {
-      json[r'grid_crop_x'] = null;
-    }
-    if (this.gridCropY != null) {
       json[r'grid_crop_y'] = this.gridCropY;
-    } else {
-      json[r'grid_crop_y'] = null;
-    }
     return json;
   }
 
@@ -87,9 +75,9 @@ class SetProfileContent {
 
       return SetProfileContent(
         content: ContentId.listFromJson(json[r'content']),
-        gridCropSize: mapValueOfType<double>(json, r'grid_crop_size'),
-        gridCropX: mapValueOfType<double>(json, r'grid_crop_x'),
-        gridCropY: mapValueOfType<double>(json, r'grid_crop_y'),
+        gridCropSize: mapValueOfType<double>(json, r'grid_crop_size') ?? 1.0,
+        gridCropX: mapValueOfType<double>(json, r'grid_crop_x') ?? 0.0,
+        gridCropY: mapValueOfType<double>(json, r'grid_crop_y') ?? 0.0,
       );
     }
     return null;

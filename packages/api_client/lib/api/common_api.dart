@@ -277,6 +277,54 @@ class CommonApi {
     return null;
   }
 
+  /// Get manual server maintenance info for another server.
+  ///
+  /// The client uses this API route when connecting to production server fails and client has demo account server URL configured.
+  ///
+  /// Note: This method returns the HTTP [Response].
+  Future<Response> getManualServerMaintenanceInfoForAnotherServerWithHttpInfo() async {
+    // ignore: prefer_const_declarations
+    final path = r'/common_api/manual_server_maintenance_info_for_another_server';
+
+    // ignore: prefer_final_locals
+    Object? postBody;
+
+    final queryParams = <QueryParam>[];
+    final headerParams = <String, String>{};
+    final formParams = <String, String>{};
+
+    const contentTypes = <String>[];
+
+
+    return apiClient.invokeAPI(
+      path,
+      'GET',
+      queryParams,
+      postBody,
+      headerParams,
+      formParams,
+      contentTypes.isEmpty ? null : contentTypes.first,
+    );
+  }
+
+  /// Get manual server maintenance info for another server.
+  ///
+  /// The client uses this API route when connecting to production server fails and client has demo account server URL configured.
+  Future<ManualServerMaintenanceInfoForAnotherServer?> getManualServerMaintenanceInfoForAnotherServer() async {
+    final response = await getManualServerMaintenanceInfoForAnotherServerWithHttpInfo();
+    if (response.statusCode >= HttpStatus.badRequest) {
+      throw ApiException(response.statusCode, await _decodeBodyBytes(response));
+    }
+    // When a remote server returns no body with a status of 204, we shall not decode it.
+    // At the time of writing this, `dart:convert` will throw an "Unexpected end of input"
+    // FormatException when trying to decode an empty string.
+    if (response.body.isNotEmpty && response.statusCode != HttpStatus.noContent) {
+      return await apiClient.deserializeAsync(await _decodeBodyBytes(response), 'ManualServerMaintenanceInfoForAnotherServer',) as ManualServerMaintenanceInfoForAnotherServer;
+    
+    }
+    return null;
+  }
+
   /// Performs an HTTP 'GET /common_api/pending_app_notifications' operation and returns the [Response].
   Future<Response> getPendingAppNotificationsWithHttpInfo() async {
     // ignore: prefer_const_declarations

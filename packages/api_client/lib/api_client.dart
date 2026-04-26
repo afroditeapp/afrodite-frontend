@@ -528,6 +528,8 @@ class ApiClient {
           return MaintenanceTask.fromJson(value);
         case 'ManagerInstanceNameList':
           return ManagerInstanceNameList.fromJson(value);
+        case 'ManualServerMaintenanceInfoForAnotherServer':
+          return ManualServerMaintenanceInfoForAnotherServer.fromJson(value);
         case 'MapBounds':
           return MapBounds.fromJson(value);
         case 'MapConfig':
@@ -642,6 +644,8 @@ class ApiClient {
           return PostModerateMediaContent.fromJson(value);
         case 'PostModerateProfileString':
           return PostModerateProfileString.fromJson(value);
+        case 'PostSecurityContentVerifiedValue':
+          return PostSecurityContentVerifiedValue.fromJson(value);
         case 'PostStartDataExport':
           return PostStartDataExport.fromJson(value);
         case 'PostVideoCallUrlResult':
@@ -792,14 +796,12 @@ class ApiClient {
           return ScheduledTaskTypeTypeTransformer().decode(value);
         case 'ScheduledTaskTypeValue':
           return ScheduledTaskTypeValue.fromJson(value);
-        case 'ScheduledTasksConfig':
-          return ScheduledTasksConfig.fromJson(value);
         case 'SearchAgeRange':
           return SearchAgeRange.fromJson(value);
         case 'SearchGroups':
           return SearchGroups.fromJson(value);
-        case 'SecurityContent':
-          return SecurityContent.fromJson(value);
+        case 'SecurityContentAdminInfo':
+          return SecurityContentAdminInfo.fromJson(value);
         case 'SeenMessage':
           return SeenMessage.fromJson(value);
         case 'SendLike':
@@ -814,8 +816,6 @@ class ApiClient {
           return SentBlocksPage.fromJson(value);
         case 'SentMessageIdList':
           return SentMessageIdList.fromJson(value);
-        case 'ServerConfig':
-          return ServerConfig.fromJson(value);
         case 'ServerMaintenanceStatus':
           return ServerMaintenanceStatus.fromJson(value);
         case 'ServerMessageType':

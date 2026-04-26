@@ -24,6 +24,7 @@ class Permissions {
     this.adminEditProfileAttributesSchema = false,
     this.adminEditProfileAttributesSchemaVisibleContent = false,
     this.adminEditProfileName = false,
+    this.adminEditSecurityContentVerifiedValue = false,
     this.adminExportData = false,
     this.adminFindAccountByEmailAddress = false,
     this.adminModerateMediaContent = false,
@@ -82,6 +83,8 @@ class Permissions {
   bool adminEditProfileAttributesSchemaVisibleContent;
 
   bool adminEditProfileName;
+
+  bool adminEditSecurityContentVerifiedValue;
 
   bool adminExportData;
 
@@ -166,6 +169,7 @@ class Permissions {
     other.adminEditProfileAttributesSchema == adminEditProfileAttributesSchema &&
     other.adminEditProfileAttributesSchemaVisibleContent == adminEditProfileAttributesSchemaVisibleContent &&
     other.adminEditProfileName == adminEditProfileName &&
+    other.adminEditSecurityContentVerifiedValue == adminEditSecurityContentVerifiedValue &&
     other.adminExportData == adminExportData &&
     other.adminFindAccountByEmailAddress == adminFindAccountByEmailAddress &&
     other.adminModerateMediaContent == adminModerateMediaContent &&
@@ -215,6 +219,7 @@ class Permissions {
     (adminEditProfileAttributesSchema.hashCode) +
     (adminEditProfileAttributesSchemaVisibleContent.hashCode) +
     (adminEditProfileName.hashCode) +
+    (adminEditSecurityContentVerifiedValue.hashCode) +
     (adminExportData.hashCode) +
     (adminFindAccountByEmailAddress.hashCode) +
     (adminModerateMediaContent.hashCode) +
@@ -251,7 +256,7 @@ class Permissions {
     (adminViewProfileHistory.hashCode);
 
   @override
-  String toString() => 'Permissions[adminBanAccount=$adminBanAccount, adminChangeEmailAddress=$adminChangeEmailAddress, adminDeleteAccount=$adminDeleteAccount, adminDeleteMediaContent=$adminDeleteMediaContent, adminEditLogin=$adminEditLogin, adminEditMediaContentFaceDetectedValue=$adminEditMediaContentFaceDetectedValue, adminEditMediaContentFaceVerifiedValue=$adminEditMediaContentFaceVerifiedValue, adminEditPermissions=$adminEditPermissions, adminEditProfileAttributesSchema=$adminEditProfileAttributesSchema, adminEditProfileAttributesSchemaVisibleContent=$adminEditProfileAttributesSchemaVisibleContent, adminEditProfileName=$adminEditProfileName, adminExportData=$adminExportData, adminFindAccountByEmailAddress=$adminFindAccountByEmailAddress, adminModerateMediaContent=$adminModerateMediaContent, adminModerateProfileNames=$adminModerateProfileNames, adminModerateProfileTexts=$adminModerateProfileTexts, adminNewsCreate=$adminNewsCreate, adminNewsEditAll=$adminNewsEditAll, adminProcessReports=$adminProcessReports, adminProfileStatistics=$adminProfileStatistics, adminRequestAccountDeletion=$adminRequestAccountDeletion, adminServerDataReset=$adminServerDataReset, adminServerEditBotConfig=$adminServerEditBotConfig, adminServerEditImageProcessingConfig=$adminServerEditImageProcessingConfig, adminServerEditInfoBanners=$adminServerEditInfoBanners, adminServerEditMaintenanceNotification=$adminServerEditMaintenanceNotification, adminServerEditServerConfig=$adminServerEditServerConfig, adminServerReboot=$adminServerReboot, adminServerRestart=$adminServerRestart, adminServerScheduledReboot=$adminServerScheduledReboot, adminServerScheduledRestart=$adminServerScheduledRestart, adminServerShutdown=$adminServerShutdown, adminServerSoftwareUpdate=$adminServerSoftwareUpdate, adminServerViewBotConfig=$adminServerViewBotConfig, adminServerViewImageProcessingConfig=$adminServerViewImageProcessingConfig, adminServerViewInfo=$adminServerViewInfo, adminServerViewServerConfig=$adminServerViewServerConfig, adminSubscribeAdminNotifications=$adminSubscribeAdminNotifications, adminViewAccountApiUsage=$adminViewAccountApiUsage, adminViewAccountIpAddressUsage=$adminViewAccountIpAddressUsage, adminViewAccountState=$adminViewAccountState, adminViewAllProfiles=$adminViewAllProfiles, adminViewEmailAddress=$adminViewEmailAddress, adminViewPermissions=$adminViewPermissions, adminViewProfileHistory=$adminViewProfileHistory]';
+  String toString() => 'Permissions[adminBanAccount=$adminBanAccount, adminChangeEmailAddress=$adminChangeEmailAddress, adminDeleteAccount=$adminDeleteAccount, adminDeleteMediaContent=$adminDeleteMediaContent, adminEditLogin=$adminEditLogin, adminEditMediaContentFaceDetectedValue=$adminEditMediaContentFaceDetectedValue, adminEditMediaContentFaceVerifiedValue=$adminEditMediaContentFaceVerifiedValue, adminEditPermissions=$adminEditPermissions, adminEditProfileAttributesSchema=$adminEditProfileAttributesSchema, adminEditProfileAttributesSchemaVisibleContent=$adminEditProfileAttributesSchemaVisibleContent, adminEditProfileName=$adminEditProfileName, adminEditSecurityContentVerifiedValue=$adminEditSecurityContentVerifiedValue, adminExportData=$adminExportData, adminFindAccountByEmailAddress=$adminFindAccountByEmailAddress, adminModerateMediaContent=$adminModerateMediaContent, adminModerateProfileNames=$adminModerateProfileNames, adminModerateProfileTexts=$adminModerateProfileTexts, adminNewsCreate=$adminNewsCreate, adminNewsEditAll=$adminNewsEditAll, adminProcessReports=$adminProcessReports, adminProfileStatistics=$adminProfileStatistics, adminRequestAccountDeletion=$adminRequestAccountDeletion, adminServerDataReset=$adminServerDataReset, adminServerEditBotConfig=$adminServerEditBotConfig, adminServerEditImageProcessingConfig=$adminServerEditImageProcessingConfig, adminServerEditInfoBanners=$adminServerEditInfoBanners, adminServerEditMaintenanceNotification=$adminServerEditMaintenanceNotification, adminServerEditServerConfig=$adminServerEditServerConfig, adminServerReboot=$adminServerReboot, adminServerRestart=$adminServerRestart, adminServerScheduledReboot=$adminServerScheduledReboot, adminServerScheduledRestart=$adminServerScheduledRestart, adminServerShutdown=$adminServerShutdown, adminServerSoftwareUpdate=$adminServerSoftwareUpdate, adminServerViewBotConfig=$adminServerViewBotConfig, adminServerViewImageProcessingConfig=$adminServerViewImageProcessingConfig, adminServerViewInfo=$adminServerViewInfo, adminServerViewServerConfig=$adminServerViewServerConfig, adminSubscribeAdminNotifications=$adminSubscribeAdminNotifications, adminViewAccountApiUsage=$adminViewAccountApiUsage, adminViewAccountIpAddressUsage=$adminViewAccountIpAddressUsage, adminViewAccountState=$adminViewAccountState, adminViewAllProfiles=$adminViewAllProfiles, adminViewEmailAddress=$adminViewEmailAddress, adminViewPermissions=$adminViewPermissions, adminViewProfileHistory=$adminViewProfileHistory]';
 
   Map<String, dynamic> toJson() {
     final json = <String, dynamic>{};
@@ -266,6 +271,7 @@ class Permissions {
       json[r'admin_edit_profile_attributes_schema'] = this.adminEditProfileAttributesSchema;
       json[r'admin_edit_profile_attributes_schema_visible_content'] = this.adminEditProfileAttributesSchemaVisibleContent;
       json[r'admin_edit_profile_name'] = this.adminEditProfileName;
+      json[r'admin_edit_security_content_verified_value'] = this.adminEditSecurityContentVerifiedValue;
       json[r'admin_export_data'] = this.adminExportData;
       json[r'admin_find_account_by_email_address'] = this.adminFindAccountByEmailAddress;
       json[r'admin_moderate_media_content'] = this.adminModerateMediaContent;
@@ -333,6 +339,7 @@ class Permissions {
         adminEditProfileAttributesSchema: mapValueOfType<bool>(json, r'admin_edit_profile_attributes_schema') ?? false,
         adminEditProfileAttributesSchemaVisibleContent: mapValueOfType<bool>(json, r'admin_edit_profile_attributes_schema_visible_content') ?? false,
         adminEditProfileName: mapValueOfType<bool>(json, r'admin_edit_profile_name') ?? false,
+        adminEditSecurityContentVerifiedValue: mapValueOfType<bool>(json, r'admin_edit_security_content_verified_value') ?? false,
         adminExportData: mapValueOfType<bool>(json, r'admin_export_data') ?? false,
         adminFindAccountByEmailAddress: mapValueOfType<bool>(json, r'admin_find_account_by_email_address') ?? false,
         adminModerateMediaContent: mapValueOfType<bool>(json, r'admin_moderate_media_content') ?? false,

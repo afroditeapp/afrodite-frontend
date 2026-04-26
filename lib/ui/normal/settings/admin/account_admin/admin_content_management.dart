@@ -56,7 +56,7 @@ class _AdminContentManagementScreenState extends State<AdminContentManagementScr
         .ok();
 
     final securityContent = await widget.api
-        .media((api) => api.getSecurityContentInfo(widget.accountId.aid))
+        .mediaAdmin((api) => api.getSecurityContentInfo(widget.accountId.aid))
         .ok();
 
     if (!context.mounted) {
@@ -72,7 +72,7 @@ class _AdminContentManagementScreenState extends State<AdminContentManagementScr
     } else {
       setState(() {
         isLoading = false;
-        data = RequiredData(result, securityContent.c?.cid);
+        data = RequiredData(result, securityContent.content?.cid);
       });
     }
   }
