@@ -287,13 +287,15 @@ class _ViewProfileEntryState extends State<ViewProfileEntry> {
 
   Widget profileVerificationStatus(BuildContext context, VerificationConfig verificationConfig) {
     final verificationStatus = widget.profile.mediaVerificationStatus;
-    final hasAllVerified = verificationStatus & ProfileVerificationStatusFlags.faceVerifiedAll != 0;
+    final hasFaceVerifiedAll =
+        verificationStatus & ProfileVerificationStatusFlags.faceVerifiedAll != 0;
     final selectedOptions =
         profileVerificationStatusOptions(context, verification: verificationConfig)
             .where(
               (option) =>
                   verificationStatus & option.$1 != 0 &&
-                  (!hasAllVerified || option.$1 != ProfileVerificationStatusFlags.faceVerifiedAny),
+                  (!hasFaceVerifiedAll ||
+                      option.$1 != ProfileVerificationStatusFlags.faceVerifiedAny),
             )
             .toList();
 

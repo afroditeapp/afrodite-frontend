@@ -2596,6 +2596,12 @@ abstract class AppLocalizations {
   /// **'Face pictures (any)'**
   String get profile_filters_screen_profile_verification_status_filter_face_verified_any;
 
+  /// Option text for profile verification status filter security content verified
+  ///
+  /// In en, this message translates to:
+  /// **'Security selfie'**
+  String get profile_filters_screen_profile_verification_status_filter_security_content_verified;
+
   /// Title for profile filters screen
   ///
   /// In en, this message translates to:

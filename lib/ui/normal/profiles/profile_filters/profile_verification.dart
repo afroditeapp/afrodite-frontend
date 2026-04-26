@@ -15,6 +15,7 @@ import 'package:openapi/api.dart';
 class ProfileVerificationStatusFlags {
   static const int faceVerifiedAny = 1;
   static const int faceVerifiedAll = 2;
+  static const int securityContentVerified = 4;
 }
 
 const _PROFILE_VERIFICATION_STATUS_ICON = MaterialAttributeIcon(Icons.verified_user_outlined);
@@ -41,6 +42,15 @@ List<(int, String)> profileVerificationStatusOptions(
         context.strings.profile_filters_screen_profile_verification_status_filter_face_verified_all,
       ),
       (verification) => verification.face,
+    ),
+    (
+      (
+        ProfileVerificationStatusFlags.securityContentVerified,
+        context
+            .strings
+            .profile_filters_screen_profile_verification_status_filter_security_content_verified,
+      ),
+      (verification) => verification.securityContent,
     ),
   ];
 

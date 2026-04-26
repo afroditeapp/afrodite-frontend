@@ -1419,6 +1419,10 @@ class AppLocalizationsSv extends AppLocalizations {
       'Face pictures (any)';
 
   @override
+  String get profile_filters_screen_profile_verification_status_filter_security_content_verified =>
+      'Security selfie';
+
+  @override
   String get profile_filters_screen_title => 'Profile filters';
 
   @override

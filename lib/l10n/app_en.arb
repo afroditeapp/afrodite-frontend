@@ -1876,6 +1876,10 @@
   "@profile_filters_screen_profile_verification_status_filter_face_verified_any": {
     "description": "Option text for profile verification status filter face verified any"
   },
+  "profile_filters_screen_profile_verification_status_filter_security_content_verified": "Security selfie",
+  "@profile_filters_screen_profile_verification_status_filter_security_content_verified": {
+    "description": "Option text for profile verification status filter security content verified"
+  },
   "profile_filters_screen_title": "Profile filters",
   "@profile_filters_screen_title": {
     "description": "Title for profile filters screen"
