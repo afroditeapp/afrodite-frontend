@@ -33,7 +33,8 @@ sealed class LoginRepositoryCmd<T> {
 
 class LogoutAndSignInWithLogin extends LoginRepositoryCmd<Result<(), SignInWithEvent>> {
   final SignInWithLoginInfo info;
-  LogoutAndSignInWithLogin(this.info);
+  final String serverAddress;
+  LogoutAndSignInWithLogin(this.info, this.serverAddress);
 }
 
 /// Logout from current or specific account
@@ -51,7 +52,8 @@ class ChangeServerAddress extends LoginRepositoryCmd<Result<(), ()>> {
 
 class DemoAccountLogin extends LoginRepositoryCmd<Result<(), DemoAccountLoginError>> {
   final DemoAccountCredentials credentials;
-  DemoAccountLogin(this.credentials);
+  final String serverAddress;
+  DemoAccountLogin(this.credentials, this.serverAddress);
 }
 
 class DemoAccountLogout extends LoginRepositoryCmd<()> {}
@@ -195,6 +197,11 @@ class LoginRepository extends AppSingleton {
           switch (cmd) {
             case LogoutAndSignInWithLogin():
               await _logoutInternal(null);
+              final changeServerResult = await _setCurrentServerAddressIfNeeded(cmd.serverAddress);
+              if (changeServerResult.isErr()) {
+                cmd.completed.add(Err(SignInWithSignInError(CommonSignInError.otherError)));
+                return;
+              }
               cmd.completed.add(await _handleSignInWithLoginInfoInternal(cmd.info));
             case Logout():
               await _logoutInternal(cmd.id);
@@ -202,20 +209,13 @@ class LoginRepository extends AppSingleton {
             case GetServerAddress():
               cmd.completed.add(_apiNoConnection.serverAddress);
             case ChangeServerAddress():
-              final Result<(), ()> result;
-              if (repositoriesOrNull != null) {
-                result = Err(());
-              } else {
-                result = await CommonDatabaseManager.getInstance()
-                    .commonAction((db) => db.app.updateServerUrl(cmd.address))
-                    .emptyErr()
-                    .andThen((_) async {
-                      _apiNoConnection = await ApiManagerNoConnection.create(cmd.address);
-                      return Ok(());
-                    });
-              }
-              cmd.completed.add(result);
+              cmd.completed.add(await _setCurrentServerAddressIfNeeded(cmd.address));
             case DemoAccountLogin():
+              final changeServerResult = await _setCurrentServerAddressIfNeeded(cmd.serverAddress);
+              if (changeServerResult.isErr()) {
+                cmd.completed.add(const Err(DemoAccountLoginError.otherError));
+                return;
+              }
               final r = await _demoAccountManager.demoAccountLogin(
                 cmd.credentials,
                 apiNoConnection: _apiNoConnection,
@@ -251,6 +251,24 @@ class LoginRepository extends AppSingleton {
           }
         })
         .listen(null);
+  }
+
+  Future<Result<(), ()>> _setCurrentServerAddressIfNeeded(String serverAddress) async {
+    if (_apiNoConnection.serverAddress == serverAddress) {
+      return Ok(());
+    }
+
+    if (repositoriesOrNull != null) {
+      return Err(());
+    }
+
+    return await CommonDatabaseManager.getInstance()
+        .commonAction((db) => db.app.updateServerUrl(serverAddress))
+        .emptyErr()
+        .andThen((_) async {
+          _apiNoConnection = await ApiManagerNoConnection.create(serverAddress);
+          return Ok(());
+        });
   }
 
   Future<RepositoryInstances> _createAndReplaceRepositories(
@@ -406,13 +424,16 @@ class LoginRepository extends AppSingleton {
     }
   }
 
-  Future<Result<(), SignInWithEvent>> sendSignInWithLoginCmd(SignInWithLoginInfo info) async {
-    final event = LogoutAndSignInWithLogin(info);
+  Future<Result<(), SignInWithEvent>> sendSignInWithLoginCmd(
+    SignInWithLoginInfo info,
+    String serverAddress,
+  ) async {
+    final event = LogoutAndSignInWithLogin(info, serverAddress);
     _cmds.add(event);
     return await event.waitCompletionAndDispose();
   }
 
-  Stream<SignInWithEvent> signInWithGoogle() async* {
+  Stream<SignInWithEvent> signInWithGoogle(String serverAddress) async* {
     final info = await _google.login().ok();
     if (info == null) {
       yield SignInWithGetTokenFailed();
@@ -421,7 +442,7 @@ class LoginRepository extends AppSingleton {
 
     yield SignInWithGetTokenCompleted();
 
-    switch (await sendSignInWithLoginCmd(info)) {
+    switch (await sendSignInWithLoginCmd(info, serverAddress)) {
       case Ok():
         ();
       case Err(:final e):
@@ -430,12 +451,8 @@ class LoginRepository extends AppSingleton {
   }
 
   /// On Android this might not never complete
-  Stream<SignInWithEvent> signInWithApple() async* {
-    final event = GetServerAddress();
-    _cmds.add(event);
-    final r = await SignInWithAppleManager.signInWithApple(
-      currentServerAddress: await event.waitCompletionAndDispose(),
-    );
+  Stream<SignInWithEvent> signInWithApple(String serverAddress) async* {
+    final r = await SignInWithAppleManager.signInWithApple(currentServerAddress: serverAddress);
 
     switch (r) {
       case Ok():
@@ -444,7 +461,7 @@ class LoginRepository extends AppSingleton {
           apple: r.v,
           clientInfo: AppVersionManager.getInstance().clientInfo(),
         );
-        switch (await sendSignInWithLoginCmd(info)) {
+        switch (await sendSignInWithLoginCmd(info, serverAddress)) {
           case Ok():
             ();
           case Err(:final e):
@@ -456,7 +473,15 @@ class LoginRepository extends AppSingleton {
   }
 
   /// Request email login token to be sent via email
-  Future<Result<RequestEmailLoginTokenResult, ()>> emailLoginRequestToken(String email) async {
+  Future<Result<RequestEmailLoginTokenResult, ()>> emailLoginRequestToken(
+    String email,
+    String serverAddress,
+  ) async {
+    final changeServerResult = await _setCurrentServerAddressIfNeeded(serverAddress);
+    if (changeServerResult.isErr()) {
+      return Err(());
+    }
+
     return await _apiNoConnection
         .account((api) => api.postRequestEmailLoginToken(RequestEmailLoginToken(email: email)))
         .mapErr((_) => ());
@@ -501,8 +526,9 @@ class LoginRepository extends AppSingleton {
 
   Future<Result<(), DemoAccountLoginError>> demoAccountLogin(
     DemoAccountCredentials credentials,
+    String serverAddress,
   ) async {
-    final event = DemoAccountLogin(credentials);
+    final event = DemoAccountLogin(credentials, serverAddress);
     _cmds.add(event);
     return await event.waitCompletionAndDispose();
   }

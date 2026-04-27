@@ -9,6 +9,32 @@ const String _debugServerUrlIosAndWeb =
     "http://localhost:3000"; // This address is for iOS simulator and web browsers
 
 const String _serverUrl = "https://localhost:3000";
+const String? _alternativeDemoAccountServerUrl = null;
+
+String? _getAlternativeDemoAccountServerUrl() {
+  if (kReleaseMode) {
+    return _alternativeDemoAccountServerUrl;
+  } else {
+    return null;
+  }
+}
+
+String serverAddressForSignIn(String currentServerAddress) {
+  if (_getAlternativeDemoAccountServerUrl() == null) {
+    return currentServerAddress;
+  } else {
+    return _serverUrl;
+  }
+}
+
+String serverAddressForDemoAccountLogin(String currentServerAddress) {
+  final alternativeServerUrl = _getAlternativeDemoAccountServerUrl();
+  if (alternativeServerUrl == null) {
+    return currentServerAddress;
+  } else {
+    return alternativeServerUrl;
+  }
+}
 
 String defaultServerUrl() {
   if (kReleaseMode) {

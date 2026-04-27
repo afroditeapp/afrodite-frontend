@@ -4,6 +4,7 @@ import "package:app/data/utils/demo_account_manager.dart";
 import "package:app/model/freezed/logic/account/demo_account_login.dart";
 import "package:flutter_bloc/flutter_bloc.dart";
 import "package:app/data/login_repository.dart";
+import "package:app/config.dart";
 import "package:app/localizations.dart";
 import "package:app/ui_utils/snack_bar.dart";
 import "package:app/utils.dart";
@@ -41,7 +42,9 @@ class DemoAccountLoginBloc extends Bloc<DemoAccountLoginEvent, DemoAccountLoginD
 
   DemoAccountLoginBloc() : super(DemoAccountLoginData()) {
     on<DoDemoAccountLogin>((data, emit) async {
-      switch (await login.demoAccountLogin(data.credentials)) {
+      final currentServerAddress = await login.accountServerAddress.first;
+      final serverAddress = serverAddressForDemoAccountLogin(currentServerAddress);
+      switch (await login.demoAccountLogin(data.credentials, serverAddress)) {
         case Ok():
           null;
         case Err(e: DemoAccountLoginError.otherError):

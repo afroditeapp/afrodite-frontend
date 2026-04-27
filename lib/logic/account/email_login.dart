@@ -1,6 +1,7 @@
 import "dart:async";
 import "package:app/logic/sign_in_with.dart";
 import "package:flutter_bloc/flutter_bloc.dart";
+import "package:app/config.dart";
 import "package:app/data/login_repository.dart";
 import "package:app/model/freezed/logic/account/email_login.dart";
 import "package:app/ui_utils/common_update_logic.dart";
@@ -34,7 +35,9 @@ class EmailLoginBloc extends Bloc<EmailLoginEvent, EmailLoginBlocData> with Acti
 
         final waitTime = WantedWaitingTimeManager();
 
-        final result = await login.emailLoginRequestToken(event.email);
+        final currentServerAddress = await login.accountServerAddress.first;
+        final serverAddress = serverAddressForSignIn(currentServerAddress);
+        final result = await login.emailLoginRequestToken(event.email, serverAddress);
 
         await waitTime.waitIfNeeded();
 

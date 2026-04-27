@@ -5,6 +5,7 @@ import 'package:app/data/app_version.dart';
 import 'package:app/data/login_repository.dart';
 import 'package:app/data/utils/sign_in_with_apple.dart';
 import 'package:app/logic/sign_in_with.dart';
+import 'package:app/config.dart';
 import 'package:app/config_services.dart';
 import 'package:app/utils/result.dart';
 import 'package:crypto/crypto.dart';
@@ -64,7 +65,10 @@ class SignInWithGoogleManager {
               google: SignInWithGoogleInfo(nonce: _nonceBase64Url, token: token),
               clientInfo: AppVersionManager.getInstance().clientInfo(),
             );
-            switch (await LoginRepository.getInstance().sendSignInWithLoginCmd(info)) {
+            final login = LoginRepository.getInstance();
+            final currentServerAddress = await login.accountServerAddress.first;
+            final serverAddress = serverAddressForSignIn(currentServerAddress);
+            switch (await login.sendSignInWithLoginCmd(info, serverAddress)) {
               case Ok():
                 ();
               case Err(:final e):

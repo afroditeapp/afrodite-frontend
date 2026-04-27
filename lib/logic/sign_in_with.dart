@@ -1,4 +1,5 @@
 import "package:flutter_bloc/flutter_bloc.dart";
+import "package:app/config.dart";
 import "package:app/data/login_repository.dart";
 import "package:app/localizations.dart";
 import "package:app/model/freezed/logic/sign_in_with.dart";
@@ -17,12 +18,16 @@ class SignInWithBloc extends Bloc<SignInWithBlocEvent, SignInWithData> with Acti
   SignInWithBloc() : super(SignInWithData()) {
     on<SignInWithGoogle>((data, emit) async {
       await runOnce(() async {
-        await _handleSignInWith(emit, login.signInWithGoogle());
+        final currentServerAddress = await login.accountServerAddress.first;
+        final serverAddress = serverAddressForSignIn(currentServerAddress);
+        await _handleSignInWith(emit, login.signInWithGoogle(serverAddress));
       });
     });
     on<SignInWithAppleEvent>((data, emit) async {
       // On Android this might not never complete
-      await _handleSignInWith(emit, login.signInWithApple());
+      final currentServerAddress = await login.accountServerAddress.first;
+      final serverAddress = serverAddressForSignIn(currentServerAddress);
+      await _handleSignInWith(emit, login.signInWithApple(serverAddress));
     });
   }
 
