@@ -208,15 +208,15 @@ class LoginRepository extends AppSingleton {
           _log.info("cmd: ${cmd.runtimeType}");
           switch (cmd) {
             case LogoutAndSignInWithLogin():
-              await _logoutInternal(null);
+              await _logout(null);
               final changeServerResult = await _setCurrentServerAddressIfNeeded(cmd.serverAddress);
               if (changeServerResult.isErr()) {
                 cmd.completed.add(Err(SignInWithSignInError(CommonSignInError.otherError)));
                 return;
               }
-              cmd.completed.add(await _handleSignInWithLoginInfoInternal(cmd.info));
+              cmd.completed.add(await _handleSignInWithLoginInfo(cmd.info));
             case Logout():
-              await _logoutInternal(cmd.id);
+              await _logout(cmd.id);
               cmd.completed.add(());
             case GetServerAddress():
               cmd.completed.add(_apiNoConnection.serverAddress);
@@ -246,7 +246,7 @@ class LoginRepository extends AppSingleton {
               );
               cmd.completed.add(r);
             case DemoAccountRegisterIfNeededAndLoginToAccount():
-              await _logoutInternal(null);
+              await _logout(null);
               final Result<(), DemoAccountError> r;
               final result = await _demoAccountManager.demoAccountRegisterIfNeededAndLogin(
                 id: cmd.id,
@@ -254,7 +254,7 @@ class LoginRepository extends AppSingleton {
               );
               switch (result) {
                 case Ok():
-                  switch (await _handleLoginResultInternal(result.v)) {
+                  switch (await _handleLoginResult(result.v)) {
                     case Ok():
                       r = Ok(());
                     case Err(:final e):
@@ -310,14 +310,12 @@ class LoginRepository extends AppSingleton {
     return createdRepositories;
   }
 
-  Future<Result<(), SignInWithEvent>> _handleSignInWithLoginInfoInternal(
-    SignInWithLoginInfo info,
-  ) async {
+  Future<Result<(), SignInWithEvent>> _handleSignInWithLoginInfo(SignInWithLoginInfo info) async {
     final login = await _apiNoConnection.account((api) => api.postSignInWithLogin(info)).ok();
     if (login == null) {
       return Err(SignInWithSignInError(CommonSignInError.loginApiRequestFailed));
     }
-    return await _handleLoginResultInternal(login).mapErr((e) {
+    return await _handleLoginResult(login).mapErr((e) {
       return SignInWithSignInError(e);
     });
   }
@@ -352,10 +350,10 @@ class LoginRepository extends AppSingleton {
       return const Err(CommonSignInError.loginApiRequestFailed);
     }
 
-    return await _handleLoginResultInternal(result);
+    return await _handleLoginResult(result);
   }
 
-  Future<Result<(), CommonSignInError>> _handleLoginResultInternal(LoginResult loginResult) async {
+  Future<Result<(), CommonSignInError>> _handleLoginResult(LoginResult loginResult) async {
     if (loginResult.errorUnsupportedClient) {
       return const Err(CommonSignInError.unsupportedClient);
     }
@@ -443,7 +441,7 @@ class LoginRepository extends AppSingleton {
     } else {
       result = Err(error);
       _log.error("Starting logout because login failed: $error");
-      await _logoutInternal(createdRepositories.accountId);
+      await _logout(createdRepositories.accountId);
     }
 
     _loginInProgress.add(false);
@@ -452,7 +450,7 @@ class LoginRepository extends AppSingleton {
   }
 
   /// Logout from current or specific account
-  Future<void> _logoutInternal(AccountId? id) async {
+  Future<void> _logout(AccountId? id) async {
     final currentRepositories = repositoriesOrNull;
     if (currentRepositories != null && (id == null || id == currentRepositories.accountId)) {
       _log.info("Logout started");
