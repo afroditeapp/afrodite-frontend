@@ -50,6 +50,18 @@ class ChangeServerAddress extends LoginRepositoryCmd<Result<(), ()>> {
   ChangeServerAddress(this.address);
 }
 
+class EmailLoginRequestToken extends LoginRepositoryCmd<Result<RequestEmailLoginTokenResult, ()>> {
+  final String email;
+  final String serverAddress;
+  EmailLoginRequestToken(this.email, this.serverAddress);
+}
+
+class EmailLoginWithToken extends LoginRepositoryCmd<Result<(), CommonSignInError>> {
+  final String clientToken;
+  final String emailToken;
+  EmailLoginWithToken(this.clientToken, this.emailToken);
+}
+
 class DemoAccountLogin extends LoginRepositoryCmd<Result<(), DemoAccountLoginError>> {
   final DemoAccountCredentials credentials;
   final String serverAddress;
@@ -210,6 +222,10 @@ class LoginRepository extends AppSingleton {
               cmd.completed.add(_apiNoConnection.serverAddress);
             case ChangeServerAddress():
               cmd.completed.add(await _setCurrentServerAddressIfNeeded(cmd.address));
+            case EmailLoginRequestToken():
+              cmd.completed.add(await _handleEmailLoginRequestToken(cmd));
+            case EmailLoginWithToken():
+              cmd.completed.add(await _handleEmailLoginWithToken(cmd));
             case DemoAccountLogin():
               final changeServerResult = await _setCurrentServerAddressIfNeeded(cmd.serverAddress);
               if (changeServerResult.isErr()) {
@@ -304,6 +320,39 @@ class LoginRepository extends AppSingleton {
     return await _handleLoginResultInternal(login).mapErr((e) {
       return SignInWithSignInError(e);
     });
+  }
+
+  Future<Result<RequestEmailLoginTokenResult, ()>> _handleEmailLoginRequestToken(
+    EmailLoginRequestToken cmd,
+  ) async {
+    final changeServerResult = await _setCurrentServerAddressIfNeeded(cmd.serverAddress);
+    if (changeServerResult.isErr()) {
+      return const Err(());
+    }
+
+    return await _apiNoConnection
+        .account((api) => api.postRequestEmailLoginToken(RequestEmailLoginToken(email: cmd.email)))
+        .mapErr((_) => ());
+  }
+
+  Future<Result<(), CommonSignInError>> _handleEmailLoginWithToken(EmailLoginWithToken cmd) async {
+    final result = await _apiNoConnection
+        .account(
+          (api) => api.postEmailLoginWithToken(
+            EmailLogin(
+              clientToken: EmailLoginToken(token: cmd.clientToken),
+              emailToken: EmailLoginToken(token: cmd.emailToken),
+              clientInfo: AppVersionManager.getInstance().clientInfo(),
+            ),
+          ),
+        )
+        .ok();
+
+    if (result == null) {
+      return const Err(CommonSignInError.loginApiRequestFailed);
+    }
+
+    return await _handleLoginResultInternal(result);
   }
 
   Future<Result<(), CommonSignInError>> _handleLoginResultInternal(LoginResult loginResult) async {
@@ -477,14 +526,9 @@ class LoginRepository extends AppSingleton {
     String email,
     String serverAddress,
   ) async {
-    final changeServerResult = await _setCurrentServerAddressIfNeeded(serverAddress);
-    if (changeServerResult.isErr()) {
-      return Err(());
-    }
-
-    return await _apiNoConnection
-        .account((api) => api.postRequestEmailLoginToken(RequestEmailLoginToken(email: email)))
-        .mapErr((_) => ());
+    final event = EmailLoginRequestToken(email, serverAddress);
+    _cmds.add(event);
+    return await event.waitCompletionAndDispose();
   }
 
   /// Login using email login token
@@ -492,23 +536,9 @@ class LoginRepository extends AppSingleton {
     String clientToken,
     String emailToken,
   ) async {
-    final result = await _apiNoConnection
-        .account(
-          (api) => api.postEmailLoginWithToken(
-            EmailLogin(
-              clientToken: EmailLoginToken(token: clientToken),
-              emailToken: EmailLoginToken(token: emailToken),
-              clientInfo: AppVersionManager.getInstance().clientInfo(),
-            ),
-          ),
-        )
-        .ok();
-
-    if (result == null) {
-      return const Err(CommonSignInError.loginApiRequestFailed);
-    }
-
-    return await _handleLoginResultInternal(result);
+    final event = EmailLoginWithToken(clientToken, emailToken);
+    _cmds.add(event);
+    return await event.waitCompletionAndDispose();
   }
 
   /// Logout back to login or demo account screen
