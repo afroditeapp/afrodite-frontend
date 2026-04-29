@@ -211,7 +211,7 @@ class LoginRepository extends AppSingleton {
               await _logout(null);
               final changeServerResult = await _setCurrentServerAddressIfNeeded(cmd.serverAddress);
               if (changeServerResult.isErr()) {
-                cmd.completed.add(Err(SignInWithSignInError(CommonSignInError.otherError)));
+                cmd.completed.add(Err(SignInWithSignInError(CseOtherError())));
                 return;
               }
               cmd.completed.add(await _handleSignInWithLoginInfo(cmd.info));
@@ -313,7 +313,7 @@ class LoginRepository extends AppSingleton {
   Future<Result<(), SignInWithEvent>> _handleSignInWithLoginInfo(SignInWithLoginInfo info) async {
     final login = await _apiNoConnection.account((api) => api.postSignInWithLogin(info)).ok();
     if (login == null) {
-      return Err(SignInWithSignInError(CommonSignInError.loginApiRequestFailed));
+      return Err(SignInWithSignInError(CseLoginApiRequestFailed()));
     }
     return await _handleLoginResult(login).mapErr((e) {
       return SignInWithSignInError(e);
@@ -347,7 +347,7 @@ class LoginRepository extends AppSingleton {
         .ok();
 
     if (result == null) {
-      return const Err(CommonSignInError.loginApiRequestFailed);
+      return Err(CseLoginApiRequestFailed());
     }
 
     return await _handleLoginResult(result);
@@ -355,31 +355,31 @@ class LoginRepository extends AppSingleton {
 
   Future<Result<(), CommonSignInError>> _handleLoginResult(LoginResult loginResult) async {
     if (loginResult.errorUnsupportedClient) {
-      return const Err(CommonSignInError.unsupportedClient);
+      return Err(CseUnsupportedClient());
     }
     if (loginResult.errorAccountRegistrationDisabled) {
-      return const Err(CommonSignInError.accountRegistrationDisabled);
+      return Err(CseAccountRegistrationDisabled());
     }
     if (loginResult.errorSignInWithEmailUnverified) {
-      return const Err(CommonSignInError.signInWithEmailUnverified);
+      return Err(CseSignInWithEmailUnverified());
     }
     if (loginResult.errorEmailAlreadyUsed) {
-      return const Err(CommonSignInError.emailAlreadyUsed);
+      return Err(CseEmailAlreadyUsed());
     }
     if (loginResult.errorAccountLocked) {
-      return const Err(CommonSignInError.accountLocked);
+      return Err(CseAccountLocked());
     }
     if (loginResult.errorInvalidEmailLoginToken) {
-      return const Err(CommonSignInError.invalidEmailLoginToken);
+      return Err(CseInvalidEmailLoginToken());
     }
     if (loginResult.error) {
-      return const Err(CommonSignInError.otherError);
+      return Err(CseOtherError());
     }
     final aid = loginResult.aid;
     final authPair = loginResult.tokens;
     if (aid == null || authPair == null) {
       _log.error("LoginResult doesn't contain required info");
-      return const Err(CommonSignInError.otherError);
+      return Err(CseOtherError());
     }
 
     // The loginInProgress keeps the UI in login screen even if app
@@ -406,7 +406,7 @@ class LoginRepository extends AppSingleton {
         );
     if (r.isErr()) {
       _log.error("Login failed: database error");
-      error = CommonSignInError.otherError;
+      error = CseOtherError();
     } else {
       await createdRepositories.onLogin();
       await createdRepositories.connectionManager.restartIfRestartNotOngoing();
@@ -416,7 +416,7 @@ class LoginRepository extends AppSingleton {
       )) {
         final syncResult = await createdRepositories.onLoginDataSync();
         if (syncResult.isErr()) {
-          error = CommonSignInError.dataSyncFailed;
+          error = CseDataSyncFailed();
         } else {
           // Save AccountId after data sync to prevent using the app with
           // invalid DB state if app crashes during data sync.
@@ -425,13 +425,13 @@ class LoginRepository extends AppSingleton {
           );
           if (sessionResult.isErr()) {
             _log.error("Login failed: could not save account ID to common DB");
-            error = CommonSignInError.otherError;
+            error = CseOtherError();
           } else {
             error = null;
           }
         }
       } else {
-        error = CommonSignInError.creatingConnectingWebSocketFailed;
+        error = CseCreatingConnectingWebSocketFailed();
       }
     }
 
@@ -604,19 +604,6 @@ class SignInWithGetTokenFailed extends SignInWithEvent {}
 class SignInWithSignInError extends SignInWithEvent {
   final CommonSignInError error;
   SignInWithSignInError(this.error);
-}
-
-enum CommonSignInError {
-  loginApiRequestFailed,
-  unsupportedClient,
-  accountRegistrationDisabled,
-  signInWithEmailUnverified,
-  emailAlreadyUsed,
-  accountLocked,
-  invalidEmailLoginToken,
-  creatingConnectingWebSocketFailed,
-  dataSyncFailed,
-  otherError,
 }
 
 class RepositoryStateStreams {

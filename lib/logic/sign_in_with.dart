@@ -1,6 +1,7 @@
 import "package:flutter_bloc/flutter_bloc.dart";
 import "package:app/config.dart";
 import "package:app/data/login_repository.dart";
+import "package:app/data/utils/login_repository_types.dart";
 import "package:app/localizations.dart";
 import "package:app/model/freezed/logic/sign_in_with.dart";
 import "package:app/ui_utils/snack_bar.dart";
@@ -59,25 +60,27 @@ void showSnackBarTextsForSignInWithEvent(SignInWithEvent event) {
 
 String signInErrorToString(CommonSignInError error) {
   switch (error) {
-    case CommonSignInError.loginApiRequestFailed:
+    case CseLoginApiRequestFailed():
       return R.strings.login_screen_login_api_request_failed;
-    case CommonSignInError.unsupportedClient:
+    case CseUnsupportedClient():
       return R.strings.generic_error_app_version_is_unsupported;
-    case CommonSignInError.accountRegistrationDisabled:
+    case CseAccountRegistrationDisabled():
       return R.strings.login_screen_account_registration_disabled;
-    case CommonSignInError.signInWithEmailUnverified:
+    case CseSignInWithEmailUnverified():
       return R.strings.login_screen_sign_in_with_email_unverified;
-    case CommonSignInError.emailAlreadyUsed:
+    case CseEmailAlreadyUsed():
       return R.strings.login_screen_email_already_used;
-    case CommonSignInError.accountLocked:
+    case CseAccountLocked():
       return R.strings.generic_account_locked_error;
-    case CommonSignInError.invalidEmailLoginToken:
+    case CseInvalidEmailLoginToken():
       return R.strings.login_screen_invalid_email_login_token;
-    case CommonSignInError.creatingConnectingWebSocketFailed:
+    case CseCreatingConnectingWebSocketFailed():
       return R.strings.login_screen_connecting_websocket_failed;
-    case CommonSignInError.dataSyncFailed:
+    case CseMaintenanceOngoing(:final maintenanceInfo):
+      return maintenanceInfo.default_;
+    case CseDataSyncFailed():
       return R.strings.generic_data_sync_failed;
-    case CommonSignInError.otherError:
+    case CseOtherError():
       return R.strings.generic_error;
   }
 }

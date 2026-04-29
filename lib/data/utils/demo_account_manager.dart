@@ -2,6 +2,7 @@ import 'dart:async';
 
 import 'package:app/data/app_version.dart';
 import 'package:app/data/login_repository.dart';
+import 'package:app/data/utils/login_repository_types.dart';
 import 'package:app/utils/app_error.dart';
 import 'package:logging/logging.dart';
 import 'package:openapi/api.dart';
@@ -111,7 +112,7 @@ class DemoAccountManager {
       await demoAccountLogout(apiNoConnection: apiNoConnection);
       return DemoAccountSessionExpired();
     } else {
-      return DemoAccountSignInError(CommonSignInError.otherError);
+      return DemoAccountSignInError(CseOtherError());
     }
   }
 

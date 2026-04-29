@@ -1,6 +1,7 @@
 import 'dart:convert';
 
 import 'package:app/data/login_repository.dart';
+import 'package:app/data/utils/login_repository_types.dart';
 import 'package:app/data/utils/web_api_empty.dart'
     if (dart.library.js_interop) 'package:web/web.dart'
     show window;
@@ -29,7 +30,7 @@ class SignInWithAppleManager {
     try {
       serverUrl = Uri.parse(currentServerAddress);
     } catch (_) {
-      return Err(SignInWithSignInError(CommonSignInError.otherError));
+      return Err(SignInWithSignInError(CseOtherError()));
     }
 
     final nonce = generateNonceBytes().toList();

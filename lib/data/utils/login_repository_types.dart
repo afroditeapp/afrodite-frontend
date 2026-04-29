@@ -85,3 +85,25 @@ class RepositoriesExists extends RepositoriesStreamValue {
     return "RepositoriesExists";
   }
 }
+
+sealed class CommonSignInError {}
+
+class CseLoginApiRequestFailed extends CommonSignInError {}
+
+class CseUnsupportedClient extends CommonSignInError {}
+
+class CseAccountRegistrationDisabled extends CommonSignInError {}
+
+class CseSignInWithEmailUnverified extends CommonSignInError {}
+
+class CseEmailAlreadyUsed extends CommonSignInError {}
+
+class CseAccountLocked extends CommonSignInError {}
+
+class CseInvalidEmailLoginToken extends CommonSignInError {}
+
+class CseCreatingConnectingWebSocketFailed extends CommonSignInError {}
+
+class CseDataSyncFailed extends CommonSignInError {}
+
+class CseOtherError extends CommonSignInError {}
