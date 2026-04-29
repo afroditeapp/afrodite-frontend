@@ -1,6 +1,7 @@
 import 'dart:async';
 import 'dart:math';
 
+import 'package:app/api/manual_maintenance_info_check.dart';
 import 'package:app/data/login_repository.dart';
 import 'package:app/localizations.dart';
 import 'package:app/ui/utils/server_connection_indicator.dart';
@@ -117,17 +118,19 @@ class ReconnectWaitTime extends ServerConnectionManagerState {
 /// No connection to server.
 class NoServerConnection extends ServerConnectionManagerState {
   final bool showRetryActionBanner;
-  NoServerConnection({required this.showRetryActionBanner});
+  final StringResource? maintenanceInfo;
+  NoServerConnection({required this.showRetryActionBanner, this.maintenanceInfo});
 
   @override
   bool operator ==(Object other) =>
       identical(this, other) ||
       other is NoServerConnection &&
           runtimeType == other.runtimeType &&
-          showRetryActionBanner == other.showRetryActionBanner;
+          showRetryActionBanner == other.showRetryActionBanner &&
+          maintenanceInfo == other.maintenanceInfo;
 
   @override
-  int get hashCode => showRetryActionBanner.hashCode;
+  int get hashCode => Object.hash(showRetryActionBanner, maintenanceInfo);
 }
 
 /// Making connection to server.
@@ -300,7 +303,7 @@ class ServerConnectionManager extends ApiManager
                   await currentConnection.close();
                   _serverConnection = null;
                 }
-                _handleConnectionError(null);
+                await _handleConnectionError(null);
               case HandleServerConnectionState():
                 final currentConnection = _serverConnection;
                 if (currentConnection == null || currentConnection != cmd.serverConnection) {
@@ -311,7 +314,7 @@ class ServerConnectionManager extends ApiManager
                     _state.add(ConnectingToServer(showBanner: _retryManager.isRetrying));
                   case Closed e:
                     _serverConnection = null;
-                    _handleConnectionError(e.error);
+                    await _handleConnectionError(e.error);
                   case Ready(:final token):
                     _reconnectionTimer.cancel();
                     // Reset retry counter on successful connection
@@ -328,7 +331,7 @@ class ServerConnectionManager extends ApiManager
         .listen(null);
   }
 
-  void _handleConnectionError(ServerConnectionError? error) {
+  Future<void> _handleConnectionError(ServerConnectionError? error) async {
     switch (error) {
       case ServerConnectionError.connectionFailure:
         final retryDelay = _retryManager.getNextRetryDelaySeconds();
@@ -336,7 +339,20 @@ class ServerConnectionManager extends ApiManager
           _retryManager.recordRetry();
           _reconnectionTimer.start(retryDelay);
         } else {
-          _state.add(NoServerConnection(showRetryActionBanner: true));
+          final maintenanceCheck = await checkManualMaintenanceInfo(
+            currentServerAddress: serverAddress,
+          );
+
+          final StringResource? maintenanceInfo;
+          switch (maintenanceCheck) {
+            case MaintenanceOngoing(maintenanceInfo: final text):
+              maintenanceInfo = text;
+            case ManualMaintenanceInfoCheckFailed() || NoMaintenance():
+              maintenanceInfo = null;
+          }
+          _state.add(
+            NoServerConnection(showRetryActionBanner: true, maintenanceInfo: maintenanceInfo),
+          );
         }
       case ServerConnectionError.invalidToken:
         _state.add(WaitingRefreshToken());
@@ -378,7 +394,7 @@ class ServerConnectionManager extends ApiManager
       case Ok():
         serverConnection = connectionResult.v;
       case Err():
-        _handleConnectionError(connectionResult.e);
+        await _handleConnectionError(connectionResult.e);
         return Err(());
     }
 

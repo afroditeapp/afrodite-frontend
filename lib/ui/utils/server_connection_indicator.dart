@@ -3,6 +3,7 @@ import 'dart:async';
 import 'package:app/api/server_connection_manager.dart';
 import 'package:app/localizations.dart';
 import 'package:app/main.dart';
+import 'package:app/ui_utils/extensions/api.dart';
 import 'package:app/ui_utils/dialog.dart';
 import 'package:flutter/material.dart';
 
@@ -41,10 +42,15 @@ class _ServerConnectionErrorDialogOpenerState extends State<ServerConnectionErro
             currentState is NoServerConnection && currentState.showRetryActionBanner;
         if (maxRetriesReached && !_dialogShown) {
           _dialogShown = true;
-          showInfoDialog(
-            context,
-            context.strings.server_connection_indicator_connection_failed_dialog_text,
-          );
+          final maintenanceInfoText = currentState.maintenanceInfo;
+          if (maintenanceInfoText != null) {
+            showInfoDialog(context, maintenanceInfoText.toLocalizedText(context));
+          } else {
+            showInfoDialog(
+              context,
+              context.strings.server_connection_indicator_connection_failed_dialog_text,
+            );
+          }
         } else if (!maxRetriesReached) {
           _dialogShown = false;
         }

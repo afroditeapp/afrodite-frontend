@@ -11,7 +11,7 @@ const String _debugServerUrlIosAndWeb =
 const String _serverUrl = "https://localhost:3000";
 const String? _alternativeDemoAccountServerUrl = null;
 
-String? _getAlternativeDemoAccountServerUrl() {
+String? getAlternativeDemoAccountServerUrl() {
   if (kReleaseMode) {
     return _alternativeDemoAccountServerUrl;
   } else {
@@ -20,7 +20,7 @@ String? _getAlternativeDemoAccountServerUrl() {
 }
 
 String serverAddressForSignIn(String currentServerAddress) {
-  if (_getAlternativeDemoAccountServerUrl() == null) {
+  if (getAlternativeDemoAccountServerUrl() == null) {
     return currentServerAddress;
   } else {
     return _serverUrl;
@@ -28,7 +28,7 @@ String serverAddressForSignIn(String currentServerAddress) {
 }
 
 String serverAddressForDemoAccountLogin(String currentServerAddress) {
-  final alternativeServerUrl = _getAlternativeDemoAccountServerUrl();
+  final alternativeServerUrl = getAlternativeDemoAccountServerUrl();
   if (alternativeServerUrl == null) {
     return currentServerAddress;
   } else {
