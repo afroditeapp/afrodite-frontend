@@ -17,6 +17,7 @@ import 'package:app/ui/normal/settings/admin/account_admin/edit_profile_name.dar
 import 'package:app/ui/normal/settings/admin/account_admin/email_address_management.dart';
 import 'package:app/ui/normal/settings/admin/account_admin/login_management.dart';
 import 'package:app/ui/normal/settings/admin/account_admin/moderate_single_profile_string.dart';
+import 'package:app/ui/normal/settings/admin/account_admin/admin_security_content_info.dart';
 import 'package:app/ui/normal/settings/admin/account_admin/view_api_usage.dart';
 import 'package:app/ui/normal/settings/admin/account_admin/view_ip_address_usage.dart';
 import 'package:app/ui/normal/settings/admin/account_admin/view_reports.dart';
@@ -232,6 +233,18 @@ class _AccountAdminSettingsScreenState extends State<AccountAdminSettingsScreen>
       );
     }
 
+    if (permissions.adminModerateMediaContent ||
+        permissions.adminEditMediaContentFaceVerifiedValue ||
+        permissions.adminEditSecurityContentVerifiedValue) {
+      list.add(
+        Setting.createSetting(
+          Icons.verified_user,
+          "Security selfie info",
+          () => MyNavigator.pushLimited(context, AdminSecurityContentInfoPage(r, widget.accountId)),
+        ).toListTile(),
+      );
+    }
+
     list.add(settingsCategoryTitle(context, "Monitoring"));
 
     if (permissions.adminViewAccountState) {
@@ -366,6 +379,10 @@ class AccountAdminSettingsPermissions {
   bool get adminExportData => _permissions.adminExportData;
   bool get adminEditProfileName => _permissions.adminEditProfileName;
   bool get adminEditLogin => _permissions.adminEditLogin;
+  bool get adminEditMediaContentFaceVerifiedValue =>
+      _permissions.adminEditMediaContentFaceVerifiedValue;
+  bool get adminEditSecurityContentVerifiedValue =>
+      _permissions.adminEditSecurityContentVerifiedValue;
   bool get adminViewEmailAddress => _permissions.adminViewEmailAddress;
   bool get adminChangeEmailAddress => _permissions.adminChangeEmailAddress;
   bool get adminModerateMediaContent => _permissions.adminModerateMediaContent;
@@ -386,6 +403,8 @@ class AccountAdminSettingsPermissions {
     return adminModifyPermissions ||
         adminEditProfileName ||
         adminEditLogin ||
+        adminEditMediaContentFaceVerifiedValue ||
+        adminEditSecurityContentVerifiedValue ||
         adminViewEmailAddress ||
         adminChangeEmailAddress ||
         adminExportData ||
