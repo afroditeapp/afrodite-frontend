@@ -126,7 +126,7 @@ class _AdminContentManagementScreenState extends State<AdminContentManagementScr
           accountId,
           e,
           permissions.adminDeleteMediaContent ? deleteAction : null,
-          changeModerationStateAction,
+          permissions.adminModerateMediaContent ? changeModerationStateAction : null,
           permissions.adminEditMediaContentFaceDetectedValue ? changeFaceDetectedValue : null,
           permissions.adminEditMediaContentFaceVerifiedValue ? changeFaceVerifiedValue : null,
         ),
@@ -254,7 +254,7 @@ Widget _buildAvailableImg(
   AccountId accountId,
   ContentInfoDetailed content,
   void Function(AccountId, ContentId)? deleteImgAction,
-  void Function(AccountId, ContentId, bool accepted) changeModerationStateAction,
+  void Function(AccountId, ContentId, bool accepted)? changeModerationStateAction,
   void Function(AccountId, ContentId, bool? accepted)? changeFaceDetectedValueAction,
   void Function(AccountId, ContentId, bool? accepted)? changeFaceVerifiedValueAction,
 ) {
@@ -311,7 +311,7 @@ Widget _statusInfo(
   AccountId accountId,
   ContentInfoDetailed content,
   void Function(AccountId, ContentId)? deleteImgAction,
-  void Function(AccountId, ContentId, bool accepted) changeModerationStateAction,
+  void Function(AccountId, ContentId, bool accepted)? changeModerationStateAction,
   void Function(AccountId, ContentId, bool? accepted)? changeFaceDetectedValueAction,
   void Function(AccountId, ContentId, bool? accepted)? changeFaceVerifiedValueAction,
 ) {
@@ -329,8 +329,9 @@ Widget _statusInfo(
   };
 
   final Widget? moderationStateChangeButton;
-  if (content.state == ContentModerationState.acceptedByBot ||
-      content.state == ContentModerationState.acceptedByHuman) {
+  if (changeModerationStateAction != null &&
+      (content.state == ContentModerationState.acceptedByBot ||
+          content.state == ContentModerationState.acceptedByHuman)) {
     moderationStateChangeButton = _createModerationStateChangeButton(
       context,
       accountId,
@@ -340,8 +341,9 @@ Widget _statusInfo(
       false,
       changeModerationStateAction,
     );
-  } else if (content.state == ContentModerationState.rejectedByBot ||
-      content.state == ContentModerationState.rejectedByHuman) {
+  } else if (changeModerationStateAction != null &&
+      (content.state == ContentModerationState.rejectedByBot ||
+          content.state == ContentModerationState.rejectedByHuman)) {
     moderationStateChangeButton = _createModerationStateChangeButton(
       context,
       accountId,

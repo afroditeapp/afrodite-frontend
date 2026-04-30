@@ -223,7 +223,9 @@ class _AccountAdminSettingsScreenState extends State<AccountAdminSettingsScreen>
       );
     }
 
-    if (permissions.adminModerateMediaContent) {
+    if (permissions.adminModerateMediaContent ||
+        permissions.adminEditMediaContentFaceVerifiedValue ||
+        permissions.adminEditSecurityContentVerifiedValue) {
       list.add(
         Setting.createSetting(
           Icons.image,
