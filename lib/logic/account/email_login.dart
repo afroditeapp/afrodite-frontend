@@ -3,6 +3,7 @@ import "package:app/logic/sign_in_with.dart";
 import "package:flutter_bloc/flutter_bloc.dart";
 import "package:app/config.dart";
 import "package:app/data/login_repository.dart";
+import "package:app/data/utils/login_repository_types.dart";
 import "package:app/model/freezed/logic/account/email_login.dart";
 import "package:app/ui_utils/common_update_logic.dart";
 import "package:app/utils.dart";
@@ -53,8 +54,15 @@ class EmailLoginBloc extends Bloc<EmailLoginEvent, EmailLoginBlocData> with Acti
                 resendWaitSeconds: v.resendWaitSeconds,
               ),
             );
-          case Err():
-            emit(state.copyWith(isLoading: false, error: RequestTokenFailed()));
+          case Err(:final e):
+            emit(
+              state.copyWith(
+                isLoading: false,
+                error: RequestTokenFailed(
+                  maintenanceInfo: e is ElrteMaintenanceOngoing ? e.maintenanceInfo : null,
+                ),
+              ),
+            );
         }
       });
     });

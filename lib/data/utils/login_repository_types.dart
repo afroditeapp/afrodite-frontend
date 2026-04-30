@@ -1,5 +1,6 @@
 import 'package:app/data/utils/repository_instances.dart';
 import 'package:app/logic/app/main_state_types.dart';
+import 'package:openapi/api.dart';
 
 sealed class LoginState {}
 
@@ -104,6 +105,20 @@ class CseInvalidEmailLoginToken extends CommonSignInError {}
 
 class CseCreatingConnectingWebSocketFailed extends CommonSignInError {}
 
+class CseMaintenanceOngoing extends CommonSignInError {
+  final StringResource maintenanceInfo;
+  CseMaintenanceOngoing(this.maintenanceInfo);
+}
+
 class CseDataSyncFailed extends CommonSignInError {}
 
 class CseOtherError extends CommonSignInError {}
+
+sealed class EmailLoginRequestTokenError {}
+
+class ElrteErrorOccurred extends EmailLoginRequestTokenError {}
+
+class ElrteMaintenanceOngoing extends EmailLoginRequestTokenError {
+  final StringResource maintenanceInfo;
+  ElrteMaintenanceOngoing(this.maintenanceInfo);
+}

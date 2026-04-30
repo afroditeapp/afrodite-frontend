@@ -6,6 +6,7 @@ import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:app/localizations.dart';
 import 'package:app/ui_utils/common_update_logic.dart';
+import 'package:app/ui_utils/extensions/api.dart';
 
 void openEmailLoginScreen(BuildContext context) {
   MyNavigator.push(context, EmailLoginPage());
@@ -174,13 +175,13 @@ class _EmailLoginCodeScreenState extends State<EmailLoginCodeScreen> {
           final clientToken = state.clientToken;
 
           if (error is RequestTokenFailed || clientToken == null) {
+            final errorMessage = error is RequestTokenFailed && error.maintenanceInfo != null
+                ? error.maintenanceInfo!.toLocalizedText(context)
+                : context.strings.generic_error_occurred;
             return Center(
               child: Padding(
                 padding: const EdgeInsets.all(16),
-                child: Text(
-                  context.strings.generic_error_occurred,
-                  style: Theme.of(context).textTheme.bodyLarge,
-                ),
+                child: Text(errorMessage, style: Theme.of(context).textTheme.bodyLarge),
               ),
             );
           }

@@ -1,5 +1,6 @@
 import 'dart:async';
 
+import 'package:app/api/manual_maintenance_info_check.dart';
 import 'package:app/data/app_version.dart';
 import 'package:app/data/utils/demo_account_manager.dart';
 import 'package:app/data/utils/login_repository_types.dart';
@@ -50,7 +51,8 @@ class ChangeServerAddress extends LoginRepositoryCmd<Result<(), ()>> {
   ChangeServerAddress(this.address);
 }
 
-class EmailLoginRequestToken extends LoginRepositoryCmd<Result<RequestEmailLoginTokenResult, ()>> {
+class EmailLoginRequestToken
+    extends LoginRepositoryCmd<Result<RequestEmailLoginTokenResult, EmailLoginRequestTokenError>> {
   final String email;
   final String serverAddress;
   EmailLoginRequestToken(this.email, this.serverAddress);
@@ -313,24 +315,29 @@ class LoginRepository extends AppSingleton {
   Future<Result<(), SignInWithEvent>> _handleSignInWithLoginInfo(SignInWithLoginInfo info) async {
     final login = await _apiNoConnection.account((api) => api.postSignInWithLogin(info)).ok();
     if (login == null) {
-      return Err(SignInWithSignInError(CseLoginApiRequestFailed()));
+      return Err(SignInWithSignInError(await _checkServerMaintenanceInfo()));
     }
     return await _handleLoginResult(login).mapErr((e) {
       return SignInWithSignInError(e);
     });
   }
 
-  Future<Result<RequestEmailLoginTokenResult, ()>> _handleEmailLoginRequestToken(
-    EmailLoginRequestToken cmd,
-  ) async {
+  Future<Result<RequestEmailLoginTokenResult, EmailLoginRequestTokenError>>
+  _handleEmailLoginRequestToken(EmailLoginRequestToken cmd) async {
     final changeServerResult = await _setCurrentServerAddressIfNeeded(cmd.serverAddress);
     if (changeServerResult.isErr()) {
-      return const Err(());
+      return Err(ElrteErrorOccurred());
     }
 
-    return await _apiNoConnection
+    final result = await _apiNoConnection
         .account((api) => api.postRequestEmailLoginToken(RequestEmailLoginToken(email: cmd.email)))
-        .mapErr((_) => ());
+        .ok();
+
+    if (result == null) {
+      return Err(await _checkServerMaintenanceInfoForEmailTokenRequest());
+    }
+
+    return Ok(result);
   }
 
   Future<Result<(), CommonSignInError>> _handleEmailLoginWithToken(EmailLoginWithToken cmd) async {
@@ -449,6 +456,27 @@ class LoginRepository extends AppSingleton {
     return result;
   }
 
+  Future<EmailLoginRequestTokenError> _checkServerMaintenanceInfoForEmailTokenRequest() async {
+    final maintenanceCheck = await checkManualMaintenanceInfo(
+      currentServerAddress: _apiNoConnection.serverAddress,
+    );
+    switch (maintenanceCheck) {
+      case MaintenanceOngoing(maintenanceInfo: final text):
+        return ElrteMaintenanceOngoing(text);
+      case ManualMaintenanceInfoCheckFailed() || NoMaintenance():
+        return ElrteErrorOccurred();
+    }
+  }
+
+  Future<CommonSignInError> _checkServerMaintenanceInfo() async {
+    switch (await _checkServerMaintenanceInfoForEmailTokenRequest()) {
+      case ElrteMaintenanceOngoing(:final maintenanceInfo):
+        return CseMaintenanceOngoing(maintenanceInfo);
+      case ElrteErrorOccurred():
+        return CseLoginApiRequestFailed();
+    }
+  }
+
   /// Logout from current or specific account
   Future<void> _logout(AccountId? id) async {
     final currentRepositories = repositoriesOrNull;
@@ -520,7 +548,7 @@ class LoginRepository extends AppSingleton {
   }
 
   /// Request email login token to be sent via email
-  Future<Result<RequestEmailLoginTokenResult, ()>> emailLoginRequestToken(
+  Future<Result<RequestEmailLoginTokenResult, EmailLoginRequestTokenError>> emailLoginRequestToken(
     String email,
     String serverAddress,
   ) async {

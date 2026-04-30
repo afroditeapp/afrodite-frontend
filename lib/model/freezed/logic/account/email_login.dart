@@ -10,7 +10,8 @@ sealed class EmailLoginError {
 }
 
 class RequestTokenFailed extends EmailLoginError {
-  const RequestTokenFailed();
+  final StringResource? maintenanceInfo;
+  const RequestTokenFailed({this.maintenanceInfo});
 }
 
 class LoginFailed extends EmailLoginError {
