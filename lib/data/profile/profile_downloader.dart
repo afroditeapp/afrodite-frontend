@@ -2,6 +2,8 @@ import 'dart:async';
 
 import 'package:logging/logging.dart';
 import 'package:openapi/api.dart';
+import 'package:openapi/manual_additions.dart';
+import 'package:app/api/binary/get_profile_content_info.dart';
 import 'package:app/api/server_connection_manager.dart';
 import 'package:app/data/image_cache.dart';
 import 'package:app/data/media_repository.dart';
@@ -30,13 +32,17 @@ class ProfileEntryDownloader {
     final currentVersion = currentData?.version;
     final currentContentVersion = currentData?.contentVersion;
 
-    final contentInfoResult = await api.media(
-      (api) => api.getProfileContentInfo(
+    final contentInfoResult = await api.media((api) async {
+      final bytes = await api.getProfileContentInfoBinaryFixed(
         accountId.aid,
         isMatch: isMatch,
         version: currentContentVersion?.v,
-      ),
-    );
+      );
+      if (bytes == null) {
+        return null;
+      }
+      return parseGetProfileContentInfoBinary(bytes);
+    });
     switch (contentInfoResult) {
       case Ok(:final v):
         final contentVersion = v.version;

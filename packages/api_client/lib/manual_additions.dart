@@ -80,6 +80,32 @@ extension MediaManualAdditions on MediaApi {
     }
     return null;
   }
+
+  /// Get current profile content for selected profile as compact binary payload.
+  ///
+  /// See [getProfileContentInfoBinary] for more documentation.
+  ///
+  /// Parameters:
+  ///
+  /// * [String] aid (required):
+  ///
+  /// * [String] version:
+  ///
+  /// * [bool] isMatch:
+  Future<Uint8List?> getProfileContentInfoBinaryFixed(String aid, { String? version, bool? isMatch, }) async {
+    final response = await getProfileContentInfoBinaryWithHttpInfo(aid,  version: version, isMatch: isMatch, );
+    if (response.statusCode >= HttpStatus.badRequest) {
+      throw ApiException(response.statusCode, "Profile content download failed");
+    }
+    // When a remote server returns no body with a status of 204, we shall not decode it.
+    // At the time of writing this, `dart:convert` will throw an "Unexpected end of input"
+    // FormatException when trying to decode an empty string.
+    if (response.body.isNotEmpty && response.statusCode != HttpStatus.noContent) {
+      return response.bodyBytes;
+
+    }
+    return null;
+  }
 }
 
 extension ChatManualAdditions on ChatApi {
