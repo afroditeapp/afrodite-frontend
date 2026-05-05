@@ -111,6 +111,19 @@ extension AccountIdUiExtensions on AccountId {
   }
 }
 
+extension AccountBanReasonCategoryUiExtensions on AccountBanReasonCategory {
+  String toUiString(BuildContext context) {
+    return switch (value) {
+      0 => context.strings.account_ban_reason_category_profile_name,
+      1 => context.strings.account_ban_reason_category_profile_text,
+      2 => context.strings.account_ban_reason_category_image,
+      3 => context.strings.account_ban_reason_category_chat_message,
+      4 => context.strings.account_ban_reason_category_report_spam,
+      _ => value.toString(),
+    };
+  }
+}
+
 extension StringResourceUiExtensions on StringResource {
   String toLocalizedText(BuildContext context) {
     final languageCode = Localizations.localeOf(context).languageCode;

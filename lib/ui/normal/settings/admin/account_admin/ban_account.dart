@@ -5,6 +5,7 @@ import 'package:app/logic/account/account.dart';
 import 'package:app/model/freezed/logic/account/account.dart';
 import 'package:app/model/freezed/logic/main/navigator_state.dart';
 import 'package:app/ui_utils/dialog.dart';
+import 'package:app/ui_utils/extensions/api.dart';
 import 'package:app/ui_utils/padding.dart';
 import 'package:app/utils/api.dart';
 import 'package:app/utils/time.dart';
@@ -34,12 +35,42 @@ class _BanAccountScreenState extends State<BanAccountScreen> {
   final banDaysTextController = TextEditingController();
   final banDetailsController = TextEditingController();
 
+  static const _banReasonCategoryEmpty = -1;
+  static const _banReasonCategoryValues = <int>[_banReasonCategoryEmpty, 0, 1, 2, 3, 4];
+
+  String _banReasonCategoryLabel(BuildContext context, int value) {
+    if (value == _banReasonCategoryEmpty) {
+      return context.strings.generic_empty;
+    }
+    return AccountBanReasonCategory(value: value).toUiString(context);
+  }
+
+  List<DropdownMenuItem<int>> _banReasonCategoryItems(BuildContext context) {
+    return _banReasonCategoryValues
+        .map(
+          (value) => DropdownMenuItem<int>(
+            value: value,
+            child: Text(_banReasonCategoryLabel(context, value)),
+          ),
+        )
+        .toList(growable: false);
+  }
+
+  int _normalizeBanReasonCategoryValue(AccountBanReasonCategory? category) {
+    final value = category?.value;
+    if (value == null || !_banReasonCategoryValues.contains(value)) {
+      return _banReasonCategoryEmpty;
+    }
+    return value;
+  }
+
   GetAccountBanTimeResult? data;
 
   bool isLoading = true;
   bool isError = false;
 
   int? selectedBanSeconds;
+  int selectedBanReasonCategory = _banReasonCategoryEmpty;
 
   Future<void> _getData() async {
     final result = await widget.api
@@ -60,6 +91,7 @@ class _BanAccountScreenState extends State<BanAccountScreen> {
       setState(() {
         isLoading = false;
         data = result;
+        selectedBanReasonCategory = _normalizeBanReasonCategoryValue(result.reasonCategory);
       });
     }
   }
@@ -152,12 +184,32 @@ class _BanAccountScreenState extends State<BanAccountScreen> {
           decoration: const InputDecoration(hintText: "Ban reason"),
         ),
         const Padding(padding: EdgeInsets.all(8.0)),
+        DropdownButtonFormField<int>(
+          initialValue: selectedBanReasonCategory,
+          decoration: InputDecoration(labelText: "Ban reason category"),
+          items: _banReasonCategoryItems(context),
+          onChanged: (value) {
+            if (value == null) {
+              return;
+            }
+            setState(() {
+              selectedBanReasonCategory = value;
+            });
+          },
+        ),
+        const Padding(padding: EdgeInsets.all(8.0)),
         bannedUntilTimePreview(),
         const Padding(padding: EdgeInsets.all(8.0)),
         ElevatedButton(
           onPressed: selectedBanSeconds != null
               ? () async {
                   final seconds = selectedBanSeconds!;
+                  final AccountBanReasonCategory? reasonCategory;
+                  if (selectedBanReasonCategory == _banReasonCategoryEmpty) {
+                    reasonCategory = null;
+                  } else {
+                    reasonCategory = AccountBanReasonCategory(value: selectedBanReasonCategory);
+                  }
 
                   final banDetailsString = banDetailsController.text.trim();
                   final AccountBanReasonDetails? banDetails;
@@ -174,6 +226,7 @@ class _BanAccountScreenState extends State<BanAccountScreen> {
                         SetAccountBanState(
                           account: widget.accountId,
                           banUntil: UtcDateTime.now().toUnixTime()..addSeconds(seconds),
+                          reasonCategory: reasonCategory,
                           reasonDetails: banDetails,
                         ),
                       ),

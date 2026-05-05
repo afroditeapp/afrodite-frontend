@@ -106,11 +106,47 @@ abstract class AppLocalizations {
   /// **'Version ID: {p0}'**
   String about_dialog_git_commit_id(String p0);
 
+  /// Account ban reason category chat message
+  ///
+  /// In en, this message translates to:
+  /// **'Chat message'**
+  String get account_ban_reason_category_chat_message;
+
+  /// Account ban reason category image
+  ///
+  /// In en, this message translates to:
+  /// **'Image'**
+  String get account_ban_reason_category_image;
+
+  /// Account ban reason category profile name
+  ///
+  /// In en, this message translates to:
+  /// **'Profile name'**
+  String get account_ban_reason_category_profile_name;
+
+  /// Account ban reason category profile text
+  ///
+  /// In en, this message translates to:
+  /// **'Profile text'**
+  String get account_ban_reason_category_profile_text;
+
+  /// Account ban reason category report spam
+  ///
+  /// In en, this message translates to:
+  /// **'Report spam'**
+  String get account_ban_reason_category_report_spam;
+
   /// Text for account ban reason
   ///
   /// In en, this message translates to:
   /// **'Ban reason: {p0}'**
   String account_banned_screen_ban_reason(String p0);
+
+  /// Text for account ban reason category
+  ///
+  /// In en, this message translates to:
+  /// **'Ban reason category: {p0}'**
+  String account_banned_screen_ban_reason_category(String p0);
 
   /// Time when account unban process will begin
   ///

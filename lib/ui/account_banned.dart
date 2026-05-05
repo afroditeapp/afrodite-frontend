@@ -6,6 +6,7 @@ import "package:app/ui/normal/settings/chat/chat_backup.dart";
 import "package:app/ui/normal/settings/data_export.dart";
 import "package:app/ui_utils/app_bar/common_actions.dart";
 import "package:app/ui_utils/app_bar/menu_actions.dart";
+import "package:app/ui_utils/extensions/api.dart";
 import "package:app/ui_utils/list.dart";
 import "package:app/utils/api.dart";
 import "package:app/utils/result.dart";
@@ -38,6 +39,14 @@ class AccountBannedScreen extends StatefulWidget {
 class _AccountBannedScreenState extends State<AccountBannedScreen> {
   bool isLoading = true;
   GetAccountBanTimeResult? data;
+
+  String? _banReasonCategoryText(BuildContext context, AccountBanReasonCategory? reasonCategory) {
+    if (reasonCategory == null) {
+      return null;
+    }
+    final label = reasonCategory.toUiString(context);
+    return context.strings.account_banned_screen_ban_reason_category(label);
+  }
 
   Future<void> _refreshData() async {
     await widget.connectionManager.tryWaitUntilConnected();
@@ -124,10 +133,14 @@ class _AccountBannedScreenState extends State<AccountBannedScreen> {
       widgets = [Text(context.strings.generic_error)];
     } else {
       final String? banReason = result.reasonDetails?.value;
+      final String? banReasonCategory = _banReasonCategoryText(context, result.reasonCategory);
       final localTime = fullTimeString(bannedUntil.toUtcDateTime());
       widgets = [
         Text(context.strings.account_banned_screen_time_text(localTime)),
         const Padding(padding: EdgeInsets.only(top: 8)),
+        if (banReasonCategory != null) Text(banReasonCategory),
+        if (banReasonCategory != null && banReason != null)
+          const Padding(padding: EdgeInsets.only(top: 8)),
         if (banReason != null) Text(context.strings.account_banned_screen_ban_reason(banReason)),
       ];
     }

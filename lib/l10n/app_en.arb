@@ -17,9 +17,38 @@
       }
     }
   },
+  "account_ban_reason_category_chat_message": "Chat message",
+  "@account_ban_reason_category_chat_message": {
+    "description": "Account ban reason category chat message"
+  },
+  "account_ban_reason_category_image": "Image",
+  "@account_ban_reason_category_image": {
+    "description": "Account ban reason category image"
+  },
+  "account_ban_reason_category_profile_name": "Profile name",
+  "@account_ban_reason_category_profile_name": {
+    "description": "Account ban reason category profile name"
+  },
+  "account_ban_reason_category_profile_text": "Profile text",
+  "@account_ban_reason_category_profile_text": {
+    "description": "Account ban reason category profile text"
+  },
+  "account_ban_reason_category_report_spam": "Report spam",
+  "@account_ban_reason_category_report_spam": {
+    "description": "Account ban reason category report spam"
+  },
   "account_banned_screen_ban_reason": "Ban reason: {p0}",
   "@account_banned_screen_ban_reason": {
     "description": "Text for account ban reason",
+    "placeholders": {
+      "p0": {
+        "type": "String"
+      }
+    }
+  },
+  "account_banned_screen_ban_reason_category": "Ban reason category: {p0}",
+  "@account_banned_screen_ban_reason_category": {
+    "description": "Text for account ban reason category",
     "placeholders": {
       "p0": {
         "type": "String"

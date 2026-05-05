@@ -19,8 +19,28 @@ class AppLocalizationsEn extends AppLocalizations {
   }
 
   @override
+  String get account_ban_reason_category_chat_message => 'Chat message';
+
+  @override
+  String get account_ban_reason_category_image => 'Image';
+
+  @override
+  String get account_ban_reason_category_profile_name => 'Profile name';
+
+  @override
+  String get account_ban_reason_category_profile_text => 'Profile text';
+
+  @override
+  String get account_ban_reason_category_report_spam => 'Report spam';
+
+  @override
   String account_banned_screen_ban_reason(String p0) {
     return 'Ban reason: $p0';
+  }
+
+  @override
+  String account_banned_screen_ban_reason_category(String p0) {
+    return 'Ban reason category: $p0';
   }
 
   @override
