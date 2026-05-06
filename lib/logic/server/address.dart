@@ -21,14 +21,10 @@ class ServerAddressBloc extends Bloc<ServerAddressEvent, String> {
         return;
       }
 
-      const error = "Error: server address change failed, Details: backend version request failed";
+      const error = "Error: server address change failed bacause API request failed";
       try {
         final api = ApiProvider(data.value);
-        final value = await api.common.getVersion();
-        if (value == null) {
-          showSnackBar(error);
-          return;
-        }
+        await api.common.getServerOnline();
       } catch (_) {
         showSnackBar(error);
         return;

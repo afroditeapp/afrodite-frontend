@@ -56,7 +56,7 @@ class _AdminContentManagementScreenState extends State<AdminContentManagementScr
         .ok();
 
     final securityContent = await widget.api
-        .mediaAdmin((api) => api.getSecurityContentInfo(widget.accountId.aid))
+        .mediaAdmin((api) => api.getSecurityContentAdminInfo(widget.accountId.aid))
         .ok();
 
     if (!context.mounted) {

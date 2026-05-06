@@ -6,6 +6,7 @@ import 'package:app/logic/admin/content_decicion_stream.dart';
 import 'package:app/model/freezed/logic/main/navigator_state.dart';
 import 'package:app/ui/normal/settings/admin/content_decicion_stream.dart';
 import 'package:app/ui_utils/moderation.dart';
+import 'package:app/utils/option.dart';
 import 'package:app/utils/result.dart';
 import 'package:flutter/material.dart';
 import 'package:openapi/api.dart';
@@ -97,7 +98,10 @@ class MediaContentIo extends ContentIo<WrappedMediaContentPendingModeration> {
 
     List<WrappedMediaContentPendingModeration> newList = [];
     for (final v in list.values) {
-      var securitySelfie = await media.getSecuritySelfie(v.accountId);
+      var securitySelfie = await api
+          .mediaAdmin((api) => api.getSecurityContentAdminInfo(v.accountId.aid))
+          .ok()
+          .map((img) => img.content?.cid);
 
       newList.add(
         WrappedMediaContentPendingModeration(

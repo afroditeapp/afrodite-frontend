@@ -194,6 +194,8 @@ class ApiClient {
           return AccountBanReasonCategory.fromJson(value);
         case 'AccountBanReasonDetails':
           return AccountBanReasonDetails.fromJson(value);
+        case 'AccountBannedAdminType':
+          return AccountBannedAdminTypeTypeTransformer().decode(value);
         case 'AccountContent':
           return AccountContent.fromJson(value);
         case 'AccountId':
@@ -210,10 +212,18 @@ class ApiClient {
           return AccountStateContainer.fromJson(value);
         case 'AccountSyncVersion':
           return AccountSyncVersion.fromJson(value);
+        case 'AccountVerificationMethodsConfig':
+          return AccountVerificationMethodsConfig.fromJson(value);
+        case 'AccountVerificationQueueAdminItem':
+          return AccountVerificationQueueAdminItem.fromJson(value);
+        case 'AccountVerificationQueueStatus':
+          return AccountVerificationQueueStatus.fromJson(value);
         case 'AddFavoriteProfileResult':
           return AddFavoriteProfileResult.fromJson(value);
         case 'AddPublicKeyResult':
           return AddPublicKeyResult.fromJson(value);
+        case 'AdminAccountVerificationConfig':
+          return AdminAccountVerificationConfig.fromJson(value);
         case 'AdminBotConfig':
           return AdminBotConfig.fromJson(value);
         case 'AdminContentModerationConfig':
@@ -230,6 +240,8 @@ class ApiClient {
           return AdminNsfwDetectionConfig.fromJson(value);
         case 'AdminProfileStringModerationConfig':
           return AdminProfileStringModerationConfig.fromJson(value);
+        case 'AdminSecurityContentVerificationConfig':
+          return AdminSecurityContentVerificationConfig.fromJson(value);
         case 'ApiUsageCount':
           return ApiUsageCount.fromJson(value);
         case 'ApiUsageStatistics':
@@ -254,8 +266,6 @@ class ApiClient {
           return AutomaticProfileSearchIteratorSessionId.fromJson(value);
         case 'AutomaticProfileSearchSettings':
           return AutomaticProfileSearchSettings.fromJson(value);
-        case 'BackendVersion':
-          return BackendVersion.fromJson(value);
         case 'BackupTransferByteCount':
           return BackupTransferByteCount.fromJson(value);
         case 'BackupTransferClientRole':
@@ -400,6 +410,8 @@ class ApiClient {
           return GetAccountDeletionRequestResult.fromJson(value);
         case 'GetAccountIdFromEmailResult':
           return GetAccountIdFromEmailResult.fromJson(value);
+        case 'GetAccountVerificationQueueNextItemResult':
+          return GetAccountVerificationQueueNextItemResult.fromJson(value);
         case 'GetAllAdminsResult':
           return GetAllAdminsResult.fromJson(value);
         case 'GetApiUsageStatisticsResult':
@@ -518,6 +530,8 @@ class ApiClient {
           return LlmContentModerationConfig.fromJson(value);
         case 'LlmFaceVerificationConfig':
           return LlmFaceVerificationConfig.fromJson(value);
+        case 'LlmSecurityContentVerificationConfig':
+          return LlmSecurityContentVerificationConfig.fromJson(value);
         case 'LlmStringModerationConfig':
           return LlmStringModerationConfig.fromJson(value);
         case 'Location':
@@ -634,6 +648,12 @@ class ApiClient {
           return PerfMetricValues.fromJson(value);
         case 'Permissions':
           return Permissions.fromJson(value);
+        case 'PostAccountVerificationQueueItem':
+          return PostAccountVerificationQueueItem.fromJson(value);
+        case 'PostAccountVerificationQueueItemResult':
+          return PostAccountVerificationQueueItemResult.fromJson(value);
+        case 'PostAccountVerificationQueueRemoveNextItem':
+          return PostAccountVerificationQueueRemoveNextItem.fromJson(value);
         case 'PostMediaContentFaceDetectedValue':
           return PostMediaContentFaceDetectedValue.fromJson(value);
         case 'PostMediaContentFaceVerifiedValue':
@@ -778,8 +798,8 @@ class ApiClient {
           return ReportIteratorQuery.fromJson(value);
         case 'ReportProcessingState':
           return ReportProcessingStateTypeTransformer().decode(value);
-        case 'ReportTypeNumber':
-          return ReportTypeNumber.fromJson(value);
+        case 'ReportType':
+          return ReportType.fromJson(value);
         case 'RequestEmailLoginToken':
           return RequestEmailLoginToken.fromJson(value);
         case 'RequestEmailLoginTokenResult':
@@ -820,6 +840,8 @@ class ApiClient {
           return ServerMaintenanceStatus.fromJson(value);
         case 'ServerMessageType':
           return ServerMessageTypeTypeTransformer().decode(value);
+        case 'ServerVersion':
+          return ServerVersion.fromJson(value);
         case 'SetAccountBanState':
           return SetAccountBanState.fromJson(value);
         case 'SetAccountSetup':
@@ -892,6 +914,8 @@ class ApiClient {
           return VerificationActionTypeTransformer().decode(value);
         case 'VerificationConfig':
           return VerificationConfig.fromJson(value);
+        case 'VerificationMethodsConfig':
+          return VerificationMethodsConfig.fromJson(value);
         default:
           dynamic match;
           if (value is List && (match = _regList.firstMatch(targetType)?.group(1)) != null) {

@@ -72,7 +72,7 @@ class MediaApi {
 
   /// Get list of all media content on the server for one account.
   ///
-  /// # Access  - Own account - Permission [model::Permissions::admin_moderate_media_content]
+  /// # Access  - Own account - Permission [model::Permissions::admin_moderate_media_content] - Permission [model::Permissions::admin_edit_media_content_face_detected_value] - Permission [model::Permissions::admin_edit_media_content_face_verified_value]
   ///
   /// Note: This method returns the HTTP [Response].
   ///
@@ -107,7 +107,7 @@ class MediaApi {
 
   /// Get list of all media content on the server for one account.
   ///
-  /// # Access  - Own account - Permission [model::Permissions::admin_moderate_media_content]
+  /// # Access  - Own account - Permission [model::Permissions::admin_moderate_media_content] - Permission [model::Permissions::admin_edit_media_content_face_detected_value] - Permission [model::Permissions::admin_edit_media_content_face_verified_value]
   ///
   /// Parameters:
   ///

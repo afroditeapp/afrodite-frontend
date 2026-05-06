@@ -451,6 +451,54 @@ class CommonAdminApi {
     return null;
   }
 
+  /// Get server version.
+  ///
+  /// # Permissions Requires admin_server_view_info.
+  ///
+  /// Note: This method returns the HTTP [Response].
+  Future<Response> getServerVersionWithHttpInfo() async {
+    // ignore: prefer_const_declarations
+    final path = r'/common_api/server_version';
+
+    // ignore: prefer_final_locals
+    Object? postBody;
+
+    final queryParams = <QueryParam>[];
+    final headerParams = <String, String>{};
+    final formParams = <String, String>{};
+
+    const contentTypes = <String>[];
+
+
+    return apiClient.invokeAPI(
+      path,
+      'GET',
+      queryParams,
+      postBody,
+      headerParams,
+      formParams,
+      contentTypes.isEmpty ? null : contentTypes.first,
+    );
+  }
+
+  /// Get server version.
+  ///
+  /// # Permissions Requires admin_server_view_info.
+  Future<ServerVersion?> getServerVersion() async {
+    final response = await getServerVersionWithHttpInfo();
+    if (response.statusCode >= HttpStatus.badRequest) {
+      throw ApiException(response.statusCode, await _decodeBodyBytes(response));
+    }
+    // When a remote server returns no body with a status of 204, we shall not decode it.
+    // At the time of writing this, `dart:convert` will throw an "Unexpected end of input"
+    // FormatException when trying to decode an empty string.
+    if (response.body.isNotEmpty && response.statusCode != HttpStatus.noContent) {
+      return await apiClient.deserializeAsync(await _decodeBodyBytes(response), 'ServerVersion',) as ServerVersion;
+    
+    }
+    return null;
+  }
+
   /// Get software version information from manager instance.
   ///
   /// # Access * Permission [model::Permissions::admin_server_view_info]
@@ -1279,18 +1327,18 @@ class CommonAdminApi {
     }
   }
 
-  /// Trigger backend data reset
+  /// Trigger server data reset.
   ///
-  /// This API route will fail if backend config file field debug_allow_backend_data_reset is not true.  Registering new accounts will be prevented and all accounts will be deleted. After that manager will stop the backend, delete backend's data directory and start the backend.  This can be requested only once per backend process.  Account registering prevention is process specific, so restarting backend will disable that.  # Access * Permission [model::Permissions::admin_server_data_reset]
+  /// This API route will fail if server config file field debug_allow_backend_data_reset is not true.  Registering new accounts will be prevented and all accounts will be deleted. After that manager will stop the server, delete server's data directory and start the server.  This can be requested only once per server process.  Account registering prevention is process specific, so restarting server will disable that.  # Access * Permission [model::Permissions::admin_server_data_reset]
   ///
   /// Note: This method returns the HTTP [Response].
   ///
   /// Parameters:
   ///
   /// * [String] managerName (required):
-  Future<Response> postTriggerBackendDataResetWithHttpInfo(String managerName,) async {
+  Future<Response> postTriggerServerDataResetWithHttpInfo(String managerName,) async {
     // ignore: prefer_const_declarations
-    final path = r'/common_api/trigger_backend_data_reset';
+    final path = r'/common_api/trigger_server_data_reset';
 
     // ignore: prefer_final_locals
     Object? postBody;
@@ -1315,21 +1363,21 @@ class CommonAdminApi {
     );
   }
 
-  /// Trigger backend data reset
+  /// Trigger server data reset.
   ///
-  /// This API route will fail if backend config file field debug_allow_backend_data_reset is not true.  Registering new accounts will be prevented and all accounts will be deleted. After that manager will stop the backend, delete backend's data directory and start the backend.  This can be requested only once per backend process.  Account registering prevention is process specific, so restarting backend will disable that.  # Access * Permission [model::Permissions::admin_server_data_reset]
+  /// This API route will fail if server config file field debug_allow_backend_data_reset is not true.  Registering new accounts will be prevented and all accounts will be deleted. After that manager will stop the server, delete server's data directory and start the server.  This can be requested only once per server process.  Account registering prevention is process specific, so restarting server will disable that.  # Access * Permission [model::Permissions::admin_server_data_reset]
   ///
   /// Parameters:
   ///
   /// * [String] managerName (required):
-  Future<void> postTriggerBackendDataReset(String managerName,) async {
-    final response = await postTriggerBackendDataResetWithHttpInfo(managerName,);
+  Future<void> postTriggerServerDataReset(String managerName,) async {
+    final response = await postTriggerServerDataResetWithHttpInfo(managerName,);
     if (response.statusCode >= HttpStatus.badRequest) {
       throw ApiException(response.statusCode, await _decodeBodyBytes(response));
     }
   }
 
-  /// Trigger backend restart.
+  /// Trigger server restart.
   ///
   /// # Access * Permission [model::Permissions::admin_server_restart]
   ///
@@ -1338,9 +1386,9 @@ class CommonAdminApi {
   /// Parameters:
   ///
   /// * [String] managerName (required):
-  Future<Response> postTriggerBackendRestartWithHttpInfo(String managerName,) async {
+  Future<Response> postTriggerServerRestartWithHttpInfo(String managerName,) async {
     // ignore: prefer_const_declarations
-    final path = r'/common_api/trigger_backend_restart';
+    final path = r'/common_api/trigger_server_restart';
 
     // ignore: prefer_final_locals
     Object? postBody;
@@ -1365,15 +1413,15 @@ class CommonAdminApi {
     );
   }
 
-  /// Trigger backend restart.
+  /// Trigger server restart.
   ///
   /// # Access * Permission [model::Permissions::admin_server_restart]
   ///
   /// Parameters:
   ///
   /// * [String] managerName (required):
-  Future<void> postTriggerBackendRestart(String managerName,) async {
-    final response = await postTriggerBackendRestartWithHttpInfo(managerName,);
+  Future<void> postTriggerServerRestart(String managerName,) async {
+    final response = await postTriggerServerRestartWithHttpInfo(managerName,);
     if (response.statusCode >= HttpStatus.badRequest) {
       throw ApiException(response.statusCode, await _decodeBodyBytes(response));
     }

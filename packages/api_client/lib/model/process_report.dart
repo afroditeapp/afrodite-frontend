@@ -23,7 +23,7 @@ class ProcessReport {
 
   AccountId creator;
 
-  ReportTypeNumber reportType;
+  ReportType reportType;
 
   AccountId target;
 
@@ -75,7 +75,7 @@ class ProcessReport {
       return ProcessReport(
         content: ReportContent.fromJson(json[r'content'])!,
         creator: AccountId.fromJson(json[r'creator'])!,
-        reportType: ReportTypeNumber.fromJson(json[r'report_type'])!,
+        reportType: ReportType.fromJson(json[r'report_type'])!,
         target: AccountId.fromJson(json[r'target'])!,
       );
     }

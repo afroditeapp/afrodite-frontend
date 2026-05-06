@@ -39,7 +39,7 @@ class _AdminSecurityContentInfoScreenState extends State<AdminSecurityContentInf
 
   Future<void> _getData() async {
     final result = await widget.api
-        .mediaAdmin((api) => api.getSecurityContentInfo(widget.accountId.aid))
+        .mediaAdmin((api) => api.getSecurityContentAdminInfo(widget.accountId.aid))
         .ok();
 
     if (!context.mounted) {

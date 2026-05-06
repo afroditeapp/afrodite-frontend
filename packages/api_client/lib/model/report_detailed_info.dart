@@ -26,7 +26,7 @@ class ReportDetailedInfo {
 
   ReportProcessingState processingState;
 
-  ReportTypeNumber reportType;
+  ReportType reportType;
 
   AccountId target;
 
@@ -82,7 +82,7 @@ class ReportDetailedInfo {
         creator: AccountId.fromJson(json[r'creator'])!,
         id: ReportId.fromJson(json[r'id'])!,
         processingState: ReportProcessingState.fromJson(json[r'processing_state'])!,
-        reportType: ReportTypeNumber.fromJson(json[r'report_type'])!,
+        reportType: ReportType.fromJson(json[r'report_type'])!,
         target: AccountId.fromJson(json[r'target'])!,
       );
     }

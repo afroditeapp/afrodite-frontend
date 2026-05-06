@@ -222,16 +222,16 @@ class MediaAdminApi {
 
   /// Get current security content for selected profile.
   ///
-  /// # Access  - Permission [model::Permissions::admin_moderate_media_content] - Permission [model::Permissions::admin_edit_media_content_face_verified_value] - Permission [model::Permissions::admin_edit_security_content_verified_value]
+  /// # Access  - Permission [model::Permissions::admin_moderate_media_content] - Permission [model::Permissions::admin_edit_media_content_face_verified_value] - Permission [model::Permissions::admin_edit_security_content_verified_value] - Permission [model::Permissions::admin_verify_account]
   ///
   /// Note: This method returns the HTTP [Response].
   ///
   /// Parameters:
   ///
   /// * [String] aid (required):
-  Future<Response> getSecurityContentInfoWithHttpInfo(String aid,) async {
+  Future<Response> getSecurityContentAdminInfoWithHttpInfo(String aid,) async {
     // ignore: prefer_const_declarations
-    final path = r'/media_api/security_content_info/{aid}'
+    final path = r'/media_api/security_content_admin_info/{aid}'
       .replaceAll('{aid}', aid);
 
     // ignore: prefer_final_locals
@@ -257,13 +257,13 @@ class MediaAdminApi {
 
   /// Get current security content for selected profile.
   ///
-  /// # Access  - Permission [model::Permissions::admin_moderate_media_content] - Permission [model::Permissions::admin_edit_media_content_face_verified_value] - Permission [model::Permissions::admin_edit_security_content_verified_value]
+  /// # Access  - Permission [model::Permissions::admin_moderate_media_content] - Permission [model::Permissions::admin_edit_media_content_face_verified_value] - Permission [model::Permissions::admin_edit_security_content_verified_value] - Permission [model::Permissions::admin_verify_account]
   ///
   /// Parameters:
   ///
   /// * [String] aid (required):
-  Future<SecurityContentAdminInfo?> getSecurityContentInfo(String aid,) async {
-    final response = await getSecurityContentInfoWithHttpInfo(aid,);
+  Future<SecurityContentAdminInfo?> getSecurityContentAdminInfo(String aid,) async {
+    final response = await getSecurityContentAdminInfoWithHttpInfo(aid,);
     if (response.statusCode >= HttpStatus.badRequest) {
       throw ApiException(response.statusCode, await _decodeBodyBytes(response));
     }

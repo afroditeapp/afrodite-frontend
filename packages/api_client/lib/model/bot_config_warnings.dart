@@ -13,6 +13,8 @@ part of openapi.api;
 class BotConfigWarnings {
   /// Returns a new [BotConfigWarnings] instance.
   BotConfigWarnings({
+    this.accountVerificationFileConfigMissing = false,
+    this.accountVerificationSecurityContentFileConfigMissing = false,
     this.contentModerationFileConfigMissing = false,
     this.error = false,
     this.errorAdminBotOffline = false,
@@ -20,6 +22,10 @@ class BotConfigWarnings {
     this.profileNameModerationFileConfigMissing = false,
     this.profileTextModerationFileConfigMissing = false,
   });
+
+  bool accountVerificationFileConfigMissing;
+
+  bool accountVerificationSecurityContentFileConfigMissing;
 
   bool contentModerationFileConfigMissing;
 
@@ -36,6 +42,8 @@ class BotConfigWarnings {
 
   @override
   bool operator ==(Object other) => identical(this, other) || other is BotConfigWarnings &&
+    other.accountVerificationFileConfigMissing == accountVerificationFileConfigMissing &&
+    other.accountVerificationSecurityContentFileConfigMissing == accountVerificationSecurityContentFileConfigMissing &&
     other.contentModerationFileConfigMissing == contentModerationFileConfigMissing &&
     other.error == error &&
     other.errorAdminBotOffline == errorAdminBotOffline &&
@@ -46,6 +54,8 @@ class BotConfigWarnings {
   @override
   int get hashCode =>
     // ignore: unnecessary_parenthesis
+    (accountVerificationFileConfigMissing.hashCode) +
+    (accountVerificationSecurityContentFileConfigMissing.hashCode) +
     (contentModerationFileConfigMissing.hashCode) +
     (error.hashCode) +
     (errorAdminBotOffline.hashCode) +
@@ -54,10 +64,12 @@ class BotConfigWarnings {
     (profileTextModerationFileConfigMissing.hashCode);
 
   @override
-  String toString() => 'BotConfigWarnings[contentModerationFileConfigMissing=$contentModerationFileConfigMissing, error=$error, errorAdminBotOffline=$errorAdminBotOffline, faceVerificationFileConfigMissing=$faceVerificationFileConfigMissing, profileNameModerationFileConfigMissing=$profileNameModerationFileConfigMissing, profileTextModerationFileConfigMissing=$profileTextModerationFileConfigMissing]';
+  String toString() => 'BotConfigWarnings[accountVerificationFileConfigMissing=$accountVerificationFileConfigMissing, accountVerificationSecurityContentFileConfigMissing=$accountVerificationSecurityContentFileConfigMissing, contentModerationFileConfigMissing=$contentModerationFileConfigMissing, error=$error, errorAdminBotOffline=$errorAdminBotOffline, faceVerificationFileConfigMissing=$faceVerificationFileConfigMissing, profileNameModerationFileConfigMissing=$profileNameModerationFileConfigMissing, profileTextModerationFileConfigMissing=$profileTextModerationFileConfigMissing]';
 
   Map<String, dynamic> toJson() {
     final json = <String, dynamic>{};
+      json[r'account_verification_file_config_missing'] = this.accountVerificationFileConfigMissing;
+      json[r'account_verification_security_content_file_config_missing'] = this.accountVerificationSecurityContentFileConfigMissing;
       json[r'content_moderation_file_config_missing'] = this.contentModerationFileConfigMissing;
       json[r'error'] = this.error;
       json[r'error_admin_bot_offline'] = this.errorAdminBotOffline;
@@ -86,6 +98,8 @@ class BotConfigWarnings {
       }());
 
       return BotConfigWarnings(
+        accountVerificationFileConfigMissing: mapValueOfType<bool>(json, r'account_verification_file_config_missing') ?? false,
+        accountVerificationSecurityContentFileConfigMissing: mapValueOfType<bool>(json, r'account_verification_security_content_file_config_missing') ?? false,
         contentModerationFileConfigMissing: mapValueOfType<bool>(json, r'content_moderation_file_config_missing') ?? false,
         error: mapValueOfType<bool>(json, r'error') ?? false,
         errorAdminBotOffline: mapValueOfType<bool>(json, r'error_admin_bot_offline') ?? false,

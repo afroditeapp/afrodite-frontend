@@ -28,6 +28,7 @@ lib/model/account.dart
 lib/model/account_app_notification_settings.dart
 lib/model/account_ban_reason_category.dart
 lib/model/account_ban_reason_details.dart
+lib/model/account_banned_admin_type.dart
 lib/model/account_content.dart
 lib/model/account_id.dart
 lib/model/account_id_db_value.dart
@@ -36,8 +37,12 @@ lib/model/account_registration_platforms.dart
 lib/model/account_setup.dart
 lib/model/account_state_container.dart
 lib/model/account_sync_version.dart
+lib/model/account_verification_methods_config.dart
+lib/model/account_verification_queue_admin_item.dart
+lib/model/account_verification_queue_status.dart
 lib/model/add_favorite_profile_result.dart
 lib/model/add_public_key_result.dart
+lib/model/admin_account_verification_config.dart
 lib/model/admin_bot_config.dart
 lib/model/admin_content_moderation_config.dart
 lib/model/admin_face_verification_config.dart
@@ -46,6 +51,7 @@ lib/model/admin_notification.dart
 lib/model/admin_notification_settings.dart
 lib/model/admin_nsfw_detection_config.dart
 lib/model/admin_profile_string_moderation_config.dart
+lib/model/admin_security_content_verification_config.dart
 lib/model/api_usage_count.dart
 lib/model/api_usage_statistics.dart
 lib/model/attribute.dart
@@ -58,7 +64,6 @@ lib/model/attribution_config.dart
 lib/model/auth_pair.dart
 lib/model/automatic_profile_search_iterator_session_id.dart
 lib/model/automatic_profile_search_settings.dart
-lib/model/backend_version.dart
 lib/model/backup_transfer_byte_count.dart
 lib/model/backup_transfer_client_role.dart
 lib/model/backup_transfer_initial_message.dart
@@ -131,6 +136,7 @@ lib/model/first_image_config.dart
 lib/model/get_account_ban_time_result.dart
 lib/model/get_account_deletion_request_result.dart
 lib/model/get_account_id_from_email_result.dart
+lib/model/get_account_verification_queue_next_item_result.dart
 lib/model/get_all_admins_result.dart
 lib/model/get_api_usage_statistics_result.dart
 lib/model/get_api_usage_statistics_settings.dart
@@ -190,6 +196,7 @@ lib/model/likes_config.dart
 lib/model/limited_action_status.dart
 lib/model/llm_content_moderation_config.dart
 lib/model/llm_face_verification_config.dart
+lib/model/llm_security_content_verification_config.dart
 lib/model/llm_string_moderation_config.dart
 lib/model/location.dart
 lib/model/login_result.dart
@@ -248,6 +255,9 @@ lib/model/perf_metric_query_result.dart
 lib/model/perf_metric_value_area.dart
 lib/model/perf_metric_values.dart
 lib/model/permissions.dart
+lib/model/post_account_verification_queue_item.dart
+lib/model/post_account_verification_queue_item_result.dart
+lib/model/post_account_verification_queue_remove_next_item.dart
 lib/model/post_media_content_face_detected_value.dart
 lib/model/post_media_content_face_verified_value.dart
 lib/model/post_media_content_face_verified_value_item.dart
@@ -320,7 +330,7 @@ lib/model/report_id.dart
 lib/model/report_iterator_mode.dart
 lib/model/report_iterator_query.dart
 lib/model/report_processing_state.dart
-lib/model/report_type_number.dart
+lib/model/report_type.dart
 lib/model/request_email_login_token.dart
 lib/model/request_email_login_token_result.dart
 lib/model/reset_news_iterator_result.dart
@@ -341,6 +351,7 @@ lib/model/sent_blocks_page.dart
 lib/model/sent_message_id_list.dart
 lib/model/server_maintenance_status.dart
 lib/model/server_message_type.dart
+lib/model/server_version.dart
 lib/model/set_account_ban_state.dart
 lib/model/set_account_setup.dart
 lib/model/set_email_login_enabled.dart
@@ -377,3 +388,4 @@ lib/model/update_report_result.dart
 lib/model/vapid_public_key.dart
 lib/model/verification_action.dart
 lib/model/verification_config.dart
+lib/model/verification_methods_config.dart

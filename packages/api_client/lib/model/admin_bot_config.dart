@@ -13,6 +13,8 @@ part of openapi.api;
 class AdminBotConfig {
   /// Returns a new [AdminBotConfig] instance.
   AdminBotConfig({
+    required this.accountVerification,
+    this.accountVerificationEnabled = false,
     required this.contentModeration,
     this.contentModerationEnabled = false,
     required this.faceVerification,
@@ -22,6 +24,10 @@ class AdminBotConfig {
     required this.profileTextModeration,
     this.profileTextModerationEnabled = false,
   });
+
+  AdminAccountVerificationConfig accountVerification;
+
+  bool accountVerificationEnabled;
 
   AdminContentModerationConfig contentModeration;
 
@@ -41,6 +47,8 @@ class AdminBotConfig {
 
   @override
   bool operator ==(Object other) => identical(this, other) || other is AdminBotConfig &&
+    other.accountVerification == accountVerification &&
+    other.accountVerificationEnabled == accountVerificationEnabled &&
     other.contentModeration == contentModeration &&
     other.contentModerationEnabled == contentModerationEnabled &&
     other.faceVerification == faceVerification &&
@@ -53,6 +61,8 @@ class AdminBotConfig {
   @override
   int get hashCode =>
     // ignore: unnecessary_parenthesis
+    (accountVerification.hashCode) +
+    (accountVerificationEnabled.hashCode) +
     (contentModeration.hashCode) +
     (contentModerationEnabled.hashCode) +
     (faceVerification.hashCode) +
@@ -63,10 +73,12 @@ class AdminBotConfig {
     (profileTextModerationEnabled.hashCode);
 
   @override
-  String toString() => 'AdminBotConfig[contentModeration=$contentModeration, contentModerationEnabled=$contentModerationEnabled, faceVerification=$faceVerification, faceVerificationEnabled=$faceVerificationEnabled, profileNameModeration=$profileNameModeration, profileNameModerationEnabled=$profileNameModerationEnabled, profileTextModeration=$profileTextModeration, profileTextModerationEnabled=$profileTextModerationEnabled]';
+  String toString() => 'AdminBotConfig[accountVerification=$accountVerification, accountVerificationEnabled=$accountVerificationEnabled, contentModeration=$contentModeration, contentModerationEnabled=$contentModerationEnabled, faceVerification=$faceVerification, faceVerificationEnabled=$faceVerificationEnabled, profileNameModeration=$profileNameModeration, profileNameModerationEnabled=$profileNameModerationEnabled, profileTextModeration=$profileTextModeration, profileTextModerationEnabled=$profileTextModerationEnabled]';
 
   Map<String, dynamic> toJson() {
     final json = <String, dynamic>{};
+      json[r'account_verification'] = this.accountVerification;
+      json[r'account_verification_enabled'] = this.accountVerificationEnabled;
       json[r'content_moderation'] = this.contentModeration;
       json[r'content_moderation_enabled'] = this.contentModerationEnabled;
       json[r'face_verification'] = this.faceVerification;
@@ -97,6 +109,8 @@ class AdminBotConfig {
       }());
 
       return AdminBotConfig(
+        accountVerification: AdminAccountVerificationConfig.fromJson(json[r'account_verification'])!,
+        accountVerificationEnabled: mapValueOfType<bool>(json, r'account_verification_enabled') ?? false,
         contentModeration: AdminContentModerationConfig.fromJson(json[r'content_moderation'])!,
         contentModerationEnabled: mapValueOfType<bool>(json, r'content_moderation_enabled') ?? false,
         faceVerification: AdminFaceVerificationConfig.fromJson(json[r'face_verification'])!,
@@ -152,6 +166,7 @@ class AdminBotConfig {
 
   /// The list of required keys that must be present in a JSON.
   static const requiredKeys = <String>{
+    'account_verification',
     'content_moderation',
     'face_verification',
     'profile_name_moderation',

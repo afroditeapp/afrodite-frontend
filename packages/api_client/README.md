@@ -69,6 +69,7 @@ Class | Method | HTTP request | Description
 *AccountApi* | [**getAccountDeletionRequestState**](doc//AccountApi.md#getaccountdeletionrequeststate) | **GET** /account_api/get_account_deletion_request_state/{aid} | Get account deletion request state
 *AccountApi* | [**getAccountSetup**](doc//AccountApi.md#getaccountsetup) | **GET** /account_api/account_setup | Get non-changeable user information to account.
 *AccountApi* | [**getAccountState**](doc//AccountApi.md#getaccountstate) | **GET** /account_api/state | Get current account state.
+*AccountApi* | [**getAccountVerificationQueueStatus**](doc//AccountApi.md#getaccountverificationqueuestatus) | **GET** /account_api/account_verification_queue | Get account verification queue status for current account.
 *AccountApi* | [**getEmailAddressState**](doc//AccountApi.md#getemailaddressstate) | **GET** /account_api/email_address_state | 
 *AccountApi* | [**getLatestBirthdate**](doc//AccountApi.md#getlatestbirthdate) | **GET** /account_api/latest_birthdate | 
 *AccountApi* | [**getNewsItem**](doc//AccountApi.md#getnewsitem) | **GET** /account_api/news_item/{nid} | Get news item content using specific locale and fallback to locale \"en\" if news translation is not found.
@@ -76,6 +77,7 @@ Class | Method | HTTP request | Description
 *AccountApi* | [**getVerifyNewEmail**](doc//AccountApi.md#getverifynewemail) | **GET** /account_api/verify_new_email/{token} | Verify new email address using the token sent via email. This endpoint is meant to be accessed via a link in the verification email. To workaround email security scanning related link accessing, the link can be opened multiple times.
 *AccountApi* | [**postAccountAppNotificationSettings**](doc//AccountApi.md#postaccountappnotificationsettings) | **POST** /account_api/post_account_app_notification_settings | 
 *AccountApi* | [**postAccountSetup**](doc//AccountApi.md#postaccountsetup) | **POST** /account_api/account_setup | Setup non-changeable user information during `initial setup` state.
+*AccountApi* | [**postAccountVerificationQueueItem**](doc//AccountApi.md#postaccountverificationqueueitem) | **POST** /account_api/account_verification_queue | Add account verification request to queue for current account.
 *AccountApi* | [**postCancelEmailChange**](doc//AccountApi.md#postcancelemailchange) | **POST** /account_api/cancel_email_change | Cancel email changing process
 *AccountApi* | [**postCompleteSetup**](doc//AccountApi.md#postcompletesetup) | **POST** /account_api/complete_setup | Complete initial setup.
 *AccountApi* | [**postCustomReportEmpty**](doc//AccountApi.md#postcustomreportempty) | **POST** /account_api/custom_report_empty | Send custom report without any content
@@ -106,9 +108,11 @@ Class | Method | HTTP request | Description
 *AccountAdminApi* | [**getAccountIdFromEmail**](doc//AccountAdminApi.md#getaccountidfromemail) | **GET** /account_api/get_account_id_from_email/{email} | Get account ID from email
 *AccountAdminApi* | [**getAccountLockedState**](doc//AccountAdminApi.md#getaccountlockedstate) | **GET** /account_api/get_account_locked_state/{aid} | Get account locked state
 *AccountAdminApi* | [**getAccountStateAdmin**](doc//AccountAdminApi.md#getaccountstateadmin) | **GET** /account_api/get_account_state_admin/{aid} | Get [model::Account] for specific account.
+*AccountAdminApi* | [**getAccountVerificationQueueNextItem**](doc//AccountAdminApi.md#getaccountverificationqueuenextitem) | **GET** /account_api/account_verification_queue_next_item | Get next item in account verification queue.
 *AccountAdminApi* | [**getAllAdmins**](doc//AccountAdminApi.md#getalladmins) | **GET** /account_api/get_all_admins | Get all admins
 *AccountAdminApi* | [**getEmailAddressStateAdmin**](doc//AccountAdminApi.md#getemailaddressstateadmin) | **GET** /account_api/email_address_state_admin/{aid} | Get email address state for admin.
 *AccountAdminApi* | [**getPermissions**](doc//AccountAdminApi.md#getpermissions) | **GET** /account_api/get_permissions/{aid} | Get [model::Permissions] for specific account.
+*AccountAdminApi* | [**postAccountVerificationQueueRemoveNextItem**](doc//AccountAdminApi.md#postaccountverificationqueueremovenextitem) | **POST** /account_api/account_verification_queue_remove_next_item | Remove next item from account verification queue if possible.
 *AccountAdminApi* | [**postAdminCancelEmailChange**](doc//AccountAdminApi.md#postadmincancelemailchange) | **POST** /account_api/admin_cancel_email_change/{aid} | Cancel email changing process for any account.
 *AccountAdminApi* | [**postAdminInitEmailChange**](doc//AccountAdminApi.md#postadmininitemailchange) | **POST** /account_api/admin_init_email_change | Initiate email change process for any account by providing a new email address.
 *AccountAdminApi* | [**postAdminLogout**](doc//AccountAdminApi.md#postadminlogout) | **POST** /account_api/admin_logout/{aid} | Logout any account
@@ -174,7 +178,7 @@ Class | Method | HTTP request | Description
 *CommonApi* | [**getManualServerMaintenanceInfoForAnotherServer**](doc//CommonApi.md#getmanualservermaintenanceinfoforanotherserver) | **GET** /common_api/manual_server_maintenance_info_for_another_server | Get manual server maintenance info for another server.
 *CommonApi* | [**getPendingAppNotifications**](doc//CommonApi.md#getpendingappnotifications) | **GET** /common_api/pending_app_notifications | 
 *CommonApi* | [**getPushNotificationInfo**](doc//CommonApi.md#getpushnotificationinfo) | **GET** /common_api/get_push_notification_info | 
-*CommonApi* | [**getVersion**](doc//CommonApi.md#getversion) | **GET** /common_api/version | Get backend version.
+*CommonApi* | [**getServerOnline**](doc//CommonApi.md#getserveronline) | **GET** /common_api/server_online | Check if server is online.
 *CommonApi* | [**postAutomaticProfileSearchGetNextProfilePage**](doc//CommonApi.md#postautomaticprofilesearchgetnextprofilepage) | **POST** /common_api/automatic_profile_search/next | Post (updates iterator) to get next page of automatic profile search profile list.
 *CommonApi* | [**postAutomaticProfileSearchResetProfilePaging**](doc//CommonApi.md#postautomaticprofilesearchresetprofilepaging) | **POST** /common_api/automatic_profile_search/reset | Reset automatic profile search profile paging.
 *CommonApi* | [**postClientLanguage**](doc//CommonApi.md#postclientlanguage) | **POST** /common_api/client_language | 
@@ -192,6 +196,7 @@ Class | Method | HTTP request | Description
 *CommonAdminApi* | [**getMaintenanceNotification**](doc//CommonAdminApi.md#getmaintenancenotification) | **GET** /common_api/maintenance_notification | Get maintenance notification.
 *CommonAdminApi* | [**getManagerInstanceNames**](doc//CommonAdminApi.md#getmanagerinstancenames) | **GET** /common_api/manager_instance_names | Get available manager instances.
 *CommonAdminApi* | [**getScheduledTasksStatus**](doc//CommonAdminApi.md#getscheduledtasksstatus) | **GET** /common_api/scheduled_tasks_status | Get scheduled tasks status from manager instance.
+*CommonAdminApi* | [**getServerVersion**](doc//CommonAdminApi.md#getserverversion) | **GET** /common_api/server_version | Get server version.
 *CommonAdminApi* | [**getSoftwareUpdateStatus**](doc//CommonAdminApi.md#getsoftwareupdatestatus) | **GET** /common_api/software_info | Get software version information from manager instance.
 *CommonAdminApi* | [**getSystemInfo**](doc//CommonAdminApi.md#getsysteminfo) | **GET** /common_api/system_info | Get system information from manager instance.
 *CommonAdminApi* | [**getWaitingReportPage**](doc//CommonAdminApi.md#getwaitingreportpage) | **GET** /common_api/waiting_report_page | 
@@ -208,8 +213,8 @@ Class | Method | HTTP request | Description
 *CommonAdminApi* | [**postGetReportIteratorPage**](doc//CommonAdminApi.md#postgetreportiteratorpage) | **POST** /common_api/report_iterator_page | Get report iterator page.
 *CommonAdminApi* | [**postProcessReport**](doc//CommonAdminApi.md#postprocessreport) | **POST** /common_api/process_report | 
 *CommonAdminApi* | [**postScheduleTask**](doc//CommonAdminApi.md#postscheduletask) | **POST** /common_api/schedule_task | Schedule task.
-*CommonAdminApi* | [**postTriggerBackendDataReset**](doc//CommonAdminApi.md#posttriggerbackenddatareset) | **POST** /common_api/trigger_backend_data_reset | Trigger backend data reset
-*CommonAdminApi* | [**postTriggerBackendRestart**](doc//CommonAdminApi.md#posttriggerbackendrestart) | **POST** /common_api/trigger_backend_restart | Trigger backend restart.
+*CommonAdminApi* | [**postTriggerServerDataReset**](doc//CommonAdminApi.md#posttriggerserverdatareset) | **POST** /common_api/trigger_server_data_reset | Trigger server data reset.
+*CommonAdminApi* | [**postTriggerServerRestart**](doc//CommonAdminApi.md#posttriggerserverrestart) | **POST** /common_api/trigger_server_restart | Trigger server restart.
 *CommonAdminApi* | [**postTriggerSoftwareUpdateDownload**](doc//CommonAdminApi.md#posttriggersoftwareupdatedownload) | **POST** /common_api/trigger_software_update_download | Trigger software update download.
 *CommonAdminApi* | [**postTriggerSoftwareUpdateInstall**](doc//CommonAdminApi.md#posttriggersoftwareupdateinstall) | **POST** /common_api/trigger_software_update_install | Trigger software update install.
 *CommonAdminApi* | [**postTriggerSystemReboot**](doc//CommonAdminApi.md#posttriggersystemreboot) | **POST** /common_api/trigger_system_reboot | Trigger system reboot.
@@ -233,7 +238,7 @@ Class | Method | HTTP request | Description
 *MediaAdminApi* | [**getImageProcessingConfigWarnings**](doc//MediaAdminApi.md#getimageprocessingconfigwarnings) | **GET** /media_api/image_processing_config_warnings | Get image processing config warnings
 *MediaAdminApi* | [**getMediaContentFaceVerifiedNullList**](doc//MediaAdminApi.md#getmediacontentfaceverifiednulllist) | **GET** /media_api/media_content_face_verified_null_list | Get first page of accounts with security selfie and content where `face_verified` is NULL and `face_detected` is true or `face_detected_manual` is true. Oldest security content set time is first and count 25.
 *MediaAdminApi* | [**getMediaContentPendingModerationList**](doc//MediaAdminApi.md#getmediacontentpendingmoderationlist) | **GET** /media_api/media_content_pending_moderation | Get first page of pending media content moderations. Oldest item is first and count 25.
-*MediaAdminApi* | [**getSecurityContentInfo**](doc//MediaAdminApi.md#getsecuritycontentinfo) | **GET** /media_api/security_content_info/{aid} | Get current security content for selected profile.
+*MediaAdminApi* | [**getSecurityContentAdminInfo**](doc//MediaAdminApi.md#getsecuritycontentadmininfo) | **GET** /media_api/security_content_admin_info/{aid} | Get current security content for selected profile.
 *MediaAdminApi* | [**postImageProcessingConfig**](doc//MediaAdminApi.md#postimageprocessingconfig) | **POST** /media_api/image_processing_config | Update image processing configuration
 *MediaAdminApi* | [**postMediaContentFaceDetectedValue**](doc//MediaAdminApi.md#postmediacontentfacedetectedvalue) | **POST** /media_api/media_content_face_detected_value | Change media content face detected value
 *MediaAdminApi* | [**postMediaContentFaceVerifiedValue**](doc//MediaAdminApi.md#postmediacontentfaceverifiedvalue) | **POST** /media_api/media_content_face_verified_value | Change media content face verified value
@@ -286,6 +291,7 @@ Class | Method | HTTP request | Description
  - [AccountAppNotificationSettings](doc//AccountAppNotificationSettings.md)
  - [AccountBanReasonCategory](doc//AccountBanReasonCategory.md)
  - [AccountBanReasonDetails](doc//AccountBanReasonDetails.md)
+ - [AccountBannedAdminType](doc//AccountBannedAdminType.md)
  - [AccountContent](doc//AccountContent.md)
  - [AccountId](doc//AccountId.md)
  - [AccountIdDbValue](doc//AccountIdDbValue.md)
@@ -294,8 +300,12 @@ Class | Method | HTTP request | Description
  - [AccountSetup](doc//AccountSetup.md)
  - [AccountStateContainer](doc//AccountStateContainer.md)
  - [AccountSyncVersion](doc//AccountSyncVersion.md)
+ - [AccountVerificationMethodsConfig](doc//AccountVerificationMethodsConfig.md)
+ - [AccountVerificationQueueAdminItem](doc//AccountVerificationQueueAdminItem.md)
+ - [AccountVerificationQueueStatus](doc//AccountVerificationQueueStatus.md)
  - [AddFavoriteProfileResult](doc//AddFavoriteProfileResult.md)
  - [AddPublicKeyResult](doc//AddPublicKeyResult.md)
+ - [AdminAccountVerificationConfig](doc//AdminAccountVerificationConfig.md)
  - [AdminBotConfig](doc//AdminBotConfig.md)
  - [AdminContentModerationConfig](doc//AdminContentModerationConfig.md)
  - [AdminFaceVerificationConfig](doc//AdminFaceVerificationConfig.md)
@@ -304,6 +314,7 @@ Class | Method | HTTP request | Description
  - [AdminNotificationSettings](doc//AdminNotificationSettings.md)
  - [AdminNsfwDetectionConfig](doc//AdminNsfwDetectionConfig.md)
  - [AdminProfileStringModerationConfig](doc//AdminProfileStringModerationConfig.md)
+ - [AdminSecurityContentVerificationConfig](doc//AdminSecurityContentVerificationConfig.md)
  - [ApiUsageCount](doc//ApiUsageCount.md)
  - [ApiUsageStatistics](doc//ApiUsageStatistics.md)
  - [Attribute](doc//Attribute.md)
@@ -316,7 +327,6 @@ Class | Method | HTTP request | Description
  - [AuthPair](doc//AuthPair.md)
  - [AutomaticProfileSearchIteratorSessionId](doc//AutomaticProfileSearchIteratorSessionId.md)
  - [AutomaticProfileSearchSettings](doc//AutomaticProfileSearchSettings.md)
- - [BackendVersion](doc//BackendVersion.md)
  - [BackupTransferByteCount](doc//BackupTransferByteCount.md)
  - [BackupTransferClientRole](doc//BackupTransferClientRole.md)
  - [BackupTransferInitialMessage](doc//BackupTransferInitialMessage.md)
@@ -389,6 +399,7 @@ Class | Method | HTTP request | Description
  - [GetAccountBanTimeResult](doc//GetAccountBanTimeResult.md)
  - [GetAccountDeletionRequestResult](doc//GetAccountDeletionRequestResult.md)
  - [GetAccountIdFromEmailResult](doc//GetAccountIdFromEmailResult.md)
+ - [GetAccountVerificationQueueNextItemResult](doc//GetAccountVerificationQueueNextItemResult.md)
  - [GetAllAdminsResult](doc//GetAllAdminsResult.md)
  - [GetApiUsageStatisticsResult](doc//GetApiUsageStatisticsResult.md)
  - [GetApiUsageStatisticsSettings](doc//GetApiUsageStatisticsSettings.md)
@@ -448,6 +459,7 @@ Class | Method | HTTP request | Description
  - [LimitedActionStatus](doc//LimitedActionStatus.md)
  - [LlmContentModerationConfig](doc//LlmContentModerationConfig.md)
  - [LlmFaceVerificationConfig](doc//LlmFaceVerificationConfig.md)
+ - [LlmSecurityContentVerificationConfig](doc//LlmSecurityContentVerificationConfig.md)
  - [LlmStringModerationConfig](doc//LlmStringModerationConfig.md)
  - [Location](doc//Location.md)
  - [LoginResult](doc//LoginResult.md)
@@ -506,6 +518,9 @@ Class | Method | HTTP request | Description
  - [PerfMetricValueArea](doc//PerfMetricValueArea.md)
  - [PerfMetricValues](doc//PerfMetricValues.md)
  - [Permissions](doc//Permissions.md)
+ - [PostAccountVerificationQueueItem](doc//PostAccountVerificationQueueItem.md)
+ - [PostAccountVerificationQueueItemResult](doc//PostAccountVerificationQueueItemResult.md)
+ - [PostAccountVerificationQueueRemoveNextItem](doc//PostAccountVerificationQueueRemoveNextItem.md)
  - [PostMediaContentFaceDetectedValue](doc//PostMediaContentFaceDetectedValue.md)
  - [PostMediaContentFaceVerifiedValue](doc//PostMediaContentFaceVerifiedValue.md)
  - [PostMediaContentFaceVerifiedValueItem](doc//PostMediaContentFaceVerifiedValueItem.md)
@@ -578,7 +593,7 @@ Class | Method | HTTP request | Description
  - [ReportIteratorMode](doc//ReportIteratorMode.md)
  - [ReportIteratorQuery](doc//ReportIteratorQuery.md)
  - [ReportProcessingState](doc//ReportProcessingState.md)
- - [ReportTypeNumber](doc//ReportTypeNumber.md)
+ - [ReportType](doc//ReportType.md)
  - [RequestEmailLoginToken](doc//RequestEmailLoginToken.md)
  - [RequestEmailLoginTokenResult](doc//RequestEmailLoginTokenResult.md)
  - [ResetNewsIteratorResult](doc//ResetNewsIteratorResult.md)
@@ -599,6 +614,7 @@ Class | Method | HTTP request | Description
  - [SentMessageIdList](doc//SentMessageIdList.md)
  - [ServerMaintenanceStatus](doc//ServerMaintenanceStatus.md)
  - [ServerMessageType](doc//ServerMessageType.md)
+ - [ServerVersion](doc//ServerVersion.md)
  - [SetAccountBanState](doc//SetAccountBanState.md)
  - [SetAccountSetup](doc//SetAccountSetup.md)
  - [SetEmailLoginEnabled](doc//SetEmailLoginEnabled.md)
@@ -635,6 +651,7 @@ Class | Method | HTTP request | Description
  - [VapidPublicKey](doc//VapidPublicKey.md)
  - [VerificationAction](doc//VerificationAction.md)
  - [VerificationConfig](doc//VerificationConfig.md)
+ - [VerificationMethodsConfig](doc//VerificationMethodsConfig.md)
 
 
 ## Documentation For Authorization

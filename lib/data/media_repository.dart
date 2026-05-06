@@ -9,7 +9,6 @@ import 'package:app/data/account_repository.dart';
 import 'package:app/data/media/send_to_slot.dart';
 import 'package:app/data/utils.dart';
 import 'package:app/database/account_database_manager.dart';
-import 'package:app/utils/option.dart';
 import 'package:app/utils/result.dart';
 import 'package:utils/utils.dart';
 
@@ -83,11 +82,6 @@ class MediaRepository extends DataRepositoryWithLifecycle {
         }
     }
   }
-
-  Future<ContentId?> getSecuritySelfie(AccountId account) => api
-      .mediaAdmin((api) => api.getSecurityContentInfo(account.aid))
-      .ok()
-      .map((img) => img.content?.cid);
 
   /// Reload current profile and security content.
   Future<Result<(), ()>> reloadMyMediaContent() async {

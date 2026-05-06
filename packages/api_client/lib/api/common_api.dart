@@ -410,12 +410,12 @@ class CommonApi {
     return null;
   }
 
-  /// Get backend version.
+  /// Check if server is online.
   ///
   /// Note: This method returns the HTTP [Response].
-  Future<Response> getVersionWithHttpInfo() async {
+  Future<Response> getServerOnlineWithHttpInfo() async {
     // ignore: prefer_const_declarations
-    final path = r'/common_api/version';
+    final path = r'/common_api/server_online';
 
     // ignore: prefer_final_locals
     Object? postBody;
@@ -438,20 +438,12 @@ class CommonApi {
     );
   }
 
-  /// Get backend version.
-  Future<BackendVersion?> getVersion() async {
-    final response = await getVersionWithHttpInfo();
+  /// Check if server is online.
+  Future<void> getServerOnline() async {
+    final response = await getServerOnlineWithHttpInfo();
     if (response.statusCode >= HttpStatus.badRequest) {
       throw ApiException(response.statusCode, await _decodeBodyBytes(response));
     }
-    // When a remote server returns no body with a status of 204, we shall not decode it.
-    // At the time of writing this, `dart:convert` will throw an "Unexpected end of input"
-    // FormatException when trying to decode an empty string.
-    if (response.body.isNotEmpty && response.statusCode != HttpStatus.noContent) {
-      return await apiClient.deserializeAsync(await _decodeBodyBytes(response), 'BackendVersion',) as BackendVersion;
-    
-    }
-    return null;
   }
 
   /// Post (updates iterator) to get next page of automatic profile search profile list.

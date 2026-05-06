@@ -23,7 +23,7 @@ class ServerSoftwareUpdateScreen extends StatefulWidget {
 }
 
 class _ServerSoftwareUpdateScreenState extends State<ServerSoftwareUpdateScreen> {
-  BackendVersion? _runningVersion;
+  ServerVersion? _runningVersion;
   ManagerInstanceNameList? _managers;
   List<ManagerInstanceRelatedState>? _currentData = [];
 
@@ -37,7 +37,7 @@ class _ServerSoftwareUpdateScreenState extends State<ServerSoftwareUpdateScreen>
 
   Future<void> _refreshData() async {
     _managers ??= await widget.api.commonAdmin((api) => api.getManagerInstanceNames()).ok();
-    _runningVersion = await widget.api.common((api) => api.getVersion()).ok();
+    _runningVersion = await widget.api.commonAdmin((api) => api.getServerVersion()).ok();
 
     final managers = _managers?.names ?? [];
     final List<ManagerInstanceRelatedState> data = [];
@@ -79,7 +79,7 @@ class _ServerSoftwareUpdateScreenState extends State<ServerSoftwareUpdateScreen>
     }
   }
 
-  Widget displayData(BackendVersion runningVersion, List<ManagerInstanceRelatedState> statusList) {
+  Widget displayData(ServerVersion runningVersion, List<ManagerInstanceRelatedState> statusList) {
     return RefreshIndicator(
       onRefresh: _refreshData,
       child: ListView.builder(
@@ -90,7 +90,7 @@ class _ServerSoftwareUpdateScreenState extends State<ServerSoftwareUpdateScreen>
             return Padding(
               padding: const EdgeInsets.all(8.0),
               child: Text(
-                "Running backend: ${runningVersion.backendVersion} ${runningVersion.backendCodeVersion}",
+                "Running server: ${runningVersion.serverVersion} ${runningVersion.serverCodeVersion}",
               ),
             );
           } else {

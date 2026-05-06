@@ -13,10 +13,13 @@ part of openapi.api;
 class GetAccountBanTimeResult {
   /// Returns a new [GetAccountBanTimeResult] instance.
   GetAccountBanTimeResult({
+    this.adminType,
     this.bannedUntil,
     this.reasonCategory,
     this.reasonDetails,
   });
+
+  AccountBannedAdminType? adminType;
 
   /// If `None` the account is not banned.
   UnixTime? bannedUntil;
@@ -27,6 +30,7 @@ class GetAccountBanTimeResult {
 
   @override
   bool operator ==(Object other) => identical(this, other) || other is GetAccountBanTimeResult &&
+    other.adminType == adminType &&
     other.bannedUntil == bannedUntil &&
     other.reasonCategory == reasonCategory &&
     other.reasonDetails == reasonDetails;
@@ -34,15 +38,21 @@ class GetAccountBanTimeResult {
   @override
   int get hashCode =>
     // ignore: unnecessary_parenthesis
+    (adminType == null ? 0 : adminType!.hashCode) +
     (bannedUntil == null ? 0 : bannedUntil!.hashCode) +
     (reasonCategory == null ? 0 : reasonCategory!.hashCode) +
     (reasonDetails == null ? 0 : reasonDetails!.hashCode);
 
   @override
-  String toString() => 'GetAccountBanTimeResult[bannedUntil=$bannedUntil, reasonCategory=$reasonCategory, reasonDetails=$reasonDetails]';
+  String toString() => 'GetAccountBanTimeResult[adminType=$adminType, bannedUntil=$bannedUntil, reasonCategory=$reasonCategory, reasonDetails=$reasonDetails]';
 
   Map<String, dynamic> toJson() {
     final json = <String, dynamic>{};
+    if (this.adminType != null) {
+      json[r'admin_type'] = this.adminType;
+    } else {
+      json[r'admin_type'] = null;
+    }
     if (this.bannedUntil != null) {
       json[r'banned_until'] = this.bannedUntil;
     } else {
@@ -80,6 +90,7 @@ class GetAccountBanTimeResult {
       }());
 
       return GetAccountBanTimeResult(
+        adminType: AccountBannedAdminType.fromJson(json[r'admin_type']),
         bannedUntil: UnixTime.fromJson(json[r'banned_until']),
         reasonCategory: AccountBanReasonCategory.fromJson(json[r'reason_category']),
         reasonDetails: AccountBanReasonDetails.fromJson(json[r'reason_details']),

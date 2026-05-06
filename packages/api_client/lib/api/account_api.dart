@@ -259,6 +259,50 @@ class AccountApi {
     return null;
   }
 
+  /// Get account verification queue status for current account.
+  ///
+  /// Note: This method returns the HTTP [Response].
+  Future<Response> getAccountVerificationQueueStatusWithHttpInfo() async {
+    // ignore: prefer_const_declarations
+    final path = r'/account_api/account_verification_queue';
+
+    // ignore: prefer_final_locals
+    Object? postBody;
+
+    final queryParams = <QueryParam>[];
+    final headerParams = <String, String>{};
+    final formParams = <String, String>{};
+
+    const contentTypes = <String>[];
+
+
+    return apiClient.invokeAPI(
+      path,
+      'GET',
+      queryParams,
+      postBody,
+      headerParams,
+      formParams,
+      contentTypes.isEmpty ? null : contentTypes.first,
+    );
+  }
+
+  /// Get account verification queue status for current account.
+  Future<AccountVerificationQueueStatus?> getAccountVerificationQueueStatus() async {
+    final response = await getAccountVerificationQueueStatusWithHttpInfo();
+    if (response.statusCode >= HttpStatus.badRequest) {
+      throw ApiException(response.statusCode, await _decodeBodyBytes(response));
+    }
+    // When a remote server returns no body with a status of 204, we shall not decode it.
+    // At the time of writing this, `dart:convert` will throw an "Unexpected end of input"
+    // FormatException when trying to decode an empty string.
+    if (response.body.isNotEmpty && response.statusCode != HttpStatus.noContent) {
+      return await apiClient.deserializeAsync(await _decodeBodyBytes(response), 'AccountVerificationQueueStatus',) as AccountVerificationQueueStatus;
+    
+    }
+    return null;
+  }
+
   /// Performs an HTTP 'GET /account_api/email_address_state' operation and returns the [Response].
   Future<Response> getEmailAddressStateWithHttpInfo() async {
     // ignore: prefer_const_declarations
@@ -594,6 +638,58 @@ class AccountApi {
     if (response.statusCode >= HttpStatus.badRequest) {
       throw ApiException(response.statusCode, await _decodeBodyBytes(response));
     }
+  }
+
+  /// Add account verification request to queue for current account.
+  ///
+  /// Note: This method returns the HTTP [Response].
+  ///
+  /// Parameters:
+  ///
+  /// * [PostAccountVerificationQueueItem] postAccountVerificationQueueItem (required):
+  Future<Response> postAccountVerificationQueueItemWithHttpInfo(PostAccountVerificationQueueItem postAccountVerificationQueueItem,) async {
+    // ignore: prefer_const_declarations
+    final path = r'/account_api/account_verification_queue';
+
+    // ignore: prefer_final_locals
+    Object? postBody = postAccountVerificationQueueItem;
+
+    final queryParams = <QueryParam>[];
+    final headerParams = <String, String>{};
+    final formParams = <String, String>{};
+
+    const contentTypes = <String>['application/json'];
+
+
+    return apiClient.invokeAPI(
+      path,
+      'POST',
+      queryParams,
+      postBody,
+      headerParams,
+      formParams,
+      contentTypes.isEmpty ? null : contentTypes.first,
+    );
+  }
+
+  /// Add account verification request to queue for current account.
+  ///
+  /// Parameters:
+  ///
+  /// * [PostAccountVerificationQueueItem] postAccountVerificationQueueItem (required):
+  Future<PostAccountVerificationQueueItemResult?> postAccountVerificationQueueItem(PostAccountVerificationQueueItem postAccountVerificationQueueItem,) async {
+    final response = await postAccountVerificationQueueItemWithHttpInfo(postAccountVerificationQueueItem,);
+    if (response.statusCode >= HttpStatus.badRequest) {
+      throw ApiException(response.statusCode, await _decodeBodyBytes(response));
+    }
+    // When a remote server returns no body with a status of 204, we shall not decode it.
+    // At the time of writing this, `dart:convert` will throw an "Unexpected end of input"
+    // FormatException when trying to decode an empty string.
+    if (response.body.isNotEmpty && response.statusCode != HttpStatus.noContent) {
+      return await apiClient.deserializeAsync(await _decodeBodyBytes(response), 'PostAccountVerificationQueueItemResult',) as PostAccountVerificationQueueItemResult;
+    
+    }
+    return null;
   }
 
   /// Cancel email changing process

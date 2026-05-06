@@ -20,6 +20,7 @@ class ClientFeaturesConfig {
     this.map,
     this.news,
     this.profile,
+    this.verificationMethods,
   });
 
   AttributionConfig? attribution;
@@ -36,6 +37,8 @@ class ClientFeaturesConfig {
 
   ProfileConfig? profile;
 
+  VerificationMethodsConfig? verificationMethods;
+
   @override
   bool operator ==(Object other) => identical(this, other) || other is ClientFeaturesConfig &&
     other.attribution == attribution &&
@@ -44,7 +47,8 @@ class ClientFeaturesConfig {
     other.likes == likes &&
     other.map == map &&
     other.news == news &&
-    other.profile == profile;
+    other.profile == profile &&
+    other.verificationMethods == verificationMethods;
 
   @override
   int get hashCode =>
@@ -55,10 +59,11 @@ class ClientFeaturesConfig {
     (likes == null ? 0 : likes!.hashCode) +
     (map == null ? 0 : map!.hashCode) +
     (news == null ? 0 : news!.hashCode) +
-    (profile == null ? 0 : profile!.hashCode);
+    (profile == null ? 0 : profile!.hashCode) +
+    (verificationMethods == null ? 0 : verificationMethods!.hashCode);
 
   @override
-  String toString() => 'ClientFeaturesConfig[attribution=$attribution, chat=$chat, features=$features, likes=$likes, map=$map, news=$news, profile=$profile]';
+  String toString() => 'ClientFeaturesConfig[attribution=$attribution, chat=$chat, features=$features, likes=$likes, map=$map, news=$news, profile=$profile, verificationMethods=$verificationMethods]';
 
   Map<String, dynamic> toJson() {
     final json = <String, dynamic>{};
@@ -97,6 +102,11 @@ class ClientFeaturesConfig {
     } else {
       json[r'profile'] = null;
     }
+    if (this.verificationMethods != null) {
+      json[r'verification_methods'] = this.verificationMethods;
+    } else {
+      json[r'verification_methods'] = null;
+    }
     return json;
   }
 
@@ -126,6 +136,7 @@ class ClientFeaturesConfig {
         map: MapConfig.fromJson(json[r'map']),
         news: NewsConfig.fromJson(json[r'news']),
         profile: ProfileConfig.fromJson(json[r'profile']),
+        verificationMethods: VerificationMethodsConfig.fromJson(json[r'verification_methods']),
       );
     }
     return null;

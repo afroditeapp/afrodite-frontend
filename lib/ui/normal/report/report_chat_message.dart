@@ -151,7 +151,7 @@ class _ReportChatMessageScreen extends State<ReportChatMessageScreen> {
                 (api) => api.postChatMessageReport(
                   UpdateChatMessageReport(
                     target: widget.accountId,
-                    backendSignedMessageBase64: base64Encode(backendSignedMessage),
+                    serverSignedMessageBase64: base64Encode(backendSignedMessage),
                     decryptionKeyBase64: base64Encode(symmetricKey),
                   ),
                 ),

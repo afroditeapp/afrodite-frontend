@@ -120,9 +120,9 @@ class _ServerTasksScreenState extends State<ServerTasksScreen> {
             actionButton(
               context,
               data,
-              "Backend restart",
+              "Server restart",
               null,
-              (api) => api.postTriggerBackendRestart(data.manager),
+              (api) => api.postTriggerServerRestart(data.manager),
             ),
           ),
         if (widget.permissions.adminServerReboot)
@@ -152,7 +152,7 @@ class _ServerTasksScreenState extends State<ServerTasksScreen> {
               data,
               "Reset data",
               null,
-              (api) => api.postTriggerBackendDataReset(data.manager),
+              (api) => api.postTriggerServerDataReset(data.manager),
             ),
           ),
         const Padding(padding: EdgeInsets.only(top: 8.0)),

@@ -272,6 +272,54 @@ class AccountAdminApi {
     return null;
   }
 
+  /// Get next item in account verification queue.
+  ///
+  /// # Access * Permission [model::Permissions::admin_verify_account]
+  ///
+  /// Note: This method returns the HTTP [Response].
+  Future<Response> getAccountVerificationQueueNextItemWithHttpInfo() async {
+    // ignore: prefer_const_declarations
+    final path = r'/account_api/account_verification_queue_next_item';
+
+    // ignore: prefer_final_locals
+    Object? postBody;
+
+    final queryParams = <QueryParam>[];
+    final headerParams = <String, String>{};
+    final formParams = <String, String>{};
+
+    const contentTypes = <String>[];
+
+
+    return apiClient.invokeAPI(
+      path,
+      'GET',
+      queryParams,
+      postBody,
+      headerParams,
+      formParams,
+      contentTypes.isEmpty ? null : contentTypes.first,
+    );
+  }
+
+  /// Get next item in account verification queue.
+  ///
+  /// # Access * Permission [model::Permissions::admin_verify_account]
+  Future<GetAccountVerificationQueueNextItemResult?> getAccountVerificationQueueNextItem() async {
+    final response = await getAccountVerificationQueueNextItemWithHttpInfo();
+    if (response.statusCode >= HttpStatus.badRequest) {
+      throw ApiException(response.statusCode, await _decodeBodyBytes(response));
+    }
+    // When a remote server returns no body with a status of 204, we shall not decode it.
+    // At the time of writing this, `dart:convert` will throw an "Unexpected end of input"
+    // FormatException when trying to decode an empty string.
+    if (response.body.isNotEmpty && response.statusCode != HttpStatus.noContent) {
+      return await apiClient.deserializeAsync(await _decodeBodyBytes(response), 'GetAccountVerificationQueueNextItemResult',) as GetAccountVerificationQueueNextItemResult;
+    
+    }
+    return null;
+  }
+
   /// Get all admins
   ///
   /// # Access  Permission [model_account::Permissions::admin_view_permissions] is required.
@@ -432,6 +480,54 @@ class AccountAdminApi {
     
     }
     return null;
+  }
+
+  /// Remove next item from account verification queue if possible.
+  ///
+  /// Removal succeeds only when the provided account id matches queue head item owner. No error is returned if there is a mismatch.  # Access * Permission [model::Permissions::admin_verify_account]
+  ///
+  /// Note: This method returns the HTTP [Response].
+  ///
+  /// Parameters:
+  ///
+  /// * [PostAccountVerificationQueueRemoveNextItem] postAccountVerificationQueueRemoveNextItem (required):
+  Future<Response> postAccountVerificationQueueRemoveNextItemWithHttpInfo(PostAccountVerificationQueueRemoveNextItem postAccountVerificationQueueRemoveNextItem,) async {
+    // ignore: prefer_const_declarations
+    final path = r'/account_api/account_verification_queue_remove_next_item';
+
+    // ignore: prefer_final_locals
+    Object? postBody = postAccountVerificationQueueRemoveNextItem;
+
+    final queryParams = <QueryParam>[];
+    final headerParams = <String, String>{};
+    final formParams = <String, String>{};
+
+    const contentTypes = <String>['application/json'];
+
+
+    return apiClient.invokeAPI(
+      path,
+      'POST',
+      queryParams,
+      postBody,
+      headerParams,
+      formParams,
+      contentTypes.isEmpty ? null : contentTypes.first,
+    );
+  }
+
+  /// Remove next item from account verification queue if possible.
+  ///
+  /// Removal succeeds only when the provided account id matches queue head item owner. No error is returned if there is a mismatch.  # Access * Permission [model::Permissions::admin_verify_account]
+  ///
+  /// Parameters:
+  ///
+  /// * [PostAccountVerificationQueueRemoveNextItem] postAccountVerificationQueueRemoveNextItem (required):
+  Future<void> postAccountVerificationQueueRemoveNextItem(PostAccountVerificationQueueRemoveNextItem postAccountVerificationQueueRemoveNextItem,) async {
+    final response = await postAccountVerificationQueueRemoveNextItemWithHttpInfo(postAccountVerificationQueueRemoveNextItem,);
+    if (response.statusCode >= HttpStatus.badRequest) {
+      throw ApiException(response.statusCode, await _decodeBodyBytes(response));
+    }
   }
 
   /// Cancel email changing process for any account.
