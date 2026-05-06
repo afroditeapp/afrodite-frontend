@@ -2944,17 +2944,17 @@ abstract class AppLocalizations {
   /// **'Waiting for source device'**
   String get receive_chat_backup_waiting_for_source;
 
-  /// Snackbar text for backend signed message not found error
-  ///
-  /// In en, this message translates to:
-  /// **'Backend signed message not found'**
-  String get report_chat_message_screen_backend_signed_message_not_found;
-
   /// Chat message reporting confirmation dialog title
   ///
   /// In en, this message translates to:
   /// **'Report chat message?'**
   String get report_chat_message_screen_confirm_dialog_title;
+
+  /// Snackbar text for server signed message not found error
+  ///
+  /// In en, this message translates to:
+  /// **'Server signed message not found'**
+  String get report_chat_message_screen_server_signed_message_not_found;
 
   /// Snackbar text for symmetric message encryption key not found error
   ///

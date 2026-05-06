@@ -39,7 +39,7 @@ void main() {
           localUnixTime: UtcDateTime.fromUnixEpochMilliseconds(1733443201000),
           messageState: 3, // sent
           symmetricKeyBlobIndex: 0,
-          backendSignedPgpMessageBlobIndex: 1,
+          serverSignedPgpMessageBlobIndex: 1,
           sentUnixTime: UtcDateTime.fromUnixEpochMilliseconds(1733443201500),
           deliveredUnixTime: UtcDateTime.fromUnixEpochMilliseconds(1733443202000),
           seenUnixTime: UtcDateTime.fromUnixEpochMilliseconds(1733443203000),
@@ -51,7 +51,7 @@ void main() {
           localUnixTime: UtcDateTime.fromUnixEpochMilliseconds(1733443204000),
           messageState: 1, // received
           symmetricKeyBlobIndex: 2,
-          backendSignedPgpMessageBlobIndex: 3,
+          serverSignedPgpMessageBlobIndex: 3,
           sentUnixTime: UtcDateTime.fromUnixEpochMilliseconds(1733443204500),
           deliveredUnixTime: null,
           seenUnixTime: null,
@@ -67,7 +67,7 @@ void main() {
           localUnixTime: UtcDateTime.fromUnixEpochMilliseconds(1733443205000),
           messageState: 0, // pending
           symmetricKeyBlobIndex: null,
-          backendSignedPgpMessageBlobIndex: null,
+          serverSignedPgpMessageBlobIndex: null,
           sentUnixTime: null,
           deliveredUnixTime: null,
           seenUnixTime: null,
@@ -131,7 +131,7 @@ void main() {
       expect(msg1.localUnixTime.toUnixEpochMilliseconds(), equals(1733443201000));
       expect(msg1.messageState, equals(3));
       expect(msg1.symmetricKeyBlobIndex, equals(0));
-      expect(msg1.backendSignedPgpMessageBlobIndex, equals(1));
+      expect(msg1.serverSignedPgpMessageBlobIndex, equals(1));
       expect(msg1.sentUnixTime?.toUnixEpochMilliseconds(), equals(1733443201500));
       expect(msg1.deliveredUnixTime?.toUnixEpochMilliseconds(), equals(1733443202000));
       expect(msg1.seenUnixTime?.toUnixEpochMilliseconds(), equals(1733443203000));
@@ -144,7 +144,7 @@ void main() {
       expect(msg2.localUnixTime.toUnixEpochMilliseconds(), equals(1733443204000));
       expect(msg2.messageState, equals(1));
       expect(msg2.symmetricKeyBlobIndex, equals(2));
-      expect(msg2.backendSignedPgpMessageBlobIndex, equals(3));
+      expect(msg2.serverSignedPgpMessageBlobIndex, equals(3));
       expect(msg2.sentUnixTime?.toUnixEpochMilliseconds(), equals(1733443204500));
       expect(msg2.deliveredUnixTime, isNull);
       expect(msg2.seenUnixTime, isNull);
@@ -160,7 +160,7 @@ void main() {
       expect(msg3.localId, equals(3));
       expect(msg3.messageState, equals(0));
       expect(msg3.symmetricKeyBlobIndex, isNull);
-      expect(msg3.backendSignedPgpMessageBlobIndex, isNull);
+      expect(msg3.serverSignedPgpMessageBlobIndex, isNull);
       expect(msg3.sentUnixTime, isNull);
       expect(msg3.deliveredUnixTime, isNull);
       expect(msg3.seenUnixTime, isNull);
@@ -233,7 +233,7 @@ void main() {
       final restoredMsg = restored.json.accounts[0].messages[0];
       expect(restoredMsg.localId, equals(1));
       expect(restoredMsg.symmetricKeyBlobIndex, isNull);
-      expect(restoredMsg.backendSignedPgpMessageBlobIndex, isNull);
+      expect(restoredMsg.serverSignedPgpMessageBlobIndex, isNull);
       expect(restoredMsg.deliveredUnixTime, isNull);
       expect(restoredMsg.seenUnixTime, isNull);
     });

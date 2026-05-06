@@ -350,8 +350,8 @@ class NewMessageEntry {
   /// Time when the message was sent. Server sets this falue.
   final UtcDateTime? sentUnixTime;
 
-  /// Backend signed PGP message. Server sets this falue.
-  final Uint8List? backendSignedPgpMessage;
+  /// Server signed PGP message. Server sets this falue.
+  final Uint8List? serverSignedPgpMessage;
 
   /// Symmetric encryption key for PGP message from sender.
   final Uint8List? symmetricMessageEncryptionKey;
@@ -365,13 +365,13 @@ class NewMessageEntry {
     this.messageNumber,
     this.messageId,
     this.sentUnixTime,
-    this.backendSignedPgpMessage,
+    this.serverSignedPgpMessage,
     this.symmetricMessageEncryptionKey,
   });
 
   @override
   String toString() {
-    return "NewMessageEntry(remoteAccountId: $remoteAccountId, message: $message, messageState: $messageState, receivedMessageState: $receivedMessageState, messageNumber: $messageNumber, messageId: $messageId, sentUnixTime: $sentUnixTime, backendSignedPgpMessage: $backendSignedPgpMessage)";
+    return "NewMessageEntry(remoteAccountId: $remoteAccountId, message: $message, messageState: $messageState, receivedMessageState: $receivedMessageState, messageNumber: $messageNumber, messageId: $messageId, sentUnixTime: $sentUnixTime, serverSignedPgpMessage: $serverSignedPgpMessage)";
   }
 }
 

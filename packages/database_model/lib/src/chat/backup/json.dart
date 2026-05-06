@@ -79,8 +79,8 @@ class BackupMessageJson {
   /// Index to symmetric encryption key blob (null if not present)
   final int? symmetricKeyBlobIndex;
 
-  /// Index to backend signed PGP message blob (null if not present)
-  final int? backendSignedPgpMessageBlobIndex;
+  /// Index to server signed PGP message blob (null if not present)
+  final int? serverSignedPgpMessageBlobIndex;
 
   /// Index to message data blob (null if not present)
   final int? messageBlobIndex;
@@ -105,7 +105,7 @@ class BackupMessageJson {
     required this.localUnixTime,
     required this.messageState,
     this.symmetricKeyBlobIndex,
-    this.backendSignedPgpMessageBlobIndex,
+    this.serverSignedPgpMessageBlobIndex,
     this.messageBlobIndex,
     this.sentUnixTime,
     this.deliveredUnixTime,
@@ -120,8 +120,8 @@ class BackupMessageJson {
       'localUnixTime': localUnixTime.toUnixEpochMilliseconds(),
       'messageState': messageState,
       if (symmetricKeyBlobIndex != null) 'symmetricKeyBlobIndex': symmetricKeyBlobIndex,
-      if (backendSignedPgpMessageBlobIndex != null)
-        'backendSignedPgpMessageBlobIndex': backendSignedPgpMessageBlobIndex,
+      if (serverSignedPgpMessageBlobIndex != null)
+        'serverSignedPgpMessageBlobIndex': serverSignedPgpMessageBlobIndex,
       if (messageBlobIndex != null) 'messageBlobIndex': messageBlobIndex,
       if (sentUnixTime != null) 'sentUnixTime': sentUnixTime!.toUnixEpochMilliseconds(),
       if (deliveredUnixTime != null)
@@ -138,7 +138,7 @@ class BackupMessageJson {
       localUnixTime: UtcDateTime.fromUnixEpochMilliseconds(json['localUnixTime'] as int),
       messageState: json['messageState'] as int,
       symmetricKeyBlobIndex: json['symmetricKeyBlobIndex'] as int?,
-      backendSignedPgpMessageBlobIndex: json['backendSignedPgpMessageBlobIndex'] as int?,
+      serverSignedPgpMessageBlobIndex: json['serverSignedPgpMessageBlobIndex'] as int?,
       messageBlobIndex: json['messageBlobIndex'] as int?,
       sentUnixTime: json['sentUnixTime'] != null
           ? UtcDateTime.fromUnixEpochMilliseconds(json['sentUnixTime'] as int)

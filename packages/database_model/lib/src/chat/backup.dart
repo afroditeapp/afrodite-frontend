@@ -41,7 +41,7 @@ class FileTooShort extends BackupFileParseResult {
 ///
 /// The blob store contains:
 /// - Symmetric encryption keys
-/// - Backend signed PGP messages
+/// - Server signed PGP messages
 ///
 /// Each message record references blobs by index rather than embedding binary data in JSON.
 /// All data after the version byte is gzip compressed for efficient storage.

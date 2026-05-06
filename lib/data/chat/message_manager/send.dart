@@ -1,7 +1,7 @@
 import 'dart:async';
 import 'dart:convert';
 
-import 'package:app/data/chat/backend_signed_message.dart';
+import 'package:app/data/chat/server_signed_message.dart';
 import 'package:app/data/chat/message_manager/delivery_info.dart';
 import 'package:app/data/chat/message_manager/public_key.dart';
 import 'package:database/database.dart';
@@ -156,7 +156,7 @@ class SendMessageUtils {
     UnixTime unixTimeFromServer;
     MessageId messageIdFromServer;
     MessageNumber messageNumberFromServer;
-    Uint8List backendSignedPgpMessage;
+    Uint8List serverSignedPgpMessage;
     var messageSenderAcknowledgementTried = false;
     var pendingDeliveryInfoReceivingTried = false;
     while (true) {
@@ -278,12 +278,12 @@ class SendMessageUtils {
         return;
       }
 
-      backendSignedPgpMessage = base64Decode(signedPgpMessageBase64);
+      serverSignedPgpMessage = base64Decode(signedPgpMessageBase64);
 
-      final (backendSignedMessage, getMessageContentResult) = await getMessageContent(
-        backendSignedPgpMessage,
+      final (serverSignedMessage, getMessageContentResult) = await getMessageContent(
+        serverSignedPgpMessage,
       );
-      if (backendSignedMessage == null) {
+      if (serverSignedMessage == null) {
         _log.error(
           "Send message error: get message content failed, error: $getMessageContentResult",
         );
@@ -291,7 +291,7 @@ class SendMessageUtils {
         return;
       }
 
-      final data = BackendSignedMessage.parse(backendSignedMessage);
+      final data = ServerSignedMessage.parse(serverSignedMessage);
       if (data == null) {
         yield ErrorAfterMessageSaving(localId);
         return;
@@ -309,7 +309,7 @@ class SendMessageUtils {
         unixTimeFromServer: unixTimeFromServer,
         messageIdFromServer: messageIdFromServer,
         messageNumberFromServer: messageNumberFromServer,
-        backendSignePgpMessage: backendSignedPgpMessage,
+        serverSignePgpMessage: serverSignedPgpMessage,
       ),
     );
     if (updateSentState.isErr()) {
@@ -342,29 +342,29 @@ class SendMessageUtils {
         continue;
       }
 
-      final currentBackendSignedPgpMessage = await db
-          .accountData((db) => db.message.getBackendSignedPgpMessage(currentMessage.localId))
+      final currentServerSignedPgpMessage = await db
+          .accountData((db) => db.message.getServerSignedPgpMessage(currentMessage.localId))
           .ok();
 
       if ((currentMessage.messageState.toSentState()?.sendingFailed() ?? false) ||
-          currentBackendSignedPgpMessage == null) {
+          currentServerSignedPgpMessage == null) {
         final r = await api.chat((api) => api.postGetSentMessage(sentMessageId)).ok();
         final base64EncodedMessage = r?.data;
         if (base64EncodedMessage == null) {
           return const Err(());
         }
         final decoded = base64Decode(base64EncodedMessage);
-        final backendSignedMessage = await BackendSignedMessage.parseFromSignedPgpMessage(decoded);
-        if (backendSignedMessage == null) {
+        final serverSignedMessage = await ServerSignedMessage.parseFromSignedPgpMessage(decoded);
+        if (serverSignedMessage == null) {
           return const Err(());
         }
         final updateSentState = await db.accountAction(
           (db) => db.message.updateSentMessageState(
             currentMessage.localId,
             sentState: SentMessageState.sent,
-            messageIdFromServer: backendSignedMessage.messageId,
-            unixTimeFromServer: backendSignedMessage.serverTime,
-            backendSignePgpMessage: decoded,
+            messageIdFromServer: serverSignedMessage.messageId,
+            unixTimeFromServer: serverSignedMessage.serverTime,
+            serverSignePgpMessage: decoded,
           ),
         );
         if (updateSentState.isErr()) {

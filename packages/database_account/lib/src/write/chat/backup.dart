@@ -91,8 +91,8 @@ class DaoWriteBackup extends DatabaseAccessor<AccountDatabase> with _$DaoWriteBa
         final symmetricKey = backupMsg.symmetricKeyBlobIndex != null
             ? blobStore.get(backupMsg.symmetricKeyBlobIndex)
             : null;
-        final pgpMessage = backupMsg.backendSignedPgpMessageBlobIndex != null
-            ? blobStore.get(backupMsg.backendSignedPgpMessageBlobIndex)
+        final pgpMessage = backupMsg.serverSignedPgpMessageBlobIndex != null
+            ? blobStore.get(backupMsg.serverSignedPgpMessageBlobIndex)
             : null;
         final messageData = backupMsg.messageBlobIndex != null
             ? blobStore.get(backupMsg.messageBlobIndex)
@@ -116,7 +116,7 @@ class DaoWriteBackup extends DatabaseAccessor<AccountDatabase> with _$DaoWriteBa
             messageNumber: messageNumber,
             messageId: messageId,
             sentUnixTime: backupMsg.sentUnixTime,
-            backendSignedPgpMessage: pgpMessage,
+            serverSignedPgpMessage: pgpMessage,
             deliveredUnixTime: backupMsg.deliveredUnixTime,
             seenUnixTime: backupMsg.seenUnixTime,
           ),
@@ -152,7 +152,7 @@ class DaoWriteBackup extends DatabaseAccessor<AccountDatabase> with _$DaoWriteBa
             messageNumber: Value(msg.messageNumber),
             messageId: Value(msg.messageId),
             sentUnixTime: Value(msg.sentUnixTime),
-            backendSignedPgpMessage: Value(msg.backendSignedPgpMessage),
+            serverSignedPgpMessage: Value(msg.serverSignedPgpMessage),
             deliveredUnixTime: Value(msg.deliveredUnixTime),
             seenUnixTime: Value(msg.seenUnixTime),
           ),

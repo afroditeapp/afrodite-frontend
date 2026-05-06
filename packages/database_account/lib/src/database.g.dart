@@ -19004,12 +19004,12 @@ class $MessageTable extends schema.Message
         type: DriftSqlType.int,
         requiredDuringInsert: false,
       ).withConverter<UtcDateTime?>($MessageTable.$convertersentUnixTime);
-  static const VerificationMeta _backendSignedPgpMessageMeta =
-      const VerificationMeta('backendSignedPgpMessage');
+  static const VerificationMeta _serverSignedPgpMessageMeta =
+      const VerificationMeta('serverSignedPgpMessage');
   @override
-  late final GeneratedColumn<Uint8List> backendSignedPgpMessage =
+  late final GeneratedColumn<Uint8List> serverSignedPgpMessage =
       GeneratedColumn<Uint8List>(
-        'backend_signed_pgp_message',
+        'server_signed_pgp_message',
         aliasedName,
         true,
         type: DriftSqlType.blob,
@@ -19052,7 +19052,7 @@ class $MessageTable extends schema.Message
     symmetricMessageEncryptionKey,
     messageNumber,
     sentUnixTime,
-    backendSignedPgpMessage,
+    serverSignedPgpMessage,
     deliveredUnixTime,
     seenUnixTime,
     messageId,
@@ -19095,12 +19095,12 @@ class $MessageTable extends schema.Message
         ),
       );
     }
-    if (data.containsKey('backend_signed_pgp_message')) {
+    if (data.containsKey('server_signed_pgp_message')) {
       context.handle(
-        _backendSignedPgpMessageMeta,
-        backendSignedPgpMessage.isAcceptableOrUnknown(
-          data['backend_signed_pgp_message']!,
-          _backendSignedPgpMessageMeta,
+        _serverSignedPgpMessageMeta,
+        serverSignedPgpMessage.isAcceptableOrUnknown(
+          data['server_signed_pgp_message']!,
+          _serverSignedPgpMessageMeta,
         ),
       );
     }
@@ -19155,9 +19155,9 @@ class $MessageTable extends schema.Message
           data['${effectivePrefix}sent_unix_time'],
         ),
       ),
-      backendSignedPgpMessage: attachedDatabase.typeMapping.read(
+      serverSignedPgpMessage: attachedDatabase.typeMapping.read(
         DriftSqlType.blob,
-        data['${effectivePrefix}backend_signed_pgp_message'],
+        data['${effectivePrefix}server_signed_pgp_message'],
       ),
       deliveredUnixTime: $MessageTable.$converterdeliveredUnixTime.fromSql(
         attachedDatabase.typeMapping.read(
@@ -19213,7 +19213,7 @@ class MessageData extends DataClass implements Insertable<MessageData> {
   final Uint8List? symmetricMessageEncryptionKey;
   final MessageNumber? messageNumber;
   final UtcDateTime? sentUnixTime;
-  final Uint8List? backendSignedPgpMessage;
+  final Uint8List? serverSignedPgpMessage;
   final UtcDateTime? deliveredUnixTime;
   final UtcDateTime? seenUnixTime;
   final MessageId? messageId;
@@ -19226,7 +19226,7 @@ class MessageData extends DataClass implements Insertable<MessageData> {
     this.symmetricMessageEncryptionKey,
     this.messageNumber,
     this.sentUnixTime,
-    this.backendSignedPgpMessage,
+    this.serverSignedPgpMessage,
     this.deliveredUnixTime,
     this.seenUnixTime,
     this.messageId,
@@ -19266,9 +19266,9 @@ class MessageData extends DataClass implements Insertable<MessageData> {
         $MessageTable.$convertersentUnixTime.toSql(sentUnixTime),
       );
     }
-    if (!nullToAbsent || backendSignedPgpMessage != null) {
-      map['backend_signed_pgp_message'] = Variable<Uint8List>(
-        backendSignedPgpMessage,
+    if (!nullToAbsent || serverSignedPgpMessage != null) {
+      map['server_signed_pgp_message'] = Variable<Uint8List>(
+        serverSignedPgpMessage,
       );
     }
     if (!nullToAbsent || deliveredUnixTime != null) {
@@ -19308,9 +19308,9 @@ class MessageData extends DataClass implements Insertable<MessageData> {
       sentUnixTime: sentUnixTime == null && nullToAbsent
           ? const Value.absent()
           : Value(sentUnixTime),
-      backendSignedPgpMessage: backendSignedPgpMessage == null && nullToAbsent
+      serverSignedPgpMessage: serverSignedPgpMessage == null && nullToAbsent
           ? const Value.absent()
-          : Value(backendSignedPgpMessage),
+          : Value(serverSignedPgpMessage),
       deliveredUnixTime: deliveredUnixTime == null && nullToAbsent
           ? const Value.absent()
           : Value(deliveredUnixTime),
@@ -19339,8 +19339,8 @@ class MessageData extends DataClass implements Insertable<MessageData> {
       ),
       messageNumber: serializer.fromJson<MessageNumber?>(json['messageNumber']),
       sentUnixTime: serializer.fromJson<UtcDateTime?>(json['sentUnixTime']),
-      backendSignedPgpMessage: serializer.fromJson<Uint8List?>(
-        json['backendSignedPgpMessage'],
+      serverSignedPgpMessage: serializer.fromJson<Uint8List?>(
+        json['serverSignedPgpMessage'],
       ),
       deliveredUnixTime: serializer.fromJson<UtcDateTime?>(
         json['deliveredUnixTime'],
@@ -19363,8 +19363,8 @@ class MessageData extends DataClass implements Insertable<MessageData> {
       ),
       'messageNumber': serializer.toJson<MessageNumber?>(messageNumber),
       'sentUnixTime': serializer.toJson<UtcDateTime?>(sentUnixTime),
-      'backendSignedPgpMessage': serializer.toJson<Uint8List?>(
-        backendSignedPgpMessage,
+      'serverSignedPgpMessage': serializer.toJson<Uint8List?>(
+        serverSignedPgpMessage,
       ),
       'deliveredUnixTime': serializer.toJson<UtcDateTime?>(deliveredUnixTime),
       'seenUnixTime': serializer.toJson<UtcDateTime?>(seenUnixTime),
@@ -19381,7 +19381,7 @@ class MessageData extends DataClass implements Insertable<MessageData> {
     Value<Uint8List?> symmetricMessageEncryptionKey = const Value.absent(),
     Value<MessageNumber?> messageNumber = const Value.absent(),
     Value<UtcDateTime?> sentUnixTime = const Value.absent(),
-    Value<Uint8List?> backendSignedPgpMessage = const Value.absent(),
+    Value<Uint8List?> serverSignedPgpMessage = const Value.absent(),
     Value<UtcDateTime?> deliveredUnixTime = const Value.absent(),
     Value<UtcDateTime?> seenUnixTime = const Value.absent(),
     Value<MessageId?> messageId = const Value.absent(),
@@ -19398,9 +19398,9 @@ class MessageData extends DataClass implements Insertable<MessageData> {
         ? messageNumber.value
         : this.messageNumber,
     sentUnixTime: sentUnixTime.present ? sentUnixTime.value : this.sentUnixTime,
-    backendSignedPgpMessage: backendSignedPgpMessage.present
-        ? backendSignedPgpMessage.value
-        : this.backendSignedPgpMessage,
+    serverSignedPgpMessage: serverSignedPgpMessage.present
+        ? serverSignedPgpMessage.value
+        : this.serverSignedPgpMessage,
     deliveredUnixTime: deliveredUnixTime.present
         ? deliveredUnixTime.value
         : this.deliveredUnixTime,
@@ -19429,9 +19429,9 @@ class MessageData extends DataClass implements Insertable<MessageData> {
       sentUnixTime: data.sentUnixTime.present
           ? data.sentUnixTime.value
           : this.sentUnixTime,
-      backendSignedPgpMessage: data.backendSignedPgpMessage.present
-          ? data.backendSignedPgpMessage.value
-          : this.backendSignedPgpMessage,
+      serverSignedPgpMessage: data.serverSignedPgpMessage.present
+          ? data.serverSignedPgpMessage.value
+          : this.serverSignedPgpMessage,
       deliveredUnixTime: data.deliveredUnixTime.present
           ? data.deliveredUnixTime.value
           : this.deliveredUnixTime,
@@ -19455,7 +19455,7 @@ class MessageData extends DataClass implements Insertable<MessageData> {
           )
           ..write('messageNumber: $messageNumber, ')
           ..write('sentUnixTime: $sentUnixTime, ')
-          ..write('backendSignedPgpMessage: $backendSignedPgpMessage, ')
+          ..write('serverSignedPgpMessage: $serverSignedPgpMessage, ')
           ..write('deliveredUnixTime: $deliveredUnixTime, ')
           ..write('seenUnixTime: $seenUnixTime, ')
           ..write('messageId: $messageId')
@@ -19473,7 +19473,7 @@ class MessageData extends DataClass implements Insertable<MessageData> {
     $driftBlobEquality.hash(symmetricMessageEncryptionKey),
     messageNumber,
     sentUnixTime,
-    $driftBlobEquality.hash(backendSignedPgpMessage),
+    $driftBlobEquality.hash(serverSignedPgpMessage),
     deliveredUnixTime,
     seenUnixTime,
     messageId,
@@ -19494,8 +19494,8 @@ class MessageData extends DataClass implements Insertable<MessageData> {
           other.messageNumber == this.messageNumber &&
           other.sentUnixTime == this.sentUnixTime &&
           $driftBlobEquality.equals(
-            other.backendSignedPgpMessage,
-            this.backendSignedPgpMessage,
+            other.serverSignedPgpMessage,
+            this.serverSignedPgpMessage,
           ) &&
           other.deliveredUnixTime == this.deliveredUnixTime &&
           other.seenUnixTime == this.seenUnixTime &&
@@ -19511,7 +19511,7 @@ class MessageCompanion extends UpdateCompanion<MessageData> {
   final Value<Uint8List?> symmetricMessageEncryptionKey;
   final Value<MessageNumber?> messageNumber;
   final Value<UtcDateTime?> sentUnixTime;
-  final Value<Uint8List?> backendSignedPgpMessage;
+  final Value<Uint8List?> serverSignedPgpMessage;
   final Value<UtcDateTime?> deliveredUnixTime;
   final Value<UtcDateTime?> seenUnixTime;
   final Value<MessageId?> messageId;
@@ -19524,7 +19524,7 @@ class MessageCompanion extends UpdateCompanion<MessageData> {
     this.symmetricMessageEncryptionKey = const Value.absent(),
     this.messageNumber = const Value.absent(),
     this.sentUnixTime = const Value.absent(),
-    this.backendSignedPgpMessage = const Value.absent(),
+    this.serverSignedPgpMessage = const Value.absent(),
     this.deliveredUnixTime = const Value.absent(),
     this.seenUnixTime = const Value.absent(),
     this.messageId = const Value.absent(),
@@ -19538,7 +19538,7 @@ class MessageCompanion extends UpdateCompanion<MessageData> {
     this.symmetricMessageEncryptionKey = const Value.absent(),
     this.messageNumber = const Value.absent(),
     this.sentUnixTime = const Value.absent(),
-    this.backendSignedPgpMessage = const Value.absent(),
+    this.serverSignedPgpMessage = const Value.absent(),
     this.deliveredUnixTime = const Value.absent(),
     this.seenUnixTime = const Value.absent(),
     this.messageId = const Value.absent(),
@@ -19554,7 +19554,7 @@ class MessageCompanion extends UpdateCompanion<MessageData> {
     Expression<Uint8List>? symmetricMessageEncryptionKey,
     Expression<int>? messageNumber,
     Expression<int>? sentUnixTime,
-    Expression<Uint8List>? backendSignedPgpMessage,
+    Expression<Uint8List>? serverSignedPgpMessage,
     Expression<int>? deliveredUnixTime,
     Expression<int>? seenUnixTime,
     Expression<String>? messageId,
@@ -19569,8 +19569,8 @@ class MessageCompanion extends UpdateCompanion<MessageData> {
         'symmetric_message_encryption_key': symmetricMessageEncryptionKey,
       if (messageNumber != null) 'message_number': messageNumber,
       if (sentUnixTime != null) 'sent_unix_time': sentUnixTime,
-      if (backendSignedPgpMessage != null)
-        'backend_signed_pgp_message': backendSignedPgpMessage,
+      if (serverSignedPgpMessage != null)
+        'server_signed_pgp_message': serverSignedPgpMessage,
       if (deliveredUnixTime != null) 'delivered_unix_time': deliveredUnixTime,
       if (seenUnixTime != null) 'seen_unix_time': seenUnixTime,
       if (messageId != null) 'message_id': messageId,
@@ -19586,7 +19586,7 @@ class MessageCompanion extends UpdateCompanion<MessageData> {
     Value<Uint8List?>? symmetricMessageEncryptionKey,
     Value<MessageNumber?>? messageNumber,
     Value<UtcDateTime?>? sentUnixTime,
-    Value<Uint8List?>? backendSignedPgpMessage,
+    Value<Uint8List?>? serverSignedPgpMessage,
     Value<UtcDateTime?>? deliveredUnixTime,
     Value<UtcDateTime?>? seenUnixTime,
     Value<MessageId?>? messageId,
@@ -19601,8 +19601,8 @@ class MessageCompanion extends UpdateCompanion<MessageData> {
           symmetricMessageEncryptionKey ?? this.symmetricMessageEncryptionKey,
       messageNumber: messageNumber ?? this.messageNumber,
       sentUnixTime: sentUnixTime ?? this.sentUnixTime,
-      backendSignedPgpMessage:
-          backendSignedPgpMessage ?? this.backendSignedPgpMessage,
+      serverSignedPgpMessage:
+          serverSignedPgpMessage ?? this.serverSignedPgpMessage,
       deliveredUnixTime: deliveredUnixTime ?? this.deliveredUnixTime,
       seenUnixTime: seenUnixTime ?? this.seenUnixTime,
       messageId: messageId ?? this.messageId,
@@ -19648,9 +19648,9 @@ class MessageCompanion extends UpdateCompanion<MessageData> {
         $MessageTable.$convertersentUnixTime.toSql(sentUnixTime.value),
       );
     }
-    if (backendSignedPgpMessage.present) {
-      map['backend_signed_pgp_message'] = Variable<Uint8List>(
-        backendSignedPgpMessage.value,
+    if (serverSignedPgpMessage.present) {
+      map['server_signed_pgp_message'] = Variable<Uint8List>(
+        serverSignedPgpMessage.value,
       );
     }
     if (deliveredUnixTime.present) {
@@ -19686,7 +19686,7 @@ class MessageCompanion extends UpdateCompanion<MessageData> {
           )
           ..write('messageNumber: $messageNumber, ')
           ..write('sentUnixTime: $sentUnixTime, ')
-          ..write('backendSignedPgpMessage: $backendSignedPgpMessage, ')
+          ..write('serverSignedPgpMessage: $serverSignedPgpMessage, ')
           ..write('deliveredUnixTime: $deliveredUnixTime, ')
           ..write('seenUnixTime: $seenUnixTime, ')
           ..write('messageId: $messageId')

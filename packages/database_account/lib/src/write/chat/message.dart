@@ -26,7 +26,7 @@ class DaoWriteMessage extends DatabaseAccessor<AccountDatabase> with _$DaoWriteM
         messageNumber: Value(entry.messageNumber),
         messageId: Value(entry.messageId),
         sentUnixTime: Value(entry.sentUnixTime),
-        backendSignedPgpMessage: Value(entry.backendSignedPgpMessage),
+        serverSignedPgpMessage: Value(entry.serverSignedPgpMessage),
         symmetricMessageEncryptionKey: Value(entry.symmetricMessageEncryptionKey),
       ),
     );
@@ -60,7 +60,7 @@ class DaoWriteMessage extends DatabaseAccessor<AccountDatabase> with _$DaoWriteM
     api.UnixTime? unixTimeFromServer,
     api.MessageId? messageIdFromServer,
     api.MessageNumber? messageNumberFromServer,
-    Uint8List? backendSignePgpMessage,
+    Uint8List? serverSignePgpMessage,
     UtcDateTime? deliveredUnixTime,
     UtcDateTime? seenUnixTime,
   }) async {
@@ -76,7 +76,7 @@ class DaoWriteMessage extends DatabaseAccessor<AccountDatabase> with _$DaoWriteM
         sentUnixTime: Value.absentIfNull(unixTime),
         messageId: Value.absentIfNull(messageIdFromServer),
         messageNumber: Value.absentIfNull(messageNumberFromServer),
-        backendSignedPgpMessage: Value.absentIfNull(backendSignePgpMessage),
+        serverSignedPgpMessage: Value.absentIfNull(serverSignePgpMessage),
         deliveredUnixTime: Value.absentIfNull(deliveredUnixTime),
         seenUnixTime: Value.absentIfNull(seenUnixTime),
       ),
@@ -88,7 +88,7 @@ class DaoWriteMessage extends DatabaseAccessor<AccountDatabase> with _$DaoWriteM
     api.MessageNumber messageNumber,
     api.MessageId messageId,
     UtcDateTime serverTime,
-    Uint8List backendSignedPgpMessage,
+    Uint8List serverSignedPgpMessage,
     dbm.Message? decryptedMessage,
     Uint8List? symmetricMessageEncryptionKey,
     dbm.ReceivedMessageState state,
@@ -101,7 +101,7 @@ class DaoWriteMessage extends DatabaseAccessor<AccountDatabase> with _$DaoWriteM
       messageNumber: messageNumber,
       messageId: messageId,
       sentUnixTime: serverTime,
-      backendSignedPgpMessage: backendSignedPgpMessage,
+      serverSignedPgpMessage: serverSignedPgpMessage,
       symmetricMessageEncryptionKey: symmetricMessageEncryptionKey,
     );
     await transaction(() async {

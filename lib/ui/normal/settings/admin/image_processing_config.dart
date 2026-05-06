@@ -74,7 +74,7 @@ class _ImageProcessingConfigScreenState extends State<ImageProcessingConfigScree
 
       if (missing.isNotEmpty) {
         showSnackBar(
-          "Warning: simple backend config file is missing config for\n${missing.join("\n")}",
+          "Warning: server side config file is missing config for\n${missing.join("\n")}",
         );
       }
     }

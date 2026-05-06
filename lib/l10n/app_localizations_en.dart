@@ -1621,11 +1621,11 @@ class AppLocalizationsEn extends AppLocalizations {
   String get receive_chat_backup_waiting_for_source => 'Waiting for source device';
 
   @override
-  String get report_chat_message_screen_backend_signed_message_not_found =>
-      'Backend signed message not found';
+  String get report_chat_message_screen_confirm_dialog_title => 'Report chat message?';
 
   @override
-  String get report_chat_message_screen_confirm_dialog_title => 'Report chat message?';
+  String get report_chat_message_screen_server_signed_message_not_found =>
+      'Server signed message not found';
 
   @override
   String get report_chat_message_screen_symmetric_message_encryption_key_not_found =>

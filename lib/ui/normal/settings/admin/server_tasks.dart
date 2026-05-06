@@ -187,24 +187,24 @@ class _ServerTasksScreenState extends State<ServerTasksScreen> {
   List<Widget> displayMaintenanceTasks(
     BuildContext context,
     ManagerInstanceRelatedState state,
-    MaintenanceTask? backendRestart,
+    MaintenanceTask? serverRestart,
     MaintenanceTask? systemReboot,
   ) {
     final List<Widget> widgets = [];
 
-    const restartBackendTitle = "Backend restart";
-    const restartBackendTaskType = ScheduledTaskType.backendRestart;
+    const restartServerTitle = "Server restart";
+    const restartServerTaskType = ScheduledTaskType.backendRestart;
     if (widget.permissions.adminServerScheduledRestart) {
-      widgets.add(hPad(Text(restartBackendTitle, style: Theme.of(context).textTheme.titleMedium)));
+      widgets.add(hPad(Text(restartServerTitle, style: Theme.of(context).textTheme.titleMedium)));
       widgets.add(const Padding(padding: EdgeInsets.all(8.0)));
-      if (backendRestart != null) {
+      if (serverRestart != null) {
         widgets.add(
           displayMaintenanceTaskState(
             context,
             state,
-            restartBackendTitle,
-            backendRestart,
-            restartBackendTaskType,
+            restartServerTitle,
+            serverRestart,
+            restartServerTaskType,
           ),
         );
       } else {
@@ -214,8 +214,8 @@ class _ServerTasksScreenState extends State<ServerTasksScreen> {
               context,
               state,
               "Schedule",
-              restartBackendTitle,
-              (api) => api.postScheduleTask(state.manager, restartBackendTaskType, true),
+              restartServerTitle,
+              (api) => api.postScheduleTask(state.manager, restartServerTaskType, true),
             ),
           ),
         );
@@ -225,8 +225,8 @@ class _ServerTasksScreenState extends State<ServerTasksScreen> {
               context,
               state,
               "Schedule hidden",
-              restartBackendTitle,
-              (api) => api.postScheduleTask(state.manager, restartBackendTaskType, false),
+              restartServerTitle,
+              (api) => api.postScheduleTask(state.manager, restartServerTaskType, false),
             ),
           ),
         );
@@ -296,7 +296,7 @@ class _ServerTasksScreenState extends State<ServerTasksScreen> {
         hPad(Text("Start time", style: Theme.of(context).textTheme.titleSmall)),
         hPad(Text(fullTimeString(info.time.toUtcDateTime()))),
         const Padding(padding: EdgeInsets.all(8.0)),
-        hPad(Text("Notify backend", style: Theme.of(context).textTheme.titleSmall)),
+        hPad(Text("Notify server", style: Theme.of(context).textTheme.titleSmall)),
         hPad(Text(info.notifyBackend.toString())),
         const Padding(padding: EdgeInsets.all(8.0)),
         hPad(

@@ -52,10 +52,10 @@ class DaoReadBackup extends DatabaseAccessor<AccountDatabase> with _$DaoReadBack
           symmetricKeyBlobIndex = blobStore.add(msg.symmetricMessageEncryptionKey);
         }
 
-        // Add backend signed PGP message to blob store if present
-        int? backendSignedPgpMessageBlobIndex;
-        if (msg.backendSignedPgpMessage != null) {
-          backendSignedPgpMessageBlobIndex = blobStore.add(msg.backendSignedPgpMessage);
+        // Add server signed PGP message to blob store if present
+        int? serverSignedPgpMessageBlobIndex;
+        if (msg.serverSignedPgpMessage != null) {
+          serverSignedPgpMessageBlobIndex = blobStore.add(msg.serverSignedPgpMessage);
         }
 
         // Add message data to blob store if present
@@ -70,7 +70,7 @@ class DaoReadBackup extends DatabaseAccessor<AccountDatabase> with _$DaoReadBack
             localUnixTime: msg.localUnixTime,
             messageState: msg.messageState,
             symmetricKeyBlobIndex: symmetricKeyBlobIndex,
-            backendSignedPgpMessageBlobIndex: backendSignedPgpMessageBlobIndex,
+            serverSignedPgpMessageBlobIndex: serverSignedPgpMessageBlobIndex,
             sentUnixTime: msg.sentUnixTime,
             deliveredUnixTime: msg.deliveredUnixTime,
             seenUnixTime: msg.seenUnixTime,

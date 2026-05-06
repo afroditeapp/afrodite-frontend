@@ -167,11 +167,11 @@ class DaoReadMessage extends DatabaseAccessor<AccountDatabase> with _$DaoReadMes
         .getSingleOrNull();
   }
 
-  Future<Uint8List?> getBackendSignedPgpMessage(dbm.LocalMessageId localId) {
+  Future<Uint8List?> getServerSignedPgpMessage(dbm.LocalMessageId localId) {
     return (select(message)
           ..where((t) => t.localId.equals(localId.id))
           ..limit(1))
-        .map((m) => m.backendSignedPgpMessage)
+        .map((m) => m.serverSignedPgpMessage)
         .getSingleOrNull();
   }
 

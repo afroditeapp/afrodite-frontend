@@ -1,6 +1,6 @@
 import 'dart:async';
 
-import 'package:app/data/chat/backend_signed_message.dart';
+import 'package:app/data/chat/server_signed_message.dart';
 import 'package:app/data/chat/message_manager/public_key.dart';
 import 'package:database/database.dart';
 import 'package:flutter/foundation.dart';
@@ -94,7 +94,7 @@ class ReceiveMessageUtils {
           message.parsed.messageNumber,
           message.parsed.messageId,
           message.parsed.serverTime.toUtcDateTime(),
-          message.backendPgpMessage,
+          message.serverPgpMessage,
           decryptedMessage,
           symmetricMessageEncryptionKey,
           messageState,
@@ -155,7 +155,7 @@ class ReceiveMessageUtils {
       }
       final signedPgpMessageUint8 = Uint8List.fromList(signedPgpMessage);
 
-      final parsed = await BackendSignedMessage.parseFromSignedPgpMessage(signedPgpMessageUint8);
+      final parsed = await ServerSignedMessage.parseFromSignedPgpMessage(signedPgpMessageUint8);
       if (parsed == null) {
         return null;
       }
@@ -167,7 +167,7 @@ class ReceiveMessageUtils {
   /// Returns message and symmetric message encryption key
   Future<Result<(Message, Uint8List), ReceivedMessageError>> decryptReceivedMessage(
     AllKeyData allKeys,
-    BackendSignedMessage message,
+    ServerSignedMessage message,
   ) async {
     final publicKey = await publicKeyUtils
         .getSpecificPublicKeyForForeignAccount(message.sender, message.senderPublicKeyId)
@@ -198,8 +198,8 @@ class ReceiveMessageUtils {
 enum ReceivedMessageError { decryptingFailed, publicKeyDonwloadingFailed }
 
 class PendingMessageData {
-  final BackendSignedMessage parsed;
-  final Uint8List backendPgpMessage;
+  final ServerSignedMessage parsed;
+  final Uint8List serverPgpMessage;
 
-  PendingMessageData(this.parsed, this.backendPgpMessage);
+  PendingMessageData(this.parsed, this.serverPgpMessage);
 }

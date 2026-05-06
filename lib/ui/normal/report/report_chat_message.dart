@@ -129,11 +129,11 @@ class _ReportChatMessageScreen extends State<ReportChatMessageScreen> {
           scrollable: true,
         );
         if (context.mounted && r == true) {
-          final backendSignedMessage = await repositories.accountDb
-              .accountData((db) => db.message.getBackendSignedPgpMessage(entry.localId))
+          final serverSignedMessage = await repositories.accountDb
+              .accountData((db) => db.message.getServerSignedPgpMessage(entry.localId))
               .ok();
-          if (backendSignedMessage == null) {
-            showSnackBar(R.strings.report_chat_message_screen_backend_signed_message_not_found);
+          if (serverSignedMessage == null) {
+            showSnackBar(R.strings.report_chat_message_screen_server_signed_message_not_found);
             return;
           }
           final symmetricKey = await repositories.accountDb
@@ -151,7 +151,7 @@ class _ReportChatMessageScreen extends State<ReportChatMessageScreen> {
                 (api) => api.postChatMessageReport(
                   UpdateChatMessageReport(
                     target: widget.accountId,
-                    serverSignedMessageBase64: base64Encode(backendSignedMessage),
+                    serverSignedMessageBase64: base64Encode(serverSignedMessage),
                     decryptionKeyBase64: base64Encode(symmetricKey),
                   ),
                 ),

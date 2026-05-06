@@ -1,6 +1,6 @@
 import 'dart:async';
 
-import 'package:app/data/chat/backend_signed_message.dart';
+import 'package:app/data/chat/server_signed_message.dart';
 import 'package:app/data/chat/message_manager/delivery_info.dart';
 import 'package:app/data/chat/message_manager/pending_chat_notifications.dart';
 import 'package:app/data/chat/message_manager/receive.dart';
@@ -369,23 +369,23 @@ class MessageManager extends LifecycleMethods {
         toBeDecrypted.messageState != MessageState.receivedAndPublicKeyDownloadFailed) {
       return const Err(RetryPublicKeyDownloadError.unspecifiedError);
     }
-    final backendSignedPgpMessage = await db
-        .accountData((db) => db.message.getBackendSignedPgpMessage(localId))
+    final serverSignedPgpMessage = await db
+        .accountData((db) => db.message.getServerSignedPgpMessage(localId))
         .ok();
-    if (backendSignedPgpMessage == null) {
+    if (serverSignedPgpMessage == null) {
       return const Err(RetryPublicKeyDownloadError.unspecifiedError);
     }
-    final backendSignedMessage = await BackendSignedMessage.parseFromSignedPgpMessage(
-      backendSignedPgpMessage,
+    final serverSignedMessage = await ServerSignedMessage.parseFromSignedPgpMessage(
+      serverSignedPgpMessage,
     );
-    if (backendSignedMessage == null) {
+    if (serverSignedMessage == null) {
       return const Err(RetryPublicKeyDownloadError.unspecifiedError);
     }
 
     final Message? decryptedMessage;
     final Uint8List? symmetricMessageEncryptionKey;
     final ReceivedMessageState messageState;
-    switch (await receiveMessageUtils.decryptReceivedMessage(allKeys, backendSignedMessage)) {
+    switch (await receiveMessageUtils.decryptReceivedMessage(allKeys, serverSignedMessage)) {
       case Err(:final e):
         decryptedMessage = null;
         symmetricMessageEncryptionKey = null;

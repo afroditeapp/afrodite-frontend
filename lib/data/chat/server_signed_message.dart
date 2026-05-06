@@ -6,7 +6,7 @@ import 'package:app/utils/result.dart';
 import 'package:native_utils/native_utils.dart';
 import 'package:openapi/api.dart';
 
-class BackendSignedMessage {
+class ServerSignedMessage {
   final AccountId sender;
   final AccountId recipient;
   final MessageId messageId;
@@ -16,7 +16,7 @@ class BackendSignedMessage {
   final UnixTime serverTime;
   final Uint8List messageFromSender;
 
-  BackendSignedMessage._({
+  ServerSignedMessage._({
     required this.sender,
     required this.recipient,
     required this.messageId,
@@ -27,16 +27,16 @@ class BackendSignedMessage {
     required this.messageFromSender,
   });
 
-  static Future<BackendSignedMessage?> parseFromSignedPgpMessage(Uint8List uint8List) async {
+  static Future<ServerSignedMessage?> parseFromSignedPgpMessage(Uint8List uint8List) async {
     final (data, _) = await getMessageContent(uint8List);
     if (data == null) {
       return null;
     }
 
-    return BackendSignedMessage.parse(data);
+    return ServerSignedMessage.parse(data);
   }
 
-  static BackendSignedMessage? parse(Iterable<int> data) {
+  static ServerSignedMessage? parse(Iterable<int> data) {
     final iterator = data.iterator;
 
     final version = parseVersion(iterator).ok();
@@ -60,7 +60,7 @@ class BackendSignedMessage {
       return null;
     }
 
-    return BackendSignedMessage._(
+    return ServerSignedMessage._(
       sender: sender,
       recipient: recipient,
       messageId: messageId,
