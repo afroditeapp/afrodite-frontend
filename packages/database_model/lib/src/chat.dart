@@ -24,7 +24,7 @@ class MessageEntry {
   /// Message sender generated UUID for the message.
   final MessageId? messageId;
 
-  /// Time when the message was sent. Server sets this falue.
+  /// Time when the message was sent. Server sets this value.
   final UtcDateTime? sentUnixTime;
 
   /// Time when the message was delivered. Only set for sent messages.
@@ -347,10 +347,10 @@ class NewMessageEntry {
   /// Message sender generated UUID for the message.
   final MessageId? messageId;
 
-  /// Time when the message was sent. Server sets this falue.
+  /// Time when the message was sent. Server sets this value.
   final UtcDateTime? sentUnixTime;
 
-  /// Server signed PGP message. Server sets this falue.
+  /// Server signed PGP message. Server sets this value.
   final Uint8List? serverSignedPgpMessage;
 
   /// Symmetric encryption key for PGP message from sender.

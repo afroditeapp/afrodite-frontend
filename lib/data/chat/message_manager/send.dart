@@ -309,7 +309,7 @@ class SendMessageUtils {
         unixTimeFromServer: unixTimeFromServer,
         messageIdFromServer: messageIdFromServer,
         messageNumberFromServer: messageNumberFromServer,
-        serverSignePgpMessage: serverSignedPgpMessage,
+        serverSignedPgpMessage: serverSignedPgpMessage,
       ),
     );
     if (updateSentState.isErr()) {
@@ -364,7 +364,7 @@ class SendMessageUtils {
             sentState: SentMessageState.sent,
             messageIdFromServer: serverSignedMessage.messageId,
             unixTimeFromServer: serverSignedMessage.serverTime,
-            serverSignePgpMessage: decoded,
+            serverSignedPgpMessage: decoded,
           ),
         );
         if (updateSentState.isErr()) {

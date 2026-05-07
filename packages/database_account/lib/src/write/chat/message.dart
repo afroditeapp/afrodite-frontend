@@ -60,7 +60,7 @@ class DaoWriteMessage extends DatabaseAccessor<AccountDatabase> with _$DaoWriteM
     api.UnixTime? unixTimeFromServer,
     api.MessageId? messageIdFromServer,
     api.MessageNumber? messageNumberFromServer,
-    Uint8List? serverSignePgpMessage,
+    Uint8List? serverSignedPgpMessage,
     UtcDateTime? deliveredUnixTime,
     UtcDateTime? seenUnixTime,
   }) async {
@@ -76,7 +76,7 @@ class DaoWriteMessage extends DatabaseAccessor<AccountDatabase> with _$DaoWriteM
         sentUnixTime: Value.absentIfNull(unixTime),
         messageId: Value.absentIfNull(messageIdFromServer),
         messageNumber: Value.absentIfNull(messageNumberFromServer),
-        serverSignedPgpMessage: Value.absentIfNull(serverSignePgpMessage),
+        serverSignedPgpMessage: Value.absentIfNull(serverSignedPgpMessage),
         deliveredUnixTime: Value.absentIfNull(deliveredUnixTime),
         seenUnixTime: Value.absentIfNull(seenUnixTime),
       ),
