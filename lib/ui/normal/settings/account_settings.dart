@@ -15,7 +15,6 @@ import 'package:app/ui_utils/common_update_logic.dart';
 import 'package:app/ui_utils/dialog.dart';
 import 'package:app/ui_utils/padding.dart';
 import 'package:app/utils/time.dart';
-import 'package:openapi/api.dart';
 import 'package:utils/utils.dart';
 
 void openAccountSettings(BuildContext context) {
@@ -222,7 +221,7 @@ class _AccountSettingsScreenState extends State<AccountSettingsScreen> {
           builder: (context, configState) {
             final accountVerificationMethods = configState.config.verificationMethods?.account;
             if (accountVerificationMethods == null ||
-                accountVerificationMethods == AccountVerificationMethodsConfig()) {
+                !isAccessToAccountVerificationScreenPossible(accountVerificationMethods)) {
               return const SizedBox.shrink();
             }
 

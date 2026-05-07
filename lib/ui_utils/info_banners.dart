@@ -18,7 +18,13 @@ const int _MAX_BANNERS = 3;
 
 class InfoBannersWidget extends StatelessWidget {
   final InfoBannerLocation location;
-  const InfoBannersWidget({required this.location, super.key});
+  final List<Widget> additionalItems;
+
+  const InfoBannersWidget({
+    required this.location,
+    this.additionalItems = const <Widget>[],
+    super.key,
+  });
 
   @override
   Widget build(BuildContext context) {
@@ -39,6 +45,7 @@ class InfoBannersWidget extends StatelessWidget {
               allBanners,
               banners,
               location == InfoBannerLocation.menu ? infoBannersData.maintenanceInfo : null,
+              additionalItems,
             );
           },
         );
@@ -51,9 +58,10 @@ class InfoBannersWidget extends StatelessWidget {
     Map<String, InfoBanner> allBanners,
     List<_VisibleTextInfoBanner> banners,
     ServerMaintenanceInfo? maintenanceInfo,
+    List<Widget> additionalItems,
   ) {
     final maintenanceBodies = _maintenanceBodies(context, allBanners, maintenanceInfo);
-    if (maintenanceBodies.isEmpty && banners.isEmpty) {
+    if (maintenanceBodies.isEmpty && banners.isEmpty && additionalItems.isEmpty) {
       return const SizedBox.shrink();
     }
 
@@ -70,6 +78,7 @@ class InfoBannersWidget extends StatelessWidget {
                 body: maintenanceBody,
               ),
             for (var i = 0; i < banners.length; i++) ...[_InfoBannerItem(banner: banners[i])],
+            ...additionalItems,
           ],
         ),
       ),

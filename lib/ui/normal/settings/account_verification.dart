@@ -4,8 +4,10 @@ import 'package:app/api/server_connection_protocol/server.dart';
 import 'package:app/api/server_connection_manager.dart';
 import 'package:app/data/utils/repository_instances.dart';
 import 'package:app/localizations.dart';
+import 'package:app/logic/account/client_features_config.dart';
 import 'package:app/logic/app/navigator_state.dart';
 import 'package:app/logic/profile/my_profile.dart';
+import 'package:app/model/freezed/logic/account/client_features_config.dart';
 import 'package:app/model/freezed/logic/profile/my_profile.dart';
 import 'package:app/model/freezed/logic/main/navigator_state.dart';
 import 'package:app/ui/normal/profiles/profile_filters/profile_verification.dart';
@@ -14,6 +16,84 @@ import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:openapi/api.dart';
 import 'package:app/utils/result.dart';
+
+bool isAccessToAccountVerificationScreenPossible(AccountVerificationMethodsConfig methods) {
+  return methods != AccountVerificationMethodsConfig();
+}
+
+class AccountVerificationInfoBannerItem extends StatelessWidget {
+  const AccountVerificationInfoBannerItem({super.key});
+
+  @override
+  Widget build(BuildContext context) {
+    return BlocBuilder<ClientFeaturesConfigBloc, ClientFeaturesConfigData>(
+      builder: (context, configData) {
+        return BlocBuilder<MyProfileBloc, MyProfileData>(
+          builder: (context, myProfileState) {
+            final accountVerificationMethods = configData.config.verificationMethods?.account;
+            if (accountVerificationMethods == null ||
+                !isAccessToAccountVerificationScreenPossible(accountVerificationMethods)) {
+              return const SizedBox.shrink();
+            }
+
+            final profile = myProfileState.profile;
+            if (!myProfileState.initialLoadingCompleted || profile == null) {
+              return const SizedBox.shrink();
+            }
+
+            final verificationStatus = profile.mediaVerificationStatus;
+            final securityContentVerified =
+                verificationStatus & ProfileVerificationStatusFlags.securityContentVerified != 0;
+            final profileAgeRangeVerified =
+                verificationStatus & ProfileVerificationStatusFlags.profileAgeVerified != 0;
+            final profileNameVerified =
+                verificationStatus & ProfileVerificationStatusFlags.profileNameVerified != 0;
+
+            if (securityContentVerified || profileAgeRangeVerified || profileNameVerified) {
+              return const SizedBox.shrink();
+            }
+
+            return Padding(
+              padding: const EdgeInsets.symmetric(horizontal: 12),
+              child: Row(
+                crossAxisAlignment: CrossAxisAlignment.center,
+                children: [
+                  Padding(
+                    padding: const EdgeInsets.symmetric(vertical: 4),
+                    child: Icon(
+                      Icons.verified_user,
+                      color: Theme.of(context).colorScheme.onPrimaryContainer,
+                    ),
+                  ),
+                  const Padding(padding: EdgeInsets.only(left: 8)),
+                  Expanded(
+                    child: Padding(
+                      padding: const EdgeInsets.symmetric(vertical: 4),
+                      child: Text(
+                        context.strings.profile_grid_screen_account_verification_banner_text,
+                        style: Theme.of(context).textTheme.bodyMedium?.copyWith(
+                          color: Theme.of(context).colorScheme.onPrimaryContainer,
+                        ),
+                      ),
+                    ),
+                  ),
+                  const Padding(padding: EdgeInsets.only(left: 8)),
+                  TextButton(
+                    onPressed: () =>
+                        openAccountVerificationSettings(context, accountVerificationMethods),
+                    child: Text(
+                      context.strings.profile_grid_screen_account_verification_banner_button,
+                    ),
+                  ),
+                ],
+              ),
+            );
+          },
+        );
+      },
+    );
+  }
+}
 
 void openAccountVerificationSettings(
   BuildContext context,

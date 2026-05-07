@@ -1489,6 +1489,12 @@ class AppLocalizationsFi extends AppLocalizations {
   String get profile_filters_screen_updating_filters_failed => 'Updating profile filters failed';
 
   @override
+  String get profile_grid_screen_account_verification_banner_button => 'Verify now';
+
+  @override
+  String get profile_grid_screen_account_verification_banner_text => 'Your account is unverified';
+
+  @override
   String profile_grid_screen_daily_likes_dialog_text(String p0, String p1) {
     return 'Daily chat requests left: $p0\nReset time: $p1';
   }

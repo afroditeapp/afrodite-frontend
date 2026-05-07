@@ -20,6 +20,7 @@ import 'package:app/ui/normal/settings/admin.dart';
 import 'package:app/ui/normal/settings/debug.dart';
 import 'package:app/ui/normal/settings/my_profile.dart';
 import 'package:app/ui/normal/settings/news/news_list.dart';
+import 'package:app/ui/normal/settings/account_verification.dart';
 import 'package:app/ui/normal/settings/statistics.dart';
 import 'package:app/ui_utils/bottom_navigation.dart';
 import 'package:app/localizations.dart';
@@ -203,7 +204,10 @@ class _MenuViewState extends State<MenuView> {
       child: Column(
         crossAxisAlignment: CrossAxisAlignment.start,
         children: [
-          const InfoBannersWidget(location: InfoBannerLocation.menu),
+          const InfoBannersWidget(
+            location: InfoBannerLocation.menu,
+            additionalItems: [AccountVerificationInfoBannerItem()],
+          ),
           ...settings.map((setting) => setting.toListTile()),
         ],
       ),

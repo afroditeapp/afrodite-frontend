@@ -2716,6 +2716,18 @@ abstract class AppLocalizations {
   /// **'Updating profile filters failed'**
   String get profile_filters_screen_updating_filters_failed;
 
+  /// Action button text for account verification info banner
+  ///
+  /// In en, this message translates to:
+  /// **'Verify now'**
+  String get profile_grid_screen_account_verification_banner_button;
+
+  /// Info banner text shown when account is not yet verified
+  ///
+  /// In en, this message translates to:
+  /// **'Your account is unverified'**
+  String get profile_grid_screen_account_verification_banner_text;
+
   /// Dialog text for daily likes info dialog
   ///
   /// In en, this message translates to:
