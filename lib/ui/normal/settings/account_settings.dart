@@ -4,14 +4,18 @@ import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:app/localizations.dart';
 import 'package:app/logic/account/account.dart';
+import 'package:app/logic/account/client_features_config.dart';
 import 'package:app/logic/account/account_details.dart';
+import 'package:app/model/freezed/logic/account/client_features_config.dart';
 import 'package:app/model/freezed/logic/account/account.dart';
 import 'package:app/model/freezed/logic/account/account_details.dart';
+import 'package:app/ui/normal/settings/account_verification.dart';
 import 'package:app/ui/normal/settings.dart';
 import 'package:app/ui_utils/common_update_logic.dart';
 import 'package:app/ui_utils/dialog.dart';
 import 'package:app/ui_utils/padding.dart';
 import 'package:app/utils/time.dart';
+import 'package:openapi/api.dart';
 import 'package:utils/utils.dart';
 
 void openAccountSettings(BuildContext context) {
@@ -214,6 +218,21 @@ class _AccountSettingsScreenState extends State<AccountSettingsScreen> {
           ),
         ],
         const Padding(padding: EdgeInsets.all(4)),
+        BlocBuilder<ClientFeaturesConfigBloc, ClientFeaturesConfigData>(
+          builder: (context, configState) {
+            final accountVerificationMethods = configState.config.verificationMethods?.account;
+            if (accountVerificationMethods == null ||
+                accountVerificationMethods == AccountVerificationMethodsConfig()) {
+              return const SizedBox.shrink();
+            }
+
+            return Setting.createSetting(
+              Icons.verified_user,
+              context.strings.account_verification_screen_title,
+              () => openAccountVerificationSettings(context, accountVerificationMethods),
+            ).toListTile();
+          },
+        ),
         deleteAccount(),
       ],
     );

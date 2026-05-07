@@ -610,6 +610,11 @@
     <string name="account_settings_screen_email_change_initiated" description="Snackbar text for successful email change initiation">Email change initiated. Please check your email.</string>
     <string name="account_settings_screen_email_change_cancelled" description="Snackbar text for successful email change cancellation">Email change cancelled</string>
     <string name="account_settings_screen_cancel_email_change_confirm_dialog_title" description="Title for cancel email change confirm dialog">Cancel email change?</string>
+    <!-- Account verification settings -->
+    <string name="account_verification_screen_title" description="Title for account verification settings screen">Account verification</string>
+    <string name="account_verification_screen_queue_position" description="Text shown with current account verification queue position">Verification queue position: %s</string>
+    <string name="account_verification_screen_request_queue_full" description="Snackbar text when account verification queue is full">Account verification queue is full. Please try again later.</string>
+    <string name="account_verification_screen_request_queued" description="Snackbar text when account verification request was queued successfully">Account verification request queued</string>
 
     <!-- Profile grid settings screen -->
     <string name="profile_grid_settings_screen_title" description="Profile grid settings screen title">Profile grid</string>

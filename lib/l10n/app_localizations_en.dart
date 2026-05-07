@@ -131,6 +131,21 @@ class AppLocalizationsEn extends AppLocalizations {
   String get account_settings_screen_title => 'Account';
 
   @override
+  String account_verification_screen_queue_position(String p0) {
+    return 'Verification queue position: $p0';
+  }
+
+  @override
+  String get account_verification_screen_request_queue_full =>
+      'Account verification queue is full. Please try again later.';
+
+  @override
+  String get account_verification_screen_request_queued => 'Account verification request queued';
+
+  @override
+  String get account_verification_screen_title => 'Account verification';
+
+  @override
   String get admin_settings_title => 'Admin';
 
   @override

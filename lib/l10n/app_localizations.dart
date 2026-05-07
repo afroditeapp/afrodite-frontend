@@ -298,6 +298,30 @@ abstract class AppLocalizations {
   /// **'Account'**
   String get account_settings_screen_title;
 
+  /// Text shown with current account verification queue position
+  ///
+  /// In en, this message translates to:
+  /// **'Verification queue position: {p0}'**
+  String account_verification_screen_queue_position(String p0);
+
+  /// Snackbar text when account verification queue is full
+  ///
+  /// In en, this message translates to:
+  /// **'Account verification queue is full. Please try again later.'**
+  String get account_verification_screen_request_queue_full;
+
+  /// Snackbar text when account verification request was queued successfully
+  ///
+  /// In en, this message translates to:
+  /// **'Account verification request queued'**
+  String get account_verification_screen_request_queued;
+
+  /// Title for account verification settings screen
+  ///
+  /// In en, this message translates to:
+  /// **'Account verification'**
+  String get account_verification_screen_title;
+
   /// Title for admin settings screen
   ///
   /// In en, this message translates to:

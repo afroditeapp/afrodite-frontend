@@ -21,6 +21,9 @@ import 'package:openapi/api.dart';
 /// - [ServerMessageTypeCode.webSocketConnectionAttemptsRemaining] (7): payload
 ///   is remaining daily websocket connection attempts as u8.
 /// - [ServerMessageTypeCode.accountStateChanged] (30): payload is empty.
+/// - [ServerMessageTypeCode.accountVerificationQueuePositionChanged] (31):
+///   payload format:
+///   - optional queue position as 1 byte (empty payload means null)
 /// - [ServerMessageTypeCode.profileChanged] (60): payload is empty.
 /// - [ServerMessageTypeCode.responseResetProfilePaging] (61): payload format:
 ///   - request id byte (u8)
@@ -97,6 +100,7 @@ enum ServerMessageTypeCode {
   pushNotificationInfoChanged(5),
   webSocketConnectionAttemptsRemaining(7),
   accountStateChanged(30),
+  accountVerificationQueuePositionChanged(31),
   profileChanged(60),
   responseResetProfilePaging(61),
   responseNextProfilePage(62),
@@ -188,6 +192,7 @@ class ServerMessage {
   final int? responseId;
 
   final int? adminBotNotification;
+  final int? accountVerificationQueuePosition;
   final int? webSocketConnectionAttemptsRemaining;
   final CheckOnlineStatusResponse? checkOnlineStatusResponse;
   final ContentProcessingStateChanged? contentProcessingStateChanged;
@@ -204,6 +209,7 @@ class ServerMessage {
     required this.payload,
     this.responseId,
     this.adminBotNotification,
+    this.accountVerificationQueuePosition,
     this.webSocketConnectionAttemptsRemaining,
     this.checkOnlineStatusResponse,
     this.contentProcessingStateChanged,
@@ -243,6 +249,15 @@ class ServerMessage {
           return null;
         }
         return ServerMessage._(type: type, payload: payload);
+      case ServerMessageTypeCode.accountVerificationQueuePositionChanged:
+        if (payload.length > 1) {
+          return null;
+        }
+        return ServerMessage._(
+          type: type,
+          payload: payload,
+          accountVerificationQueuePosition: payload.isEmpty ? null : payload[0],
+        );
       case ServerMessageTypeCode.responseResetProfilePaging:
         final response = _parseResponseResetProfilePaging(payload);
         if (response == null) {
