@@ -11968,7 +11968,7 @@ class $MyProfileTable extends schema.MyProfile
   @override
   late final GeneratedColumn<int> mediaVerificationStatus =
       GeneratedColumn<int>(
-        'media_verification_status_flags',
+        'media_verification_status',
         aliasedName,
         true,
         type: DriftSqlType.int,
@@ -12132,11 +12132,11 @@ class $MyProfileTable extends schema.MyProfile
         ),
       );
     }
-    if (data.containsKey('media_verification_status_flags')) {
+    if (data.containsKey('media_verification_status')) {
       context.handle(
         _mediaVerificationStatusMeta,
         mediaVerificationStatus.isAcceptableOrUnknown(
-          data['media_verification_status_flags']!,
+          data['media_verification_status']!,
           _mediaVerificationStatusMeta,
         ),
       );
@@ -12255,7 +12255,7 @@ class $MyProfileTable extends schema.MyProfile
       ),
       mediaVerificationStatus: attachedDatabase.typeMapping.read(
         DriftSqlType.int,
-        data['${effectivePrefix}media_verification_status_flags'],
+        data['${effectivePrefix}media_verification_status'],
       ),
       profileVersion: $MyProfileTable.$converterprofileVersion.fromSql(
         attachedDatabase.typeMapping.read(
@@ -12449,9 +12449,7 @@ class MyProfileData extends DataClass implements Insertable<MyProfileData> {
       map['profile_unlimited_likes'] = Variable<bool>(profileUnlimitedLikes);
     }
     if (!nullToAbsent || mediaVerificationStatus != null) {
-      map['media_verification_status_flags'] = Variable<int>(
-        mediaVerificationStatus,
-      );
+      map['media_verification_status'] = Variable<int>(mediaVerificationStatus);
     }
     if (!nullToAbsent || profileVersion != null) {
       map['profile_version'] = Variable<String>(
@@ -12535,8 +12533,7 @@ class MyProfileData extends DataClass implements Insertable<MyProfileData> {
       profileUnlimitedLikes: profileUnlimitedLikes == null && nullToAbsent
           ? const Value.absent()
           : Value(profileUnlimitedLikes),
-      mediaVerificationStatus:
-          mediaVerificationStatus == null && nullToAbsent
+      mediaVerificationStatus: mediaVerificationStatus == null && nullToAbsent
           ? const Value.absent()
           : Value(mediaVerificationStatus),
       profileVersion: profileVersion == null && nullToAbsent
@@ -12867,9 +12864,7 @@ class MyProfileData extends DataClass implements Insertable<MyProfileData> {
           )
           ..write('profileAge: $profileAge, ')
           ..write('profileUnlimitedLikes: $profileUnlimitedLikes, ')
-          ..write(
-            'mediaVerificationStatus: $mediaVerificationStatus, ',
-          )
+          ..write('mediaVerificationStatus: $mediaVerificationStatus, ')
           ..write('profileVersion: $profileVersion, ')
           ..write('jsonProfileAttributes: $jsonProfileAttributes, ')
           ..write('primaryContentGridCropSize: $primaryContentGridCropSize, ')
@@ -12924,8 +12919,7 @@ class MyProfileData extends DataClass implements Insertable<MyProfileData> {
               this.profileTextModerationRejectedDetails &&
           other.profileAge == this.profileAge &&
           other.profileUnlimitedLikes == this.profileUnlimitedLikes &&
-          other.mediaVerificationStatus ==
-              this.mediaVerificationStatus &&
+          other.mediaVerificationStatus == this.mediaVerificationStatus &&
           other.profileVersion == this.profileVersion &&
           other.jsonProfileAttributes == this.jsonProfileAttributes &&
           other.primaryContentGridCropSize == this.primaryContentGridCropSize &&
@@ -13055,7 +13049,7 @@ class MyProfileCompanion extends UpdateCompanion<MyProfileData> {
       if (profileUnlimitedLikes != null)
         'profile_unlimited_likes': profileUnlimitedLikes,
       if (mediaVerificationStatus != null)
-        'media_verification_status_flags': mediaVerificationStatus,
+        'media_verification_status': mediaVerificationStatus,
       if (profileVersion != null) 'profile_version': profileVersion,
       if (jsonProfileAttributes != null)
         'json_profile_attributes': jsonProfileAttributes,
@@ -13208,7 +13202,7 @@ class MyProfileCompanion extends UpdateCompanion<MyProfileData> {
       );
     }
     if (mediaVerificationStatus.present) {
-      map['media_verification_status_flags'] = Variable<int>(
+      map['media_verification_status'] = Variable<int>(
         mediaVerificationStatus.value,
       );
     }
@@ -13273,9 +13267,7 @@ class MyProfileCompanion extends UpdateCompanion<MyProfileData> {
           )
           ..write('profileAge: $profileAge, ')
           ..write('profileUnlimitedLikes: $profileUnlimitedLikes, ')
-          ..write(
-            'mediaVerificationStatus: $mediaVerificationStatus, ',
-          )
+          ..write('mediaVerificationStatus: $mediaVerificationStatus, ')
           ..write('profileVersion: $profileVersion, ')
           ..write('jsonProfileAttributes: $jsonProfileAttributes, ')
           ..write('primaryContentGridCropSize: $primaryContentGridCropSize, ')
@@ -13412,7 +13404,7 @@ class $ProfileTable extends schema.Profile
   @override
   late final GeneratedColumn<int> mediaVerificationStatus =
       GeneratedColumn<int>(
-        'media_verification_status_flags',
+        'media_verification_status',
         aliasedName,
         true,
         type: DriftSqlType.int,
@@ -13579,11 +13571,11 @@ class $ProfileTable extends schema.Profile
         ),
       );
     }
-    if (data.containsKey('media_verification_status_flags')) {
+    if (data.containsKey('media_verification_status')) {
       context.handle(
         _mediaVerificationStatusMeta,
         mediaVerificationStatus.isAcceptableOrUnknown(
-          data['media_verification_status_flags']!,
+          data['media_verification_status']!,
           _mediaVerificationStatusMeta,
         ),
       );
@@ -13673,7 +13665,7 @@ class $ProfileTable extends schema.Profile
       ),
       mediaVerificationStatus: attachedDatabase.typeMapping.read(
         DriftSqlType.int,
-        data['${effectivePrefix}media_verification_status_flags'],
+        data['${effectivePrefix}media_verification_status'],
       ),
       jsonProfileAttributes: $ProfileTable.$converterjsonProfileAttributes
           .fromSql(
@@ -13815,9 +13807,7 @@ class ProfileData extends DataClass implements Insertable<ProfileData> {
       map['profile_unlimited_likes'] = Variable<bool>(profileUnlimitedLikes);
     }
     if (!nullToAbsent || mediaVerificationStatus != null) {
-      map['media_verification_status_flags'] = Variable<int>(
-        mediaVerificationStatus,
-      );
+      map['media_verification_status'] = Variable<int>(mediaVerificationStatus);
     }
     if (!nullToAbsent || jsonProfileAttributes != null) {
       map['json_profile_attributes'] = Variable<String>(
@@ -13888,8 +13878,7 @@ class ProfileData extends DataClass implements Insertable<ProfileData> {
       profileUnlimitedLikes: profileUnlimitedLikes == null && nullToAbsent
           ? const Value.absent()
           : Value(profileUnlimitedLikes),
-      mediaVerificationStatus:
-          mediaVerificationStatus == null && nullToAbsent
+      mediaVerificationStatus: mediaVerificationStatus == null && nullToAbsent
           ? const Value.absent()
           : Value(mediaVerificationStatus),
       jsonProfileAttributes: jsonProfileAttributes == null && nullToAbsent
@@ -14138,9 +14127,7 @@ class ProfileData extends DataClass implements Insertable<ProfileData> {
           ..write('profileAge: $profileAge, ')
           ..write('profileLastSeenTimeValue: $profileLastSeenTimeValue, ')
           ..write('profileUnlimitedLikes: $profileUnlimitedLikes, ')
-          ..write(
-            'mediaVerificationStatus: $mediaVerificationStatus, ',
-          )
+          ..write('mediaVerificationStatus: $mediaVerificationStatus, ')
           ..write('jsonProfileAttributes: $jsonProfileAttributes, ')
           ..write('primaryContentGridCropSize: $primaryContentGridCropSize, ')
           ..write('primaryContentGridCropX: $primaryContentGridCropX, ')
@@ -14185,8 +14172,7 @@ class ProfileData extends DataClass implements Insertable<ProfileData> {
           other.profileAge == this.profileAge &&
           other.profileLastSeenTimeValue == this.profileLastSeenTimeValue &&
           other.profileUnlimitedLikes == this.profileUnlimitedLikes &&
-          other.mediaVerificationStatus ==
-              this.mediaVerificationStatus &&
+          other.mediaVerificationStatus == this.mediaVerificationStatus &&
           other.jsonProfileAttributes == this.jsonProfileAttributes &&
           other.primaryContentGridCropSize == this.primaryContentGridCropSize &&
           other.primaryContentGridCropX == this.primaryContentGridCropX &&
@@ -14291,7 +14277,7 @@ class ProfileCompanion extends UpdateCompanion<ProfileData> {
       if (profileUnlimitedLikes != null)
         'profile_unlimited_likes': profileUnlimitedLikes,
       if (mediaVerificationStatus != null)
-        'media_verification_status_flags': mediaVerificationStatus,
+        'media_verification_status': mediaVerificationStatus,
       if (jsonProfileAttributes != null)
         'json_profile_attributes': jsonProfileAttributes,
       if (primaryContentGridCropSize != null)
@@ -14406,7 +14392,7 @@ class ProfileCompanion extends UpdateCompanion<ProfileData> {
       );
     }
     if (mediaVerificationStatus.present) {
-      map['media_verification_status_flags'] = Variable<int>(
+      map['media_verification_status'] = Variable<int>(
         mediaVerificationStatus.value,
       );
     }
@@ -14465,9 +14451,7 @@ class ProfileCompanion extends UpdateCompanion<ProfileData> {
           ..write('profileAge: $profileAge, ')
           ..write('profileLastSeenTimeValue: $profileLastSeenTimeValue, ')
           ..write('profileUnlimitedLikes: $profileUnlimitedLikes, ')
-          ..write(
-            'mediaVerificationStatus: $mediaVerificationStatus, ',
-          )
+          ..write('mediaVerificationStatus: $mediaVerificationStatus, ')
           ..write('jsonProfileAttributes: $jsonProfileAttributes, ')
           ..write('primaryContentGridCropSize: $primaryContentGridCropSize, ')
           ..write('primaryContentGridCropX: $primaryContentGridCropX, ')
