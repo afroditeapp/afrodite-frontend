@@ -13,31 +13,31 @@ part of openapi.api;
 class MaintenanceTask {
   /// Returns a new [MaintenanceTask] instance.
   MaintenanceTask({
-    required this.notifyBackend,
+    required this.notifyServer,
     required this.time,
   });
 
-  bool notifyBackend;
+  bool notifyServer;
 
   UnixTime time;
 
   @override
   bool operator ==(Object other) => identical(this, other) || other is MaintenanceTask &&
-    other.notifyBackend == notifyBackend &&
+    other.notifyServer == notifyServer &&
     other.time == time;
 
   @override
   int get hashCode =>
     // ignore: unnecessary_parenthesis
-    (notifyBackend.hashCode) +
+    (notifyServer.hashCode) +
     (time.hashCode);
 
   @override
-  String toString() => 'MaintenanceTask[notifyBackend=$notifyBackend, time=$time]';
+  String toString() => 'MaintenanceTask[notifyServer=$notifyServer, time=$time]';
 
   Map<String, dynamic> toJson() {
     final json = <String, dynamic>{};
-      json[r'notify_backend'] = this.notifyBackend;
+      json[r'notify_server'] = this.notifyServer;
       json[r'time'] = this.time;
     return json;
   }
@@ -61,7 +61,7 @@ class MaintenanceTask {
       }());
 
       return MaintenanceTask(
-        notifyBackend: mapValueOfType<bool>(json, r'notify_backend')!,
+        notifyServer: mapValueOfType<bool>(json, r'notify_server')!,
         time: UnixTime.fromJson(json[r'time'])!,
       );
     }
@@ -110,7 +110,7 @@ class MaintenanceTask {
 
   /// The list of required keys that must be present in a JSON.
   static const requiredKeys = <String>{
-    'notify_backend',
+    'notify_server',
     'time',
   };
 }

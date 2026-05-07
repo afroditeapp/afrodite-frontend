@@ -13,34 +13,34 @@ part of openapi.api;
 class ScheduledTaskStatus {
   /// Returns a new [ScheduledTaskStatus] instance.
   ScheduledTaskStatus({
-    this.backendRestart,
+    this.serverRestart,
     this.systemReboot,
   });
 
-  MaintenanceTask? backendRestart;
+  MaintenanceTask? serverRestart;
 
   MaintenanceTask? systemReboot;
 
   @override
   bool operator ==(Object other) => identical(this, other) || other is ScheduledTaskStatus &&
-    other.backendRestart == backendRestart &&
+    other.serverRestart == serverRestart &&
     other.systemReboot == systemReboot;
 
   @override
   int get hashCode =>
     // ignore: unnecessary_parenthesis
-    (backendRestart == null ? 0 : backendRestart!.hashCode) +
+    (serverRestart == null ? 0 : serverRestart!.hashCode) +
     (systemReboot == null ? 0 : systemReboot!.hashCode);
 
   @override
-  String toString() => 'ScheduledTaskStatus[backendRestart=$backendRestart, systemReboot=$systemReboot]';
+  String toString() => 'ScheduledTaskStatus[serverRestart=$serverRestart, systemReboot=$systemReboot]';
 
   Map<String, dynamic> toJson() {
     final json = <String, dynamic>{};
-    if (this.backendRestart != null) {
-      json[r'backend_restart'] = this.backendRestart;
+    if (this.serverRestart != null) {
+      json[r'server_restart'] = this.serverRestart;
     } else {
-      json[r'backend_restart'] = null;
+      json[r'server_restart'] = null;
     }
     if (this.systemReboot != null) {
       json[r'system_reboot'] = this.systemReboot;
@@ -69,7 +69,7 @@ class ScheduledTaskStatus {
       }());
 
       return ScheduledTaskStatus(
-        backendRestart: MaintenanceTask.fromJson(json[r'backend_restart']),
+        serverRestart: MaintenanceTask.fromJson(json[r'server_restart']),
         systemReboot: MaintenanceTask.fromJson(json[r'system_reboot']),
       );
     }

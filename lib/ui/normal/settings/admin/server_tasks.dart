@@ -178,7 +178,7 @@ class _ServerTasksScreenState extends State<ServerTasksScreen> {
         const Padding(padding: EdgeInsets.all(8.0)),
         hPad(Text("Scheduled tasks", style: Theme.of(context).textTheme.titleLarge)),
         const Padding(padding: EdgeInsets.all(8.0)),
-        ...displayMaintenanceTasks(context, state, status.backendRestart, status.systemReboot),
+        ...displayMaintenanceTasks(context, state, status.serverRestart, status.systemReboot),
         const Padding(padding: EdgeInsets.all(8.0)),
       ],
     );
@@ -193,7 +193,7 @@ class _ServerTasksScreenState extends State<ServerTasksScreen> {
     final List<Widget> widgets = [];
 
     const restartServerTitle = "Server restart";
-    const restartServerTaskType = ScheduledTaskType.backendRestart;
+    const restartServerTaskType = ScheduledTaskType.serverRestart;
     if (widget.permissions.adminServerScheduledRestart) {
       widgets.add(hPad(Text(restartServerTitle, style: Theme.of(context).textTheme.titleMedium)));
       widgets.add(const Padding(padding: EdgeInsets.all(8.0)));
@@ -297,7 +297,7 @@ class _ServerTasksScreenState extends State<ServerTasksScreen> {
         hPad(Text(fullTimeString(info.time.toUtcDateTime()))),
         const Padding(padding: EdgeInsets.all(8.0)),
         hPad(Text("Notify server", style: Theme.of(context).textTheme.titleSmall)),
-        hPad(Text(info.notifyBackend.toString())),
+        hPad(Text(info.notifyServer.toString())),
         const Padding(padding: EdgeInsets.all(8.0)),
         hPad(
           actionButton(

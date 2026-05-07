@@ -23,12 +23,12 @@ class ScheduledTaskType {
 
   String toJson() => value;
 
-  static const backendRestart = ScheduledTaskType._(r'BackendRestart');
+  static const serverRestart = ScheduledTaskType._(r'ServerRestart');
   static const systemReboot = ScheduledTaskType._(r'SystemReboot');
 
   /// List of all possible values in this [enum][ScheduledTaskType].
   static const values = <ScheduledTaskType>[
-    backendRestart,
+    serverRestart,
     systemReboot,
   ];
 
@@ -68,7 +68,7 @@ class ScheduledTaskTypeTypeTransformer {
   ScheduledTaskType? decode(dynamic data, {bool allowNull = true}) {
     if (data != null) {
       switch (data) {
-        case r'BackendRestart': return ScheduledTaskType.backendRestart;
+        case r'ServerRestart': return ScheduledTaskType.serverRestart;
         case r'SystemReboot': return ScheduledTaskType.systemReboot;
         default:
           if (!allowNull) {

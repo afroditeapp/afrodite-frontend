@@ -1279,8 +1279,8 @@ class CommonAdminApi {
   ///
   /// * [ScheduledTaskType] scheduledTaskType (required):
   ///
-  /// * [bool] notifyBackend (required):
-  Future<Response> postScheduleTaskWithHttpInfo(String managerName, ScheduledTaskType scheduledTaskType, bool notifyBackend,) async {
+  /// * [bool] notifyServer (required):
+  Future<Response> postScheduleTaskWithHttpInfo(String managerName, ScheduledTaskType scheduledTaskType, bool notifyServer,) async {
     // ignore: prefer_const_declarations
     final path = r'/common_api/schedule_task';
 
@@ -1293,7 +1293,7 @@ class CommonAdminApi {
 
       queryParams.addAll(_queryParams('', 'manager_name', managerName));
       queryParams.addAll(_queryParams('', 'scheduled_task_type', scheduledTaskType));
-      queryParams.addAll(_queryParams('', 'notify_backend', notifyBackend));
+      queryParams.addAll(_queryParams('', 'notify_server', notifyServer));
 
     const contentTypes = <String>[];
 
@@ -1319,9 +1319,9 @@ class CommonAdminApi {
   ///
   /// * [ScheduledTaskType] scheduledTaskType (required):
   ///
-  /// * [bool] notifyBackend (required):
-  Future<void> postScheduleTask(String managerName, ScheduledTaskType scheduledTaskType, bool notifyBackend,) async {
-    final response = await postScheduleTaskWithHttpInfo(managerName, scheduledTaskType, notifyBackend,);
+  /// * [bool] notifyServer (required):
+  Future<void> postScheduleTask(String managerName, ScheduledTaskType scheduledTaskType, bool notifyServer,) async {
+    final response = await postScheduleTaskWithHttpInfo(managerName, scheduledTaskType, notifyServer,);
     if (response.statusCode >= HttpStatus.badRequest) {
       throw ApiException(response.statusCode, await _decodeBodyBytes(response));
     }
