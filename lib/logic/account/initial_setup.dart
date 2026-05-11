@@ -387,37 +387,39 @@ class InitialSetupBloc extends Bloc<InitialSetupEvent, InitialSetupData>
       });
     });
     on<CreateDebugAdminAccount>((data, emit) async {
-      emit(state.copyWith(sendingInProgress: true));
+      await runOnce(() async {
+        emit(state.copyWith(sendingInProgress: true));
 
-      final securitySelfie = await createImage("debug_security_selfie.jpg", (pixel) {
-        pixel
-          ..r = 0
-          ..g = 145
-          ..b = 255
-          ..a = 255;
+        final securitySelfie = await createImage("debug_security_selfie.jpg", (pixel) {
+          pixel
+            ..r = 0
+            ..g = 145
+            ..b = 255
+            ..a = 255;
+        });
+
+        final profileImage = await createImage("debug_profile_image.jpg", (pixel) {
+          pixel
+            ..r = 255
+            ..g = 150
+            ..b = 0
+            ..a = 255;
+        });
+
+        var error = await account.doDeveloperInitialSetup(
+          "${currentUser.aid}@example.com",
+          "Admin",
+          securitySelfie,
+          profileImage,
+        );
+
+        if (error != null) {
+          _log.error("Developer initial setup failed: $error");
+          showSnackBar(R.strings.generic_error_occurred);
+        }
+
+        emit(state.copyWith(sendingInProgress: false));
       });
-
-      final profileImage = await createImage("debug_profile_image.jpg", (pixel) {
-        pixel
-          ..r = 255
-          ..g = 150
-          ..b = 0
-          ..a = 255;
-      });
-
-      var error = await account.doDeveloperInitialSetup(
-        "${currentUser.aid}@example.com",
-        "Admin",
-        securitySelfie,
-        profileImage,
-      );
-
-      if (error != null) {
-        _log.error("Developer initial setup failed: $error");
-        showSnackBar(R.strings.generic_error_occurred);
-      }
-
-      emit(state.copyWith(sendingInProgress: false));
     });
     on<SkipInitialSetup>((data, emit) async {
       final r = await db.accountAction((db) => db.app.updateInitialSetupSkipped(true));
