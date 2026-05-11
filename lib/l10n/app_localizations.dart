@@ -2656,6 +2656,18 @@ abstract class AppLocalizations {
   /// **'Face pictures (any)'**
   String get profile_filters_screen_profile_verification_status_filter_face_verified_any;
 
+  /// Option text for profile verification status filter profile age range verified
+  ///
+  /// In en, this message translates to:
+  /// **'Age (verified once)'**
+  String get profile_filters_screen_profile_verification_status_filter_profile_age_range_verified;
+
+  /// Option text for profile verification status filter profile name verified
+  ///
+  /// In en, this message translates to:
+  /// **'Name'**
+  String get profile_filters_screen_profile_verification_status_filter_profile_name_verified;
+
   /// Option text for profile verification status filter security content verified
   ///
   /// In en, this message translates to:

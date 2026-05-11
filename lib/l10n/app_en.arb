@@ -1926,6 +1926,14 @@
   "@profile_filters_screen_profile_verification_status_filter_face_verified_any": {
     "description": "Option text for profile verification status filter face verified any"
   },
+  "profile_filters_screen_profile_verification_status_filter_profile_age_range_verified": "Age (verified once)",
+  "@profile_filters_screen_profile_verification_status_filter_profile_age_range_verified": {
+    "description": "Option text for profile verification status filter profile age range verified"
+  },
+  "profile_filters_screen_profile_verification_status_filter_profile_name_verified": "Name",
+  "@profile_filters_screen_profile_verification_status_filter_profile_name_verified": {
+    "description": "Option text for profile verification status filter profile name verified"
+  },
   "profile_filters_screen_profile_verification_status_filter_security_content_verified": "Security selfie",
   "@profile_filters_screen_profile_verification_status_filter_security_content_verified": {
     "description": "Option text for profile verification status filter security content verified"

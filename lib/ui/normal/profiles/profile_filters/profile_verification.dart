@@ -16,6 +16,8 @@ class ProfileVerificationStatusFlags {
   static const int faceVerifiedAny = 1;
   static const int faceVerifiedAll = 2;
   static const int securityContentVerified = 4;
+  static const int profileAgeVerified = 8;
+  static const int profileNameVerified = 16;
 }
 
 const _PROFILE_VERIFICATION_STATUS_ICON = MaterialAttributeIcon(Icons.verified_user_outlined);
@@ -51,6 +53,24 @@ List<(int, String)> profileVerificationStatusOptions(
             .profile_filters_screen_profile_verification_status_filter_security_content_verified,
       ),
       (verification) => verification.securityContent,
+    ),
+    (
+      (
+        ProfileVerificationStatusFlags.profileAgeVerified,
+        context
+            .strings
+            .profile_filters_screen_profile_verification_status_filter_profile_age_range_verified,
+      ),
+      (verification) => verification.profileAgeRange,
+    ),
+    (
+      (
+        ProfileVerificationStatusFlags.profileNameVerified,
+        context
+            .strings
+            .profile_filters_screen_profile_verification_status_filter_profile_name_verified,
+      ),
+      (verification) => verification.profileName,
     ),
   ];
 
