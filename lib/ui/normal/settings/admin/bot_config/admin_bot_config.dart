@@ -1,5 +1,6 @@
 import 'package:app/logic/app/navigator_state.dart';
 import 'package:app/model/freezed/logic/main/navigator_state.dart';
+import 'package:app/ui/normal/settings/admin/bot_config/account_verification_config.dart';
 import 'package:app/ui/normal/settings/admin/bot_config/content_moderation_config.dart';
 import 'package:app/ui/normal/settings/admin/bot_config/face_verification_config.dart';
 import 'package:app/ui/normal/settings/admin/bot_config/profile_string_moderation_config.dart';
@@ -46,6 +47,28 @@ class _EditAdminBotConfigScreenState extends State<EditAdminBotConfigScreen> {
       appBar: AppBar(title: const Text("Admin Bot Config")),
       body: ListView(
         children: [
+          SwitchListTile(
+            title: const Text("Account Verification"),
+            value: _config.accountVerificationEnabled,
+            onChanged: (v) => setState(() => _config.accountVerificationEnabled = v),
+          ),
+          ListTile(
+            title: const Text("Configure account verification"),
+            trailing: const Icon(Icons.chevron_right),
+            enabled: _config.accountVerificationEnabled,
+            onTap: _config.accountVerificationEnabled
+                ? () async {
+                    final result = await MyNavigator.pushLimited(
+                      context,
+                      EditAccountVerificationConfigPage(_config.accountVerification),
+                    );
+                    if (result != null) {
+                      setState(() => _config.accountVerification = result);
+                    }
+                  }
+                : null,
+          ),
+          const Divider(),
           SwitchListTile(
             title: const Text("Content Moderation"),
             value: _config.contentModerationEnabled,

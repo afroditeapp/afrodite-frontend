@@ -307,7 +307,8 @@ class _BotConfigScreenState extends State<BotConfigScreen> {
   }
 
   bool _isAdminBotConfigEnabled(AdminBotConfig config) {
-    return config.contentModerationEnabled ||
+    return config.accountVerificationEnabled ||
+        config.contentModerationEnabled ||
         config.faceVerificationEnabled ||
         config.profileNameModerationEnabled ||
         config.profileTextModerationEnabled;
