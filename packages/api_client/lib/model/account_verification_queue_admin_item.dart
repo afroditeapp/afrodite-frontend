@@ -16,6 +16,7 @@ class AccountVerificationQueueAdminItem {
     required this.accountId,
     required this.verificationData,
     required this.verificationMethod,
+    required this.verificationScope,
   });
 
   AccountId accountId;
@@ -24,27 +25,32 @@ class AccountVerificationQueueAdminItem {
 
   String verificationMethod;
 
+  AccountVerificationScope verificationScope;
+
   @override
   bool operator ==(Object other) => identical(this, other) || other is AccountVerificationQueueAdminItem &&
     other.accountId == accountId &&
     other.verificationData == verificationData &&
-    other.verificationMethod == verificationMethod;
+    other.verificationMethod == verificationMethod &&
+    other.verificationScope == verificationScope;
 
   @override
   int get hashCode =>
     // ignore: unnecessary_parenthesis
     (accountId.hashCode) +
     (verificationData.hashCode) +
-    (verificationMethod.hashCode);
+    (verificationMethod.hashCode) +
+    (verificationScope.hashCode);
 
   @override
-  String toString() => 'AccountVerificationQueueAdminItem[accountId=$accountId, verificationData=$verificationData, verificationMethod=$verificationMethod]';
+  String toString() => 'AccountVerificationQueueAdminItem[accountId=$accountId, verificationData=$verificationData, verificationMethod=$verificationMethod, verificationScope=$verificationScope]';
 
   Map<String, dynamic> toJson() {
     final json = <String, dynamic>{};
       json[r'account_id'] = this.accountId;
       json[r'verification_data'] = this.verificationData;
       json[r'verification_method'] = this.verificationMethod;
+      json[r'verification_scope'] = this.verificationScope;
     return json;
   }
 
@@ -70,6 +76,7 @@ class AccountVerificationQueueAdminItem {
         accountId: AccountId.fromJson(json[r'account_id'])!,
         verificationData: mapValueOfType<String>(json, r'verification_data')!,
         verificationMethod: mapValueOfType<String>(json, r'verification_method')!,
+        verificationScope: AccountVerificationScope.fromJson(json[r'verification_scope'])!,
       );
     }
     return null;
@@ -120,6 +127,7 @@ class AccountVerificationQueueAdminItem {
     'account_id',
     'verification_data',
     'verification_method',
+    'verification_scope',
   };
 }
 

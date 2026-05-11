@@ -15,6 +15,10 @@ class GetMyProfileResult {
   GetMyProfileResult({
     this.nameModerationInfo,
     required this.profile,
+    this.profileAgeRangeVerified,
+    this.profileAgeRangeVerifiedManual,
+    this.profileNameVerified,
+    this.profileNameVerifiedManual,
     required this.profileSyncVersion,
     required this.profileVersion,
     this.textModerationInfo,
@@ -23,6 +27,14 @@ class GetMyProfileResult {
   ProfileStringModerationInfo? nameModerationInfo;
 
   Profile profile;
+
+  bool? profileAgeRangeVerified;
+
+  bool? profileAgeRangeVerifiedManual;
+
+  bool? profileNameVerified;
+
+  bool? profileNameVerifiedManual;
 
   ProfileSyncVersion profileSyncVersion;
 
@@ -34,6 +46,10 @@ class GetMyProfileResult {
   bool operator ==(Object other) => identical(this, other) || other is GetMyProfileResult &&
     other.nameModerationInfo == nameModerationInfo &&
     other.profile == profile &&
+    other.profileAgeRangeVerified == profileAgeRangeVerified &&
+    other.profileAgeRangeVerifiedManual == profileAgeRangeVerifiedManual &&
+    other.profileNameVerified == profileNameVerified &&
+    other.profileNameVerifiedManual == profileNameVerifiedManual &&
     other.profileSyncVersion == profileSyncVersion &&
     other.profileVersion == profileVersion &&
     other.textModerationInfo == textModerationInfo;
@@ -43,12 +59,16 @@ class GetMyProfileResult {
     // ignore: unnecessary_parenthesis
     (nameModerationInfo == null ? 0 : nameModerationInfo!.hashCode) +
     (profile.hashCode) +
+    (profileAgeRangeVerified == null ? 0 : profileAgeRangeVerified!.hashCode) +
+    (profileAgeRangeVerifiedManual == null ? 0 : profileAgeRangeVerifiedManual!.hashCode) +
+    (profileNameVerified == null ? 0 : profileNameVerified!.hashCode) +
+    (profileNameVerifiedManual == null ? 0 : profileNameVerifiedManual!.hashCode) +
     (profileSyncVersion.hashCode) +
     (profileVersion.hashCode) +
     (textModerationInfo == null ? 0 : textModerationInfo!.hashCode);
 
   @override
-  String toString() => 'GetMyProfileResult[nameModerationInfo=$nameModerationInfo, profile=$profile, profileSyncVersion=$profileSyncVersion, profileVersion=$profileVersion, textModerationInfo=$textModerationInfo]';
+  String toString() => 'GetMyProfileResult[nameModerationInfo=$nameModerationInfo, profile=$profile, profileAgeRangeVerified=$profileAgeRangeVerified, profileAgeRangeVerifiedManual=$profileAgeRangeVerifiedManual, profileNameVerified=$profileNameVerified, profileNameVerifiedManual=$profileNameVerifiedManual, profileSyncVersion=$profileSyncVersion, profileVersion=$profileVersion, textModerationInfo=$textModerationInfo]';
 
   Map<String, dynamic> toJson() {
     final json = <String, dynamic>{};
@@ -58,6 +78,26 @@ class GetMyProfileResult {
       json[r'name_moderation_info'] = null;
     }
       json[r'profile'] = this.profile;
+    if (this.profileAgeRangeVerified != null) {
+      json[r'profile_age_range_verified'] = this.profileAgeRangeVerified;
+    } else {
+      json[r'profile_age_range_verified'] = null;
+    }
+    if (this.profileAgeRangeVerifiedManual != null) {
+      json[r'profile_age_range_verified_manual'] = this.profileAgeRangeVerifiedManual;
+    } else {
+      json[r'profile_age_range_verified_manual'] = null;
+    }
+    if (this.profileNameVerified != null) {
+      json[r'profile_name_verified'] = this.profileNameVerified;
+    } else {
+      json[r'profile_name_verified'] = null;
+    }
+    if (this.profileNameVerifiedManual != null) {
+      json[r'profile_name_verified_manual'] = this.profileNameVerifiedManual;
+    } else {
+      json[r'profile_name_verified_manual'] = null;
+    }
       json[r'profile_sync_version'] = this.profileSyncVersion;
       json[r'profile_version'] = this.profileVersion;
     if (this.textModerationInfo != null) {
@@ -89,6 +129,10 @@ class GetMyProfileResult {
       return GetMyProfileResult(
         nameModerationInfo: ProfileStringModerationInfo.fromJson(json[r'name_moderation_info']),
         profile: Profile.fromJson(json[r'profile'])!,
+        profileAgeRangeVerified: mapValueOfType<bool>(json, r'profile_age_range_verified'),
+        profileAgeRangeVerifiedManual: mapValueOfType<bool>(json, r'profile_age_range_verified_manual'),
+        profileNameVerified: mapValueOfType<bool>(json, r'profile_name_verified'),
+        profileNameVerifiedManual: mapValueOfType<bool>(json, r'profile_name_verified_manual'),
         profileSyncVersion: ProfileSyncVersion.fromJson(json[r'profile_sync_version'])!,
         profileVersion: ProfileVersion.fromJson(json[r'profile_version'])!,
         textModerationInfo: ProfileStringModerationInfo.fromJson(json[r'text_moderation_info']),

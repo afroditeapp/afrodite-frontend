@@ -274,11 +274,15 @@ Class | Method | HTTP request | Description
 *ProfileAdminApi* | [**getAdminProfileIteratorPage**](doc//ProfileAdminApi.md#getadminprofileiteratorpage) | **GET** /profile_api/get_admin_profile_iterator_page | Get admin profile iterator page
 *ProfileAdminApi* | [**getLatestCreatedAccountIdDb**](doc//ProfileAdminApi.md#getlatestcreatedaccountiddb) | **GET** /profile_api/get_latest_created_account_id_db | Get latest created account ID DB
 *ProfileAdminApi* | [**getProfileAgeAndName**](doc//ProfileAdminApi.md#getprofileageandname) | **GET** /profile_api/get_profile_age_and_name/{aid} | Get profile age and name
+*ProfileAdminApi* | [**getProfileAgeRangeVerificationAdminInfo**](doc//ProfileAdminApi.md#getprofileagerangeverificationadmininfo) | **GET** /profile_api/profile_age_range_verification_admin_info/{aid} | Get profile age range verification values.
 *ProfileAdminApi* | [**getProfileAttributesSchema**](doc//ProfileAdminApi.md#getprofileattributesschema) | **GET** /profile_api/profile_attributes_schema | Get profile attributes schema from DB.
+*ProfileAdminApi* | [**getProfileNameVerificationAdminInfo**](doc//ProfileAdminApi.md#getprofilenameverificationadmininfo) | **GET** /profile_api/profile_name_verification_admin_info/{aid} | Get profile name verification values.
 *ProfileAdminApi* | [**getProfileStatisticsHistory**](doc//ProfileAdminApi.md#getprofilestatisticshistory) | **GET** /profile_api/profile_statistics_history | 
 *ProfileAdminApi* | [**getProfileStringPendingModerationList**](doc//ProfileAdminApi.md#getprofilestringpendingmoderationlist) | **GET** /profile_api/profile_string_pending_moderation | Get first page of pending profile string moderations. Oldest item is first and count 25.
 *ProfileAdminApi* | [**getProfileStringState**](doc//ProfileAdminApi.md#getprofilestringstate) | **GET** /profile_api/get_profile_string_state/{aid} | Get profile string state
 *ProfileAdminApi* | [**postModerateProfileString**](doc//ProfileAdminApi.md#postmoderateprofilestring) | **POST** /profile_api/moderate_profile_string | Rejected category and details can be set only when [PostModerateProfileString::value] is rejected.
+*ProfileAdminApi* | [**postProfileAgeRangeVerifiedValue**](doc//ProfileAdminApi.md#postprofileagerangeverifiedvalue) | **POST** /profile_api/profile_age_range_verified_value | Change profile age range verified value.
+*ProfileAdminApi* | [**postProfileNameVerifiedValue**](doc//ProfileAdminApi.md#postprofilenameverifiedvalue) | **POST** /profile_api/profile_name_verified_value | Change profile name verified value.
 *ProfileAdminApi* | [**postSetProfileName**](doc//ProfileAdminApi.md#postsetprofilename) | **POST** /profile_api/set_profile_name | Set profile name
 *ProfileAdminApi* | [**putProfileAttributesSchema**](doc//ProfileAdminApi.md#putprofileattributesschema) | **PUT** /profile_api/profile_attributes_schema | Add or edit profile attributes to profile attributes schema in DB.
 
@@ -302,7 +306,9 @@ Class | Method | HTTP request | Description
  - [AccountSyncVersion](doc//AccountSyncVersion.md)
  - [AccountVerificationMethodsConfig](doc//AccountVerificationMethodsConfig.md)
  - [AccountVerificationQueueAdminItem](doc//AccountVerificationQueueAdminItem.md)
+ - [AccountVerificationQueueItem](doc//AccountVerificationQueueItem.md)
  - [AccountVerificationQueueStatus](doc//AccountVerificationQueueStatus.md)
+ - [AccountVerificationScope](doc//AccountVerificationScope.md)
  - [AddFavoriteProfileResult](doc//AddFavoriteProfileResult.md)
  - [AddPublicKeyResult](doc//AddPublicKeyResult.md)
  - [AdminAccountVerificationConfig](doc//AdminAccountVerificationConfig.md)
@@ -518,7 +524,6 @@ Class | Method | HTTP request | Description
  - [PerfMetricValueArea](doc//PerfMetricValueArea.md)
  - [PerfMetricValues](doc//PerfMetricValues.md)
  - [Permissions](doc//Permissions.md)
- - [PostAccountVerificationQueueItem](doc//PostAccountVerificationQueueItem.md)
  - [PostAccountVerificationQueueItemResult](doc//PostAccountVerificationQueueItemResult.md)
  - [PostAccountVerificationQueueRemoveNextItem](doc//PostAccountVerificationQueueRemoveNextItem.md)
  - [PostMediaContentFaceDetectedValue](doc//PostMediaContentFaceDetectedValue.md)
@@ -526,6 +531,8 @@ Class | Method | HTTP request | Description
  - [PostMediaContentFaceVerifiedValueItem](doc//PostMediaContentFaceVerifiedValueItem.md)
  - [PostModerateMediaContent](doc//PostModerateMediaContent.md)
  - [PostModerateProfileString](doc//PostModerateProfileString.md)
+ - [PostProfileAgeRangeVerifiedValue](doc//PostProfileAgeRangeVerifiedValue.md)
+ - [PostProfileNameVerifiedValue](doc//PostProfileNameVerifiedValue.md)
  - [PostSecurityContentVerifiedValue](doc//PostSecurityContentVerifiedValue.md)
  - [PostStartDataExport](doc//PostStartDataExport.md)
  - [PostVideoCallUrlResult](doc//PostVideoCallUrlResult.md)
@@ -533,6 +540,7 @@ Class | Method | HTTP request | Description
  - [ProcessReport](doc//ProcessReport.md)
  - [Profile](doc//Profile.md)
  - [ProfileAgeCounts](doc//ProfileAgeCounts.md)
+ - [ProfileAgeRangeVerificationAdminInfo](doc//ProfileAgeRangeVerificationAdminInfo.md)
  - [ProfileAppNotificationSettings](doc//ProfileAppNotificationSettings.md)
  - [ProfileAttributeFilterValue](doc//ProfileAttributeFilterValue.md)
  - [ProfileAttributeFilterValueUpdate](doc//ProfileAttributeFilterValueUpdate.md)
@@ -553,6 +561,7 @@ Class | Method | HTTP request | Description
  - [ProfileIteratorPageValue](doc//ProfileIteratorPageValue.md)
  - [ProfileIteratorSessionId](doc//ProfileIteratorSessionId.md)
  - [ProfileLink](doc//ProfileLink.md)
+ - [ProfileNameVerificationAdminInfo](doc//ProfileNameVerificationAdminInfo.md)
  - [ProfilePage](doc//ProfilePage.md)
  - [ProfilePrivacySettings](doc//ProfilePrivacySettings.md)
  - [ProfileStatisticsHistoryValue](doc//ProfileStatisticsHistoryValue.md)
@@ -567,6 +576,7 @@ Class | Method | HTTP request | Description
  - [ProfileTextMaxCharactersFilter](doc//ProfileTextMaxCharactersFilter.md)
  - [ProfileTextMinCharactersFilter](doc//ProfileTextMinCharactersFilter.md)
  - [ProfileUpdate](doc//ProfileUpdate.md)
+ - [ProfileVerificationStatus](doc//ProfileVerificationStatus.md)
  - [ProfileVerificationStatusFilter](doc//ProfileVerificationStatusFilter.md)
  - [ProfileVersion](doc//ProfileVersion.md)
  - [ProfileVisibility](doc//ProfileVisibility.md)

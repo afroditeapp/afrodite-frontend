@@ -216,8 +216,12 @@ class ApiClient {
           return AccountVerificationMethodsConfig.fromJson(value);
         case 'AccountVerificationQueueAdminItem':
           return AccountVerificationQueueAdminItem.fromJson(value);
+        case 'AccountVerificationQueueItem':
+          return AccountVerificationQueueItem.fromJson(value);
         case 'AccountVerificationQueueStatus':
           return AccountVerificationQueueStatus.fromJson(value);
+        case 'AccountVerificationScope':
+          return AccountVerificationScope.fromJson(value);
         case 'AddFavoriteProfileResult':
           return AddFavoriteProfileResult.fromJson(value);
         case 'AddPublicKeyResult':
@@ -648,8 +652,6 @@ class ApiClient {
           return PerfMetricValues.fromJson(value);
         case 'Permissions':
           return Permissions.fromJson(value);
-        case 'PostAccountVerificationQueueItem':
-          return PostAccountVerificationQueueItem.fromJson(value);
         case 'PostAccountVerificationQueueItemResult':
           return PostAccountVerificationQueueItemResult.fromJson(value);
         case 'PostAccountVerificationQueueRemoveNextItem':
@@ -664,6 +666,10 @@ class ApiClient {
           return PostModerateMediaContent.fromJson(value);
         case 'PostModerateProfileString':
           return PostModerateProfileString.fromJson(value);
+        case 'PostProfileAgeRangeVerifiedValue':
+          return PostProfileAgeRangeVerifiedValue.fromJson(value);
+        case 'PostProfileNameVerifiedValue':
+          return PostProfileNameVerifiedValue.fromJson(value);
         case 'PostSecurityContentVerifiedValue':
           return PostSecurityContentVerifiedValue.fromJson(value);
         case 'PostStartDataExport':
@@ -678,6 +684,8 @@ class ApiClient {
           return Profile.fromJson(value);
         case 'ProfileAgeCounts':
           return ProfileAgeCounts.fromJson(value);
+        case 'ProfileAgeRangeVerificationAdminInfo':
+          return ProfileAgeRangeVerificationAdminInfo.fromJson(value);
         case 'ProfileAppNotificationSettings':
           return ProfileAppNotificationSettings.fromJson(value);
         case 'ProfileAttributeFilterValue':
@@ -718,6 +726,8 @@ class ApiClient {
           return ProfileIteratorSessionId.fromJson(value);
         case 'ProfileLink':
           return ProfileLink.fromJson(value);
+        case 'ProfileNameVerificationAdminInfo':
+          return ProfileNameVerificationAdminInfo.fromJson(value);
         case 'ProfilePage':
           return ProfilePage.fromJson(value);
         case 'ProfilePrivacySettings':
@@ -746,6 +756,8 @@ class ApiClient {
           return ProfileTextMinCharactersFilter.fromJson(value);
         case 'ProfileUpdate':
           return ProfileUpdate.fromJson(value);
+        case 'ProfileVerificationStatus':
+          return ProfileVerificationStatus.fromJson(value);
         case 'ProfileVerificationStatusFilter':
           return ProfileVerificationStatusFilter.fromJson(value);
         case 'ProfileVersion':

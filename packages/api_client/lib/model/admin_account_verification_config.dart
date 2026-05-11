@@ -13,9 +13,15 @@ part of openapi.api;
 class AdminAccountVerificationConfig {
   /// Returns a new [AdminAccountVerificationConfig] instance.
   AdminAccountVerificationConfig({
+    this.profileAgeRangeEnabled = false,
+    this.profileNameEnabled = false,
     required this.securityContent,
     this.securityContentEnabled = false,
   });
+
+  bool profileAgeRangeEnabled;
+
+  bool profileNameEnabled;
 
   AdminSecurityContentVerificationConfig securityContent;
 
@@ -23,20 +29,26 @@ class AdminAccountVerificationConfig {
 
   @override
   bool operator ==(Object other) => identical(this, other) || other is AdminAccountVerificationConfig &&
+    other.profileAgeRangeEnabled == profileAgeRangeEnabled &&
+    other.profileNameEnabled == profileNameEnabled &&
     other.securityContent == securityContent &&
     other.securityContentEnabled == securityContentEnabled;
 
   @override
   int get hashCode =>
     // ignore: unnecessary_parenthesis
+    (profileAgeRangeEnabled.hashCode) +
+    (profileNameEnabled.hashCode) +
     (securityContent.hashCode) +
     (securityContentEnabled.hashCode);
 
   @override
-  String toString() => 'AdminAccountVerificationConfig[securityContent=$securityContent, securityContentEnabled=$securityContentEnabled]';
+  String toString() => 'AdminAccountVerificationConfig[profileAgeRangeEnabled=$profileAgeRangeEnabled, profileNameEnabled=$profileNameEnabled, securityContent=$securityContent, securityContentEnabled=$securityContentEnabled]';
 
   Map<String, dynamic> toJson() {
     final json = <String, dynamic>{};
+      json[r'profile_age_range_enabled'] = this.profileAgeRangeEnabled;
+      json[r'profile_name_enabled'] = this.profileNameEnabled;
       json[r'security_content'] = this.securityContent;
       json[r'security_content_enabled'] = this.securityContentEnabled;
     return json;
@@ -61,6 +73,8 @@ class AdminAccountVerificationConfig {
       }());
 
       return AdminAccountVerificationConfig(
+        profileAgeRangeEnabled: mapValueOfType<bool>(json, r'profile_age_range_enabled') ?? false,
+        profileNameEnabled: mapValueOfType<bool>(json, r'profile_name_enabled') ?? false,
         securityContent: AdminSecurityContentVerificationConfig.fromJson(json[r'security_content'])!,
         securityContentEnabled: mapValueOfType<bool>(json, r'security_content_enabled') ?? false,
       );

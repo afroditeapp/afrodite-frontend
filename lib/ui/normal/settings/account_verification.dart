@@ -166,9 +166,10 @@ class _AccountVerificationSettingsScreenState extends State<AccountVerificationS
     final result = await widget.api
         .account(
           (api) => api.postAccountVerificationQueueItem(
-            PostAccountVerificationQueueItem(
+            AccountVerificationQueueItem(
               verificationData: '',
               verificationMethod: verificationMethod,
+              verificationScope: AccountVerificationScope(securityContent: true),
             ),
           ),
         )

@@ -646,13 +646,13 @@ class AccountApi {
   ///
   /// Parameters:
   ///
-  /// * [PostAccountVerificationQueueItem] postAccountVerificationQueueItem (required):
-  Future<Response> postAccountVerificationQueueItemWithHttpInfo(PostAccountVerificationQueueItem postAccountVerificationQueueItem,) async {
+  /// * [AccountVerificationQueueItem] accountVerificationQueueItem (required):
+  Future<Response> postAccountVerificationQueueItemWithHttpInfo(AccountVerificationQueueItem accountVerificationQueueItem,) async {
     // ignore: prefer_const_declarations
     final path = r'/account_api/account_verification_queue';
 
     // ignore: prefer_final_locals
-    Object? postBody = postAccountVerificationQueueItem;
+    Object? postBody = accountVerificationQueueItem;
 
     final queryParams = <QueryParam>[];
     final headerParams = <String, String>{};
@@ -676,9 +676,9 @@ class AccountApi {
   ///
   /// Parameters:
   ///
-  /// * [PostAccountVerificationQueueItem] postAccountVerificationQueueItem (required):
-  Future<PostAccountVerificationQueueItemResult?> postAccountVerificationQueueItem(PostAccountVerificationQueueItem postAccountVerificationQueueItem,) async {
-    final response = await postAccountVerificationQueueItemWithHttpInfo(postAccountVerificationQueueItem,);
+  /// * [AccountVerificationQueueItem] accountVerificationQueueItem (required):
+  Future<PostAccountVerificationQueueItemResult?> postAccountVerificationQueueItem(AccountVerificationQueueItem accountVerificationQueueItem,) async {
+    final response = await postAccountVerificationQueueItemWithHttpInfo(accountVerificationQueueItem,);
     if (response.statusCode >= HttpStatus.badRequest) {
       throw ApiException(response.statusCode, await _decodeBodyBytes(response));
     }

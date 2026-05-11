@@ -20,6 +20,7 @@ class Profile {
     this.ptext,
     this.ptextAccepted = true,
     this.unlimitedLikes = false,
+    required this.verificationStatus,
   });
 
   int age;
@@ -52,6 +53,8 @@ class Profile {
 
   bool unlimitedLikes;
 
+  ProfileVerificationStatus verificationStatus;
+
   @override
   bool operator ==(Object other) => identical(this, other) || other is Profile &&
     other.age == age &&
@@ -60,7 +63,8 @@ class Profile {
     other.nameAccepted == nameAccepted &&
     other.ptext == ptext &&
     other.ptextAccepted == ptextAccepted &&
-    other.unlimitedLikes == unlimitedLikes;
+    other.unlimitedLikes == unlimitedLikes &&
+    other.verificationStatus == verificationStatus;
 
   @override
   int get hashCode =>
@@ -71,10 +75,11 @@ class Profile {
     (nameAccepted.hashCode) +
     (ptext == null ? 0 : ptext!.hashCode) +
     (ptextAccepted.hashCode) +
-    (unlimitedLikes.hashCode);
+    (unlimitedLikes.hashCode) +
+    (verificationStatus.hashCode);
 
   @override
-  String toString() => 'Profile[age=$age, attributes=$attributes, name=$name, nameAccepted=$nameAccepted, ptext=$ptext, ptextAccepted=$ptextAccepted, unlimitedLikes=$unlimitedLikes]';
+  String toString() => 'Profile[age=$age, attributes=$attributes, name=$name, nameAccepted=$nameAccepted, ptext=$ptext, ptextAccepted=$ptextAccepted, unlimitedLikes=$unlimitedLikes, verificationStatus=$verificationStatus]';
 
   Map<String, dynamic> toJson() {
     final json = <String, dynamic>{};
@@ -93,6 +98,7 @@ class Profile {
     }
       json[r'ptext_accepted'] = this.ptextAccepted;
       json[r'unlimited_likes'] = this.unlimitedLikes;
+      json[r'verification_status'] = this.verificationStatus;
     return json;
   }
 
@@ -122,6 +128,7 @@ class Profile {
         ptext: mapValueOfType<String>(json, r'ptext'),
         ptextAccepted: mapValueOfType<bool>(json, r'ptext_accepted') ?? true,
         unlimitedLikes: mapValueOfType<bool>(json, r'unlimited_likes') ?? false,
+        verificationStatus: ProfileVerificationStatus.fromJson(json[r'verification_status'])!,
       );
     }
     return null;
@@ -170,6 +177,7 @@ class Profile {
   /// The list of required keys that must be present in a JSON.
   static const requiredKeys = <String>{
     'age',
+    'verification_status',
   };
 }
 

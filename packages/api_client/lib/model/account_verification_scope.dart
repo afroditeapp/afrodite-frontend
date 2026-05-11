@@ -10,30 +10,22 @@
 
 part of openapi.api;
 
-class VerificationConfig {
-  /// Returns a new [VerificationConfig] instance.
-  VerificationConfig({
-    this.face = false,
+class AccountVerificationScope {
+  /// Returns a new [AccountVerificationScope] instance.
+  AccountVerificationScope({
     this.profileAgeRange = false,
     this.profileName = false,
     this.securityContent = false,
   });
 
-  /// Show face verification status and filters.
-  bool face;
-
-  /// Show profile age range verification status and filters.
   bool profileAgeRange;
 
-  /// Show profile name verification status and filters.
   bool profileName;
 
-  /// Show security content verification status and filters.
   bool securityContent;
 
   @override
-  bool operator ==(Object other) => identical(this, other) || other is VerificationConfig &&
-    other.face == face &&
+  bool operator ==(Object other) => identical(this, other) || other is AccountVerificationScope &&
     other.profileAgeRange == profileAgeRange &&
     other.profileName == profileName &&
     other.securityContent == securityContent;
@@ -41,27 +33,25 @@ class VerificationConfig {
   @override
   int get hashCode =>
     // ignore: unnecessary_parenthesis
-    (face.hashCode) +
     (profileAgeRange.hashCode) +
     (profileName.hashCode) +
     (securityContent.hashCode);
 
   @override
-  String toString() => 'VerificationConfig[face=$face, profileAgeRange=$profileAgeRange, profileName=$profileName, securityContent=$securityContent]';
+  String toString() => 'AccountVerificationScope[profileAgeRange=$profileAgeRange, profileName=$profileName, securityContent=$securityContent]';
 
   Map<String, dynamic> toJson() {
     final json = <String, dynamic>{};
-      json[r'face'] = this.face;
       json[r'profile_age_range'] = this.profileAgeRange;
       json[r'profile_name'] = this.profileName;
       json[r'security_content'] = this.securityContent;
     return json;
   }
 
-  /// Returns a new [VerificationConfig] instance and imports its values from
+  /// Returns a new [AccountVerificationScope] instance and imports its values from
   /// [value] if it's a [Map], null otherwise.
   // ignore: prefer_constructors_over_static_methods
-  static VerificationConfig? fromJson(dynamic value) {
+  static AccountVerificationScope? fromJson(dynamic value) {
     if (value is Map) {
       final json = value.cast<String, dynamic>();
 
@@ -70,14 +60,13 @@ class VerificationConfig {
       // Note 2: this code is stripped in release mode!
       assert(() {
         requiredKeys.forEach((key) {
-          assert(json.containsKey(key), 'Required key "VerificationConfig[$key]" is missing from JSON.');
-          assert(json[key] != null, 'Required key "VerificationConfig[$key]" has a null value in JSON.');
+          assert(json.containsKey(key), 'Required key "AccountVerificationScope[$key]" is missing from JSON.');
+          assert(json[key] != null, 'Required key "AccountVerificationScope[$key]" has a null value in JSON.');
         });
         return true;
       }());
 
-      return VerificationConfig(
-        face: mapValueOfType<bool>(json, r'face') ?? false,
+      return AccountVerificationScope(
         profileAgeRange: mapValueOfType<bool>(json, r'profile_age_range') ?? false,
         profileName: mapValueOfType<bool>(json, r'profile_name') ?? false,
         securityContent: mapValueOfType<bool>(json, r'security_content') ?? false,
@@ -86,11 +75,11 @@ class VerificationConfig {
     return null;
   }
 
-  static List<VerificationConfig> listFromJson(dynamic json, {bool growable = false,}) {
-    final result = <VerificationConfig>[];
+  static List<AccountVerificationScope> listFromJson(dynamic json, {bool growable = false,}) {
+    final result = <AccountVerificationScope>[];
     if (json is List && json.isNotEmpty) {
       for (final row in json) {
-        final value = VerificationConfig.fromJson(row);
+        final value = AccountVerificationScope.fromJson(row);
         if (value != null) {
           result.add(value);
         }
@@ -99,12 +88,12 @@ class VerificationConfig {
     return result.toList(growable: growable);
   }
 
-  static Map<String, VerificationConfig> mapFromJson(dynamic json) {
-    final map = <String, VerificationConfig>{};
+  static Map<String, AccountVerificationScope> mapFromJson(dynamic json) {
+    final map = <String, AccountVerificationScope>{};
     if (json is Map && json.isNotEmpty) {
       json = json.cast<String, dynamic>(); // ignore: parameter_assignments
       for (final entry in json.entries) {
-        final value = VerificationConfig.fromJson(entry.value);
+        final value = AccountVerificationScope.fromJson(entry.value);
         if (value != null) {
           map[entry.key] = value;
         }
@@ -113,14 +102,14 @@ class VerificationConfig {
     return map;
   }
 
-  // maps a json object with a list of VerificationConfig-objects as value to a dart map
-  static Map<String, List<VerificationConfig>> mapListFromJson(dynamic json, {bool growable = false,}) {
-    final map = <String, List<VerificationConfig>>{};
+  // maps a json object with a list of AccountVerificationScope-objects as value to a dart map
+  static Map<String, List<AccountVerificationScope>> mapListFromJson(dynamic json, {bool growable = false,}) {
+    final map = <String, List<AccountVerificationScope>>{};
     if (json is Map && json.isNotEmpty) {
       // ignore: parameter_assignments
       json = json.cast<String, dynamic>();
       for (final entry in json.entries) {
-        map[entry.key] = VerificationConfig.listFromJson(entry.value, growable: growable,);
+        map[entry.key] = AccountVerificationScope.listFromJson(entry.value, growable: growable,);
       }
     }
     return map;

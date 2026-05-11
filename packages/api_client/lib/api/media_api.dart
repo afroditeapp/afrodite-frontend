@@ -129,7 +129,7 @@ class MediaApi {
 
   /// Get content data
   ///
-  /// # Access  ## Own content Unrestricted access.  ## Public other content Normal account state required. Only accepted content can be accessed.  ## Private other content If owner of the requested content is a match and the requested content is in current profile content, then the requested content can be accessed if query parameter `is_match` is set to `true`.  Only accepted content can be accessed.  ## Admin access [Permissions::admin_view_all_profiles] and [Permissions::admin_moderate_media_content] allows access to all content.  
+  /// # Access  ## Own content Unrestricted access.  ## Public other content Normal account state required. Only accepted content can be accessed.  ## Private other content If owner of the requested content is a match and the requested content is in current profile content, then the requested content can be accessed if query parameter `is_match` is set to `true`.  Only accepted content can be accessed.  ## Admin access - [Permissions::admin_view_all_profiles] - [Permissions::admin_moderate_media_content] - [Permissions::admin_edit_media_content_face_verified_value] - [Permissions::admin_edit_security_content_verified_value]  
   ///
   /// Note: This method returns the HTTP [Response].
   ///
@@ -174,7 +174,7 @@ class MediaApi {
 
   /// Get content data
   ///
-  /// # Access  ## Own content Unrestricted access.  ## Public other content Normal account state required. Only accepted content can be accessed.  ## Private other content If owner of the requested content is a match and the requested content is in current profile content, then the requested content can be accessed if query parameter `is_match` is set to `true`.  Only accepted content can be accessed.  ## Admin access [Permissions::admin_view_all_profiles] and [Permissions::admin_moderate_media_content] allows access to all content.  
+  /// # Access  ## Own content Unrestricted access.  ## Public other content Normal account state required. Only accepted content can be accessed.  ## Private other content If owner of the requested content is a match and the requested content is in current profile content, then the requested content can be accessed if query parameter `is_match` is set to `true`.  Only accepted content can be accessed.  ## Admin access - [Permissions::admin_view_all_profiles] - [Permissions::admin_moderate_media_content] - [Permissions::admin_edit_media_content_face_verified_value] - [Permissions::admin_edit_security_content_verified_value]  
   ///
   /// Parameters:
   ///

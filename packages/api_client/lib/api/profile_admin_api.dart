@@ -129,7 +129,7 @@ class ProfileAdminApi {
 
   /// Get profile age and name
   ///
-  /// # Access - Permission [model::Permissions::admin_edit_profile_name] - Permission [model::Permissions::admin_find_account_by_email_address] - Permission [model::Permissions::admin_view_permissions] - Permission [model::Permissions::admin_moderate_media_content] - Permission [model::Permissions::admin_moderate_profile_names] - Permission [model::Permissions::admin_moderate_profile_texts]
+  /// # Access - Permission [model::Permissions::admin_edit_profile_name] - Permission [model::Permissions::admin_find_account_by_email_address] - Permission [model::Permissions::admin_view_permissions] - Permission [model::Permissions::admin_moderate_media_content] - Permission [model::Permissions::admin_moderate_profile_names] - Permission [model::Permissions::admin_moderate_profile_texts] - Permission [model::Permissions::admin_edit_profile_age_range_verified_value] - Permission [model::Permissions::admin_edit_profile_name_verified_value]
   ///
   /// Note: This method returns the HTTP [Response].
   ///
@@ -164,7 +164,7 @@ class ProfileAdminApi {
 
   /// Get profile age and name
   ///
-  /// # Access - Permission [model::Permissions::admin_edit_profile_name] - Permission [model::Permissions::admin_find_account_by_email_address] - Permission [model::Permissions::admin_view_permissions] - Permission [model::Permissions::admin_moderate_media_content] - Permission [model::Permissions::admin_moderate_profile_names] - Permission [model::Permissions::admin_moderate_profile_texts]
+  /// # Access - Permission [model::Permissions::admin_edit_profile_name] - Permission [model::Permissions::admin_find_account_by_email_address] - Permission [model::Permissions::admin_view_permissions] - Permission [model::Permissions::admin_moderate_media_content] - Permission [model::Permissions::admin_moderate_profile_names] - Permission [model::Permissions::admin_moderate_profile_texts] - Permission [model::Permissions::admin_edit_profile_age_range_verified_value] - Permission [model::Permissions::admin_edit_profile_name_verified_value]
   ///
   /// Parameters:
   ///
@@ -179,6 +179,63 @@ class ProfileAdminApi {
     // FormatException when trying to decode an empty string.
     if (response.body.isNotEmpty && response.statusCode != HttpStatus.noContent) {
       return await apiClient.deserializeAsync(await _decodeBodyBytes(response), 'GetProfileAgeAndName',) as GetProfileAgeAndName;
+    
+    }
+    return null;
+  }
+
+  /// Get profile age range verification values.
+  ///
+  /// # Access - Permission [model::Permissions::admin_edit_profile_age_range_verified_value]
+  ///
+  /// Note: This method returns the HTTP [Response].
+  ///
+  /// Parameters:
+  ///
+  /// * [String] aid (required):
+  Future<Response> getProfileAgeRangeVerificationAdminInfoWithHttpInfo(String aid,) async {
+    // ignore: prefer_const_declarations
+    final path = r'/profile_api/profile_age_range_verification_admin_info/{aid}'
+      .replaceAll('{aid}', aid);
+
+    // ignore: prefer_final_locals
+    Object? postBody;
+
+    final queryParams = <QueryParam>[];
+    final headerParams = <String, String>{};
+    final formParams = <String, String>{};
+
+    const contentTypes = <String>[];
+
+
+    return apiClient.invokeAPI(
+      path,
+      'GET',
+      queryParams,
+      postBody,
+      headerParams,
+      formParams,
+      contentTypes.isEmpty ? null : contentTypes.first,
+    );
+  }
+
+  /// Get profile age range verification values.
+  ///
+  /// # Access - Permission [model::Permissions::admin_edit_profile_age_range_verified_value]
+  ///
+  /// Parameters:
+  ///
+  /// * [String] aid (required):
+  Future<ProfileAgeRangeVerificationAdminInfo?> getProfileAgeRangeVerificationAdminInfo(String aid,) async {
+    final response = await getProfileAgeRangeVerificationAdminInfoWithHttpInfo(aid,);
+    if (response.statusCode >= HttpStatus.badRequest) {
+      throw ApiException(response.statusCode, await _decodeBodyBytes(response));
+    }
+    // When a remote server returns no body with a status of 204, we shall not decode it.
+    // At the time of writing this, `dart:convert` will throw an "Unexpected end of input"
+    // FormatException when trying to decode an empty string.
+    if (response.body.isNotEmpty && response.statusCode != HttpStatus.noContent) {
+      return await apiClient.deserializeAsync(await _decodeBodyBytes(response), 'ProfileAgeRangeVerificationAdminInfo',) as ProfileAgeRangeVerificationAdminInfo;
     
     }
     return null;
@@ -227,6 +284,63 @@ class ProfileAdminApi {
     // FormatException when trying to decode an empty string.
     if (response.body.isNotEmpty && response.statusCode != HttpStatus.noContent) {
       return await apiClient.deserializeAsync(await _decodeBodyBytes(response), 'ProfileAttributesSchemaExport',) as ProfileAttributesSchemaExport;
+    
+    }
+    return null;
+  }
+
+  /// Get profile name verification values.
+  ///
+  /// # Access - Permission [model::Permissions::admin_edit_profile_name_verified_value]
+  ///
+  /// Note: This method returns the HTTP [Response].
+  ///
+  /// Parameters:
+  ///
+  /// * [String] aid (required):
+  Future<Response> getProfileNameVerificationAdminInfoWithHttpInfo(String aid,) async {
+    // ignore: prefer_const_declarations
+    final path = r'/profile_api/profile_name_verification_admin_info/{aid}'
+      .replaceAll('{aid}', aid);
+
+    // ignore: prefer_final_locals
+    Object? postBody;
+
+    final queryParams = <QueryParam>[];
+    final headerParams = <String, String>{};
+    final formParams = <String, String>{};
+
+    const contentTypes = <String>[];
+
+
+    return apiClient.invokeAPI(
+      path,
+      'GET',
+      queryParams,
+      postBody,
+      headerParams,
+      formParams,
+      contentTypes.isEmpty ? null : contentTypes.first,
+    );
+  }
+
+  /// Get profile name verification values.
+  ///
+  /// # Access - Permission [model::Permissions::admin_edit_profile_name_verified_value]
+  ///
+  /// Parameters:
+  ///
+  /// * [String] aid (required):
+  Future<ProfileNameVerificationAdminInfo?> getProfileNameVerificationAdminInfo(String aid,) async {
+    final response = await getProfileNameVerificationAdminInfoWithHttpInfo(aid,);
+    if (response.statusCode >= HttpStatus.badRequest) {
+      throw ApiException(response.statusCode, await _decodeBodyBytes(response));
+    }
+    // When a remote server returns no body with a status of 204, we shall not decode it.
+    // At the time of writing this, `dart:convert` will throw an "Unexpected end of input"
+    // FormatException when trying to decode an empty string.
+    if (response.body.isNotEmpty && response.statusCode != HttpStatus.noContent) {
+      return await apiClient.deserializeAsync(await _decodeBodyBytes(response), 'ProfileNameVerificationAdminInfo',) as ProfileNameVerificationAdminInfo;
     
     }
     return null;
@@ -459,6 +573,102 @@ class ProfileAdminApi {
   /// * [PostModerateProfileString] postModerateProfileString (required):
   Future<void> postModerateProfileString(PostModerateProfileString postModerateProfileString,) async {
     final response = await postModerateProfileStringWithHttpInfo(postModerateProfileString,);
+    if (response.statusCode >= HttpStatus.badRequest) {
+      throw ApiException(response.statusCode, await _decodeBodyBytes(response));
+    }
+  }
+
+  /// Change profile age range verified value.
+  ///
+  /// Bot account sets automatic value and human admin account sets manual override value.  # Access - Permission [model::Permissions::admin_edit_profile_age_range_verified_value]
+  ///
+  /// Note: This method returns the HTTP [Response].
+  ///
+  /// Parameters:
+  ///
+  /// * [PostProfileAgeRangeVerifiedValue] postProfileAgeRangeVerifiedValue (required):
+  Future<Response> postProfileAgeRangeVerifiedValueWithHttpInfo(PostProfileAgeRangeVerifiedValue postProfileAgeRangeVerifiedValue,) async {
+    // ignore: prefer_const_declarations
+    final path = r'/profile_api/profile_age_range_verified_value';
+
+    // ignore: prefer_final_locals
+    Object? postBody = postProfileAgeRangeVerifiedValue;
+
+    final queryParams = <QueryParam>[];
+    final headerParams = <String, String>{};
+    final formParams = <String, String>{};
+
+    const contentTypes = <String>['application/json'];
+
+
+    return apiClient.invokeAPI(
+      path,
+      'POST',
+      queryParams,
+      postBody,
+      headerParams,
+      formParams,
+      contentTypes.isEmpty ? null : contentTypes.first,
+    );
+  }
+
+  /// Change profile age range verified value.
+  ///
+  /// Bot account sets automatic value and human admin account sets manual override value.  # Access - Permission [model::Permissions::admin_edit_profile_age_range_verified_value]
+  ///
+  /// Parameters:
+  ///
+  /// * [PostProfileAgeRangeVerifiedValue] postProfileAgeRangeVerifiedValue (required):
+  Future<void> postProfileAgeRangeVerifiedValue(PostProfileAgeRangeVerifiedValue postProfileAgeRangeVerifiedValue,) async {
+    final response = await postProfileAgeRangeVerifiedValueWithHttpInfo(postProfileAgeRangeVerifiedValue,);
+    if (response.statusCode >= HttpStatus.badRequest) {
+      throw ApiException(response.statusCode, await _decodeBodyBytes(response));
+    }
+  }
+
+  /// Change profile name verified value.
+  ///
+  /// Bot account sets automatic value and human admin account sets manual override value.  # Access - Permission [model::Permissions::admin_edit_profile_name_verified_value]
+  ///
+  /// Note: This method returns the HTTP [Response].
+  ///
+  /// Parameters:
+  ///
+  /// * [PostProfileNameVerifiedValue] postProfileNameVerifiedValue (required):
+  Future<Response> postProfileNameVerifiedValueWithHttpInfo(PostProfileNameVerifiedValue postProfileNameVerifiedValue,) async {
+    // ignore: prefer_const_declarations
+    final path = r'/profile_api/profile_name_verified_value';
+
+    // ignore: prefer_final_locals
+    Object? postBody = postProfileNameVerifiedValue;
+
+    final queryParams = <QueryParam>[];
+    final headerParams = <String, String>{};
+    final formParams = <String, String>{};
+
+    const contentTypes = <String>['application/json'];
+
+
+    return apiClient.invokeAPI(
+      path,
+      'POST',
+      queryParams,
+      postBody,
+      headerParams,
+      formParams,
+      contentTypes.isEmpty ? null : contentTypes.first,
+    );
+  }
+
+  /// Change profile name verified value.
+  ///
+  /// Bot account sets automatic value and human admin account sets manual override value.  # Access - Permission [model::Permissions::admin_edit_profile_name_verified_value]
+  ///
+  /// Parameters:
+  ///
+  /// * [PostProfileNameVerifiedValue] postProfileNameVerifiedValue (required):
+  Future<void> postProfileNameVerifiedValue(PostProfileNameVerifiedValue postProfileNameVerifiedValue,) async {
+    final response = await postProfileNameVerifiedValueWithHttpInfo(postProfileNameVerifiedValue,);
     if (response.statusCode >= HttpStatus.badRequest) {
       throw ApiException(response.statusCode, await _decodeBodyBytes(response));
     }

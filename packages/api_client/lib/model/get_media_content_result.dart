@@ -16,7 +16,6 @@ class GetMediaContentResult {
     required this.profileContent,
     required this.profileContentVersion,
     this.securityContent,
-    this.securityContentVerified,
     required this.syncVersion,
   });
 
@@ -26,8 +25,6 @@ class GetMediaContentResult {
 
   MyContentInfo? securityContent;
 
-  bool? securityContentVerified;
-
   MediaContentSyncVersion syncVersion;
 
   @override
@@ -35,7 +32,6 @@ class GetMediaContentResult {
     other.profileContent == profileContent &&
     other.profileContentVersion == profileContentVersion &&
     other.securityContent == securityContent &&
-    other.securityContentVerified == securityContentVerified &&
     other.syncVersion == syncVersion;
 
   @override
@@ -44,11 +40,10 @@ class GetMediaContentResult {
     (profileContent.hashCode) +
     (profileContentVersion.hashCode) +
     (securityContent == null ? 0 : securityContent!.hashCode) +
-    (securityContentVerified == null ? 0 : securityContentVerified!.hashCode) +
     (syncVersion.hashCode);
 
   @override
-  String toString() => 'GetMediaContentResult[profileContent=$profileContent, profileContentVersion=$profileContentVersion, securityContent=$securityContent, securityContentVerified=$securityContentVerified, syncVersion=$syncVersion]';
+  String toString() => 'GetMediaContentResult[profileContent=$profileContent, profileContentVersion=$profileContentVersion, securityContent=$securityContent, syncVersion=$syncVersion]';
 
   Map<String, dynamic> toJson() {
     final json = <String, dynamic>{};
@@ -58,11 +53,6 @@ class GetMediaContentResult {
       json[r'security_content'] = this.securityContent;
     } else {
       json[r'security_content'] = null;
-    }
-    if (this.securityContentVerified != null) {
-      json[r'security_content_verified'] = this.securityContentVerified;
-    } else {
-      json[r'security_content_verified'] = null;
     }
       json[r'sync_version'] = this.syncVersion;
     return json;
@@ -90,7 +80,6 @@ class GetMediaContentResult {
         profileContent: MyProfileContent.fromJson(json[r'profile_content'])!,
         profileContentVersion: ProfileContentVersion.fromJson(json[r'profile_content_version'])!,
         securityContent: MyContentInfo.fromJson(json[r'security_content']),
-        securityContentVerified: mapValueOfType<bool>(json, r'security_content_verified'),
         syncVersion: MediaContentSyncVersion.fromJson(json[r'sync_version'])!,
       );
     }

@@ -39,7 +39,9 @@ lib/model/account_state_container.dart
 lib/model/account_sync_version.dart
 lib/model/account_verification_methods_config.dart
 lib/model/account_verification_queue_admin_item.dart
+lib/model/account_verification_queue_item.dart
 lib/model/account_verification_queue_status.dart
+lib/model/account_verification_scope.dart
 lib/model/add_favorite_profile_result.dart
 lib/model/add_public_key_result.dart
 lib/model/admin_account_verification_config.dart
@@ -255,7 +257,6 @@ lib/model/perf_metric_query_result.dart
 lib/model/perf_metric_value_area.dart
 lib/model/perf_metric_values.dart
 lib/model/permissions.dart
-lib/model/post_account_verification_queue_item.dart
 lib/model/post_account_verification_queue_item_result.dart
 lib/model/post_account_verification_queue_remove_next_item.dart
 lib/model/post_media_content_face_detected_value.dart
@@ -263,6 +264,8 @@ lib/model/post_media_content_face_verified_value.dart
 lib/model/post_media_content_face_verified_value_item.dart
 lib/model/post_moderate_media_content.dart
 lib/model/post_moderate_profile_string.dart
+lib/model/post_profile_age_range_verified_value.dart
+lib/model/post_profile_name_verified_value.dart
 lib/model/post_security_content_verified_value.dart
 lib/model/post_start_data_export.dart
 lib/model/post_video_call_url_result.dart
@@ -270,6 +273,7 @@ lib/model/predefined_banner.dart
 lib/model/process_report.dart
 lib/model/profile.dart
 lib/model/profile_age_counts.dart
+lib/model/profile_age_range_verification_admin_info.dart
 lib/model/profile_app_notification_settings.dart
 lib/model/profile_attribute_filter_value.dart
 lib/model/profile_attribute_filter_value_update.dart
@@ -290,6 +294,7 @@ lib/model/profile_iterator_page.dart
 lib/model/profile_iterator_page_value.dart
 lib/model/profile_iterator_session_id.dart
 lib/model/profile_link.dart
+lib/model/profile_name_verification_admin_info.dart
 lib/model/profile_page.dart
 lib/model/profile_privacy_settings.dart
 lib/model/profile_statistics_history_value.dart
@@ -304,6 +309,7 @@ lib/model/profile_sync_version.dart
 lib/model/profile_text_max_characters_filter.dart
 lib/model/profile_text_min_characters_filter.dart
 lib/model/profile_update.dart
+lib/model/profile_verification_status.dart
 lib/model/profile_verification_status_filter.dart
 lib/model/profile_version.dart
 lib/model/profile_visibility.dart
