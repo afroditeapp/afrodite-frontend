@@ -35,7 +35,6 @@ class MyProfile extends SingleRowTable {
       .nullable()();
   IntColumn get profileAge => integer().nullable()();
   BoolColumn get profileUnlimitedLikes => boolean().nullable()();
-  IntColumn get mediaVerificationStatus => integer().nullable()();
   IntColumn get profileVerificationStatus => integer().nullable()();
   TextColumn get profileVersion =>
       text().map(const NullAwareTypeConverter.wrap(ProfileVersionConverter())).nullable()();
@@ -43,6 +42,7 @@ class MyProfile extends SingleRowTable {
       text().map(NullAwareTypeConverter.wrap(const ProfileAttributeValueConverter())).nullable()();
 
   // Profile content
+  IntColumn get mediaVerificationStatus => integer().nullable()();
   RealColumn get primaryContentGridCropSize => real().nullable()();
   RealColumn get primaryContentGridCropX => real().nullable()();
   RealColumn get primaryContentGridCropY => real().nullable()();
