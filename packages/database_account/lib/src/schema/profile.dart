@@ -79,9 +79,6 @@ class InitialProfileAge extends SingleRowTable {
 class Profile extends Table {
   TextColumn get accountId => text().map(const AccountIdConverter())();
 
-  TextColumn get profileContentVersion =>
-      text().map(const NullAwareTypeConverter.wrap(ProfileContentVersionConverter())).nullable()();
-
   TextColumn get profileName => text().nullable()();
   BoolColumn get profileNameAccepted => boolean().nullable()();
   TextColumn get profileText => text().nullable()();
@@ -91,14 +88,17 @@ class Profile extends Table {
   IntColumn get profileAge => integer().nullable()();
   IntColumn get profileLastSeenTimeValue => integer().nullable()();
   BoolColumn get profileUnlimitedLikes => boolean().nullable()();
-  IntColumn get mediaVerificationStatus => integer().nullable()();
   IntColumn get profileVerificationStatus => integer().nullable()();
   TextColumn get jsonProfileAttributes =>
       text().map(NullAwareTypeConverter.wrap(const ProfileAttributeValueConverter())).nullable()();
 
+  // Profile content
+  IntColumn get mediaVerificationStatus => integer().nullable()();
   RealColumn get primaryContentGridCropSize => real().nullable()();
   RealColumn get primaryContentGridCropX => real().nullable()();
   RealColumn get primaryContentGridCropY => real().nullable()();
+  TextColumn get profileContentVersion =>
+      text().map(const NullAwareTypeConverter.wrap(ProfileContentVersionConverter())).nullable()();
 
   IntColumn get profileDataRefreshTime =>
       integer().map(const NullAwareTypeConverter.wrap(UtcDateTimeConverter())).nullable()();
