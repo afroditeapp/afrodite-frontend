@@ -316,11 +316,35 @@ abstract class AppLocalizations {
   /// **'Account verification request queued'**
   String get account_verification_screen_request_queued;
 
+  /// Checkbox label for account verification profile age scope
+  ///
+  /// In en, this message translates to:
+  /// **'Profile age'**
+  String get account_verification_screen_scope_profile_age;
+
+  /// Checkbox label for account verification profile name scope
+  ///
+  /// In en, this message translates to:
+  /// **'Profile name'**
+  String get account_verification_screen_scope_profile_name;
+
+  /// Title shown above account verification scope and actions section
+  ///
+  /// In en, this message translates to:
+  /// **'Select verification scopes and method'**
+  String get account_verification_screen_start_verification_title;
+
   /// Title for account verification settings screen
   ///
   /// In en, this message translates to:
   /// **'Account verification'**
   String get account_verification_screen_title;
+
+  /// Account verification method label for eudi when it is not yet supported
+  ///
+  /// In en, this message translates to:
+  /// **'EU digital wallet (currently unsupported)'**
+  String get account_verification_screen_verification_method_eudi_unsupported;
 
   /// Title for admin settings screen
   ///

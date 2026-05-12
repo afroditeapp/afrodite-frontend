@@ -617,6 +617,10 @@
     <string name="account_verification_screen_queue_position" description="Text shown with current account verification queue position">Verification queue position: %s</string>
     <string name="account_verification_screen_request_queue_full" description="Snackbar text when account verification queue is full">Account verification queue is full. Please try again later.</string>
     <string name="account_verification_screen_request_queued" description="Snackbar text when account verification request was queued successfully">Account verification request queued</string>
+    <string name="account_verification_screen_start_verification_title" description="Title shown above account verification scope and actions section">Select verification scopes and method</string>
+    <string name="account_verification_screen_scope_profile_age" description="Checkbox label for account verification profile age scope">Profile age</string>
+    <string name="account_verification_screen_scope_profile_name" description="Checkbox label for account verification profile name scope">Profile name</string>
+    <string name="account_verification_screen_verification_method_eudi_unsupported" description="Account verification method label for eudi when it is not yet supported">EU digital wallet (currently unsupported)</string>
 
     <!-- Profile grid settings screen -->
     <string name="profile_grid_settings_screen_title" description="Profile grid settings screen title">Profile grid</string>

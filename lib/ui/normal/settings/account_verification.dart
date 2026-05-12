@@ -49,6 +49,9 @@ class _AccountVerificationSettingsScreenState extends State<AccountVerificationS
   int? _queuePosition;
   bool _isLoading = true;
   bool _actionInProgress = false;
+  bool _scopeSecurityContent = true;
+  bool _scopeProfileAgeRange = true;
+  bool _scopeProfileName = true;
 
   @override
   void initState() {
@@ -96,13 +99,49 @@ class _AccountVerificationSettingsScreenState extends State<AccountVerificationS
     final mediaVerificationStatus = state.profile?.mediaVerificationStatus ?? 0;
     final securitySelfieVerified =
         mediaVerificationStatus & ProfileVerificationStatusFlags.securityContentVerified != 0;
+    final profileAgeRangeVerified =
+        mediaVerificationStatus & ProfileVerificationStatusFlags.profileAgeVerified != 0;
+    final profileNameVerified =
+        mediaVerificationStatus & ProfileVerificationStatusFlags.profileNameVerified != 0;
+    final verificationScope = AccountVerificationScope(
+      securityContent: !securitySelfieVerified,
+      profileAgeRange: !profileAgeRangeVerified,
+      profileName: !profileNameVerified,
+    );
+    _syncScopeSelection(verificationScope);
+    final selectedVerificationScope = _selectedVerificationScope(verificationScope);
     final verificationOngoing = _queuePosition != null;
-    final showVerificationMethods = !_isLoading && !verificationOngoing && !securitySelfieVerified;
+    final showVerificationStates =
+        profileAgeRangeVerified || profileNameVerified || securitySelfieVerified;
+    final showVerificationMethods =
+        !_isLoading && !verificationOngoing && _hasVerificationScope(verificationScope);
 
     return Column(
       children: [
-        _securitySelfieStatusTile(context, securitySelfieVerified: securitySelfieVerified),
-        const Divider(),
+        if (showVerificationStates) ...[
+          _verificationStatusTile(
+            context,
+            verified: profileAgeRangeVerified,
+            title: context
+                .strings
+                .profile_filters_screen_profile_verification_status_filter_profile_age_range_verified,
+          ),
+          _verificationStatusTile(
+            context,
+            verified: profileNameVerified,
+            title: context
+                .strings
+                .profile_filters_screen_profile_verification_status_filter_profile_name_verified,
+          ),
+          _verificationStatusTile(
+            context,
+            verified: securitySelfieVerified,
+            title: context
+                .strings
+                .profile_filters_screen_profile_verification_status_filter_security_content_verified,
+          ),
+          const Divider(),
+        ],
         if (verificationOngoing)
           ListTile(
             leading: const Icon(Icons.hourglass_top, color: Colors.orange),
@@ -113,36 +152,138 @@ class _AccountVerificationSettingsScreenState extends State<AccountVerificationS
             ),
           ),
         if (verificationOngoing) const Divider(),
-        if (showVerificationMethods && widget.methods.debugAccept)
-          ListTile(
-            leading: const Icon(Icons.task_alt),
-            title: const Text('debug_accept'),
-            enabled: !_actionInProgress,
-            onTap: () => _requestVerification("debug_accept"),
+        if (showVerificationMethods) ...[
+          _sectionTitle(context.strings.account_verification_screen_start_verification_title),
+          ..._verificationScopeAndActionTiles(
+            context,
+            availableScope: verificationScope,
+            selectedScope: selectedVerificationScope,
           ),
-        if (showVerificationMethods && widget.methods.debugReject)
-          ListTile(
-            leading: const Icon(Icons.cancel_outlined),
-            title: const Text('debug_reject'),
-            enabled: !_actionInProgress,
-            onTap: () => _requestVerification("debug_reject"),
-          ),
+        ],
       ],
     );
   }
 
-  Widget _securitySelfieStatusTile(BuildContext context, {required bool securitySelfieVerified}) {
-    final icon = securitySelfieVerified ? Icons.check_circle : Icons.cancel;
-    final color = securitySelfieVerified ? Colors.green : Colors.red;
+  Widget _sectionTitle(String title) {
+    return Padding(
+      padding: const EdgeInsets.only(left: 16.0, right: 16.0, top: 8.0, bottom: 4.0),
+      child: Align(
+        alignment: Alignment.centerLeft,
+        child: Text(title, style: Theme.of(context).textTheme.titleMedium),
+      ),
+    );
+  }
+
+  List<Widget> _verificationScopeAndActionTiles(
+    BuildContext context, {
+    required AccountVerificationScope availableScope,
+    required AccountVerificationScope selectedScope,
+  }) {
+    return [
+      ..._verificationScopeCheckboxTiles(context, availableScope: availableScope),
+      if (widget.methods.debugAccept)
+        ListTile(
+          leading: const Icon(Icons.task_alt),
+          title: const Text('debug_accept'),
+          enabled: !_actionInProgress && _hasVerificationScope(selectedScope),
+          onTap: () => _requestVerification("debug_accept", selectedScope),
+        ),
+      if (widget.methods.debugReject)
+        ListTile(
+          leading: const Icon(Icons.cancel_outlined),
+          title: const Text('debug_reject'),
+          enabled: !_actionInProgress && _hasVerificationScope(selectedScope),
+          onTap: () => _requestVerification("debug_reject", selectedScope),
+        ),
+      if (widget.methods.eudi)
+        ListTile(
+          leading: const Icon(Icons.badge_outlined),
+          title: Text(
+            context.strings.account_verification_screen_verification_method_eudi_unsupported,
+          ),
+          enabled: false,
+        ),
+    ];
+  }
+
+  List<Widget> _verificationScopeCheckboxTiles(
+    BuildContext context, {
+    required AccountVerificationScope availableScope,
+  }) {
+    return [
+      if (availableScope.profileAgeRange)
+        CheckboxListTile(
+          title: Text(context.strings.account_verification_screen_scope_profile_age),
+          value: _scopeProfileAgeRange,
+          onChanged: _actionInProgress
+              ? null
+              : (value) {
+                  setState(() {
+                    _scopeProfileAgeRange = value == true;
+                  });
+                },
+        ),
+      if (availableScope.profileName)
+        CheckboxListTile(
+          title: Text(context.strings.account_verification_screen_scope_profile_name),
+          value: _scopeProfileName,
+          onChanged: _actionInProgress
+              ? null
+              : (value) {
+                  setState(() {
+                    _scopeProfileName = value == true;
+                  });
+                },
+        ),
+      if (availableScope.securityContent)
+        CheckboxListTile(
+          title: Text(
+            context
+                .strings
+                .profile_filters_screen_profile_verification_status_filter_security_content_verified,
+          ),
+          value: _scopeSecurityContent,
+          onChanged: _actionInProgress
+              ? null
+              : (value) {
+                  setState(() {
+                    _scopeSecurityContent = value == true;
+                  });
+                },
+        ),
+    ];
+  }
+
+  Widget _verificationStatusTile(
+    BuildContext context, {
+    required bool verified,
+    required String title,
+  }) {
+    final icon = verified ? Icons.check_circle : Icons.cancel;
+    final color = verified ? Colors.green : Colors.red;
 
     return ListTile(
       leading: Icon(icon, color: color),
-      title: Text(
-        context
-            .strings
-            .profile_filters_screen_profile_verification_status_filter_security_content_verified,
-      ),
+      title: Text(title),
     );
+  }
+
+  bool _hasVerificationScope(AccountVerificationScope scope) {
+    return scope.securityContent || scope.profileAgeRange || scope.profileName;
+  }
+
+  AccountVerificationScope _selectedVerificationScope(AccountVerificationScope availableScope) {
+    return AccountVerificationScope(
+      securityContent: availableScope.securityContent && _scopeSecurityContent,
+      profileAgeRange: availableScope.profileAgeRange && _scopeProfileAgeRange,
+      profileName: availableScope.profileName && _scopeProfileName,
+    );
+  }
+
+  void _syncScopeSelection(AccountVerificationScope availableScope) {
+    _scopeSecurityContent = availableScope.securityContent && _scopeSecurityContent;
+    _scopeProfileAgeRange = availableScope.profileAgeRange && _scopeProfileAgeRange;
+    _scopeProfileName = availableScope.profileName && _scopeProfileName;
   }
 
   Future<void> _reloadQueueStatus() async {
@@ -158,7 +299,14 @@ class _AccountVerificationSettingsScreenState extends State<AccountVerificationS
     });
   }
 
-  Future<void> _requestVerification(String verificationMethod) async {
+  Future<void> _requestVerification(
+    String verificationMethod,
+    AccountVerificationScope verificationScope,
+  ) async {
+    if (!_hasVerificationScope(verificationScope)) {
+      return;
+    }
+
     setState(() {
       _actionInProgress = true;
     });
@@ -169,7 +317,7 @@ class _AccountVerificationSettingsScreenState extends State<AccountVerificationS
             AccountVerificationQueueItem(
               verificationData: '',
               verificationMethod: verificationMethod,
-              verificationScope: AccountVerificationScope(securityContent: true),
+              verificationScope: verificationScope,
             ),
           ),
         )

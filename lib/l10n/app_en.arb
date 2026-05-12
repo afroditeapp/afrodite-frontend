@@ -187,9 +187,25 @@
   "@account_verification_screen_request_queued": {
     "description": "Snackbar text when account verification request was queued successfully"
   },
+  "account_verification_screen_scope_profile_age": "Profile age",
+  "@account_verification_screen_scope_profile_age": {
+    "description": "Checkbox label for account verification profile age scope"
+  },
+  "account_verification_screen_scope_profile_name": "Profile name",
+  "@account_verification_screen_scope_profile_name": {
+    "description": "Checkbox label for account verification profile name scope"
+  },
+  "account_verification_screen_start_verification_title": "Select verification scopes and method",
+  "@account_verification_screen_start_verification_title": {
+    "description": "Title shown above account verification scope and actions section"
+  },
   "account_verification_screen_title": "Account verification",
   "@account_verification_screen_title": {
     "description": "Title for account verification settings screen"
+  },
+  "account_verification_screen_verification_method_eudi_unsupported": "EU digital wallet (currently unsupported)",
+  "@account_verification_screen_verification_method_eudi_unsupported": {
+    "description": "Account verification method label for eudi when it is not yet supported"
   },
   "admin_settings_title": "Admin",
   "@admin_settings_title": {

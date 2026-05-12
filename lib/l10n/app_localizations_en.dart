@@ -143,7 +143,21 @@ class AppLocalizationsEn extends AppLocalizations {
   String get account_verification_screen_request_queued => 'Account verification request queued';
 
   @override
+  String get account_verification_screen_scope_profile_age => 'Profile age';
+
+  @override
+  String get account_verification_screen_scope_profile_name => 'Profile name';
+
+  @override
+  String get account_verification_screen_start_verification_title =>
+      'Select verification scopes and method';
+
+  @override
   String get account_verification_screen_title => 'Account verification';
+
+  @override
+  String get account_verification_screen_verification_method_eudi_unsupported =>
+      'EU digital wallet (currently unsupported)';
 
   @override
   String get admin_settings_title => 'Admin';
