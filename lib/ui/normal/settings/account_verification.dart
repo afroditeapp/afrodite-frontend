@@ -41,7 +41,7 @@ class AccountVerificationInfoBannerItem extends StatelessWidget {
               return const SizedBox.shrink();
             }
 
-            final verificationStatus = profile.mediaVerificationStatus;
+            final verificationStatus = profile.mergedVerificationStatus();
             final securityContentVerified =
                 verificationStatus & ProfileVerificationStatusFlags.securityContentVerified != 0;
             final profileAgeRangeVerified =
@@ -176,13 +176,13 @@ class _AccountVerificationSettingsScreenState extends State<AccountVerificationS
   }
 
   Widget column(BuildContext context, MyProfileData state) {
-    final mediaVerificationStatus = state.profile?.mediaVerificationStatus ?? 0;
+    final verificationStatus = state.profile?.mergedVerificationStatus() ?? 0;
     final securitySelfieVerified =
-        mediaVerificationStatus & ProfileVerificationStatusFlags.securityContentVerified != 0;
+        verificationStatus & ProfileVerificationStatusFlags.securityContentVerified != 0;
     final profileAgeRangeVerified =
-        mediaVerificationStatus & ProfileVerificationStatusFlags.profileAgeVerified != 0;
+        verificationStatus & ProfileVerificationStatusFlags.profileAgeVerified != 0;
     final profileNameVerified =
-        mediaVerificationStatus & ProfileVerificationStatusFlags.profileNameVerified != 0;
+        verificationStatus & ProfileVerificationStatusFlags.profileNameVerified != 0;
     final verificationScope = AccountVerificationScope(
       securityContent: !securitySelfieVerified,
       profileAgeRange: !profileAgeRangeVerified,

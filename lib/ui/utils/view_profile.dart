@@ -286,7 +286,7 @@ class _ViewProfileEntryState extends State<ViewProfileEntry> {
   }
 
   Widget profileVerificationStatus(BuildContext context, VerificationConfig verificationConfig) {
-    final verificationStatus = widget.profile.mediaVerificationStatus;
+    final verificationStatus = widget.profile.mergedVerificationStatus();
     final hasFaceVerifiedAll =
         verificationStatus & ProfileVerificationStatusFlags.faceVerifiedAll != 0;
     final selectedOptions =
@@ -325,8 +325,8 @@ class _ViewProfileEntryState extends State<ViewProfileEntry> {
     return BlocBuilder<ClientFeaturesConfigBloc, ClientFeaturesConfigData>(
       builder: (context, state) {
         final verificationConfig = state.verificationConfig();
-        if (verificationConfig == VerificationConfig() ||
-            widget.profile.mediaVerificationStatus == 0) {
+        final verificationStatus = widget.profile.mergedVerificationStatus();
+        if (verificationConfig == VerificationConfig() || verificationStatus == 0) {
           return const SizedBox.shrink();
         }
 

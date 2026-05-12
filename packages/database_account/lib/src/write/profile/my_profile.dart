@@ -39,6 +39,7 @@ class DaoWriteMyProfile extends DatabaseAccessor<AccountDatabase> with _$DaoWrit
         profileAge: Value(profile.age),
         profileVersion: Value(result.profileVersion),
         profileUnlimitedLikes: Value(profile.unlimitedLikes),
+        profileVerificationStatus: Value(profile.verificationStatus.v),
         jsonProfileAttributes: Value(profile.attributes.toJsonList()),
       ),
     );

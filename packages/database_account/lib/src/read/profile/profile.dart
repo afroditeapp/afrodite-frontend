@@ -62,6 +62,7 @@ class DaoReadProfile extends DatabaseAccessor<AccountDatabase> with _$DaoReadPro
     final profileAttributes = r.jsonProfileAttributes?.value.toProfileAttributesMap();
     final profileUnlimitedLikes = r.profileUnlimitedLikes;
     final mediaVerificationStatus = r.mediaVerificationStatus ?? 0;
+    final profileVerificationStatus = r.profileVerificationStatus ?? 0;
     final contentVersion = r.profileContentVersion;
 
     if (profileName != null &&
@@ -87,6 +88,7 @@ class DaoReadProfile extends DatabaseAccessor<AccountDatabase> with _$DaoReadPro
         attributeIdAndStateMap: profileAttributes,
         unlimitedLikes: profileUnlimitedLikes,
         mediaVerificationStatus: mediaVerificationStatus,
+        profileVerificationStatus: profileVerificationStatus,
         contentVersion: contentVersion,
         lastSeenTimeValue: r.profileLastSeenTimeValue,
         newLikeInfoReceivedTime: r.newLikeInfoReceivedTime,

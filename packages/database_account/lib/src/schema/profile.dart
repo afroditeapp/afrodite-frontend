@@ -36,6 +36,7 @@ class MyProfile extends SingleRowTable {
   IntColumn get profileAge => integer().nullable()();
   BoolColumn get profileUnlimitedLikes => boolean().nullable()();
   IntColumn get mediaVerificationStatus => integer().nullable()();
+  IntColumn get profileVerificationStatus => integer().nullable()();
   TextColumn get profileVersion =>
       text().map(const NullAwareTypeConverter.wrap(ProfileVersionConverter())).nullable()();
   TextColumn get jsonProfileAttributes =>
@@ -91,6 +92,7 @@ class Profile extends Table {
   IntColumn get profileLastSeenTimeValue => integer().nullable()();
   BoolColumn get profileUnlimitedLikes => boolean().nullable()();
   IntColumn get mediaVerificationStatus => integer().nullable()();
+  IntColumn get profileVerificationStatus => integer().nullable()();
   TextColumn get jsonProfileAttributes =>
       text().map(NullAwareTypeConverter.wrap(const ProfileAttributeValueConverter())).nullable()();
 

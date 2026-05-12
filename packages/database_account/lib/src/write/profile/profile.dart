@@ -26,6 +26,7 @@ class DaoWriteProfile extends DatabaseAccessor<AccountDatabase> with _$DaoWriteP
         profileLastSeenTimeValue: Value(null),
         profileUnlimitedLikes: Value(null),
         mediaVerificationStatus: Value(null),
+        profileVerificationStatus: Value(null),
         jsonProfileAttributes: Value(null),
         primaryContentGridCropSize: Value(null),
         primaryContentGridCropX: Value(null),
@@ -55,6 +56,7 @@ class DaoWriteProfile extends DatabaseAccessor<AccountDatabase> with _$DaoWriteP
         profileVersion: Value(profileVersion),
         profileLastSeenTimeValue: Value(profileLastSeenTime),
         profileUnlimitedLikes: Value(p.unlimitedLikes),
+        profileVerificationStatus: Value(p.verificationStatus.v),
         jsonProfileAttributes: Value(p.attributes.toJsonList()),
       ),
     );

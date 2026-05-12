@@ -43,6 +43,7 @@ class DaoReadMyProfile extends DatabaseAccessor<AccountDatabase> with _$DaoReadM
     final profileContentVersion = r.profileContentVersion;
     final profileUnlimitedLikes = r.profileUnlimitedLikes;
     final mediaVerificationStatus = r.mediaVerificationStatus ?? 0;
+    final profileVerificationStatus = r.profileVerificationStatus ?? 0;
 
     final gridCropSize = r.primaryContentGridCropSize ?? 1.0;
     final gridCropX = r.primaryContentGridCropX ?? 0.0;
@@ -76,6 +77,7 @@ class DaoReadMyProfile extends DatabaseAccessor<AccountDatabase> with _$DaoReadM
         age: profileAge,
         unlimitedLikes: profileUnlimitedLikes,
         mediaVerificationStatus: mediaVerificationStatus,
+        profileVerificationStatus: profileVerificationStatus,
         attributeIdAndStateMap: profileAttributes,
         version: profileVersion,
         contentVersion: profileContentVersion,
