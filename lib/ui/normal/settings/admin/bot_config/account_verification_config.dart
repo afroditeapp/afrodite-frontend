@@ -52,6 +52,23 @@ class _EditAccountVerificationConfigScreenState extends State<EditAccountVerific
             crossAxisAlignment: CrossAxisAlignment.start,
             children: [
               SwitchListTile(
+                title: const Text("Profile age range"),
+                value: _config.profileAgeRangeEnabled,
+                onChanged: (v) {
+                  setState(() => _config.profileAgeRangeEnabled = v);
+                  _formKey.currentState?.validate();
+                },
+              ),
+              SwitchListTile(
+                title: const Text("Profile name verification status"),
+                value: _config.profileNameEnabled,
+                onChanged: (v) {
+                  setState(() => _config.profileNameEnabled = v);
+                  _formKey.currentState?.validate();
+                },
+              ),
+              const Divider(),
+              SwitchListTile(
                 title: const Text("Security content"),
                 value: _config.securityContentEnabled,
                 onChanged: (v) {
