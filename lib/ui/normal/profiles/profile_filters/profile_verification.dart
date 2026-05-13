@@ -25,6 +25,10 @@ typedef _ProfileVerificationStatusOption = ((int, String), bool Function(Verific
 List<(int, String)> profileVerificationStatusOptions(
   BuildContext context, {
   required VerificationConfig verification,
+
+  /// Return those options which are selected even if
+  /// those are disabled from config.
+  int selectedOptions = 0,
 }) {
   final options = <_ProfileVerificationStatusOption>[
     (
@@ -70,7 +74,10 @@ List<(int, String)> profileVerificationStatusOptions(
     ),
   ];
 
-  return options.where((option) => option.$2(verification)).map((option) => option.$1).toList();
+  return options
+      .where((option) => option.$2(verification) || (selectedOptions & option.$1.$1) != 0)
+      .map((option) => option.$1)
+      .toList();
 }
 
 class ProfileVerificationStatusFilterSection extends StatelessWidget {
@@ -81,16 +88,22 @@ class ProfileVerificationStatusFilterSection extends StatelessWidget {
     return BlocBuilder<ClientFeaturesConfigBloc, ClientFeaturesConfigData>(
       builder: (context, clientFeaturesConfigState) {
         final config = clientFeaturesConfigState.verificationConfig();
-        if (config == VerificationConfig()) {
-          return const SizedBox.shrink();
-        }
+        return BlocBuilder<ProfileFiltersBloc, ProfileFiltersData>(
+          builder: (context, profileFiltersState) {
+            final hasEnabledFilter =
+                (profileFiltersState.valueProfileVerificationStatusFilter()?.value ?? 0) != 0;
+            if (config == VerificationConfig() && !hasEnabledFilter) {
+              return const SizedBox.shrink();
+            }
 
-        return Column(
-          mainAxisSize: MainAxisSize.min,
-          children: [
-            const Divider(),
-            _ProfileVerificationStatusFilter(verificationConfig: config),
-          ],
+            return Column(
+              mainAxisSize: MainAxisSize.min,
+              children: [
+                const Divider(),
+                _ProfileVerificationStatusFilter(verificationConfig: config),
+              ],
+            );
+          },
         );
       },
     );
@@ -115,6 +128,7 @@ class _ProfileVerificationStatusFilter extends StatelessWidget {
                 final options = profileVerificationStatusOptions(
                   context,
                   verification: verificationConfig,
+                  selectedOptions: value ?? 0,
                 );
                 final selectedOptions = options
                     .where((option) => (value ?? 0) & option.$1 != 0)
@@ -245,8 +259,6 @@ class ProfileVerificationFilterScreen extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
-    final options = profileVerificationStatusOptions(context, verification: verificationConfig);
-
     return Scaffold(
       appBar: AppBar(
         title: Text(context.strings.profile_filters_screen_profile_verification_status_filter),
@@ -254,6 +266,11 @@ class ProfileVerificationFilterScreen extends StatelessWidget {
       body: BlocBuilder<ProfileFiltersBloc, ProfileFiltersData>(
         builder: (context, state) {
           final currentValue = state.valueProfileVerificationStatusFilter()?.value ?? 0;
+          final options = profileVerificationStatusOptions(
+            context,
+            verification: verificationConfig,
+            selectedOptions: currentValue,
+          );
           return ListView(
             children: [
               for (final option in options)
