@@ -2662,6 +2662,12 @@ abstract class AppLocalizations {
   /// **'Min {p0} characters'**
   String profile_filters_screen_profile_text_filter_min_value(String p0);
 
+  /// Text shown when using profile verification filter requires verified account
+  ///
+  /// In en, this message translates to:
+  /// **'Using this filter requires verified account'**
+  String get profile_filters_screen_profile_verification_requires_verified_account;
+
   /// Title for profile verification status filter
   ///
   /// In en, this message translates to:
@@ -2722,7 +2728,7 @@ abstract class AppLocalizations {
   /// **'Verify now'**
   String get profile_grid_screen_account_verification_banner_button;
 
-  /// Info banner text shown when account is not yet verified
+  /// Info banner text shown when account is unverified
   ///
   /// In en, this message translates to:
   /// **'Your account is unverified'**
@@ -3753,6 +3759,12 @@ abstract class AppLocalizations {
   /// In en, this message translates to:
   /// **'Last seen {p0} seconds ago'**
   String view_profile_screen_profile_last_seen_seconds(String p0);
+
+  /// Text shown when viewing profile verification info requires verified account
+  ///
+  /// In en, this message translates to:
+  /// **'Viewing this info requires verified account'**
+  String get view_profile_screen_profile_verification_requires_verified_account;
 
   /// Text for view profile screen remove from favorites action
   ///

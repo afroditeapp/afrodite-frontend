@@ -1457,6 +1457,10 @@ class AppLocalizationsSv extends AppLocalizations {
   }
 
   @override
+  String get profile_filters_screen_profile_verification_requires_verified_account =>
+      'Using this filter requires verified account';
+
+  @override
   String get profile_filters_screen_profile_verification_status_filter => 'Profile verification';
 
   @override
@@ -2112,6 +2116,10 @@ class AppLocalizationsSv extends AppLocalizations {
   String view_profile_screen_profile_last_seen_seconds(String p0) {
     return 'Last seen $p0 seconds ago';
   }
+
+  @override
+  String get view_profile_screen_profile_verification_requires_verified_account =>
+      'Viewing this info requires verified account';
 
   @override
   String get view_profile_screen_remove_from_favorites_action => 'Remove from favorites';

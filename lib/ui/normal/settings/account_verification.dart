@@ -10,7 +10,7 @@ import 'package:app/logic/profile/my_profile.dart';
 import 'package:app/model/freezed/logic/account/client_features_config.dart';
 import 'package:app/model/freezed/logic/profile/my_profile.dart';
 import 'package:app/model/freezed/logic/main/navigator_state.dart';
-import 'package:app/ui/normal/profiles/profile_filters/profile_verification.dart';
+import 'package:app/ui/normal/profiles/profile_filters/profile_verification_flags.dart';
 import 'package:app/ui_utils/snack_bar.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
@@ -19,6 +19,17 @@ import 'package:app/utils/result.dart';
 
 bool isAccessToAccountVerificationScreenPossible(AccountVerificationMethodsConfig methods) {
   return methods != AccountVerificationMethodsConfig();
+}
+
+bool shouldShowAccountVerificationRequiredLimit({
+  required AccountVerificationMethodsConfig? methods,
+  required int myProfileVerificationStatus,
+}) {
+  if (methods == null || !isAccessToAccountVerificationScreenPossible(methods)) {
+    return false;
+  }
+
+  return !hasAnyAccountVerificationCompleted(myProfileVerificationStatus);
 }
 
 class AccountVerificationInfoBannerItem extends StatelessWidget {
@@ -31,66 +42,61 @@ class AccountVerificationInfoBannerItem extends StatelessWidget {
         return BlocBuilder<MyProfileBloc, MyProfileData>(
           builder: (context, myProfileState) {
             final accountVerificationMethods = configData.config.verificationMethods?.account;
-            if (accountVerificationMethods == null ||
-                !isAccessToAccountVerificationScreenPossible(accountVerificationMethods)) {
-              return const SizedBox.shrink();
-            }
-
             final profile = myProfileState.profile;
             if (!myProfileState.initialLoadingCompleted || profile == null) {
               return const SizedBox.shrink();
             }
 
-            final verificationStatus = profile.mergedVerificationStatus();
-            final securityContentVerified =
-                verificationStatus & ProfileVerificationStatusFlags.securityContentVerified != 0;
-            final profileAgeRangeVerified =
-                verificationStatus & ProfileVerificationStatusFlags.profileAgeVerified != 0;
-            final profileNameVerified =
-                verificationStatus & ProfileVerificationStatusFlags.profileNameVerified != 0;
-
-            if (securityContentVerified || profileAgeRangeVerified || profileNameVerified) {
+            final shouldShowBanner = shouldShowAccountVerificationRequiredLimit(
+              methods: accountVerificationMethods,
+              myProfileVerificationStatus: profile.mergedVerificationStatus(),
+            );
+            if (!shouldShowBanner || accountVerificationMethods == null) {
               return const SizedBox.shrink();
             }
 
-            return Padding(
-              padding: const EdgeInsets.symmetric(horizontal: 12),
-              child: Row(
-                crossAxisAlignment: CrossAxisAlignment.center,
-                children: [
-                  Padding(
-                    padding: const EdgeInsets.symmetric(vertical: 4),
-                    child: Icon(
-                      Icons.verified_user,
-                      color: Theme.of(context).colorScheme.onPrimaryContainer,
-                    ),
-                  ),
-                  const Padding(padding: EdgeInsets.only(left: 8)),
-                  Expanded(
-                    child: Padding(
-                      padding: const EdgeInsets.symmetric(vertical: 4),
-                      child: Text(
-                        context.strings.profile_grid_screen_account_verification_banner_text,
-                        style: Theme.of(context).textTheme.bodyMedium?.copyWith(
-                          color: Theme.of(context).colorScheme.onPrimaryContainer,
-                        ),
-                      ),
-                    ),
-                  ),
-                  const Padding(padding: EdgeInsets.only(left: 8)),
-                  TextButton(
-                    onPressed: () =>
-                        openAccountVerificationSettings(context, accountVerificationMethods),
-                    child: Text(
-                      context.strings.profile_grid_screen_account_verification_banner_button,
-                    ),
-                  ),
-                ],
-              ),
-            );
+            return _accountVerificationRequiredBanner(context, accountVerificationMethods);
           },
         );
       },
+    );
+  }
+
+  Widget _accountVerificationRequiredBanner(
+    BuildContext context,
+    AccountVerificationMethodsConfig methods,
+  ) {
+    return Padding(
+      padding: const EdgeInsets.symmetric(horizontal: 12),
+      child: Row(
+        crossAxisAlignment: CrossAxisAlignment.center,
+        children: [
+          Padding(
+            padding: const EdgeInsets.symmetric(vertical: 4),
+            child: Icon(
+              Icons.verified_user,
+              color: Theme.of(context).colorScheme.onPrimaryContainer,
+            ),
+          ),
+          const Padding(padding: EdgeInsets.only(left: 8)),
+          Expanded(
+            child: Padding(
+              padding: const EdgeInsets.symmetric(vertical: 4),
+              child: Text(
+                context.strings.profile_grid_screen_account_verification_banner_text,
+                style: Theme.of(context).textTheme.bodyMedium?.copyWith(
+                  color: Theme.of(context).colorScheme.onPrimaryContainer,
+                ),
+              ),
+            ),
+          ),
+          const Padding(padding: EdgeInsets.only(left: 8)),
+          TextButton(
+            onPressed: () => openAccountVerificationSettings(context, methods),
+            child: Text(context.strings.profile_grid_screen_account_verification_banner_button),
+          ),
+        ],
+      ),
     );
   }
 }

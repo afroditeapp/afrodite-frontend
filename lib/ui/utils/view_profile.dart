@@ -15,13 +15,17 @@ import 'package:utils/utils.dart';
 import 'package:app/data/image_cache.dart';
 import 'package:app/localizations.dart';
 import 'package:app/logic/account/client_features_config.dart';
+import 'package:app/logic/profile/my_profile.dart';
 import 'package:app/logic/profile/attributes.dart';
 import 'package:app/logic/settings/privacy_settings.dart';
 import 'package:app/model/freezed/logic/account/client_features_config.dart';
+import 'package:app/model/freezed/logic/profile/my_profile.dart';
 import 'package:app/model/freezed/logic/profile/attributes.dart';
 import 'package:app/model/freezed/logic/settings/privacy_settings.dart';
 import 'package:app/ui/normal/settings/profile/edit_profile.dart';
 import 'package:app/ui/normal/profiles/profile_filters/profile_verification.dart';
+import 'package:app/ui/normal/profiles/profile_filters/profile_verification_flags.dart';
+import 'package:app/ui/normal/settings/account_verification.dart';
 import 'package:app/ui_utils/consts/corners.dart';
 import 'package:app/ui_utils/consts/padding.dart';
 
@@ -323,19 +327,53 @@ class _ViewProfileEntryState extends State<ViewProfileEntry> {
 
   Widget profileVerificationStatusSection() {
     return BlocBuilder<ClientFeaturesConfigBloc, ClientFeaturesConfigData>(
-      builder: (context, state) {
-        final verificationConfig = state.verificationConfig();
-        final verificationStatus = widget.profile.mergedVerificationStatus();
-        if (verificationConfig == VerificationConfig() || verificationStatus == 0) {
-          return const SizedBox.shrink();
-        }
+      builder: (context, configState) {
+        final verificationConfig = configState.verificationConfig();
+        final accountVerificationMethods = configState.config.verificationMethods?.account;
+        return BlocBuilder<MyProfileBloc, MyProfileData>(
+          builder: (context, myProfileState) {
+            final myVerificationStatus = myProfileState.profile?.mergedVerificationStatus() ?? 0;
+            final blockedByVerification =
+                !widget.isMyProfile &&
+                shouldShowAccountVerificationRequiredLimit(
+                  methods: accountVerificationMethods,
+                  myProfileVerificationStatus: myVerificationStatus,
+                );
+            if (blockedByVerification && accountVerificationMethods != null) {
+              return Column(
+                crossAxisAlignment: CrossAxisAlignment.start,
+                mainAxisSize: MainAxisSize.min,
+                children: [
+                  const Padding(padding: EdgeInsets.only(top: 8)),
+                  const Padding(padding: EdgeInsets.all(4)),
+                  ViewAttributeTitle(
+                    context.strings.profile_filters_screen_profile_verification_status_filter,
+                    icon: profileVerificationStatusIcon(),
+                  ),
+                  accountVerificationRequiredLimitBanner(
+                    context,
+                    accountVerificationMethods,
+                    text: context
+                        .strings
+                        .view_profile_screen_profile_verification_requires_verified_account,
+                  ),
+                ],
+              );
+            }
 
-        return Column(
-          mainAxisSize: MainAxisSize.min,
-          children: [
-            const Padding(padding: EdgeInsets.only(top: 8)),
-            profileVerificationStatus(context, verificationConfig),
-          ],
+            final verificationStatus = widget.profile.mergedVerificationStatus();
+            if (verificationConfig == VerificationConfig() || verificationStatus == 0) {
+              return const SizedBox.shrink();
+            }
+
+            return Column(
+              mainAxisSize: MainAxisSize.min,
+              children: [
+                const Padding(padding: EdgeInsets.only(top: 8)),
+                profileVerificationStatus(context, verificationConfig),
+              ],
+            );
+          },
         );
       },
     );

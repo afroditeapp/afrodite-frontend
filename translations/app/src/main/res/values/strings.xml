@@ -383,6 +383,7 @@
     <string name="view_profile_screen_profile_last_seen_hours" description="View profile screen text that profile is last seen multiple hours ago">Last seen %s hours ago</string>
     <string name="view_profile_screen_profile_last_seen_day" description="View profile screen text that profile is last seen day ago">Last seen %s day ago</string>
     <string name="view_profile_screen_profile_last_seen_days" description="View profile screen text that profile is last seen multiple days ago">Last seen %s days ago</string>
+    <string name="view_profile_screen_profile_verification_requires_verified_account" description="Text shown when viewing profile verification info requires verified account">Viewing this info requires verified account</string>
     <string name="view_profile_screen_non_accepted_profile_name_info_dialog_text" description="View profile screen info dialog text about non-accepted profile name">Profile name is not yet moderated or it is moderated as rejected. Only the first letter is visible to users.</string>
     <string name="view_profile_screen_non_accepted_profile_text_info_dialog_text" description="View profile screen info dialog text about non-accepted profile text">Profile text is not yet moderated or it is moderated as rejected. Only the first letter is visible to users.</string>
     <string name="view_profile_screen_non_accepted_profile_content_info_dialog_text" description="View profile screen info dialog text about non-accepted profile content">All profile pictures are not yet moderated or some picture is moderated as rejected. Only accepted pictures are visible to users.</string>
@@ -427,6 +428,7 @@
     <!-- Profile filters screen -->
     <string name="profile_filters_screen_title" description="Title for profile filters screen">Profile filters</string>
     <string name="profile_filters_screen_disable_filters_action" description="Title for disable filters action">Disable filters</string>
+    <string name="profile_filters_screen_profile_verification_requires_verified_account" description="Text shown when using profile verification filter requires verified account">Using this filter requires verified account</string>
     <string name="profile_filters_screen_disable_filters_action_dialog_title" description="Title for disable filters action confirm dialog">Disable filters?</string>
     <string name="profile_filters_screen_min_age_filter" description="Title for min profile age filter">Min age</string>
     <string name="profile_filters_screen_max_age_filter" description="Title for max profile age filter">Max age</string>

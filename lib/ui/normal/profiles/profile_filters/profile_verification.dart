@@ -1,24 +1,20 @@
 import 'package:app/localizations.dart';
 import 'package:app/logic/account/client_features_config.dart';
 import 'package:app/logic/app/navigator_state.dart';
+import 'package:app/logic/profile/my_profile.dart';
 import 'package:app/logic/profile/profile_filters.dart';
 import 'package:app/model/freezed/logic/account/client_features_config.dart';
 import 'package:app/model/freezed/logic/main/navigator_state.dart';
+import 'package:app/model/freezed/logic/profile/my_profile.dart';
 import 'package:app/model/freezed/logic/profile/profile_filters.dart';
+import 'package:app/ui/normal/profiles/profile_filters/profile_verification_flags.dart';
+import 'package:app/ui/normal/settings/account_verification.dart';
 import 'package:app/ui_utils/attribute/attribute.dart';
 import 'package:app/ui/normal/settings/profile/edit_profile.dart';
 import 'package:app/ui_utils/consts/colors.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:openapi/api.dart';
-
-class ProfileVerificationStatusFlags {
-  static const int faceVerifiedAny = 1;
-  static const int faceVerifiedAll = 2;
-  static const int securityContentVerified = 4;
-  static const int profileAgeVerified = 8;
-  static const int profileNameVerified = 16;
-}
 
 const _PROFILE_VERIFICATION_STATUS_ICON = MaterialAttributeIcon(Icons.verified_user_outlined);
 
@@ -107,52 +103,134 @@ class _ProfileVerificationStatusFilter extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
-    return BlocBuilder<ProfileFiltersBloc, ProfileFiltersData>(
-      builder: (context, state) {
-        final value = state.valueProfileVerificationStatusFilter()?.value;
-        final options = profileVerificationStatusOptions(context, verification: verificationConfig);
-        final selectedOptions = options.where((option) => (value ?? 0) & option.$1 != 0).toList();
+    return BlocBuilder<ClientFeaturesConfigBloc, ClientFeaturesConfigData>(
+      builder: (context, configState) {
+        final accountVerificationMethods = configState.config.verificationMethods?.account;
+        return BlocBuilder<MyProfileBloc, MyProfileData>(
+          builder: (context, myProfileState) {
+            final myVerificationStatus = myProfileState.profile?.mergedVerificationStatus() ?? 0;
+            return BlocBuilder<ProfileFiltersBloc, ProfileFiltersData>(
+              builder: (context, state) {
+                final value = state.valueProfileVerificationStatusFilter()?.value;
+                final options = profileVerificationStatusOptions(
+                  context,
+                  verification: verificationConfig,
+                );
+                final selectedOptions = options
+                    .where((option) => (value ?? 0) & option.$1 != 0)
+                    .toList();
+                final hasEnabledFilter = (value ?? 0) != 0;
+                final blockedByVerification =
+                    !hasEnabledFilter &&
+                    shouldShowAccountVerificationRequiredLimit(
+                      methods: accountVerificationMethods,
+                      myProfileVerificationStatus: myVerificationStatus,
+                    );
 
-        return InkWell(
-          onTap: () {
-            MyNavigator.pushLimited(context, ProfileVerificationFilterPage(verificationConfig));
+                return InkWell(
+                  onTap: blockedByVerification
+                      ? null
+                      : () {
+                          MyNavigator.pushLimited(
+                            context,
+                            ProfileVerificationFilterPage(verificationConfig),
+                          );
+                        },
+                  child: _filterRow(
+                    context,
+                    blockedByVerification: blockedByVerification,
+                    accountVerificationMethods: accountVerificationMethods,
+                    selectedOptions: selectedOptions,
+                  ),
+                );
+              },
+            );
           },
-          child: Row(
-            children: [
-              Expanded(
-                child: Column(
-                  crossAxisAlignment: CrossAxisAlignment.start,
-                  children: [
-                    const Padding(padding: EdgeInsets.all(4)),
-                    ViewAttributeTitle(
-                      context.strings.profile_filters_screen_profile_verification_status_filter,
-                      icon: profileVerificationStatusIcon(),
-                    ),
-                    Padding(
-                      padding: const EdgeInsets.only(left: 16.0, top: 4.0, right: 8.0, bottom: 4.0),
-                      child: selectedOptions.isEmpty
-                          ? const SizedBox.shrink()
-                          : Wrap(
-                              spacing: 8.0,
-                              runSpacing: 8.0,
-                              children: [
-                                for (final option in selectedOptions) Chip(label: Text(option.$2)),
-                              ],
-                            ),
-                    ),
-                  ],
-                ),
-              ),
-              Padding(
-                padding: const EdgeInsets.only(right: 16.0),
-                child: Icon(Icons.edit_rounded, color: getIconButtonEnabledColor(context)),
-              ),
-            ],
-          ),
         );
       },
     );
   }
+
+  Widget _filterRow(
+    BuildContext context, {
+    required bool blockedByVerification,
+    required AccountVerificationMethodsConfig? accountVerificationMethods,
+    required List<(int, String)> selectedOptions,
+  }) {
+    return Row(
+      children: [
+        Expanded(
+          child: Column(
+            crossAxisAlignment: CrossAxisAlignment.start,
+            children: [
+              const Padding(padding: EdgeInsets.all(4)),
+              ViewAttributeTitle(
+                context.strings.profile_filters_screen_profile_verification_status_filter,
+                icon: profileVerificationStatusIcon(),
+              ),
+              if (blockedByVerification && accountVerificationMethods != null)
+                accountVerificationRequiredLimitBanner(
+                  context,
+                  accountVerificationMethods,
+                  text: context
+                      .strings
+                      .profile_filters_screen_profile_verification_requires_verified_account,
+                )
+              else
+                Padding(
+                  padding: const EdgeInsets.only(left: 16.0, top: 4.0, right: 8.0, bottom: 4.0),
+                  child: selectedOptions.isEmpty
+                      ? const SizedBox.shrink()
+                      : Wrap(
+                          spacing: 8.0,
+                          runSpacing: 8.0,
+                          children: [
+                            for (final option in selectedOptions) Chip(label: Text(option.$2)),
+                          ],
+                        ),
+                ),
+            ],
+          ),
+        ),
+        if (!blockedByVerification)
+          Padding(
+            padding: const EdgeInsets.only(right: 16.0),
+            child: Icon(Icons.edit_rounded, color: getIconButtonEnabledColor(context)),
+          ),
+      ],
+    );
+  }
+}
+
+Widget accountVerificationRequiredLimitBanner(
+  BuildContext context,
+  AccountVerificationMethodsConfig methods, {
+  required String text,
+}) {
+  return Padding(
+    padding: const EdgeInsets.symmetric(horizontal: 12),
+    child: Row(
+      crossAxisAlignment: CrossAxisAlignment.center,
+      children: [
+        Expanded(
+          child: Padding(
+            padding: const EdgeInsets.symmetric(vertical: 4),
+            child: Text(
+              text,
+              style: Theme.of(context).textTheme.bodyMedium?.copyWith(
+                color: Theme.of(context).colorScheme.onPrimaryContainer,
+              ),
+            ),
+          ),
+        ),
+        const Padding(padding: EdgeInsets.only(left: 8)),
+        TextButton(
+          onPressed: () => openAccountVerificationSettings(context, methods),
+          child: Text(context.strings.profile_grid_screen_account_verification_banner_button),
+        ),
+      ],
+    ),
+  );
 }
 
 class ProfileVerificationFilterPage extends MyScreenPageLimited<()> {

@@ -1930,6 +1930,10 @@
       }
     }
   },
+  "profile_filters_screen_profile_verification_requires_verified_account": "Using this filter requires verified account",
+  "@profile_filters_screen_profile_verification_requires_verified_account": {
+    "description": "Text shown when using profile verification filter requires verified account"
+  },
   "profile_filters_screen_profile_verification_status_filter": "Profile verification",
   "@profile_filters_screen_profile_verification_status_filter": {
     "description": "Title for profile verification status filter"
@@ -1972,7 +1976,7 @@
   },
   "profile_grid_screen_account_verification_banner_text": "Your account is unverified",
   "@profile_grid_screen_account_verification_banner_text": {
-    "description": "Info banner text shown when account is not yet verified"
+    "description": "Info banner text shown when account is unverified"
   },
   "profile_grid_screen_daily_likes_dialog_text": "Daily chat requests left: {p0}\nReset time: {p1}",
   "@profile_grid_screen_daily_likes_dialog_text": {
@@ -2822,6 +2826,10 @@
         "type": "String"
       }
     }
+  },
+  "view_profile_screen_profile_verification_requires_verified_account": "Viewing this info requires verified account",
+  "@view_profile_screen_profile_verification_requires_verified_account": {
+    "description": "Text shown when viewing profile verification info requires verified account"
   },
   "view_profile_screen_remove_from_favorites_action": "Remove from favorites",
   "@view_profile_screen_remove_from_favorites_action": {
