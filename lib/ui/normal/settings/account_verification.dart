@@ -73,10 +73,7 @@ class AccountVerificationInfoBannerItem extends StatelessWidget {
         children: [
           Padding(
             padding: const EdgeInsets.symmetric(vertical: 4),
-            child: Icon(
-              Icons.verified_user,
-              color: Theme.of(context).colorScheme.onPrimaryContainer,
-            ),
+            child: Icon(Icons.gpp_maybe, color: Theme.of(context).colorScheme.onPrimaryContainer),
           ),
           const Padding(padding: EdgeInsets.only(left: 8)),
           Expanded(
