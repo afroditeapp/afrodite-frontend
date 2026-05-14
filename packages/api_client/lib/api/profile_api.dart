@@ -398,6 +398,82 @@ class ProfileApi {
     return null;
   }
 
+  /// Get account's current profile as compact binary payload.
+  ///
+  /// The first byte is result variant: - 0 = Empty - 1 = VersionOnly - 2 = ProfileWithVersion  Variant payloads: - Empty: no payload - VersionOnly:   - 16-byte profile version UUID   - null last seen time (0 byte) or last seen time as minimal i64 - ProfileWithVersion:   - 16-byte profile version UUID   - null last seen time (0 byte) or last seen time as minimal i64   - profile payload:     - optional name string:       - 1-byte u8 byte count (0 means null)       - string UTF-8 bytes when count > 0     - optional profile text string:       - 2-byte little-endian u16 byte count (0 means null)       - string UTF-8 bytes when count > 0     - 1-byte age     - attributes list:       - 2-byte little-endian u16 attribute count       - repeated entries:         - 2-byte little-endian u16 attribute id with value width flag in most significant bit:           - bits 0..14: attribute ID           - bit 15: value width flag (0 = u16 values, 1 = u32 values)         - 1-byte u8 value count         - repeated values:           - value width flag 0: 2-byte little-endian u16 values           - value width flag 1: 4-byte little-endian u32 values     - 1-byte profile flags:       - bit 0: unlimited_likes       - bit 1: name_accepted       - bit 2: ptext_accepted       - bits 3..7: reserved (0)     - 2-byte verification status i16 (little-endian)  Minimal i64 format: - i64 byte count (u8, values: 1, 2, 4, 8) - i64 bytes (little-endian)
+  ///
+  /// Note: This method returns the HTTP [Response].
+  ///
+  /// Parameters:
+  ///
+  /// * [String] aid (required):
+  ///
+  /// * [String] v:
+  ///   Profile version UUID
+  ///
+  /// * [bool] isMatch:
+  ///   If requested profile is not public, allow getting the profile data if the requested profile is a match.
+  Future<Response> getProfileBinaryWithHttpInfo(String aid, { String? v, bool? isMatch, }) async {
+    // ignore: prefer_const_declarations
+    final path = r'/profile_api/profile_binary/{aid}'
+      .replaceAll('{aid}', aid);
+
+    // ignore: prefer_final_locals
+    Object? postBody;
+
+    final queryParams = <QueryParam>[];
+    final headerParams = <String, String>{};
+    final formParams = <String, String>{};
+
+    if (v != null) {
+      queryParams.addAll(_queryParams('', 'v', v));
+    }
+    if (isMatch != null) {
+      queryParams.addAll(_queryParams('', 'is_match', isMatch));
+    }
+
+    const contentTypes = <String>[];
+
+
+    return apiClient.invokeAPI(
+      path,
+      'GET',
+      queryParams,
+      postBody,
+      headerParams,
+      formParams,
+      contentTypes.isEmpty ? null : contentTypes.first,
+    );
+  }
+
+  /// Get account's current profile as compact binary payload.
+  ///
+  /// The first byte is result variant: - 0 = Empty - 1 = VersionOnly - 2 = ProfileWithVersion  Variant payloads: - Empty: no payload - VersionOnly:   - 16-byte profile version UUID   - null last seen time (0 byte) or last seen time as minimal i64 - ProfileWithVersion:   - 16-byte profile version UUID   - null last seen time (0 byte) or last seen time as minimal i64   - profile payload:     - optional name string:       - 1-byte u8 byte count (0 means null)       - string UTF-8 bytes when count > 0     - optional profile text string:       - 2-byte little-endian u16 byte count (0 means null)       - string UTF-8 bytes when count > 0     - 1-byte age     - attributes list:       - 2-byte little-endian u16 attribute count       - repeated entries:         - 2-byte little-endian u16 attribute id with value width flag in most significant bit:           - bits 0..14: attribute ID           - bit 15: value width flag (0 = u16 values, 1 = u32 values)         - 1-byte u8 value count         - repeated values:           - value width flag 0: 2-byte little-endian u16 values           - value width flag 1: 4-byte little-endian u32 values     - 1-byte profile flags:       - bit 0: unlimited_likes       - bit 1: name_accepted       - bit 2: ptext_accepted       - bits 3..7: reserved (0)     - 2-byte verification status i16 (little-endian)  Minimal i64 format: - i64 byte count (u8, values: 1, 2, 4, 8) - i64 bytes (little-endian)
+  ///
+  /// Parameters:
+  ///
+  /// * [String] aid (required):
+  ///
+  /// * [String] v:
+  ///   Profile version UUID
+  ///
+  /// * [bool] isMatch:
+  ///   If requested profile is not public, allow getting the profile data if the requested profile is a match.
+  Future<MultipartFile?> getProfileBinary(String aid, { String? v, bool? isMatch, }) async {
+    final response = await getProfileBinaryWithHttpInfo(aid,  v: v, isMatch: isMatch, );
+    if (response.statusCode >= HttpStatus.badRequest) {
+      throw ApiException(response.statusCode, await _decodeBodyBytes(response));
+    }
+    // When a remote server returns no body with a status of 204, we shall not decode it.
+    // At the time of writing this, `dart:convert` will throw an "Unexpected end of input"
+    // FormatException when trying to decode an empty string.
+    if (response.body.isNotEmpty && response.statusCode != HttpStatus.noContent) {
+      return await apiClient.deserializeAsync(await _decodeBodyBytes(response), 'MultipartFile',) as MultipartFile;
+    
+    }
+    return null;
+  }
+
   /// Get current profile filters.
   ///
   /// Note: This method returns the HTTP [Response].
@@ -840,7 +916,7 @@ class ProfileApi {
 
   /// Update profile information.
   ///
-  /// Writes the profile to the database only if it is changed.  WebSocket event about profile change will not be emitted. The event is emitted only from server side profile updates.  # Requirements - Profile attributes must be valid. - Profile text must be 2000 bytes or less. - Profile text must be trimmed. - Profile name changes are only possible when initial setup is ongoing   or current profile name is not accepted. - Profile name must be trimmed and not empty. - Profile name must be 100 bytes or less. - Profile name must start with uppercase letter. - Profile name must match with profile name regex if it is enabled and   related account is not a bot account. - Profile age must match with currently valid age range. The first min   value for the age range is the age at the initial setup. The second min   and max value is calculated using the following algorithm:  - The initial age (initialAge) is paired with the year of initial    setup completed (initialSetupYear).    - Year difference (yearDifference = currentYear - initialSetupYear) is      used for changing the range min and max.      - Min value: initialAge + yearDifference - 1.      - Max value: initialAge + yearDifference + 1.  
+  /// Writes the profile to the database only if it is changed.  WebSocket event about profile change will not be emitted. The event is emitted only from server side profile updates.  # Requirements - Profile attributes must be valid. - Profile text must be 2000 bytes or less.   If limit is increased in the future the max limit is u16. - Profile text must be trimmed. - Profile name changes are only possible when initial setup is ongoing   or current profile name is not accepted. - Profile name must be trimmed and not empty. - Profile name must be 100 bytes or less.   If limit is increased in the future the max limit is u8. - Profile name must start with uppercase letter. - Profile name must match with profile name regex if it is enabled and   related account is not a bot account. - Profile age must match with currently valid age range. The first min   value for the age range is the age at the initial setup. The second min   and max value is calculated using the following algorithm:  - The initial age (initialAge) is paired with the year of initial    setup completed (initialSetupYear).    - Year difference (yearDifference = currentYear - initialSetupYear) is      used for changing the range min and max.      - Min value: initialAge + yearDifference - 1.      - Max value: initialAge + yearDifference + 1.  
   ///
   /// Note: This method returns the HTTP [Response].
   ///
@@ -874,7 +950,7 @@ class ProfileApi {
 
   /// Update profile information.
   ///
-  /// Writes the profile to the database only if it is changed.  WebSocket event about profile change will not be emitted. The event is emitted only from server side profile updates.  # Requirements - Profile attributes must be valid. - Profile text must be 2000 bytes or less. - Profile text must be trimmed. - Profile name changes are only possible when initial setup is ongoing   or current profile name is not accepted. - Profile name must be trimmed and not empty. - Profile name must be 100 bytes or less. - Profile name must start with uppercase letter. - Profile name must match with profile name regex if it is enabled and   related account is not a bot account. - Profile age must match with currently valid age range. The first min   value for the age range is the age at the initial setup. The second min   and max value is calculated using the following algorithm:  - The initial age (initialAge) is paired with the year of initial    setup completed (initialSetupYear).    - Year difference (yearDifference = currentYear - initialSetupYear) is      used for changing the range min and max.      - Min value: initialAge + yearDifference - 1.      - Max value: initialAge + yearDifference + 1.  
+  /// Writes the profile to the database only if it is changed.  WebSocket event about profile change will not be emitted. The event is emitted only from server side profile updates.  # Requirements - Profile attributes must be valid. - Profile text must be 2000 bytes or less.   If limit is increased in the future the max limit is u16. - Profile text must be trimmed. - Profile name changes are only possible when initial setup is ongoing   or current profile name is not accepted. - Profile name must be trimmed and not empty. - Profile name must be 100 bytes or less.   If limit is increased in the future the max limit is u8. - Profile name must start with uppercase letter. - Profile name must match with profile name regex if it is enabled and   related account is not a bot account. - Profile age must match with currently valid age range. The first min   value for the age range is the age at the initial setup. The second min   and max value is calculated using the following algorithm:  - The initial age (initialAge) is paired with the year of initial    setup completed (initialSetupYear).    - Year difference (yearDifference = currentYear - initialSetupYear) is      used for changing the range min and max.      - Min value: initialAge + yearDifference - 1.      - Max value: initialAge + yearDifference + 1.  
   ///
   /// Parameters:
   ///

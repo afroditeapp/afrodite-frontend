@@ -252,6 +252,7 @@ Class | Method | HTTP request | Description
 *ProfileApi* | [**getMyProfile**](doc//ProfileApi.md#getmyprofile) | **GET** /profile_api/my_profile | Get my profile
 *ProfileApi* | [**getProfile**](doc//ProfileApi.md#getprofile) | **GET** /profile_api/profile/{aid} | Get account's current profile.
 *ProfileApi* | [**getProfileAppNotificationSettings**](doc//ProfileApi.md#getprofileappnotificationsettings) | **GET** /profile_api/get_profile_app_notification_settings | 
+*ProfileApi* | [**getProfileBinary**](doc//ProfileApi.md#getprofilebinary) | **GET** /profile_api/profile_binary/{aid} | Get account's current profile as compact binary payload.
 *ProfileApi* | [**getProfileFilters**](doc//ProfileApi.md#getprofilefilters) | **GET** /profile_api/profile_filters | Get current profile filters.
 *ProfileApi* | [**getProfileFromDatabaseDebugModeBenchmark**](doc//ProfileApi.md#getprofilefromdatabasedebugmodebenchmark) | **GET** /profile_api/benchmark/profile/{aid} | Get account's current profile from database. Debug mode must be enabled that route can be used.
 *ProfileApi* | [**getProfilePrivacySettings**](doc//ProfileApi.md#getprofileprivacysettings) | **GET** /profile_api/get_profile_privacy_settings | 
