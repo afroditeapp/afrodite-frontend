@@ -12,6 +12,7 @@ import 'package:app/ui/normal/settings/account_verification.dart';
 import 'package:app/ui_utils/attribute/attribute.dart';
 import 'package:app/ui/normal/settings/profile/edit_profile.dart';
 import 'package:app/ui_utils/consts/colors.dart';
+import 'package:app/ui_utils/icon_button.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:openapi/api.dart';
@@ -182,35 +183,39 @@ class _ProfileVerificationStatusFilter extends StatelessWidget {
                 context.strings.profile_filters_screen_profile_verification_status_filter,
                 icon: profileVerificationStatusIcon(),
               ),
+              const Padding(padding: EdgeInsets.all(4)),
               if (blockedByVerification && accountVerificationMethods != null)
-                accountVerificationRequiredLimitBanner(
-                  context,
-                  accountVerificationMethods,
-                  text: context
-                      .strings
-                      .profile_filters_screen_profile_verification_requires_verified_account,
+                Padding(
+                  padding: const EdgeInsets.only(left: 16, right: 4),
+                  child: accountVerificationRequiredLimitBanner(
+                    context,
+                    accountVerificationMethods,
+                    text: context
+                        .strings
+                        .profile_filters_screen_profile_verification_requires_verified_account,
+                  ),
                 )
               else
-                Padding(
-                  padding: const EdgeInsets.only(left: 16.0, top: 4.0, right: 8.0, bottom: 4.0),
-                  child: selectedOptions.isEmpty
-                      ? const SizedBox.shrink()
-                      : Wrap(
+                selectedOptions.isEmpty
+                    ? const SizedBox.shrink()
+                    : Padding(
+                        padding: const EdgeInsets.only(left: 16.0),
+                        child: Wrap(
                           spacing: 8.0,
-                          runSpacing: 8.0,
                           children: [
                             for (final option in selectedOptions) Chip(label: Text(option.$2)),
                           ],
                         ),
-                ),
+                      ),
             ],
           ),
         ),
         if (!blockedByVerification)
-          Padding(
-            padding: const EdgeInsets.only(right: 16.0),
-            child: Icon(Icons.edit_rounded, color: getIconButtonEnabledColor(context)),
+          IconWithIconButtonPadding(
+            Icons.edit_rounded,
+            iconColor: getIconButtonEnabledColor(context),
           ),
+        const Padding(padding: EdgeInsetsGeometry.only(right: 4)),
       ],
     );
   }
@@ -221,29 +226,22 @@ Widget accountVerificationRequiredLimitBanner(
   AccountVerificationMethodsConfig methods, {
   required String text,
 }) {
-  return Padding(
-    padding: const EdgeInsets.symmetric(horizontal: 12),
-    child: Row(
-      crossAxisAlignment: CrossAxisAlignment.center,
-      children: [
-        Expanded(
-          child: Padding(
-            padding: const EdgeInsets.symmetric(vertical: 4),
-            child: Text(
-              text,
-              style: Theme.of(context).textTheme.bodyMedium?.copyWith(
-                color: Theme.of(context).colorScheme.onPrimaryContainer,
-              ),
-            ),
-          ),
+  return Row(
+    children: [
+      Expanded(
+        child: Text(
+          text,
+          style: Theme.of(
+            context,
+          ).textTheme.bodyMedium?.copyWith(color: Theme.of(context).colorScheme.onPrimaryContainer),
         ),
-        const Padding(padding: EdgeInsets.only(left: 8)),
-        TextButton(
-          onPressed: () => openAccountVerificationSettings(context, methods),
-          child: Text(context.strings.profile_grid_screen_account_verification_banner_button),
-        ),
-      ],
-    ),
+      ),
+      const Padding(padding: EdgeInsets.only(left: 8)),
+      TextButton(
+        onPressed: () => openAccountVerificationSettings(context, methods),
+        child: Text(context.strings.profile_grid_screen_account_verification_banner_button),
+      ),
+    ],
   );
 }
 

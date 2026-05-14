@@ -350,12 +350,15 @@ class _ViewProfileEntryState extends State<ViewProfileEntry> {
                     context.strings.profile_filters_screen_profile_verification_status_filter,
                     icon: profileVerificationStatusIcon(),
                   ),
-                  accountVerificationRequiredLimitBanner(
-                    context,
-                    accountVerificationMethods,
-                    text: context
-                        .strings
-                        .view_profile_screen_profile_verification_requires_verified_account,
+                  Padding(
+                    padding: const EdgeInsets.symmetric(horizontal: COMMON_SCREEN_EDGE_PADDING),
+                    child: accountVerificationRequiredLimitBanner(
+                      context,
+                      accountVerificationMethods,
+                      text: context
+                          .strings
+                          .view_profile_screen_profile_verification_requires_verified_account,
+                    ),
                   ),
                 ],
               );
