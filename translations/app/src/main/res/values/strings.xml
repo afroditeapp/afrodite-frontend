@@ -24,6 +24,7 @@
     <string name="generic_remind" description="Generic remind text">Remind</string>
     <string name="generic_resend" description="Generic resend text">Resend</string>
     <string name="generic_refresh" description="Generic refresh text">Refresh</string>
+    <string name="generic_update" description="Generic update text">Update</string>
     <string name="generic_filters" description="Generic filters text">Filters</string>
     <string name="generic_retry" description="Generic retry text">Retry</string>
     <string name="generic_delete" description="Generic delete text">Delete</string>
@@ -31,6 +32,7 @@
     <string name="generic_time" description="Generic time text">Time</string>
     <string name="generic_state" description="Generic state text">State</string>
     <string name="generic_cancel" description="Generic cancel text">Cancel</string>
+    <string name="generic_later" description="Generic later text">Later</string>
     <string name="generic_close" description="Generic close text">Close</string>
     <string name="generic_ok" description="Generic OK text">OK</string>
     <string name="generic_yes" description="Generic yes text">Yes</string>
@@ -301,6 +303,11 @@
     <!-- Notification permission -->
     <string name="notification_permission_dialog_title" description="Title for notification permission dialog">Allow notifications?</string>
     <string name="notification_permission_dialog_description" description="Description text for notification permission dialog">Allow notifications to receive notifications for example from new chat requests and messages.</string>
+
+    <!-- App update available dialog -->
+    <string name="app_update_available_dialog_description_update_now" description="Description text for app update available dialog when update action is available">New app version available. Update now?</string>
+    <string name="app_update_available_dialog_description_manual_update" description="Description text for app update available dialog when update action is not available">New app version available. Please update the app.</string>
+    <string name="app_update_available_dialog_description_web_restart" description="Description text for app update available dialog on web">New app version available. Restart the app.</string>
 
     <!-- Video call tip dialog -->
     <string name="video_call_tip_dialog_title" description="Title for video call tip dialog">Like video calls?</string>

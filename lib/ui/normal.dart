@@ -17,6 +17,7 @@ import "package:app/logic/account/account.dart";
 import "package:app/logic/account/news/news_count.dart";
 import "package:app/logic/app/bottom_navigation_state.dart";
 import "package:app/logic/app/navigator_state.dart";
+import "package:app/logic/app/app_update_available.dart";
 
 import "package:app/logic/app/notification_permission.dart";
 import "package:app/logic/chat/new_received_likes_available_bloc.dart";
@@ -35,8 +36,11 @@ import "package:app/ui/normal/chat.dart";
 import "package:app/ui/normal/likes.dart";
 import "package:app/ui/normal/profiles.dart";
 import "package:app/ui/normal/settings/my_profile.dart";
+import "package:app/ui/utils/open_app_store.dart";
 import "package:app/ui/utils/notification_payload_handler.dart";
 import "package:app/ui_utils/profile_thumbnail_image.dart";
+import "package:app/ui_utils/bloc_listener.dart";
+import "package:app/ui_utils/snack_bar.dart";
 import "package:openapi/api.dart";
 
 class NormalStatePage extends MyScreenPage<()> with SimpleUrlParser<NormalStatePage> {
@@ -152,6 +156,17 @@ class _NormalStateContentState extends State<NormalStateContent> {
           ),
           const NotificationPermissionDialogOpener(),
           const NotificationPayloadHandler(),
+          BlocListenerWithInitialValue<AppUpdateAvailableBloc, AppUpdateAvailableData>(
+            listener: (context, state) {
+              if (!state.shouldOpenDialog) {
+                return;
+              }
+
+              final bloc = context.read<AppUpdateAvailableBloc>();
+              bloc.add(AppUpdateDialogOpened());
+              openAppUpdateAvailableDialog(context, bloc);
+            },
+          ),
         ],
       ),
       bottomNavigationBar: BottomNavigationBar(
@@ -171,6 +186,34 @@ class _NormalStateContentState extends State<NormalStateContent> {
       ),
       floatingActionButton: views[selectedView].floatingActionButton(context),
     );
+  }
+
+  Future<void> openAppUpdateAvailableDialog(
+    BuildContext context,
+    AppUpdateAvailableBloc bloc,
+  ) async {
+    await Future<void>.delayed(Duration.zero);
+    if (!context.mounted) {
+      return;
+    }
+
+    final value = await MyNavigator.showDialog<bool>(
+      context: context,
+      page: AppUpdateAvailableDialogPage(),
+    );
+
+    if (!context.mounted) {
+      return;
+    }
+
+    if (value == true) {
+      final launchSuccessful = await openStorePageForCurrentApp();
+      if (!launchSuccessful && context.mounted) {
+        showSnackBar(context.strings.generic_error_occurred);
+      }
+    } else {
+      bloc.add(AppUpdateDialogLaterSelected());
+    }
   }
 
   List<BottomNavigationBarItem> bottomNavigationBarContent(int selectedView) {
@@ -383,6 +426,40 @@ class NotificationPermissionDialog extends StatelessWidget {
           onPressed: () => closer.close(context, true),
           child: Text(context.strings.generic_yes),
         ),
+      ],
+    );
+  }
+}
+
+class AppUpdateAvailableDialogPage extends MyDialogPage<bool> {
+  AppUpdateAvailableDialogPage()
+    : super(
+        builder: (_, closer) => AppUpdateAvailableDialog(closer: closer),
+        barrierDismissable: false,
+      );
+}
+
+class AppUpdateAvailableDialog extends StatelessWidget {
+  final PageCloser<bool> closer;
+  const AppUpdateAvailableDialog({required this.closer, super.key});
+
+  @override
+  Widget build(BuildContext context) {
+    final showUpdateButton = isDirectUpdateActionSupportedForCurrentPlatform();
+
+    return AlertDialog(
+      scrollable: true,
+      content: Text(updateAvailableDialogTextForCurrentPlatform(context)),
+      actions: [
+        TextButton(
+          onPressed: () => closer.close(context, false),
+          child: Text(context.strings.generic_later),
+        ),
+        if (showUpdateButton)
+          TextButton(
+            onPressed: () => closer.close(context, true),
+            child: Text(context.strings.generic_update),
+          ),
       ],
     );
   }

@@ -4317,6 +4317,312 @@ class PushNotificationCompanion extends UpdateCompanion<PushNotificationData> {
   }
 }
 
+class $AppUpdateAvailableDialogTable extends schema.AppUpdateAvailableDialog
+    with
+        TableInfo<
+          $AppUpdateAvailableDialogTable,
+          AppUpdateAvailableDialogData
+        > {
+  @override
+  final GeneratedDatabase attachedDatabase;
+  final String? _alias;
+  $AppUpdateAvailableDialogTable(this.attachedDatabase, [this._alias]);
+  static const VerificationMeta _idMeta = const VerificationMeta('id');
+  @override
+  late final GeneratedColumn<int> id = GeneratedColumn<int>(
+    'id',
+    aliasedName,
+    false,
+    hasAutoIncrement: true,
+    type: DriftSqlType.int,
+    requiredDuringInsert: false,
+    defaultConstraints: GeneratedColumn.constraintIsAlways(
+      'PRIMARY KEY AUTOINCREMENT',
+    ),
+  );
+  @override
+  late final GeneratedColumnWithTypeConverter<UtcDateTime?, int>
+  latestEventTime =
+      GeneratedColumn<int>(
+        'latest_event_time',
+        aliasedName,
+        true,
+        type: DriftSqlType.int,
+        requiredDuringInsert: false,
+      ).withConverter<UtcDateTime?>(
+        $AppUpdateAvailableDialogTable.$converterlatestEventTime,
+      );
+  @override
+  late final GeneratedColumnWithTypeConverter<UtcDateTime?, int>
+  blockDialogsUntil =
+      GeneratedColumn<int>(
+        'block_dialogs_until',
+        aliasedName,
+        true,
+        type: DriftSqlType.int,
+        requiredDuringInsert: false,
+      ).withConverter<UtcDateTime?>(
+        $AppUpdateAvailableDialogTable.$converterblockDialogsUntil,
+      );
+  @override
+  List<GeneratedColumn> get $columns => [
+    id,
+    latestEventTime,
+    blockDialogsUntil,
+  ];
+  @override
+  String get aliasedName => _alias ?? actualTableName;
+  @override
+  String get actualTableName => $name;
+  static const String $name = 'app_update_available_dialog';
+  @override
+  VerificationContext validateIntegrity(
+    Insertable<AppUpdateAvailableDialogData> instance, {
+    bool isInserting = false,
+  }) {
+    final context = VerificationContext();
+    final data = instance.toColumns(true);
+    if (data.containsKey('id')) {
+      context.handle(_idMeta, id.isAcceptableOrUnknown(data['id']!, _idMeta));
+    }
+    return context;
+  }
+
+  @override
+  Set<GeneratedColumn> get $primaryKey => {id};
+  @override
+  AppUpdateAvailableDialogData map(
+    Map<String, dynamic> data, {
+    String? tablePrefix,
+  }) {
+    final effectivePrefix = tablePrefix != null ? '$tablePrefix.' : '';
+    return AppUpdateAvailableDialogData(
+      id: attachedDatabase.typeMapping.read(
+        DriftSqlType.int,
+        data['${effectivePrefix}id'],
+      )!,
+      latestEventTime: $AppUpdateAvailableDialogTable.$converterlatestEventTime
+          .fromSql(
+            attachedDatabase.typeMapping.read(
+              DriftSqlType.int,
+              data['${effectivePrefix}latest_event_time'],
+            ),
+          ),
+      blockDialogsUntil: $AppUpdateAvailableDialogTable
+          .$converterblockDialogsUntil
+          .fromSql(
+            attachedDatabase.typeMapping.read(
+              DriftSqlType.int,
+              data['${effectivePrefix}block_dialogs_until'],
+            ),
+          ),
+    );
+  }
+
+  @override
+  $AppUpdateAvailableDialogTable createAlias(String alias) {
+    return $AppUpdateAvailableDialogTable(attachedDatabase, alias);
+  }
+
+  static TypeConverter<UtcDateTime?, int?> $converterlatestEventTime =
+      NullAwareTypeConverter.wrap(const UtcDateTimeConverter());
+  static TypeConverter<UtcDateTime?, int?> $converterblockDialogsUntil =
+      NullAwareTypeConverter.wrap(const UtcDateTimeConverter());
+}
+
+class AppUpdateAvailableDialogData extends DataClass
+    implements Insertable<AppUpdateAvailableDialogData> {
+  final int id;
+
+  /// Timestamp of latest websocket AppUpdateAvailable event.
+  final UtcDateTime? latestEventTime;
+
+  /// Dialog opening is blocked while current time is before this value.
+  final UtcDateTime? blockDialogsUntil;
+  const AppUpdateAvailableDialogData({
+    required this.id,
+    this.latestEventTime,
+    this.blockDialogsUntil,
+  });
+  @override
+  Map<String, Expression> toColumns(bool nullToAbsent) {
+    final map = <String, Expression>{};
+    map['id'] = Variable<int>(id);
+    if (!nullToAbsent || latestEventTime != null) {
+      map['latest_event_time'] = Variable<int>(
+        $AppUpdateAvailableDialogTable.$converterlatestEventTime.toSql(
+          latestEventTime,
+        ),
+      );
+    }
+    if (!nullToAbsent || blockDialogsUntil != null) {
+      map['block_dialogs_until'] = Variable<int>(
+        $AppUpdateAvailableDialogTable.$converterblockDialogsUntil.toSql(
+          blockDialogsUntil,
+        ),
+      );
+    }
+    return map;
+  }
+
+  AppUpdateAvailableDialogCompanion toCompanion(bool nullToAbsent) {
+    return AppUpdateAvailableDialogCompanion(
+      id: Value(id),
+      latestEventTime: latestEventTime == null && nullToAbsent
+          ? const Value.absent()
+          : Value(latestEventTime),
+      blockDialogsUntil: blockDialogsUntil == null && nullToAbsent
+          ? const Value.absent()
+          : Value(blockDialogsUntil),
+    );
+  }
+
+  factory AppUpdateAvailableDialogData.fromJson(
+    Map<String, dynamic> json, {
+    ValueSerializer? serializer,
+  }) {
+    serializer ??= driftRuntimeOptions.defaultSerializer;
+    return AppUpdateAvailableDialogData(
+      id: serializer.fromJson<int>(json['id']),
+      latestEventTime: serializer.fromJson<UtcDateTime?>(
+        json['latestEventTime'],
+      ),
+      blockDialogsUntil: serializer.fromJson<UtcDateTime?>(
+        json['blockDialogsUntil'],
+      ),
+    );
+  }
+  @override
+  Map<String, dynamic> toJson({ValueSerializer? serializer}) {
+    serializer ??= driftRuntimeOptions.defaultSerializer;
+    return <String, dynamic>{
+      'id': serializer.toJson<int>(id),
+      'latestEventTime': serializer.toJson<UtcDateTime?>(latestEventTime),
+      'blockDialogsUntil': serializer.toJson<UtcDateTime?>(blockDialogsUntil),
+    };
+  }
+
+  AppUpdateAvailableDialogData copyWith({
+    int? id,
+    Value<UtcDateTime?> latestEventTime = const Value.absent(),
+    Value<UtcDateTime?> blockDialogsUntil = const Value.absent(),
+  }) => AppUpdateAvailableDialogData(
+    id: id ?? this.id,
+    latestEventTime: latestEventTime.present
+        ? latestEventTime.value
+        : this.latestEventTime,
+    blockDialogsUntil: blockDialogsUntil.present
+        ? blockDialogsUntil.value
+        : this.blockDialogsUntil,
+  );
+  AppUpdateAvailableDialogData copyWithCompanion(
+    AppUpdateAvailableDialogCompanion data,
+  ) {
+    return AppUpdateAvailableDialogData(
+      id: data.id.present ? data.id.value : this.id,
+      latestEventTime: data.latestEventTime.present
+          ? data.latestEventTime.value
+          : this.latestEventTime,
+      blockDialogsUntil: data.blockDialogsUntil.present
+          ? data.blockDialogsUntil.value
+          : this.blockDialogsUntil,
+    );
+  }
+
+  @override
+  String toString() {
+    return (StringBuffer('AppUpdateAvailableDialogData(')
+          ..write('id: $id, ')
+          ..write('latestEventTime: $latestEventTime, ')
+          ..write('blockDialogsUntil: $blockDialogsUntil')
+          ..write(')'))
+        .toString();
+  }
+
+  @override
+  int get hashCode => Object.hash(id, latestEventTime, blockDialogsUntil);
+  @override
+  bool operator ==(Object other) =>
+      identical(this, other) ||
+      (other is AppUpdateAvailableDialogData &&
+          other.id == this.id &&
+          other.latestEventTime == this.latestEventTime &&
+          other.blockDialogsUntil == this.blockDialogsUntil);
+}
+
+class AppUpdateAvailableDialogCompanion
+    extends UpdateCompanion<AppUpdateAvailableDialogData> {
+  final Value<int> id;
+  final Value<UtcDateTime?> latestEventTime;
+  final Value<UtcDateTime?> blockDialogsUntil;
+  const AppUpdateAvailableDialogCompanion({
+    this.id = const Value.absent(),
+    this.latestEventTime = const Value.absent(),
+    this.blockDialogsUntil = const Value.absent(),
+  });
+  AppUpdateAvailableDialogCompanion.insert({
+    this.id = const Value.absent(),
+    this.latestEventTime = const Value.absent(),
+    this.blockDialogsUntil = const Value.absent(),
+  });
+  static Insertable<AppUpdateAvailableDialogData> custom({
+    Expression<int>? id,
+    Expression<int>? latestEventTime,
+    Expression<int>? blockDialogsUntil,
+  }) {
+    return RawValuesInsertable({
+      if (id != null) 'id': id,
+      if (latestEventTime != null) 'latest_event_time': latestEventTime,
+      if (blockDialogsUntil != null) 'block_dialogs_until': blockDialogsUntil,
+    });
+  }
+
+  AppUpdateAvailableDialogCompanion copyWith({
+    Value<int>? id,
+    Value<UtcDateTime?>? latestEventTime,
+    Value<UtcDateTime?>? blockDialogsUntil,
+  }) {
+    return AppUpdateAvailableDialogCompanion(
+      id: id ?? this.id,
+      latestEventTime: latestEventTime ?? this.latestEventTime,
+      blockDialogsUntil: blockDialogsUntil ?? this.blockDialogsUntil,
+    );
+  }
+
+  @override
+  Map<String, Expression> toColumns(bool nullToAbsent) {
+    final map = <String, Expression>{};
+    if (id.present) {
+      map['id'] = Variable<int>(id.value);
+    }
+    if (latestEventTime.present) {
+      map['latest_event_time'] = Variable<int>(
+        $AppUpdateAvailableDialogTable.$converterlatestEventTime.toSql(
+          latestEventTime.value,
+        ),
+      );
+    }
+    if (blockDialogsUntil.present) {
+      map['block_dialogs_until'] = Variable<int>(
+        $AppUpdateAvailableDialogTable.$converterblockDialogsUntil.toSql(
+          blockDialogsUntil.value,
+        ),
+      );
+    }
+    return map;
+  }
+
+  @override
+  String toString() {
+    return (StringBuffer('AppUpdateAvailableDialogCompanion(')
+          ..write('id: $id, ')
+          ..write('latestEventTime: $latestEventTime, ')
+          ..write('blockDialogsUntil: $blockDialogsUntil')
+          ..write(')'))
+        .toString();
+  }
+}
+
 class $ClientVersionInfoTable extends schema.ClientVersionInfo
     with TableInfo<$ClientVersionInfoTable, ClientVersionInfoData> {
   @override
@@ -20322,6 +20628,8 @@ abstract class _$AccountDatabase extends GeneratedDatabase {
   late final $PushNotificationTable pushNotification = $PushNotificationTable(
     this,
   );
+  late final $AppUpdateAvailableDialogTable appUpdateAvailableDialog =
+      $AppUpdateAvailableDialogTable(this);
   late final $ClientVersionInfoTable clientVersionInfo =
       $ClientVersionInfoTable(this);
   late final $EditProfileProgressTable editProfileProgress =
@@ -20512,6 +20820,7 @@ abstract class _$AccountDatabase extends GeneratedDatabase {
     appNotificationSettings,
     news,
     pushNotification,
+    appUpdateAvailableDialog,
     clientVersionInfo,
     editProfileProgress,
     draftMessage,

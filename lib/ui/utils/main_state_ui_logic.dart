@@ -37,6 +37,7 @@ import 'package:app/logic/account/news/news_count.dart';
 import 'package:app/logic/app/bottom_navigation_state.dart';
 import 'package:app/logic/app/main_state.dart';
 import 'package:app/logic/app/navigator_state.dart';
+import 'package:app/logic/app/app_update_available.dart';
 import 'package:app/logic/app/notification_payload_handler.dart';
 import 'package:app/logic/app/notification_permission.dart';
 import 'package:app/logic/app/notification_settings.dart';
@@ -289,6 +290,7 @@ class NavigatorNormal extends LoggedInRootScreen {
         BlocProvider(create: (_) => SecuritySelfieImageProcessingBloc(r)),
         BlocProvider(create: (_) => NotificationPermissionBloc(r)),
         BlocProvider(create: (_) => NotificationPayloadHandlerBloc(r)),
+        BlocProvider(create: (_) => AppUpdateAvailableBloc(r)),
         BlocProvider(create: (_) => ProfileAttributesBloc(r)),
         BlocProvider(create: (_) => UnreadConversationsCountBloc(r)),
         BlocProvider(create: (_) => NewReceivedLikesAvailableBloc(r)),

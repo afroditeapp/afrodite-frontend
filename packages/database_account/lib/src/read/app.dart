@@ -1,5 +1,6 @@
 import 'package:database_account/src/database.dart';
-import 'package:database_model/database_model.dart' show GridSettings, ChatBackupReminder;
+import 'package:database_model/database_model.dart'
+    show AppUpdateAvailableDialogState, ChatBackupReminder, GridSettings;
 import 'package:database_utils/database_utils.dart';
 import 'package:drift/drift.dart';
 import 'package:openapi/api.dart' as api;
@@ -18,6 +19,7 @@ part 'app.g.dart';
     schema.ChatBackupReminder,
     schema.News,
     schema.PushNotification,
+    schema.AppUpdateAvailableDialog,
   ],
 )
 class DaoReadApp extends DatabaseAccessor<AccountDatabase> with _$DaoReadAppMixin {
@@ -115,6 +117,20 @@ class DaoReadApp extends DatabaseAccessor<AccountDatabase> with _$DaoReadAppMixi
         reminderIntervalDays: r?.reminderIntervalDays,
         lastBackupTime: r?.lastBackupTime,
         lastDialogOpenedTime: r?.lastDialogOpenedTime,
+      );
+    });
+  }
+
+  Stream<AppUpdateAvailableDialogState?> watchAppUpdateAvailableDialogState() {
+    return (select(
+      appUpdateAvailableDialog,
+    )..where((t) => t.id.equals(SingleRowTable.ID.value))).watchSingleOrNull().map((r) {
+      if (r == null) {
+        return null;
+      }
+      return AppUpdateAvailableDialogState(
+        latestEventTime: r.latestEventTime,
+        blockDialogsUntil: r.blockDialogsUntil,
       );
     });
   }

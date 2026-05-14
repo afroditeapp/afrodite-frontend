@@ -124,6 +124,8 @@ class EventRouter {
         } else {
           _log.error("Missing remaining websocket attempts for $type");
         }
+      case ServerMessageTypeCode.appUpdateAvailable:
+        await account.handleAppUpdateAvailableEvent();
       case ServerMessageTypeCode.typingStart:
         final typingStart = event.typingStart;
         if (typingStart != null) {

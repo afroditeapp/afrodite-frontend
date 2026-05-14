@@ -231,6 +231,18 @@
   "@app_slogan": {
     "description": "Slogan for the app"
   },
+  "app_update_available_dialog_description_manual_update": "New app version available. Please update the app.",
+  "@app_update_available_dialog_description_manual_update": {
+    "description": "Description text for app update available dialog when update action is not available"
+  },
+  "app_update_available_dialog_description_update_now": "New app version available. Update now?",
+  "@app_update_available_dialog_description_update_now": {
+    "description": "Description text for app update available dialog when update action is available"
+  },
+  "app_update_available_dialog_description_web_restart": "New app version available. Restart the app.",
+  "@app_update_available_dialog_description_web_restart": {
+    "description": "Description text for app update available dialog on web"
+  },
   "automatic_profile_search_results_screen_no_profiles_found_description": "You will be notified when this changes",
   "@automatic_profile_search_results_screen_no_profiles_found_description": {
     "description": "Description text displayed when no profiles are found"
@@ -1028,6 +1040,10 @@
   "@generic_large": {
     "description": "Generic large size text"
   },
+  "generic_later": "Later",
+  "@generic_later": {
+    "description": "Generic later text"
+  },
   "generic_login": "Login",
   "@generic_login": {
     "description": "Generic login text"
@@ -1200,6 +1216,10 @@
   "generic_unlimited": "Unlimited",
   "@generic_unlimited": {
     "description": "Generic unlimited text"
+  },
+  "generic_update": "Update",
+  "@generic_update": {
+    "description": "Generic update text"
   },
   "generic_warning": "Warning",
   "@generic_warning": {

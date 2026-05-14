@@ -11,6 +11,9 @@ const String _debugServerUrlIosAndWeb =
 const String _serverUrl = "https://localhost:3000";
 const String? _alternativeDemoAccountServerUrl = null;
 
+const bool APP_AVAILABLE_FROM_GOOGLE_PLAY_STORE = false;
+const int? APPLE_APP_STORE_APP_ID = null;
+
 String? getAlternativeDemoAccountServerUrl() {
   if (kReleaseMode) {
     return _alternativeDemoAccountServerUrl;

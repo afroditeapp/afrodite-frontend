@@ -75,6 +75,16 @@ class ChatBackupReminder {
   });
 }
 
+class AppUpdateAvailableDialogState {
+  final UtcDateTime? latestEventTime;
+  final UtcDateTime? blockDialogsUntil;
+
+  const AppUpdateAvailableDialogState({
+    required this.latestEventTime,
+    required this.blockDialogsUntil,
+  });
+}
+
 class InitialSetupProgressEntry {
   final String? email;
   final bool? isAdult;

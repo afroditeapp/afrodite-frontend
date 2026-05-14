@@ -21,6 +21,7 @@ import 'package:app/model/freezed/logic/account/initial_setup.dart';
 import 'package:app/utils/api.dart';
 import 'package:app/utils/result.dart';
 import 'package:rxdart/rxdart.dart';
+import 'package:utils/utils.dart';
 
 final _log = Logger("AccountRepository");
 
@@ -352,6 +353,12 @@ class AccountRepository extends DataRepositoryWithLifecycle {
             adminBotOffline: event.adminBotOffline,
           ),
         )
+        .emptyErr();
+  }
+
+  Future<Result<(), ()>> handleAppUpdateAvailableEvent() {
+    return db
+        .accountAction((db) => db.app.updateAppUpdateAvailableLatestEventTime(UtcDateTime.now()))
         .emptyErr();
   }
 

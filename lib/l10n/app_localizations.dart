@@ -382,6 +382,24 @@ abstract class AppLocalizations {
   /// **'Dating app'**
   String get app_slogan;
 
+  /// Description text for app update available dialog when update action is not available
+  ///
+  /// In en, this message translates to:
+  /// **'New app version available. Please update the app.'**
+  String get app_update_available_dialog_description_manual_update;
+
+  /// Description text for app update available dialog when update action is available
+  ///
+  /// In en, this message translates to:
+  /// **'New app version available. Update now?'**
+  String get app_update_available_dialog_description_update_now;
+
+  /// Description text for app update available dialog on web
+  ///
+  /// In en, this message translates to:
+  /// **'New app version available. Restart the app.'**
+  String get app_update_available_dialog_description_web_restart;
+
   /// Description text displayed when no profiles are found
   ///
   /// In en, this message translates to:
@@ -1438,6 +1456,12 @@ abstract class AppLocalizations {
   /// **'Large'**
   String get generic_large;
 
+  /// Generic later text
+  ///
+  /// In en, this message translates to:
+  /// **'Later'**
+  String get generic_later;
+
   /// Generic login text
   ///
   /// In en, this message translates to:
@@ -1689,6 +1713,12 @@ abstract class AppLocalizations {
   /// In en, this message translates to:
   /// **'Unlimited'**
   String get generic_unlimited;
+
+  /// Generic update text
+  ///
+  /// In en, this message translates to:
+  /// **'Update'**
+  String get generic_update;
 
   /// Generic warning message
   ///

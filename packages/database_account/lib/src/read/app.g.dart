@@ -17,4 +17,6 @@ mixin _$DaoReadAppMixin on DatabaseAccessor<AccountDatabase> {
   $NewsTable get news => attachedDatabase.news;
   $PushNotificationTable get pushNotification =>
       attachedDatabase.pushNotification;
+  $AppUpdateAvailableDialogTable get appUpdateAvailableDialog =>
+      attachedDatabase.appUpdateAvailableDialog;
 }

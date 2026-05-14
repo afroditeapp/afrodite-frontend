@@ -178,6 +178,18 @@ class AppLocalizationsSv extends AppLocalizations {
   String get app_slogan => 'Dating app';
 
   @override
+  String get app_update_available_dialog_description_manual_update =>
+      'New app version available. Please update the app.';
+
+  @override
+  String get app_update_available_dialog_description_update_now =>
+      'New app version available. Update now?';
+
+  @override
+  String get app_update_available_dialog_description_web_restart =>
+      'New app version available. Restart the app.';
+
+  @override
   String get automatic_profile_search_results_screen_no_profiles_found_description =>
       'You will be notified when this changes';
 
@@ -778,6 +790,9 @@ class AppLocalizationsSv extends AppLocalizations {
   String get generic_large => 'Large';
 
   @override
+  String get generic_later => 'Later';
+
+  @override
   String get generic_login => 'Login';
 
   @override
@@ -904,6 +919,9 @@ class AppLocalizationsSv extends AppLocalizations {
 
   @override
   String get generic_unlimited => 'Unlimited';
+
+  @override
+  String get generic_update => 'Update';
 
   @override
   String get generic_warning => 'Warning';

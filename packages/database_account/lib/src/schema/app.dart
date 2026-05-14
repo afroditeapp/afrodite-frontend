@@ -73,6 +73,16 @@ class PushNotification extends SingleRowTable {
   IntColumn get syncVersionPushNotificationInfo => integer().nullable()();
 }
 
+class AppUpdateAvailableDialog extends SingleRowTable {
+  /// Timestamp of latest websocket AppUpdateAvailable event.
+  IntColumn get latestEventTime =>
+      integer().map(NullAwareTypeConverter.wrap(const UtcDateTimeConverter())).nullable()();
+
+  /// Dialog opening is blocked while current time is before this value.
+  IntColumn get blockDialogsUntil =>
+      integer().map(NullAwareTypeConverter.wrap(const UtcDateTimeConverter())).nullable()();
+}
+
 class ClientVersionInfo extends SingleRowTable {
   IntColumn get majorVersion => integer()();
   IntColumn get minorVersion => integer()();

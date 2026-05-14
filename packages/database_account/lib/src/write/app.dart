@@ -19,6 +19,7 @@ part 'app.g.dart';
     schema.ChatBackupReminder,
     schema.News,
     schema.PushNotification,
+    schema.AppUpdateAvailableDialog,
     schema.ClientVersionInfo,
   ],
 )
@@ -93,6 +94,33 @@ class DaoWriteApp extends DatabaseAccessor<AccountDatabase> with _$DaoWriteAppMi
       PushNotificationCompanion.insert(
         id: SingleRowTable.ID,
         syncVersionPushNotificationInfo: Value(null),
+      ),
+    );
+  }
+
+  Future<void> updateAppUpdateAvailableLatestEventTime(UtcDateTime time) async {
+    await into(appUpdateAvailableDialog).insertOnConflictUpdate(
+      AppUpdateAvailableDialogCompanion.insert(id: SingleRowTable.ID, latestEventTime: Value(time)),
+    );
+  }
+
+  Future<void> removeAppUpdateDialogEventTimeAndBlockDialogsUntil(
+    UtcDateTime? blockDialogsUntil,
+  ) async {
+    await into(appUpdateAvailableDialog).insertOnConflictUpdate(
+      AppUpdateAvailableDialogCompanion.insert(
+        id: SingleRowTable.ID,
+        latestEventTime: Value(null),
+        blockDialogsUntil: Value(blockDialogsUntil),
+      ),
+    );
+  }
+
+  Future<void> updateAppUpdateAvailableDialogBlockUntil(UtcDateTime? time) async {
+    await into(appUpdateAvailableDialog).insertOnConflictUpdate(
+      AppUpdateAvailableDialogCompanion.insert(
+        id: SingleRowTable.ID,
+        blockDialogsUntil: Value(time),
       ),
     );
   }

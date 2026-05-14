@@ -20,6 +20,8 @@ import 'package:openapi/api.dart';
 /// - [ServerMessageTypeCode.pushNotificationInfoChanged] (5): payload is empty.
 /// - [ServerMessageTypeCode.webSocketConnectionAttemptsRemaining] (7): payload
 ///   is remaining daily websocket connection attempts as u8.
+/// - [ServerMessageTypeCode.appUpdateAvailable] (8): payload can be empty or
+///   non-empty to keep protocol forward compatible.
 /// - [ServerMessageTypeCode.accountStateChanged] (30): payload is empty.
 /// - [ServerMessageTypeCode.accountVerificationQueuePositionChanged] (31):
 ///   payload format:
@@ -99,6 +101,7 @@ enum ServerMessageTypeCode {
   adminBotNotification(4),
   pushNotificationInfoChanged(5),
   webSocketConnectionAttemptsRemaining(7),
+  appUpdateAvailable(8),
   accountStateChanged(30),
   accountVerificationQueuePositionChanged(31),
   profileChanged(60),
@@ -236,6 +239,7 @@ class ServerMessage {
       case ServerMessageTypeCode.clientConfigChanged:
       case ServerMessageTypeCode.newsCountChanged:
       case ServerMessageTypeCode.pushNotificationInfoChanged:
+      case ServerMessageTypeCode.appUpdateAvailable:
       case ServerMessageTypeCode.accountStateChanged:
       case ServerMessageTypeCode.profileChanged:
       case ServerMessageTypeCode.mediaContentChanged:
@@ -245,6 +249,9 @@ class ServerMessage {
       case ServerMessageTypeCode.dailyLikesLeftChanged:
       case ServerMessageTypeCode.messageDeliveryInfoChanged:
       case ServerMessageTypeCode.latestSeenMessageChanged:
+        if (type == ServerMessageTypeCode.appUpdateAvailable) {
+          return ServerMessage._(type: type, payload: payload);
+        }
         if (payload.isNotEmpty) {
           return null;
         }
