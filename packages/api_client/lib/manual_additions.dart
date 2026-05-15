@@ -1,6 +1,3 @@
-
-
-
 import 'dart:io';
 import 'dart:typed_data';
 
@@ -14,17 +11,17 @@ extension CommonManualAdditions on CommonApi {
   /// Parameters:
   ///
   /// * [String] name (required):
-  Future<Uint8List?> getDataExportArchiveFixed(String name,) async {
-    final response = await getDataExportArchiveWithHttpInfo(name,);
+  Future<Uint8List?> getDataExportArchiveFixed(String name) async {
+    final response = await getDataExportArchiveWithHttpInfo(name);
     if (response.statusCode >= HttpStatus.badRequest) {
       throw ApiException(response.statusCode, "Data export downloading failed");
     }
     // When a remote server returns no body with a status of 204, we shall not decode it.
     // At the time of writing this, `dart:convert` will throw an "Unexpected end of input"
     // FormatException when trying to decode an empty string.
-    if (response.body.isNotEmpty && response.statusCode != HttpStatus.noContent) {
+    if (response.body.isNotEmpty &&
+        response.statusCode != HttpStatus.noContent) {
       return response.bodyBytes;
-
     }
     return null;
   }
@@ -40,17 +37,25 @@ extension MediaManualAdditions on MediaApi {
   /// * [String] accountId (required):
   ///
   /// * [String] contentId (required):
-  Future<Uint8List?> getContentFixed(String accountId, String contentId, bool isMatch) async {
-    final response = await getContentWithHttpInfo(accountId, contentId, isMatch: isMatch);
+  Future<Uint8List?> getContentFixed(
+    String accountId,
+    String contentId,
+    bool isMatch,
+  ) async {
+    final response = await getContentWithHttpInfo(
+      accountId,
+      contentId,
+      isMatch: isMatch,
+    );
     if (response.statusCode >= HttpStatus.badRequest) {
       throw ApiException(response.statusCode, "Image loading failed");
     }
     // When a remote server returns no body with a status of 204, we shall not decode it.
     // At the time of writing this, `dart:convert` will throw an "Unexpected end of input"
     // FormatException when trying to decode an empty string.
-    if (response.body.isNotEmpty && response.statusCode != HttpStatus.noContent) {
+    if (response.body.isNotEmpty &&
+        response.statusCode != HttpStatus.noContent) {
       return response.bodyBytes;
-
     }
     return null;
   }
@@ -66,7 +71,12 @@ extension MediaManualAdditions on MediaApi {
   /// * [int] x (required):
   ///
   /// * [String] y (required):
-  Future<Uint8List?> getMapTileFixed(int z, int x, String y, int version) async {
+  Future<Uint8List?> getMapTileFixed(
+    int z,
+    int x,
+    String y,
+    int version,
+  ) async {
     final response = await getMapTileWithHttpInfo(z, x, y, version);
     if (response.statusCode >= HttpStatus.badRequest) {
       throw ApiException(response.statusCode, "Image loading failed");
@@ -74,9 +84,9 @@ extension MediaManualAdditions on MediaApi {
     // When a remote server returns no body with a status of 204, we shall not decode it.
     // At the time of writing this, `dart:convert` will throw an "Unexpected end of input"
     // FormatException when trying to decode an empty string.
-    if (response.body.isNotEmpty && response.statusCode != HttpStatus.noContent) {
+    if (response.body.isNotEmpty &&
+        response.statusCode != HttpStatus.noContent) {
       return response.bodyBytes;
-
     }
     return null;
   }
@@ -92,17 +102,64 @@ extension MediaManualAdditions on MediaApi {
   /// * [String] version:
   ///
   /// * [bool] isMatch:
-  Future<Uint8List?> getProfileContentInfoBinaryFixed(String aid, { String? version, bool? isMatch, }) async {
-    final response = await getProfileContentInfoBinaryWithHttpInfo(aid,  version: version, isMatch: isMatch, );
+  Future<Uint8List?> getProfileContentInfoBinaryFixed(
+    String aid, {
+    String? version,
+    bool? isMatch,
+  }) async {
+    final response = await getProfileContentInfoBinaryWithHttpInfo(
+      aid,
+      version: version,
+      isMatch: isMatch,
+    );
     if (response.statusCode >= HttpStatus.badRequest) {
-      throw ApiException(response.statusCode, "Profile content download failed");
+      throw ApiException(
+        response.statusCode,
+        "Profile content download failed",
+      );
     }
     // When a remote server returns no body with a status of 204, we shall not decode it.
     // At the time of writing this, `dart:convert` will throw an "Unexpected end of input"
     // FormatException when trying to decode an empty string.
-    if (response.body.isNotEmpty && response.statusCode != HttpStatus.noContent) {
+    if (response.body.isNotEmpty &&
+        response.statusCode != HttpStatus.noContent) {
       return response.bodyBytes;
+    }
+    return null;
+  }
+}
 
+extension ProfileManualAdditions on ProfileApi {
+  /// Get account's current profile as compact binary payload.
+  ///
+  /// See [getProfileBinary] for more documentation.
+  ///
+  /// Parameters:
+  ///
+  /// * [String] aid (required):
+  ///
+  /// * [String] v:
+  ///
+  /// * [bool] isMatch:
+  Future<Uint8List?> getProfileBinaryFixed(
+    String aid, {
+    String? v,
+    bool? isMatch,
+  }) async {
+    final response = await getProfileBinaryWithHttpInfo(
+      aid,
+      v: v,
+      isMatch: isMatch,
+    );
+    if (response.statusCode >= HttpStatus.badRequest) {
+      throw ApiException(response.statusCode, "Profile download failed");
+    }
+    // When a remote server returns no body with a status of 204, we shall not decode it.
+    // At the time of writing this, `dart:convert` will throw an "Unexpected end of input"
+    // FormatException when trying to decode an empty string.
+    if (response.body.isNotEmpty &&
+        response.statusCode != HttpStatus.noContent) {
+      return response.bodyBytes;
     }
     return null;
   }
@@ -127,17 +184,17 @@ extension ChatManualAdditions on ChatApi {
   /// * [String] aid (required):
   ///
   /// * [int] id (required):
-  Future<Uint8List?> getPublicKeyFixed(String aid, int id,) async {
-    final response = await getPublicKeyWithHttpInfo(aid, id,);
+  Future<Uint8List?> getPublicKeyFixed(String aid, int id) async {
+    final response = await getPublicKeyWithHttpInfo(aid, id);
     if (response.statusCode >= HttpStatus.badRequest) {
       throw ApiException(response.statusCode, "Get public key failed");
     }
     // When a remote server returns no body with a status of 204, we shall not decode it.
     // At the time of writing this, `dart:convert` will throw an "Unexpected end of input"
     // FormatException when trying to decode an empty string.
-    if (response.body.isNotEmpty && response.statusCode != HttpStatus.noContent) {
+    if (response.body.isNotEmpty &&
+        response.statusCode != HttpStatus.noContent) {
       return response.bodyBytes;
-
     }
     return null;
   }

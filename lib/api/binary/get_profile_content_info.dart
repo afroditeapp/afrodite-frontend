@@ -1,6 +1,6 @@
-import 'dart:convert';
 import 'dart:typed_data';
 
+import 'package:app/api/binary/utils.dart';
 import 'package:openapi/api.dart';
 
 const int _variantEmpty = 0;
@@ -8,7 +8,7 @@ const int _variantVersionOnly = 1;
 const int _variantContentWithVersion = 2;
 
 GetProfileContentResult? parseGetProfileContentInfoBinary(Uint8List bytes) {
-  final reader = _ByteReader(bytes);
+  final reader = ByteReader(bytes);
   final variant = reader.readU8();
   if (variant == null) {
     return null;
@@ -16,13 +16,13 @@ GetProfileContentResult? parseGetProfileContentInfoBinary(Uint8List bytes) {
 
   switch (variant) {
     case _variantEmpty:
-      return reader.isAtEnd ? GetProfileContentResult() : null;
+      return GetProfileContentResult();
     case _variantVersionOnly:
       final versionBytes = reader.readBytes(16);
-      if (versionBytes == null || !reader.isAtEnd) {
+      if (versionBytes == null) {
         return null;
       }
-      return GetProfileContentResult(version: ProfileContentVersion(v: _toIdString(versionBytes)));
+      return GetProfileContentResult(version: ProfileContentVersion(v: toIdString(versionBytes)));
     case _variantContentWithVersion:
       final versionBytes = reader.readBytes(16);
       final verificationStatus = reader.readU8();
@@ -51,12 +51,12 @@ GetProfileContentResult? parseGetProfileContentInfoBinary(Uint8List bytes) {
       final gridCropSize = reader.readF32LE();
       final gridCropX = reader.readF32LE();
       final gridCropY = reader.readF32LE();
-      if (gridCropSize == null || gridCropX == null || gridCropY == null || !reader.isAtEnd) {
+      if (gridCropSize == null || gridCropX == null || gridCropY == null) {
         return null;
       }
 
       return GetProfileContentResult(
-        version: ProfileContentVersion(v: _toIdString(versionBytes)),
+        version: ProfileContentVersion(v: toIdString(versionBytes)),
         content: ProfileContent(
           content: content,
           verificationStatus: MediaVerificationStatus(v: verificationStatus),
@@ -90,7 +90,7 @@ ContentInfo? _parseContentInfo(Uint8List contentIdBytes, int packedInfo) {
   final ctype = _parseMediaContentType(mediaTypeBits);
 
   return ContentInfo(
-    cid: ContentId(cid: _toIdString(contentIdBytes)),
+    cid: ContentId(cid: toIdString(contentIdBytes)),
     ctype: ctype,
     accepted: accepted,
     faceDetected: faceDetected,
@@ -103,41 +103,4 @@ MediaContentType? _parseMediaContentType(int value) {
     0 => MediaContentType.jpegImage,
     _ => null,
   };
-}
-
-String _toIdString(Uint8List value) {
-  return base64UrlEncode(value).replaceAll('=', '');
-}
-
-class _ByteReader {
-  final Uint8List _bytes;
-  int _offset = 0;
-
-  _ByteReader(this._bytes);
-
-  bool get isAtEnd => _offset == _bytes.length;
-
-  int? readU8() {
-    if (_offset >= _bytes.length) {
-      return null;
-    }
-    return _bytes[_offset++];
-  }
-
-  Uint8List? readBytes(int length) {
-    if (length < 0 || _offset + length > _bytes.length) {
-      return null;
-    }
-    final result = Uint8List.sublistView(_bytes, _offset, _offset + length);
-    _offset += length;
-    return result;
-  }
-
-  double? readF32LE() {
-    final value = readBytes(4);
-    if (value == null) {
-      return null;
-    }
-    return ByteData.sublistView(value).getFloat32(0, Endian.little);
-  }
 }

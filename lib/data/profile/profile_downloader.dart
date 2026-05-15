@@ -3,6 +3,7 @@ import 'dart:async';
 import 'package:logging/logging.dart';
 import 'package:openapi/api.dart';
 import 'package:openapi/manual_additions.dart';
+import 'package:app/api/binary/get_profile.dart';
 import 'package:app/api/binary/get_profile_content_info.dart';
 import 'package:app/api/server_connection_manager.dart';
 import 'package:app/data/image_cache.dart';
@@ -78,10 +79,19 @@ class ProfileEntryDownloader {
     }
 
     // Prevent displaying error when profile is made private while iterating
-    final profileDetailsResult = await api.profileWrapper().requestValue(
-      logError: false,
-      (api) => api.getProfile(accountId.aid, isMatch: isMatch, v: currentVersion?.v),
-    );
+    final profileDetailsResult = await api.profileWrapper().requestValue(logError: false, (
+      api,
+    ) async {
+      final bytes = await api.getProfileBinaryFixed(
+        accountId.aid,
+        isMatch: isMatch,
+        v: currentVersion?.v,
+      );
+      if (bytes == null) {
+        return null;
+      }
+      return parseGetProfileBinary(bytes);
+    });
 
     switch (profileDetailsResult) {
       case Ok(:final v):
