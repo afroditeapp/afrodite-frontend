@@ -4,7 +4,7 @@ part of 'login_session.dart';
 
 // ignore_for_file: type=lint
 mixin _$DaoReadLoginSessionMixin on DatabaseAccessor<AccountDatabase> {
-  $AccountIdTable get accountId => attachedDatabase.accountId;
+  $DbOwnerTable get dbOwner => attachedDatabase.dbOwner;
   $LoginSessionTokensTable get loginSessionTokens =>
       attachedDatabase.loginSessionTokens;
 }

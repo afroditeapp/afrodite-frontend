@@ -7,7 +7,7 @@ class LocalAccountId extends Table {
   TextColumn get uuid => text().map(const AccountIdConverter()).unique()();
 }
 
-class AccountId extends SingleRowTable {
+class DbOwner extends SingleRowTable {
   TextColumn get accountId => text().map(const AccountIdConverter())();
 }
 

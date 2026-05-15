@@ -10588,12 +10588,12 @@ class EmailVerifiedCompanion extends UpdateCompanion<EmailVerifiedData> {
   }
 }
 
-class $AccountIdTable extends schema.AccountId
-    with TableInfo<$AccountIdTable, AccountIdData> {
+class $DbOwnerTable extends schema.DbOwner
+    with TableInfo<$DbOwnerTable, DbOwnerData> {
   @override
   final GeneratedDatabase attachedDatabase;
   final String? _alias;
-  $AccountIdTable(this.attachedDatabase, [this._alias]);
+  $DbOwnerTable(this.attachedDatabase, [this._alias]);
   static const VerificationMeta _idMeta = const VerificationMeta('id');
   @override
   late final GeneratedColumn<int> id = GeneratedColumn<int>(
@@ -10615,17 +10615,17 @@ class $AccountIdTable extends schema.AccountId
         false,
         type: DriftSqlType.string,
         requiredDuringInsert: true,
-      ).withConverter<AccountId>($AccountIdTable.$converteraccountId);
+      ).withConverter<AccountId>($DbOwnerTable.$converteraccountId);
   @override
   List<GeneratedColumn> get $columns => [id, accountId];
   @override
   String get aliasedName => _alias ?? actualTableName;
   @override
   String get actualTableName => $name;
-  static const String $name = 'account_id';
+  static const String $name = 'db_owner';
   @override
   VerificationContext validateIntegrity(
-    Insertable<AccountIdData> instance, {
+    Insertable<DbOwnerData> instance, {
     bool isInserting = false,
   }) {
     final context = VerificationContext();
@@ -10639,14 +10639,14 @@ class $AccountIdTable extends schema.AccountId
   @override
   Set<GeneratedColumn> get $primaryKey => {id};
   @override
-  AccountIdData map(Map<String, dynamic> data, {String? tablePrefix}) {
+  DbOwnerData map(Map<String, dynamic> data, {String? tablePrefix}) {
     final effectivePrefix = tablePrefix != null ? '$tablePrefix.' : '';
-    return AccountIdData(
+    return DbOwnerData(
       id: attachedDatabase.typeMapping.read(
         DriftSqlType.int,
         data['${effectivePrefix}id'],
       )!,
-      accountId: $AccountIdTable.$converteraccountId.fromSql(
+      accountId: $DbOwnerTable.$converteraccountId.fromSql(
         attachedDatabase.typeMapping.read(
           DriftSqlType.string,
           data['${effectivePrefix}account_id'],
@@ -10656,40 +10656,40 @@ class $AccountIdTable extends schema.AccountId
   }
 
   @override
-  $AccountIdTable createAlias(String alias) {
-    return $AccountIdTable(attachedDatabase, alias);
+  $DbOwnerTable createAlias(String alias) {
+    return $DbOwnerTable(attachedDatabase, alias);
   }
 
   static TypeConverter<AccountId, String> $converteraccountId =
       const AccountIdConverter();
 }
 
-class AccountIdData extends DataClass implements Insertable<AccountIdData> {
+class DbOwnerData extends DataClass implements Insertable<DbOwnerData> {
   final int id;
   final AccountId accountId;
-  const AccountIdData({required this.id, required this.accountId});
+  const DbOwnerData({required this.id, required this.accountId});
   @override
   Map<String, Expression> toColumns(bool nullToAbsent) {
     final map = <String, Expression>{};
     map['id'] = Variable<int>(id);
     {
       map['account_id'] = Variable<String>(
-        $AccountIdTable.$converteraccountId.toSql(accountId),
+        $DbOwnerTable.$converteraccountId.toSql(accountId),
       );
     }
     return map;
   }
 
-  AccountIdCompanion toCompanion(bool nullToAbsent) {
-    return AccountIdCompanion(id: Value(id), accountId: Value(accountId));
+  DbOwnerCompanion toCompanion(bool nullToAbsent) {
+    return DbOwnerCompanion(id: Value(id), accountId: Value(accountId));
   }
 
-  factory AccountIdData.fromJson(
+  factory DbOwnerData.fromJson(
     Map<String, dynamic> json, {
     ValueSerializer? serializer,
   }) {
     serializer ??= driftRuntimeOptions.defaultSerializer;
-    return AccountIdData(
+    return DbOwnerData(
       id: serializer.fromJson<int>(json['id']),
       accountId: serializer.fromJson<AccountId>(json['accountId']),
     );
@@ -10703,10 +10703,10 @@ class AccountIdData extends DataClass implements Insertable<AccountIdData> {
     };
   }
 
-  AccountIdData copyWith({int? id, AccountId? accountId}) =>
-      AccountIdData(id: id ?? this.id, accountId: accountId ?? this.accountId);
-  AccountIdData copyWithCompanion(AccountIdCompanion data) {
-    return AccountIdData(
+  DbOwnerData copyWith({int? id, AccountId? accountId}) =>
+      DbOwnerData(id: id ?? this.id, accountId: accountId ?? this.accountId);
+  DbOwnerData copyWithCompanion(DbOwnerCompanion data) {
+    return DbOwnerData(
       id: data.id.present ? data.id.value : this.id,
       accountId: data.accountId.present ? data.accountId.value : this.accountId,
     );
@@ -10714,7 +10714,7 @@ class AccountIdData extends DataClass implements Insertable<AccountIdData> {
 
   @override
   String toString() {
-    return (StringBuffer('AccountIdData(')
+    return (StringBuffer('DbOwnerData(')
           ..write('id: $id, ')
           ..write('accountId: $accountId')
           ..write(')'))
@@ -10726,23 +10726,23 @@ class AccountIdData extends DataClass implements Insertable<AccountIdData> {
   @override
   bool operator ==(Object other) =>
       identical(this, other) ||
-      (other is AccountIdData &&
+      (other is DbOwnerData &&
           other.id == this.id &&
           other.accountId == this.accountId);
 }
 
-class AccountIdCompanion extends UpdateCompanion<AccountIdData> {
+class DbOwnerCompanion extends UpdateCompanion<DbOwnerData> {
   final Value<int> id;
   final Value<AccountId> accountId;
-  const AccountIdCompanion({
+  const DbOwnerCompanion({
     this.id = const Value.absent(),
     this.accountId = const Value.absent(),
   });
-  AccountIdCompanion.insert({
+  DbOwnerCompanion.insert({
     this.id = const Value.absent(),
     required AccountId accountId,
   }) : accountId = Value(accountId);
-  static Insertable<AccountIdData> custom({
+  static Insertable<DbOwnerData> custom({
     Expression<int>? id,
     Expression<String>? accountId,
   }) {
@@ -10752,8 +10752,8 @@ class AccountIdCompanion extends UpdateCompanion<AccountIdData> {
     });
   }
 
-  AccountIdCompanion copyWith({Value<int>? id, Value<AccountId>? accountId}) {
-    return AccountIdCompanion(
+  DbOwnerCompanion copyWith({Value<int>? id, Value<AccountId>? accountId}) {
+    return DbOwnerCompanion(
       id: id ?? this.id,
       accountId: accountId ?? this.accountId,
     );
@@ -10767,7 +10767,7 @@ class AccountIdCompanion extends UpdateCompanion<AccountIdData> {
     }
     if (accountId.present) {
       map['account_id'] = Variable<String>(
-        $AccountIdTable.$converteraccountId.toSql(accountId.value),
+        $DbOwnerTable.$converteraccountId.toSql(accountId.value),
       );
     }
     return map;
@@ -10775,7 +10775,7 @@ class AccountIdCompanion extends UpdateCompanion<AccountIdData> {
 
   @override
   String toString() {
-    return (StringBuffer('AccountIdCompanion(')
+    return (StringBuffer('DbOwnerCompanion(')
           ..write('id: $id, ')
           ..write('accountId: $accountId')
           ..write(')'))
@@ -20665,7 +20665,7 @@ abstract class _$AccountDatabase extends GeneratedDatabase {
       $ProfileVisibilityTable(this);
   late final $EmailAddressTable emailAddress = $EmailAddressTable(this);
   late final $EmailVerifiedTable emailVerified = $EmailVerifiedTable(this);
-  late final $AccountIdTable accountId = $AccountIdTable(this);
+  late final $DbOwnerTable dbOwner = $DbOwnerTable(this);
   late final $LoginSessionTokensTable loginSessionTokens =
       $LoginSessionTokensTable(this);
   late final $MyMediaContentTable myMediaContent = $MyMediaContentTable(this);
@@ -20841,7 +20841,7 @@ abstract class _$AccountDatabase extends GeneratedDatabase {
     profileVisibility,
     emailAddress,
     emailVerified,
-    accountId,
+    dbOwner,
     loginSessionTokens,
     myMediaContent,
     profileContent,

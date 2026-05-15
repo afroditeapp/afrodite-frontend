@@ -8,7 +8,7 @@ import '../../schema.dart' as schema;
 
 part 'login_session.g.dart';
 
-@DriftAccessor(tables: [schema.AccountId, schema.LoginSessionTokens])
+@DriftAccessor(tables: [schema.DbOwner, schema.LoginSessionTokens])
 class DaoWriteLoginSession extends DatabaseAccessor<AccountDatabase>
     with _$DaoWriteLoginSessionMixin {
   DaoWriteLoginSession(super.db);
@@ -18,8 +18,8 @@ class DaoWriteLoginSession extends DatabaseAccessor<AccountDatabase>
       final currentAccountId = await db.read.loginSession.watchAccountId().firstOrNull;
       if (currentAccountId == null) {
         await into(
-          accountId,
-        ).insertOnConflictUpdate(AccountIdCompanion.insert(id: SingleRowTable.ID, accountId: id));
+          dbOwner,
+        ).insertOnConflictUpdate(DbOwnerCompanion.insert(id: SingleRowTable.ID, accountId: id));
       }
     });
   }
