@@ -2224,6 +2224,12 @@ abstract class AppLocalizations {
   /// **'Automatic moderation is not working currently'**
   String get menu_screen_admin_offline_title;
 
+  /// Title for help center menu item
+  ///
+  /// In en, this message translates to:
+  /// **'Help center'**
+  String get menu_screen_help_center_title;
+
   /// Title text for server maintenance info
   ///
   /// In en, this message translates to:

@@ -1,4 +1,5 @@
 import 'package:app/data/utils/repository_instances.dart';
+import 'package:app/config.dart';
 import 'package:app/logic/account/client_features_config.dart';
 import 'package:app/logic/account/info_banners.dart';
 import 'package:app/logic/profile/automatic_profile_search_badge.dart';
@@ -29,6 +30,7 @@ import 'package:app/ui_utils/app_bar/menu_actions.dart';
 import 'package:app/ui_utils/info_banners.dart';
 import 'package:app/ui_utils/scroll_controller.dart';
 import 'package:openapi/api.dart';
+import 'package:url_launcher/url_launcher_string.dart';
 
 class MenuView extends BottomNavigationScreen {
   const MenuView({super.key});
@@ -173,6 +175,12 @@ class _MenuViewState extends State<MenuView> {
         context.strings.settings_screen_title,
         () => openSettingsScreen(context),
       ),
+      if (HELP_CENTER_URL != null)
+        Setting.createSetting(
+          Icons.help_center,
+          context.strings.menu_screen_help_center_title,
+          () => launchUrlString(HELP_CENTER_URL!),
+        ),
     ];
 
     if (AdminSettingsPermissions(permissions).somePermissionEnabled()) {

@@ -1,3 +1,5 @@
+// ignore_for_file: unnecessary_nullable_for_final_variable_declarations
+
 import 'dart:io';
 
 import 'package:flutter/foundation.dart';
@@ -11,6 +13,7 @@ const String _debugServerUrlIosAndWeb =
 const String _serverUrl = "https://localhost:3000";
 const String? _alternativeDemoAccountServerUrl = null;
 
+const String? HELP_CENTER_URL = null;
 const bool APP_AVAILABLE_FROM_GOOGLE_PLAY_STORE = false;
 const int? APPLE_APP_STORE_APP_ID = null;
 

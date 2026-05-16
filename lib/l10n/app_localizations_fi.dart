@@ -1202,6 +1202,9 @@ class AppLocalizationsFi extends AppLocalizations {
   String get menu_screen_admin_offline_title => 'Automatic moderation is not working currently';
 
   @override
+  String get menu_screen_help_center_title => 'Help center';
+
+  @override
   String get menu_screen_server_maintenance_title => 'Maintenance break';
 
   @override

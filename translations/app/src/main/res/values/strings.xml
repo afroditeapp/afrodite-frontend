@@ -554,6 +554,7 @@
     <string name="menu_screen_title" description="Title for menu screen">Menu</string>
     <string name="menu_screen_server_maintenance_title" description="Title text for server maintenance info">Maintenance break</string>
     <string name="menu_screen_admin_offline_title" description="Title text for admin bot offline info">Automatic moderation is not working currently</string>
+    <string name="menu_screen_help_center_title" description="Title for help center menu item">Help center</string>
 
     <!-- Settings -->
     <string name="settings_screen_title" description="Title for settings screen">Settings</string>
