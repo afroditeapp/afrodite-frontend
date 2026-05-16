@@ -59,7 +59,6 @@ LazyDatabase openDbConnection(DbFile db) {
         // ignore: avoid_print
         print("${db.runtimeType} setup started");
 
-        dbAccess.execute("PRAGMA foreign_keys = ON;");
         dbAccess.execute("PRAGMA journal_mode = WAL;");
         dbAccess.execute("PRAGMA synchronous = NORMAL;");
 
