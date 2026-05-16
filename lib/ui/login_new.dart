@@ -172,8 +172,6 @@ class _DemoAccountLoginDialogContentState extends State<_DemoAccountLoginDialogC
   Widget build(BuildContext context) {
     final usernameField = SimpleTextField(
       hintText: context.strings.login_screen_demo_account_username,
-      // TODO(prod): After password login is implemented add boolean constant which
-      //             can hide demo account login.
       getInitialValue: () => username,
       onChanged: usernameChangedCallback,
     );

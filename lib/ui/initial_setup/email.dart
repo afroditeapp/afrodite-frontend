@@ -97,8 +97,6 @@ class _AskEmailState extends State<AskEmail> {
   Widget emailRow(BuildContext context) {
     final email = widget.initialEmail;
     if (email != null) {
-      // TODO(prod): Make email editing possible even if sign in with login
-      //             is used.
       return Center(
         child: Padding(padding: const EdgeInsets.all(8.0), child: Text(email)),
       );
