@@ -5,7 +5,7 @@ part of 'profile.dart';
 // ignore_for_file: type=lint
 mixin _$DaoWriteProfileMixin on DatabaseAccessor<AccountDatabase> {
   $ProfileTable get profile => attachedDatabase.profile;
-  $ProfileStatesTable get profileStates => attachedDatabase.profileStates;
+  $ProfileExtraTable get profileExtra => attachedDatabase.profileExtra;
   $FavoriteProfilesTable get favoriteProfiles =>
       attachedDatabase.favoriteProfiles;
 }

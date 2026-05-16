@@ -15921,12 +15921,12 @@ class InitialProfileAgeCompanion
   }
 }
 
-class $ProfileStatesTable extends schema.ProfileStates
-    with TableInfo<$ProfileStatesTable, ProfileState> {
+class $ProfileExtraTable extends schema.ProfileExtra
+    with TableInfo<$ProfileExtraTable, ProfileExtraData> {
   @override
   final GeneratedDatabase attachedDatabase;
   final String? _alias;
-  $ProfileStatesTable(this.attachedDatabase, [this._alias]);
+  $ProfileExtraTable(this.attachedDatabase, [this._alias]);
   @override
   late final GeneratedColumnWithTypeConverter<AccountId, String> accountId =
       GeneratedColumn<String>(
@@ -15935,19 +15935,16 @@ class $ProfileStatesTable extends schema.ProfileStates
         false,
         type: DriftSqlType.string,
         requiredDuringInsert: true,
-      ).withConverter<AccountId>($ProfileStatesTable.$converteraccountId);
+      ).withConverter<AccountId>($ProfileExtraTable.$converteraccountId);
   @override
   late final GeneratedColumnWithTypeConverter<UtcDateTime?, int>
-  isInReceivedLikes =
-      GeneratedColumn<int>(
-        'is_in_received_likes',
-        aliasedName,
-        true,
-        type: DriftSqlType.int,
-        requiredDuringInsert: false,
-      ).withConverter<UtcDateTime?>(
-        $ProfileStatesTable.$converterisInReceivedLikes,
-      );
+  isInReceivedLikes = GeneratedColumn<int>(
+    'is_in_received_likes',
+    aliasedName,
+    true,
+    type: DriftSqlType.int,
+    requiredDuringInsert: false,
+  ).withConverter<UtcDateTime?>($ProfileExtraTable.$converterisInReceivedLikes);
   @override
   late final GeneratedColumnWithTypeConverter<UtcDateTime?, int> isInSentLikes =
       GeneratedColumn<int>(
@@ -15956,9 +15953,7 @@ class $ProfileStatesTable extends schema.ProfileStates
         true,
         type: DriftSqlType.int,
         requiredDuringInsert: false,
-      ).withConverter<UtcDateTime?>(
-        $ProfileStatesTable.$converterisInSentLikes,
-      );
+      ).withConverter<UtcDateTime?>($ProfileExtraTable.$converterisInSentLikes);
   @override
   late final GeneratedColumnWithTypeConverter<UtcDateTime?, int> isInMatches =
       GeneratedColumn<int>(
@@ -15967,7 +15962,7 @@ class $ProfileStatesTable extends schema.ProfileStates
         true,
         type: DriftSqlType.int,
         requiredDuringInsert: false,
-      ).withConverter<UtcDateTime?>($ProfileStatesTable.$converterisInMatches);
+      ).withConverter<UtcDateTime?>($ProfileExtraTable.$converterisInMatches);
   @override
   late final GeneratedColumnWithTypeConverter<UtcDateTime?, int>
   isInProfileGrid = GeneratedColumn<int>(
@@ -15976,7 +15971,7 @@ class $ProfileStatesTable extends schema.ProfileStates
     true,
     type: DriftSqlType.int,
     requiredDuringInsert: false,
-  ).withConverter<UtcDateTime?>($ProfileStatesTable.$converterisInProfileGrid);
+  ).withConverter<UtcDateTime?>($ProfileExtraTable.$converterisInProfileGrid);
   @override
   late final GeneratedColumnWithTypeConverter<UtcDateTime?, int>
   isInAutomaticProfileSearchGrid =
@@ -15987,7 +15982,7 @@ class $ProfileStatesTable extends schema.ProfileStates
         type: DriftSqlType.int,
         requiredDuringInsert: false,
       ).withConverter<UtcDateTime?>(
-        $ProfileStatesTable.$converterisInAutomaticProfileSearchGrid,
+        $ProfileExtraTable.$converterisInAutomaticProfileSearchGrid,
       );
   @override
   late final GeneratedColumnWithTypeConverter<UtcDateTime?, int>
@@ -15999,7 +15994,7 @@ class $ProfileStatesTable extends schema.ProfileStates
         type: DriftSqlType.int,
         requiredDuringInsert: false,
       ).withConverter<UtcDateTime?>(
-        $ProfileStatesTable.$converterisInReceivedLikesGrid,
+        $ProfileExtraTable.$converterisInReceivedLikesGrid,
       );
   @override
   late final GeneratedColumnWithTypeConverter<UtcDateTime?, int>
@@ -16009,7 +16004,7 @@ class $ProfileStatesTable extends schema.ProfileStates
     true,
     type: DriftSqlType.int,
     requiredDuringInsert: false,
-  ).withConverter<UtcDateTime?>($ProfileStatesTable.$converterisInMatchesGrid);
+  ).withConverter<UtcDateTime?>($ProfileExtraTable.$converterisInMatchesGrid);
   @override
   List<GeneratedColumn> get $columns => [
     accountId,
@@ -16025,45 +16020,44 @@ class $ProfileStatesTable extends schema.ProfileStates
   String get aliasedName => _alias ?? actualTableName;
   @override
   String get actualTableName => $name;
-  static const String $name = 'profile_states';
+  static const String $name = 'profile_extra';
   @override
   Set<GeneratedColumn> get $primaryKey => {accountId};
   @override
-  ProfileState map(Map<String, dynamic> data, {String? tablePrefix}) {
+  ProfileExtraData map(Map<String, dynamic> data, {String? tablePrefix}) {
     final effectivePrefix = tablePrefix != null ? '$tablePrefix.' : '';
-    return ProfileState(
-      accountId: $ProfileStatesTable.$converteraccountId.fromSql(
+    return ProfileExtraData(
+      accountId: $ProfileExtraTable.$converteraccountId.fromSql(
         attachedDatabase.typeMapping.read(
           DriftSqlType.string,
           data['${effectivePrefix}account_id'],
         )!,
       ),
-      isInReceivedLikes: $ProfileStatesTable.$converterisInReceivedLikes
-          .fromSql(
-            attachedDatabase.typeMapping.read(
-              DriftSqlType.int,
-              data['${effectivePrefix}is_in_received_likes'],
-            ),
-          ),
-      isInSentLikes: $ProfileStatesTable.$converterisInSentLikes.fromSql(
+      isInReceivedLikes: $ProfileExtraTable.$converterisInReceivedLikes.fromSql(
+        attachedDatabase.typeMapping.read(
+          DriftSqlType.int,
+          data['${effectivePrefix}is_in_received_likes'],
+        ),
+      ),
+      isInSentLikes: $ProfileExtraTable.$converterisInSentLikes.fromSql(
         attachedDatabase.typeMapping.read(
           DriftSqlType.int,
           data['${effectivePrefix}is_in_sent_likes'],
         ),
       ),
-      isInMatches: $ProfileStatesTable.$converterisInMatches.fromSql(
+      isInMatches: $ProfileExtraTable.$converterisInMatches.fromSql(
         attachedDatabase.typeMapping.read(
           DriftSqlType.int,
           data['${effectivePrefix}is_in_matches'],
         ),
       ),
-      isInProfileGrid: $ProfileStatesTable.$converterisInProfileGrid.fromSql(
+      isInProfileGrid: $ProfileExtraTable.$converterisInProfileGrid.fromSql(
         attachedDatabase.typeMapping.read(
           DriftSqlType.int,
           data['${effectivePrefix}is_in_profile_grid'],
         ),
       ),
-      isInAutomaticProfileSearchGrid: $ProfileStatesTable
+      isInAutomaticProfileSearchGrid: $ProfileExtraTable
           .$converterisInAutomaticProfileSearchGrid
           .fromSql(
             attachedDatabase.typeMapping.read(
@@ -16071,14 +16065,14 @@ class $ProfileStatesTable extends schema.ProfileStates
               data['${effectivePrefix}is_in_automatic_profile_search_grid'],
             ),
           ),
-      isInReceivedLikesGrid: $ProfileStatesTable.$converterisInReceivedLikesGrid
+      isInReceivedLikesGrid: $ProfileExtraTable.$converterisInReceivedLikesGrid
           .fromSql(
             attachedDatabase.typeMapping.read(
               DriftSqlType.int,
               data['${effectivePrefix}is_in_received_likes_grid'],
             ),
           ),
-      isInMatchesGrid: $ProfileStatesTable.$converterisInMatchesGrid.fromSql(
+      isInMatchesGrid: $ProfileExtraTable.$converterisInMatchesGrid.fromSql(
         attachedDatabase.typeMapping.read(
           DriftSqlType.int,
           data['${effectivePrefix}is_in_matches_grid'],
@@ -16088,8 +16082,8 @@ class $ProfileStatesTable extends schema.ProfileStates
   }
 
   @override
-  $ProfileStatesTable createAlias(String alias) {
-    return $ProfileStatesTable(attachedDatabase, alias);
+  $ProfileExtraTable createAlias(String alias) {
+    return $ProfileExtraTable(attachedDatabase, alias);
   }
 
   static TypeConverter<AccountId, String> $converteraccountId =
@@ -16112,7 +16106,8 @@ class $ProfileStatesTable extends schema.ProfileStates
       const NullAwareTypeConverter.wrap(UtcDateTimeConverter());
 }
 
-class ProfileState extends DataClass implements Insertable<ProfileState> {
+class ProfileExtraData extends DataClass
+    implements Insertable<ProfileExtraData> {
   final AccountId accountId;
   final UtcDateTime? isInReceivedLikes;
   final UtcDateTime? isInSentLikes;
@@ -16121,7 +16116,7 @@ class ProfileState extends DataClass implements Insertable<ProfileState> {
   final UtcDateTime? isInAutomaticProfileSearchGrid;
   final UtcDateTime? isInReceivedLikesGrid;
   final UtcDateTime? isInMatchesGrid;
-  const ProfileState({
+  const ProfileExtraData({
     required this.accountId,
     this.isInReceivedLikes,
     this.isInSentLikes,
@@ -16136,55 +16131,53 @@ class ProfileState extends DataClass implements Insertable<ProfileState> {
     final map = <String, Expression>{};
     {
       map['account_id'] = Variable<String>(
-        $ProfileStatesTable.$converteraccountId.toSql(accountId),
+        $ProfileExtraTable.$converteraccountId.toSql(accountId),
       );
     }
     if (!nullToAbsent || isInReceivedLikes != null) {
       map['is_in_received_likes'] = Variable<int>(
-        $ProfileStatesTable.$converterisInReceivedLikes.toSql(
-          isInReceivedLikes,
-        ),
+        $ProfileExtraTable.$converterisInReceivedLikes.toSql(isInReceivedLikes),
       );
     }
     if (!nullToAbsent || isInSentLikes != null) {
       map['is_in_sent_likes'] = Variable<int>(
-        $ProfileStatesTable.$converterisInSentLikes.toSql(isInSentLikes),
+        $ProfileExtraTable.$converterisInSentLikes.toSql(isInSentLikes),
       );
     }
     if (!nullToAbsent || isInMatches != null) {
       map['is_in_matches'] = Variable<int>(
-        $ProfileStatesTable.$converterisInMatches.toSql(isInMatches),
+        $ProfileExtraTable.$converterisInMatches.toSql(isInMatches),
       );
     }
     if (!nullToAbsent || isInProfileGrid != null) {
       map['is_in_profile_grid'] = Variable<int>(
-        $ProfileStatesTable.$converterisInProfileGrid.toSql(isInProfileGrid),
+        $ProfileExtraTable.$converterisInProfileGrid.toSql(isInProfileGrid),
       );
     }
     if (!nullToAbsent || isInAutomaticProfileSearchGrid != null) {
       map['is_in_automatic_profile_search_grid'] = Variable<int>(
-        $ProfileStatesTable.$converterisInAutomaticProfileSearchGrid.toSql(
+        $ProfileExtraTable.$converterisInAutomaticProfileSearchGrid.toSql(
           isInAutomaticProfileSearchGrid,
         ),
       );
     }
     if (!nullToAbsent || isInReceivedLikesGrid != null) {
       map['is_in_received_likes_grid'] = Variable<int>(
-        $ProfileStatesTable.$converterisInReceivedLikesGrid.toSql(
+        $ProfileExtraTable.$converterisInReceivedLikesGrid.toSql(
           isInReceivedLikesGrid,
         ),
       );
     }
     if (!nullToAbsent || isInMatchesGrid != null) {
       map['is_in_matches_grid'] = Variable<int>(
-        $ProfileStatesTable.$converterisInMatchesGrid.toSql(isInMatchesGrid),
+        $ProfileExtraTable.$converterisInMatchesGrid.toSql(isInMatchesGrid),
       );
     }
     return map;
   }
 
-  ProfileStatesCompanion toCompanion(bool nullToAbsent) {
-    return ProfileStatesCompanion(
+  ProfileExtraCompanion toCompanion(bool nullToAbsent) {
+    return ProfileExtraCompanion(
       accountId: Value(accountId),
       isInReceivedLikes: isInReceivedLikes == null && nullToAbsent
           ? const Value.absent()
@@ -16211,12 +16204,12 @@ class ProfileState extends DataClass implements Insertable<ProfileState> {
     );
   }
 
-  factory ProfileState.fromJson(
+  factory ProfileExtraData.fromJson(
     Map<String, dynamic> json, {
     ValueSerializer? serializer,
   }) {
     serializer ??= driftRuntimeOptions.defaultSerializer;
-    return ProfileState(
+    return ProfileExtraData(
       accountId: serializer.fromJson<AccountId>(json['accountId']),
       isInReceivedLikes: serializer.fromJson<UtcDateTime?>(
         json['isInReceivedLikes'],
@@ -16256,7 +16249,7 @@ class ProfileState extends DataClass implements Insertable<ProfileState> {
     };
   }
 
-  ProfileState copyWith({
+  ProfileExtraData copyWith({
     AccountId? accountId,
     Value<UtcDateTime?> isInReceivedLikes = const Value.absent(),
     Value<UtcDateTime?> isInSentLikes = const Value.absent(),
@@ -16265,7 +16258,7 @@ class ProfileState extends DataClass implements Insertable<ProfileState> {
     Value<UtcDateTime?> isInAutomaticProfileSearchGrid = const Value.absent(),
     Value<UtcDateTime?> isInReceivedLikesGrid = const Value.absent(),
     Value<UtcDateTime?> isInMatchesGrid = const Value.absent(),
-  }) => ProfileState(
+  }) => ProfileExtraData(
     accountId: accountId ?? this.accountId,
     isInReceivedLikes: isInReceivedLikes.present
         ? isInReceivedLikes.value
@@ -16287,8 +16280,8 @@ class ProfileState extends DataClass implements Insertable<ProfileState> {
         ? isInMatchesGrid.value
         : this.isInMatchesGrid,
   );
-  ProfileState copyWithCompanion(ProfileStatesCompanion data) {
-    return ProfileState(
+  ProfileExtraData copyWithCompanion(ProfileExtraCompanion data) {
+    return ProfileExtraData(
       accountId: data.accountId.present ? data.accountId.value : this.accountId,
       isInReceivedLikes: data.isInReceivedLikes.present
           ? data.isInReceivedLikes.value
@@ -16317,7 +16310,7 @@ class ProfileState extends DataClass implements Insertable<ProfileState> {
 
   @override
   String toString() {
-    return (StringBuffer('ProfileState(')
+    return (StringBuffer('ProfileExtraData(')
           ..write('accountId: $accountId, ')
           ..write('isInReceivedLikes: $isInReceivedLikes, ')
           ..write('isInSentLikes: $isInSentLikes, ')
@@ -16346,7 +16339,7 @@ class ProfileState extends DataClass implements Insertable<ProfileState> {
   @override
   bool operator ==(Object other) =>
       identical(this, other) ||
-      (other is ProfileState &&
+      (other is ProfileExtraData &&
           other.accountId == this.accountId &&
           other.isInReceivedLikes == this.isInReceivedLikes &&
           other.isInSentLikes == this.isInSentLikes &&
@@ -16358,7 +16351,7 @@ class ProfileState extends DataClass implements Insertable<ProfileState> {
           other.isInMatchesGrid == this.isInMatchesGrid);
 }
 
-class ProfileStatesCompanion extends UpdateCompanion<ProfileState> {
+class ProfileExtraCompanion extends UpdateCompanion<ProfileExtraData> {
   final Value<AccountId> accountId;
   final Value<UtcDateTime?> isInReceivedLikes;
   final Value<UtcDateTime?> isInSentLikes;
@@ -16368,7 +16361,7 @@ class ProfileStatesCompanion extends UpdateCompanion<ProfileState> {
   final Value<UtcDateTime?> isInReceivedLikesGrid;
   final Value<UtcDateTime?> isInMatchesGrid;
   final Value<int> rowid;
-  const ProfileStatesCompanion({
+  const ProfileExtraCompanion({
     this.accountId = const Value.absent(),
     this.isInReceivedLikes = const Value.absent(),
     this.isInSentLikes = const Value.absent(),
@@ -16379,7 +16372,7 @@ class ProfileStatesCompanion extends UpdateCompanion<ProfileState> {
     this.isInMatchesGrid = const Value.absent(),
     this.rowid = const Value.absent(),
   });
-  ProfileStatesCompanion.insert({
+  ProfileExtraCompanion.insert({
     required AccountId accountId,
     this.isInReceivedLikes = const Value.absent(),
     this.isInSentLikes = const Value.absent(),
@@ -16390,7 +16383,7 @@ class ProfileStatesCompanion extends UpdateCompanion<ProfileState> {
     this.isInMatchesGrid = const Value.absent(),
     this.rowid = const Value.absent(),
   }) : accountId = Value(accountId);
-  static Insertable<ProfileState> custom({
+  static Insertable<ProfileExtraData> custom({
     Expression<String>? accountId,
     Expression<int>? isInReceivedLikes,
     Expression<int>? isInSentLikes,
@@ -16416,7 +16409,7 @@ class ProfileStatesCompanion extends UpdateCompanion<ProfileState> {
     });
   }
 
-  ProfileStatesCompanion copyWith({
+  ProfileExtraCompanion copyWith({
     Value<AccountId>? accountId,
     Value<UtcDateTime?>? isInReceivedLikes,
     Value<UtcDateTime?>? isInSentLikes,
@@ -16427,7 +16420,7 @@ class ProfileStatesCompanion extends UpdateCompanion<ProfileState> {
     Value<UtcDateTime?>? isInMatchesGrid,
     Value<int>? rowid,
   }) {
-    return ProfileStatesCompanion(
+    return ProfileExtraCompanion(
       accountId: accountId ?? this.accountId,
       isInReceivedLikes: isInReceivedLikes ?? this.isInReceivedLikes,
       isInSentLikes: isInSentLikes ?? this.isInSentLikes,
@@ -16447,50 +16440,50 @@ class ProfileStatesCompanion extends UpdateCompanion<ProfileState> {
     final map = <String, Expression>{};
     if (accountId.present) {
       map['account_id'] = Variable<String>(
-        $ProfileStatesTable.$converteraccountId.toSql(accountId.value),
+        $ProfileExtraTable.$converteraccountId.toSql(accountId.value),
       );
     }
     if (isInReceivedLikes.present) {
       map['is_in_received_likes'] = Variable<int>(
-        $ProfileStatesTable.$converterisInReceivedLikes.toSql(
+        $ProfileExtraTable.$converterisInReceivedLikes.toSql(
           isInReceivedLikes.value,
         ),
       );
     }
     if (isInSentLikes.present) {
       map['is_in_sent_likes'] = Variable<int>(
-        $ProfileStatesTable.$converterisInSentLikes.toSql(isInSentLikes.value),
+        $ProfileExtraTable.$converterisInSentLikes.toSql(isInSentLikes.value),
       );
     }
     if (isInMatches.present) {
       map['is_in_matches'] = Variable<int>(
-        $ProfileStatesTable.$converterisInMatches.toSql(isInMatches.value),
+        $ProfileExtraTable.$converterisInMatches.toSql(isInMatches.value),
       );
     }
     if (isInProfileGrid.present) {
       map['is_in_profile_grid'] = Variable<int>(
-        $ProfileStatesTable.$converterisInProfileGrid.toSql(
+        $ProfileExtraTable.$converterisInProfileGrid.toSql(
           isInProfileGrid.value,
         ),
       );
     }
     if (isInAutomaticProfileSearchGrid.present) {
       map['is_in_automatic_profile_search_grid'] = Variable<int>(
-        $ProfileStatesTable.$converterisInAutomaticProfileSearchGrid.toSql(
+        $ProfileExtraTable.$converterisInAutomaticProfileSearchGrid.toSql(
           isInAutomaticProfileSearchGrid.value,
         ),
       );
     }
     if (isInReceivedLikesGrid.present) {
       map['is_in_received_likes_grid'] = Variable<int>(
-        $ProfileStatesTable.$converterisInReceivedLikesGrid.toSql(
+        $ProfileExtraTable.$converterisInReceivedLikesGrid.toSql(
           isInReceivedLikesGrid.value,
         ),
       );
     }
     if (isInMatchesGrid.present) {
       map['is_in_matches_grid'] = Variable<int>(
-        $ProfileStatesTable.$converterisInMatchesGrid.toSql(
+        $ProfileExtraTable.$converterisInMatchesGrid.toSql(
           isInMatchesGrid.value,
         ),
       );
@@ -16503,7 +16496,7 @@ class ProfileStatesCompanion extends UpdateCompanion<ProfileState> {
 
   @override
   String toString() {
-    return (StringBuffer('ProfileStatesCompanion(')
+    return (StringBuffer('ProfileExtraCompanion(')
           ..write('accountId: $accountId, ')
           ..write('isInReceivedLikes: $isInReceivedLikes, ')
           ..write('isInSentLikes: $isInSentLikes, ')
@@ -20679,7 +20672,7 @@ abstract class _$AccountDatabase extends GeneratedDatabase {
   late final $ProfileFiltersTable profileFilters = $ProfileFiltersTable(this);
   late final $InitialProfileAgeTable initialProfileAge =
       $InitialProfileAgeTable(this);
-  late final $ProfileStatesTable profileStates = $ProfileStatesTable(this);
+  late final $ProfileExtraTable profileExtra = $ProfileExtraTable(this);
   late final $ProfileLocationTable profileLocation = $ProfileLocationTable(
     this,
   );
@@ -20851,7 +20844,7 @@ abstract class _$AccountDatabase extends GeneratedDatabase {
     profileSearchGroups,
     profileFilters,
     initialProfileAge,
-    profileStates,
+    profileExtra,
     profileLocation,
     favoriteProfiles,
     automaticProfileSearchSettings,

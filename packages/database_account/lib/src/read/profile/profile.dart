@@ -11,7 +11,7 @@ import '../../schema.dart' as schema;
 
 part 'profile.g.dart';
 
-@DriftAccessor(tables: [schema.Profile, schema.ProfileStates, schema.FavoriteProfiles])
+@DriftAccessor(tables: [schema.Profile, schema.ProfileExtra, schema.FavoriteProfiles])
 class DaoReadProfile extends DatabaseAccessor<AccountDatabase> with _$DaoReadProfileMixin {
   DaoReadProfile(super.db);
 
@@ -177,10 +177,10 @@ class DaoReadProfile extends DatabaseAccessor<AccountDatabase> with _$DaoReadPro
   Future<List<api.AccountId>> _getProfilesList(
     int? startIndex,
     int limit,
-    GeneratedColumnWithTypeConverter<UtcDateTime?, int> Function($ProfileStatesTable) getter, {
+    GeneratedColumnWithTypeConverter<UtcDateTime?, int> Function($ProfileExtraTable) getter, {
     OrderingMode mode = OrderingMode.asc,
   }) =>
-      (select(profileStates)
+      (select(profileExtra)
             ..where((t) => getter(t).isNotNull())
             ..orderBy([
               (t) => OrderingTerm(expression: getter(t), mode: mode),
@@ -194,10 +194,10 @@ class DaoReadProfile extends DatabaseAccessor<AccountDatabase> with _$DaoReadPro
 
   Future<bool> _existenceCheck(
     api.AccountId accountId,
-    Expression<bool> Function($ProfileStatesTable) additionalCheck,
+    Expression<bool> Function($ProfileExtraTable) additionalCheck,
   ) async {
     final r =
-        await (select(profileStates)..where(
+        await (select(profileExtra)..where(
               (t) => Expression.and([t.accountId.equals(accountId.aid), additionalCheck(t)]),
             ))
             .getSingleOrNull();
@@ -209,9 +209,9 @@ class DaoReadProfile extends DatabaseAccessor<AccountDatabase> with _$DaoReadPro
 
   Stream<bool> _existenceCheckStream(
     api.AccountId accountId,
-    Expression<bool> Function($ProfileStatesTable) additionalCheck,
+    Expression<bool> Function($ProfileExtraTable) additionalCheck,
   ) {
-    return (select(profileStates)
+    return (select(profileExtra)
           ..where((t) => Expression.and([t.accountId.equals(accountId.aid), additionalCheck(t)])))
         .watchSingleOrNull()
         .map((v) => v != null);

@@ -97,7 +97,7 @@ part 'database.g.dart';
     schema.ProfileSearchGroups,
     schema.ProfileFilters,
     schema.InitialProfileAge,
-    schema.ProfileStates,
+    schema.ProfileExtra,
     schema.ProfileLocation,
     schema.FavoriteProfiles,
     schema.AutomaticProfileSearchSettings,

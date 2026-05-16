@@ -111,11 +111,10 @@ class Profile extends Table {
 
 // TODO(prod): Consider own tables for profileDataRefreshTime and
 //             newLikeInfoReceivedTime.
-// TODO(prod): Consider splitting ProfileStates to multiple tables.
 
-/// Moved from Profile table to avoid unnecessary emissions from
-/// `Stream<ProfileEntry>`.
-class ProfileStates extends Table {
+/// Data related to user profiles which does not affect
+/// Drift's watch performance that much.
+class ProfileExtra extends Table {
   TextColumn get accountId => text().map(const AccountIdConverter())();
 
   // If column is not null, then it is in the specific group.

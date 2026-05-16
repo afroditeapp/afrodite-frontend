@@ -8,7 +8,7 @@ import '../../schema.dart' as schema;
 
 part 'profile.g.dart';
 
-@DriftAccessor(tables: [schema.Profile, schema.ProfileStates, schema.FavoriteProfiles])
+@DriftAccessor(tables: [schema.Profile, schema.ProfileExtra, schema.FavoriteProfiles])
 class DaoWriteProfile extends DatabaseAccessor<AccountDatabase> with _$DaoWriteProfileMixin {
   DaoWriteProfile(super.db);
 
@@ -153,32 +153,32 @@ class DaoWriteProfile extends DatabaseAccessor<AccountDatabase> with _$DaoWriteP
   }
 
   Future<void> setReceivedLikeStatus(api.AccountId accountId, bool value) async {
-    await into(profileStates).insertOnConflictUpdate(
-      ProfileStatesCompanion.insert(accountId: accountId, isInReceivedLikes: _toGroupValue(value)),
+    await into(profileExtra).insertOnConflictUpdate(
+      ProfileExtraCompanion.insert(accountId: accountId, isInReceivedLikes: _toGroupValue(value)),
     );
   }
 
   Future<void> setSentLikeStatus(api.AccountId accountId, bool value) async {
-    await into(profileStates).insertOnConflictUpdate(
-      ProfileStatesCompanion.insert(accountId: accountId, isInSentLikes: _toGroupValue(value)),
+    await into(profileExtra).insertOnConflictUpdate(
+      ProfileExtraCompanion.insert(accountId: accountId, isInSentLikes: _toGroupValue(value)),
     );
   }
 
   Future<void> setMatchStatus(api.AccountId accountId, bool value) async {
-    await into(profileStates).insertOnConflictUpdate(
-      ProfileStatesCompanion.insert(accountId: accountId, isInMatches: _toGroupValue(value)),
+    await into(profileExtra).insertOnConflictUpdate(
+      ProfileExtraCompanion.insert(accountId: accountId, isInMatches: _toGroupValue(value)),
     );
   }
 
   Future<void> setProfileGridStatus(api.AccountId accountId, bool value) async {
-    await into(profileStates).insertOnConflictUpdate(
-      ProfileStatesCompanion.insert(accountId: accountId, isInProfileGrid: _toGroupValue(value)),
+    await into(profileExtra).insertOnConflictUpdate(
+      ProfileExtraCompanion.insert(accountId: accountId, isInProfileGrid: _toGroupValue(value)),
     );
   }
 
   Future<void> setAutomaticProfileSearchGridStatus(api.AccountId accountId, bool value) async {
-    await into(profileStates).insertOnConflictUpdate(
-      ProfileStatesCompanion.insert(
+    await into(profileExtra).insertOnConflictUpdate(
+      ProfileExtraCompanion.insert(
         accountId: accountId,
         isInAutomaticProfileSearchGrid: _toGroupValue(value),
       ),
@@ -186,8 +186,8 @@ class DaoWriteProfile extends DatabaseAccessor<AccountDatabase> with _$DaoWriteP
   }
 
   Future<void> setReceivedLikeGridStatus(api.AccountId accountId, bool value) async {
-    await into(profileStates).insertOnConflictUpdate(
-      ProfileStatesCompanion.insert(
+    await into(profileExtra).insertOnConflictUpdate(
+      ProfileExtraCompanion.insert(
         accountId: accountId,
         isInReceivedLikesGrid: _toGroupValue(value),
       ),
@@ -195,8 +195,8 @@ class DaoWriteProfile extends DatabaseAccessor<AccountDatabase> with _$DaoWriteP
   }
 
   Future<void> setMatchesGridStatus(api.AccountId accountId, bool value) async {
-    await into(profileStates).insertOnConflictUpdate(
-      ProfileStatesCompanion.insert(accountId: accountId, isInMatchesGrid: _toGroupValue(value)),
+    await into(profileExtra).insertOnConflictUpdate(
+      ProfileExtraCompanion.insert(accountId: accountId, isInMatchesGrid: _toGroupValue(value)),
     );
   }
 
@@ -218,8 +218,8 @@ class DaoWriteProfile extends DatabaseAccessor<AccountDatabase> with _$DaoWriteP
     await transaction(() async {
       if (clear) {
         await update(
-          profileStates,
-        ).write(const ProfileStatesCompanion(isInReceivedLikes: Value(null)));
+          profileExtra,
+        ).write(const ProfileExtraCompanion(isInReceivedLikes: Value(null)));
       }
       for (final a in accounts ?? <api.AccountId>[]) {
         await setReceivedLikeStatus(a, value);
@@ -235,8 +235,8 @@ class DaoWriteProfile extends DatabaseAccessor<AccountDatabase> with _$DaoWriteP
     await transaction(() async {
       if (clear) {
         await update(
-          profileStates,
-        ).write(const ProfileStatesCompanion(isInReceivedLikesGrid: Value(null)));
+          profileExtra,
+        ).write(const ProfileExtraCompanion(isInReceivedLikesGrid: Value(null)));
       }
       for (final a in accounts ?? <api.AccountId>[]) {
         await setReceivedLikeGridStatus(a, value);
@@ -251,9 +251,7 @@ class DaoWriteProfile extends DatabaseAccessor<AccountDatabase> with _$DaoWriteP
   }) async {
     await transaction(() async {
       if (clear) {
-        await update(
-          profileStates,
-        ).write(const ProfileStatesCompanion(isInMatchesGrid: Value(null)));
+        await update(profileExtra).write(const ProfileExtraCompanion(isInMatchesGrid: Value(null)));
       }
       for (final a in accounts ?? <api.AccountId>[]) {
         await setMatchesGridStatus(a, value);
@@ -268,9 +266,7 @@ class DaoWriteProfile extends DatabaseAccessor<AccountDatabase> with _$DaoWriteP
   }) async {
     await transaction(() async {
       if (clear) {
-        await update(
-          profileStates,
-        ).write(const ProfileStatesCompanion(isInProfileGrid: Value(null)));
+        await update(profileExtra).write(const ProfileExtraCompanion(isInProfileGrid: Value(null)));
       }
       for (final a in accounts ?? <api.AccountId>[]) {
         await setProfileGridStatus(a, value);
@@ -286,8 +282,8 @@ class DaoWriteProfile extends DatabaseAccessor<AccountDatabase> with _$DaoWriteP
     await transaction(() async {
       if (clear) {
         await update(
-          profileStates,
-        ).write(const ProfileStatesCompanion(isInAutomaticProfileSearchGrid: Value(null)));
+          profileExtra,
+        ).write(const ProfileExtraCompanion(isInAutomaticProfileSearchGrid: Value(null)));
       }
       for (final a in accounts ?? <api.AccountId>[]) {
         await setAutomaticProfileSearchGridStatus(a, value);
