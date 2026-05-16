@@ -1,3 +1,4 @@
+import 'package:database_model/database_model.dart';
 import 'package:drift/drift.dart';
 import 'package:openapi/api.dart';
 
@@ -70,5 +71,36 @@ class ReceivedLikeIdConverter extends TypeConverter<ReceivedLikeId, int> {
   @override
   int toSql(value) {
     return value.id;
+  }
+}
+
+class LocalAccountInteractionStateConverter
+    extends TypeConverter<LocalAccountInteractionState, int> {
+  const LocalAccountInteractionStateConverter();
+
+  @override
+  LocalAccountInteractionState fromSql(fromDb) {
+    switch (fromDb) {
+      case 0:
+        return LocalAccountInteractionState.receivedLike;
+      case 1:
+        return LocalAccountInteractionState.sentLike;
+      case 2:
+        return LocalAccountInteractionState.match;
+      default:
+        throw ArgumentError('Invalid LocalAccountInteractionState DB value: $fromDb');
+    }
+  }
+
+  @override
+  int toSql(value) {
+    switch (value) {
+      case LocalAccountInteractionState.receivedLike:
+        return 0;
+      case LocalAccountInteractionState.sentLike:
+        return 1;
+      case LocalAccountInteractionState.match:
+        return 2;
+    }
   }
 }

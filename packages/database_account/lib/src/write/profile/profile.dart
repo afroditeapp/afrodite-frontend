@@ -1,5 +1,6 @@
 import 'package:database_account/src/database.dart';
 import 'package:database_converter/database_converter.dart';
+import 'package:database_model/database_model.dart';
 import 'package:drift/drift.dart';
 import 'package:openapi/api.dart' as api;
 import 'package:utils/utils.dart';
@@ -177,20 +178,35 @@ class DaoWriteProfile extends DatabaseAccessor<AccountDatabase> with _$DaoWriteP
   }
 
   Future<void> setReceivedLikeStatus(api.AccountId accountId, bool value) async {
-    await into(profileExtra).insertOnConflictUpdate(
-      ProfileExtraCompanion.insert(accountId: accountId, isInReceivedLikes: _toGroupValue(value)),
+    await setLocalAccountInteractionState(
+      accountId,
+      value ? LocalAccountInteractionState.receivedLike : null,
     );
   }
 
   Future<void> setSentLikeStatus(api.AccountId accountId, bool value) async {
-    await into(profileExtra).insertOnConflictUpdate(
-      ProfileExtraCompanion.insert(accountId: accountId, isInSentLikes: _toGroupValue(value)),
+    await setLocalAccountInteractionState(
+      accountId,
+      value ? LocalAccountInteractionState.sentLike : null,
     );
   }
 
   Future<void> setMatchStatus(api.AccountId accountId, bool value) async {
+    await setLocalAccountInteractionState(
+      accountId,
+      value ? LocalAccountInteractionState.match : null,
+    );
+  }
+
+  Future<void> setLocalAccountInteractionState(
+    api.AccountId accountId,
+    LocalAccountInteractionState? value,
+  ) async {
     await into(profileExtra).insertOnConflictUpdate(
-      ProfileExtraCompanion.insert(accountId: accountId, isInMatches: _toGroupValue(value)),
+      ProfileExtraCompanion.insert(
+        accountId: accountId,
+        localAccountInteractionState: Value(value),
+      ),
     );
   }
 
@@ -230,23 +246,6 @@ class DaoWriteProfile extends DatabaseAccessor<AccountDatabase> with _$DaoWriteP
       for (final (i, a) in accounts.indexed) {
         // Order the favorites so that oldest added favorite has unix time 0.
         await setFavoriteStatusWithTime(a, i);
-      }
-    });
-  }
-
-  Future<void> setReceivedLikeStatusList(
-    List<api.AccountId>? accounts,
-    bool value, {
-    bool clear = false,
-  }) async {
-    await transaction(() async {
-      if (clear) {
-        await update(
-          profileExtra,
-        ).write(const ProfileExtraCompanion(isInReceivedLikes: Value(null)));
-      }
-      for (final a in accounts ?? <api.AccountId>[]) {
-        await setReceivedLikeStatus(a, value);
       }
     });
   }

@@ -4,6 +4,8 @@ import 'media.dart';
 import 'package:openapi/api.dart';
 import 'package:utils/utils.dart';
 
+enum LocalAccountInteractionState { receivedLike, sentLike, match }
+
 class ProfileThumbnail {
   final ProfileEntry entry;
   final bool isFavorite;

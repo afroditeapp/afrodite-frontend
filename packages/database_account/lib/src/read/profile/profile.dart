@@ -140,14 +140,20 @@ class DaoReadProfile extends DatabaseAccessor<AccountDatabase> with _$DaoReadPro
         null;
   }
 
-  Future<bool> isInReceivedLikes(api.AccountId accountId) =>
-      _existenceCheck(accountId, (t) => t.isInReceivedLikes.isNotNull());
+  Future<bool> isInReceivedLikes(api.AccountId accountId) => _existenceCheck(
+    accountId,
+    (t) => t.localAccountInteractionState.equalsValue(LocalAccountInteractionState.receivedLike),
+  );
 
-  Future<bool> isInSentLikes(api.AccountId accountId) =>
-      _existenceCheck(accountId, (t) => t.isInSentLikes.isNotNull());
+  Future<bool> isInSentLikes(api.AccountId accountId) => _existenceCheck(
+    accountId,
+    (t) => t.localAccountInteractionState.equalsValue(LocalAccountInteractionState.sentLike),
+  );
 
-  Future<bool> isInMatches(api.AccountId accountId) =>
-      _existenceCheck(accountId, (t) => t.isInMatches.isNotNull());
+  Future<bool> isInMatches(api.AccountId accountId) => _existenceCheck(
+    accountId,
+    (t) => t.localAccountInteractionState.equalsValue(LocalAccountInteractionState.match),
+  );
 
   Future<bool> isInProfileGrid(api.AccountId accountId) =>
       _existenceCheck(accountId, (t) => t.isInProfileGrid.isNotNull());
@@ -167,12 +173,6 @@ class DaoReadProfile extends DatabaseAccessor<AccountDatabase> with _$DaoReadPro
             ..limit(limit, offset: startIndex))
           .map((t) => t.accountId)
           .get();
-
-  Future<List<api.AccountId>> getReceivedLikesList(int startIndex, int limit) =>
-      _getProfilesList(startIndex, limit, (t) => t.isInReceivedLikes);
-
-  Future<List<api.AccountId>> getSentLikesList(int startIndex, int limit) =>
-      _getProfilesList(startIndex, limit, (t) => t.isInSentLikes);
 
   Future<List<api.AccountId>> getProfileGridList(int startIndex, int limit) =>
       _getProfilesList(startIndex, limit, (t) => t.isInProfileGrid);
@@ -216,8 +216,10 @@ class DaoReadProfile extends DatabaseAccessor<AccountDatabase> with _$DaoReadPro
     return r != null;
   }
 
-  Stream<bool> isInMatchesStream(api.AccountId accountId) =>
-      _existenceCheckStream(accountId, (t) => t.isInMatches.isNotNull());
+  Stream<bool> isInMatchesStream(api.AccountId accountId) => _existenceCheckStream(
+    accountId,
+    (t) => t.localAccountInteractionState.equalsValue(LocalAccountInteractionState.match),
+  );
 
   Stream<bool> _existenceCheckStream(
     api.AccountId accountId,

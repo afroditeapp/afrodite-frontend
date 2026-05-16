@@ -135,12 +135,19 @@ class ChatRepository extends DataRepositoryWithLifecycle {
     AccountId accountId,
     CurrentAccountInteractionState state,
   ) async {
-    final sentLike = state == CurrentAccountInteractionState.likeSent;
-    final receivedLike = state == CurrentAccountInteractionState.likeReceived;
-    final match = state == CurrentAccountInteractionState.match;
-    await db.accountAction((db) => db.profile.setSentLikeStatus(accountId, sentLike));
-    await db.accountAction((db) => db.profile.setReceivedLikeStatus(accountId, receivedLike));
-    await db.accountAction((db) => db.profile.setMatchStatus(accountId, match));
+    final LocalAccountInteractionState? localState;
+    if (state == CurrentAccountInteractionState.likeSent) {
+      localState = LocalAccountInteractionState.sentLike;
+    } else if (state == CurrentAccountInteractionState.likeReceived) {
+      localState = LocalAccountInteractionState.receivedLike;
+    } else if (state == CurrentAccountInteractionState.match) {
+      localState = LocalAccountInteractionState.match;
+    } else {
+      localState = null;
+    }
+    await db.accountAction(
+      (db) => db.profile.setLocalAccountInteractionState(accountId, localState),
+    );
   }
 
   Future<Result<LimitedActionStatus, SendLikeError>> sendLikeTo(AccountId accountId) async {

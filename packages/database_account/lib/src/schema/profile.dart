@@ -117,15 +117,12 @@ class ProfileExtra extends Table {
   IntColumn get privateProfileErrorTime =>
       integer().map(const NullAwareTypeConverter.wrap(UtcDateTimeConverter())).nullable()();
 
+  IntColumn get localAccountInteractionState => integer()
+      .map(const NullAwareTypeConverter.wrap(LocalAccountInteractionStateConverter()))
+      .nullable()();
+
   // If column is not null, then it is in the specific group.
   // The time is the time when the profile was added to the group.
-  IntColumn get isInReceivedLikes =>
-      integer().map(const NullAwareTypeConverter.wrap(UtcDateTimeConverter())).nullable()();
-  IntColumn get isInSentLikes =>
-      integer().map(const NullAwareTypeConverter.wrap(UtcDateTimeConverter())).nullable()();
-  IntColumn get isInMatches =>
-      integer().map(const NullAwareTypeConverter.wrap(UtcDateTimeConverter())).nullable()();
-
   IntColumn get isInProfileGrid =>
       integer().map(const NullAwareTypeConverter.wrap(UtcDateTimeConverter())).nullable()();
   IntColumn get isInAutomaticProfileSearchGrid =>
