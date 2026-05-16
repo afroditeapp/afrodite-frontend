@@ -100,8 +100,6 @@ class Profile extends Table {
   TextColumn get profileContentVersion =>
       text().map(const NullAwareTypeConverter.wrap(ProfileContentVersionConverter())).nullable()();
 
-  IntColumn get profileDataRefreshTime =>
-      integer().map(const NullAwareTypeConverter.wrap(UtcDateTimeConverter())).nullable()();
   IntColumn get newLikeInfoReceivedTime =>
       integer().map(const NullAwareTypeConverter.wrap(UtcDateTimeConverter())).nullable()();
 
@@ -109,13 +107,13 @@ class Profile extends Table {
   Set<Column<Object>> get primaryKey => {accountId};
 }
 
-// TODO(prod): Consider own tables for profileDataRefreshTime and
-//             newLikeInfoReceivedTime.
-
 /// Data related to user profiles which does not affect
 /// Drift's watch performance that much.
 class ProfileExtra extends Table {
   TextColumn get accountId => text().map(const AccountIdConverter())();
+
+  IntColumn get profileDataRefreshTime =>
+      integer().map(const NullAwareTypeConverter.wrap(UtcDateTimeConverter())).nullable()();
 
   // If column is not null, then it is in the specific group.
   // The time is the time when the profile was added to the group.

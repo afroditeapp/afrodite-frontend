@@ -31,9 +31,11 @@ class DaoWriteProfile extends DatabaseAccessor<AccountDatabase> with _$DaoWriteP
         primaryContentGridCropSize: Value(null),
         primaryContentGridCropX: Value(null),
         primaryContentGridCropY: Value(null),
-        profileDataRefreshTime: Value(null),
         newLikeInfoReceivedTime: Value(null),
       ),
+    );
+    await (update(profileExtra)..where((t) => t.accountId.equals(accountId.aid))).write(
+      const ProfileExtraCompanion(profileDataRefreshTime: Value(null)),
     );
   }
 
@@ -127,8 +129,11 @@ class DaoWriteProfile extends DatabaseAccessor<AccountDatabase> with _$DaoWriteP
 
   Future<void> updateProfileDataRefreshTimeToCurrentTime(api.AccountId accountId) async {
     final currentTime = UtcDateTime.now();
-    await into(profile).insertOnConflictUpdate(
-      ProfileCompanion.insert(accountId: accountId, profileDataRefreshTime: Value(currentTime)),
+    await into(profileExtra).insertOnConflictUpdate(
+      ProfileExtraCompanion.insert(
+        accountId: accountId,
+        profileDataRefreshTime: Value(currentTime),
+      ),
     );
   }
 

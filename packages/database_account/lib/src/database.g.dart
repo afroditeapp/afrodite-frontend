@@ -13844,15 +13844,6 @@ class $ProfileTable extends schema.Profile
       );
   @override
   late final GeneratedColumnWithTypeConverter<UtcDateTime?, int>
-  profileDataRefreshTime = GeneratedColumn<int>(
-    'profile_data_refresh_time',
-    aliasedName,
-    true,
-    type: DriftSqlType.int,
-    requiredDuringInsert: false,
-  ).withConverter<UtcDateTime?>($ProfileTable.$converterprofileDataRefreshTime);
-  @override
-  late final GeneratedColumnWithTypeConverter<UtcDateTime?, int>
   newLikeInfoReceivedTime =
       GeneratedColumn<int>(
         'new_like_info_received_time',
@@ -13881,7 +13872,6 @@ class $ProfileTable extends schema.Profile
     primaryContentGridCropX,
     primaryContentGridCropY,
     profileContentVersion,
-    profileDataRefreshTime,
     newLikeInfoReceivedTime,
   ];
   @override
@@ -14084,13 +14074,6 @@ class $ProfileTable extends schema.Profile
               data['${effectivePrefix}profile_content_version'],
             ),
           ),
-      profileDataRefreshTime: $ProfileTable.$converterprofileDataRefreshTime
-          .fromSql(
-            attachedDatabase.typeMapping.read(
-              DriftSqlType.int,
-              data['${effectivePrefix}profile_data_refresh_time'],
-            ),
-          ),
       newLikeInfoReceivedTime: $ProfileTable.$converternewLikeInfoReceivedTime
           .fromSql(
             attachedDatabase.typeMapping.read(
@@ -14118,8 +14101,6 @@ class $ProfileTable extends schema.Profile
   $converterprofileContentVersion = const NullAwareTypeConverter.wrap(
     ProfileContentVersionConverter(),
   );
-  static TypeConverter<UtcDateTime?, int?> $converterprofileDataRefreshTime =
-      const NullAwareTypeConverter.wrap(UtcDateTimeConverter());
   static TypeConverter<UtcDateTime?, int?> $converternewLikeInfoReceivedTime =
       const NullAwareTypeConverter.wrap(UtcDateTimeConverter());
 }
@@ -14141,7 +14122,6 @@ class ProfileData extends DataClass implements Insertable<ProfileData> {
   final double? primaryContentGridCropX;
   final double? primaryContentGridCropY;
   final ProfileContentVersion? profileContentVersion;
-  final UtcDateTime? profileDataRefreshTime;
   final UtcDateTime? newLikeInfoReceivedTime;
   const ProfileData({
     required this.accountId,
@@ -14160,7 +14140,6 @@ class ProfileData extends DataClass implements Insertable<ProfileData> {
     this.primaryContentGridCropX,
     this.primaryContentGridCropY,
     this.profileContentVersion,
-    this.profileDataRefreshTime,
     this.newLikeInfoReceivedTime,
   });
   @override
@@ -14236,13 +14215,6 @@ class ProfileData extends DataClass implements Insertable<ProfileData> {
         ),
       );
     }
-    if (!nullToAbsent || profileDataRefreshTime != null) {
-      map['profile_data_refresh_time'] = Variable<int>(
-        $ProfileTable.$converterprofileDataRefreshTime.toSql(
-          profileDataRefreshTime,
-        ),
-      );
-    }
     if (!nullToAbsent || newLikeInfoReceivedTime != null) {
       map['new_like_info_received_time'] = Variable<int>(
         $ProfileTable.$converternewLikeInfoReceivedTime.toSql(
@@ -14303,9 +14275,6 @@ class ProfileData extends DataClass implements Insertable<ProfileData> {
       profileContentVersion: profileContentVersion == null && nullToAbsent
           ? const Value.absent()
           : Value(profileContentVersion),
-      profileDataRefreshTime: profileDataRefreshTime == null && nullToAbsent
-          ? const Value.absent()
-          : Value(profileDataRefreshTime),
       newLikeInfoReceivedTime: newLikeInfoReceivedTime == null && nullToAbsent
           ? const Value.absent()
           : Value(newLikeInfoReceivedTime),
@@ -14359,9 +14328,6 @@ class ProfileData extends DataClass implements Insertable<ProfileData> {
       profileContentVersion: serializer.fromJson<ProfileContentVersion?>(
         json['profileContentVersion'],
       ),
-      profileDataRefreshTime: serializer.fromJson<UtcDateTime?>(
-        json['profileDataRefreshTime'],
-      ),
       newLikeInfoReceivedTime: serializer.fromJson<UtcDateTime?>(
         json['newLikeInfoReceivedTime'],
       ),
@@ -14402,9 +14368,6 @@ class ProfileData extends DataClass implements Insertable<ProfileData> {
       'profileContentVersion': serializer.toJson<ProfileContentVersion?>(
         profileContentVersion,
       ),
-      'profileDataRefreshTime': serializer.toJson<UtcDateTime?>(
-        profileDataRefreshTime,
-      ),
       'newLikeInfoReceivedTime': serializer.toJson<UtcDateTime?>(
         newLikeInfoReceivedTime,
       ),
@@ -14429,7 +14392,6 @@ class ProfileData extends DataClass implements Insertable<ProfileData> {
     Value<double?> primaryContentGridCropX = const Value.absent(),
     Value<double?> primaryContentGridCropY = const Value.absent(),
     Value<ProfileContentVersion?> profileContentVersion = const Value.absent(),
-    Value<UtcDateTime?> profileDataRefreshTime = const Value.absent(),
     Value<UtcDateTime?> newLikeInfoReceivedTime = const Value.absent(),
   }) => ProfileData(
     accountId: accountId ?? this.accountId,
@@ -14472,9 +14434,6 @@ class ProfileData extends DataClass implements Insertable<ProfileData> {
     profileContentVersion: profileContentVersion.present
         ? profileContentVersion.value
         : this.profileContentVersion,
-    profileDataRefreshTime: profileDataRefreshTime.present
-        ? profileDataRefreshTime.value
-        : this.profileDataRefreshTime,
     newLikeInfoReceivedTime: newLikeInfoReceivedTime.present
         ? newLikeInfoReceivedTime.value
         : this.newLikeInfoReceivedTime,
@@ -14527,9 +14486,6 @@ class ProfileData extends DataClass implements Insertable<ProfileData> {
       profileContentVersion: data.profileContentVersion.present
           ? data.profileContentVersion.value
           : this.profileContentVersion,
-      profileDataRefreshTime: data.profileDataRefreshTime.present
-          ? data.profileDataRefreshTime.value
-          : this.profileDataRefreshTime,
       newLikeInfoReceivedTime: data.newLikeInfoReceivedTime.present
           ? data.newLikeInfoReceivedTime.value
           : this.newLikeInfoReceivedTime,
@@ -14555,7 +14511,6 @@ class ProfileData extends DataClass implements Insertable<ProfileData> {
           ..write('primaryContentGridCropX: $primaryContentGridCropX, ')
           ..write('primaryContentGridCropY: $primaryContentGridCropY, ')
           ..write('profileContentVersion: $profileContentVersion, ')
-          ..write('profileDataRefreshTime: $profileDataRefreshTime, ')
           ..write('newLikeInfoReceivedTime: $newLikeInfoReceivedTime')
           ..write(')'))
         .toString();
@@ -14579,7 +14534,6 @@ class ProfileData extends DataClass implements Insertable<ProfileData> {
     primaryContentGridCropX,
     primaryContentGridCropY,
     profileContentVersion,
-    profileDataRefreshTime,
     newLikeInfoReceivedTime,
   );
   @override
@@ -14602,7 +14556,6 @@ class ProfileData extends DataClass implements Insertable<ProfileData> {
           other.primaryContentGridCropX == this.primaryContentGridCropX &&
           other.primaryContentGridCropY == this.primaryContentGridCropY &&
           other.profileContentVersion == this.profileContentVersion &&
-          other.profileDataRefreshTime == this.profileDataRefreshTime &&
           other.newLikeInfoReceivedTime == this.newLikeInfoReceivedTime);
 }
 
@@ -14623,7 +14576,6 @@ class ProfileCompanion extends UpdateCompanion<ProfileData> {
   final Value<double?> primaryContentGridCropX;
   final Value<double?> primaryContentGridCropY;
   final Value<ProfileContentVersion?> profileContentVersion;
-  final Value<UtcDateTime?> profileDataRefreshTime;
   final Value<UtcDateTime?> newLikeInfoReceivedTime;
   final Value<int> rowid;
   const ProfileCompanion({
@@ -14643,7 +14595,6 @@ class ProfileCompanion extends UpdateCompanion<ProfileData> {
     this.primaryContentGridCropX = const Value.absent(),
     this.primaryContentGridCropY = const Value.absent(),
     this.profileContentVersion = const Value.absent(),
-    this.profileDataRefreshTime = const Value.absent(),
     this.newLikeInfoReceivedTime = const Value.absent(),
     this.rowid = const Value.absent(),
   });
@@ -14664,7 +14615,6 @@ class ProfileCompanion extends UpdateCompanion<ProfileData> {
     this.primaryContentGridCropX = const Value.absent(),
     this.primaryContentGridCropY = const Value.absent(),
     this.profileContentVersion = const Value.absent(),
-    this.profileDataRefreshTime = const Value.absent(),
     this.newLikeInfoReceivedTime = const Value.absent(),
     this.rowid = const Value.absent(),
   }) : accountId = Value(accountId);
@@ -14685,7 +14635,6 @@ class ProfileCompanion extends UpdateCompanion<ProfileData> {
     Expression<double>? primaryContentGridCropX,
     Expression<double>? primaryContentGridCropY,
     Expression<String>? profileContentVersion,
-    Expression<int>? profileDataRefreshTime,
     Expression<int>? newLikeInfoReceivedTime,
     Expression<int>? rowid,
   }) {
@@ -14717,8 +14666,6 @@ class ProfileCompanion extends UpdateCompanion<ProfileData> {
         'primary_content_grid_crop_y': primaryContentGridCropY,
       if (profileContentVersion != null)
         'profile_content_version': profileContentVersion,
-      if (profileDataRefreshTime != null)
-        'profile_data_refresh_time': profileDataRefreshTime,
       if (newLikeInfoReceivedTime != null)
         'new_like_info_received_time': newLikeInfoReceivedTime,
       if (rowid != null) 'rowid': rowid,
@@ -14742,7 +14689,6 @@ class ProfileCompanion extends UpdateCompanion<ProfileData> {
     Value<double?>? primaryContentGridCropX,
     Value<double?>? primaryContentGridCropY,
     Value<ProfileContentVersion?>? profileContentVersion,
-    Value<UtcDateTime?>? profileDataRefreshTime,
     Value<UtcDateTime?>? newLikeInfoReceivedTime,
     Value<int>? rowid,
   }) {
@@ -14772,8 +14718,6 @@ class ProfileCompanion extends UpdateCompanion<ProfileData> {
           primaryContentGridCropY ?? this.primaryContentGridCropY,
       profileContentVersion:
           profileContentVersion ?? this.profileContentVersion,
-      profileDataRefreshTime:
-          profileDataRefreshTime ?? this.profileDataRefreshTime,
       newLikeInfoReceivedTime:
           newLikeInfoReceivedTime ?? this.newLikeInfoReceivedTime,
       rowid: rowid ?? this.rowid,
@@ -14857,13 +14801,6 @@ class ProfileCompanion extends UpdateCompanion<ProfileData> {
         ),
       );
     }
-    if (profileDataRefreshTime.present) {
-      map['profile_data_refresh_time'] = Variable<int>(
-        $ProfileTable.$converterprofileDataRefreshTime.toSql(
-          profileDataRefreshTime.value,
-        ),
-      );
-    }
     if (newLikeInfoReceivedTime.present) {
       map['new_like_info_received_time'] = Variable<int>(
         $ProfileTable.$converternewLikeInfoReceivedTime.toSql(
@@ -14896,7 +14833,6 @@ class ProfileCompanion extends UpdateCompanion<ProfileData> {
           ..write('primaryContentGridCropX: $primaryContentGridCropX, ')
           ..write('primaryContentGridCropY: $primaryContentGridCropY, ')
           ..write('profileContentVersion: $profileContentVersion, ')
-          ..write('profileDataRefreshTime: $profileDataRefreshTime, ')
           ..write('newLikeInfoReceivedTime: $newLikeInfoReceivedTime, ')
           ..write('rowid: $rowid')
           ..write(')'))
@@ -15938,6 +15874,18 @@ class $ProfileExtraTable extends schema.ProfileExtra
       ).withConverter<AccountId>($ProfileExtraTable.$converteraccountId);
   @override
   late final GeneratedColumnWithTypeConverter<UtcDateTime?, int>
+  profileDataRefreshTime =
+      GeneratedColumn<int>(
+        'profile_data_refresh_time',
+        aliasedName,
+        true,
+        type: DriftSqlType.int,
+        requiredDuringInsert: false,
+      ).withConverter<UtcDateTime?>(
+        $ProfileExtraTable.$converterprofileDataRefreshTime,
+      );
+  @override
+  late final GeneratedColumnWithTypeConverter<UtcDateTime?, int>
   isInReceivedLikes = GeneratedColumn<int>(
     'is_in_received_likes',
     aliasedName,
@@ -16008,6 +15956,7 @@ class $ProfileExtraTable extends schema.ProfileExtra
   @override
   List<GeneratedColumn> get $columns => [
     accountId,
+    profileDataRefreshTime,
     isInReceivedLikes,
     isInSentLikes,
     isInMatches,
@@ -16033,6 +15982,14 @@ class $ProfileExtraTable extends schema.ProfileExtra
           data['${effectivePrefix}account_id'],
         )!,
       ),
+      profileDataRefreshTime: $ProfileExtraTable
+          .$converterprofileDataRefreshTime
+          .fromSql(
+            attachedDatabase.typeMapping.read(
+              DriftSqlType.int,
+              data['${effectivePrefix}profile_data_refresh_time'],
+            ),
+          ),
       isInReceivedLikes: $ProfileExtraTable.$converterisInReceivedLikes.fromSql(
         attachedDatabase.typeMapping.read(
           DriftSqlType.int,
@@ -16088,6 +16045,8 @@ class $ProfileExtraTable extends schema.ProfileExtra
 
   static TypeConverter<AccountId, String> $converteraccountId =
       const AccountIdConverter();
+  static TypeConverter<UtcDateTime?, int?> $converterprofileDataRefreshTime =
+      const NullAwareTypeConverter.wrap(UtcDateTimeConverter());
   static TypeConverter<UtcDateTime?, int?> $converterisInReceivedLikes =
       const NullAwareTypeConverter.wrap(UtcDateTimeConverter());
   static TypeConverter<UtcDateTime?, int?> $converterisInSentLikes =
@@ -16109,6 +16068,7 @@ class $ProfileExtraTable extends schema.ProfileExtra
 class ProfileExtraData extends DataClass
     implements Insertable<ProfileExtraData> {
   final AccountId accountId;
+  final UtcDateTime? profileDataRefreshTime;
   final UtcDateTime? isInReceivedLikes;
   final UtcDateTime? isInSentLikes;
   final UtcDateTime? isInMatches;
@@ -16118,6 +16078,7 @@ class ProfileExtraData extends DataClass
   final UtcDateTime? isInMatchesGrid;
   const ProfileExtraData({
     required this.accountId,
+    this.profileDataRefreshTime,
     this.isInReceivedLikes,
     this.isInSentLikes,
     this.isInMatches,
@@ -16132,6 +16093,13 @@ class ProfileExtraData extends DataClass
     {
       map['account_id'] = Variable<String>(
         $ProfileExtraTable.$converteraccountId.toSql(accountId),
+      );
+    }
+    if (!nullToAbsent || profileDataRefreshTime != null) {
+      map['profile_data_refresh_time'] = Variable<int>(
+        $ProfileExtraTable.$converterprofileDataRefreshTime.toSql(
+          profileDataRefreshTime,
+        ),
       );
     }
     if (!nullToAbsent || isInReceivedLikes != null) {
@@ -16179,6 +16147,9 @@ class ProfileExtraData extends DataClass
   ProfileExtraCompanion toCompanion(bool nullToAbsent) {
     return ProfileExtraCompanion(
       accountId: Value(accountId),
+      profileDataRefreshTime: profileDataRefreshTime == null && nullToAbsent
+          ? const Value.absent()
+          : Value(profileDataRefreshTime),
       isInReceivedLikes: isInReceivedLikes == null && nullToAbsent
           ? const Value.absent()
           : Value(isInReceivedLikes),
@@ -16211,6 +16182,9 @@ class ProfileExtraData extends DataClass
     serializer ??= driftRuntimeOptions.defaultSerializer;
     return ProfileExtraData(
       accountId: serializer.fromJson<AccountId>(json['accountId']),
+      profileDataRefreshTime: serializer.fromJson<UtcDateTime?>(
+        json['profileDataRefreshTime'],
+      ),
       isInReceivedLikes: serializer.fromJson<UtcDateTime?>(
         json['isInReceivedLikes'],
       ),
@@ -16235,6 +16209,9 @@ class ProfileExtraData extends DataClass
     serializer ??= driftRuntimeOptions.defaultSerializer;
     return <String, dynamic>{
       'accountId': serializer.toJson<AccountId>(accountId),
+      'profileDataRefreshTime': serializer.toJson<UtcDateTime?>(
+        profileDataRefreshTime,
+      ),
       'isInReceivedLikes': serializer.toJson<UtcDateTime?>(isInReceivedLikes),
       'isInSentLikes': serializer.toJson<UtcDateTime?>(isInSentLikes),
       'isInMatches': serializer.toJson<UtcDateTime?>(isInMatches),
@@ -16251,6 +16228,7 @@ class ProfileExtraData extends DataClass
 
   ProfileExtraData copyWith({
     AccountId? accountId,
+    Value<UtcDateTime?> profileDataRefreshTime = const Value.absent(),
     Value<UtcDateTime?> isInReceivedLikes = const Value.absent(),
     Value<UtcDateTime?> isInSentLikes = const Value.absent(),
     Value<UtcDateTime?> isInMatches = const Value.absent(),
@@ -16260,6 +16238,9 @@ class ProfileExtraData extends DataClass
     Value<UtcDateTime?> isInMatchesGrid = const Value.absent(),
   }) => ProfileExtraData(
     accountId: accountId ?? this.accountId,
+    profileDataRefreshTime: profileDataRefreshTime.present
+        ? profileDataRefreshTime.value
+        : this.profileDataRefreshTime,
     isInReceivedLikes: isInReceivedLikes.present
         ? isInReceivedLikes.value
         : this.isInReceivedLikes,
@@ -16283,6 +16264,9 @@ class ProfileExtraData extends DataClass
   ProfileExtraData copyWithCompanion(ProfileExtraCompanion data) {
     return ProfileExtraData(
       accountId: data.accountId.present ? data.accountId.value : this.accountId,
+      profileDataRefreshTime: data.profileDataRefreshTime.present
+          ? data.profileDataRefreshTime.value
+          : this.profileDataRefreshTime,
       isInReceivedLikes: data.isInReceivedLikes.present
           ? data.isInReceivedLikes.value
           : this.isInReceivedLikes,
@@ -16312,6 +16296,7 @@ class ProfileExtraData extends DataClass
   String toString() {
     return (StringBuffer('ProfileExtraData(')
           ..write('accountId: $accountId, ')
+          ..write('profileDataRefreshTime: $profileDataRefreshTime, ')
           ..write('isInReceivedLikes: $isInReceivedLikes, ')
           ..write('isInSentLikes: $isInSentLikes, ')
           ..write('isInMatches: $isInMatches, ')
@@ -16328,6 +16313,7 @@ class ProfileExtraData extends DataClass
   @override
   int get hashCode => Object.hash(
     accountId,
+    profileDataRefreshTime,
     isInReceivedLikes,
     isInSentLikes,
     isInMatches,
@@ -16341,6 +16327,7 @@ class ProfileExtraData extends DataClass
       identical(this, other) ||
       (other is ProfileExtraData &&
           other.accountId == this.accountId &&
+          other.profileDataRefreshTime == this.profileDataRefreshTime &&
           other.isInReceivedLikes == this.isInReceivedLikes &&
           other.isInSentLikes == this.isInSentLikes &&
           other.isInMatches == this.isInMatches &&
@@ -16353,6 +16340,7 @@ class ProfileExtraData extends DataClass
 
 class ProfileExtraCompanion extends UpdateCompanion<ProfileExtraData> {
   final Value<AccountId> accountId;
+  final Value<UtcDateTime?> profileDataRefreshTime;
   final Value<UtcDateTime?> isInReceivedLikes;
   final Value<UtcDateTime?> isInSentLikes;
   final Value<UtcDateTime?> isInMatches;
@@ -16363,6 +16351,7 @@ class ProfileExtraCompanion extends UpdateCompanion<ProfileExtraData> {
   final Value<int> rowid;
   const ProfileExtraCompanion({
     this.accountId = const Value.absent(),
+    this.profileDataRefreshTime = const Value.absent(),
     this.isInReceivedLikes = const Value.absent(),
     this.isInSentLikes = const Value.absent(),
     this.isInMatches = const Value.absent(),
@@ -16374,6 +16363,7 @@ class ProfileExtraCompanion extends UpdateCompanion<ProfileExtraData> {
   });
   ProfileExtraCompanion.insert({
     required AccountId accountId,
+    this.profileDataRefreshTime = const Value.absent(),
     this.isInReceivedLikes = const Value.absent(),
     this.isInSentLikes = const Value.absent(),
     this.isInMatches = const Value.absent(),
@@ -16385,6 +16375,7 @@ class ProfileExtraCompanion extends UpdateCompanion<ProfileExtraData> {
   }) : accountId = Value(accountId);
   static Insertable<ProfileExtraData> custom({
     Expression<String>? accountId,
+    Expression<int>? profileDataRefreshTime,
     Expression<int>? isInReceivedLikes,
     Expression<int>? isInSentLikes,
     Expression<int>? isInMatches,
@@ -16396,6 +16387,8 @@ class ProfileExtraCompanion extends UpdateCompanion<ProfileExtraData> {
   }) {
     return RawValuesInsertable({
       if (accountId != null) 'account_id': accountId,
+      if (profileDataRefreshTime != null)
+        'profile_data_refresh_time': profileDataRefreshTime,
       if (isInReceivedLikes != null) 'is_in_received_likes': isInReceivedLikes,
       if (isInSentLikes != null) 'is_in_sent_likes': isInSentLikes,
       if (isInMatches != null) 'is_in_matches': isInMatches,
@@ -16411,6 +16404,7 @@ class ProfileExtraCompanion extends UpdateCompanion<ProfileExtraData> {
 
   ProfileExtraCompanion copyWith({
     Value<AccountId>? accountId,
+    Value<UtcDateTime?>? profileDataRefreshTime,
     Value<UtcDateTime?>? isInReceivedLikes,
     Value<UtcDateTime?>? isInSentLikes,
     Value<UtcDateTime?>? isInMatches,
@@ -16422,6 +16416,8 @@ class ProfileExtraCompanion extends UpdateCompanion<ProfileExtraData> {
   }) {
     return ProfileExtraCompanion(
       accountId: accountId ?? this.accountId,
+      profileDataRefreshTime:
+          profileDataRefreshTime ?? this.profileDataRefreshTime,
       isInReceivedLikes: isInReceivedLikes ?? this.isInReceivedLikes,
       isInSentLikes: isInSentLikes ?? this.isInSentLikes,
       isInMatches: isInMatches ?? this.isInMatches,
@@ -16441,6 +16437,13 @@ class ProfileExtraCompanion extends UpdateCompanion<ProfileExtraData> {
     if (accountId.present) {
       map['account_id'] = Variable<String>(
         $ProfileExtraTable.$converteraccountId.toSql(accountId.value),
+      );
+    }
+    if (profileDataRefreshTime.present) {
+      map['profile_data_refresh_time'] = Variable<int>(
+        $ProfileExtraTable.$converterprofileDataRefreshTime.toSql(
+          profileDataRefreshTime.value,
+        ),
       );
     }
     if (isInReceivedLikes.present) {
@@ -16498,6 +16501,7 @@ class ProfileExtraCompanion extends UpdateCompanion<ProfileExtraData> {
   String toString() {
     return (StringBuffer('ProfileExtraCompanion(')
           ..write('accountId: $accountId, ')
+          ..write('profileDataRefreshTime: $profileDataRefreshTime, ')
           ..write('isInReceivedLikes: $isInReceivedLikes, ')
           ..write('isInSentLikes: $isInSentLikes, ')
           ..write('isInMatches: $isInMatches, ')
