@@ -137,6 +137,25 @@ class DaoWriteProfile extends DatabaseAccessor<AccountDatabase> with _$DaoWriteP
     );
   }
 
+  Future<void> updatePrivateProfileErrorTimeToCurrentTime(api.AccountId accountId) async {
+    final currentTime = UtcDateTime.now();
+    await into(profileExtra).insertOnConflictUpdate(
+      ProfileExtraCompanion.insert(
+        accountId: accountId,
+        privateProfileErrorTime: Value(currentTime),
+      ),
+    );
+  }
+
+  Future<void> clearPrivateProfileErrorTime(api.AccountId accountId) async {
+    await into(profileExtra).insertOnConflictUpdate(
+      ProfileExtraCompanion.insert(
+        accountId: accountId,
+        privateProfileErrorTime: const Value(null),
+      ),
+    );
+  }
+
   Future<void> setFavoriteStatus(api.AccountId accountId, bool value) async {
     if (value) {
       await into(favoriteProfiles).insertOnConflictUpdate(

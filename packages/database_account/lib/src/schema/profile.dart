@@ -114,6 +114,8 @@ class ProfileExtra extends Table {
 
   IntColumn get profileDataRefreshTime =>
       integer().map(const NullAwareTypeConverter.wrap(UtcDateTimeConverter())).nullable()();
+  IntColumn get privateProfileErrorTime =>
+      integer().map(const NullAwareTypeConverter.wrap(UtcDateTimeConverter())).nullable()();
 
   // If column is not null, then it is in the specific group.
   // The time is the time when the profile was added to the group.

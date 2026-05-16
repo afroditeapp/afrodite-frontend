@@ -15,9 +15,6 @@ import 'package:app/utils/result.dart';
 
 final _log = Logger("ProfileEntryDownloader");
 
-// TODO(prod): Save info is profile private and limit profile
-//             downloads to once per day for private proifles.
-
 class ProfileEntryDownloader {
   final ApiManager api;
   final AccountDatabaseManager db;
@@ -49,6 +46,9 @@ class ProfileEntryDownloader {
         final contentVersion = v.version;
         if (contentVersion == null) {
           // Profile private (or account state might not be Normal)
+          await db.accountAction(
+            (db) => db.profile.updatePrivateProfileErrorTimeToCurrentTime(accountId),
+          );
           return Err(PrivateProfile());
         }
         final contentInfo = v.content;
@@ -98,6 +98,9 @@ class ProfileEntryDownloader {
         final version = v.profileVersion;
         if (version == null) {
           // Profile not accessible (or account state might not be Normal)
+          await db.accountAction(
+            (db) => db.profile.updatePrivateProfileErrorTimeToCurrentTime(accountId),
+          );
           return Err(PrivateProfile());
         }
 
@@ -120,9 +123,10 @@ class ProfileEntryDownloader {
         return Err(OtherProfileDownloadError());
     }
 
-    final refreshTimeUpdateResult = await db.accountAction(
-      (db) => db.profile.updateProfileDataRefreshTimeToCurrentTime(accountId),
-    );
+    final refreshTimeUpdateResult = await db.accountAction((db) async {
+      await db.profile.clearPrivateProfileErrorTime(accountId);
+      await db.profile.updateProfileDataRefreshTimeToCurrentTime(accountId);
+    });
     if (refreshTimeUpdateResult.isErr()) {
       _log.error("Refresh time update failed");
       return Err(OtherProfileDownloadError());

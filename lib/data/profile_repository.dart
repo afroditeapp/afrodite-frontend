@@ -130,12 +130,21 @@ class ProfileRepository extends DataRepositoryWithLifecycle {
 
     bool download = true;
 
+    final privateProfileErrorTime = await db
+        .accountData((db) => db.profile.getPrivateProfileErrorTime(id))
+        .ok();
+    if (privateProfileErrorTime != null) {
+      final elapsed = UtcDateTime.now().dateTime.difference(privateProfileErrorTime.dateTime);
+      if (elapsed < Duration(days: 1)) {
+        download = false;
+      }
+    }
+
     final lastRefreshTime = await db
         .accountData((db) => db.profile.getProfileDataRefreshTime(id))
         .ok();
     if (profile != null && lastRefreshTime != null) {
-      final currentTime = UtcDateTime.now();
-      final difference = currentTime.dateTime.difference(lastRefreshTime.dateTime);
+      final difference = UtcDateTime.now().dateTime.difference(lastRefreshTime.dateTime);
       final int timePassedAtLeastSeconds = switch (priority) {
         ProfileRefreshPriority.low => 60 * 15,
       };

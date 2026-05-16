@@ -15886,6 +15886,18 @@ class $ProfileExtraTable extends schema.ProfileExtra
       );
   @override
   late final GeneratedColumnWithTypeConverter<UtcDateTime?, int>
+  privateProfileErrorTime =
+      GeneratedColumn<int>(
+        'private_profile_error_time',
+        aliasedName,
+        true,
+        type: DriftSqlType.int,
+        requiredDuringInsert: false,
+      ).withConverter<UtcDateTime?>(
+        $ProfileExtraTable.$converterprivateProfileErrorTime,
+      );
+  @override
+  late final GeneratedColumnWithTypeConverter<UtcDateTime?, int>
   isInReceivedLikes = GeneratedColumn<int>(
     'is_in_received_likes',
     aliasedName,
@@ -15957,6 +15969,7 @@ class $ProfileExtraTable extends schema.ProfileExtra
   List<GeneratedColumn> get $columns => [
     accountId,
     profileDataRefreshTime,
+    privateProfileErrorTime,
     isInReceivedLikes,
     isInSentLikes,
     isInMatches,
@@ -15988,6 +16001,14 @@ class $ProfileExtraTable extends schema.ProfileExtra
             attachedDatabase.typeMapping.read(
               DriftSqlType.int,
               data['${effectivePrefix}profile_data_refresh_time'],
+            ),
+          ),
+      privateProfileErrorTime: $ProfileExtraTable
+          .$converterprivateProfileErrorTime
+          .fromSql(
+            attachedDatabase.typeMapping.read(
+              DriftSqlType.int,
+              data['${effectivePrefix}private_profile_error_time'],
             ),
           ),
       isInReceivedLikes: $ProfileExtraTable.$converterisInReceivedLikes.fromSql(
@@ -16047,6 +16068,8 @@ class $ProfileExtraTable extends schema.ProfileExtra
       const AccountIdConverter();
   static TypeConverter<UtcDateTime?, int?> $converterprofileDataRefreshTime =
       const NullAwareTypeConverter.wrap(UtcDateTimeConverter());
+  static TypeConverter<UtcDateTime?, int?> $converterprivateProfileErrorTime =
+      const NullAwareTypeConverter.wrap(UtcDateTimeConverter());
   static TypeConverter<UtcDateTime?, int?> $converterisInReceivedLikes =
       const NullAwareTypeConverter.wrap(UtcDateTimeConverter());
   static TypeConverter<UtcDateTime?, int?> $converterisInSentLikes =
@@ -16069,6 +16092,7 @@ class ProfileExtraData extends DataClass
     implements Insertable<ProfileExtraData> {
   final AccountId accountId;
   final UtcDateTime? profileDataRefreshTime;
+  final UtcDateTime? privateProfileErrorTime;
   final UtcDateTime? isInReceivedLikes;
   final UtcDateTime? isInSentLikes;
   final UtcDateTime? isInMatches;
@@ -16079,6 +16103,7 @@ class ProfileExtraData extends DataClass
   const ProfileExtraData({
     required this.accountId,
     this.profileDataRefreshTime,
+    this.privateProfileErrorTime,
     this.isInReceivedLikes,
     this.isInSentLikes,
     this.isInMatches,
@@ -16099,6 +16124,13 @@ class ProfileExtraData extends DataClass
       map['profile_data_refresh_time'] = Variable<int>(
         $ProfileExtraTable.$converterprofileDataRefreshTime.toSql(
           profileDataRefreshTime,
+        ),
+      );
+    }
+    if (!nullToAbsent || privateProfileErrorTime != null) {
+      map['private_profile_error_time'] = Variable<int>(
+        $ProfileExtraTable.$converterprivateProfileErrorTime.toSql(
+          privateProfileErrorTime,
         ),
       );
     }
@@ -16150,6 +16182,9 @@ class ProfileExtraData extends DataClass
       profileDataRefreshTime: profileDataRefreshTime == null && nullToAbsent
           ? const Value.absent()
           : Value(profileDataRefreshTime),
+      privateProfileErrorTime: privateProfileErrorTime == null && nullToAbsent
+          ? const Value.absent()
+          : Value(privateProfileErrorTime),
       isInReceivedLikes: isInReceivedLikes == null && nullToAbsent
           ? const Value.absent()
           : Value(isInReceivedLikes),
@@ -16185,6 +16220,9 @@ class ProfileExtraData extends DataClass
       profileDataRefreshTime: serializer.fromJson<UtcDateTime?>(
         json['profileDataRefreshTime'],
       ),
+      privateProfileErrorTime: serializer.fromJson<UtcDateTime?>(
+        json['privateProfileErrorTime'],
+      ),
       isInReceivedLikes: serializer.fromJson<UtcDateTime?>(
         json['isInReceivedLikes'],
       ),
@@ -16212,6 +16250,9 @@ class ProfileExtraData extends DataClass
       'profileDataRefreshTime': serializer.toJson<UtcDateTime?>(
         profileDataRefreshTime,
       ),
+      'privateProfileErrorTime': serializer.toJson<UtcDateTime?>(
+        privateProfileErrorTime,
+      ),
       'isInReceivedLikes': serializer.toJson<UtcDateTime?>(isInReceivedLikes),
       'isInSentLikes': serializer.toJson<UtcDateTime?>(isInSentLikes),
       'isInMatches': serializer.toJson<UtcDateTime?>(isInMatches),
@@ -16229,6 +16270,7 @@ class ProfileExtraData extends DataClass
   ProfileExtraData copyWith({
     AccountId? accountId,
     Value<UtcDateTime?> profileDataRefreshTime = const Value.absent(),
+    Value<UtcDateTime?> privateProfileErrorTime = const Value.absent(),
     Value<UtcDateTime?> isInReceivedLikes = const Value.absent(),
     Value<UtcDateTime?> isInSentLikes = const Value.absent(),
     Value<UtcDateTime?> isInMatches = const Value.absent(),
@@ -16241,6 +16283,9 @@ class ProfileExtraData extends DataClass
     profileDataRefreshTime: profileDataRefreshTime.present
         ? profileDataRefreshTime.value
         : this.profileDataRefreshTime,
+    privateProfileErrorTime: privateProfileErrorTime.present
+        ? privateProfileErrorTime.value
+        : this.privateProfileErrorTime,
     isInReceivedLikes: isInReceivedLikes.present
         ? isInReceivedLikes.value
         : this.isInReceivedLikes,
@@ -16267,6 +16312,9 @@ class ProfileExtraData extends DataClass
       profileDataRefreshTime: data.profileDataRefreshTime.present
           ? data.profileDataRefreshTime.value
           : this.profileDataRefreshTime,
+      privateProfileErrorTime: data.privateProfileErrorTime.present
+          ? data.privateProfileErrorTime.value
+          : this.privateProfileErrorTime,
       isInReceivedLikes: data.isInReceivedLikes.present
           ? data.isInReceivedLikes.value
           : this.isInReceivedLikes,
@@ -16297,6 +16345,7 @@ class ProfileExtraData extends DataClass
     return (StringBuffer('ProfileExtraData(')
           ..write('accountId: $accountId, ')
           ..write('profileDataRefreshTime: $profileDataRefreshTime, ')
+          ..write('privateProfileErrorTime: $privateProfileErrorTime, ')
           ..write('isInReceivedLikes: $isInReceivedLikes, ')
           ..write('isInSentLikes: $isInSentLikes, ')
           ..write('isInMatches: $isInMatches, ')
@@ -16314,6 +16363,7 @@ class ProfileExtraData extends DataClass
   int get hashCode => Object.hash(
     accountId,
     profileDataRefreshTime,
+    privateProfileErrorTime,
     isInReceivedLikes,
     isInSentLikes,
     isInMatches,
@@ -16328,6 +16378,7 @@ class ProfileExtraData extends DataClass
       (other is ProfileExtraData &&
           other.accountId == this.accountId &&
           other.profileDataRefreshTime == this.profileDataRefreshTime &&
+          other.privateProfileErrorTime == this.privateProfileErrorTime &&
           other.isInReceivedLikes == this.isInReceivedLikes &&
           other.isInSentLikes == this.isInSentLikes &&
           other.isInMatches == this.isInMatches &&
@@ -16341,6 +16392,7 @@ class ProfileExtraData extends DataClass
 class ProfileExtraCompanion extends UpdateCompanion<ProfileExtraData> {
   final Value<AccountId> accountId;
   final Value<UtcDateTime?> profileDataRefreshTime;
+  final Value<UtcDateTime?> privateProfileErrorTime;
   final Value<UtcDateTime?> isInReceivedLikes;
   final Value<UtcDateTime?> isInSentLikes;
   final Value<UtcDateTime?> isInMatches;
@@ -16352,6 +16404,7 @@ class ProfileExtraCompanion extends UpdateCompanion<ProfileExtraData> {
   const ProfileExtraCompanion({
     this.accountId = const Value.absent(),
     this.profileDataRefreshTime = const Value.absent(),
+    this.privateProfileErrorTime = const Value.absent(),
     this.isInReceivedLikes = const Value.absent(),
     this.isInSentLikes = const Value.absent(),
     this.isInMatches = const Value.absent(),
@@ -16364,6 +16417,7 @@ class ProfileExtraCompanion extends UpdateCompanion<ProfileExtraData> {
   ProfileExtraCompanion.insert({
     required AccountId accountId,
     this.profileDataRefreshTime = const Value.absent(),
+    this.privateProfileErrorTime = const Value.absent(),
     this.isInReceivedLikes = const Value.absent(),
     this.isInSentLikes = const Value.absent(),
     this.isInMatches = const Value.absent(),
@@ -16376,6 +16430,7 @@ class ProfileExtraCompanion extends UpdateCompanion<ProfileExtraData> {
   static Insertable<ProfileExtraData> custom({
     Expression<String>? accountId,
     Expression<int>? profileDataRefreshTime,
+    Expression<int>? privateProfileErrorTime,
     Expression<int>? isInReceivedLikes,
     Expression<int>? isInSentLikes,
     Expression<int>? isInMatches,
@@ -16389,6 +16444,8 @@ class ProfileExtraCompanion extends UpdateCompanion<ProfileExtraData> {
       if (accountId != null) 'account_id': accountId,
       if (profileDataRefreshTime != null)
         'profile_data_refresh_time': profileDataRefreshTime,
+      if (privateProfileErrorTime != null)
+        'private_profile_error_time': privateProfileErrorTime,
       if (isInReceivedLikes != null) 'is_in_received_likes': isInReceivedLikes,
       if (isInSentLikes != null) 'is_in_sent_likes': isInSentLikes,
       if (isInMatches != null) 'is_in_matches': isInMatches,
@@ -16405,6 +16462,7 @@ class ProfileExtraCompanion extends UpdateCompanion<ProfileExtraData> {
   ProfileExtraCompanion copyWith({
     Value<AccountId>? accountId,
     Value<UtcDateTime?>? profileDataRefreshTime,
+    Value<UtcDateTime?>? privateProfileErrorTime,
     Value<UtcDateTime?>? isInReceivedLikes,
     Value<UtcDateTime?>? isInSentLikes,
     Value<UtcDateTime?>? isInMatches,
@@ -16418,6 +16476,8 @@ class ProfileExtraCompanion extends UpdateCompanion<ProfileExtraData> {
       accountId: accountId ?? this.accountId,
       profileDataRefreshTime:
           profileDataRefreshTime ?? this.profileDataRefreshTime,
+      privateProfileErrorTime:
+          privateProfileErrorTime ?? this.privateProfileErrorTime,
       isInReceivedLikes: isInReceivedLikes ?? this.isInReceivedLikes,
       isInSentLikes: isInSentLikes ?? this.isInSentLikes,
       isInMatches: isInMatches ?? this.isInMatches,
@@ -16443,6 +16503,13 @@ class ProfileExtraCompanion extends UpdateCompanion<ProfileExtraData> {
       map['profile_data_refresh_time'] = Variable<int>(
         $ProfileExtraTable.$converterprofileDataRefreshTime.toSql(
           profileDataRefreshTime.value,
+        ),
+      );
+    }
+    if (privateProfileErrorTime.present) {
+      map['private_profile_error_time'] = Variable<int>(
+        $ProfileExtraTable.$converterprivateProfileErrorTime.toSql(
+          privateProfileErrorTime.value,
         ),
       );
     }
@@ -16502,6 +16569,7 @@ class ProfileExtraCompanion extends UpdateCompanion<ProfileExtraData> {
     return (StringBuffer('ProfileExtraCompanion(')
           ..write('accountId: $accountId, ')
           ..write('profileDataRefreshTime: $profileDataRefreshTime, ')
+          ..write('privateProfileErrorTime: $privateProfileErrorTime, ')
           ..write('isInReceivedLikes: $isInReceivedLikes, ')
           ..write('isInSentLikes: $isInSentLikes, ')
           ..write('isInMatches: $isInMatches, ')

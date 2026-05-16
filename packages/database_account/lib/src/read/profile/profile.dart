@@ -121,6 +121,18 @@ class DaoReadProfile extends DatabaseAccessor<AccountDatabase> with _$DaoReadPro
     return r.profileDataRefreshTime;
   }
 
+  Future<UtcDateTime?> getPrivateProfileErrorTime(api.AccountId accountId) async {
+    final r = await (select(
+      profileExtra,
+    )..where((t) => t.accountId.equals(accountId.aid))).getSingleOrNull();
+
+    if (r == null) {
+      return null;
+    }
+
+    return r.privateProfileErrorTime;
+  }
+
   Future<bool> isInFavorites(api.AccountId accountId) async {
     return await (select(
           favoriteProfiles,
