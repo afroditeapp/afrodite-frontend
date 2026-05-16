@@ -154,11 +154,11 @@ class AutomaticProfileSearchSettings extends SingleRowTable {
 }
 
 class ProfilePrivacySettings extends SingleRowTable {
-  BoolColumn get lastSeenTime => boolean().withDefault(const Constant(false))();
-  BoolColumn get onlineStatus => boolean().withDefault(const Constant(false))();
+  BoolColumn get lastSeenTime => boolean().clientDefault(() => false)();
+  BoolColumn get onlineStatus => boolean().clientDefault(() => false)();
 }
 
 class AutomaticProfileSearchBadgeState extends SingleRowTable {
-  IntColumn get profileCount => integer().withDefault(const Constant(0))();
-  BoolColumn get showBadge => boolean().withDefault(const Constant(false))();
+  IntColumn get profileCount => integer().clientDefault(() => 0)();
+  BoolColumn get showBadge => boolean().clientDefault(() => false)();
 }

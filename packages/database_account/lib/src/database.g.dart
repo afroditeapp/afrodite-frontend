@@ -35,7 +35,7 @@ class $ProfileFilterFavoritesTable extends schema.ProfileFilterFavorites
         defaultConstraints: GeneratedColumn.constraintIsAlways(
           'CHECK ("profile_filter_favorites" IN (0, 1))',
         ),
-        defaultValue: const Constant(false),
+        clientDefault: () => false,
       );
   @override
   List<GeneratedColumn> get $columns => [id, profileFilterFavorites];
@@ -262,7 +262,7 @@ class $ShowAdvancedProfileFiltersTable extends schema.ShowAdvancedProfileFilters
     defaultConstraints: GeneratedColumn.constraintIsAlways(
       'CHECK ("advanced_filters" IN (0, 1))',
     ),
-    defaultValue: const Constant(false),
+    clientDefault: () => false,
   );
   @override
   List<GeneratedColumn> get $columns => [id, advancedFilters];
@@ -482,7 +482,7 @@ class $InitialSyncTable extends schema.InitialSync
         defaultConstraints: GeneratedColumn.constraintIsAlways(
           'CHECK ("initial_sync_done_login_repository" IN (0, 1))',
         ),
-        defaultValue: const Constant(false),
+        clientDefault: () => false,
       );
   static const VerificationMeta _initialSyncDoneAccountRepositoryMeta =
       const VerificationMeta('initialSyncDoneAccountRepository');
@@ -497,7 +497,7 @@ class $InitialSyncTable extends schema.InitialSync
         defaultConstraints: GeneratedColumn.constraintIsAlways(
           'CHECK ("initial_sync_done_account_repository" IN (0, 1))',
         ),
-        defaultValue: const Constant(false),
+        clientDefault: () => false,
       );
   static const VerificationMeta _initialSyncDoneMediaRepositoryMeta =
       const VerificationMeta('initialSyncDoneMediaRepository');
@@ -512,7 +512,7 @@ class $InitialSyncTable extends schema.InitialSync
         defaultConstraints: GeneratedColumn.constraintIsAlways(
           'CHECK ("initial_sync_done_media_repository" IN (0, 1))',
         ),
-        defaultValue: const Constant(false),
+        clientDefault: () => false,
       );
   static const VerificationMeta _initialSyncDoneProfileRepositoryMeta =
       const VerificationMeta('initialSyncDoneProfileRepository');
@@ -527,7 +527,7 @@ class $InitialSyncTable extends schema.InitialSync
         defaultConstraints: GeneratedColumn.constraintIsAlways(
           'CHECK ("initial_sync_done_profile_repository" IN (0, 1))',
         ),
-        defaultValue: const Constant(false),
+        clientDefault: () => false,
       );
   static const VerificationMeta _initialSyncDoneChatRepositoryMeta =
       const VerificationMeta('initialSyncDoneChatRepository');
@@ -542,7 +542,7 @@ class $InitialSyncTable extends schema.InitialSync
         defaultConstraints: GeneratedColumn.constraintIsAlways(
           'CHECK ("initial_sync_done_chat_repository" IN (0, 1))',
         ),
-        defaultValue: const Constant(false),
+        clientDefault: () => false,
       );
   @override
   List<GeneratedColumn> get $columns => [
@@ -1008,7 +1008,7 @@ class $InitialSetupSkippedTable extends schema.InitialSetupSkipped
     defaultConstraints: GeneratedColumn.constraintIsAlways(
       'CHECK ("initial_setup_skipped" IN (0, 1))',
     ),
-    defaultValue: const Constant(false),
+    clientDefault: () => false,
   );
   @override
   List<GeneratedColumn> get $columns => [id, initialSetupSkipped];
@@ -5050,7 +5050,7 @@ class $EditProfileProgressTable extends schema.EditProfileProgress
     defaultConstraints: GeneratedColumn.constraintIsAlways(
       'CHECK ("editing_in_progress" IN (0, 1))',
     ),
-    defaultValue: const Constant(false),
+    clientDefault: () => false,
   );
   static const VerificationMeta _selectingImageMeta = const VerificationMeta(
     'selectingImage',
@@ -5065,7 +5065,7 @@ class $EditProfileProgressTable extends schema.EditProfileProgress
     defaultConstraints: GeneratedColumn.constraintIsAlways(
       'CHECK ("selecting_image" IN (0, 1))',
     ),
-    defaultValue: const Constant(false),
+    clientDefault: () => false,
   );
   @override
   List<GeneratedColumn> get $columns => [
@@ -5848,7 +5848,7 @@ class $ServerMaintenanceTable extends schema.ServerMaintenance
     defaultConstraints: GeneratedColumn.constraintIsAlways(
       'CHECK ("show_badge" IN (0, 1))',
     ),
-    defaultValue: const Constant(false),
+    clientDefault: () => false,
   );
   static const VerificationMeta _adminBotOfflineMeta = const VerificationMeta(
     'adminBotOffline',
@@ -5863,7 +5863,7 @@ class $ServerMaintenanceTable extends schema.ServerMaintenance
     defaultConstraints: GeneratedColumn.constraintIsAlways(
       'CHECK ("admin_bot_offline" IN (0, 1))',
     ),
-    defaultValue: const Constant(false),
+    clientDefault: () => false,
   );
   @override
   List<GeneratedColumn> get $columns => [
@@ -6617,7 +6617,7 @@ class $ReceivedLikesIteratorStateTable extends schema.ReceivedLikesIteratorState
     false,
     type: DriftSqlType.int,
     requiredDuringInsert: false,
-    defaultValue: const Constant(0),
+    clientDefault: () => 0,
   );
   @override
   List<GeneratedColumn> get $columns => [id, idAtReset, page];
@@ -7530,7 +7530,7 @@ class $InfoBannerDismissStateTable extends schema.InfoBannerDismissState
     false,
     type: DriftSqlType.int,
     requiredDuringInsert: false,
-    defaultValue: const Constant(0),
+    clientDefault: () => 0,
   );
   static const VerificationMeta _dismissedMeta = const VerificationMeta(
     'dismissed',
@@ -7545,7 +7545,7 @@ class $InfoBannerDismissStateTable extends schema.InfoBannerDismissState
     defaultConstraints: GeneratedColumn.constraintIsAlways(
       'CHECK ("dismissed" IN (0, 1))',
     ),
-    defaultValue: const Constant(false),
+    clientDefault: () => false,
   );
   @override
   List<GeneratedColumn> get $columns => [
@@ -10409,7 +10409,7 @@ class $EmailVerifiedTable extends schema.EmailVerified
     defaultConstraints: GeneratedColumn.constraintIsAlways(
       'CHECK ("email_verified" IN (0, 1))',
     ),
-    defaultValue: const Constant(false),
+    clientDefault: () => false,
   );
   @override
   List<GeneratedColumn> get $columns => [id, emailVerified];
@@ -17373,7 +17373,7 @@ class $AutomaticProfileSearchBadgeStateTable
     false,
     type: DriftSqlType.int,
     requiredDuringInsert: false,
-    defaultValue: const Constant(0),
+    clientDefault: () => 0,
   );
   static const VerificationMeta _showBadgeMeta = const VerificationMeta(
     'showBadge',
@@ -17388,7 +17388,7 @@ class $AutomaticProfileSearchBadgeStateTable
     defaultConstraints: GeneratedColumn.constraintIsAlways(
       'CHECK ("show_badge" IN (0, 1))',
     ),
-    defaultValue: const Constant(false),
+    clientDefault: () => false,
   );
   @override
   List<GeneratedColumn> get $columns => [id, profileCount, showBadge];
@@ -17642,7 +17642,7 @@ class $ProfilePrivacySettingsTable extends schema.ProfilePrivacySettings
     defaultConstraints: GeneratedColumn.constraintIsAlways(
       'CHECK ("last_seen_time" IN (0, 1))',
     ),
-    defaultValue: const Constant(false),
+    clientDefault: () => false,
   );
   static const VerificationMeta _onlineStatusMeta = const VerificationMeta(
     'onlineStatus',
@@ -17657,7 +17657,7 @@ class $ProfilePrivacySettingsTable extends schema.ProfilePrivacySettings
     defaultConstraints: GeneratedColumn.constraintIsAlways(
       'CHECK ("online_status" IN (0, 1))',
     ),
-    defaultValue: const Constant(false),
+    clientDefault: () => false,
   );
   @override
   List<GeneratedColumn> get $columns => [id, lastSeenTime, onlineStatus];
@@ -19185,7 +19185,7 @@ class $ChatPrivacySettingsTable extends schema.ChatPrivacySettings
     defaultConstraints: GeneratedColumn.constraintIsAlways(
       'CHECK ("message_state_seen" IN (0, 1))',
     ),
-    defaultValue: const Constant(false),
+    clientDefault: () => false,
   );
   static const VerificationMeta _typingIndicatorMeta = const VerificationMeta(
     'typingIndicator',
@@ -19200,7 +19200,7 @@ class $ChatPrivacySettingsTable extends schema.ChatPrivacySettings
     defaultConstraints: GeneratedColumn.constraintIsAlways(
       'CHECK ("typing_indicator" IN (0, 1))',
     ),
-    defaultValue: const Constant(false),
+    clientDefault: () => false,
   );
   @override
   List<GeneratedColumn> get $columns => [id, messageStateSeen, typingIndicator];
@@ -20224,7 +20224,7 @@ class $UnreadMessagesCountTable extends schema.UnreadMessagesCount
         false,
         type: DriftSqlType.int,
         requiredDuringInsert: false,
-        defaultValue: const Constant(0),
+        clientDefault: () => 0,
       ).withConverter<UnreadMessagesCount>(
         $UnreadMessagesCountTable.$converterunreadMessagesCount,
       );

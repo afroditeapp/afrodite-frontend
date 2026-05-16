@@ -11,12 +11,12 @@ class DemoAccount extends SingleRowTable {
 class NotificationPermissionAsked extends SingleRowTable {
   /// If true don't show notification permission asking dialog when
   /// app main view (bottom navigation is visible) is opened.
-  BoolColumn get notificationPermissionAsked => boolean().withDefault(const Constant(false))();
+  BoolColumn get notificationPermissionAsked => boolean().clientDefault(() => false)();
 }
 
 class VideoCallTipShown extends SingleRowTable {
   /// If true don't show video call tip dialog when conversation opens.
-  BoolColumn get videoCallTipShown => boolean().withDefault(const Constant(false))();
+  BoolColumn get videoCallTipShown => boolean().clientDefault(() => false)();
 }
 
 class AccountId extends SingleRowTable {

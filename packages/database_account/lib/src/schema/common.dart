@@ -5,7 +5,7 @@ import 'package:drift/drift.dart';
 class ReceivedLikesIteratorState extends SingleRowTable {
   IntColumn get idAtReset =>
       integer().map(const NullAwareTypeConverter.wrap(ReceivedLikeIdConverter())).nullable()();
-  IntColumn get page => integer().withDefault(const Constant(0))();
+  IntColumn get page => integer().clientDefault(() => 0)();
 }
 
 class SyncVersion extends SingleRowTable {
@@ -20,8 +20,8 @@ class ServerMaintenance extends SingleRowTable {
       integer().map(const NullAwareTypeConverter.wrap(UtcDateTimeConverter())).nullable()();
   IntColumn get endTime =>
       integer().map(const NullAwareTypeConverter.wrap(UtcDateTimeConverter())).nullable()();
-  BoolColumn get showBadge => boolean().withDefault(const Constant(false))();
-  BoolColumn get adminBotOffline => boolean().withDefault(const Constant(false))();
+  BoolColumn get showBadge => boolean().clientDefault(() => false)();
+  BoolColumn get adminBotOffline => boolean().clientDefault(() => false)();
 }
 
 class CustomReportsConfig extends SingleRowTable {
@@ -51,8 +51,8 @@ class DynamicClientFeaturesConfig extends SingleRowTable {
 
 class InfoBannerDismissState extends Table {
   TextColumn get infoBannerKey => text()();
-  IntColumn get infoBannerVersion => integer().withDefault(const Constant(0))();
-  BoolColumn get dismissed => boolean().withDefault(const Constant(false))();
+  IntColumn get infoBannerVersion => integer().clientDefault(() => 0)();
+  BoolColumn get dismissed => boolean().clientDefault(() => false)();
 
   @override
   Set<Column<Object>> get primaryKey => {infoBannerKey};

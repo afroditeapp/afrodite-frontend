@@ -385,7 +385,7 @@ class $NotificationPermissionAskedTable
         defaultConstraints: GeneratedColumn.constraintIsAlways(
           'CHECK ("notification_permission_asked" IN (0, 1))',
         ),
-        defaultValue: const Constant(false),
+        clientDefault: () => false,
       );
   @override
   List<GeneratedColumn> get $columns => [id, notificationPermissionAsked];
@@ -622,7 +622,7 @@ class $VideoCallTipShownTable extends schema.VideoCallTipShown
     defaultConstraints: GeneratedColumn.constraintIsAlways(
       'CHECK ("video_call_tip_shown" IN (0, 1))',
     ),
-    defaultValue: const Constant(false),
+    clientDefault: () => false,
   );
   @override
   List<GeneratedColumn> get $columns => [id, videoCallTipShown];

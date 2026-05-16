@@ -31,7 +31,7 @@ class EmailAddress extends SingleRowTable {
 }
 
 class EmailVerified extends SingleRowTable {
-  BoolColumn get emailVerified => boolean().withDefault(const Constant(false))();
+  BoolColumn get emailVerified => boolean().clientDefault(() => false)();
 }
 
 class LoginSessionTokens extends SingleRowTable {

@@ -49,8 +49,8 @@ class DailyLikesLeft extends SingleRowTable {
 }
 
 class ChatPrivacySettings extends SingleRowTable {
-  BoolColumn get messageStateSeen => boolean().withDefault(const Constant(false))();
-  BoolColumn get typingIndicator => boolean().withDefault(const Constant(false))();
+  BoolColumn get messageStateSeen => boolean().clientDefault(() => false)();
+  BoolColumn get typingIndicator => boolean().clientDefault(() => false)();
 }
 
 class Message extends Table {
@@ -83,7 +83,7 @@ class Message extends Table {
 class UnreadMessagesCount extends Table {
   TextColumn get accountId => text().map(const AccountIdConverter())();
   IntColumn get unreadMessagesCount =>
-      integer().map(UnreadMessagesCountConverter()).withDefault(const Constant(0))();
+      integer().map(UnreadMessagesCountConverter()).clientDefault(() => 0)();
 
   @override
   Set<Column<Object>> get primaryKey => {accountId};

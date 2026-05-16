@@ -59,8 +59,8 @@ class EditProfileProgress extends SingleRowTable {
   TextColumn get jsonProfileImages => text()
       .map(NullAwareTypeConverter.wrap(const ProfilePictureEntryListConverter()))
       .nullable()();
-  BoolColumn get editingInProgress => boolean().withDefault(const Constant(false))();
-  BoolColumn get selectingImage => boolean().withDefault(const Constant(false))();
+  BoolColumn get editingInProgress => boolean().clientDefault(() => false)();
+  BoolColumn get selectingImage => boolean().clientDefault(() => false)();
 }
 
 class DraftMessage extends Table {
