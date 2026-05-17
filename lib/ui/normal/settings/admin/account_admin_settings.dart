@@ -17,6 +17,7 @@ import 'package:app/ui/normal/settings/admin/account_admin/edit_profile_name.dar
 import 'package:app/ui/normal/settings/admin/account_admin/email_address_management.dart';
 import 'package:app/ui/normal/settings/admin/account_admin/login_management.dart';
 import 'package:app/ui/normal/settings/admin/account_admin/moderate_single_profile_string.dart';
+import 'package:app/ui/normal/settings/admin/account_admin/admin_profile_verification_info.dart';
 import 'package:app/ui/normal/settings/admin/account_admin/admin_security_content_info.dart';
 import 'package:app/ui/normal/settings/admin/account_admin/view_api_usage.dart';
 import 'package:app/ui/normal/settings/admin/account_admin/view_ip_address_usage.dart';
@@ -223,6 +224,25 @@ class _AccountAdminSettingsScreenState extends State<AccountAdminSettingsScreen>
       );
     }
 
+    if (permissions.adminEditProfileAgeRangeVerifiedValue ||
+        permissions.adminEditProfileNameVerifiedValue) {
+      list.add(
+        Setting.createSetting(
+          Icons.verified_user,
+          "Profile verification info",
+          () => MyNavigator.pushLimited(
+            context,
+            AdminProfileVerificationInfoPage(
+              r,
+              widget.accountId,
+              currentName: name,
+              currentAge: age,
+            ),
+          ),
+        ).toListTile(),
+      );
+    }
+
     if (permissions.adminModerateMediaContent ||
         permissions.adminEditMediaContentFaceVerifiedValue ||
         permissions.adminEditSecurityContentVerifiedValue) {
@@ -383,6 +403,9 @@ class AccountAdminSettingsPermissions {
   bool get adminEditLogin => _permissions.adminEditLogin;
   bool get adminEditMediaContentFaceVerifiedValue =>
       _permissions.adminEditMediaContentFaceVerifiedValue;
+  bool get adminEditProfileAgeRangeVerifiedValue =>
+      _permissions.adminEditProfileAgeRangeVerifiedValue;
+  bool get adminEditProfileNameVerifiedValue => _permissions.adminEditProfileNameVerifiedValue;
   bool get adminEditSecurityContentVerifiedValue =>
       _permissions.adminEditSecurityContentVerifiedValue;
   bool get adminViewEmailAddress => _permissions.adminViewEmailAddress;
@@ -406,6 +429,8 @@ class AccountAdminSettingsPermissions {
         adminEditProfileName ||
         adminEditLogin ||
         adminEditMediaContentFaceVerifiedValue ||
+        adminEditProfileAgeRangeVerifiedValue ||
+        adminEditProfileNameVerifiedValue ||
         adminEditSecurityContentVerifiedValue ||
         adminViewEmailAddress ||
         adminChangeEmailAddress ||
