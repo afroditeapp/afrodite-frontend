@@ -28,6 +28,7 @@ import 'package:app/model/freezed/logic/profile/profile_filters.dart';
 import 'package:app/ui/normal/profiles/profile_filters.dart';
 import 'package:app/ui/normal/profiles/profile_grid.dart';
 import 'package:app/ui/normal/settings/account_settings.dart';
+import 'package:app/ui/normal/settings.dart';
 import 'package:app/ui_utils/bottom_navigation.dart';
 
 import 'package:app/localizations.dart';
@@ -249,6 +250,12 @@ class PublicProfileViewingBlocker extends StatelessWidget {
           const Icon(Icons.public_off_rounded, size: 48),
           const Padding(padding: EdgeInsets.all(16)),
           Text(context.strings.profile_grid_screen_profile_is_private_info),
+          const Padding(padding: EdgeInsets.all(8)),
+          ElevatedButton.icon(
+            onPressed: () => openSettingsScreen(context),
+            icon: const Icon(Icons.settings),
+            label: Text(context.strings.settings_screen_title),
+          ),
         ],
       ),
     );
