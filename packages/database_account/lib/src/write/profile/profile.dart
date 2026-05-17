@@ -13,8 +13,6 @@ part 'profile.g.dart';
 class DaoWriteProfile extends DatabaseAccessor<AccountDatabase> with _$DaoWriteProfileMixin {
   DaoWriteProfile(super.db);
 
-  /// If you call this make sure that profile data in background DB
-  /// is also updated.
   Future<void> updateProfileData(
     api.AccountId accountId,
     api.Profile p,
