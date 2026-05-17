@@ -182,6 +182,15 @@ class ProfileListOnlineIteratorIo extends OnlineIteratorIo {
 
   @override
   Future<Result<(), ()>> resetServerPaging() async {
+    final cleanedCount = await db
+        .accountDataWrite((db) => db.app.cleanupUnusedProfileDataIfNeeded())
+        .ok();
+    if (cleanedCount == null) {
+      _log.error("Profile data cleanup failed before profile paging reset");
+    } else if (cleanedCount > 0) {
+      _log.fine("Profile data cleanup removed $cleanedCount profiles before paging reset");
+    }
+
     final resetResult = await connectionManager.webSocketApiRequestManager
         .requestResetProfilePaging();
 

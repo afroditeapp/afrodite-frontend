@@ -70,7 +70,7 @@ abstract class DataRepositoryMethods {
   /// Server API is not available.
   Future<void> onLogout() async {}
 
-  /// Called when the user opens app and there has been previous
+  /// Called when the app process starts and there has been previous
   /// login.
   ///
   /// Server API is not available.

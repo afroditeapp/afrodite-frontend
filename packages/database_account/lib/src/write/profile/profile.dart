@@ -13,33 +13,6 @@ part 'profile.g.dart';
 class DaoWriteProfile extends DatabaseAccessor<AccountDatabase> with _$DaoWriteProfileMixin {
   DaoWriteProfile(super.db);
 
-  /// NOTE: Currently unused
-  Future<void> removeProfileData(api.AccountId accountId) async {
-    await (update(profile)..where((t) => t.accountId.equals(accountId.aid))).write(
-      const ProfileCompanion(
-        profileContentVersion: Value(null),
-        profileName: Value(null),
-        profileNameAccepted: Value(null),
-        profileText: Value(null),
-        profileTextAccepted: Value(null),
-        profileAge: Value(null),
-        profileVersion: Value(null),
-        profileLastSeenTimeValue: Value(null),
-        profileUnlimitedLikes: Value(null),
-        mediaVerificationStatus: Value(null),
-        profileVerificationStatus: Value(null),
-        jsonProfileAttributes: Value(null),
-        primaryContentGridCropSize: Value(null),
-        primaryContentGridCropX: Value(null),
-        primaryContentGridCropY: Value(null),
-        newLikeInfoReceivedTime: Value(null),
-      ),
-    );
-    await (update(profileExtra)..where((t) => t.accountId.equals(accountId.aid))).write(
-      const ProfileExtraCompanion(profileDataRefreshTime: Value(null)),
-    );
-  }
-
   /// If you call this make sure that profile data in background DB
   /// is also updated.
   Future<void> updateProfileData(

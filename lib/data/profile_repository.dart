@@ -14,8 +14,11 @@ import 'package:app/data/utils.dart';
 import 'package:database/database.dart';
 import 'package:app/database/account_database_manager.dart';
 import 'package:app/utils/result.dart';
+import 'package:logging/logging.dart';
 import 'package:rxdart/rxdart.dart';
 import 'package:utils/utils.dart';
+
+final _log = Logger("ProfileRepository");
 
 class ProfileRepository extends DataRepositoryWithLifecycle {
   final AccountDatabaseManager db;
@@ -93,6 +96,18 @@ class ProfileRepository extends DataRepositoryWithLifecycle {
   @override
   Future<void> onLogout() async {
     await db.accountAction((db) => db.app.updateProfileFilterFavorites(false));
+  }
+
+  @override
+  Future<void> onResumeAppUsage() async {
+    final cleanedCount = await db
+        .accountDataWrite((db) => db.app.cleanupUnusedProfileDataIfNeeded())
+        .ok();
+    if (cleanedCount == null) {
+      _log.warning("Profile data cleanup failed on app resume");
+    } else if (cleanedCount > 0) {
+      _log.fine("Profile data cleanup removed $cleanedCount profiles on app resume");
+    }
   }
 
   Future<bool> updateLocation(Location location) async {

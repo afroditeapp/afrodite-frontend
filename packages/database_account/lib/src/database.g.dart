@@ -3136,6 +3136,235 @@ class ChatBackupReminderCompanion
   }
 }
 
+class $ProfileDataCleanupStateTable extends schema.ProfileDataCleanupState
+    with TableInfo<$ProfileDataCleanupStateTable, ProfileDataCleanupStateData> {
+  @override
+  final GeneratedDatabase attachedDatabase;
+  final String? _alias;
+  $ProfileDataCleanupStateTable(this.attachedDatabase, [this._alias]);
+  static const VerificationMeta _idMeta = const VerificationMeta('id');
+  @override
+  late final GeneratedColumn<int> id = GeneratedColumn<int>(
+    'id',
+    aliasedName,
+    false,
+    hasAutoIncrement: true,
+    type: DriftSqlType.int,
+    requiredDuringInsert: false,
+    defaultConstraints: GeneratedColumn.constraintIsAlways(
+      'PRIMARY KEY AUTOINCREMENT',
+    ),
+  );
+  @override
+  late final GeneratedColumnWithTypeConverter<UtcDateTime?, int>
+  lastCleanupTime =
+      GeneratedColumn<int>(
+        'last_cleanup_time',
+        aliasedName,
+        true,
+        type: DriftSqlType.int,
+        requiredDuringInsert: false,
+      ).withConverter<UtcDateTime?>(
+        $ProfileDataCleanupStateTable.$converterlastCleanupTime,
+      );
+  @override
+  List<GeneratedColumn> get $columns => [id, lastCleanupTime];
+  @override
+  String get aliasedName => _alias ?? actualTableName;
+  @override
+  String get actualTableName => $name;
+  static const String $name = 'profile_data_cleanup_state';
+  @override
+  VerificationContext validateIntegrity(
+    Insertable<ProfileDataCleanupStateData> instance, {
+    bool isInserting = false,
+  }) {
+    final context = VerificationContext();
+    final data = instance.toColumns(true);
+    if (data.containsKey('id')) {
+      context.handle(_idMeta, id.isAcceptableOrUnknown(data['id']!, _idMeta));
+    }
+    return context;
+  }
+
+  @override
+  Set<GeneratedColumn> get $primaryKey => {id};
+  @override
+  ProfileDataCleanupStateData map(
+    Map<String, dynamic> data, {
+    String? tablePrefix,
+  }) {
+    final effectivePrefix = tablePrefix != null ? '$tablePrefix.' : '';
+    return ProfileDataCleanupStateData(
+      id: attachedDatabase.typeMapping.read(
+        DriftSqlType.int,
+        data['${effectivePrefix}id'],
+      )!,
+      lastCleanupTime: $ProfileDataCleanupStateTable.$converterlastCleanupTime
+          .fromSql(
+            attachedDatabase.typeMapping.read(
+              DriftSqlType.int,
+              data['${effectivePrefix}last_cleanup_time'],
+            ),
+          ),
+    );
+  }
+
+  @override
+  $ProfileDataCleanupStateTable createAlias(String alias) {
+    return $ProfileDataCleanupStateTable(attachedDatabase, alias);
+  }
+
+  static TypeConverter<UtcDateTime?, int?> $converterlastCleanupTime =
+      NullAwareTypeConverter.wrap(const UtcDateTimeConverter());
+}
+
+class ProfileDataCleanupStateData extends DataClass
+    implements Insertable<ProfileDataCleanupStateData> {
+  final int id;
+  final UtcDateTime? lastCleanupTime;
+  const ProfileDataCleanupStateData({required this.id, this.lastCleanupTime});
+  @override
+  Map<String, Expression> toColumns(bool nullToAbsent) {
+    final map = <String, Expression>{};
+    map['id'] = Variable<int>(id);
+    if (!nullToAbsent || lastCleanupTime != null) {
+      map['last_cleanup_time'] = Variable<int>(
+        $ProfileDataCleanupStateTable.$converterlastCleanupTime.toSql(
+          lastCleanupTime,
+        ),
+      );
+    }
+    return map;
+  }
+
+  ProfileDataCleanupStateCompanion toCompanion(bool nullToAbsent) {
+    return ProfileDataCleanupStateCompanion(
+      id: Value(id),
+      lastCleanupTime: lastCleanupTime == null && nullToAbsent
+          ? const Value.absent()
+          : Value(lastCleanupTime),
+    );
+  }
+
+  factory ProfileDataCleanupStateData.fromJson(
+    Map<String, dynamic> json, {
+    ValueSerializer? serializer,
+  }) {
+    serializer ??= driftRuntimeOptions.defaultSerializer;
+    return ProfileDataCleanupStateData(
+      id: serializer.fromJson<int>(json['id']),
+      lastCleanupTime: serializer.fromJson<UtcDateTime?>(
+        json['lastCleanupTime'],
+      ),
+    );
+  }
+  @override
+  Map<String, dynamic> toJson({ValueSerializer? serializer}) {
+    serializer ??= driftRuntimeOptions.defaultSerializer;
+    return <String, dynamic>{
+      'id': serializer.toJson<int>(id),
+      'lastCleanupTime': serializer.toJson<UtcDateTime?>(lastCleanupTime),
+    };
+  }
+
+  ProfileDataCleanupStateData copyWith({
+    int? id,
+    Value<UtcDateTime?> lastCleanupTime = const Value.absent(),
+  }) => ProfileDataCleanupStateData(
+    id: id ?? this.id,
+    lastCleanupTime: lastCleanupTime.present
+        ? lastCleanupTime.value
+        : this.lastCleanupTime,
+  );
+  ProfileDataCleanupStateData copyWithCompanion(
+    ProfileDataCleanupStateCompanion data,
+  ) {
+    return ProfileDataCleanupStateData(
+      id: data.id.present ? data.id.value : this.id,
+      lastCleanupTime: data.lastCleanupTime.present
+          ? data.lastCleanupTime.value
+          : this.lastCleanupTime,
+    );
+  }
+
+  @override
+  String toString() {
+    return (StringBuffer('ProfileDataCleanupStateData(')
+          ..write('id: $id, ')
+          ..write('lastCleanupTime: $lastCleanupTime')
+          ..write(')'))
+        .toString();
+  }
+
+  @override
+  int get hashCode => Object.hash(id, lastCleanupTime);
+  @override
+  bool operator ==(Object other) =>
+      identical(this, other) ||
+      (other is ProfileDataCleanupStateData &&
+          other.id == this.id &&
+          other.lastCleanupTime == this.lastCleanupTime);
+}
+
+class ProfileDataCleanupStateCompanion
+    extends UpdateCompanion<ProfileDataCleanupStateData> {
+  final Value<int> id;
+  final Value<UtcDateTime?> lastCleanupTime;
+  const ProfileDataCleanupStateCompanion({
+    this.id = const Value.absent(),
+    this.lastCleanupTime = const Value.absent(),
+  });
+  ProfileDataCleanupStateCompanion.insert({
+    this.id = const Value.absent(),
+    this.lastCleanupTime = const Value.absent(),
+  });
+  static Insertable<ProfileDataCleanupStateData> custom({
+    Expression<int>? id,
+    Expression<int>? lastCleanupTime,
+  }) {
+    return RawValuesInsertable({
+      if (id != null) 'id': id,
+      if (lastCleanupTime != null) 'last_cleanup_time': lastCleanupTime,
+    });
+  }
+
+  ProfileDataCleanupStateCompanion copyWith({
+    Value<int>? id,
+    Value<UtcDateTime?>? lastCleanupTime,
+  }) {
+    return ProfileDataCleanupStateCompanion(
+      id: id ?? this.id,
+      lastCleanupTime: lastCleanupTime ?? this.lastCleanupTime,
+    );
+  }
+
+  @override
+  Map<String, Expression> toColumns(bool nullToAbsent) {
+    final map = <String, Expression>{};
+    if (id.present) {
+      map['id'] = Variable<int>(id.value);
+    }
+    if (lastCleanupTime.present) {
+      map['last_cleanup_time'] = Variable<int>(
+        $ProfileDataCleanupStateTable.$converterlastCleanupTime.toSql(
+          lastCleanupTime.value,
+        ),
+      );
+    }
+    return map;
+  }
+
+  @override
+  String toString() {
+    return (StringBuffer('ProfileDataCleanupStateCompanion(')
+          ..write('id: $id, ')
+          ..write('lastCleanupTime: $lastCleanupTime')
+          ..write(')'))
+        .toString();
+  }
+}
+
 class $AppNotificationSettingsTable extends schema.AppNotificationSettings
     with TableInfo<$AppNotificationSettingsTable, AppNotificationSetting> {
   @override
@@ -20606,6 +20835,8 @@ abstract class _$AccountDatabase extends GeneratedDatabase {
   late final $GridSettingsTable gridSettings = $GridSettingsTable(this);
   late final $ChatBackupReminderTable chatBackupReminder =
       $ChatBackupReminderTable(this);
+  late final $ProfileDataCleanupStateTable profileDataCleanupState =
+      $ProfileDataCleanupStateTable(this);
   late final $AppNotificationSettingsTable appNotificationSettings =
       $AppNotificationSettingsTable(this);
   late final $NewsTable news = $NewsTable(this);
@@ -20801,6 +21032,7 @@ abstract class _$AccountDatabase extends GeneratedDatabase {
     initialSetupProgress,
     gridSettings,
     chatBackupReminder,
+    profileDataCleanupState,
     appNotificationSettings,
     news,
     pushNotification,

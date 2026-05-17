@@ -17,14 +17,70 @@ part 'app.g.dart';
     schema.InitialSetupSkipped,
     schema.GridSettings,
     schema.ChatBackupReminder,
+    schema.ProfileDataCleanupState,
     schema.News,
     schema.PushNotification,
     schema.AppUpdateAvailableDialog,
     schema.ClientVersionInfo,
+    schema.Profile,
+    schema.ProfileExtra,
+    schema.ProfileContent,
   ],
 )
 class DaoWriteApp extends DatabaseAccessor<AccountDatabase> with _$DaoWriteAppMixin {
   DaoWriteApp(super.db);
+
+  static const _profileCleanupRunInterval = Duration(days: 1);
+  static const _unusedProfileThreshold = Duration(days: 90);
+
+  Future<int> cleanupUnusedProfileDataIfNeeded() async {
+    final now = UtcDateTime.now();
+    return await transaction(() async {
+      final state = await (select(
+        profileDataCleanupState,
+      )..where((t) => t.id.equals(SingleRowTable.ID.value))).getSingleOrNull();
+
+      final lastCleanupTime = state?.lastCleanupTime;
+      if (lastCleanupTime != null && now.difference(lastCleanupTime) < _profileCleanupRunInterval) {
+        return 0;
+      }
+
+      final staleBefore = now.substract(_unusedProfileThreshold);
+      final staleBeforeUnixEpochMilliseconds = staleBefore.toUnixEpochMilliseconds();
+      final staleProfileAccountIds =
+          await (select(profileExtra)..where(
+                (t) =>
+                    (t.profileDataRefreshTime.isNotNull() &
+                        t.profileDataRefreshTime.isSmallerOrEqualValue(
+                          staleBeforeUnixEpochMilliseconds,
+                        )) |
+                    (t.privateProfileErrorTime.isNotNull() &
+                        t.privateProfileErrorTime.isSmallerOrEqualValue(
+                          staleBeforeUnixEpochMilliseconds,
+                        )),
+              ))
+              .map((t) => t.accountId.aid)
+              .get();
+
+      if (staleProfileAccountIds.isNotEmpty) {
+        await (delete(profile)..where((t) => t.accountId.isIn(staleProfileAccountIds))).go();
+        await (delete(profileContent)..where((t) => t.accountId.isIn(staleProfileAccountIds))).go();
+
+        await (update(profileExtra)..where((t) => t.accountId.isIn(staleProfileAccountIds))).write(
+          const ProfileExtraCompanion(
+            profileDataRefreshTime: Value(null),
+            privateProfileErrorTime: Value(null),
+          ),
+        );
+      }
+
+      await into(profileDataCleanupState).insertOnConflictUpdate(
+        ProfileDataCleanupStateCompanion.insert(id: SingleRowTable.ID, lastCleanupTime: Value(now)),
+      );
+
+      return staleProfileAccountIds.length;
+    });
+  }
 
   Future<void> updateClientVersionInfo(api.ClientVersion value) async {
     final existingVersion = await (select(

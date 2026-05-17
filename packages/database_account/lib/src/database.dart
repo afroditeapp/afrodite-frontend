@@ -59,6 +59,7 @@ part 'database.g.dart';
     schema.InitialSetupProgress,
     schema.GridSettings,
     schema.ChatBackupReminder,
+    schema.ProfileDataCleanupState,
     schema.AppNotificationSettings,
     schema.News,
     schema.PushNotification,

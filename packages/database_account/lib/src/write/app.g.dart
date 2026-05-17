@@ -14,6 +14,8 @@ mixin _$DaoWriteAppMixin on DatabaseAccessor<AccountDatabase> {
   $GridSettingsTable get gridSettings => attachedDatabase.gridSettings;
   $ChatBackupReminderTable get chatBackupReminder =>
       attachedDatabase.chatBackupReminder;
+  $ProfileDataCleanupStateTable get profileDataCleanupState =>
+      attachedDatabase.profileDataCleanupState;
   $NewsTable get news => attachedDatabase.news;
   $PushNotificationTable get pushNotification =>
       attachedDatabase.pushNotification;
@@ -21,4 +23,7 @@ mixin _$DaoWriteAppMixin on DatabaseAccessor<AccountDatabase> {
       attachedDatabase.appUpdateAvailableDialog;
   $ClientVersionInfoTable get clientVersionInfo =>
       attachedDatabase.clientVersionInfo;
+  $ProfileTable get profile => attachedDatabase.profile;
+  $ProfileExtraTable get profileExtra => attachedDatabase.profileExtra;
+  $ProfileContentTable get profileContent => attachedDatabase.profileContent;
 }

@@ -49,6 +49,11 @@ class ChatBackupReminder extends SingleRowTable {
       integer().map(NullAwareTypeConverter.wrap(const UtcDateTimeConverter())).nullable()();
 }
 
+class ProfileDataCleanupState extends SingleRowTable {
+  IntColumn get lastCleanupTime =>
+      integer().map(NullAwareTypeConverter.wrap(const UtcDateTimeConverter())).nullable()();
+}
+
 class AppNotificationSettings extends SingleRowTable {
   BoolColumn get messages => boolean().nullable()();
   BoolColumn get likes => boolean().nullable()();
