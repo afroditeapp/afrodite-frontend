@@ -65,13 +65,7 @@ class DaoWriteApp extends DatabaseAccessor<AccountDatabase> with _$DaoWriteAppMi
       if (staleProfileAccountIds.isNotEmpty) {
         await (delete(profile)..where((t) => t.accountId.isIn(staleProfileAccountIds))).go();
         await (delete(profileContent)..where((t) => t.accountId.isIn(staleProfileAccountIds))).go();
-
-        await (update(profileExtra)..where((t) => t.accountId.isIn(staleProfileAccountIds))).write(
-          const ProfileExtraCompanion(
-            profileDataRefreshTime: Value(null),
-            privateProfileErrorTime: Value(null),
-          ),
-        );
+        await (delete(profileExtra)..where((t) => t.accountId.isIn(staleProfileAccountIds))).go();
       }
 
       await into(profileDataCleanupState).insertOnConflictUpdate(
