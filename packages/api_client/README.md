@@ -305,6 +305,7 @@ Class | Method | HTTP request | Description
  - [AccountSetup](doc//AccountSetup.md)
  - [AccountStateContainer](doc//AccountStateContainer.md)
  - [AccountSyncVersion](doc//AccountSyncVersion.md)
+ - [AccountVerificationErrorFlagsValue](doc//AccountVerificationErrorFlagsValue.md)
  - [AccountVerificationMethodsConfig](doc//AccountVerificationMethodsConfig.md)
  - [AccountVerificationQueueAdminItem](doc//AccountVerificationQueueAdminItem.md)
  - [AccountVerificationQueueItem](doc//AccountVerificationQueueItem.md)
@@ -396,6 +397,10 @@ Class | Method | HTTP request | Description
  - [DynamicClientFeaturesConfig](doc//DynamicClientFeaturesConfig.md)
  - [DynamicClientFeaturesConfigHash](doc//DynamicClientFeaturesConfigHash.md)
  - [DynamicServerConfig](doc//DynamicServerConfig.md)
+ - [EditVerificationProfileAgeRange](doc//EditVerificationProfileAgeRange.md)
+ - [EditVerificationProfileName](doc//EditVerificationProfileName.md)
+ - [EditVerificationSecurityContent](doc//EditVerificationSecurityContent.md)
+ - [EditVerificationValues](doc//EditVerificationValues.md)
  - [EmailAddressState](doc//EmailAddressState.md)
  - [EmailAddressStateAdmin](doc//EmailAddressStateAdmin.md)
  - [EmailLogin](doc//EmailLogin.md)
@@ -662,6 +667,7 @@ Class | Method | HTTP request | Description
  - [VapidPublicKey](doc//VapidPublicKey.md)
  - [VerificationAction](doc//VerificationAction.md)
  - [VerificationConfig](doc//VerificationConfig.md)
+ - [VerificationMethod](doc//VerificationMethod.md)
  - [VerificationMethodsConfig](doc//VerificationMethodsConfig.md)
 
 

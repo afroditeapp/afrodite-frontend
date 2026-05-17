@@ -14,6 +14,9 @@ class AccountVerificationQueueStatus {
   /// Returns a new [AccountVerificationQueueStatus] instance.
   AccountVerificationQueueStatus({
     this.queuePosition,
+    required this.verificationErrorFlags,
+    this.verificationMethod,
+    this.verificationUnixTime,
   });
 
   /// The first queue position is 1
@@ -21,17 +24,30 @@ class AccountVerificationQueueStatus {
   /// Minimum value: 0
   int? queuePosition;
 
+  /// Empty flags value means there are no known verification errors.
+  AccountVerificationErrorFlagsValue verificationErrorFlags;
+
+  VerificationMethod? verificationMethod;
+
+  UnixTime? verificationUnixTime;
+
   @override
   bool operator ==(Object other) => identical(this, other) || other is AccountVerificationQueueStatus &&
-    other.queuePosition == queuePosition;
+    other.queuePosition == queuePosition &&
+    other.verificationErrorFlags == verificationErrorFlags &&
+    other.verificationMethod == verificationMethod &&
+    other.verificationUnixTime == verificationUnixTime;
 
   @override
   int get hashCode =>
     // ignore: unnecessary_parenthesis
-    (queuePosition == null ? 0 : queuePosition!.hashCode);
+    (queuePosition == null ? 0 : queuePosition!.hashCode) +
+    (verificationErrorFlags.hashCode) +
+    (verificationMethod == null ? 0 : verificationMethod!.hashCode) +
+    (verificationUnixTime == null ? 0 : verificationUnixTime!.hashCode);
 
   @override
-  String toString() => 'AccountVerificationQueueStatus[queuePosition=$queuePosition]';
+  String toString() => 'AccountVerificationQueueStatus[queuePosition=$queuePosition, verificationErrorFlags=$verificationErrorFlags, verificationMethod=$verificationMethod, verificationUnixTime=$verificationUnixTime]';
 
   Map<String, dynamic> toJson() {
     final json = <String, dynamic>{};
@@ -39,6 +55,17 @@ class AccountVerificationQueueStatus {
       json[r'queue_position'] = this.queuePosition;
     } else {
       json[r'queue_position'] = null;
+    }
+      json[r'verification_error_flags'] = this.verificationErrorFlags;
+    if (this.verificationMethod != null) {
+      json[r'verification_method'] = this.verificationMethod;
+    } else {
+      json[r'verification_method'] = null;
+    }
+    if (this.verificationUnixTime != null) {
+      json[r'verification_unix_time'] = this.verificationUnixTime;
+    } else {
+      json[r'verification_unix_time'] = null;
     }
     return json;
   }
@@ -63,6 +90,9 @@ class AccountVerificationQueueStatus {
 
       return AccountVerificationQueueStatus(
         queuePosition: mapValueOfType<int>(json, r'queue_position'),
+        verificationErrorFlags: AccountVerificationErrorFlagsValue.fromJson(json[r'verification_error_flags'])!,
+        verificationMethod: VerificationMethod.fromJson(json[r'verification_method']),
+        verificationUnixTime: UnixTime.fromJson(json[r'verification_unix_time']),
       );
     }
     return null;
@@ -110,6 +140,7 @@ class AccountVerificationQueueStatus {
 
   /// The list of required keys that must be present in a JSON.
   static const requiredKeys = <String>{
+    'verification_error_flags',
   };
 }
 

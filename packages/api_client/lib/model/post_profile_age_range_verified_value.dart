@@ -14,10 +14,13 @@ class PostProfileAgeRangeVerifiedValue {
   /// Returns a new [PostProfileAgeRangeVerifiedValue] instance.
   PostProfileAgeRangeVerifiedValue({
     required this.accountId,
+    required this.currentProfileAge,
     this.value,
   });
 
   AccountId accountId;
+
+  int currentProfileAge;
 
   /// Bot sets automatic profile age range verification value. Human admin sets manual override value. Set to None to clear the currently applicable value.
   bool? value;
@@ -25,20 +28,23 @@ class PostProfileAgeRangeVerifiedValue {
   @override
   bool operator ==(Object other) => identical(this, other) || other is PostProfileAgeRangeVerifiedValue &&
     other.accountId == accountId &&
+    other.currentProfileAge == currentProfileAge &&
     other.value == value;
 
   @override
   int get hashCode =>
     // ignore: unnecessary_parenthesis
     (accountId.hashCode) +
+    (currentProfileAge.hashCode) +
     (value == null ? 0 : value!.hashCode);
 
   @override
-  String toString() => 'PostProfileAgeRangeVerifiedValue[accountId=$accountId, value=$value]';
+  String toString() => 'PostProfileAgeRangeVerifiedValue[accountId=$accountId, currentProfileAge=$currentProfileAge, value=$value]';
 
   Map<String, dynamic> toJson() {
     final json = <String, dynamic>{};
       json[r'account_id'] = this.accountId;
+      json[r'current_profile_age'] = this.currentProfileAge;
     if (this.value != null) {
       json[r'value'] = this.value;
     } else {
@@ -67,6 +73,7 @@ class PostProfileAgeRangeVerifiedValue {
 
       return PostProfileAgeRangeVerifiedValue(
         accountId: AccountId.fromJson(json[r'account_id'])!,
+        currentProfileAge: mapValueOfType<int>(json, r'current_profile_age')!,
         value: mapValueOfType<bool>(json, r'value'),
       );
     }
@@ -116,6 +123,7 @@ class PostProfileAgeRangeVerifiedValue {
   /// The list of required keys that must be present in a JSON.
   static const requiredKeys = <String>{
     'account_id',
+    'current_profile_age',
   };
 }
 

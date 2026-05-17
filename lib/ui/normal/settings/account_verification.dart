@@ -269,14 +269,14 @@ class _AccountVerificationSettingsScreenState extends State<AccountVerificationS
           leading: const Icon(Icons.task_alt),
           title: const Text('debug_accept'),
           enabled: !_actionInProgress && _hasVerificationScope(selectedScope),
-          onTap: () => _requestVerification("debug_accept", selectedScope),
+          onTap: () => _requestVerification(VerificationMethod.debugAccept, selectedScope),
         ),
       if (widget.methods.debugReject)
         ListTile(
           leading: const Icon(Icons.cancel_outlined),
           title: const Text('debug_reject'),
           enabled: !_actionInProgress && _hasVerificationScope(selectedScope),
-          onTap: () => _requestVerification("debug_reject", selectedScope),
+          onTap: () => _requestVerification(VerificationMethod.debugReject, selectedScope),
         ),
       if (widget.methods.eudi)
         ListTile(
@@ -383,7 +383,7 @@ class _AccountVerificationSettingsScreenState extends State<AccountVerificationS
   }
 
   Future<void> _requestVerification(
-    String verificationMethod,
+    VerificationMethod verificationMethod,
     AccountVerificationScope verificationScope,
   ) async {
     if (!_hasVerificationScope(verificationScope)) {

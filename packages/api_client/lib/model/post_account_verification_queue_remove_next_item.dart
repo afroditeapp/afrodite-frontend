@@ -14,25 +14,41 @@ class PostAccountVerificationQueueRemoveNextItem {
   /// Returns a new [PostAccountVerificationQueueRemoveNextItem] instance.
   PostAccountVerificationQueueRemoveNextItem({
     required this.accountId,
+    this.edit,
+    required this.verificationErrorFlags,
   });
 
   AccountId accountId;
 
+  EditVerificationValues? edit;
+
+  AccountVerificationErrorFlagsValue verificationErrorFlags;
+
   @override
   bool operator ==(Object other) => identical(this, other) || other is PostAccountVerificationQueueRemoveNextItem &&
-    other.accountId == accountId;
+    other.accountId == accountId &&
+    other.edit == edit &&
+    other.verificationErrorFlags == verificationErrorFlags;
 
   @override
   int get hashCode =>
     // ignore: unnecessary_parenthesis
-    (accountId.hashCode);
+    (accountId.hashCode) +
+    (edit == null ? 0 : edit!.hashCode) +
+    (verificationErrorFlags.hashCode);
 
   @override
-  String toString() => 'PostAccountVerificationQueueRemoveNextItem[accountId=$accountId]';
+  String toString() => 'PostAccountVerificationQueueRemoveNextItem[accountId=$accountId, edit=$edit, verificationErrorFlags=$verificationErrorFlags]';
 
   Map<String, dynamic> toJson() {
     final json = <String, dynamic>{};
       json[r'account_id'] = this.accountId;
+    if (this.edit != null) {
+      json[r'edit'] = this.edit;
+    } else {
+      json[r'edit'] = null;
+    }
+      json[r'verification_error_flags'] = this.verificationErrorFlags;
     return json;
   }
 
@@ -56,6 +72,8 @@ class PostAccountVerificationQueueRemoveNextItem {
 
       return PostAccountVerificationQueueRemoveNextItem(
         accountId: AccountId.fromJson(json[r'account_id'])!,
+        edit: EditVerificationValues.fromJson(json[r'edit']),
+        verificationErrorFlags: AccountVerificationErrorFlagsValue.fromJson(json[r'verification_error_flags'])!,
       );
     }
     return null;
@@ -104,6 +122,7 @@ class PostAccountVerificationQueueRemoveNextItem {
   /// The list of required keys that must be present in a JSON.
   static const requiredKeys = <String>{
     'account_id',
+    'verification_error_flags',
   };
 }
 

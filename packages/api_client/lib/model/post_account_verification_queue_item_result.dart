@@ -15,6 +15,7 @@ class PostAccountVerificationQueueItemResult {
   PostAccountVerificationQueueItemResult({
     this.error = false,
     this.errorAlreadyInQueue = false,
+    this.errorInitialSetupNotCompleted = false,
     this.errorQueueFull = false,
   });
 
@@ -22,12 +23,15 @@ class PostAccountVerificationQueueItemResult {
 
   bool errorAlreadyInQueue;
 
+  bool errorInitialSetupNotCompleted;
+
   bool errorQueueFull;
 
   @override
   bool operator ==(Object other) => identical(this, other) || other is PostAccountVerificationQueueItemResult &&
     other.error == error &&
     other.errorAlreadyInQueue == errorAlreadyInQueue &&
+    other.errorInitialSetupNotCompleted == errorInitialSetupNotCompleted &&
     other.errorQueueFull == errorQueueFull;
 
   @override
@@ -35,15 +39,17 @@ class PostAccountVerificationQueueItemResult {
     // ignore: unnecessary_parenthesis
     (error.hashCode) +
     (errorAlreadyInQueue.hashCode) +
+    (errorInitialSetupNotCompleted.hashCode) +
     (errorQueueFull.hashCode);
 
   @override
-  String toString() => 'PostAccountVerificationQueueItemResult[error=$error, errorAlreadyInQueue=$errorAlreadyInQueue, errorQueueFull=$errorQueueFull]';
+  String toString() => 'PostAccountVerificationQueueItemResult[error=$error, errorAlreadyInQueue=$errorAlreadyInQueue, errorInitialSetupNotCompleted=$errorInitialSetupNotCompleted, errorQueueFull=$errorQueueFull]';
 
   Map<String, dynamic> toJson() {
     final json = <String, dynamic>{};
       json[r'error'] = this.error;
       json[r'error_already_in_queue'] = this.errorAlreadyInQueue;
+      json[r'error_initial_setup_not_completed'] = this.errorInitialSetupNotCompleted;
       json[r'error_queue_full'] = this.errorQueueFull;
     return json;
   }
@@ -69,6 +75,7 @@ class PostAccountVerificationQueueItemResult {
       return PostAccountVerificationQueueItemResult(
         error: mapValueOfType<bool>(json, r'error') ?? false,
         errorAlreadyInQueue: mapValueOfType<bool>(json, r'error_already_in_queue') ?? false,
+        errorInitialSetupNotCompleted: mapValueOfType<bool>(json, r'error_initial_setup_not_completed') ?? false,
         errorQueueFull: mapValueOfType<bool>(json, r'error_queue_full') ?? false,
       );
     }

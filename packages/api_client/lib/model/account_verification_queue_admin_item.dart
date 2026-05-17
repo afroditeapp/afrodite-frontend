@@ -23,7 +23,7 @@ class AccountVerificationQueueAdminItem {
 
   String verificationData;
 
-  String verificationMethod;
+  VerificationMethod verificationMethod;
 
   AccountVerificationScope verificationScope;
 
@@ -75,7 +75,7 @@ class AccountVerificationQueueAdminItem {
       return AccountVerificationQueueAdminItem(
         accountId: AccountId.fromJson(json[r'account_id'])!,
         verificationData: mapValueOfType<String>(json, r'verification_data')!,
-        verificationMethod: mapValueOfType<String>(json, r'verification_method')!,
+        verificationMethod: VerificationMethod.fromJson(json[r'verification_method'])!,
         verificationScope: AccountVerificationScope.fromJson(json[r'verification_scope'])!,
       );
     }

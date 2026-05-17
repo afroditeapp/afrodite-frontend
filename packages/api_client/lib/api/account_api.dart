@@ -642,6 +642,8 @@ class AccountApi {
 
   /// Add account verification request to queue for current account.
   ///
+  /// Adding new request requires initial setup to be completed.
+  ///
   /// Note: This method returns the HTTP [Response].
   ///
   /// Parameters:
@@ -673,6 +675,8 @@ class AccountApi {
   }
 
   /// Add account verification request to queue for current account.
+  ///
+  /// Adding new request requires initial setup to be completed.
   ///
   /// Parameters:
   ///

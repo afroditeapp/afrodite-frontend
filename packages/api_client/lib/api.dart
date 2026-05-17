@@ -55,6 +55,7 @@ part 'model/account_registration_platforms.dart';
 part 'model/account_setup.dart';
 part 'model/account_state_container.dart';
 part 'model/account_sync_version.dart';
+part 'model/account_verification_error_flags_value.dart';
 part 'model/account_verification_methods_config.dart';
 part 'model/account_verification_queue_admin_item.dart';
 part 'model/account_verification_queue_item.dart';
@@ -146,6 +147,10 @@ part 'model/demo_account_token.dart';
 part 'model/dynamic_client_features_config.dart';
 part 'model/dynamic_client_features_config_hash.dart';
 part 'model/dynamic_server_config.dart';
+part 'model/edit_verification_profile_age_range.dart';
+part 'model/edit_verification_profile_name.dart';
+part 'model/edit_verification_security_content.dart';
+part 'model/edit_verification_values.dart';
 part 'model/email_address_state.dart';
 part 'model/email_address_state_admin.dart';
 part 'model/email_login.dart';
@@ -412,6 +417,7 @@ part 'model/update_report_result.dart';
 part 'model/vapid_public_key.dart';
 part 'model/verification_action.dart';
 part 'model/verification_config.dart';
+part 'model/verification_method.dart';
 part 'model/verification_methods_config.dart';
 
 

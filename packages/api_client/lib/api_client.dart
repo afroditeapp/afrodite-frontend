@@ -212,6 +212,8 @@ class ApiClient {
           return AccountStateContainer.fromJson(value);
         case 'AccountSyncVersion':
           return AccountSyncVersion.fromJson(value);
+        case 'AccountVerificationErrorFlagsValue':
+          return AccountVerificationErrorFlagsValue.fromJson(value);
         case 'AccountVerificationMethodsConfig':
           return AccountVerificationMethodsConfig.fromJson(value);
         case 'AccountVerificationQueueAdminItem':
@@ -394,6 +396,14 @@ class ApiClient {
           return DynamicClientFeaturesConfigHash.fromJson(value);
         case 'DynamicServerConfig':
           return DynamicServerConfig.fromJson(value);
+        case 'EditVerificationProfileAgeRange':
+          return EditVerificationProfileAgeRange.fromJson(value);
+        case 'EditVerificationProfileName':
+          return EditVerificationProfileName.fromJson(value);
+        case 'EditVerificationSecurityContent':
+          return EditVerificationSecurityContent.fromJson(value);
+        case 'EditVerificationValues':
+          return EditVerificationValues.fromJson(value);
         case 'EmailAddressState':
           return EmailAddressState.fromJson(value);
         case 'EmailAddressStateAdmin':
@@ -926,6 +936,8 @@ class ApiClient {
           return VerificationActionTypeTransformer().decode(value);
         case 'VerificationConfig':
           return VerificationConfig.fromJson(value);
+        case 'VerificationMethod':
+          return VerificationMethodTypeTransformer().decode(value);
         case 'VerificationMethodsConfig':
           return VerificationMethodsConfig.fromJson(value);
         default:

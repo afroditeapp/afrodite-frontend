@@ -10,15 +10,12 @@
 
 part of openapi.api;
 
-class PostProfileNameVerifiedValue {
-  /// Returns a new [PostProfileNameVerifiedValue] instance.
-  PostProfileNameVerifiedValue({
-    required this.accountId,
+class EditVerificationProfileName {
+  /// Returns a new [EditVerificationProfileName] instance.
+  EditVerificationProfileName({
     this.currentProfileName,
-    this.value,
+    this.verifiedValue,
   });
-
-  AccountId accountId;
 
   /// A string wrapper that ensures the string is not empty. This type is used for TEXT columns that should not allow empty strings. In the database, these columns are NULL when there is no value, and this type represents non-NULL values that must be non-empty.
   ///
@@ -29,45 +26,41 @@ class PostProfileNameVerifiedValue {
   ///
   String? currentProfileName;
 
-  /// Bot sets automatic profile name verification value. Human admin sets manual override value. Set to None to clear the currently applicable value.
-  bool? value;
+  bool? verifiedValue;
 
   @override
-  bool operator ==(Object other) => identical(this, other) || other is PostProfileNameVerifiedValue &&
-    other.accountId == accountId &&
+  bool operator ==(Object other) => identical(this, other) || other is EditVerificationProfileName &&
     other.currentProfileName == currentProfileName &&
-    other.value == value;
+    other.verifiedValue == verifiedValue;
 
   @override
   int get hashCode =>
     // ignore: unnecessary_parenthesis
-    (accountId.hashCode) +
     (currentProfileName == null ? 0 : currentProfileName!.hashCode) +
-    (value == null ? 0 : value!.hashCode);
+    (verifiedValue == null ? 0 : verifiedValue!.hashCode);
 
   @override
-  String toString() => 'PostProfileNameVerifiedValue[accountId=$accountId, currentProfileName=$currentProfileName, value=$value]';
+  String toString() => 'EditVerificationProfileName[currentProfileName=$currentProfileName, verifiedValue=$verifiedValue]';
 
   Map<String, dynamic> toJson() {
     final json = <String, dynamic>{};
-      json[r'account_id'] = this.accountId;
     if (this.currentProfileName != null) {
       json[r'current_profile_name'] = this.currentProfileName;
     } else {
       json[r'current_profile_name'] = null;
     }
-    if (this.value != null) {
-      json[r'value'] = this.value;
+    if (this.verifiedValue != null) {
+      json[r'verified_value'] = this.verifiedValue;
     } else {
-      json[r'value'] = null;
+      json[r'verified_value'] = null;
     }
     return json;
   }
 
-  /// Returns a new [PostProfileNameVerifiedValue] instance and imports its values from
+  /// Returns a new [EditVerificationProfileName] instance and imports its values from
   /// [value] if it's a [Map], null otherwise.
   // ignore: prefer_constructors_over_static_methods
-  static PostProfileNameVerifiedValue? fromJson(dynamic value) {
+  static EditVerificationProfileName? fromJson(dynamic value) {
     if (value is Map) {
       final json = value.cast<String, dynamic>();
 
@@ -76,26 +69,25 @@ class PostProfileNameVerifiedValue {
       // Note 2: this code is stripped in release mode!
       assert(() {
         requiredKeys.forEach((key) {
-          assert(json.containsKey(key), 'Required key "PostProfileNameVerifiedValue[$key]" is missing from JSON.');
-          assert(json[key] != null, 'Required key "PostProfileNameVerifiedValue[$key]" has a null value in JSON.');
+          assert(json.containsKey(key), 'Required key "EditVerificationProfileName[$key]" is missing from JSON.');
+          assert(json[key] != null, 'Required key "EditVerificationProfileName[$key]" has a null value in JSON.');
         });
         return true;
       }());
 
-      return PostProfileNameVerifiedValue(
-        accountId: AccountId.fromJson(json[r'account_id'])!,
+      return EditVerificationProfileName(
         currentProfileName: mapValueOfType<String>(json, r'current_profile_name'),
-        value: mapValueOfType<bool>(json, r'value'),
+        verifiedValue: mapValueOfType<bool>(json, r'verified_value'),
       );
     }
     return null;
   }
 
-  static List<PostProfileNameVerifiedValue> listFromJson(dynamic json, {bool growable = false,}) {
-    final result = <PostProfileNameVerifiedValue>[];
+  static List<EditVerificationProfileName> listFromJson(dynamic json, {bool growable = false,}) {
+    final result = <EditVerificationProfileName>[];
     if (json is List && json.isNotEmpty) {
       for (final row in json) {
-        final value = PostProfileNameVerifiedValue.fromJson(row);
+        final value = EditVerificationProfileName.fromJson(row);
         if (value != null) {
           result.add(value);
         }
@@ -104,12 +96,12 @@ class PostProfileNameVerifiedValue {
     return result.toList(growable: growable);
   }
 
-  static Map<String, PostProfileNameVerifiedValue> mapFromJson(dynamic json) {
-    final map = <String, PostProfileNameVerifiedValue>{};
+  static Map<String, EditVerificationProfileName> mapFromJson(dynamic json) {
+    final map = <String, EditVerificationProfileName>{};
     if (json is Map && json.isNotEmpty) {
       json = json.cast<String, dynamic>(); // ignore: parameter_assignments
       for (final entry in json.entries) {
-        final value = PostProfileNameVerifiedValue.fromJson(entry.value);
+        final value = EditVerificationProfileName.fromJson(entry.value);
         if (value != null) {
           map[entry.key] = value;
         }
@@ -118,14 +110,14 @@ class PostProfileNameVerifiedValue {
     return map;
   }
 
-  // maps a json object with a list of PostProfileNameVerifiedValue-objects as value to a dart map
-  static Map<String, List<PostProfileNameVerifiedValue>> mapListFromJson(dynamic json, {bool growable = false,}) {
-    final map = <String, List<PostProfileNameVerifiedValue>>{};
+  // maps a json object with a list of EditVerificationProfileName-objects as value to a dart map
+  static Map<String, List<EditVerificationProfileName>> mapListFromJson(dynamic json, {bool growable = false,}) {
+    final map = <String, List<EditVerificationProfileName>>{};
     if (json is Map && json.isNotEmpty) {
       // ignore: parameter_assignments
       json = json.cast<String, dynamic>();
       for (final entry in json.entries) {
-        map[entry.key] = PostProfileNameVerifiedValue.listFromJson(entry.value, growable: growable,);
+        map[entry.key] = EditVerificationProfileName.listFromJson(entry.value, growable: growable,);
       }
     }
     return map;
@@ -133,7 +125,6 @@ class PostProfileNameVerifiedValue {
 
   /// The list of required keys that must be present in a JSON.
   static const requiredKeys = <String>{
-    'account_id',
   };
 }
 

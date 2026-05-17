@@ -169,6 +169,9 @@ String parameterToString(dynamic value) {
   if (value is VerificationAction) {
     return VerificationActionTypeTransformer().encode(value).toString();
   }
+  if (value is VerificationMethod) {
+    return VerificationMethodTypeTransformer().encode(value).toString();
+  }
   return value.toString();
 }
 
