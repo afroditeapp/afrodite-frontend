@@ -9,7 +9,9 @@ import '../../schema.dart' as schema;
 
 part 'profile.g.dart';
 
-@DriftAccessor(tables: [schema.Profile, schema.ProfileExtra, schema.FavoriteProfiles])
+@DriftAccessor(
+  tables: [schema.Profile, schema.ProfileExtra, schema.FavoriteProfiles, schema.ReceivedLikesGrid],
+)
 class DaoWriteProfile extends DatabaseAccessor<AccountDatabase> with _$DaoWriteProfileMixin {
   DaoWriteProfile(super.db);
 
@@ -187,13 +189,13 @@ class DaoWriteProfile extends DatabaseAccessor<AccountDatabase> with _$DaoWriteP
     );
   }
 
-  Future<void> setReceivedLikeGridStatus(api.AccountId accountId, bool value) async {
-    await into(profileExtra).insertOnConflictUpdate(
-      ProfileExtraCompanion.insert(
-        accountId: accountId,
-        isInReceivedLikesGrid: _toGroupValue(value),
-      ),
-    );
+  Future<void> addToReceivedLikesGrid(api.AccountId accountId) async {
+    await transaction(() async {
+      final lowestUnusedId = await _nextReceivedLikesGridId();
+      await into(
+        receivedLikesGrid,
+      ).insert(ReceivedLikesGridCompanion.insert(id: Value(lowestUnusedId), accountId: accountId));
+    });
   }
 
   Future<void> replaceFavorites(List<api.AccountId> accounts) async {
@@ -206,21 +208,21 @@ class DaoWriteProfile extends DatabaseAccessor<AccountDatabase> with _$DaoWriteP
     });
   }
 
-  Future<void> setReceivedLikeGridStatusList(
-    List<api.AccountId>? accounts,
-    bool value, {
-    bool clear = false,
-  }) async {
-    await transaction(() async {
-      if (clear) {
-        await update(
-          profileExtra,
-        ).write(const ProfileExtraCompanion(isInReceivedLikesGrid: Value(null)));
-      }
-      for (final a in accounts ?? <api.AccountId>[]) {
-        await setReceivedLikeGridStatus(a, value);
-      }
-    });
+  Future<void> clearReceivedLikesGrid() async {
+    await delete(receivedLikesGrid).go();
+  }
+
+  Future<int> _nextReceivedLikesGridId() async {
+    final maxIdExpression = receivedLikesGrid.id.max();
+    final maxId = await (selectOnly(
+      receivedLikesGrid,
+    )..addColumns([maxIdExpression])).map((row) => row.read(maxIdExpression)).getSingle();
+
+    if (maxId == null || maxId < 0) {
+      return 0;
+    }
+
+    return maxId + 1;
   }
 
   Future<void> setProfileGridStatusList(

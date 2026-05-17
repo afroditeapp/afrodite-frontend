@@ -125,11 +125,17 @@ class ProfileExtra extends Table {
   // The time is the time when the profile was added to the group.
   IntColumn get isInProfileGrid =>
       integer().map(const NullAwareTypeConverter.wrap(UtcDateTimeConverter())).nullable()();
-  IntColumn get isInReceivedLikesGrid =>
-      integer().map(const NullAwareTypeConverter.wrap(UtcDateTimeConverter())).nullable()();
 
   @override
   Set<Column<Object>> get primaryKey => {accountId};
+}
+
+class ReceivedLikesGrid extends Table {
+  IntColumn get id => integer()();
+  TextColumn get accountId => text().map(const AccountIdConverter())();
+
+  @override
+  Set<Column<Object>> get primaryKey => {id};
 }
 
 class FavoriteProfiles extends Table {

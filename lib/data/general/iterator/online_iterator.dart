@@ -272,9 +272,7 @@ class ReceivedLikesOnlineIteratorIo extends OnlineIteratorIo {
   Future<Result<(), ()>> resetServerPaging() async {
     switch (await api.chat((api) => api.postResetReceivedLikesPaging())) {
       case Ok(:final v):
-        await db.accountAction(
-          (db) => db.profile.setReceivedLikeGridStatusList(null, false, clear: true),
-        );
+        await db.accountAction((db) => db.profile.clearReceivedLikesGrid());
         await db.accountAction((db) => db.common.updateReceivedLikesIteratorState(v.s));
         return const Ok(());
       case Err():
@@ -348,7 +346,7 @@ class ReceivedLikesOnlineIteratorIo extends OnlineIteratorIo {
   @override
   Future<void> setDbVisibility(AccountId id, bool visibility) async {
     await db.accountAction((db) => db.profile.setReceivedLikeStatus(id, true));
-    await db.accountAction((db) => db.profile.setReceivedLikeGridStatus(id, true));
+    await db.accountAction((db) => db.profile.addToReceivedLikesGrid(id));
   }
 }
 

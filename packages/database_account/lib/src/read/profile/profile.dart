@@ -11,7 +11,9 @@ import '../../schema.dart' as schema;
 
 part 'profile.g.dart';
 
-@DriftAccessor(tables: [schema.Profile, schema.ProfileExtra, schema.FavoriteProfiles])
+@DriftAccessor(
+  tables: [schema.Profile, schema.ProfileExtra, schema.FavoriteProfiles, schema.ReceivedLikesGrid],
+)
 class DaoReadProfile extends DatabaseAccessor<AccountDatabase> with _$DaoReadProfileMixin {
   DaoReadProfile(super.db);
 
@@ -158,9 +160,6 @@ class DaoReadProfile extends DatabaseAccessor<AccountDatabase> with _$DaoReadPro
   Future<bool> isInProfileGrid(api.AccountId accountId) =>
       _existenceCheck(accountId, (t) => t.isInProfileGrid.isNotNull());
 
-  Future<bool> isInReceivedLikesGrid(api.AccountId accountId) =>
-      _existenceCheck(accountId, (t) => t.isInReceivedLikesGrid.isNotNull());
-
   Future<List<api.AccountId>> getFavoritesList(int startIndex, int limit) =>
       (select(favoriteProfiles)
             ..orderBy([
@@ -175,7 +174,11 @@ class DaoReadProfile extends DatabaseAccessor<AccountDatabase> with _$DaoReadPro
       _getProfilesList(startIndex, limit, (t) => t.isInProfileGrid);
 
   Future<List<api.AccountId>> getReceivedLikesGridList(int startIndex, int limit) =>
-      _getProfilesList(startIndex, limit, (t) => t.isInReceivedLikesGrid);
+      (select(receivedLikesGrid)
+            ..orderBy([(t) => OrderingTerm(expression: t.id, mode: OrderingMode.asc)])
+            ..limit(limit, offset: startIndex))
+          .map((t) => t.accountId)
+          .get();
 
   Future<List<api.AccountId>> _getProfilesList(
     int? startIndex,

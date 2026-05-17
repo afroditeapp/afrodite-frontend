@@ -16150,25 +16150,12 @@ class $ProfileExtraTable extends schema.ProfileExtra
     requiredDuringInsert: false,
   ).withConverter<UtcDateTime?>($ProfileExtraTable.$converterisInProfileGrid);
   @override
-  late final GeneratedColumnWithTypeConverter<UtcDateTime?, int>
-  isInReceivedLikesGrid =
-      GeneratedColumn<int>(
-        'is_in_received_likes_grid',
-        aliasedName,
-        true,
-        type: DriftSqlType.int,
-        requiredDuringInsert: false,
-      ).withConverter<UtcDateTime?>(
-        $ProfileExtraTable.$converterisInReceivedLikesGrid,
-      );
-  @override
   List<GeneratedColumn> get $columns => [
     accountId,
     profileDataRefreshTime,
     privateProfileErrorTime,
     localAccountInteractionState,
     isInProfileGrid,
-    isInReceivedLikesGrid,
   ];
   @override
   String get aliasedName => _alias ?? actualTableName;
@@ -16217,13 +16204,6 @@ class $ProfileExtraTable extends schema.ProfileExtra
           data['${effectivePrefix}is_in_profile_grid'],
         ),
       ),
-      isInReceivedLikesGrid: $ProfileExtraTable.$converterisInReceivedLikesGrid
-          .fromSql(
-            attachedDatabase.typeMapping.read(
-              DriftSqlType.int,
-              data['${effectivePrefix}is_in_received_likes_grid'],
-            ),
-          ),
     );
   }
 
@@ -16244,8 +16224,6 @@ class $ProfileExtraTable extends schema.ProfileExtra
   );
   static TypeConverter<UtcDateTime?, int?> $converterisInProfileGrid =
       const NullAwareTypeConverter.wrap(UtcDateTimeConverter());
-  static TypeConverter<UtcDateTime?, int?> $converterisInReceivedLikesGrid =
-      const NullAwareTypeConverter.wrap(UtcDateTimeConverter());
 }
 
 class ProfileExtraData extends DataClass
@@ -16255,14 +16233,12 @@ class ProfileExtraData extends DataClass
   final UtcDateTime? privateProfileErrorTime;
   final LocalAccountInteractionState? localAccountInteractionState;
   final UtcDateTime? isInProfileGrid;
-  final UtcDateTime? isInReceivedLikesGrid;
   const ProfileExtraData({
     required this.accountId,
     this.profileDataRefreshTime,
     this.privateProfileErrorTime,
     this.localAccountInteractionState,
     this.isInProfileGrid,
-    this.isInReceivedLikesGrid,
   });
   @override
   Map<String, Expression> toColumns(bool nullToAbsent) {
@@ -16298,13 +16274,6 @@ class ProfileExtraData extends DataClass
         $ProfileExtraTable.$converterisInProfileGrid.toSql(isInProfileGrid),
       );
     }
-    if (!nullToAbsent || isInReceivedLikesGrid != null) {
-      map['is_in_received_likes_grid'] = Variable<int>(
-        $ProfileExtraTable.$converterisInReceivedLikesGrid.toSql(
-          isInReceivedLikesGrid,
-        ),
-      );
-    }
     return map;
   }
 
@@ -16324,9 +16293,6 @@ class ProfileExtraData extends DataClass
       isInProfileGrid: isInProfileGrid == null && nullToAbsent
           ? const Value.absent()
           : Value(isInProfileGrid),
-      isInReceivedLikesGrid: isInReceivedLikesGrid == null && nullToAbsent
-          ? const Value.absent()
-          : Value(isInReceivedLikesGrid),
     );
   }
 
@@ -16350,9 +16316,6 @@ class ProfileExtraData extends DataClass
       isInProfileGrid: serializer.fromJson<UtcDateTime?>(
         json['isInProfileGrid'],
       ),
-      isInReceivedLikesGrid: serializer.fromJson<UtcDateTime?>(
-        json['isInReceivedLikesGrid'],
-      ),
     );
   }
   @override
@@ -16369,9 +16332,6 @@ class ProfileExtraData extends DataClass
       'localAccountInteractionState': serializer
           .toJson<LocalAccountInteractionState?>(localAccountInteractionState),
       'isInProfileGrid': serializer.toJson<UtcDateTime?>(isInProfileGrid),
-      'isInReceivedLikesGrid': serializer.toJson<UtcDateTime?>(
-        isInReceivedLikesGrid,
-      ),
     };
   }
 
@@ -16382,7 +16342,6 @@ class ProfileExtraData extends DataClass
     Value<LocalAccountInteractionState?> localAccountInteractionState =
         const Value.absent(),
     Value<UtcDateTime?> isInProfileGrid = const Value.absent(),
-    Value<UtcDateTime?> isInReceivedLikesGrid = const Value.absent(),
   }) => ProfileExtraData(
     accountId: accountId ?? this.accountId,
     profileDataRefreshTime: profileDataRefreshTime.present
@@ -16397,9 +16356,6 @@ class ProfileExtraData extends DataClass
     isInProfileGrid: isInProfileGrid.present
         ? isInProfileGrid.value
         : this.isInProfileGrid,
-    isInReceivedLikesGrid: isInReceivedLikesGrid.present
-        ? isInReceivedLikesGrid.value
-        : this.isInReceivedLikesGrid,
   );
   ProfileExtraData copyWithCompanion(ProfileExtraCompanion data) {
     return ProfileExtraData(
@@ -16416,9 +16372,6 @@ class ProfileExtraData extends DataClass
       isInProfileGrid: data.isInProfileGrid.present
           ? data.isInProfileGrid.value
           : this.isInProfileGrid,
-      isInReceivedLikesGrid: data.isInReceivedLikesGrid.present
-          ? data.isInReceivedLikesGrid.value
-          : this.isInReceivedLikesGrid,
     );
   }
 
@@ -16431,8 +16384,7 @@ class ProfileExtraData extends DataClass
           ..write(
             'localAccountInteractionState: $localAccountInteractionState, ',
           )
-          ..write('isInProfileGrid: $isInProfileGrid, ')
-          ..write('isInReceivedLikesGrid: $isInReceivedLikesGrid')
+          ..write('isInProfileGrid: $isInProfileGrid')
           ..write(')'))
         .toString();
   }
@@ -16444,7 +16396,6 @@ class ProfileExtraData extends DataClass
     privateProfileErrorTime,
     localAccountInteractionState,
     isInProfileGrid,
-    isInReceivedLikesGrid,
   );
   @override
   bool operator ==(Object other) =>
@@ -16455,8 +16406,7 @@ class ProfileExtraData extends DataClass
           other.privateProfileErrorTime == this.privateProfileErrorTime &&
           other.localAccountInteractionState ==
               this.localAccountInteractionState &&
-          other.isInProfileGrid == this.isInProfileGrid &&
-          other.isInReceivedLikesGrid == this.isInReceivedLikesGrid);
+          other.isInProfileGrid == this.isInProfileGrid);
 }
 
 class ProfileExtraCompanion extends UpdateCompanion<ProfileExtraData> {
@@ -16465,7 +16415,6 @@ class ProfileExtraCompanion extends UpdateCompanion<ProfileExtraData> {
   final Value<UtcDateTime?> privateProfileErrorTime;
   final Value<LocalAccountInteractionState?> localAccountInteractionState;
   final Value<UtcDateTime?> isInProfileGrid;
-  final Value<UtcDateTime?> isInReceivedLikesGrid;
   final Value<int> rowid;
   const ProfileExtraCompanion({
     this.accountId = const Value.absent(),
@@ -16473,7 +16422,6 @@ class ProfileExtraCompanion extends UpdateCompanion<ProfileExtraData> {
     this.privateProfileErrorTime = const Value.absent(),
     this.localAccountInteractionState = const Value.absent(),
     this.isInProfileGrid = const Value.absent(),
-    this.isInReceivedLikesGrid = const Value.absent(),
     this.rowid = const Value.absent(),
   });
   ProfileExtraCompanion.insert({
@@ -16482,7 +16430,6 @@ class ProfileExtraCompanion extends UpdateCompanion<ProfileExtraData> {
     this.privateProfileErrorTime = const Value.absent(),
     this.localAccountInteractionState = const Value.absent(),
     this.isInProfileGrid = const Value.absent(),
-    this.isInReceivedLikesGrid = const Value.absent(),
     this.rowid = const Value.absent(),
   }) : accountId = Value(accountId);
   static Insertable<ProfileExtraData> custom({
@@ -16491,7 +16438,6 @@ class ProfileExtraCompanion extends UpdateCompanion<ProfileExtraData> {
     Expression<int>? privateProfileErrorTime,
     Expression<int>? localAccountInteractionState,
     Expression<int>? isInProfileGrid,
-    Expression<int>? isInReceivedLikesGrid,
     Expression<int>? rowid,
   }) {
     return RawValuesInsertable({
@@ -16503,8 +16449,6 @@ class ProfileExtraCompanion extends UpdateCompanion<ProfileExtraData> {
       if (localAccountInteractionState != null)
         'local_account_interaction_state': localAccountInteractionState,
       if (isInProfileGrid != null) 'is_in_profile_grid': isInProfileGrid,
-      if (isInReceivedLikesGrid != null)
-        'is_in_received_likes_grid': isInReceivedLikesGrid,
       if (rowid != null) 'rowid': rowid,
     });
   }
@@ -16515,7 +16459,6 @@ class ProfileExtraCompanion extends UpdateCompanion<ProfileExtraData> {
     Value<UtcDateTime?>? privateProfileErrorTime,
     Value<LocalAccountInteractionState?>? localAccountInteractionState,
     Value<UtcDateTime?>? isInProfileGrid,
-    Value<UtcDateTime?>? isInReceivedLikesGrid,
     Value<int>? rowid,
   }) {
     return ProfileExtraCompanion(
@@ -16527,8 +16470,6 @@ class ProfileExtraCompanion extends UpdateCompanion<ProfileExtraData> {
       localAccountInteractionState:
           localAccountInteractionState ?? this.localAccountInteractionState,
       isInProfileGrid: isInProfileGrid ?? this.isInProfileGrid,
-      isInReceivedLikesGrid:
-          isInReceivedLikesGrid ?? this.isInReceivedLikesGrid,
       rowid: rowid ?? this.rowid,
     );
   }
@@ -16569,13 +16510,6 @@ class ProfileExtraCompanion extends UpdateCompanion<ProfileExtraData> {
         ),
       );
     }
-    if (isInReceivedLikesGrid.present) {
-      map['is_in_received_likes_grid'] = Variable<int>(
-        $ProfileExtraTable.$converterisInReceivedLikesGrid.toSql(
-          isInReceivedLikesGrid.value,
-        ),
-      );
-    }
     if (rowid.present) {
       map['rowid'] = Variable<int>(rowid.value);
     }
@@ -16592,8 +16526,209 @@ class ProfileExtraCompanion extends UpdateCompanion<ProfileExtraData> {
             'localAccountInteractionState: $localAccountInteractionState, ',
           )
           ..write('isInProfileGrid: $isInProfileGrid, ')
-          ..write('isInReceivedLikesGrid: $isInReceivedLikesGrid, ')
           ..write('rowid: $rowid')
+          ..write(')'))
+        .toString();
+  }
+}
+
+class $ReceivedLikesGridTable extends schema.ReceivedLikesGrid
+    with TableInfo<$ReceivedLikesGridTable, ReceivedLikesGridData> {
+  @override
+  final GeneratedDatabase attachedDatabase;
+  final String? _alias;
+  $ReceivedLikesGridTable(this.attachedDatabase, [this._alias]);
+  static const VerificationMeta _idMeta = const VerificationMeta('id');
+  @override
+  late final GeneratedColumn<int> id = GeneratedColumn<int>(
+    'id',
+    aliasedName,
+    false,
+    type: DriftSqlType.int,
+    requiredDuringInsert: false,
+  );
+  @override
+  late final GeneratedColumnWithTypeConverter<AccountId, String> accountId =
+      GeneratedColumn<String>(
+        'account_id',
+        aliasedName,
+        false,
+        type: DriftSqlType.string,
+        requiredDuringInsert: true,
+      ).withConverter<AccountId>($ReceivedLikesGridTable.$converteraccountId);
+  @override
+  List<GeneratedColumn> get $columns => [id, accountId];
+  @override
+  String get aliasedName => _alias ?? actualTableName;
+  @override
+  String get actualTableName => $name;
+  static const String $name = 'received_likes_grid';
+  @override
+  VerificationContext validateIntegrity(
+    Insertable<ReceivedLikesGridData> instance, {
+    bool isInserting = false,
+  }) {
+    final context = VerificationContext();
+    final data = instance.toColumns(true);
+    if (data.containsKey('id')) {
+      context.handle(_idMeta, id.isAcceptableOrUnknown(data['id']!, _idMeta));
+    }
+    return context;
+  }
+
+  @override
+  Set<GeneratedColumn> get $primaryKey => {id};
+  @override
+  ReceivedLikesGridData map(Map<String, dynamic> data, {String? tablePrefix}) {
+    final effectivePrefix = tablePrefix != null ? '$tablePrefix.' : '';
+    return ReceivedLikesGridData(
+      id: attachedDatabase.typeMapping.read(
+        DriftSqlType.int,
+        data['${effectivePrefix}id'],
+      )!,
+      accountId: $ReceivedLikesGridTable.$converteraccountId.fromSql(
+        attachedDatabase.typeMapping.read(
+          DriftSqlType.string,
+          data['${effectivePrefix}account_id'],
+        )!,
+      ),
+    );
+  }
+
+  @override
+  $ReceivedLikesGridTable createAlias(String alias) {
+    return $ReceivedLikesGridTable(attachedDatabase, alias);
+  }
+
+  static TypeConverter<AccountId, String> $converteraccountId =
+      const AccountIdConverter();
+}
+
+class ReceivedLikesGridData extends DataClass
+    implements Insertable<ReceivedLikesGridData> {
+  final int id;
+  final AccountId accountId;
+  const ReceivedLikesGridData({required this.id, required this.accountId});
+  @override
+  Map<String, Expression> toColumns(bool nullToAbsent) {
+    final map = <String, Expression>{};
+    map['id'] = Variable<int>(id);
+    {
+      map['account_id'] = Variable<String>(
+        $ReceivedLikesGridTable.$converteraccountId.toSql(accountId),
+      );
+    }
+    return map;
+  }
+
+  ReceivedLikesGridCompanion toCompanion(bool nullToAbsent) {
+    return ReceivedLikesGridCompanion(
+      id: Value(id),
+      accountId: Value(accountId),
+    );
+  }
+
+  factory ReceivedLikesGridData.fromJson(
+    Map<String, dynamic> json, {
+    ValueSerializer? serializer,
+  }) {
+    serializer ??= driftRuntimeOptions.defaultSerializer;
+    return ReceivedLikesGridData(
+      id: serializer.fromJson<int>(json['id']),
+      accountId: serializer.fromJson<AccountId>(json['accountId']),
+    );
+  }
+  @override
+  Map<String, dynamic> toJson({ValueSerializer? serializer}) {
+    serializer ??= driftRuntimeOptions.defaultSerializer;
+    return <String, dynamic>{
+      'id': serializer.toJson<int>(id),
+      'accountId': serializer.toJson<AccountId>(accountId),
+    };
+  }
+
+  ReceivedLikesGridData copyWith({int? id, AccountId? accountId}) =>
+      ReceivedLikesGridData(
+        id: id ?? this.id,
+        accountId: accountId ?? this.accountId,
+      );
+  ReceivedLikesGridData copyWithCompanion(ReceivedLikesGridCompanion data) {
+    return ReceivedLikesGridData(
+      id: data.id.present ? data.id.value : this.id,
+      accountId: data.accountId.present ? data.accountId.value : this.accountId,
+    );
+  }
+
+  @override
+  String toString() {
+    return (StringBuffer('ReceivedLikesGridData(')
+          ..write('id: $id, ')
+          ..write('accountId: $accountId')
+          ..write(')'))
+        .toString();
+  }
+
+  @override
+  int get hashCode => Object.hash(id, accountId);
+  @override
+  bool operator ==(Object other) =>
+      identical(this, other) ||
+      (other is ReceivedLikesGridData &&
+          other.id == this.id &&
+          other.accountId == this.accountId);
+}
+
+class ReceivedLikesGridCompanion
+    extends UpdateCompanion<ReceivedLikesGridData> {
+  final Value<int> id;
+  final Value<AccountId> accountId;
+  const ReceivedLikesGridCompanion({
+    this.id = const Value.absent(),
+    this.accountId = const Value.absent(),
+  });
+  ReceivedLikesGridCompanion.insert({
+    this.id = const Value.absent(),
+    required AccountId accountId,
+  }) : accountId = Value(accountId);
+  static Insertable<ReceivedLikesGridData> custom({
+    Expression<int>? id,
+    Expression<String>? accountId,
+  }) {
+    return RawValuesInsertable({
+      if (id != null) 'id': id,
+      if (accountId != null) 'account_id': accountId,
+    });
+  }
+
+  ReceivedLikesGridCompanion copyWith({
+    Value<int>? id,
+    Value<AccountId>? accountId,
+  }) {
+    return ReceivedLikesGridCompanion(
+      id: id ?? this.id,
+      accountId: accountId ?? this.accountId,
+    );
+  }
+
+  @override
+  Map<String, Expression> toColumns(bool nullToAbsent) {
+    final map = <String, Expression>{};
+    if (id.present) {
+      map['id'] = Variable<int>(id.value);
+    }
+    if (accountId.present) {
+      map['account_id'] = Variable<String>(
+        $ReceivedLikesGridTable.$converteraccountId.toSql(accountId.value),
+      );
+    }
+    return map;
+  }
+
+  @override
+  String toString() {
+    return (StringBuffer('ReceivedLikesGridCompanion(')
+          ..write('id: $id, ')
+          ..write('accountId: $accountId')
           ..write(')'))
         .toString();
   }
@@ -20761,6 +20896,8 @@ abstract class _$AccountDatabase extends GeneratedDatabase {
   late final $InitialProfileAgeTable initialProfileAge =
       $InitialProfileAgeTable(this);
   late final $ProfileExtraTable profileExtra = $ProfileExtraTable(this);
+  late final $ReceivedLikesGridTable receivedLikesGrid =
+      $ReceivedLikesGridTable(this);
   late final $ProfileLocationTable profileLocation = $ProfileLocationTable(
     this,
   );
@@ -20934,6 +21071,7 @@ abstract class _$AccountDatabase extends GeneratedDatabase {
     profileFilters,
     initialProfileAge,
     profileExtra,
+    receivedLikesGrid,
     profileLocation,
     favoriteProfiles,
     automaticProfileSearchSettings,
