@@ -161,9 +161,6 @@ class DaoReadProfile extends DatabaseAccessor<AccountDatabase> with _$DaoReadPro
   Future<bool> isInReceivedLikesGrid(api.AccountId accountId) =>
       _existenceCheck(accountId, (t) => t.isInReceivedLikesGrid.isNotNull());
 
-  Future<bool> isInMatchesGrid(api.AccountId accountId) =>
-      _existenceCheck(accountId, (t) => t.isInMatchesGrid.isNotNull());
-
   Future<List<api.AccountId>> getFavoritesList(int startIndex, int limit) =>
       (select(favoriteProfiles)
             ..orderBy([
@@ -182,9 +179,6 @@ class DaoReadProfile extends DatabaseAccessor<AccountDatabase> with _$DaoReadPro
 
   Future<List<api.AccountId>> getReceivedLikesGridList(int startIndex, int limit) =>
       _getProfilesList(startIndex, limit, (t) => t.isInReceivedLikesGrid);
-
-  Future<List<api.AccountId>> getMatchesGridList(int startIndex, int limit) =>
-      _getProfilesList(startIndex, limit, (t) => t.isInMatchesGrid);
 
   Future<List<api.AccountId>> _getProfilesList(
     int? startIndex,

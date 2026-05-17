@@ -205,12 +205,6 @@ class DaoWriteProfile extends DatabaseAccessor<AccountDatabase> with _$DaoWriteP
     );
   }
 
-  Future<void> setMatchesGridStatus(api.AccountId accountId, bool value) async {
-    await into(profileExtra).insertOnConflictUpdate(
-      ProfileExtraCompanion.insert(accountId: accountId, isInMatchesGrid: _toGroupValue(value)),
-    );
-  }
-
   Future<void> replaceFavorites(List<api.AccountId> accounts) async {
     await transaction(() async {
       await delete(favoriteProfiles).go();
@@ -234,21 +228,6 @@ class DaoWriteProfile extends DatabaseAccessor<AccountDatabase> with _$DaoWriteP
       }
       for (final a in accounts ?? <api.AccountId>[]) {
         await setReceivedLikeGridStatus(a, value);
-      }
-    });
-  }
-
-  Future<void> setMatchesGridStatusList(
-    List<api.AccountId>? accounts,
-    bool value, {
-    bool clear = false,
-  }) async {
-    await transaction(() async {
-      if (clear) {
-        await update(profileExtra).write(const ProfileExtraCompanion(isInMatchesGrid: Value(null)));
-      }
-      for (final a in accounts ?? <api.AccountId>[]) {
-        await setMatchesGridStatus(a, value);
       }
     });
   }

@@ -4,7 +4,6 @@ import 'package:app/data/profile/automatic_profile_search/automatic_profile_sear
 import 'package:logging/logging.dart';
 import 'package:openapi/api.dart';
 import 'package:app/api/server_connection_manager.dart';
-import 'package:app/data/chat/matches_database_iterator.dart';
 import 'package:app/data/chat/received_likes_database_iterator.dart';
 import 'package:app/data/media_repository.dart';
 import 'package:app/data/profile/profile_downloader.dart';
@@ -359,31 +358,23 @@ class ReceivedLikesOnlineIteratorIo extends OnlineIteratorIo {
 class MatchesOnlineIteratorIo extends OnlineIteratorIo {
   final AccountDatabaseManager db;
   final ApiManager api;
-  IteratorType? iteratorValue;
   MatchesIteratorState? currentState;
 
   MatchesOnlineIteratorIo(this.db, this.api);
 
   @override
-  IteratorType? get databaseIterator => iteratorValue;
+  IteratorType? get databaseIterator => null;
 
   @override
-  void resetDatabaseIterator() {
-    iteratorValue = MatchesDatabaseIterator(db: db);
-  }
+  void resetDatabaseIterator() {}
 
   @override
-  void setDatabaseIteratorToNull() {
-    iteratorValue = null;
-  }
+  void setDatabaseIteratorToNull() {}
 
   @override
   Future<Result<(), ()>> resetServerPaging() async {
     switch (await api.chat((api) => api.getInitialMatchesIteratorState())) {
       case Ok(:final v):
-        await db.accountAction(
-          (db) => db.profile.setMatchesGridStatusList(null, false, clear: true),
-        );
         currentState = v;
         return const Ok(());
       case Err():
@@ -415,7 +406,6 @@ class MatchesOnlineIteratorIo extends OnlineIteratorIo {
   @override
   Future<void> setDbVisibility(AccountId id, bool visibility) async {
     await db.accountAction((db) => db.profile.setMatchStatus(id, true));
-    await db.accountAction((db) => db.profile.setMatchesGridStatus(id, true));
   }
 }
 

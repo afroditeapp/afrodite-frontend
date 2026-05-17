@@ -129,8 +129,6 @@ class ProfileExtra extends Table {
       integer().map(const NullAwareTypeConverter.wrap(UtcDateTimeConverter())).nullable()();
   IntColumn get isInReceivedLikesGrid =>
       integer().map(const NullAwareTypeConverter.wrap(UtcDateTimeConverter())).nullable()();
-  IntColumn get isInMatchesGrid =>
-      integer().map(const NullAwareTypeConverter.wrap(UtcDateTimeConverter())).nullable()();
 
   @override
   Set<Column<Object>> get primaryKey => {accountId};

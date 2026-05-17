@@ -16174,15 +16174,6 @@ class $ProfileExtraTable extends schema.ProfileExtra
         $ProfileExtraTable.$converterisInReceivedLikesGrid,
       );
   @override
-  late final GeneratedColumnWithTypeConverter<UtcDateTime?, int>
-  isInMatchesGrid = GeneratedColumn<int>(
-    'is_in_matches_grid',
-    aliasedName,
-    true,
-    type: DriftSqlType.int,
-    requiredDuringInsert: false,
-  ).withConverter<UtcDateTime?>($ProfileExtraTable.$converterisInMatchesGrid);
-  @override
   List<GeneratedColumn> get $columns => [
     accountId,
     profileDataRefreshTime,
@@ -16191,7 +16182,6 @@ class $ProfileExtraTable extends schema.ProfileExtra
     isInProfileGrid,
     isInAutomaticProfileSearchGrid,
     isInReceivedLikesGrid,
-    isInMatchesGrid,
   ];
   @override
   String get aliasedName => _alias ?? actualTableName;
@@ -16255,12 +16245,6 @@ class $ProfileExtraTable extends schema.ProfileExtra
               data['${effectivePrefix}is_in_received_likes_grid'],
             ),
           ),
-      isInMatchesGrid: $ProfileExtraTable.$converterisInMatchesGrid.fromSql(
-        attachedDatabase.typeMapping.read(
-          DriftSqlType.int,
-          data['${effectivePrefix}is_in_matches_grid'],
-        ),
-      ),
     );
   }
 
@@ -16287,8 +16271,6 @@ class $ProfileExtraTable extends schema.ProfileExtra
   );
   static TypeConverter<UtcDateTime?, int?> $converterisInReceivedLikesGrid =
       const NullAwareTypeConverter.wrap(UtcDateTimeConverter());
-  static TypeConverter<UtcDateTime?, int?> $converterisInMatchesGrid =
-      const NullAwareTypeConverter.wrap(UtcDateTimeConverter());
 }
 
 class ProfileExtraData extends DataClass
@@ -16300,7 +16282,6 @@ class ProfileExtraData extends DataClass
   final UtcDateTime? isInProfileGrid;
   final UtcDateTime? isInAutomaticProfileSearchGrid;
   final UtcDateTime? isInReceivedLikesGrid;
-  final UtcDateTime? isInMatchesGrid;
   const ProfileExtraData({
     required this.accountId,
     this.profileDataRefreshTime,
@@ -16309,7 +16290,6 @@ class ProfileExtraData extends DataClass
     this.isInProfileGrid,
     this.isInAutomaticProfileSearchGrid,
     this.isInReceivedLikesGrid,
-    this.isInMatchesGrid,
   });
   @override
   Map<String, Expression> toColumns(bool nullToAbsent) {
@@ -16359,11 +16339,6 @@ class ProfileExtraData extends DataClass
         ),
       );
     }
-    if (!nullToAbsent || isInMatchesGrid != null) {
-      map['is_in_matches_grid'] = Variable<int>(
-        $ProfileExtraTable.$converterisInMatchesGrid.toSql(isInMatchesGrid),
-      );
-    }
     return map;
   }
 
@@ -16390,9 +16365,6 @@ class ProfileExtraData extends DataClass
       isInReceivedLikesGrid: isInReceivedLikesGrid == null && nullToAbsent
           ? const Value.absent()
           : Value(isInReceivedLikesGrid),
-      isInMatchesGrid: isInMatchesGrid == null && nullToAbsent
-          ? const Value.absent()
-          : Value(isInMatchesGrid),
     );
   }
 
@@ -16422,9 +16394,6 @@ class ProfileExtraData extends DataClass
       isInReceivedLikesGrid: serializer.fromJson<UtcDateTime?>(
         json['isInReceivedLikesGrid'],
       ),
-      isInMatchesGrid: serializer.fromJson<UtcDateTime?>(
-        json['isInMatchesGrid'],
-      ),
     );
   }
   @override
@@ -16447,7 +16416,6 @@ class ProfileExtraData extends DataClass
       'isInReceivedLikesGrid': serializer.toJson<UtcDateTime?>(
         isInReceivedLikesGrid,
       ),
-      'isInMatchesGrid': serializer.toJson<UtcDateTime?>(isInMatchesGrid),
     };
   }
 
@@ -16460,7 +16428,6 @@ class ProfileExtraData extends DataClass
     Value<UtcDateTime?> isInProfileGrid = const Value.absent(),
     Value<UtcDateTime?> isInAutomaticProfileSearchGrid = const Value.absent(),
     Value<UtcDateTime?> isInReceivedLikesGrid = const Value.absent(),
-    Value<UtcDateTime?> isInMatchesGrid = const Value.absent(),
   }) => ProfileExtraData(
     accountId: accountId ?? this.accountId,
     profileDataRefreshTime: profileDataRefreshTime.present
@@ -16481,9 +16448,6 @@ class ProfileExtraData extends DataClass
     isInReceivedLikesGrid: isInReceivedLikesGrid.present
         ? isInReceivedLikesGrid.value
         : this.isInReceivedLikesGrid,
-    isInMatchesGrid: isInMatchesGrid.present
-        ? isInMatchesGrid.value
-        : this.isInMatchesGrid,
   );
   ProfileExtraData copyWithCompanion(ProfileExtraCompanion data) {
     return ProfileExtraData(
@@ -16507,9 +16471,6 @@ class ProfileExtraData extends DataClass
       isInReceivedLikesGrid: data.isInReceivedLikesGrid.present
           ? data.isInReceivedLikesGrid.value
           : this.isInReceivedLikesGrid,
-      isInMatchesGrid: data.isInMatchesGrid.present
-          ? data.isInMatchesGrid.value
-          : this.isInMatchesGrid,
     );
   }
 
@@ -16526,8 +16487,7 @@ class ProfileExtraData extends DataClass
           ..write(
             'isInAutomaticProfileSearchGrid: $isInAutomaticProfileSearchGrid, ',
           )
-          ..write('isInReceivedLikesGrid: $isInReceivedLikesGrid, ')
-          ..write('isInMatchesGrid: $isInMatchesGrid')
+          ..write('isInReceivedLikesGrid: $isInReceivedLikesGrid')
           ..write(')'))
         .toString();
   }
@@ -16541,7 +16501,6 @@ class ProfileExtraData extends DataClass
     isInProfileGrid,
     isInAutomaticProfileSearchGrid,
     isInReceivedLikesGrid,
-    isInMatchesGrid,
   );
   @override
   bool operator ==(Object other) =>
@@ -16555,8 +16514,7 @@ class ProfileExtraData extends DataClass
           other.isInProfileGrid == this.isInProfileGrid &&
           other.isInAutomaticProfileSearchGrid ==
               this.isInAutomaticProfileSearchGrid &&
-          other.isInReceivedLikesGrid == this.isInReceivedLikesGrid &&
-          other.isInMatchesGrid == this.isInMatchesGrid);
+          other.isInReceivedLikesGrid == this.isInReceivedLikesGrid);
 }
 
 class ProfileExtraCompanion extends UpdateCompanion<ProfileExtraData> {
@@ -16567,7 +16525,6 @@ class ProfileExtraCompanion extends UpdateCompanion<ProfileExtraData> {
   final Value<UtcDateTime?> isInProfileGrid;
   final Value<UtcDateTime?> isInAutomaticProfileSearchGrid;
   final Value<UtcDateTime?> isInReceivedLikesGrid;
-  final Value<UtcDateTime?> isInMatchesGrid;
   final Value<int> rowid;
   const ProfileExtraCompanion({
     this.accountId = const Value.absent(),
@@ -16577,7 +16534,6 @@ class ProfileExtraCompanion extends UpdateCompanion<ProfileExtraData> {
     this.isInProfileGrid = const Value.absent(),
     this.isInAutomaticProfileSearchGrid = const Value.absent(),
     this.isInReceivedLikesGrid = const Value.absent(),
-    this.isInMatchesGrid = const Value.absent(),
     this.rowid = const Value.absent(),
   });
   ProfileExtraCompanion.insert({
@@ -16588,7 +16544,6 @@ class ProfileExtraCompanion extends UpdateCompanion<ProfileExtraData> {
     this.isInProfileGrid = const Value.absent(),
     this.isInAutomaticProfileSearchGrid = const Value.absent(),
     this.isInReceivedLikesGrid = const Value.absent(),
-    this.isInMatchesGrid = const Value.absent(),
     this.rowid = const Value.absent(),
   }) : accountId = Value(accountId);
   static Insertable<ProfileExtraData> custom({
@@ -16599,7 +16554,6 @@ class ProfileExtraCompanion extends UpdateCompanion<ProfileExtraData> {
     Expression<int>? isInProfileGrid,
     Expression<int>? isInAutomaticProfileSearchGrid,
     Expression<int>? isInReceivedLikesGrid,
-    Expression<int>? isInMatchesGrid,
     Expression<int>? rowid,
   }) {
     return RawValuesInsertable({
@@ -16615,7 +16569,6 @@ class ProfileExtraCompanion extends UpdateCompanion<ProfileExtraData> {
         'is_in_automatic_profile_search_grid': isInAutomaticProfileSearchGrid,
       if (isInReceivedLikesGrid != null)
         'is_in_received_likes_grid': isInReceivedLikesGrid,
-      if (isInMatchesGrid != null) 'is_in_matches_grid': isInMatchesGrid,
       if (rowid != null) 'rowid': rowid,
     });
   }
@@ -16628,7 +16581,6 @@ class ProfileExtraCompanion extends UpdateCompanion<ProfileExtraData> {
     Value<UtcDateTime?>? isInProfileGrid,
     Value<UtcDateTime?>? isInAutomaticProfileSearchGrid,
     Value<UtcDateTime?>? isInReceivedLikesGrid,
-    Value<UtcDateTime?>? isInMatchesGrid,
     Value<int>? rowid,
   }) {
     return ProfileExtraCompanion(
@@ -16644,7 +16596,6 @@ class ProfileExtraCompanion extends UpdateCompanion<ProfileExtraData> {
           isInAutomaticProfileSearchGrid ?? this.isInAutomaticProfileSearchGrid,
       isInReceivedLikesGrid:
           isInReceivedLikesGrid ?? this.isInReceivedLikesGrid,
-      isInMatchesGrid: isInMatchesGrid ?? this.isInMatchesGrid,
       rowid: rowid ?? this.rowid,
     );
   }
@@ -16699,13 +16650,6 @@ class ProfileExtraCompanion extends UpdateCompanion<ProfileExtraData> {
         ),
       );
     }
-    if (isInMatchesGrid.present) {
-      map['is_in_matches_grid'] = Variable<int>(
-        $ProfileExtraTable.$converterisInMatchesGrid.toSql(
-          isInMatchesGrid.value,
-        ),
-      );
-    }
     if (rowid.present) {
       map['rowid'] = Variable<int>(rowid.value);
     }
@@ -16726,7 +16670,6 @@ class ProfileExtraCompanion extends UpdateCompanion<ProfileExtraData> {
             'isInAutomaticProfileSearchGrid: $isInAutomaticProfileSearchGrid, ',
           )
           ..write('isInReceivedLikesGrid: $isInReceivedLikesGrid, ')
-          ..write('isInMatchesGrid: $isInMatchesGrid, ')
           ..write('rowid: $rowid')
           ..write(')'))
         .toString();
