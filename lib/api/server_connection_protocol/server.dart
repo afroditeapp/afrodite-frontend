@@ -1,6 +1,7 @@
 import 'dart:convert';
 import 'dart:typed_data';
 
+import 'package:app/utils/minimal_i64.dart';
 import 'package:openapi/api.dart';
 
 /// First byte of websocket binary protocol messages sent from server to client.
@@ -729,23 +730,15 @@ class _ByteReader {
   }
 
   int? readMinimalI64WithKnownByteCount(int byteCount) {
-    if (byteCount != 1 && byteCount != 2 && byteCount != 4 && byteCount != 8) {
-      failed = true;
-      return null;
-    }
-
     final dataBytes = readBytes(byteCount);
     if (dataBytes == null) {
       return null;
     }
 
-    final data = ByteData.sublistView(dataBytes);
-    return switch (byteCount) {
-      1 => data.getInt8(0),
-      2 => data.getInt16(0, Endian.little),
-      4 => data.getInt32(0, Endian.little),
-      8 => data.getInt64(0, Endian.little),
-      _ => null,
-    };
+    final value = decodeMinimalI64FromBytes(dataBytes);
+    if (value == null) {
+      failed = true;
+    }
+    return value;
   }
 }

@@ -2,6 +2,7 @@ import 'dart:convert';
 import 'dart:typed_data';
 
 import 'package:app/api/server_connection_protocol/client.dart';
+import 'package:app/utils/minimal_i64.dart';
 import 'package:flutter_test/flutter_test.dart';
 import 'package:openapi/api.dart';
 import 'package:uuid/uuid.dart';
@@ -37,7 +38,7 @@ void main() {
     test('requestGetNextProfilePage includes request id and session id', () {
       final message = ClientMessage.requestGetNextProfilePage(18, ProfileIteratorSessionId(id: 12));
 
-      expect(message.payload, equals(Uint8List.fromList([18, ...minimalI64Bytes(12)])));
+      expect(message.payload, equals(Uint8List.fromList([18, ...encodeMinimalI64(12)])));
     });
 
     test('requestAutomaticProfileSearchResetProfilePaging includes request id byte', () {
@@ -52,7 +53,7 @@ void main() {
         AutomaticProfileSearchIteratorSessionId(id: 13),
       );
 
-      expect(message.payload, equals(Uint8List.fromList([20, ...minimalI64Bytes(13)])));
+      expect(message.payload, equals(Uint8List.fromList([20, ...encodeMinimalI64(13)])));
     });
   });
 }

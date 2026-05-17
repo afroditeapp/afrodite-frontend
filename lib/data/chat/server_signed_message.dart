@@ -2,6 +2,7 @@ import 'dart:convert';
 import 'dart:typed_data';
 
 import 'package:app/utils/iterator.dart';
+import 'package:app/utils/minimal_i64.dart';
 import 'package:app/utils/result.dart';
 import 'package:native_utils/native_utils.dart';
 import 'package:openapi/api.dart';
@@ -43,10 +44,10 @@ class ServerSignedMessage {
     final sender = parseAccountId(iterator).ok();
     final recipient = parseAccountId(iterator).ok();
     final messageId = parseMessageId(iterator).ok();
-    final senderPublicKeyId = parseMinimalI64(iterator).mapOk((v) => PublicKeyId(id: v)).ok();
-    final recipientPublicKeyId = parseMinimalI64(iterator).mapOk((v) => PublicKeyId(id: v)).ok();
-    final messageNumber = parseMinimalI64(iterator).mapOk((v) => MessageNumber(mn: v)).ok();
-    final serverTime = parseMinimalI64(iterator).mapOk((v) => UnixTime(ut: v)).ok();
+    final senderPublicKeyId = _parseMinimalI64(iterator).mapOk((v) => PublicKeyId(id: v)).ok();
+    final recipientPublicKeyId = _parseMinimalI64(iterator).mapOk((v) => PublicKeyId(id: v)).ok();
+    final messageNumber = _parseMinimalI64(iterator).mapOk((v) => MessageNumber(mn: v)).ok();
+    final serverTime = _parseMinimalI64(iterator).mapOk((v) => UnixTime(ut: v)).ok();
     final messageFromSender = iterator.takeAllAsBytes();
 
     if (version != 1 ||
@@ -102,51 +103,10 @@ Result<MessageId, ()> parseMessageId(Iterator<int> data) {
   return Ok(MessageId(id: base64UrlsNoPadding));
 }
 
-Result<int, ()> parseMinimalI64(Iterator<int> data) {
-  final count = data.next();
-  final first = data.next();
-  if (count == null || first == null) {
+Result<int, ()> _parseMinimalI64(Iterator<int> data) {
+  final value = decodeMinimalI64FromIterator(data);
+  if (value == null) {
     return const Err(());
   }
-  if (count == 1) {
-    final value = ByteData.view(Uint8List.fromList([first]).buffer).getInt8(0);
-    return Ok(value);
-  }
-
-  final second = data.next();
-  if (second == null) {
-    return const Err(());
-  }
-  if (count == 2) {
-    final value = ByteData.view(
-      Uint8List.fromList([first, second]).buffer,
-    ).getInt16(0, Endian.little);
-    return Ok(value);
-  }
-
-  final third = data.next();
-  final fourth = data.next();
-  if (third == null || fourth == null) {
-    return const Err(());
-  }
-  if (count == 4) {
-    final list = Uint8List.fromList([first, second, third, fourth]);
-    final value = ByteData.view(list.buffer).getInt32(0, Endian.little);
-    return Ok(value);
-  }
-
-  final fift = data.next();
-  final sixth = data.next();
-  final sevent = data.next();
-  final eight = data.next();
-  if (fift == null || sixth == null || sevent == null || eight == null) {
-    return const Err(());
-  }
-  if (count == 8) {
-    final list = Uint8List.fromList([first, second, third, fourth, fift, sixth, sevent, eight]);
-    final value = ByteData.view(list.buffer).getInt64(0, Endian.little);
-    return Ok(value);
-  }
-
-  return const Err(());
+  return Ok(value);
 }

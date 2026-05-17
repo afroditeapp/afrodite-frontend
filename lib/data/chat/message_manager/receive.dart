@@ -15,6 +15,7 @@ import 'package:app/database/account_database_manager.dart';
 import 'package:app/utils/api.dart';
 import 'package:utils/utils.dart';
 import 'package:app/utils/iterator.dart';
+import 'package:app/utils/minimal_i64.dart';
 import 'package:app/utils/result.dart';
 
 final _log = Logger("ReceiveMessgeUtils");
@@ -145,9 +146,12 @@ class ReceiveMessageUtils {
     }
 
     while (true) {
-      final count = parseMinimalI64(bytesIterator).ok();
+      final count = decodeMinimalI64FromIterator(bytesIterator);
       if (count == null) {
         return parsedData;
+      }
+      if (count == 0) {
+        continue;
       }
       final signedPgpMessage = bytesIterator.takeAndAdvance(count);
       if (signedPgpMessage == null) {

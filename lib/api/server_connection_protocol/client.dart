@@ -1,6 +1,7 @@
 import 'dart:convert';
 import 'dart:typed_data';
 
+import 'package:app/utils/minimal_i64.dart';
 import 'package:openapi/api.dart';
 
 /// First byte of websocket binary protocol messages sent from client to server.
@@ -77,7 +78,7 @@ class ClientMessage {
   ) {
     return ClientMessage._(
       type: ClientMessageType.requestGetNextProfilePage,
-      payload: Uint8List.fromList([requestId, ...minimalI64Bytes(sessionId.id)]),
+      payload: Uint8List.fromList([requestId, ...encodeMinimalI64(sessionId.id)]),
     );
   }
 
@@ -94,7 +95,7 @@ class ClientMessage {
   ) {
     return ClientMessage._(
       type: ClientMessageType.requestAutomaticProfileSearchGetNextProfilePage,
-      payload: Uint8List.fromList([requestId, ...minimalI64Bytes(sessionId.id)]),
+      payload: Uint8List.fromList([requestId, ...encodeMinimalI64(sessionId.id)]),
     );
   }
 
@@ -134,34 +135,4 @@ Uint8List _uuidBytesFromAccountId(AccountId accountId) {
   final requiredPadding = (4 - aid.length % 4) % 4;
   final paddedAid = aid.padRight(aid.length + requiredPadding, "=");
   return base64Url.decode(paddedAid);
-}
-
-Uint8List minimalI64Bytes(int value) {
-  int byteCount;
-  if (value >= -128 && value <= 127) {
-    byteCount = 1;
-  } else if (value >= -32768 && value <= 32767) {
-    byteCount = 2;
-  } else if (value >= -2147483648 && value <= 2147483647) {
-    byteCount = 4;
-  } else {
-    byteCount = 8;
-  }
-
-  final payload = Uint8List(1 + byteCount);
-  payload[0] = byteCount;
-
-  final data = ByteData.sublistView(payload, 1);
-  switch (byteCount) {
-    case 1:
-      data.setInt8(0, value);
-    case 2:
-      data.setInt16(0, value, Endian.little);
-    case 4:
-      data.setInt32(0, value, Endian.little);
-    case 8:
-      data.setInt64(0, value, Endian.little);
-  }
-
-  return payload;
 }

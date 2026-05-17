@@ -1,8 +1,8 @@
 import 'dart:convert';
 import 'dart:typed_data';
 
-import 'package:app/api/server_connection_protocol/client.dart';
 import 'package:app/api/server_connection_protocol/server.dart';
+import 'package:app/utils/minimal_i64.dart';
 import 'package:flutter_test/flutter_test.dart';
 import 'package:openapi/api.dart';
 
@@ -32,7 +32,12 @@ void main() {
       const start = 1700000000;
       const end = 1700000600;
 
-      final bytes = Uint8List.fromList([3, 1, ...minimalI64Bytes(start), ...minimalI64Bytes(end)]);
+      final bytes = Uint8List.fromList([
+        3,
+        1,
+        ...encodeMinimalI64(start),
+        ...encodeMinimalI64(end),
+      ]);
 
       final parsed = ServerMessage.fromBytes(bytes);
 
@@ -64,7 +69,7 @@ void main() {
       final contentIdUuid = Uint8List.fromList(List<int>.generate(16, (index) => 255 - index));
       final expectedContentId = base64UrlEncode(contentIdUuid).replaceAll('=', '');
 
-      final bytes = Uint8List.fromList([90, ...minimalI64Bytes(42), 3, ...contentIdUuid, 1]);
+      final bytes = Uint8List.fromList([90, ...encodeMinimalI64(42), 3, ...contentIdUuid, 1]);
 
       final parsed = ServerMessage.fromBytes(bytes);
 
@@ -78,7 +83,7 @@ void main() {
     });
 
     test('parses content processing in queue payload', () {
-      final bytes = Uint8List.fromList([90, ...minimalI64Bytes(11), 1, ...minimalI64Bytes(7)]);
+      final bytes = Uint8List.fromList([90, ...encodeMinimalI64(11), 1, ...encodeMinimalI64(7)]);
 
       final parsed = ServerMessage.fromBytes(bytes);
 
@@ -96,7 +101,7 @@ void main() {
       final accountIdUuid = Uint8List.fromList(List<int>.generate(16, (index) => 100 + index));
       final expectedAid = base64UrlEncode(accountIdUuid).replaceAll('=', '');
 
-      final bytes = Uint8List.fromList([126, ...accountIdUuid, ...minimalI64Bytes(-1)]);
+      final bytes = Uint8List.fromList([126, ...accountIdUuid, ...encodeMinimalI64(-1)]);
 
       final parsed = ServerMessage.fromBytes(bytes);
 
@@ -123,9 +128,23 @@ void main() {
       expect(response.l, isNull);
     });
 
+    test('parses check online status response with 3-byte minimal i64', () {
+      final accountIdUuid = Uint8List.fromList(List<int>.generate(16, (index) => 70 + index));
+      final expectedAid = base64UrlEncode(accountIdUuid).replaceAll('=', '');
+
+      final bytes = Uint8List.fromList([126, ...accountIdUuid, 3, 0xFF, 0x7F, 0xFF]);
+      final parsed = ServerMessage.fromBytes(bytes);
+
+      expect(parsed, isNotNull);
+      final response = parsed!.checkOnlineStatusResponse;
+      expect(response, isNotNull);
+      expect(response!.a.aid, expectedAid);
+      expect(response.l, -32769);
+    });
+
     test('parses reset profile paging response with session id', () {
       final parsed = ServerMessage.fromBytes(
-        Uint8List.fromList([61, 7, 0, ...minimalI64Bytes(12)]),
+        Uint8List.fromList([61, 7, 0, ...encodeMinimalI64(12)]),
       );
 
       expect(parsed, isNotNull);
