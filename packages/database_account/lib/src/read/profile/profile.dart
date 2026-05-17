@@ -174,9 +174,6 @@ class DaoReadProfile extends DatabaseAccessor<AccountDatabase> with _$DaoReadPro
   Future<List<api.AccountId>> getProfileGridList(int startIndex, int limit) =>
       _getProfilesList(startIndex, limit, (t) => t.isInProfileGrid);
 
-  Future<List<api.AccountId>> getAutomaticProfileSearchGridList(int startIndex, int limit) =>
-      _getProfilesList(startIndex, limit, (t) => t.isInAutomaticProfileSearchGrid);
-
   Future<List<api.AccountId>> getReceivedLikesGridList(int startIndex, int limit) =>
       _getProfilesList(startIndex, limit, (t) => t.isInReceivedLikesGrid);
 

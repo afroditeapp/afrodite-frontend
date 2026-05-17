@@ -125,8 +125,6 @@ class ProfileExtra extends Table {
   // The time is the time when the profile was added to the group.
   IntColumn get isInProfileGrid =>
       integer().map(const NullAwareTypeConverter.wrap(UtcDateTimeConverter())).nullable()();
-  IntColumn get isInAutomaticProfileSearchGrid =>
-      integer().map(const NullAwareTypeConverter.wrap(UtcDateTimeConverter())).nullable()();
   IntColumn get isInReceivedLikesGrid =>
       integer().map(const NullAwareTypeConverter.wrap(UtcDateTimeConverter())).nullable()();
 

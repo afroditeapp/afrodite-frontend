@@ -1,6 +1,5 @@
 import 'dart:async';
 
-import 'package:app/data/profile/automatic_profile_search/automatic_profile_search_database_iterator.dart';
 import 'package:logging/logging.dart';
 import 'package:openapi/api.dart';
 import 'package:app/api/server_connection_manager.dart';
@@ -414,23 +413,18 @@ class MatchesOnlineIteratorIo extends OnlineIteratorIo {
 class AutomaticProfileSearchOnlineIteratorIo extends OnlineIteratorIo {
   final AccountDatabaseManager db;
   final ServerConnectionManager connectionManager;
-  IteratorType? iteratorValue;
   AutomaticProfileSearchIteratorSessionId? currentSessionId;
 
   AutomaticProfileSearchOnlineIteratorIo(this.db, this.connectionManager);
 
   @override
-  IteratorType? get databaseIterator => iteratorValue;
+  IteratorType? get databaseIterator => null;
 
   @override
-  void resetDatabaseIterator() {
-    iteratorValue = AutomaticProfileSearchDatabaseIterator(db: db);
-  }
+  void resetDatabaseIterator() {}
 
   @override
-  void setDatabaseIteratorToNull() {
-    iteratorValue = null;
-  }
+  void setDatabaseIteratorToNull() {}
 
   @override
   Future<Result<(), ()>> resetServerPaging() async {
@@ -439,9 +433,6 @@ class AutomaticProfileSearchOnlineIteratorIo extends OnlineIteratorIo {
 
     switch (resetResult) {
       case Ok(:final v):
-        await db.accountAction(
-          (db) => db.profile.setAutomaticProfileSearchGridStatusList(null, false, clear: true),
-        );
         currentSessionId = v;
         return const Ok(());
       case Err():
@@ -475,6 +466,6 @@ class AutomaticProfileSearchOnlineIteratorIo extends OnlineIteratorIo {
 
   @override
   Future<void> setDbVisibility(AccountId id, bool visibility) async {
-    await db.accountAction((db) => db.profile.setAutomaticProfileSearchGridStatus(id, true));
+    return;
   }
 }

@@ -187,15 +187,6 @@ class DaoWriteProfile extends DatabaseAccessor<AccountDatabase> with _$DaoWriteP
     );
   }
 
-  Future<void> setAutomaticProfileSearchGridStatus(api.AccountId accountId, bool value) async {
-    await into(profileExtra).insertOnConflictUpdate(
-      ProfileExtraCompanion.insert(
-        accountId: accountId,
-        isInAutomaticProfileSearchGrid: _toGroupValue(value),
-      ),
-    );
-  }
-
   Future<void> setReceivedLikeGridStatus(api.AccountId accountId, bool value) async {
     await into(profileExtra).insertOnConflictUpdate(
       ProfileExtraCompanion.insert(
@@ -243,23 +234,6 @@ class DaoWriteProfile extends DatabaseAccessor<AccountDatabase> with _$DaoWriteP
       }
       for (final a in accounts ?? <api.AccountId>[]) {
         await setProfileGridStatus(a, value);
-      }
-    });
-  }
-
-  Future<void> setAutomaticProfileSearchGridStatusList(
-    List<api.AccountId>? accounts,
-    bool value, {
-    bool clear = false,
-  }) async {
-    await transaction(() async {
-      if (clear) {
-        await update(
-          profileExtra,
-        ).write(const ProfileExtraCompanion(isInAutomaticProfileSearchGrid: Value(null)));
-      }
-      for (final a in accounts ?? <api.AccountId>[]) {
-        await setAutomaticProfileSearchGridStatus(a, value);
       }
     });
   }
