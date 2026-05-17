@@ -173,8 +173,18 @@ void main() {
       expect(parsed.responseNextProfilePage!.errorInvalidIteratorSessionId, isTrue);
     });
 
-    test('returns null for malformed reset profile paging response payload', () {
+    test('parses reset profile paging error status with extra bytes', () {
+      // Extra trailing bytes are ignored — status 1 (rate limited) with extra byte 0
       final parsed = ServerMessage.fromBytes(Uint8List.fromList([61, 1, 1, 0]));
+      expect(parsed, isNotNull);
+      expect(parsed!.type, ServerMessageTypeCode.responseResetProfilePaging);
+      expect(parsed.responseId, 1);
+      expect(parsed.responseResetProfilePaging, isNull);
+    });
+
+    test('returns null for truncated reset profile paging response payload', () {
+      // Missing status byte
+      final parsed = ServerMessage.fromBytes(Uint8List.fromList([61, 1]));
       expect(parsed, isNull);
     });
 

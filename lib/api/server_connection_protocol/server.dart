@@ -1,7 +1,6 @@
-import 'dart:convert';
 import 'dart:typed_data';
 
-import 'package:app/utils/minimal_i64.dart';
+import 'package:app/api/binary/utils.dart';
 import 'package:openapi/api.dart';
 
 /// First byte of websocket binary protocol messages sent from server to client.
@@ -373,7 +372,7 @@ class ServerMessage {
 ///
 /// Non-success statuses (1 and 2) are valid and returned with null session id.
 _ResponseResetProfilePagingPayload? _parseResponseResetProfilePaging(Uint8List payload) {
-  final reader = _ByteReader(payload);
+  final reader = ByteReader(payload);
 
   final requestId = reader.readU8();
   final status = reader.readU8();
@@ -383,8 +382,12 @@ _ResponseResetProfilePagingPayload? _parseResponseResetProfilePaging(Uint8List p
 
   switch (status) {
     case 0:
-      final sessionId = reader.readMinimalI64();
-      if (sessionId == null || reader.failed || !reader.isAtEnd) {
+      final byteCount = reader.readU8();
+      if (byteCount == null) {
+        return null;
+      }
+      final sessionId = reader.readMinimalI64WithKnownByteCount(byteCount);
+      if (sessionId == null) {
         return null;
       }
       return _ResponseResetProfilePagingPayload(
@@ -393,9 +396,6 @@ _ResponseResetProfilePagingPayload? _parseResponseResetProfilePaging(Uint8List p
       );
     case 1:
     case 2:
-      if (!reader.isAtEnd) {
-        return null;
-      }
       return _ResponseResetProfilePagingPayload(requestId: requestId);
     default:
       return null;
@@ -408,7 +408,7 @@ _ResponseResetProfilePagingPayload? _parseResponseResetProfilePaging(Uint8List p
 ///
 /// Returns null for malformed payloads.
 _ResponseNextProfilePagePayload? _parseResponseNextProfilePage(Uint8List payload) {
-  final reader = _ByteReader(payload);
+  final reader = ByteReader(payload);
 
   final requestId = reader.readU8();
   final status = reader.readU8();
@@ -419,33 +419,24 @@ _ResponseNextProfilePagePayload? _parseResponseNextProfilePage(Uint8List payload
   switch (status) {
     case 0:
       final profiles = <ProfileLink>[];
-      while (!reader.isAtEnd) {
+      while (true) {
         final profile = _parseProfileLinkForPaging(reader);
         if (profile == null) {
-          return null;
+          break;
         }
         profiles.add(profile);
-      }
-      if (reader.failed) {
-        return null;
       }
       return _ResponseNextProfilePagePayload(
         requestId: requestId,
         page: ProfilePage(profiles: profiles),
       );
     case 1:
-      if (!reader.isAtEnd) {
-        return null;
-      }
       return _ResponseNextProfilePagePayload(
         requestId: requestId,
         page: ProfilePage(errorInvalidIteratorSessionId: true),
       );
     case 2:
     case 3:
-      if (!reader.isAtEnd) {
-        return null;
-      }
       return _ResponseNextProfilePagePayload(requestId: requestId, page: ProfilePage(error: true));
     default:
       return null;
@@ -460,7 +451,7 @@ _ResponseNextProfilePagePayload? _parseResponseNextProfilePage(Uint8List payload
 /// Non-success statuses (1 and 2) are valid and returned with null session id.
 _ResponseAutomaticProfileSearchResetProfilePagingPayload?
 _parseResponseAutomaticProfileSearchResetProfilePaging(Uint8List payload) {
-  final reader = _ByteReader(payload);
+  final reader = ByteReader(payload);
 
   final requestId = reader.readU8();
   final status = reader.readU8();
@@ -470,8 +461,12 @@ _parseResponseAutomaticProfileSearchResetProfilePaging(Uint8List payload) {
 
   switch (status) {
     case 0:
-      final sessionId = reader.readMinimalI64();
-      if (sessionId == null || reader.failed || !reader.isAtEnd) {
+      final byteCount = reader.readU8();
+      if (byteCount == null) {
+        return null;
+      }
+      final sessionId = reader.readMinimalI64WithKnownByteCount(byteCount);
+      if (sessionId == null) {
         return null;
       }
       return _ResponseAutomaticProfileSearchResetProfilePagingPayload(
@@ -480,23 +475,19 @@ _parseResponseAutomaticProfileSearchResetProfilePaging(Uint8List payload) {
       );
     case 1:
     case 2:
-      if (!reader.isAtEnd) {
-        return null;
-      }
       return _ResponseAutomaticProfileSearchResetProfilePagingPayload(requestId: requestId);
     default:
       return null;
   }
 }
 
-ProfileLink? _parseProfileLinkForPaging(_ByteReader reader) {
+ProfileLink? _parseProfileLinkForPaging(ByteReader reader) {
   final accountIdBytes = reader.readBytes(16);
   final profileVersionBytes = reader.readBytes(16);
   final profileContentVersionBytes = reader.readBytes(16);
   final lastSeenMarker = reader.readU8();
 
-  if (reader.failed ||
-      accountIdBytes == null ||
+  if (accountIdBytes == null ||
       profileVersionBytes == null ||
       profileContentVersionBytes == null ||
       lastSeenMarker == null) {
@@ -508,16 +499,16 @@ ProfileLink? _parseProfileLinkForPaging(_ByteReader reader) {
     lastSeen = null;
   } else {
     lastSeen = reader.readMinimalI64WithKnownByteCount(lastSeenMarker);
-    if (reader.failed || lastSeen == null) {
+    if (lastSeen == null) {
       return null;
     }
   }
 
   return ProfileLink(
-    a: AccountId(aid: _base64UrlWithoutPadding(accountIdBytes)),
-    c: ProfileContentVersion(v: _base64UrlWithoutPadding(profileContentVersionBytes)),
+    a: AccountId(aid: toIdString(accountIdBytes)),
+    c: ProfileContentVersion(v: toIdString(profileContentVersionBytes)),
     l: lastSeen,
-    p: ProfileVersion(v: _base64UrlWithoutPadding(profileVersionBytes)),
+    p: ProfileVersion(v: toIdString(profileVersionBytes)),
   );
 }
 
@@ -526,7 +517,7 @@ ScheduledMaintenanceStatus? _parseScheduledMaintenanceStatus(Uint8List payload) 
     return null;
   }
 
-  final reader = _ByteReader(payload);
+  final reader = ByteReader(payload);
   final adminBotOffline = switch (reader.readU8()) {
     0 => false,
     1 => true,
@@ -537,23 +528,21 @@ ScheduledMaintenanceStatus? _parseScheduledMaintenanceStatus(Uint8List payload) 
   }
 
   final start = _optionalUnixTimeFromMinimalI64(reader);
-  if (reader.failed) {
-    return null;
-  }
 
   final end = start != null ? _optionalUnixTimeFromMinimalI64(reader) : null;
-  if (reader.failed || !reader.isAtEnd) {
-    return null;
-  }
 
   return ScheduledMaintenanceStatus(end: end, adminBotOffline: adminBotOffline, start: start);
 }
 
 ContentProcessingStateChanged? _parseContentProcessingStateChanged(Uint8List payload) {
-  final reader = _ByteReader(payload);
+  final reader = ByteReader(payload);
 
-  final processId = reader.readMinimalI64();
-  if (reader.failed || processId == null) {
+  final processIdByteCount = reader.readU8();
+  if (processIdByteCount == null) {
+    return null;
+  }
+  final processId = reader.readMinimalI64WithKnownByteCount(processIdByteCount);
+  if (processId == null) {
     return null;
   }
 
@@ -577,8 +566,12 @@ ContentProcessingStateChanged? _parseContentProcessingStateChanged(Uint8List pay
 
   switch (stateType) {
     case ContentProcessingStateType.inQueue:
-      final queueNumber = reader.readMinimalI64();
-      if (queueNumber == null || reader.failed) {
+      final queueByteCount = reader.readU8();
+      if (queueByteCount == null) {
+        return null;
+      }
+      final queueNumber = reader.readMinimalI64WithKnownByteCount(queueByteCount);
+      if (queueNumber == null) {
         return null;
       }
       waitQueuePosition = queueNumber;
@@ -604,10 +597,6 @@ ContentProcessingStateChanged? _parseContentProcessingStateChanged(Uint8List pay
       break;
   }
 
-  if (reader.failed || !reader.isAtEnd) {
-    return null;
-  }
-
   final state = ContentProcessingState(
     cid: contentId,
     faceDetected: faceDetected,
@@ -622,7 +611,7 @@ ContentProcessingStateChanged? _parseContentProcessingStateChanged(Uint8List pay
 }
 
 CheckOnlineStatusResponse? _parseCheckOnlineStatusResponse(Uint8List payload) {
-  final reader = _ByteReader(payload);
+  final reader = ByteReader(payload);
   final accountIdBytes = reader.readBytes(16);
   final accountId = _accountIdFromUuidBytes(accountIdBytes);
   final marker = reader.readU8();
@@ -641,18 +630,15 @@ CheckOnlineStatusResponse? _parseCheckOnlineStatusResponse(Uint8List payload) {
     }
   }
 
-  if (reader.failed || !reader.isAtEnd) {
-    return null;
-  }
-
   return CheckOnlineStatusResponse(a: accountId, l: lastSeen);
 }
 
-UnixTime? _optionalUnixTimeFromMinimalI64(_ByteReader reader) {
-  if (reader.isAtEnd) {
+UnixTime? _optionalUnixTimeFromMinimalI64(ByteReader reader) {
+  final byteCount = reader.readU8();
+  if (byteCount == null) {
     return null;
   }
-  final value = reader.readMinimalI64();
+  final value = reader.readMinimalI64WithKnownByteCount(byteCount);
   if (value == null) {
     return null;
   }
@@ -678,67 +664,12 @@ AccountId? _accountIdFromUuidBytes(Uint8List? bytes) {
   if (bytes == null || bytes.length != 16) {
     return null;
   }
-  return AccountId(aid: _base64UrlWithoutPadding(bytes));
+  return AccountId(aid: toIdString(bytes));
 }
 
 ContentId? _contentIdFromUuidBytes(Uint8List? bytes) {
   if (bytes == null || bytes.length != 16) {
     return null;
   }
-  return ContentId(cid: _base64UrlWithoutPadding(bytes));
-}
-
-String _base64UrlWithoutPadding(Uint8List bytes) {
-  return base64UrlEncode(bytes).replaceAll('=', '');
-}
-
-class _ByteReader {
-  final Uint8List _bytes;
-  int _offset = 0;
-  bool failed = false;
-
-  _ByteReader(this._bytes);
-
-  bool get isAtEnd => _offset == _bytes.length;
-
-  int? readU8() {
-    if (_offset >= _bytes.length) {
-      failed = true;
-      return null;
-    }
-    return _bytes[_offset++];
-  }
-
-  Uint8List? readBytes(int length) {
-    if (length < 0 || _offset + length > _bytes.length) {
-      failed = true;
-      return null;
-    }
-
-    final value = Uint8List.sublistView(_bytes, _offset, _offset + length);
-    _offset += length;
-    return value;
-  }
-
-  int? readMinimalI64() {
-    final byteCount = readU8();
-    if (byteCount == null) {
-      return null;
-    }
-
-    return readMinimalI64WithKnownByteCount(byteCount);
-  }
-
-  int? readMinimalI64WithKnownByteCount(int byteCount) {
-    final dataBytes = readBytes(byteCount);
-    if (dataBytes == null) {
-      return null;
-    }
-
-    final value = decodeMinimalI64FromBytes(dataBytes);
-    if (value == null) {
-      failed = true;
-    }
-    return value;
-  }
+  return ContentId(cid: toIdString(bytes));
 }
