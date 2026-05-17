@@ -8,6 +8,7 @@ mixin _$DaoWriteProfileMixin on DatabaseAccessor<AccountDatabase> {
   $ProfileExtraTable get profileExtra => attachedDatabase.profileExtra;
   $FavoriteProfilesTable get favoriteProfiles =>
       attachedDatabase.favoriteProfiles;
+  $ProfileGridTable get profileGrid => attachedDatabase.profileGrid;
   $ReceivedLikesGridTable get receivedLikesGrid =>
       attachedDatabase.receivedLikesGrid;
 }

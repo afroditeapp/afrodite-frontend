@@ -10,7 +10,13 @@ import '../../schema.dart' as schema;
 part 'profile.g.dart';
 
 @DriftAccessor(
-  tables: [schema.Profile, schema.ProfileExtra, schema.FavoriteProfiles, schema.ReceivedLikesGrid],
+  tables: [
+    schema.Profile,
+    schema.ProfileExtra,
+    schema.FavoriteProfiles,
+    schema.ProfileGrid,
+    schema.ReceivedLikesGrid,
+  ],
 )
 class DaoWriteProfile extends DatabaseAccessor<AccountDatabase> with _$DaoWriteProfileMixin {
   DaoWriteProfile(super.db);
@@ -183,10 +189,13 @@ class DaoWriteProfile extends DatabaseAccessor<AccountDatabase> with _$DaoWriteP
     );
   }
 
-  Future<void> setProfileGridStatus(api.AccountId accountId, bool value) async {
-    await into(profileExtra).insertOnConflictUpdate(
-      ProfileExtraCompanion.insert(accountId: accountId, isInProfileGrid: _toGroupValue(value)),
-    );
+  Future<void> addToProfileGrid(api.AccountId accountId) async {
+    await transaction(() async {
+      final lowestUnusedId = await _nextProfileGridId();
+      await into(
+        profileGrid,
+      ).insert(ProfileGridCompanion.insert(id: Value(lowestUnusedId), accountId: accountId));
+    });
   }
 
   Future<void> addToReceivedLikesGrid(api.AccountId accountId) async {
@@ -225,26 +234,20 @@ class DaoWriteProfile extends DatabaseAccessor<AccountDatabase> with _$DaoWriteP
     return maxId + 1;
   }
 
-  Future<void> setProfileGridStatusList(
-    List<api.AccountId>? accounts,
-    bool value, {
-    bool clear = false,
-  }) async {
-    await transaction(() async {
-      if (clear) {
-        await update(profileExtra).write(const ProfileExtraCompanion(isInProfileGrid: Value(null)));
-      }
-      for (final a in accounts ?? <api.AccountId>[]) {
-        await setProfileGridStatus(a, value);
-      }
-    });
+  Future<int> _nextProfileGridId() async {
+    final maxIdExpression = profileGrid.id.max();
+    final maxId = await (selectOnly(
+      profileGrid,
+    )..addColumns([maxIdExpression])).map((row) => row.read(maxIdExpression)).getSingle();
+
+    if (maxId == null || maxId < 0) {
+      return 0;
+    }
+
+    return maxId + 1;
   }
 
-  Value<UtcDateTime?> _toGroupValue(bool value) {
-    if (value) {
-      return Value(UtcDateTime.now());
-    } else {
-      return const Value(null);
-    }
+  Future<void> clearProfileGrid() async {
+    await delete(profileGrid).go();
   }
 }

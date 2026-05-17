@@ -12,7 +12,13 @@ import '../../schema.dart' as schema;
 part 'profile.g.dart';
 
 @DriftAccessor(
-  tables: [schema.Profile, schema.ProfileExtra, schema.FavoriteProfiles, schema.ReceivedLikesGrid],
+  tables: [
+    schema.Profile,
+    schema.ProfileExtra,
+    schema.FavoriteProfiles,
+    schema.ProfileGrid,
+    schema.ReceivedLikesGrid,
+  ],
 )
 class DaoReadProfile extends DatabaseAccessor<AccountDatabase> with _$DaoReadProfileMixin {
   DaoReadProfile(super.db);
@@ -157,9 +163,6 @@ class DaoReadProfile extends DatabaseAccessor<AccountDatabase> with _$DaoReadPro
     (t) => t.localAccountInteractionState.equalsValue(LocalAccountInteractionState.match),
   );
 
-  Future<bool> isInProfileGrid(api.AccountId accountId) =>
-      _existenceCheck(accountId, (t) => t.isInProfileGrid.isNotNull());
-
   Future<List<api.AccountId>> getFavoritesList(int startIndex, int limit) =>
       (select(favoriteProfiles)
             ..orderBy([
@@ -171,29 +174,15 @@ class DaoReadProfile extends DatabaseAccessor<AccountDatabase> with _$DaoReadPro
           .get();
 
   Future<List<api.AccountId>> getProfileGridList(int startIndex, int limit) =>
-      _getProfilesList(startIndex, limit, (t) => t.isInProfileGrid);
-
-  Future<List<api.AccountId>> getReceivedLikesGridList(int startIndex, int limit) =>
-      (select(receivedLikesGrid)
+      (select(profileGrid)
             ..orderBy([(t) => OrderingTerm(expression: t.id, mode: OrderingMode.asc)])
             ..limit(limit, offset: startIndex))
           .map((t) => t.accountId)
           .get();
 
-  Future<List<api.AccountId>> _getProfilesList(
-    int? startIndex,
-    int limit,
-    GeneratedColumnWithTypeConverter<UtcDateTime?, int> Function($ProfileExtraTable) getter, {
-    OrderingMode mode = OrderingMode.asc,
-  }) =>
-      (select(profileExtra)
-            ..where((t) => getter(t).isNotNull())
-            ..orderBy([
-              (t) => OrderingTerm(expression: getter(t), mode: mode),
-              // If list is added, the time values can have same value, so
-              // order by AccountId to make the order deterministic.
-              (t) => OrderingTerm(expression: t.accountId),
-            ])
+  Future<List<api.AccountId>> getReceivedLikesGridList(int startIndex, int limit) =>
+      (select(receivedLikesGrid)
+            ..orderBy([(t) => OrderingTerm(expression: t.id, mode: OrderingMode.asc)])
             ..limit(limit, offset: startIndex))
           .map((t) => t.accountId)
           .get();

@@ -99,6 +99,7 @@ part 'database.g.dart';
     schema.ProfileFilters,
     schema.InitialProfileAge,
     schema.ProfileExtra,
+    schema.ProfileGrid,
     schema.ReceivedLikesGrid,
     schema.ProfileLocation,
     schema.FavoriteProfiles,

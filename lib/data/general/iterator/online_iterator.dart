@@ -194,9 +194,7 @@ class ProfileListOnlineIteratorIo extends OnlineIteratorIo {
 
     switch (resetResult) {
       case Ok(:final v):
-        await db.accountAction(
-          (db) => db.profile.setProfileGridStatusList(null, false, clear: true),
-        );
+        await db.accountAction((db) => db.profile.clearProfileGrid());
         currentSessionId = v;
         return const Ok(());
       case Err():
@@ -231,7 +229,7 @@ class ProfileListOnlineIteratorIo extends OnlineIteratorIo {
 
   @override
   Future<void> setDbVisibility(AccountId id, bool visibility) async {
-    await db.accountAction((db) => db.profile.setProfileGridStatus(id, true));
+    await db.accountAction((db) => db.profile.addToProfileGrid(id));
   }
 }
 
