@@ -17,3 +17,5 @@ needs to be executed.
 
 When editing database code, don't create database migrations as
 app is not in production.
+
+Use built-in workspace tools if possible.
