@@ -42,3 +42,8 @@ String fullTimeString(UtcDateTime messageTime) {
   final localTime = messageTime.dateTime.toLocal();
   return DateFormat.yMd().add_Hm().format(localTime);
 }
+
+String fullTimeWithSecondsString(UtcDateTime messageTime) {
+  final localTime = messageTime.dateTime.toLocal();
+  return DateFormat.yMd().add_Hms().format(localTime);
+}

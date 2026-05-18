@@ -298,23 +298,113 @@ abstract class AppLocalizations {
   /// **'Account'**
   String get account_settings_screen_title;
 
+  /// Account verification error: profile age range changed during verification
+  ///
+  /// In en, this message translates to:
+  /// **'Profile age changed during verification'**
+  String get account_verification_screen_error_profile_age_range_mismatch;
+
+  /// Account verification error: profile age range verification failed
+  ///
+  /// In en, this message translates to:
+  /// **'Profile age verification failed'**
+  String get account_verification_screen_error_profile_age_range_verification_failed;
+
+  /// Account verification error: verified profile age range mismatch
+  ///
+  /// In en, this message translates to:
+  /// **'Provided age does not match your profile age'**
+  String get account_verification_screen_error_profile_age_range_verification_mismatch;
+
+  /// Account verification error: profile name changed during verification
+  ///
+  /// In en, this message translates to:
+  /// **'Profile name changed during verification'**
+  String get account_verification_screen_error_profile_name_mismatch;
+
+  /// Account verification error: profile name verification failed
+  ///
+  /// In en, this message translates to:
+  /// **'Profile name verification failed'**
+  String get account_verification_screen_error_profile_name_verification_failed;
+
+  /// Account verification error: verified profile name mismatch
+  ///
+  /// In en, this message translates to:
+  /// **'Provided name does not match your profile name'**
+  String get account_verification_screen_error_profile_name_verification_mismatch;
+
+  /// Account verification error: security content changed during verification
+  ///
+  /// In en, this message translates to:
+  /// **'Security selfie changed during verification'**
+  String get account_verification_screen_error_security_content_mismatch;
+
+  /// Account verification error: security content verification failed
+  ///
+  /// In en, this message translates to:
+  /// **'Security selfie verification failed'**
+  String get account_verification_screen_error_security_content_verification_failed;
+
+  /// Account verification error: verified security content mismatch
+  ///
+  /// In en, this message translates to:
+  /// **'Provided image does not match your security selfie'**
+  String get account_verification_screen_error_security_content_verification_mismatch;
+
+  /// Account verification error: verification data parsing failed
+  ///
+  /// In en, this message translates to:
+  /// **'Unsupported person identification data'**
+  String get account_verification_screen_error_verification_data_parsing_failed;
+
+  /// Account verification error: verification data verification failed
+  ///
+  /// In en, this message translates to:
+  /// **'Verifying person identification data failed'**
+  String get account_verification_screen_error_verification_data_verification_failed;
+
+  /// Account verification error: verification method disabled
+  ///
+  /// In en, this message translates to:
+  /// **'Verification method is disabled'**
+  String get account_verification_screen_error_verification_method_disabled;
+
+  /// Title shown above previous account verification errors
+  ///
+  /// In en, this message translates to:
+  /// **'Errors'**
+  String get account_verification_screen_previous_verification_errors_title;
+
+  /// Text shown with previous account verification time
+  ///
+  /// In en, this message translates to:
+  /// **'Time: {p0}'**
+  String account_verification_screen_previous_verification_time(String p0);
+
+  /// Title shown for previous account verification details
+  ///
+  /// In en, this message translates to:
+  /// **'Previous verification'**
+  String get account_verification_screen_previous_verification_title;
+
   /// Text shown with current account verification queue position
   ///
   /// In en, this message translates to:
-  /// **'Verification queue position: {p0}'**
+  /// **'Queue position: {p0}'**
   String account_verification_screen_queue_position(String p0);
+
+  /// Snackbar text when account verification fails because initial setup is not completed
+  ///
+  /// In en, this message translates to:
+  /// **'Dating profile not created'**
+  String get account_verification_screen_request_initial_setup_not_completed;
 
   /// Snackbar text when account verification queue is full
   ///
   /// In en, this message translates to:
   /// **'Account verification queue is full. Please try again later.'**
   String get account_verification_screen_request_queue_full;
-
-  /// Snackbar text when account verification request was queued successfully
-  ///
-  /// In en, this message translates to:
-  /// **'Account verification request queued'**
-  String get account_verification_screen_request_queued;
 
   /// Checkbox label for account verification profile age scope
   ///
@@ -339,6 +429,12 @@ abstract class AppLocalizations {
   /// In en, this message translates to:
   /// **'Account verification'**
   String get account_verification_screen_title;
+
+  /// Title shown for account verification in progress section
+  ///
+  /// In en, this message translates to:
+  /// **'Verification in progress'**
+  String get account_verification_screen_verification_in_progress_title;
 
   /// Account verification method label for eudi when it is not yet supported
   ///

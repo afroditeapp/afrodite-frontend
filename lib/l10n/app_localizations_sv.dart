@@ -131,16 +131,76 @@ class AppLocalizationsSv extends AppLocalizations {
   String get account_settings_screen_title => 'Account';
 
   @override
-  String account_verification_screen_queue_position(String p0) {
-    return 'Verification queue position: $p0';
+  String get account_verification_screen_error_profile_age_range_mismatch =>
+      'Profile age changed during verification';
+
+  @override
+  String get account_verification_screen_error_profile_age_range_verification_failed =>
+      'Profile age verification failed';
+
+  @override
+  String get account_verification_screen_error_profile_age_range_verification_mismatch =>
+      'Provided age does not match your profile age';
+
+  @override
+  String get account_verification_screen_error_profile_name_mismatch =>
+      'Profile name changed during verification';
+
+  @override
+  String get account_verification_screen_error_profile_name_verification_failed =>
+      'Profile name verification failed';
+
+  @override
+  String get account_verification_screen_error_profile_name_verification_mismatch =>
+      'Provided name does not match your profile name';
+
+  @override
+  String get account_verification_screen_error_security_content_mismatch =>
+      'Security selfie changed during verification';
+
+  @override
+  String get account_verification_screen_error_security_content_verification_failed =>
+      'Security selfie verification failed';
+
+  @override
+  String get account_verification_screen_error_security_content_verification_mismatch =>
+      'Provided image does not match your security selfie';
+
+  @override
+  String get account_verification_screen_error_verification_data_parsing_failed =>
+      'Unsupported person identification data';
+
+  @override
+  String get account_verification_screen_error_verification_data_verification_failed =>
+      'Verifying person identification data failed';
+
+  @override
+  String get account_verification_screen_error_verification_method_disabled =>
+      'Verification method is disabled';
+
+  @override
+  String get account_verification_screen_previous_verification_errors_title => 'Errors';
+
+  @override
+  String account_verification_screen_previous_verification_time(String p0) {
+    return 'Time: $p0';
   }
+
+  @override
+  String get account_verification_screen_previous_verification_title => 'Previous verification';
+
+  @override
+  String account_verification_screen_queue_position(String p0) {
+    return 'Queue position: $p0';
+  }
+
+  @override
+  String get account_verification_screen_request_initial_setup_not_completed =>
+      'Dating profile not created';
 
   @override
   String get account_verification_screen_request_queue_full =>
       'Account verification queue is full. Please try again later.';
-
-  @override
-  String get account_verification_screen_request_queued => 'Account verification request queued';
 
   @override
   String get account_verification_screen_scope_profile_age => 'Profile age';
@@ -154,6 +214,10 @@ class AppLocalizationsSv extends AppLocalizations {
 
   @override
   String get account_verification_screen_title => 'Account verification';
+
+  @override
+  String get account_verification_screen_verification_in_progress_title =>
+      'Verification in progress';
 
   @override
   String get account_verification_screen_verification_method_eudi_unsupported =>

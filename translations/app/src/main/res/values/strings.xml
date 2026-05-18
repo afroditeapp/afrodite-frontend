@@ -623,11 +623,28 @@
     <string name="account_settings_screen_email_change_initiated" description="Snackbar text for successful email change initiation">Email change initiated. Please check your email.</string>
     <string name="account_settings_screen_email_change_cancelled" description="Snackbar text for successful email change cancellation">Email change cancelled</string>
     <string name="account_settings_screen_cancel_email_change_confirm_dialog_title" description="Title for cancel email change confirm dialog">Cancel email change?</string>
+
     <!-- Account verification settings -->
     <string name="account_verification_screen_title" description="Title for account verification settings screen">Account verification</string>
-    <string name="account_verification_screen_queue_position" description="Text shown with current account verification queue position">Verification queue position: %s</string>
+    <string name="account_verification_screen_verification_in_progress_title" description="Title shown for account verification in progress section">Verification in progress</string>
+    <string name="account_verification_screen_queue_position" description="Text shown with current account verification queue position">Queue position: %s</string>
     <string name="account_verification_screen_request_queue_full" description="Snackbar text when account verification queue is full">Account verification queue is full. Please try again later.</string>
-    <string name="account_verification_screen_request_queued" description="Snackbar text when account verification request was queued successfully">Account verification request queued</string>
+    <string name="account_verification_screen_request_initial_setup_not_completed" description="Snackbar text when account verification fails because initial setup is not completed">Dating profile not created</string>
+    <string name="account_verification_screen_previous_verification_title" description="Title shown for previous account verification details">Previous verification</string>
+    <string name="account_verification_screen_previous_verification_time" description="Text shown with previous account verification time">Time: %s</string>
+    <string name="account_verification_screen_previous_verification_errors_title" description="Title shown above previous account verification errors">Errors</string>
+    <string name="account_verification_screen_error_verification_method_disabled" description="Account verification error: verification method disabled">Verification method is disabled</string>
+    <string name="account_verification_screen_error_verification_data_parsing_failed" description="Account verification error: verification data parsing failed">Unsupported person identification data</string>
+    <string name="account_verification_screen_error_verification_data_verification_failed" description="Account verification error: verification data verification failed">Verifying person identification data failed</string>
+    <string name="account_verification_screen_error_profile_age_range_verification_failed" description="Account verification error: profile age range verification failed">Profile age verification failed</string>
+    <string name="account_verification_screen_error_profile_age_range_verification_mismatch" description="Account verification error: verified profile age range mismatch">Provided age does not match your profile age</string>
+    <string name="account_verification_screen_error_profile_age_range_mismatch" description="Account verification error: profile age range changed during verification">Profile age changed during verification</string>
+    <string name="account_verification_screen_error_profile_name_verification_failed" description="Account verification error: profile name verification failed">Profile name verification failed</string>
+    <string name="account_verification_screen_error_profile_name_verification_mismatch" description="Account verification error: verified profile name mismatch">Provided name does not match your profile name</string>
+    <string name="account_verification_screen_error_profile_name_mismatch" description="Account verification error: profile name changed during verification">Profile name changed during verification</string>
+    <string name="account_verification_screen_error_security_content_verification_failed" description="Account verification error: security content verification failed">Security selfie verification failed</string>
+    <string name="account_verification_screen_error_security_content_verification_mismatch" description="Account verification error: verified security content mismatch">Provided image does not match your security selfie</string>
+    <string name="account_verification_screen_error_security_content_mismatch" description="Account verification error: security content changed during verification">Security selfie changed during verification</string>
     <string name="account_verification_screen_start_verification_title" description="Title shown above account verification scope and actions section">Select verification scopes and method</string>
     <string name="account_verification_screen_scope_profile_age" description="Checkbox label for account verification profile age scope">Profile age</string>
     <string name="account_verification_screen_scope_profile_name" description="Checkbox label for account verification profile name scope">Profile name</string>

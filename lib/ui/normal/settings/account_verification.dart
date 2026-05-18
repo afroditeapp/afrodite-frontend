@@ -16,16 +16,29 @@ import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:openapi/api.dart';
 import 'package:app/utils/result.dart';
+import 'package:app/utils/api.dart';
+import 'package:app/utils/time.dart';
 
-bool isAccessToAccountVerificationScreenPossible(AccountVerificationMethodsConfig methods) {
-  return methods != AccountVerificationMethodsConfig();
+bool isAccessToAccountVerificationScreenPossible({
+  required AccountVerificationMethodsConfig methods,
+  required VerificationConfig verificationConfig,
+}) {
+  return methods != AccountVerificationMethodsConfig() &&
+      (verificationConfig.securityContent ||
+          verificationConfig.profileAgeRange ||
+          verificationConfig.profileName);
 }
 
 bool shouldShowAccountVerificationRequiredLimit({
   required AccountVerificationMethodsConfig? methods,
+  required VerificationConfig verificationConfig,
   required int myProfileVerificationStatus,
 }) {
-  if (methods == null || !isAccessToAccountVerificationScreenPossible(methods)) {
+  if (methods == null ||
+      !isAccessToAccountVerificationScreenPossible(
+        methods: methods,
+        verificationConfig: verificationConfig,
+      )) {
     return false;
   }
 
@@ -49,6 +62,7 @@ class AccountVerificationInfoBannerItem extends StatelessWidget {
 
             final shouldShowBanner = shouldShowAccountVerificationRequiredLimit(
               methods: accountVerificationMethods,
+              verificationConfig: configData.verificationConfig(),
               myProfileVerificationStatus: profile.mergedVerificationStatus(),
             );
             if (!shouldShowBanner || accountVerificationMethods == null) {
@@ -128,16 +142,35 @@ class AccountVerificationSettingsScreen extends StatefulWidget {
 }
 
 class _AccountVerificationSettingsScreenState extends State<AccountVerificationSettingsScreen> {
+  static const int _verificationMethodDisabled = 0x1;
+  static const int _verificationDataParsingFailed = 0x2;
+  static const int _verificationDataVerificationFailed = 0x4;
+  static const int _profileAgeRangeVerificationFailed = 0x8;
+  static const int _profileAgeRangeVerificationMismatch = 0x10;
+  static const int _profileAgeRangeMismatch = 0x20;
+  static const int _profileNameVerificationFailed = 0x40;
+  static const int _profileNameVerificationMismatch = 0x80;
+  static const int _profileNameMismatch = 0x100;
+  static const int _securityContentVerificationFailed = 0x200;
+  static const int _securityContentVerificationMismatch = 0x400;
+  static const int _securityContentMismatch = 0x800;
+
   StreamSubscription<ServerWsEvent>? _serverEventsSubscription;
   int? _queuePosition;
+  UnixTime? _previousVerificationUnixTime;
+  int _verificationErrorFlags = 0;
+  int _profileVerificationStatus = 0;
+  int _mediaVerificationStatus = 0;
   bool _isLoading = true;
   bool _actionInProgress = false;
   bool _scopeSecurityContent = true;
   bool _scopeProfileAgeRange = true;
   bool _scopeProfileName = true;
+  late final _QueueStatusReloader _reloader;
 
   @override
   void initState() {
+    _reloader = _QueueStatusReloader(_reloadQueueStatus);
     super.initState();
     _serverEventsSubscription = widget.api.serverEvents
         .where((event) => event is ServerMessageContainer)
@@ -151,11 +184,16 @@ class _AccountVerificationSettingsScreenState extends State<AccountVerificationS
             return;
           }
 
-          setState(() {
-            _queuePosition = event.message.accountVerificationQueuePosition;
-          });
+          final queuePosition = event.message.accountVerificationQueuePosition;
+          if (queuePosition == null) {
+            unawaited(_reloader.trigger());
+          } else {
+            setState(() {
+              _queuePosition = queuePosition;
+            });
+          }
         });
-    _reloadQueueStatus();
+    unawaited(_reloader.trigger());
   }
 
   @override
@@ -168,64 +206,71 @@ class _AccountVerificationSettingsScreenState extends State<AccountVerificationS
   Widget build(BuildContext context) {
     return Scaffold(
       appBar: AppBar(title: Text(context.strings.account_verification_screen_title)),
-      body: SingleChildScrollView(
-        child: BlocBuilder<MyProfileBloc, MyProfileData>(
-          builder: (context, state) {
-            return column(context, state);
-          },
-        ),
-      ),
+      body: _isLoading
+          ? const Center(child: CircularProgressIndicator())
+          : SingleChildScrollView(child: column(context)),
     );
   }
 
-  Widget column(BuildContext context, MyProfileData state) {
-    final verificationStatus = state.profile?.mergedVerificationStatus() ?? 0;
+  Widget column(BuildContext context) {
+    final verificationConfig = context.read<ClientFeaturesConfigBloc>().state.verificationConfig();
+    final showSecurityContent = verificationConfig.securityContent;
+    final showProfileAgeRange = verificationConfig.profileAgeRange;
+    final showProfileName = verificationConfig.profileName;
+
+    final verificationStatus = _profileVerificationStatus | _mediaVerificationStatus;
     final securitySelfieVerified =
         verificationStatus & ProfileVerificationStatusFlags.securityContentVerified != 0;
     final profileAgeRangeVerified =
         verificationStatus & ProfileVerificationStatusFlags.profileAgeVerified != 0;
     final profileNameVerified =
         verificationStatus & ProfileVerificationStatusFlags.profileNameVerified != 0;
-    final verificationScope = AccountVerificationScope(
-      securityContent: !securitySelfieVerified,
-      profileAgeRange: !profileAgeRangeVerified,
-      profileName: !profileNameVerified,
-    );
-    _syncScopeSelection(verificationScope);
-    final selectedVerificationScope = _selectedVerificationScope(verificationScope);
+
+    final allVisibleScopesVerified =
+        (!showSecurityContent || securitySelfieVerified) &&
+        (!showProfileAgeRange || profileAgeRangeVerified) &&
+        (!showProfileName || profileNameVerified);
+
     final verificationOngoing = _queuePosition != null;
-    final showVerificationStates =
-        profileAgeRangeVerified || profileNameVerified || securitySelfieVerified;
+    final showPreviousVerification = !verificationOngoing && _previousVerificationUnixTime != null;
+    final previousVerificationErrors = _verificationErrors(context);
+    final showVerificationStates = _previousVerificationUnixTime != null;
     final showVerificationMethods =
-        !_isLoading && !verificationOngoing && _hasVerificationScope(verificationScope);
+        !verificationOngoing &&
+        (showSecurityContent || showProfileAgeRange || showProfileName) &&
+        !allVisibleScopesVerified;
 
     return Column(
       children: [
         if (showVerificationStates) ...[
-          _verificationStatusTile(
-            context,
-            verified: profileAgeRangeVerified,
-            title: context
-                .strings
-                .profile_filters_screen_profile_verification_status_filter_profile_age_range_verified,
-          ),
-          _verificationStatusTile(
-            context,
-            verified: profileNameVerified,
-            title: context
-                .strings
-                .profile_filters_screen_profile_verification_status_filter_profile_name_verified,
-          ),
-          _verificationStatusTile(
-            context,
-            verified: securitySelfieVerified,
-            title: context
-                .strings
-                .profile_filters_screen_profile_verification_status_filter_security_content_verified,
-          ),
+          if (showProfileAgeRange)
+            _verificationStatusTile(
+              context,
+              verified: profileAgeRangeVerified,
+              title: context
+                  .strings
+                  .profile_filters_screen_profile_verification_status_filter_profile_age_range_verified,
+            ),
+          if (showProfileName)
+            _verificationStatusTile(
+              context,
+              verified: profileNameVerified,
+              title: context
+                  .strings
+                  .profile_filters_screen_profile_verification_status_filter_profile_name_verified,
+            ),
+          if (showSecurityContent)
+            _verificationStatusTile(
+              context,
+              verified: securitySelfieVerified,
+              title: context
+                  .strings
+                  .profile_filters_screen_profile_verification_status_filter_security_content_verified,
+            ),
           const Divider(),
         ],
-        if (verificationOngoing)
+        if (verificationOngoing) ...[
+          _sectionTitle(context.strings.account_verification_screen_verification_in_progress_title),
           ListTile(
             leading: const Icon(Icons.hourglass_top, color: Colors.orange),
             title: Text(
@@ -234,17 +279,106 @@ class _AccountVerificationSettingsScreenState extends State<AccountVerificationS
               ),
             ),
           ),
+        ],
         if (verificationOngoing) const Divider(),
+        if (showPreviousVerification) ...[
+          _sectionTitle(context.strings.account_verification_screen_previous_verification_title),
+          ListTile(
+            leading: const Icon(Icons.history),
+            title: Text(
+              context.strings.account_verification_screen_previous_verification_time(
+                fullTimeWithSecondsString(_previousVerificationUnixTime!.toUtcDateTime()),
+              ),
+            ),
+          ),
+          if (previousVerificationErrors.isNotEmpty)
+            Padding(
+              padding: const EdgeInsets.only(left: 16.0, right: 16.0, top: 4.0),
+              child: Align(
+                alignment: Alignment.centerLeft,
+                child: Text(
+                  context.strings.account_verification_screen_previous_verification_errors_title,
+                  style: Theme.of(context).textTheme.titleSmall,
+                ),
+              ),
+            ),
+          ...previousVerificationErrors.map(
+            (error) => ListTile(
+              leading: const Icon(Icons.error_outline, color: Colors.orange),
+              title: Text(error),
+            ),
+          ),
+          const Divider(),
+        ],
         if (showVerificationMethods) ...[
           _sectionTitle(context.strings.account_verification_screen_start_verification_title),
-          ..._verificationScopeAndActionTiles(
-            context,
-            availableScope: verificationScope,
-            selectedScope: selectedVerificationScope,
-          ),
+          ..._verificationScopeAndActionTiles(context, verificationConfig),
         ],
       ],
     );
+  }
+
+  List<String> _verificationErrors(BuildContext context) {
+    final errorFlags = _verificationErrorFlags;
+    if (errorFlags == 0) {
+      return const [];
+    }
+
+    final errors = <String>[];
+    if (errorFlags & _verificationMethodDisabled != 0) {
+      errors.add(context.strings.account_verification_screen_error_verification_method_disabled);
+    }
+    if (errorFlags & _verificationDataParsingFailed != 0) {
+      errors.add(
+        context.strings.account_verification_screen_error_verification_data_parsing_failed,
+      );
+    }
+    if (errorFlags & _verificationDataVerificationFailed != 0) {
+      errors.add(
+        context.strings.account_verification_screen_error_verification_data_verification_failed,
+      );
+    }
+    if (errorFlags & _profileAgeRangeVerificationFailed != 0) {
+      errors.add(
+        context.strings.account_verification_screen_error_profile_age_range_verification_failed,
+      );
+    }
+    if (errorFlags & _profileAgeRangeVerificationMismatch != 0) {
+      errors.add(
+        context.strings.account_verification_screen_error_profile_age_range_verification_mismatch,
+      );
+    }
+    if (errorFlags & _profileAgeRangeMismatch != 0) {
+      errors.add(context.strings.account_verification_screen_error_profile_age_range_mismatch);
+    }
+    if (errorFlags & _profileNameVerificationFailed != 0) {
+      errors.add(
+        context.strings.account_verification_screen_error_profile_name_verification_failed,
+      );
+    }
+    if (errorFlags & _profileNameVerificationMismatch != 0) {
+      errors.add(
+        context.strings.account_verification_screen_error_profile_name_verification_mismatch,
+      );
+    }
+    if (errorFlags & _profileNameMismatch != 0) {
+      errors.add(context.strings.account_verification_screen_error_profile_name_mismatch);
+    }
+    if (errorFlags & _securityContentVerificationFailed != 0) {
+      errors.add(
+        context.strings.account_verification_screen_error_security_content_verification_failed,
+      );
+    }
+    if (errorFlags & _securityContentVerificationMismatch != 0) {
+      errors.add(
+        context.strings.account_verification_screen_error_security_content_verification_mismatch,
+      );
+    }
+    if (errorFlags & _securityContentMismatch != 0) {
+      errors.add(context.strings.account_verification_screen_error_security_content_mismatch);
+    }
+
+    return errors;
   }
 
   Widget _sectionTitle(String title) {
@@ -258,23 +392,23 @@ class _AccountVerificationSettingsScreenState extends State<AccountVerificationS
   }
 
   List<Widget> _verificationScopeAndActionTiles(
-    BuildContext context, {
-    required AccountVerificationScope availableScope,
-    required AccountVerificationScope selectedScope,
-  }) {
+    BuildContext context,
+    VerificationConfig verificationConfig,
+  ) {
+    final selectedScope = _selectedVerificationScope(verificationConfig);
     return [
-      ..._verificationScopeCheckboxTiles(context, availableScope: availableScope),
+      ..._verificationScopeCheckboxTiles(context, verificationConfig),
       if (widget.methods.debugAccept)
         ListTile(
           leading: const Icon(Icons.task_alt),
-          title: const Text('debug_accept'),
+          title: const Text('Debug accept'),
           enabled: !_actionInProgress && _hasVerificationScope(selectedScope),
           onTap: () => _requestVerification(VerificationMethod.debugAccept, selectedScope),
         ),
       if (widget.methods.debugReject)
         ListTile(
           leading: const Icon(Icons.cancel_outlined),
-          title: const Text('debug_reject'),
+          title: const Text('Debug reject'),
           enabled: !_actionInProgress && _hasVerificationScope(selectedScope),
           onTap: () => _requestVerification(VerificationMethod.debugReject, selectedScope),
         ),
@@ -290,11 +424,11 @@ class _AccountVerificationSettingsScreenState extends State<AccountVerificationS
   }
 
   List<Widget> _verificationScopeCheckboxTiles(
-    BuildContext context, {
-    required AccountVerificationScope availableScope,
-  }) {
+    BuildContext context,
+    VerificationConfig verificationConfig,
+  ) {
     return [
-      if (availableScope.profileAgeRange)
+      if (verificationConfig.profileAgeRange)
         CheckboxListTile(
           title: Text(context.strings.account_verification_screen_scope_profile_age),
           value: _scopeProfileAgeRange,
@@ -306,7 +440,7 @@ class _AccountVerificationSettingsScreenState extends State<AccountVerificationS
                   });
                 },
         ),
-      if (availableScope.profileName)
+      if (verificationConfig.profileName)
         CheckboxListTile(
           title: Text(context.strings.account_verification_screen_scope_profile_name),
           value: _scopeProfileName,
@@ -318,7 +452,7 @@ class _AccountVerificationSettingsScreenState extends State<AccountVerificationS
                   });
                 },
         ),
-      if (availableScope.securityContent)
+      if (verificationConfig.securityContent)
         CheckboxListTile(
           title: Text(
             context
@@ -342,7 +476,7 @@ class _AccountVerificationSettingsScreenState extends State<AccountVerificationS
     required bool verified,
     required String title,
   }) {
-    final icon = verified ? Icons.check_circle : Icons.cancel;
+    final icon = verified ? Icons.check : Icons.close;
     final color = verified ? Colors.green : Colors.red;
 
     return ListTile(
@@ -355,22 +489,18 @@ class _AccountVerificationSettingsScreenState extends State<AccountVerificationS
     return scope.securityContent || scope.profileAgeRange || scope.profileName;
   }
 
-  AccountVerificationScope _selectedVerificationScope(AccountVerificationScope availableScope) {
+  AccountVerificationScope _selectedVerificationScope(VerificationConfig verificationConfig) {
     return AccountVerificationScope(
-      securityContent: availableScope.securityContent && _scopeSecurityContent,
-      profileAgeRange: availableScope.profileAgeRange && _scopeProfileAgeRange,
-      profileName: availableScope.profileName && _scopeProfileName,
+      securityContent: verificationConfig.securityContent && _scopeSecurityContent,
+      profileAgeRange: verificationConfig.profileAgeRange && _scopeProfileAgeRange,
+      profileName: verificationConfig.profileName && _scopeProfileName,
     );
-  }
-
-  void _syncScopeSelection(AccountVerificationScope availableScope) {
-    _scopeSecurityContent = availableScope.securityContent && _scopeSecurityContent;
-    _scopeProfileAgeRange = availableScope.profileAgeRange && _scopeProfileAgeRange;
-    _scopeProfileName = availableScope.profileName && _scopeProfileName;
   }
 
   Future<void> _reloadQueueStatus() async {
     final status = await widget.api.account((api) => api.getAccountVerificationQueueStatus()).ok();
+    final profile = await widget.api.profile((api) => api.getMyProfile()).ok();
+    final mediaContent = await widget.api.media((api) => api.getMediaContentInfo()).ok();
 
     if (!mounted) {
       return;
@@ -379,6 +509,14 @@ class _AccountVerificationSettingsScreenState extends State<AccountVerificationS
     setState(() {
       _isLoading = false;
       _queuePosition = status?.queuePosition;
+      _previousVerificationUnixTime = status?.verificationUnixTime;
+      _verificationErrorFlags = status?.verificationErrorFlags.v ?? 0;
+      if (profile != null) {
+        _profileVerificationStatus = profile.profile.verificationStatus.v;
+      }
+      if (mediaContent != null) {
+        _mediaVerificationStatus = mediaContent.profileContent.verificationStatus.v;
+      }
     });
   }
 
@@ -410,19 +548,17 @@ class _AccountVerificationSettingsScreenState extends State<AccountVerificationS
       return;
     }
 
-    if (result == null) {
-      showSnackBar(context.strings.generic_error_occurred);
-    } else if (result.errorAlreadyInQueue) {
+    if (result?.errorAlreadyInQueue == true) {
       showSnackBar(context.strings.generic_error);
-    } else if (result.errorQueueFull) {
+    } else if (result?.errorQueueFull == true) {
       showSnackBar(context.strings.account_verification_screen_request_queue_full);
-    } else if (result.error) {
+    } else if (result?.errorInitialSetupNotCompleted == true) {
+      showSnackBar(context.strings.account_verification_screen_request_initial_setup_not_completed);
+    } else if (result?.error == true) {
       showSnackBar(context.strings.generic_error_occurred);
-    } else {
-      showSnackBar(context.strings.account_verification_screen_request_queued);
     }
 
-    await _reloadQueueStatus();
+    await _reloader.trigger();
 
     if (!mounted) {
       return;
@@ -431,5 +567,29 @@ class _AccountVerificationSettingsScreenState extends State<AccountVerificationS
     setState(() {
       _actionInProgress = false;
     });
+  }
+}
+
+class _QueueStatusReloader {
+  final Future<void> Function() _reload;
+  bool _inProgress = false;
+  bool _requested = false;
+
+  _QueueStatusReloader(this._reload);
+
+  Future<void> trigger() async {
+    _requested = true;
+    if (_inProgress) {
+      return;
+    }
+    _inProgress = true;
+    try {
+      while (_requested) {
+        _requested = false;
+        await _reload();
+      }
+    } finally {
+      _inProgress = false;
+    }
   }
 }

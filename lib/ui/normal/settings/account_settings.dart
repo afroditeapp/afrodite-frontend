@@ -220,8 +220,12 @@ class _AccountSettingsScreenState extends State<AccountSettingsScreen> {
         BlocBuilder<ClientFeaturesConfigBloc, ClientFeaturesConfigData>(
           builder: (context, configState) {
             final accountVerificationMethods = configState.config.verificationMethods?.account;
+            final verificationConfig = configState.verificationConfig();
             if (accountVerificationMethods == null ||
-                !isAccessToAccountVerificationScreenPossible(accountVerificationMethods)) {
+                !isAccessToAccountVerificationScreenPossible(
+                  methods: accountVerificationMethods,
+                  verificationConfig: verificationConfig,
+                )) {
               return const SizedBox.shrink();
             }
 
