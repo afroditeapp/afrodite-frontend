@@ -356,6 +356,7 @@
     <string name="profile_grid_screen_daily_likes_dialog_text" description="Dialog text for daily likes info dialog">Daily chat requests left: %s\nReset time: %s</string>
     <string name="profile_grid_screen_daily_likes_dialog_unlimited_likes_text" description="Dialog text for unlimited likes specific text in daily likes info dialog">Sending chat requests to those who are up for a date today does not decrease daily chat requests.</string>
     <string name="profile_grid_screen_account_verification_banner_text" description="Info banner text shown when account is unverified">Your account is unverified</string>
+    <string name="profile_grid_screen_account_verification_banner_text_incomplete" description="Info banner text shown when account verification is incomplete">Account verification incomplete</string>
     <string name="profile_grid_screen_account_verification_banner_button" description="Action button text for account verification info banner">Verify now</string>
 
     <!-- View profile screen -->

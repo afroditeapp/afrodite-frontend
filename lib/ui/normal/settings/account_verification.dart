@@ -29,10 +29,57 @@ bool isAccessToAccountVerificationScreenPossible({
           verificationConfig.profileName);
 }
 
-bool shouldShowAccountVerificationRequiredLimit({
+class AccountVerificationScopeStatuses {
+  final bool showSecurityContent;
+  final bool showProfileAgeRange;
+  final bool showProfileName;
+  final bool securitySelfieVerified;
+  final bool profileAgeRangeVerified;
+  final bool profileNameVerified;
+
+  const AccountVerificationScopeStatuses({
+    required this.showSecurityContent,
+    required this.showProfileAgeRange,
+    required this.showProfileName,
+    required this.securitySelfieVerified,
+    required this.profileAgeRangeVerified,
+    required this.profileNameVerified,
+  });
+
+  bool get isAnyScopeVisible => showSecurityContent || showProfileAgeRange || showProfileName;
+
+  bool get allVisibleScopesVerified {
+    return (!showSecurityContent || securitySelfieVerified) &&
+        (!showProfileAgeRange || profileAgeRangeVerified) &&
+        (!showProfileName || profileNameVerified);
+  }
+}
+
+AccountVerificationScopeStatuses accountVerificationScopeStatuses({
+  required VerificationConfig verificationConfig,
+  required int verificationStatus,
+}) {
+  final securitySelfieVerified =
+      verificationStatus & ProfileVerificationStatusFlags.securityContentVerified != 0;
+  final profileAgeRangeVerified =
+      verificationStatus & ProfileVerificationStatusFlags.profileAgeVerified != 0;
+  final profileNameVerified =
+      verificationStatus & ProfileVerificationStatusFlags.profileNameVerified != 0;
+
+  return AccountVerificationScopeStatuses(
+    showSecurityContent: verificationConfig.securityContent,
+    showProfileAgeRange: verificationConfig.profileAgeRange,
+    showProfileName: verificationConfig.profileName,
+    securitySelfieVerified: securitySelfieVerified,
+    profileAgeRangeVerified: profileAgeRangeVerified,
+    profileNameVerified: profileNameVerified,
+  );
+}
+
+bool shouldShowAccountVerificationIncompleteBanner({
   required AccountVerificationMethodsConfig? methods,
   required VerificationConfig verificationConfig,
-  required int myProfileVerificationStatus,
+  required int verificationStatus,
 }) {
   if (methods == null ||
       !isAccessToAccountVerificationScreenPossible(
@@ -42,7 +89,12 @@ bool shouldShowAccountVerificationRequiredLimit({
     return false;
   }
 
-  return !hasAnyAccountVerificationCompleted(myProfileVerificationStatus);
+  final statuses = accountVerificationScopeStatuses(
+    verificationConfig: verificationConfig,
+    verificationStatus: verificationStatus,
+  );
+
+  return statuses.isAnyScopeVisible && !statuses.allVisibleScopesVerified;
 }
 
 class AccountVerificationInfoBannerItem extends StatelessWidget {
@@ -55,21 +107,30 @@ class AccountVerificationInfoBannerItem extends StatelessWidget {
         return BlocBuilder<MyProfileBloc, MyProfileData>(
           builder: (context, myProfileState) {
             final accountVerificationMethods = configData.config.verificationMethods?.account;
+            final verificationConfig = configData.verificationConfig();
             final profile = myProfileState.profile;
             if (!myProfileState.initialLoadingCompleted || profile == null) {
               return const SizedBox.shrink();
             }
 
-            final shouldShowBanner = shouldShowAccountVerificationRequiredLimit(
+            final verificationStatus = profile.mergedVerificationStatus();
+            final shouldShowBanner = shouldShowAccountVerificationIncompleteBanner(
               methods: accountVerificationMethods,
-              verificationConfig: configData.verificationConfig(),
-              myProfileVerificationStatus: profile.mergedVerificationStatus(),
+              verificationConfig: verificationConfig,
+              verificationStatus: verificationStatus,
             );
             if (!shouldShowBanner || accountVerificationMethods == null) {
               return const SizedBox.shrink();
             }
 
-            return _accountVerificationRequiredBanner(context, accountVerificationMethods);
+            final anyAccountVerificationCompleted = hasAnyAccountVerificationCompleted(
+              verificationStatus,
+            );
+            return _accountVerificationRequiredBanner(
+              context,
+              accountVerificationMethods,
+              anyAccountVerificationCompleted,
+            );
           },
         );
       },
@@ -79,7 +140,12 @@ class AccountVerificationInfoBannerItem extends StatelessWidget {
   Widget _accountVerificationRequiredBanner(
     BuildContext context,
     AccountVerificationMethodsConfig methods,
+    bool accountVerificationIncomplete,
   ) {
+    final bannerText = accountVerificationIncomplete
+        ? context.strings.profile_grid_screen_account_verification_banner_text_incomplete
+        : context.strings.profile_grid_screen_account_verification_banner_text;
+
     return Padding(
       padding: const EdgeInsets.symmetric(horizontal: 12),
       child: Row(
@@ -94,7 +160,7 @@ class AccountVerificationInfoBannerItem extends StatelessWidget {
             child: Padding(
               padding: const EdgeInsets.symmetric(vertical: 4),
               child: Text(
-                context.strings.profile_grid_screen_account_verification_banner_text,
+                bannerText,
                 style: Theme.of(context).textTheme.bodyMedium?.copyWith(
                   color: Theme.of(context).colorScheme.onPrimaryContainer,
                 ),
@@ -214,55 +280,42 @@ class _AccountVerificationSettingsScreenState extends State<AccountVerificationS
 
   Widget column(BuildContext context) {
     final verificationConfig = context.read<ClientFeaturesConfigBloc>().state.verificationConfig();
-    final showSecurityContent = verificationConfig.securityContent;
-    final showProfileAgeRange = verificationConfig.profileAgeRange;
-    final showProfileName = verificationConfig.profileName;
-
     final verificationStatus = _profileVerificationStatus | _mediaVerificationStatus;
-    final securitySelfieVerified =
-        verificationStatus & ProfileVerificationStatusFlags.securityContentVerified != 0;
-    final profileAgeRangeVerified =
-        verificationStatus & ProfileVerificationStatusFlags.profileAgeVerified != 0;
-    final profileNameVerified =
-        verificationStatus & ProfileVerificationStatusFlags.profileNameVerified != 0;
-
-    final allVisibleScopesVerified =
-        (!showSecurityContent || securitySelfieVerified) &&
-        (!showProfileAgeRange || profileAgeRangeVerified) &&
-        (!showProfileName || profileNameVerified);
+    final statuses = accountVerificationScopeStatuses(
+      verificationConfig: verificationConfig,
+      verificationStatus: verificationStatus,
+    );
 
     final verificationOngoing = _queuePosition != null;
     final showPreviousVerification = !verificationOngoing && _previousVerificationUnixTime != null;
     final previousVerificationErrors = _verificationErrors(context);
     final showVerificationStates = _previousVerificationUnixTime != null;
     final showVerificationMethods =
-        !verificationOngoing &&
-        (showSecurityContent || showProfileAgeRange || showProfileName) &&
-        !allVisibleScopesVerified;
+        !verificationOngoing && statuses.isAnyScopeVisible && !statuses.allVisibleScopesVerified;
 
     return Column(
       children: [
         if (showVerificationStates) ...[
-          if (showProfileAgeRange)
+          if (statuses.showProfileAgeRange)
             _verificationStatusTile(
               context,
-              verified: profileAgeRangeVerified,
+              verified: statuses.profileAgeRangeVerified,
               title: context
                   .strings
                   .profile_filters_screen_profile_verification_status_filter_profile_age_range_verified,
             ),
-          if (showProfileName)
+          if (statuses.showProfileName)
             _verificationStatusTile(
               context,
-              verified: profileNameVerified,
+              verified: statuses.profileNameVerified,
               title: context
                   .strings
                   .profile_filters_screen_profile_verification_status_filter_profile_name_verified,
             ),
-          if (showSecurityContent)
+          if (statuses.showSecurityContent)
             _verificationStatusTile(
               context,
-              verified: securitySelfieVerified,
+              verified: statuses.securitySelfieVerified,
               title: context
                   .strings
                   .profile_filters_screen_profile_verification_status_filter_security_content_verified,

@@ -1,3 +1,5 @@
+import 'package:openapi/api.dart';
+
 class ProfileVerificationStatusFlags {
   static const int faceVerified = 1;
   static const int securityContentVerified = 2;
@@ -14,4 +16,15 @@ bool hasAnyAccountVerificationCompleted(int verificationStatus) {
       verificationStatus & ProfileVerificationStatusFlags.profileNameVerified != 0;
 
   return securityContentVerified || profileAgeRangeVerified || profileNameVerified;
+}
+
+bool shouldShowAccountVerificationRequiredLimit({
+  required AccountVerificationMethodsConfig? methods,
+  required int myProfileVerificationStatus,
+}) {
+  if (methods == null || methods == AccountVerificationMethodsConfig()) {
+    return false;
+  }
+
+  return !hasAnyAccountVerificationCompleted(myProfileVerificationStatus);
 }

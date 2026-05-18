@@ -2860,6 +2860,12 @@ abstract class AppLocalizations {
   /// **'Your account is unverified'**
   String get profile_grid_screen_account_verification_banner_text;
 
+  /// Info banner text shown when account verification is incomplete
+  ///
+  /// In en, this message translates to:
+  /// **'Account verification incomplete'**
+  String get profile_grid_screen_account_verification_banner_text_incomplete;
+
   /// Dialog text for daily likes info dialog
   ///
   /// In en, this message translates to:

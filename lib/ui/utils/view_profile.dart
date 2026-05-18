@@ -24,7 +24,7 @@ import 'package:app/model/freezed/logic/profile/attributes.dart';
 import 'package:app/model/freezed/logic/settings/privacy_settings.dart';
 import 'package:app/ui/normal/settings/profile/edit_profile.dart';
 import 'package:app/ui/normal/profiles/profile_filters/profile_verification.dart';
-import 'package:app/ui/normal/settings/account_verification.dart';
+import 'package:app/ui/normal/profiles/profile_filters/profile_verification_flags.dart';
 import 'package:app/ui_utils/consts/corners.dart';
 import 'package:app/ui_utils/consts/padding.dart';
 

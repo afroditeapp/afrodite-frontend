@@ -2067,6 +2067,10 @@
   "@profile_grid_screen_account_verification_banner_text": {
     "description": "Info banner text shown when account is unverified"
   },
+  "profile_grid_screen_account_verification_banner_text_incomplete": "Account verification incomplete",
+  "@profile_grid_screen_account_verification_banner_text_incomplete": {
+    "description": "Info banner text shown when account verification is incomplete"
+  },
   "profile_grid_screen_daily_likes_dialog_text": "Daily chat requests left: {p0}\nReset time: {p1}",
   "@profile_grid_screen_daily_likes_dialog_text": {
     "description": "Dialog text for daily likes info dialog",
