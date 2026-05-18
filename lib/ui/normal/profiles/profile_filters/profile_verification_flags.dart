@@ -1,9 +1,8 @@
 class ProfileVerificationStatusFlags {
-  static const int faceVerifiedAny = 1;
-  static const int faceVerifiedAll = 2;
-  static const int securityContentVerified = 4;
-  static const int profileAgeVerified = 8;
-  static const int profileNameVerified = 16;
+  static const int faceVerified = 1;
+  static const int securityContentVerified = 2;
+  static const int profileAgeVerified = 4;
+  static const int profileNameVerified = 8;
 }
 
 bool hasAnyAccountVerificationCompleted(int verificationStatus) {

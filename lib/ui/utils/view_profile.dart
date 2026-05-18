@@ -24,7 +24,6 @@ import 'package:app/model/freezed/logic/profile/attributes.dart';
 import 'package:app/model/freezed/logic/settings/privacy_settings.dart';
 import 'package:app/ui/normal/settings/profile/edit_profile.dart';
 import 'package:app/ui/normal/profiles/profile_filters/profile_verification.dart';
-import 'package:app/ui/normal/profiles/profile_filters/profile_verification_flags.dart';
 import 'package:app/ui/normal/settings/account_verification.dart';
 import 'package:app/ui_utils/consts/corners.dart';
 import 'package:app/ui_utils/consts/padding.dart';
@@ -291,17 +290,10 @@ class _ViewProfileEntryState extends State<ViewProfileEntry> {
 
   Widget profileVerificationStatus(BuildContext context, VerificationConfig verificationConfig) {
     final verificationStatus = widget.profile.mergedVerificationStatus();
-    final hasFaceVerifiedAll =
-        verificationStatus & ProfileVerificationStatusFlags.faceVerifiedAll != 0;
-    final selectedOptions =
-        profileVerificationStatusOptions(context, verification: verificationConfig)
-            .where(
-              (option) =>
-                  verificationStatus & option.$1 != 0 &&
-                  (!hasFaceVerifiedAll ||
-                      option.$1 != ProfileVerificationStatusFlags.faceVerifiedAny),
-            )
-            .toList();
+    final selectedOptions = profileVerificationStatusOptions(
+      context,
+      verification: verificationConfig,
+    ).where((option) => verificationStatus & option.$1 != 0).toList();
 
     return Column(
       crossAxisAlignment: CrossAxisAlignment.start,

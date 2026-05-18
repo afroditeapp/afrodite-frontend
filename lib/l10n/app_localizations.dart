@@ -2710,17 +2710,11 @@ abstract class AppLocalizations {
   /// **'Profile verification'**
   String get profile_filters_screen_profile_verification_status_filter;
 
-  /// Option text for profile verification status filter face verified all
+  /// Option text for profile verification status filter face verified
   ///
   /// In en, this message translates to:
-  /// **'Face pictures (all)'**
-  String get profile_filters_screen_profile_verification_status_filter_face_verified_all;
-
-  /// Option text for profile verification status filter face verified any
-  ///
-  /// In en, this message translates to:
-  /// **'Face pictures (any)'**
-  String get profile_filters_screen_profile_verification_status_filter_face_verified_any;
+  /// **'Face picture'**
+  String get profile_filters_screen_profile_verification_status_filter_face_verified;
 
   /// Option text for profile verification status filter profile age range verified
   ///

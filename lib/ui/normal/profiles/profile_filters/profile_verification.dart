@@ -34,15 +34,8 @@ List<(int, String)> profileVerificationStatusOptions(
   final options = <_ProfileVerificationStatusOption>[
     (
       (
-        ProfileVerificationStatusFlags.faceVerifiedAny,
-        context.strings.profile_filters_screen_profile_verification_status_filter_face_verified_any,
-      ),
-      (verification) => verification.face,
-    ),
-    (
-      (
-        ProfileVerificationStatusFlags.faceVerifiedAll,
-        context.strings.profile_filters_screen_profile_verification_status_filter_face_verified_all,
+        ProfileVerificationStatusFlags.faceVerified,
+        context.strings.profile_filters_screen_profile_verification_status_filter_face_verified,
       ),
       (verification) => verification.face,
     ),

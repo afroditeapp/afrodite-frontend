@@ -1485,12 +1485,8 @@ class AppLocalizationsEn extends AppLocalizations {
   String get profile_filters_screen_profile_verification_status_filter => 'Profile verification';
 
   @override
-  String get profile_filters_screen_profile_verification_status_filter_face_verified_all =>
-      'Face pictures (all)';
-
-  @override
-  String get profile_filters_screen_profile_verification_status_filter_face_verified_any =>
-      'Face pictures (any)';
+  String get profile_filters_screen_profile_verification_status_filter_face_verified =>
+      'Face picture';
 
   @override
   String get profile_filters_screen_profile_verification_status_filter_profile_age_range_verified =>
