@@ -3,6 +3,8 @@ import 'dart:async';
 import 'package:app/api/server_connection_manager.dart';
 import 'package:app/api/server_connection_protocol/client.dart';
 import 'package:app/api/server_connection_protocol/server.dart';
+import 'package:app/localizations.dart';
+import 'package:app/ui_utils/snack_bar.dart';
 import 'package:logging/logging.dart';
 import 'package:openapi/api.dart';
 import 'package:app/utils/result.dart';
@@ -108,7 +110,13 @@ class WebSocketApiRequestManager {
                     waitResponse: (requestId) => _waitForResponse(
                       type: ServerMessageTypeCode.responseResetProfilePaging,
                       requestId: requestId,
-                      parser: (message) => _okIfNotNull(message.responseResetProfilePaging),
+                      parser: (message) {
+                        if (message.rateLimited) {
+                          _showRateLimitSnackBar();
+                          return const Err(());
+                        }
+                        return _okIfNotNull(message.responseResetProfilePaging);
+                      },
                     ),
                   ),
                 );
@@ -121,7 +129,13 @@ class WebSocketApiRequestManager {
                     waitResponse: (requestId) => _waitForResponse(
                       type: ServerMessageTypeCode.responseNextProfilePage,
                       requestId: requestId,
-                      parser: (message) => _okIfNotNull(message.responseNextProfilePage),
+                      parser: (message) {
+                        if (message.rateLimited) {
+                          _showRateLimitSnackBar();
+                          return const Err(());
+                        }
+                        return _okIfNotNull(message.responseNextProfilePage);
+                      },
                     ),
                   ),
                 );
@@ -134,8 +148,15 @@ class WebSocketApiRequestManager {
                     waitResponse: (requestId) => _waitForResponse(
                       type: ServerMessageTypeCode.responseAutomaticProfileSearchResetProfilePaging,
                       requestId: requestId,
-                      parser: (message) =>
-                          _okIfNotNull(message.responseAutomaticProfileSearchResetProfilePaging),
+                      parser: (message) {
+                        if (message.rateLimited) {
+                          _showRateLimitSnackBar();
+                          return const Err(());
+                        }
+                        return _okIfNotNull(
+                          message.responseAutomaticProfileSearchResetProfilePaging,
+                        );
+                      },
                     ),
                   ),
                 );
@@ -151,8 +172,13 @@ class WebSocketApiRequestManager {
                     waitResponse: (requestId) => _waitForResponse(
                       type: ServerMessageTypeCode.responseAutomaticProfileSearchNextProfilePage,
                       requestId: requestId,
-                      parser: (message) =>
-                          _okIfNotNull(message.responseAutomaticProfileSearchNextProfilePage),
+                      parser: (message) {
+                        if (message.rateLimited) {
+                          _showRateLimitSnackBar();
+                          return const Err(());
+                        }
+                        return _okIfNotNull(message.responseAutomaticProfileSearchNextProfilePage);
+                      },
                     ),
                   ),
                 );
@@ -207,6 +233,10 @@ class WebSocketApiRequestManager {
       return const Err(());
     }
     return Ok(value);
+  }
+
+  void _showRateLimitSnackBar() {
+    showSnackBar(R.strings.snackbar_api_usage_limit_reached);
   }
 
   int _takeNextRequestId() {

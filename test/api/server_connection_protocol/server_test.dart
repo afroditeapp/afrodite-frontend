@@ -161,6 +161,7 @@ void main() {
       expect(parsed!.type, ServerMessageTypeCode.responseResetProfilePaging);
       expect(parsed.responseId, 8);
       expect(parsed.responseResetProfilePaging, isNull);
+      expect(parsed.rateLimited, isTrue);
     });
 
     test('parses next profile page response with invalid session status', () {
@@ -171,6 +172,18 @@ void main() {
       expect(parsed.responseId, 9);
       expect(parsed.responseNextProfilePage, isNotNull);
       expect(parsed.responseNextProfilePage!.errorInvalidIteratorSessionId, isTrue);
+      expect(parsed.rateLimited, isFalse);
+    });
+
+    test('parses next profile page response with rate-limited status', () {
+      final parsed = ServerMessage.fromBytes(Uint8List.fromList([62, 10, 2]));
+
+      expect(parsed, isNotNull);
+      expect(parsed!.type, ServerMessageTypeCode.responseNextProfilePage);
+      expect(parsed.responseId, 10);
+      expect(parsed.responseNextProfilePage, isNotNull);
+      expect(parsed.responseNextProfilePage!.error, isTrue);
+      expect(parsed.rateLimited, isTrue);
     });
 
     test('parses reset profile paging error status with extra bytes', () {
@@ -180,6 +193,7 @@ void main() {
       expect(parsed!.type, ServerMessageTypeCode.responseResetProfilePaging);
       expect(parsed.responseId, 1);
       expect(parsed.responseResetProfilePaging, isNull);
+      expect(parsed.rateLimited, isTrue);
     });
 
     test('returns null for truncated reset profile paging response payload', () {

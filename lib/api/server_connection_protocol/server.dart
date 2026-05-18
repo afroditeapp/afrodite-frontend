@@ -168,24 +168,36 @@ class CheckOnlineStatusResponse {
 class _ResponseResetProfilePagingPayload {
   final int requestId;
   final ProfileIteratorSessionId? sessionId;
+  final bool rateLimited;
 
-  const _ResponseResetProfilePagingPayload({required this.requestId, this.sessionId});
+  const _ResponseResetProfilePagingPayload({
+    required this.requestId,
+    this.sessionId,
+    this.rateLimited = false,
+  });
 }
 
 class _ResponseNextProfilePagePayload {
   final int requestId;
   final ProfilePage page;
+  final bool rateLimited;
 
-  const _ResponseNextProfilePagePayload({required this.requestId, required this.page});
+  const _ResponseNextProfilePagePayload({
+    required this.requestId,
+    required this.page,
+    this.rateLimited = false,
+  });
 }
 
 class _ResponseAutomaticProfileSearchResetProfilePagingPayload {
   final int requestId;
   final AutomaticProfileSearchIteratorSessionId? sessionId;
+  final bool rateLimited;
 
   const _ResponseAutomaticProfileSearchResetProfilePagingPayload({
     required this.requestId,
     this.sessionId,
+    this.rateLimited = false,
   });
 }
 
@@ -193,6 +205,7 @@ class ServerMessage {
   final ServerMessageTypeCode type;
   final Uint8List payload;
   final int? responseId;
+  final bool rateLimited;
 
   final int? adminBotNotification;
   final int? accountVerificationQueuePosition;
@@ -211,6 +224,7 @@ class ServerMessage {
     required this.type,
     required this.payload,
     this.responseId,
+    this.rateLimited = false,
     this.adminBotNotification,
     this.accountVerificationQueuePosition,
     this.webSocketConnectionAttemptsRemaining,
@@ -274,6 +288,7 @@ class ServerMessage {
           type: type,
           payload: payload,
           responseId: response.requestId,
+          rateLimited: response.rateLimited,
           responseResetProfilePaging: response.sessionId,
         );
       case ServerMessageTypeCode.responseNextProfilePage:
@@ -285,6 +300,7 @@ class ServerMessage {
           type: type,
           payload: payload,
           responseId: response.requestId,
+          rateLimited: response.rateLimited,
           responseNextProfilePage: response.page,
         );
       case ServerMessageTypeCode.responseAutomaticProfileSearchResetProfilePaging:
@@ -296,6 +312,7 @@ class ServerMessage {
           type: type,
           payload: payload,
           responseId: response.requestId,
+          rateLimited: response.rateLimited,
           responseAutomaticProfileSearchResetProfilePaging: response.sessionId,
         );
       case ServerMessageTypeCode.responseAutomaticProfileSearchNextProfilePage:
@@ -307,6 +324,7 @@ class ServerMessage {
           type: type,
           payload: payload,
           responseId: response.requestId,
+          rateLimited: response.rateLimited,
           responseAutomaticProfileSearchNextProfilePage: response.page,
         );
       case ServerMessageTypeCode.scheduledMaintenanceStatus:
@@ -395,6 +413,7 @@ _ResponseResetProfilePagingPayload? _parseResponseResetProfilePaging(Uint8List p
         sessionId: ProfileIteratorSessionId(id: sessionId),
       );
     case 1:
+      return _ResponseResetProfilePagingPayload(requestId: requestId, rateLimited: true);
     case 2:
       return _ResponseResetProfilePagingPayload(requestId: requestId);
     default:
@@ -436,6 +455,11 @@ _ResponseNextProfilePagePayload? _parseResponseNextProfilePage(Uint8List payload
         page: ProfilePage(errorInvalidIteratorSessionId: true),
       );
     case 2:
+      return _ResponseNextProfilePagePayload(
+        requestId: requestId,
+        page: ProfilePage(error: true),
+        rateLimited: true,
+      );
     case 3:
       return _ResponseNextProfilePagePayload(requestId: requestId, page: ProfilePage(error: true));
     default:
@@ -474,6 +498,10 @@ _parseResponseAutomaticProfileSearchResetProfilePaging(Uint8List payload) {
         sessionId: AutomaticProfileSearchIteratorSessionId(id: sessionId),
       );
     case 1:
+      return _ResponseAutomaticProfileSearchResetProfilePagingPayload(
+        requestId: requestId,
+        rateLimited: true,
+      );
     case 2:
       return _ResponseAutomaticProfileSearchResetProfilePagingPayload(requestId: requestId);
     default:
