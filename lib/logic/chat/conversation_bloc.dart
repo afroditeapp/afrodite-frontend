@@ -43,11 +43,6 @@ class UpdateIsInMatches extends ConversationEvent {
   UpdateIsInMatches(this.value);
 }
 
-class MessageCountChanged extends ConversationEvent {
-  final int newMessageCount;
-  MessageCountChanged(this.newMessageCount);
-}
-
 class BlockProfile extends ConversationEvent {
   final AccountId accountId;
   BlockProfile(this.accountId);
@@ -78,7 +73,6 @@ abstract class ConversationDataProvider {
   Future<bool> isInSentBlocks(AccountId accountId);
   Future<bool> sendBlockTo(AccountId accountId);
   Stream<MessageSendingEvent> sendMessageTo(AccountId accountId, Message message);
-  Stream<int> getMessageCount(AccountId match);
 
   Future<Result<(), DeleteSendFailedError>> deleteSendFailedMessage(LocalMessageId localId);
   Future<Result<(), ResendFailedError>> resendSendFailedMessage(LocalMessageId localId);
@@ -102,11 +96,6 @@ class DefaultConversationDataProvider extends ConversationDataProvider {
   @override
   Stream<MessageSendingEvent> sendMessageTo(AccountId accountId, Message message) {
     return chat.sendMessageTo(accountId, message);
-  }
-
-  @override
-  Stream<int> getMessageCount(AccountId match) {
-    return chat.getMessageCount(match);
   }
 
   @override
@@ -141,7 +130,6 @@ class ConversationBloc extends Bloc<ConversationEvent, ConversationData> with Ac
   final ApiManager api;
   final AccountRepository account;
 
-  StreamSubscription<int>? _messageCountSubscription;
   StreamSubscription<ProfileChange>? _profileChangeSubscription;
   StreamSubscription<bool>? _isInMatchesSubscription;
 
@@ -157,8 +145,6 @@ class ConversationBloc extends Bloc<ConversationEvent, ConversationData> with Ac
       _log.info("Set conversation bloc initial state");
 
       final isBlocked = await dataProvider.isInSentBlocks(state.accountId);
-
-      await profile.resetUnreadMessagesCount(state.accountId);
 
       // Send check online status request when conversation is opened
       chat.checkOnlineStatusManager.handleCheckOnlineStatusRequest(state.accountId);
@@ -313,18 +299,8 @@ class ConversationBloc extends Bloc<ConversationEvent, ConversationData> with Ac
 
       emit(state.copyWith(isRetryPublicKeyDownloadInProgress: false));
     }, transformer: sequential());
-    on<MessageCountChanged>((data, emit) async {
-      await profile.resetUnreadMessagesCount(state.accountId);
-    }, transformer: sequential());
-
     _profileChangeSubscription = profile.profileChanges.listen((event) {
       add(HandleProfileChange(event));
-    });
-
-    _messageCountSubscription = dataProvider.getMessageCount(state.accountId).listen((
-      newMessageCount,
-    ) {
-      add(MessageCountChanged(newMessageCount));
     });
 
     _isInMatchesSubscription = dataProvider.isInMatchesStream(state.accountId).listen((value) {
@@ -384,7 +360,6 @@ class ConversationBloc extends Bloc<ConversationEvent, ConversationData> with Ac
 
   @override
   Future<void> close() async {
-    await _messageCountSubscription?.cancel();
     await _profileChangeSubscription?.cancel();
     await _isInMatchesSubscription?.cancel();
     return super.close();

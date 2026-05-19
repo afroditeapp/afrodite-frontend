@@ -70,6 +70,7 @@ class _ChatListState extends State<ChatList> {
   late ReplyTargetController _replyTargetController;
 
   Timer? _saveDraftTimer;
+  StreamSubscription<UnreadMessagesCount?>? _unreadMessagesSubscription;
 
   bool _reversed = false;
   bool _endReached = false;
@@ -115,7 +116,20 @@ class _ChatListState extends State<ChatList> {
       messageStateSeenEnabled: widget.messageStateSeenEnabled,
     );
 
+    _startUnreadMessagesResetWatcher();
     _loadDraft();
+  }
+
+  void _startUnreadMessagesResetWatcher() {
+    final r = context.read<RepositoryInstances>();
+
+    _unreadMessagesSubscription = r.profile
+        .getUnreadMessagesCountStream(widget.messageRecipient)
+        .listen((count) {
+          if ((count?.count ?? 0) > 0) {
+            r.profile.resetUnreadMessagesCount(widget.messageRecipient);
+          }
+        });
   }
 
   void _loadDraft() async {
@@ -605,6 +619,8 @@ class _ChatListState extends State<ChatList> {
     if (widget.typingIndicatorEnabled) {
       widget.typingIndicatorManager.handleTypingEvent(widget.messageRecipient, false);
     }
+
+    _unreadMessagesSubscription?.cancel();
 
     if (_saveDraftTimer?.isActive ?? false) {
       _saveDraftTimer?.cancel();
