@@ -57,8 +57,9 @@ class AttributeIcons {
 class AttributeIconWidget extends StatelessWidget {
   final AttributeIcon? icon;
   final Color? color;
+  final bool chipIcon;
 
-  const AttributeIconWidget({required this.icon, this.color, super.key});
+  const AttributeIconWidget({required this.icon, this.color, this.chipIcon = false, super.key});
 
   @override
   Widget build(BuildContext context) {
@@ -68,7 +69,11 @@ class AttributeIconWidget extends StatelessWidget {
       return const SizedBox.shrink();
     }
     return switch (icon) {
-      MaterialAttributeIcon(iconData: final data) => Icon(data, color: color, size: SIZE),
+      MaterialAttributeIcon(iconData: final data) => Icon(
+        data,
+        color: color,
+        size: chipIcon ? 20 : SIZE,
+      ),
       EmojiAttributeIcon(emoji: final emoji) => SizedBox(
         width: SIZE,
         height: SIZE,

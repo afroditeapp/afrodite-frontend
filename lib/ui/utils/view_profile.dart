@@ -598,7 +598,7 @@ class AttributeValuesArea extends StatelessWidget {
       final icon = v.uiIcon();
       final Widget? avatar;
       if (icon != null) {
-        avatar = AttributeIconWidget(icon: icon);
+        avatar = AttributeIconWidget(icon: icon, chipIcon: true);
       } else {
         avatar = null;
       }
@@ -617,7 +617,7 @@ class AttributeValuesArea extends StatelessWidget {
       final icon = v.uiIcon();
       final Widget? avatar;
       if (icon != null) {
-        avatar = AttributeIconWidget(icon: icon);
+        avatar = AttributeIconWidget(icon: icon, chipIcon: true);
       } else {
         avatar = null;
       }
