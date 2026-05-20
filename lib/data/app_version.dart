@@ -1,13 +1,10 @@
 import 'dart:io';
 
 import 'package:flutter/foundation.dart';
-import 'package:logging/logging.dart';
 import 'package:openapi/api.dart';
 import 'package:package_info_plus/package_info_plus.dart';
 import 'package:shared_preferences/shared_preferences.dart';
 import 'package:utils/utils.dart';
-
-final _log = Logger("AppVersionManager");
 
 class AppVersionManager extends AppSingleton {
   static final _instance = AppVersionManager._();
@@ -37,53 +34,13 @@ class AppVersionManager extends AppSingleton {
     patch = int.parse(numbers[2]);
   }
 
-  /// Returns true if the app major version is 0 and the minor version has changed
-  /// since the last run, or if the app transitioned from major version 0 to 1+.
-  /// This is useful for preview versions where breaking changes may
-  /// require database resets.
-  Future<bool> previewVersionMinorVersionChangedOrTransitionToStableVersionsHappened() async {
-    // Load previous version from shared preferences
+  /// Persists the current app version for use on next app launch.
+  Future<void> updateAppVersionInSharedPrefs() async {
     final prefs = SharedPreferencesAsync();
     final previousVersion = await prefs.getString(_keyPreviousVersion);
 
     if (previousVersion != appVersion) {
-      // Save current version for next launch
       await prefs.setString(_keyPreviousVersion, appVersion);
-    }
-
-    if (previousVersion == null) {
-      return false;
-    }
-
-    final previousNumbers = previousVersion.split(".");
-    if (previousNumbers.length < 2) {
-      return false;
-    }
-
-    final previousMajor = int.tryParse(previousNumbers[0]);
-    if (previousMajor == null) {
-      return false;
-    }
-
-    if (previousMajor == 0 && major >= 1) {
-      _log.info("App version changed, previous: $previousVersion, current: $appVersion");
-      return true;
-    }
-
-    if (major != 0) {
-      return false;
-    }
-
-    final previousMinor = int.tryParse(previousNumbers[1]);
-    if (previousMinor == null) {
-      return false;
-    }
-
-    if (previousMinor != minor) {
-      _log.info("App version changed, previous: $previousVersion, current: $appVersion");
-      return true;
-    } else {
-      return false;
     }
   }
 

@@ -11,15 +11,3 @@ class DbProvider implements QueryExcecutorProvider {
 Future<bool> databaseExists(DbFile db) async {
   throw UnsupportedError("Unsupported platform");
 }
-
-class DatabaseRemoverImpl extends DatabaseRemover {
-  @override
-  Future<void> recreateDatabasesDir() async {
-    throw UnsupportedError("Unsupported platform");
-  }
-
-  @override
-  Future<void> deleteAllDatabases() async {
-    throw UnsupportedError("Unsupported platform");
-  }
-}

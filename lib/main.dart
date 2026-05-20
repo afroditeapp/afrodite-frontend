@@ -29,7 +29,6 @@ import 'package:app/utils/camera.dart';
 
 import 'package:rxdart/rxdart.dart';
 import 'package:utils/utils.dart';
-import 'package:database_provider/database_provider.dart';
 
 final _log = Logger("main");
 
@@ -201,11 +200,7 @@ class GlobalInitManager extends AppSingletonNoInit {
       return;
     }
 
-    if (await AppVersionManager.getInstance()
-        .previewVersionMinorVersionChangedOrTransitionToStableVersionsHappened()) {
-      _log.info("Running preview version related automatic database removal");
-      await _removeAllDatabases();
-    }
+    await AppVersionManager.getInstance().updateAppVersionInSharedPrefs();
 
     await CommonDatabaseManager.getInstance().init();
 
@@ -228,16 +223,5 @@ class GlobalInitManager extends AppSingletonNoInit {
   /// is visible.
   Future<void> triggerGlobalInit() async {
     unawaited(_init());
-  }
-
-  /// Removes all database files.
-  Future<void> _removeAllDatabases() async {
-    try {
-      final remover = DatabaseRemoverImpl();
-      await remover.deleteAllDatabases();
-      _log.info("Removed all databases");
-    } catch (e, stackTrace) {
-      _log.severe("Error removing databases", e, stackTrace);
-    }
   }
 }

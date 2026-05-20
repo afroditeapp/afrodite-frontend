@@ -1,11 +1,7 @@
 import 'dart:io';
 
-import 'package:logging/logging.dart';
 import 'package:path_provider/path_provider.dart';
 import 'package:path/path.dart' as p;
-import 'package:database_utils/database_utils.dart';
-
-final _log = Logger("DbDirUtils");
 
 /// TODO(quality): Error handling
 class DbDirUtils {
@@ -34,30 +30,5 @@ class DbDirUtils {
   static Future<String> accountDbPath(String account) async {
     final dbName = "$account.account.db";
     return await _dbPath(dbName);
-  }
-}
-
-class DatabaseRemoverImpl extends DatabaseRemover {
-  @override
-  Future<void> recreateDatabasesDir() async {
-    final dbDirPath = await DbDirUtils._dbDirPath();
-    final dir = Directory(dbDirPath);
-    if (await dir.exists()) {
-      await dir.delete(recursive: true);
-      await DbDirUtils._dbDirPath(); // Recreate the directory
-      _log.info("Databases directory recreated");
-    }
-  }
-
-  @override
-  Future<void> deleteAllDatabases() async {
-    try {
-      // Delete databases
-      await recreateDatabasesDir();
-      _log.info("Deleted all databases");
-    } catch (e, stackTrace) {
-      _log.severe("Error deleting all databases", e, stackTrace);
-      rethrow;
-    }
   }
 }
