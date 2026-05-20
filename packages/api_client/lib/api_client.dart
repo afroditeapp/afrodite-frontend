@@ -212,6 +212,8 @@ class ApiClient {
           return AccountStateContainer.fromJson(value);
         case 'AccountSyncVersion':
           return AccountSyncVersion.fromJson(value);
+        case 'AccountVerificationConfig':
+          return AccountVerificationConfig.fromJson(value);
         case 'AccountVerificationErrorFlagsValue':
           return AccountVerificationErrorFlagsValue.fromJson(value);
         case 'AccountVerificationMethodsConfig':
@@ -224,6 +226,8 @@ class ApiClient {
           return AccountVerificationQueueStatus.fromJson(value);
         case 'AccountVerificationScope':
           return AccountVerificationScope.fromJson(value);
+        case 'AccountVerificationScopesConfig':
+          return AccountVerificationScopesConfig.fromJson(value);
         case 'AddFavoriteProfileResult':
           return AddFavoriteProfileResult.fromJson(value);
         case 'AddPublicKeyResult':
@@ -248,6 +252,12 @@ class ApiClient {
           return AdminProfileStringModerationConfig.fromJson(value);
         case 'AdminSecurityContentVerificationConfig':
           return AdminSecurityContentVerificationConfig.fromJson(value);
+        case 'AgeVerificationConfig':
+          return AgeVerificationConfig.fromJson(value);
+        case 'AgeVerificationMethod':
+          return AgeVerificationMethodTypeTransformer().decode(value);
+        case 'AgeVerificationMethodsConfig':
+          return AgeVerificationMethodsConfig.fromJson(value);
         case 'ApiUsageCount':
           return ApiUsageCount.fromJson(value);
         case 'ApiUsageStatistics':
@@ -666,6 +676,10 @@ class ApiClient {
           return PostAccountVerificationQueueItemResult.fromJson(value);
         case 'PostAccountVerificationQueueRemoveNextItem':
           return PostAccountVerificationQueueRemoveNextItem.fromJson(value);
+        case 'PostAgeVerification':
+          return PostAgeVerification.fromJson(value);
+        case 'PostAgeVerificationResult':
+          return PostAgeVerificationResult.fromJson(value);
         case 'PostMediaContentFaceDetectedValue':
           return PostMediaContentFaceDetectedValue.fromJson(value);
         case 'PostMediaContentFaceVerifiedValue':
@@ -934,12 +948,8 @@ class ApiClient {
           return VapidPublicKey.fromJson(value);
         case 'VerificationAction':
           return VerificationActionTypeTransformer().decode(value);
-        case 'VerificationConfig':
-          return VerificationConfig.fromJson(value);
         case 'VerificationMethod':
           return VerificationMethodTypeTransformer().decode(value);
-        case 'VerificationMethodsConfig':
-          return VerificationMethodsConfig.fromJson(value);
         default:
           dynamic match;
           if (value is List && (match = _regList.firstMatch(targetType)?.group(1)) != null) {

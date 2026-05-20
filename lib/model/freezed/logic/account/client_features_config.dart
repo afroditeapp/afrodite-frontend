@@ -75,8 +75,40 @@ class ClientFeaturesConfigData with _$ClientFeaturesConfigData {
   }
 
   VerificationConfig verificationConfig() {
-    return config.profile?.verification ?? VerificationConfig();
+    final scopes = config.accountVerification?.scopes;
+    return VerificationConfig(
+      face: config.features?.faceVerification ?? false,
+      securityContent: scopes?.securityContent ?? false,
+      profileAgeRange: scopes?.profileAgeRange ?? false,
+      profileName: scopes?.profileName ?? false,
+    );
   }
+}
+
+class VerificationConfig {
+  final bool face;
+  final bool securityContent;
+  final bool profileAgeRange;
+  final bool profileName;
+
+  const VerificationConfig({
+    this.face = false,
+    this.securityContent = false,
+    this.profileAgeRange = false,
+    this.profileName = false,
+  });
+
+  @override
+  bool operator ==(Object other) {
+    return other is VerificationConfig &&
+        other.face == face &&
+        other.securityContent == securityContent &&
+        other.profileAgeRange == profileAgeRange &&
+        other.profileName == profileName;
+  }
+
+  @override
+  int get hashCode => Object.hash(face, securityContent, profileAgeRange, profileName);
 }
 
 class Time {

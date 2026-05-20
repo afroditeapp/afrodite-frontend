@@ -13,26 +13,33 @@ part of openapi.api;
 class FeaturesConfig {
   /// Returns a new [FeaturesConfig] instance.
   FeaturesConfig({
+    this.faceVerification = false,
     this.videoCalls = false,
   });
+
+  /// Show face verification status and filters
+  bool faceVerification;
 
   /// Enable video calls
   bool videoCalls;
 
   @override
   bool operator ==(Object other) => identical(this, other) || other is FeaturesConfig &&
+    other.faceVerification == faceVerification &&
     other.videoCalls == videoCalls;
 
   @override
   int get hashCode =>
     // ignore: unnecessary_parenthesis
+    (faceVerification.hashCode) +
     (videoCalls.hashCode);
 
   @override
-  String toString() => 'FeaturesConfig[videoCalls=$videoCalls]';
+  String toString() => 'FeaturesConfig[faceVerification=$faceVerification, videoCalls=$videoCalls]';
 
   Map<String, dynamic> toJson() {
     final json = <String, dynamic>{};
+      json[r'face_verification'] = this.faceVerification;
       json[r'video_calls'] = this.videoCalls;
     return json;
   }
@@ -56,6 +63,7 @@ class FeaturesConfig {
       }());
 
       return FeaturesConfig(
+        faceVerification: mapValueOfType<bool>(json, r'face_verification') ?? false,
         videoCalls: mapValueOfType<bool>(json, r'video_calls') ?? false,
       );
     }

@@ -78,6 +78,7 @@ Class | Method | HTTP request | Description
 *AccountApi* | [**postAccountAppNotificationSettings**](doc//AccountApi.md#postaccountappnotificationsettings) | **POST** /account_api/post_account_app_notification_settings | 
 *AccountApi* | [**postAccountSetup**](doc//AccountApi.md#postaccountsetup) | **POST** /account_api/account_setup | Setup non-changeable user information during `initial setup` state.
 *AccountApi* | [**postAccountVerificationQueueItem**](doc//AccountApi.md#postaccountverificationqueueitem) | **POST** /account_api/account_verification_queue | Add account verification request to queue for current account.
+*AccountApi* | [**postAgeVerification**](doc//AccountApi.md#postageverification) | **POST** /account_api/age_verification | Verify user's age once for current account.
 *AccountApi* | [**postCancelEmailChange**](doc//AccountApi.md#postcancelemailchange) | **POST** /account_api/cancel_email_change | Cancel email changing process
 *AccountApi* | [**postCompleteSetup**](doc//AccountApi.md#postcompletesetup) | **POST** /account_api/complete_setup | Complete initial setup.
 *AccountApi* | [**postCustomReportEmpty**](doc//AccountApi.md#postcustomreportempty) | **POST** /account_api/custom_report_empty | Send custom report without any content
@@ -305,12 +306,14 @@ Class | Method | HTTP request | Description
  - [AccountSetup](doc//AccountSetup.md)
  - [AccountStateContainer](doc//AccountStateContainer.md)
  - [AccountSyncVersion](doc//AccountSyncVersion.md)
+ - [AccountVerificationConfig](doc//AccountVerificationConfig.md)
  - [AccountVerificationErrorFlagsValue](doc//AccountVerificationErrorFlagsValue.md)
  - [AccountVerificationMethodsConfig](doc//AccountVerificationMethodsConfig.md)
  - [AccountVerificationQueueAdminItem](doc//AccountVerificationQueueAdminItem.md)
  - [AccountVerificationQueueItem](doc//AccountVerificationQueueItem.md)
  - [AccountVerificationQueueStatus](doc//AccountVerificationQueueStatus.md)
  - [AccountVerificationScope](doc//AccountVerificationScope.md)
+ - [AccountVerificationScopesConfig](doc//AccountVerificationScopesConfig.md)
  - [AddFavoriteProfileResult](doc//AddFavoriteProfileResult.md)
  - [AddPublicKeyResult](doc//AddPublicKeyResult.md)
  - [AdminAccountVerificationConfig](doc//AdminAccountVerificationConfig.md)
@@ -323,6 +326,9 @@ Class | Method | HTTP request | Description
  - [AdminNsfwDetectionConfig](doc//AdminNsfwDetectionConfig.md)
  - [AdminProfileStringModerationConfig](doc//AdminProfileStringModerationConfig.md)
  - [AdminSecurityContentVerificationConfig](doc//AdminSecurityContentVerificationConfig.md)
+ - [AgeVerificationConfig](doc//AgeVerificationConfig.md)
+ - [AgeVerificationMethod](doc//AgeVerificationMethod.md)
+ - [AgeVerificationMethodsConfig](doc//AgeVerificationMethodsConfig.md)
  - [ApiUsageCount](doc//ApiUsageCount.md)
  - [ApiUsageStatistics](doc//ApiUsageStatistics.md)
  - [Attribute](doc//Attribute.md)
@@ -532,6 +538,8 @@ Class | Method | HTTP request | Description
  - [Permissions](doc//Permissions.md)
  - [PostAccountVerificationQueueItemResult](doc//PostAccountVerificationQueueItemResult.md)
  - [PostAccountVerificationQueueRemoveNextItem](doc//PostAccountVerificationQueueRemoveNextItem.md)
+ - [PostAgeVerification](doc//PostAgeVerification.md)
+ - [PostAgeVerificationResult](doc//PostAgeVerificationResult.md)
  - [PostMediaContentFaceDetectedValue](doc//PostMediaContentFaceDetectedValue.md)
  - [PostMediaContentFaceVerifiedValue](doc//PostMediaContentFaceVerifiedValue.md)
  - [PostMediaContentFaceVerifiedValueItem](doc//PostMediaContentFaceVerifiedValueItem.md)
@@ -666,9 +674,7 @@ Class | Method | HTTP request | Description
  - [UpdateReportResult](doc//UpdateReportResult.md)
  - [VapidPublicKey](doc//VapidPublicKey.md)
  - [VerificationAction](doc//VerificationAction.md)
- - [VerificationConfig](doc//VerificationConfig.md)
  - [VerificationMethod](doc//VerificationMethod.md)
- - [VerificationMethodsConfig](doc//VerificationMethodsConfig.md)
 
 
 ## Documentation For Authorization

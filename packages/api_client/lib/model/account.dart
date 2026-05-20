@@ -13,12 +13,15 @@ part of openapi.api;
 class Account {
   /// Returns a new [Account] instance.
   Account({
+    this.ageVerified = false,
     this.emailVerified = true,
     required this.permissions,
     required this.state,
     required this.syncVersion,
     required this.visibility,
   });
+
+  bool ageVerified;
 
   bool emailVerified;
 
@@ -32,6 +35,7 @@ class Account {
 
   @override
   bool operator ==(Object other) => identical(this, other) || other is Account &&
+    other.ageVerified == ageVerified &&
     other.emailVerified == emailVerified &&
     other.permissions == permissions &&
     other.state == state &&
@@ -41,6 +45,7 @@ class Account {
   @override
   int get hashCode =>
     // ignore: unnecessary_parenthesis
+    (ageVerified.hashCode) +
     (emailVerified.hashCode) +
     (permissions.hashCode) +
     (state.hashCode) +
@@ -48,10 +53,11 @@ class Account {
     (visibility.hashCode);
 
   @override
-  String toString() => 'Account[emailVerified=$emailVerified, permissions=$permissions, state=$state, syncVersion=$syncVersion, visibility=$visibility]';
+  String toString() => 'Account[ageVerified=$ageVerified, emailVerified=$emailVerified, permissions=$permissions, state=$state, syncVersion=$syncVersion, visibility=$visibility]';
 
   Map<String, dynamic> toJson() {
     final json = <String, dynamic>{};
+      json[r'age_verified'] = this.ageVerified;
       json[r'email_verified'] = this.emailVerified;
       json[r'permissions'] = this.permissions;
       json[r'state'] = this.state;
@@ -79,6 +85,7 @@ class Account {
       }());
 
       return Account(
+        ageVerified: mapValueOfType<bool>(json, r'age_verified') ?? false,
         emailVerified: mapValueOfType<bool>(json, r'email_verified') ?? true,
         permissions: Permissions.fromJson(json[r'permissions'])!,
         state: AccountStateContainer.fromJson(json[r'state'])!,

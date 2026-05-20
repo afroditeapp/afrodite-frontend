@@ -10,9 +10,9 @@
 
 part of openapi.api;
 
-class AccountVerificationMethodsConfig {
-  /// Returns a new [AccountVerificationMethodsConfig] instance.
-  AccountVerificationMethodsConfig({
+class AgeVerificationMethodsConfig {
+  /// Returns a new [AgeVerificationMethodsConfig] instance.
+  AgeVerificationMethodsConfig({
     this.debug = false,
     this.eudi = false,
   });
@@ -22,7 +22,7 @@ class AccountVerificationMethodsConfig {
   bool eudi;
 
   @override
-  bool operator ==(Object other) => identical(this, other) || other is AccountVerificationMethodsConfig &&
+  bool operator ==(Object other) => identical(this, other) || other is AgeVerificationMethodsConfig &&
     other.debug == debug &&
     other.eudi == eudi;
 
@@ -33,7 +33,7 @@ class AccountVerificationMethodsConfig {
     (eudi.hashCode);
 
   @override
-  String toString() => 'AccountVerificationMethodsConfig[debug=$debug, eudi=$eudi]';
+  String toString() => 'AgeVerificationMethodsConfig[debug=$debug, eudi=$eudi]';
 
   Map<String, dynamic> toJson() {
     final json = <String, dynamic>{};
@@ -42,10 +42,10 @@ class AccountVerificationMethodsConfig {
     return json;
   }
 
-  /// Returns a new [AccountVerificationMethodsConfig] instance and imports its values from
+  /// Returns a new [AgeVerificationMethodsConfig] instance and imports its values from
   /// [value] if it's a [Map], null otherwise.
   // ignore: prefer_constructors_over_static_methods
-  static AccountVerificationMethodsConfig? fromJson(dynamic value) {
+  static AgeVerificationMethodsConfig? fromJson(dynamic value) {
     if (value is Map) {
       final json = value.cast<String, dynamic>();
 
@@ -54,13 +54,13 @@ class AccountVerificationMethodsConfig {
       // Note 2: this code is stripped in release mode!
       assert(() {
         requiredKeys.forEach((key) {
-          assert(json.containsKey(key), 'Required key "AccountVerificationMethodsConfig[$key]" is missing from JSON.');
-          assert(json[key] != null, 'Required key "AccountVerificationMethodsConfig[$key]" has a null value in JSON.');
+          assert(json.containsKey(key), 'Required key "AgeVerificationMethodsConfig[$key]" is missing from JSON.');
+          assert(json[key] != null, 'Required key "AgeVerificationMethodsConfig[$key]" has a null value in JSON.');
         });
         return true;
       }());
 
-      return AccountVerificationMethodsConfig(
+      return AgeVerificationMethodsConfig(
         debug: mapValueOfType<bool>(json, r'debug') ?? false,
         eudi: mapValueOfType<bool>(json, r'eudi') ?? false,
       );
@@ -68,11 +68,11 @@ class AccountVerificationMethodsConfig {
     return null;
   }
 
-  static List<AccountVerificationMethodsConfig> listFromJson(dynamic json, {bool growable = false,}) {
-    final result = <AccountVerificationMethodsConfig>[];
+  static List<AgeVerificationMethodsConfig> listFromJson(dynamic json, {bool growable = false,}) {
+    final result = <AgeVerificationMethodsConfig>[];
     if (json is List && json.isNotEmpty) {
       for (final row in json) {
-        final value = AccountVerificationMethodsConfig.fromJson(row);
+        final value = AgeVerificationMethodsConfig.fromJson(row);
         if (value != null) {
           result.add(value);
         }
@@ -81,12 +81,12 @@ class AccountVerificationMethodsConfig {
     return result.toList(growable: growable);
   }
 
-  static Map<String, AccountVerificationMethodsConfig> mapFromJson(dynamic json) {
-    final map = <String, AccountVerificationMethodsConfig>{};
+  static Map<String, AgeVerificationMethodsConfig> mapFromJson(dynamic json) {
+    final map = <String, AgeVerificationMethodsConfig>{};
     if (json is Map && json.isNotEmpty) {
       json = json.cast<String, dynamic>(); // ignore: parameter_assignments
       for (final entry in json.entries) {
-        final value = AccountVerificationMethodsConfig.fromJson(entry.value);
+        final value = AgeVerificationMethodsConfig.fromJson(entry.value);
         if (value != null) {
           map[entry.key] = value;
         }
@@ -95,14 +95,14 @@ class AccountVerificationMethodsConfig {
     return map;
   }
 
-  // maps a json object with a list of AccountVerificationMethodsConfig-objects as value to a dart map
-  static Map<String, List<AccountVerificationMethodsConfig>> mapListFromJson(dynamic json, {bool growable = false,}) {
-    final map = <String, List<AccountVerificationMethodsConfig>>{};
+  // maps a json object with a list of AgeVerificationMethodsConfig-objects as value to a dart map
+  static Map<String, List<AgeVerificationMethodsConfig>> mapListFromJson(dynamic json, {bool growable = false,}) {
+    final map = <String, List<AgeVerificationMethodsConfig>>{};
     if (json is Map && json.isNotEmpty) {
       // ignore: parameter_assignments
       json = json.cast<String, dynamic>();
       for (final entry in json.entries) {
-        map[entry.key] = AccountVerificationMethodsConfig.listFromJson(entry.value, growable: growable,);
+        map[entry.key] = AgeVerificationMethodsConfig.listFromJson(entry.value, growable: growable,);
       }
     }
     return map;

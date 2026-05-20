@@ -321,7 +321,7 @@ class _ViewProfileEntryState extends State<ViewProfileEntry> {
     return BlocBuilder<ClientFeaturesConfigBloc, ClientFeaturesConfigData>(
       builder: (context, configState) {
         final verificationConfig = configState.verificationConfig();
-        final accountVerificationMethods = configState.config.verificationMethods?.account;
+        final accountVerificationMethods = configState.config.accountVerification?.methods;
         return BlocBuilder<MyProfileBloc, MyProfileData>(
           builder: (context, myProfileState) {
             final myVerificationStatus = myProfileState.profile?.mergedVerificationStatus() ?? 0;

@@ -364,11 +364,11 @@ abstract class AppLocalizations {
   /// **'Verifying person identification data failed'**
   String get account_verification_screen_error_verification_data_verification_failed;
 
-  /// Account verification error: verification method disabled
+  /// Account verification error: verification method is not configured
   ///
   /// In en, this message translates to:
-  /// **'Verification method is disabled'**
-  String get account_verification_screen_error_verification_method_disabled;
+  /// **'App admin has not configured this verification method'**
+  String get account_verification_screen_error_verification_method_not_configured;
 
   /// Title shown above previous account verification errors
   ///

@@ -219,7 +219,7 @@ class _AccountSettingsScreenState extends State<AccountSettingsScreen> {
         const Padding(padding: EdgeInsets.all(4)),
         BlocBuilder<ClientFeaturesConfigBloc, ClientFeaturesConfigData>(
           builder: (context, configState) {
-            final accountVerificationMethods = configState.config.verificationMethods?.account;
+            final accountVerificationMethods = configState.config.accountVerification?.methods;
             final verificationConfig = configState.verificationConfig();
             if (accountVerificationMethods == null ||
                 !isAccessToAccountVerificationScreenPossible(

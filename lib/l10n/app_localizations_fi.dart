@@ -175,8 +175,8 @@ class AppLocalizationsFi extends AppLocalizations {
       'Verifying person identification data failed';
 
   @override
-  String get account_verification_screen_error_verification_method_disabled =>
-      'Verification method is disabled';
+  String get account_verification_screen_error_verification_method_not_configured =>
+      'App admin has not configured this verification method';
 
   @override
   String get account_verification_screen_previous_verification_errors_title => 'Errors';

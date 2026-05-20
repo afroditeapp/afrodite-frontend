@@ -13,6 +13,8 @@ part of openapi.api;
 class ClientFeaturesConfig {
   /// Returns a new [ClientFeaturesConfig] instance.
   ClientFeaturesConfig({
+    this.accountVerification,
+    this.ageVerification,
     this.attribution,
     this.chat,
     this.features,
@@ -20,8 +22,11 @@ class ClientFeaturesConfig {
     this.map,
     this.news,
     this.profile,
-    this.verificationMethods,
   });
+
+  AccountVerificationConfig? accountVerification;
+
+  AgeVerificationConfig? ageVerification;
 
   AttributionConfig? attribution;
 
@@ -37,36 +42,46 @@ class ClientFeaturesConfig {
 
   ProfileConfig? profile;
 
-  VerificationMethodsConfig? verificationMethods;
-
   @override
   bool operator ==(Object other) => identical(this, other) || other is ClientFeaturesConfig &&
+    other.accountVerification == accountVerification &&
+    other.ageVerification == ageVerification &&
     other.attribution == attribution &&
     other.chat == chat &&
     other.features == features &&
     other.likes == likes &&
     other.map == map &&
     other.news == news &&
-    other.profile == profile &&
-    other.verificationMethods == verificationMethods;
+    other.profile == profile;
 
   @override
   int get hashCode =>
     // ignore: unnecessary_parenthesis
+    (accountVerification == null ? 0 : accountVerification!.hashCode) +
+    (ageVerification == null ? 0 : ageVerification!.hashCode) +
     (attribution == null ? 0 : attribution!.hashCode) +
     (chat == null ? 0 : chat!.hashCode) +
     (features == null ? 0 : features!.hashCode) +
     (likes == null ? 0 : likes!.hashCode) +
     (map == null ? 0 : map!.hashCode) +
     (news == null ? 0 : news!.hashCode) +
-    (profile == null ? 0 : profile!.hashCode) +
-    (verificationMethods == null ? 0 : verificationMethods!.hashCode);
+    (profile == null ? 0 : profile!.hashCode);
 
   @override
-  String toString() => 'ClientFeaturesConfig[attribution=$attribution, chat=$chat, features=$features, likes=$likes, map=$map, news=$news, profile=$profile, verificationMethods=$verificationMethods]';
+  String toString() => 'ClientFeaturesConfig[accountVerification=$accountVerification, ageVerification=$ageVerification, attribution=$attribution, chat=$chat, features=$features, likes=$likes, map=$map, news=$news, profile=$profile]';
 
   Map<String, dynamic> toJson() {
     final json = <String, dynamic>{};
+    if (this.accountVerification != null) {
+      json[r'account_verification'] = this.accountVerification;
+    } else {
+      json[r'account_verification'] = null;
+    }
+    if (this.ageVerification != null) {
+      json[r'age_verification'] = this.ageVerification;
+    } else {
+      json[r'age_verification'] = null;
+    }
     if (this.attribution != null) {
       json[r'attribution'] = this.attribution;
     } else {
@@ -102,11 +117,6 @@ class ClientFeaturesConfig {
     } else {
       json[r'profile'] = null;
     }
-    if (this.verificationMethods != null) {
-      json[r'verification_methods'] = this.verificationMethods;
-    } else {
-      json[r'verification_methods'] = null;
-    }
     return json;
   }
 
@@ -129,6 +139,8 @@ class ClientFeaturesConfig {
       }());
 
       return ClientFeaturesConfig(
+        accountVerification: AccountVerificationConfig.fromJson(json[r'account_verification']),
+        ageVerification: AgeVerificationConfig.fromJson(json[r'age_verification']),
         attribution: AttributionConfig.fromJson(json[r'attribution']),
         chat: ChatConfig.fromJson(json[r'chat']),
         features: FeaturesConfig.fromJson(json[r'features']),
@@ -136,7 +148,6 @@ class ClientFeaturesConfig {
         map: MapConfig.fromJson(json[r'map']),
         news: NewsConfig.fromJson(json[r'news']),
         profile: ProfileConfig.fromJson(json[r'profile']),
-        verificationMethods: VerificationMethodsConfig.fromJson(json[r'verification_methods']),
       );
     }
     return null;

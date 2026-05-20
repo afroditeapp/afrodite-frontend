@@ -106,7 +106,7 @@ class AccountVerificationInfoBannerItem extends StatelessWidget {
       builder: (context, configData) {
         return BlocBuilder<MyProfileBloc, MyProfileData>(
           builder: (context, myProfileState) {
-            final accountVerificationMethods = configData.config.verificationMethods?.account;
+            final accountVerificationMethods = configData.config.accountVerification?.methods;
             final verificationConfig = configData.verificationConfig();
             final profile = myProfileState.profile;
             if (!myProfileState.initialLoadingCompleted || profile == null) {
@@ -208,7 +208,7 @@ class AccountVerificationSettingsScreen extends StatefulWidget {
 }
 
 class _AccountVerificationSettingsScreenState extends State<AccountVerificationSettingsScreen> {
-  static const int _verificationMethodDisabled = 0x1;
+  static const int _verificationMethodNotConfigured = 0x1;
   static const int _verificationDataParsingFailed = 0x2;
   static const int _verificationDataVerificationFailed = 0x4;
   static const int _profileAgeRangeVerificationFailed = 0x8;
@@ -378,8 +378,10 @@ class _AccountVerificationSettingsScreenState extends State<AccountVerificationS
     }
 
     final errors = <String>[];
-    if (errorFlags & _verificationMethodDisabled != 0) {
-      errors.add(context.strings.account_verification_screen_error_verification_method_disabled);
+    if (errorFlags & _verificationMethodNotConfigured != 0) {
+      errors.add(
+        context.strings.account_verification_screen_error_verification_method_not_configured,
+      );
     }
     if (errorFlags & _verificationDataParsingFailed != 0) {
       errors.add(
@@ -451,19 +453,27 @@ class _AccountVerificationSettingsScreenState extends State<AccountVerificationS
     final selectedScope = _selectedVerificationScope(verificationConfig);
     return [
       ..._verificationScopeCheckboxTiles(context, verificationConfig),
-      if (widget.methods.debugAccept)
+      if (widget.methods.debug)
         ListTile(
           leading: const Icon(Icons.task_alt),
           title: const Text('Debug accept'),
           enabled: !_actionInProgress && _hasVerificationScope(selectedScope),
-          onTap: () => _requestVerification(VerificationMethod.debugAccept, selectedScope),
+          onTap: () => _requestVerification(
+            verificationMethod: VerificationMethod.debug,
+            verificationScope: selectedScope,
+            verificationData: 'accept',
+          ),
         ),
-      if (widget.methods.debugReject)
+      if (widget.methods.debug)
         ListTile(
           leading: const Icon(Icons.cancel_outlined),
           title: const Text('Debug reject'),
           enabled: !_actionInProgress && _hasVerificationScope(selectedScope),
-          onTap: () => _requestVerification(VerificationMethod.debugReject, selectedScope),
+          onTap: () => _requestVerification(
+            verificationMethod: VerificationMethod.debug,
+            verificationScope: selectedScope,
+            verificationData: 'reject',
+          ),
         ),
       if (widget.methods.eudi)
         ListTile(
@@ -573,10 +583,11 @@ class _AccountVerificationSettingsScreenState extends State<AccountVerificationS
     });
   }
 
-  Future<void> _requestVerification(
-    VerificationMethod verificationMethod,
-    AccountVerificationScope verificationScope,
-  ) async {
+  Future<void> _requestVerification({
+    required VerificationMethod verificationMethod,
+    required AccountVerificationScope verificationScope,
+    required String verificationData,
+  }) async {
     if (!_hasVerificationScope(verificationScope)) {
       return;
     }
@@ -589,7 +600,7 @@ class _AccountVerificationSettingsScreenState extends State<AccountVerificationS
         .account(
           (api) => api.postAccountVerificationQueueItem(
             AccountVerificationQueueItem(
-              verificationData: '',
+              verificationData: verificationData,
               verificationMethod: verificationMethod,
               verificationScope: verificationScope,
             ),

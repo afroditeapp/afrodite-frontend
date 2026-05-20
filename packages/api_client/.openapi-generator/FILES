@@ -37,12 +37,14 @@ lib/model/account_registration_platforms.dart
 lib/model/account_setup.dart
 lib/model/account_state_container.dart
 lib/model/account_sync_version.dart
+lib/model/account_verification_config.dart
 lib/model/account_verification_error_flags_value.dart
 lib/model/account_verification_methods_config.dart
 lib/model/account_verification_queue_admin_item.dart
 lib/model/account_verification_queue_item.dart
 lib/model/account_verification_queue_status.dart
 lib/model/account_verification_scope.dart
+lib/model/account_verification_scopes_config.dart
 lib/model/add_favorite_profile_result.dart
 lib/model/add_public_key_result.dart
 lib/model/admin_account_verification_config.dart
@@ -55,6 +57,9 @@ lib/model/admin_notification_settings.dart
 lib/model/admin_nsfw_detection_config.dart
 lib/model/admin_profile_string_moderation_config.dart
 lib/model/admin_security_content_verification_config.dart
+lib/model/age_verification_config.dart
+lib/model/age_verification_method.dart
+lib/model/age_verification_methods_config.dart
 lib/model/api_usage_count.dart
 lib/model/api_usage_statistics.dart
 lib/model/attribute.dart
@@ -264,6 +269,8 @@ lib/model/perf_metric_values.dart
 lib/model/permissions.dart
 lib/model/post_account_verification_queue_item_result.dart
 lib/model/post_account_verification_queue_remove_next_item.dart
+lib/model/post_age_verification.dart
+lib/model/post_age_verification_result.dart
 lib/model/post_media_content_face_detected_value.dart
 lib/model/post_media_content_face_verified_value.dart
 lib/model/post_media_content_face_verified_value_item.dart
@@ -398,6 +405,4 @@ lib/model/update_profile_text_report.dart
 lib/model/update_report_result.dart
 lib/model/vapid_public_key.dart
 lib/model/verification_action.dart
-lib/model/verification_config.dart
 lib/model/verification_method.dart
-lib/model/verification_methods_config.dart

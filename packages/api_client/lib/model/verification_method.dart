@@ -23,14 +23,12 @@ class VerificationMethod {
 
   String toJson() => value;
 
-  static const debugAccept = VerificationMethod._(r'DebugAccept');
-  static const debugReject = VerificationMethod._(r'DebugReject');
+  static const debug = VerificationMethod._(r'Debug');
   static const eudi = VerificationMethod._(r'Eudi');
 
   /// List of all possible values in this [enum][VerificationMethod].
   static const values = <VerificationMethod>[
-    debugAccept,
-    debugReject,
+    debug,
     eudi,
   ];
 
@@ -70,8 +68,7 @@ class VerificationMethodTypeTransformer {
   VerificationMethod? decode(dynamic data, {bool allowNull = true}) {
     if (data != null) {
       switch (data) {
-        case r'DebugAccept': return VerificationMethod.debugAccept;
-        case r'DebugReject': return VerificationMethod.debugReject;
+        case r'Debug': return VerificationMethod.debug;
         case r'Eudi': return VerificationMethod.eudi;
         default:
           if (!allowNull) {

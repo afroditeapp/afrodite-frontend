@@ -112,7 +112,7 @@ class _ProfileVerificationStatusFilter extends StatelessWidget {
   Widget build(BuildContext context) {
     return BlocBuilder<ClientFeaturesConfigBloc, ClientFeaturesConfigData>(
       builder: (context, configState) {
-        final accountVerificationMethods = configState.config.verificationMethods?.account;
+        final accountVerificationMethods = configState.config.accountVerification?.methods;
         return BlocBuilder<MyProfileBloc, MyProfileData>(
           builder: (context, myProfileState) {
             final myVerificationStatus = myProfileState.profile?.mergedVerificationStatus() ?? 0;

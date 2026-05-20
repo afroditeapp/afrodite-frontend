@@ -58,6 +58,9 @@ String parameterToString(dynamic value) {
   if (value is AccountBannedAdminType) {
     return AccountBannedAdminTypeTypeTransformer().encode(value).toString();
   }
+  if (value is AgeVerificationMethod) {
+    return AgeVerificationMethodTypeTransformer().encode(value).toString();
+  }
   if (value is AttributeMode) {
     return AttributeModeTypeTransformer().encode(value).toString();
   }
