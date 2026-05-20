@@ -1974,6 +1974,10 @@ class AppLocalizationsEn extends AppLocalizations {
   String get splash_screen_app_is_already_running => 'App is already running';
 
   @override
+  String get splash_screen_app_version_downgrade_detected =>
+      'Warning: app version downgrade detected. Please use latest app version if possible.';
+
+  @override
   String statistics_screen_age_range(String p0) {
     return 'Ages: $p0';
   }

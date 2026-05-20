@@ -3556,6 +3556,12 @@ abstract class AppLocalizations {
   /// **'App is already running'**
   String get splash_screen_app_is_already_running;
 
+  /// Splash screen warning text when app major/minor version downgrade is detected
+  ///
+  /// In en, this message translates to:
+  /// **'Warning: app version downgrade detected. Please use latest app version if possible.'**
+  String get splash_screen_app_version_downgrade_detected;
+
   /// Text for age range
   ///
   /// In en, this message translates to:

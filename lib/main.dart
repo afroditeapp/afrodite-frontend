@@ -172,7 +172,7 @@ class GlobalLocalizationsInitializer extends StatelessWidget {
   }
 }
 
-enum GlobalInitState { inProgress, completed, appIsAlreadyRunning }
+enum GlobalInitState { inProgress, completed, appIsAlreadyRunning, appVersionDowngradeDetected }
 
 class GlobalInitManager extends AppSingletonNoInit {
   GlobalInitManager._private();
@@ -182,6 +182,8 @@ class GlobalInitManager extends AppSingletonNoInit {
   }
 
   bool _initDone = false;
+  bool _appVersionDowngradeDetected = false;
+  bool _continueAfterDowngradeTriggered = false;
 
   final BehaviorSubject<GlobalInitState> _globalInitState = BehaviorSubject.seeded(
     GlobalInitState.inProgress,
@@ -200,8 +202,18 @@ class GlobalInitManager extends AppSingletonNoInit {
       return;
     }
 
-    await AppVersionManager.getInstance().updateAppVersionInSharedPrefs();
+    _appVersionDowngradeDetected = await AppVersionManager.getInstance()
+        .detectAppVersionDowngradeAndUpdateAppVersionInSharedPrefs();
+    if (_appVersionDowngradeDetected) {
+      _log.warning("App version downgrade detected, pausing global init");
+      _globalInitState.add(GlobalInitState.appVersionDowngradeDetected);
+      return;
+    }
 
+    await _continueInit();
+  }
+
+  Future<void> _continueInit() async {
     await CommonDatabaseManager.getInstance().init();
 
     await ErrorManager.getInstance().init();
@@ -217,6 +229,18 @@ class GlobalInitManager extends AppSingletonNoInit {
 
     _log.fine("Global init completed");
     _globalInitState.add(GlobalInitState.completed);
+  }
+
+  Future<void> ignoreVersionDowngradeAndContinueInit() async {
+    if (!_appVersionDowngradeDetected || _continueAfterDowngradeTriggered) {
+      return;
+    }
+    _continueAfterDowngradeTriggered = true;
+
+    _log.info("Continuing global init");
+
+    _globalInitState.add(GlobalInitState.inProgress);
+    await _continueInit();
   }
 
   /// Global init should be triggerred after splash screen

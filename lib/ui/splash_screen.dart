@@ -51,6 +51,29 @@ class _SplashScreenState extends State<SplashScreen> {
                     return Center(
                       child: Text(context.strings.splash_screen_app_is_already_running),
                     );
+                  } else if (state.data == GlobalInitState.appVersionDowngradeDetected) {
+                    return Center(
+                      child: Padding(
+                        padding: const EdgeInsets.symmetric(horizontal: 16),
+                        child: Column(
+                          mainAxisSize: MainAxisSize.min,
+                          children: [
+                            Text(
+                              context.strings.splash_screen_app_version_downgrade_detected,
+                              textAlign: TextAlign.center,
+                            ),
+                            const SizedBox(height: 12),
+                            TextButton(
+                              onPressed: () async {
+                                await GlobalInitManager.getInstance()
+                                    .ignoreVersionDowngradeAndContinueInit();
+                              },
+                              child: Text(context.strings.generic_skip),
+                            ),
+                          ],
+                        ),
+                      ),
+                    );
                   } else {
                     return const SizedBox.shrink();
                   }
