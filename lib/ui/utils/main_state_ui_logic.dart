@@ -57,6 +57,7 @@ import 'package:app/logic/settings/profile_visibility.dart';
 import 'package:app/logic/settings/search_settings.dart';
 import 'package:app/logic/settings/ui_settings.dart';
 import 'package:app/ui/account_banned.dart';
+import 'package:app/ui/age_verification_required.dart';
 import 'package:app/ui/demo_account.dart';
 import 'package:app/ui/login_new.dart';
 import 'package:app/ui/normal.dart';
@@ -80,6 +81,9 @@ class MainStateUiLogic extends StatelessWidget {
             LoggedInBasicScreen.accountBanned => NavigatorAccountBanned(r: state.repositories),
             LoggedInBasicScreen.pendingRemoval => NavigatorPendingRemoval(r: state.repositories),
             LoggedInBasicScreen.unsupportedClientVersion => NavigatorUnsupportedClient(
+              r: state.repositories,
+            ),
+            LoggedInBasicScreen.ageVerificationRequired => NavigatorAgeVerificationRequired(
               r: state.repositories,
             ),
           },
@@ -266,6 +270,30 @@ class NavigatorUnsupportedClient extends LoggedInRootScreen {
   @override
   Widget blocProvider(Widget child) {
     return child;
+  }
+}
+
+class NavigatorAgeVerificationRequired extends LoggedInRootScreen {
+  const NavigatorAgeVerificationRequired({required super.r, super.key});
+
+  @override
+  MyScreenPage<Object> rootScreen() => AgeVerificationRequiredPage(r);
+
+  @override
+  Widget blocProvider(Widget child) {
+    return MultiBlocProvider(
+      providers: [
+        // Logout action
+        BlocProvider(create: (_) => LoginBloc()),
+
+        BlocProvider(create: (_) => AccountBloc(r)),
+        BlocProvider(create: (_) => AccountDetailsBloc(r)),
+        BlocProvider(create: (_) => DataExportBloc(r)),
+        BlocProvider(create: (_) => ChatBackupBloc(r)),
+        BlocProvider(create: (_) => ClientFeaturesConfigBloc(r), lazy: false),
+      ],
+      child: child,
+    );
   }
 }
 

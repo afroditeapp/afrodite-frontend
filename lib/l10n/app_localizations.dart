@@ -448,6 +448,18 @@ abstract class AppLocalizations {
   /// **'Admin'**
   String get admin_settings_title;
 
+  /// Title for age verification required screen
+  ///
+  /// In en, this message translates to:
+  /// **'Age verification required'**
+  String get age_verification_required_screen_title;
+
+  /// Action text for opening age verification settings when age verification is required
+  ///
+  /// In en, this message translates to:
+  /// **'Verify age'**
+  String get age_verification_required_screen_verify_age_action;
+
   /// Age verification status label for adult age
   ///
   /// In en, this message translates to:

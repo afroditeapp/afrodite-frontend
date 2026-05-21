@@ -103,6 +103,9 @@ class LoginRepository extends AppSingleton {
   Stream<AccountStateStreamValue> get accountState => _repositoryStateStreams.accountState;
   Stream<InitialSetupSkippedStreamValue> get initialSetupSkipped =>
       _repositoryStateStreams.initialSetupSkipped;
+  Stream<AgeVerifiedStreamValue> get ageVerified => _repositoryStateStreams.ageVerified;
+  Stream<ClientFeaturesConfigStreamValue> get clientFeaturesConfig =>
+      _repositoryStateStreams.clientFeaturesConfig;
 
   final BehaviorSubject<LoginState> _loginState = BehaviorSubject.seeded(LsSplashScreen());
   final BehaviorSubject<bool> _loginInProgress = BehaviorSubject.seeded(false);
@@ -646,6 +649,17 @@ class RepositoryStateStreams {
   StreamSubscription<bool>? _initialSetupSkippedSubscription;
   Stream<InitialSetupSkippedStreamValue> get initialSetupSkipped => _initialSetupSkipped;
 
+  final BehaviorSubject<AgeVerifiedStreamValue> _ageVerified = BehaviorSubject.seeded(
+    AgeVerifiedLoading(),
+  );
+  StreamSubscription<bool>? _ageVerifiedSubscription;
+  Stream<AgeVerifiedStreamValue> get ageVerified => _ageVerified;
+
+  final BehaviorSubject<ClientFeaturesConfigStreamValue> _clientFeaturesConfig =
+      BehaviorSubject.seeded(ClientFeaturesConfigLoading());
+  StreamSubscription<ClientFeaturesConfig>? _clientFeaturesConfigSubscription;
+  Stream<ClientFeaturesConfigStreamValue> get clientFeaturesConfig => _clientFeaturesConfig;
+
   final BehaviorSubject<ServerConnectionManagerStateStreamValue>
   _serverConnectionManagerStateEvents = BehaviorSubject.seeded(
     ServerConnectionManagerStateLoading(),
@@ -676,6 +690,24 @@ class RepositoryStateStreams {
           _initialSetupSkipped.add(InitialSetupSkippedExists(v));
         });
 
+    await _ageVerifiedSubscription?.cancel();
+    _ageVerifiedSubscription = accountDb
+        .accountStream((db) => db.account.watchAgeVerified())
+        .map((v) => v ?? false)
+        .listen((v) {
+          _ageVerified.add(AgeVerifiedExists(v));
+        });
+
+    await _clientFeaturesConfigSubscription?.cancel();
+    _clientFeaturesConfigSubscription = accountDb
+        .accountStreamOrDefault(
+          (db) => db.config.watchClientFeaturesConfig(),
+          emptyClientFeaturesConfig(),
+        )
+        .listen((v) {
+          _clientFeaturesConfig.add(ClientFeaturesConfigExists(v));
+        });
+
     await _serverConnectionManagerStateEventsSubscription?.cancel();
     _serverConnectionManagerStateEventsSubscription = connectionManager.state.listen((v) {
       _serverConnectionManagerStateEvents.add(ServerConnectionManagerStateExists(v));
@@ -690,6 +722,14 @@ class RepositoryStateStreams {
     _log.info("Cancelling initial setup skipped subscription");
     await _initialSetupSkippedSubscription?.cancel();
     _initialSetupSkipped.add(InitialSetupSkippedLoading());
+
+    _log.info("Cancelling age verified subscription");
+    await _ageVerifiedSubscription?.cancel();
+    _ageVerified.add(AgeVerifiedLoading());
+
+    _log.info("Cancelling client features config subscription");
+    await _clientFeaturesConfigSubscription?.cancel();
+    _clientFeaturesConfig.add(ClientFeaturesConfigLoading());
 
     _log.info("Cancelling server connection state events subscription");
     await _serverConnectionManagerStateEventsSubscription?.cancel();
@@ -739,6 +779,44 @@ class InitialSetupSkippedExists extends InitialSetupSkippedStreamValue {
   @override
   String toString() {
     return "InitalSetupSkipped($value)";
+  }
+}
+
+sealed class AgeVerifiedStreamValue {}
+
+class AgeVerifiedLoading extends AgeVerifiedStreamValue {
+  @override
+  String toString() {
+    return "AgeVerifiedLoading";
+  }
+}
+
+class AgeVerifiedExists extends AgeVerifiedStreamValue {
+  final bool value;
+  AgeVerifiedExists(this.value);
+
+  @override
+  String toString() {
+    return "AgeVerified($value)";
+  }
+}
+
+sealed class ClientFeaturesConfigStreamValue {}
+
+class ClientFeaturesConfigLoading extends ClientFeaturesConfigStreamValue {
+  @override
+  String toString() {
+    return "ClientFeaturesConfigLoading";
+  }
+}
+
+class ClientFeaturesConfigExists extends ClientFeaturesConfigStreamValue {
+  final ClientFeaturesConfig value;
+  ClientFeaturesConfigExists(this.value);
+
+  @override
+  String toString() {
+    return "ClientFeaturesConfigExists";
   }
 }
 

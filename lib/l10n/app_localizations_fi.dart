@@ -227,6 +227,12 @@ class AppLocalizationsFi extends AppLocalizations {
   String get admin_settings_title => 'Admin';
 
   @override
+  String get age_verification_required_screen_title => 'Age verification required';
+
+  @override
+  String get age_verification_required_screen_verify_age_action => 'Verify age';
+
+  @override
   String get age_verification_screen_age_is_18_or_older => 'Age is 18 or older';
 
   @override

@@ -50,7 +50,12 @@ class MsLoggedInBasicScreen extends MainState {
   int get hashCode => Object.hash(runtimeType, repositories, screen);
 }
 
-enum LoggedInBasicScreen { accountBanned, pendingRemoval, unsupportedClientVersion }
+enum LoggedInBasicScreen {
+  accountBanned,
+  pendingRemoval,
+  unsupportedClientVersion,
+  ageVerificationRequired,
+}
 
 class MsLoggedInInitialSetupScreen extends MainState {
   final RepositoryInstances repositories;

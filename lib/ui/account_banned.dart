@@ -1,11 +1,7 @@
 import "package:app/api/server_connection_manager.dart";
 import "package:app/data/utils/repository_instances.dart";
 import "package:app/model/freezed/logic/main/navigator_state.dart";
-import "package:app/ui/normal/settings/account_settings.dart";
-import "package:app/ui/normal/settings/chat/chat_backup.dart";
-import "package:app/ui/normal/settings/data_export.dart";
 import "package:app/ui_utils/app_bar/common_actions.dart";
-import "package:app/ui_utils/app_bar/menu_actions.dart";
 import "package:app/ui_utils/extensions/api.dart";
 import "package:app/ui_utils/list.dart";
 import "package:app/utils/api.dart";
@@ -74,28 +70,7 @@ class _AccountBannedScreenState extends State<AccountBannedScreen> {
     return Scaffold(
       appBar: AppBar(
         title: Text(context.strings.account_banned_screen_title),
-        actions: [
-          menuActions([
-            // Allow access to account deletion request UI
-            MenuItemButton(
-              child: Text(context.strings.account_settings_screen_title),
-              onPressed: () => openAccountSettings(context),
-            ),
-            MenuItemButton(
-              child: Text(context.strings.data_export_screen_title_export_type_user),
-              onPressed: () {
-                openDataExportScreenMyData(context);
-              },
-            ),
-            MenuItemButton(
-              child: Text(context.strings.chat_backup_screen_title),
-              onPressed: () {
-                openChatBackupScreen(context);
-              },
-            ),
-            ...commonActionsWhenLoggedInAndAccountIsNotNormallyUsable(context),
-          ]),
-        ],
+        actions: [loggedInAndNormalUiBlockedActionsMenu(context)],
       ),
       body: LayoutBuilder(
         builder: (context, constraints) {

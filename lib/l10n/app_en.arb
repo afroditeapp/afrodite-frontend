@@ -280,6 +280,14 @@
   "@admin_settings_title": {
     "description": "Title for admin settings screen"
   },
+  "age_verification_required_screen_title": "Age verification required",
+  "@age_verification_required_screen_title": {
+    "description": "Title for age verification required screen"
+  },
+  "age_verification_required_screen_verify_age_action": "Verify age",
+  "@age_verification_required_screen_verify_age_action": {
+    "description": "Action text for opening age verification settings when age verification is required"
+  },
   "age_verification_screen_age_is_18_or_older": "Age is 18 or older",
   "@age_verification_screen_age_is_18_or_older": {
     "description": "Age verification status label for adult age"

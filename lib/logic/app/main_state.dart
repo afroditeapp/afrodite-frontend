@@ -43,21 +43,32 @@ class MainStateBloc extends Bloc<MainStateEvent, MainState> {
   MainStateBloc() : super(MsSplashScreen()) {
     on<UpdateMainState>((data, emit) => emit(data.value), transformer: sequential());
 
-    Rx.combineLatest4(
+    Rx.combineLatest6(
           login.loginState,
           login.accountState,
           login.initialSetupSkipped,
+          login.ageVerified,
+          login.clientFeaturesConfig,
           globalInitManager.globalInitState,
-          (a, b, c, d) => (a, b, c, d),
+          (a, b, c, d, e, f) => (a, b, c, d, e, f),
         )
         .asyncMap((current) async {
-          final (ls, accountState, initialSetupSkipped, globalInitCompleted) = current;
+          final (
+            ls,
+            accountState,
+            initialSetupSkipped,
+            ageVerified,
+            clientFeaturesConfig,
+            globalInitCompleted,
+          ) = current;
 
           if (globalInitCompleted != GlobalInitState.completed) {
             return;
           }
 
-          _log.finer("$ls, $accountState, initialSetupSkipped: $initialSetupSkipped");
+          _log.finer(
+            "$ls, $accountState, initialSetupSkipped: $initialSetupSkipped, ageVerified: $ageVerified, clientFeaturesConfig: $clientFeaturesConfig",
+          );
 
           final ms = switch (ls) {
             LsSplashScreen() => MsSplashScreen(),
@@ -83,7 +94,20 @@ class MainStateBloc extends Bloc<MainStateEvent, MainState> {
                 },
                 AccountState.banned => ls.toMainState(LoggedInBasicScreen.accountBanned),
                 AccountState.pendingDeletion => ls.toMainState(LoggedInBasicScreen.pendingRemoval),
-                AccountState.normal => await createMainScreenState(ls.repositories),
+                AccountState.normal => switch ((ageVerified, clientFeaturesConfig)) {
+                  (AgeVerifiedLoading(), _) || (_, ClientFeaturesConfigLoading()) => null,
+                  (
+                    AgeVerifiedExists(value: final isAgeVerified),
+                    ClientFeaturesConfigExists(value: final config),
+                  )
+                      when (config.ageVerification?.require ?? false) && !isAgeVerified =>
+                    MsLoggedInBasicScreen(
+                      ls.repositories,
+                      LoggedInBasicScreen.ageVerificationRequired,
+                    ),
+                  (AgeVerifiedExists(), ClientFeaturesConfigExists()) =>
+                    await createMainScreenState(ls.repositories),
+                },
               },
             },
           };

@@ -664,6 +664,10 @@
     <string name="age_verification_screen_error_verification_data_verification_failed" description="Age verification error: verification data verification failed">Verifying person identification data failed</string>
     <string name="age_verification_screen_error_verification_method_not_configured" description="Age verification error: verification method is not configured">App admin has not configured this verification method</string>
 
+    <!-- Age verification required screen -->
+    <string name="age_verification_required_screen_title" description="Title for age verification required screen">Age verification required</string>
+    <string name="age_verification_required_screen_verify_age_action" description="Action text for opening age verification settings when age verification is required">Verify age</string>
+
     <!-- Profile grid settings screen -->
     <string name="profile_grid_settings_screen_title" description="Profile grid settings screen title">Profile grid</string>
     <string name="profile_grid_settings_screen_all_grids_title" description="Title for common settings to all profile grids">All profile grids</string>
