@@ -18,6 +18,8 @@ void openAgeVerificationSettings(BuildContext context, AgeVerificationMethodsCon
   MyNavigator.pushLimited(context, AgeVerificationSettingsPage(r.connectionManager, methods));
 }
 
+typedef AgeVerificationStateChanged = void Function(BuildContext context, bool ageVerified);
+
 class AgeVerificationSettingsPage extends MyScreenPageLimited<()> {
   final ServerConnectionManager api;
   final AgeVerificationMethodsConfig methods;
@@ -39,9 +41,38 @@ class AgeVerificationSettingsScreen extends StatefulWidget {
 }
 
 class _AgeVerificationSettingsScreenState extends State<AgeVerificationSettingsScreen> {
+  @override
+  Widget build(BuildContext context) {
+    return Scaffold(
+      appBar: AppBar(title: Text(context.strings.age_verification_screen_title)),
+      body: SingleChildScrollView(
+        child: AgeVerificationContent(api: widget.api, methods: widget.methods),
+      ),
+    );
+  }
+}
+
+class AgeVerificationContent extends StatefulWidget {
+  final ServerConnectionManager api;
+  final AgeVerificationMethodsConfig methods;
+  final AgeVerificationStateChanged? onVerificationStateChanged;
+
+  const AgeVerificationContent({
+    required this.api,
+    required this.methods,
+    this.onVerificationStateChanged,
+    super.key,
+  });
+
+  @override
+  State<AgeVerificationContent> createState() => _AgeVerificationContentState();
+}
+
+class _AgeVerificationContentState extends State<AgeVerificationContent> {
   bool _isLoading = true;
   bool _actionInProgress = false;
   bool _ageVerified = false;
+  bool _hasLoadError = false;
 
   @override
   void initState() {
@@ -51,12 +82,27 @@ class _AgeVerificationSettingsScreenState extends State<AgeVerificationSettingsS
 
   @override
   Widget build(BuildContext context) {
-    return Scaffold(
-      appBar: AppBar(title: Text(context.strings.age_verification_screen_title)),
-      body: _isLoading
-          ? const Center(child: CircularProgressIndicator())
-          : SingleChildScrollView(child: _column(context)),
-    );
+    if (_isLoading) {
+      return const Center(child: CircularProgressIndicator());
+    }
+
+    if (_hasLoadError) {
+      return Center(
+        child: Column(
+          mainAxisSize: MainAxisSize.min,
+          children: [
+            Text(context.strings.generic_error_occurred),
+            const SizedBox(height: 12),
+            ElevatedButton(
+              onPressed: _actionInProgress ? null : _reloadAgeVerificationStatus,
+              child: Text(context.strings.generic_retry),
+            ),
+          ],
+        ),
+      );
+    }
+
+    return _column(context);
   }
 
   Widget _column(BuildContext context) {
@@ -118,16 +164,35 @@ class _AgeVerificationSettingsScreenState extends State<AgeVerificationSettingsS
   }
 
   Future<void> _reloadAgeVerificationStatus() async {
+    if (_hasLoadError) {
+      setState(() {
+        _hasLoadError = false;
+      });
+    }
+
     final accountState = await widget.api.account((api) => api.getAccountState()).ok();
 
     if (!mounted) {
       return;
     }
 
+    if (accountState == null) {
+      setState(() {
+        _isLoading = false;
+        _hasLoadError = true;
+      });
+      return;
+    }
+
+    final ageVerified = accountState.ageVerified;
+
     setState(() {
       _isLoading = false;
-      _ageVerified = accountState?.ageVerified ?? false;
+      _ageVerified = ageVerified;
+      _hasLoadError = false;
     });
+
+    widget.onVerificationStateChanged?.call(context, ageVerified);
   }
 
   Future<void> _requestVerification({

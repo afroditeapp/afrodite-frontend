@@ -2,10 +2,15 @@ import "package:app/model/freezed/logic/main/navigator_state.dart";
 import "package:flutter/material.dart";
 import "package:flutter_bloc/flutter_bloc.dart";
 import "package:app/localizations.dart";
+import "package:app/logic/account/client_features_config.dart";
 import "package:app/logic/account/initial_setup.dart";
+import "package:app/model/freezed/logic/account/client_features_config.dart";
 import "package:app/model/freezed/logic/account/initial_setup.dart";
+import "package:app/data/utils/repository_instances.dart";
 import "package:app/ui/initial_setup/navigation.dart";
+import "package:app/ui/normal/settings/age_verification.dart";
 import "package:app/ui_utils/initial_setup_common.dart";
+import "package:openapi/api.dart";
 
 class AgeConfirmationPage extends InitialSetupPageBase with SimpleUrlParser<AgeConfirmationPage> {
   AgeConfirmationPage() : super(builder: (_) => AgeConfirmationScreen());
@@ -44,8 +49,41 @@ class _AgeConfirmationScreenInternal extends StatelessWidget {
             return null;
           }
         },
-        question: const AskAgeConfirmation(),
+        question: BlocBuilder<ClientFeaturesConfigBloc, ClientFeaturesConfigData>(
+          builder: (context, configState) {
+            final ageVerificationConfig = configState.config.ageVerification;
+            final ageVerificationMethods = ageVerificationConfig?.methods;
+            final verifyDuringInitialSetup =
+                ageVerificationConfig?.verifyDuringInitialSetup == true;
+
+            if (verifyDuringInitialSetup &&
+                ageVerificationMethods != null &&
+                isAccessToAgeVerificationScreenPossible(methods: ageVerificationMethods)) {
+              return AskAgeVerificationDuringInitialSetup(methods: ageVerificationMethods);
+            }
+
+            return const AskAgeConfirmation();
+          },
+        ),
       ),
+    );
+  }
+}
+
+class AskAgeVerificationDuringInitialSetup extends StatelessWidget {
+  final AgeVerificationMethodsConfig methods;
+
+  const AskAgeVerificationDuringInitialSetup({required this.methods, super.key});
+
+  @override
+  Widget build(BuildContext context) {
+    final api = context.read<RepositoryInstances>().connectionManager;
+    return AgeVerificationContent(
+      api: api,
+      methods: methods,
+      onVerificationStateChanged: (context, verified) {
+        context.read<InitialSetupBloc>().add(SetAgeConfirmation(verified));
+      },
     );
   }
 }
