@@ -16,6 +16,7 @@ part 'account.g.dart';
     schema.ProfileVisibility,
     schema.EmailAddress,
     schema.EmailVerified,
+    schema.AgeVerified,
   ],
 )
 class DaoReadAccount extends DatabaseAccessor<AccountDatabase> with _$DaoReadAccountMixin {
@@ -46,6 +47,12 @@ class DaoReadAccount extends DatabaseAccessor<AccountDatabase> with _$DaoReadAcc
           .map((r) => r.emailVerified)
           .watchSingleOrNull()
           .map((value) => value ?? true);
+
+  Stream<bool> watchAgeVerified() =>
+      (select(ageVerified)..where((t) => t.id.equals(SingleRowTable.ID.value)))
+          .map((r) => r.ageVerified)
+          .watchSingleOrNull()
+          .map((value) => value ?? false);
 
   Future<api.AccountId?> localAccountIdToAccountId(dbm.LocalAccountId id) async {
     return (select(

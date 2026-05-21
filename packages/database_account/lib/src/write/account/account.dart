@@ -17,6 +17,7 @@ part 'account.g.dart';
     schema.ProfileVisibility,
     schema.EmailAddress,
     schema.EmailVerified,
+    schema.AgeVerified,
   ],
 )
 class DaoWriteAccount extends DatabaseAccessor<AccountDatabase> with _$DaoWriteAccountMixin {
@@ -47,6 +48,9 @@ class DaoWriteAccount extends DatabaseAccessor<AccountDatabase> with _$DaoWriteA
           id: SingleRowTable.ID,
           emailVerified: Value(value.emailVerified),
         ),
+      );
+      await into(ageVerified).insertOnConflictUpdate(
+        AgeVerifiedCompanion.insert(id: SingleRowTable.ID, ageVerified: Value(value.ageVerified)),
       );
       await db.write.common.updateSyncVersionAccount(value.syncVersion);
     });

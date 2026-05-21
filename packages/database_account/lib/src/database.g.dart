@@ -10817,6 +10817,209 @@ class EmailVerifiedCompanion extends UpdateCompanion<EmailVerifiedData> {
   }
 }
 
+class $AgeVerifiedTable extends schema.AgeVerified
+    with TableInfo<$AgeVerifiedTable, AgeVerifiedData> {
+  @override
+  final GeneratedDatabase attachedDatabase;
+  final String? _alias;
+  $AgeVerifiedTable(this.attachedDatabase, [this._alias]);
+  static const VerificationMeta _idMeta = const VerificationMeta('id');
+  @override
+  late final GeneratedColumn<int> id = GeneratedColumn<int>(
+    'id',
+    aliasedName,
+    false,
+    hasAutoIncrement: true,
+    type: DriftSqlType.int,
+    requiredDuringInsert: false,
+    defaultConstraints: GeneratedColumn.constraintIsAlways(
+      'PRIMARY KEY AUTOINCREMENT',
+    ),
+  );
+  static const VerificationMeta _ageVerifiedMeta = const VerificationMeta(
+    'ageVerified',
+  );
+  @override
+  late final GeneratedColumn<bool> ageVerified = GeneratedColumn<bool>(
+    'age_verified',
+    aliasedName,
+    false,
+    type: DriftSqlType.bool,
+    requiredDuringInsert: false,
+    defaultConstraints: GeneratedColumn.constraintIsAlways(
+      'CHECK ("age_verified" IN (0, 1))',
+    ),
+    clientDefault: () => false,
+  );
+  @override
+  List<GeneratedColumn> get $columns => [id, ageVerified];
+  @override
+  String get aliasedName => _alias ?? actualTableName;
+  @override
+  String get actualTableName => $name;
+  static const String $name = 'age_verified';
+  @override
+  VerificationContext validateIntegrity(
+    Insertable<AgeVerifiedData> instance, {
+    bool isInserting = false,
+  }) {
+    final context = VerificationContext();
+    final data = instance.toColumns(true);
+    if (data.containsKey('id')) {
+      context.handle(_idMeta, id.isAcceptableOrUnknown(data['id']!, _idMeta));
+    }
+    if (data.containsKey('age_verified')) {
+      context.handle(
+        _ageVerifiedMeta,
+        ageVerified.isAcceptableOrUnknown(
+          data['age_verified']!,
+          _ageVerifiedMeta,
+        ),
+      );
+    }
+    return context;
+  }
+
+  @override
+  Set<GeneratedColumn> get $primaryKey => {id};
+  @override
+  AgeVerifiedData map(Map<String, dynamic> data, {String? tablePrefix}) {
+    final effectivePrefix = tablePrefix != null ? '$tablePrefix.' : '';
+    return AgeVerifiedData(
+      id: attachedDatabase.typeMapping.read(
+        DriftSqlType.int,
+        data['${effectivePrefix}id'],
+      )!,
+      ageVerified: attachedDatabase.typeMapping.read(
+        DriftSqlType.bool,
+        data['${effectivePrefix}age_verified'],
+      )!,
+    );
+  }
+
+  @override
+  $AgeVerifiedTable createAlias(String alias) {
+    return $AgeVerifiedTable(attachedDatabase, alias);
+  }
+}
+
+class AgeVerifiedData extends DataClass implements Insertable<AgeVerifiedData> {
+  final int id;
+  final bool ageVerified;
+  const AgeVerifiedData({required this.id, required this.ageVerified});
+  @override
+  Map<String, Expression> toColumns(bool nullToAbsent) {
+    final map = <String, Expression>{};
+    map['id'] = Variable<int>(id);
+    map['age_verified'] = Variable<bool>(ageVerified);
+    return map;
+  }
+
+  AgeVerifiedCompanion toCompanion(bool nullToAbsent) {
+    return AgeVerifiedCompanion(id: Value(id), ageVerified: Value(ageVerified));
+  }
+
+  factory AgeVerifiedData.fromJson(
+    Map<String, dynamic> json, {
+    ValueSerializer? serializer,
+  }) {
+    serializer ??= driftRuntimeOptions.defaultSerializer;
+    return AgeVerifiedData(
+      id: serializer.fromJson<int>(json['id']),
+      ageVerified: serializer.fromJson<bool>(json['ageVerified']),
+    );
+  }
+  @override
+  Map<String, dynamic> toJson({ValueSerializer? serializer}) {
+    serializer ??= driftRuntimeOptions.defaultSerializer;
+    return <String, dynamic>{
+      'id': serializer.toJson<int>(id),
+      'ageVerified': serializer.toJson<bool>(ageVerified),
+    };
+  }
+
+  AgeVerifiedData copyWith({int? id, bool? ageVerified}) => AgeVerifiedData(
+    id: id ?? this.id,
+    ageVerified: ageVerified ?? this.ageVerified,
+  );
+  AgeVerifiedData copyWithCompanion(AgeVerifiedCompanion data) {
+    return AgeVerifiedData(
+      id: data.id.present ? data.id.value : this.id,
+      ageVerified: data.ageVerified.present
+          ? data.ageVerified.value
+          : this.ageVerified,
+    );
+  }
+
+  @override
+  String toString() {
+    return (StringBuffer('AgeVerifiedData(')
+          ..write('id: $id, ')
+          ..write('ageVerified: $ageVerified')
+          ..write(')'))
+        .toString();
+  }
+
+  @override
+  int get hashCode => Object.hash(id, ageVerified);
+  @override
+  bool operator ==(Object other) =>
+      identical(this, other) ||
+      (other is AgeVerifiedData &&
+          other.id == this.id &&
+          other.ageVerified == this.ageVerified);
+}
+
+class AgeVerifiedCompanion extends UpdateCompanion<AgeVerifiedData> {
+  final Value<int> id;
+  final Value<bool> ageVerified;
+  const AgeVerifiedCompanion({
+    this.id = const Value.absent(),
+    this.ageVerified = const Value.absent(),
+  });
+  AgeVerifiedCompanion.insert({
+    this.id = const Value.absent(),
+    this.ageVerified = const Value.absent(),
+  });
+  static Insertable<AgeVerifiedData> custom({
+    Expression<int>? id,
+    Expression<bool>? ageVerified,
+  }) {
+    return RawValuesInsertable({
+      if (id != null) 'id': id,
+      if (ageVerified != null) 'age_verified': ageVerified,
+    });
+  }
+
+  AgeVerifiedCompanion copyWith({Value<int>? id, Value<bool>? ageVerified}) {
+    return AgeVerifiedCompanion(
+      id: id ?? this.id,
+      ageVerified: ageVerified ?? this.ageVerified,
+    );
+  }
+
+  @override
+  Map<String, Expression> toColumns(bool nullToAbsent) {
+    final map = <String, Expression>{};
+    if (id.present) {
+      map['id'] = Variable<int>(id.value);
+    }
+    if (ageVerified.present) {
+      map['age_verified'] = Variable<bool>(ageVerified.value);
+    }
+    return map;
+  }
+
+  @override
+  String toString() {
+    return (StringBuffer('AgeVerifiedCompanion(')
+          ..write('id: $id, ')
+          ..write('ageVerified: $ageVerified')
+          ..write(')'))
+        .toString();
+  }
+}
+
 class $DbOwnerTable extends schema.DbOwner
     with TableInfo<$DbOwnerTable, DbOwnerData> {
   @override
@@ -21015,6 +21218,7 @@ abstract class _$AccountDatabase extends GeneratedDatabase {
       $ProfileVisibilityTable(this);
   late final $EmailAddressTable emailAddress = $EmailAddressTable(this);
   late final $EmailVerifiedTable emailVerified = $EmailVerifiedTable(this);
+  late final $AgeVerifiedTable ageVerified = $AgeVerifiedTable(this);
   late final $DbOwnerTable dbOwner = $DbOwnerTable(this);
   late final $LoginSessionTokensTable loginSessionTokens =
       $LoginSessionTokensTable(this);
@@ -21195,6 +21399,7 @@ abstract class _$AccountDatabase extends GeneratedDatabase {
     profileVisibility,
     emailAddress,
     emailVerified,
+    ageVerified,
     dbOwner,
     loginSessionTokens,
     myMediaContent,

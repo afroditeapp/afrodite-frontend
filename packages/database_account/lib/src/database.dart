@@ -86,6 +86,7 @@ part 'database.g.dart';
     schema.ProfileVisibility,
     schema.EmailAddress,
     schema.EmailVerified,
+    schema.AgeVerified,
     schema.DbOwner,
     schema.LoginSessionTokens,
     // Media

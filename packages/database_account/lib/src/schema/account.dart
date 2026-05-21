@@ -34,6 +34,10 @@ class EmailVerified extends SingleRowTable {
   BoolColumn get emailVerified => boolean().clientDefault(() => false)();
 }
 
+class AgeVerified extends SingleRowTable {
+  BoolColumn get ageVerified => boolean().clientDefault(() => false)();
+}
+
 class LoginSessionTokens extends SingleRowTable {
   TextColumn get refreshToken =>
       text().map(NullAwareTypeConverter.wrap(RefreshTokenConverter())).nullable()();
