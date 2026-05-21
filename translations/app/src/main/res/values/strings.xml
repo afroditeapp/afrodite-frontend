@@ -652,6 +652,18 @@
     <string name="account_verification_screen_scope_profile_name" description="Checkbox label for account verification profile name scope">Profile name</string>
     <string name="account_verification_screen_verification_method_eudi_unsupported" description="Account verification method label for eudi when it is not yet supported">EU digital wallet (currently unsupported)</string>
 
+    <!-- Age verification settings -->
+    <string name="age_verification_screen_title" description="Title for age verification settings screen">Age verification</string>
+    <string name="age_verification_screen_current_verification_status_title" description="Title shown for current age verification status section">Current verification status</string>
+    <string name="age_verification_screen_age_is_18_or_older" description="Age verification status label for adult age">Age is 18 or older</string>
+    <string name="age_verification_screen_start_verification_title" description="Title shown above age verification methods section">Start verification</string>
+    <string name="age_verification_screen_verification_method_eudi_unsupported" description="Age verification method label for eudi when it is not yet supported">EU digital wallet (currently unsupported)</string>
+    <string name="age_verification_screen_error_age_already_verified" description="Age verification error: age is already verified">Age already verified</string>
+    <string name="age_verification_screen_error_age_under_18" description="Age verification error: age is under 18">Age is under 18</string>
+    <string name="age_verification_screen_error_verification_data_parsing_failed" description="Age verification error: verification data parsing failed">Unsupported person identification data</string>
+    <string name="age_verification_screen_error_verification_data_verification_failed" description="Age verification error: verification data verification failed">Verifying person identification data failed</string>
+    <string name="age_verification_screen_error_verification_method_not_configured" description="Age verification error: verification method is not configured">App admin has not configured this verification method</string>
+
     <!-- Profile grid settings screen -->
     <string name="profile_grid_settings_screen_title" description="Profile grid settings screen title">Profile grid</string>
     <string name="profile_grid_settings_screen_all_grids_title" description="Title for common settings to all profile grids">All profile grids</string>

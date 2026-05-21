@@ -448,6 +448,66 @@ abstract class AppLocalizations {
   /// **'Admin'**
   String get admin_settings_title;
 
+  /// Age verification status label for adult age
+  ///
+  /// In en, this message translates to:
+  /// **'Age is 18 or older'**
+  String get age_verification_screen_age_is_18_or_older;
+
+  /// Title shown for current age verification status section
+  ///
+  /// In en, this message translates to:
+  /// **'Current verification status'**
+  String get age_verification_screen_current_verification_status_title;
+
+  /// Age verification error: age is already verified
+  ///
+  /// In en, this message translates to:
+  /// **'Age already verified'**
+  String get age_verification_screen_error_age_already_verified;
+
+  /// Age verification error: age is under 18
+  ///
+  /// In en, this message translates to:
+  /// **'Age is under 18'**
+  String get age_verification_screen_error_age_under_18;
+
+  /// Age verification error: verification data parsing failed
+  ///
+  /// In en, this message translates to:
+  /// **'Unsupported person identification data'**
+  String get age_verification_screen_error_verification_data_parsing_failed;
+
+  /// Age verification error: verification data verification failed
+  ///
+  /// In en, this message translates to:
+  /// **'Verifying person identification data failed'**
+  String get age_verification_screen_error_verification_data_verification_failed;
+
+  /// Age verification error: verification method is not configured
+  ///
+  /// In en, this message translates to:
+  /// **'App admin has not configured this verification method'**
+  String get age_verification_screen_error_verification_method_not_configured;
+
+  /// Title shown above age verification methods section
+  ///
+  /// In en, this message translates to:
+  /// **'Start verification'**
+  String get age_verification_screen_start_verification_title;
+
+  /// Title for age verification settings screen
+  ///
+  /// In en, this message translates to:
+  /// **'Age verification'**
+  String get age_verification_screen_title;
+
+  /// Age verification method label for eudi when it is not yet supported
+  ///
+  /// In en, this message translates to:
+  /// **'EU digital wallet (currently unsupported)'**
+  String get age_verification_screen_verification_method_eudi_unsupported;
+
   /// Title for app bar action which opens about dialog
   ///
   /// In en, this message translates to:

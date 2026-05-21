@@ -9,6 +9,7 @@ import 'package:app/logic/account/account_details.dart';
 import 'package:app/model/freezed/logic/account/client_features_config.dart';
 import 'package:app/model/freezed/logic/account/account.dart';
 import 'package:app/model/freezed/logic/account/account_details.dart';
+import 'package:app/ui/normal/settings/age_verification.dart';
 import 'package:app/ui/normal/settings/account_verification.dart';
 import 'package:app/ui/normal/settings.dart';
 import 'package:app/ui_utils/common_update_logic.dart';
@@ -217,6 +218,20 @@ class _AccountSettingsScreenState extends State<AccountSettingsScreen> {
           ),
         ],
         const Padding(padding: EdgeInsets.all(4)),
+        BlocBuilder<ClientFeaturesConfigBloc, ClientFeaturesConfigData>(
+          builder: (context, configState) {
+            final ageVerificationMethods = configState.config.ageVerification?.methods;
+            if (ageVerificationMethods != null &&
+                isAccessToAgeVerificationScreenPossible(methods: ageVerificationMethods)) {
+              return Setting.createSetting(
+                Icons.eighteen_up_rating,
+                context.strings.age_verification_screen_title,
+                () => openAgeVerificationSettings(context, ageVerificationMethods),
+              ).toListTile();
+            }
+            return const SizedBox.shrink();
+          },
+        ),
         BlocBuilder<ClientFeaturesConfigBloc, ClientFeaturesConfigData>(
           builder: (context, configState) {
             final accountVerificationMethods = configState.config.accountVerification?.methods;

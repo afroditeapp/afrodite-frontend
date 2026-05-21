@@ -227,6 +227,41 @@ class AppLocalizationsEn extends AppLocalizations {
   String get admin_settings_title => 'Admin';
 
   @override
+  String get age_verification_screen_age_is_18_or_older => 'Age is 18 or older';
+
+  @override
+  String get age_verification_screen_current_verification_status_title =>
+      'Current verification status';
+
+  @override
+  String get age_verification_screen_error_age_already_verified => 'Age already verified';
+
+  @override
+  String get age_verification_screen_error_age_under_18 => 'Age is under 18';
+
+  @override
+  String get age_verification_screen_error_verification_data_parsing_failed =>
+      'Unsupported person identification data';
+
+  @override
+  String get age_verification_screen_error_verification_data_verification_failed =>
+      'Verifying person identification data failed';
+
+  @override
+  String get age_verification_screen_error_verification_method_not_configured =>
+      'App admin has not configured this verification method';
+
+  @override
+  String get age_verification_screen_start_verification_title => 'Start verification';
+
+  @override
+  String get age_verification_screen_title => 'Age verification';
+
+  @override
+  String get age_verification_screen_verification_method_eudi_unsupported =>
+      'EU digital wallet (currently unsupported)';
+
+  @override
   String get app_bar_action_about => 'About';
 
   @override

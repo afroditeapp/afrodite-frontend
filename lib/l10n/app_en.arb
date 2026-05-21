@@ -280,6 +280,46 @@
   "@admin_settings_title": {
     "description": "Title for admin settings screen"
   },
+  "age_verification_screen_age_is_18_or_older": "Age is 18 or older",
+  "@age_verification_screen_age_is_18_or_older": {
+    "description": "Age verification status label for adult age"
+  },
+  "age_verification_screen_current_verification_status_title": "Current verification status",
+  "@age_verification_screen_current_verification_status_title": {
+    "description": "Title shown for current age verification status section"
+  },
+  "age_verification_screen_error_age_already_verified": "Age already verified",
+  "@age_verification_screen_error_age_already_verified": {
+    "description": "Age verification error: age is already verified"
+  },
+  "age_verification_screen_error_age_under_18": "Age is under 18",
+  "@age_verification_screen_error_age_under_18": {
+    "description": "Age verification error: age is under 18"
+  },
+  "age_verification_screen_error_verification_data_parsing_failed": "Unsupported person identification data",
+  "@age_verification_screen_error_verification_data_parsing_failed": {
+    "description": "Age verification error: verification data parsing failed"
+  },
+  "age_verification_screen_error_verification_data_verification_failed": "Verifying person identification data failed",
+  "@age_verification_screen_error_verification_data_verification_failed": {
+    "description": "Age verification error: verification data verification failed"
+  },
+  "age_verification_screen_error_verification_method_not_configured": "App admin has not configured this verification method",
+  "@age_verification_screen_error_verification_method_not_configured": {
+    "description": "Age verification error: verification method is not configured"
+  },
+  "age_verification_screen_start_verification_title": "Start verification",
+  "@age_verification_screen_start_verification_title": {
+    "description": "Title shown above age verification methods section"
+  },
+  "age_verification_screen_title": "Age verification",
+  "@age_verification_screen_title": {
+    "description": "Title for age verification settings screen"
+  },
+  "age_verification_screen_verification_method_eudi_unsupported": "EU digital wallet (currently unsupported)",
+  "@age_verification_screen_verification_method_eudi_unsupported": {
+    "description": "Age verification method label for eudi when it is not yet supported"
+  },
   "app_bar_action_about": "About",
   "@app_bar_action_about": {
     "description": "Title for app bar action which opens about dialog"
