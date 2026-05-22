@@ -111,6 +111,7 @@
     <string name="snackbar_error_database" description="Snackbar error text for database errors">Database error</string>
     <string name="snackbar_error_file" description="Snackbar error text for file errors">File error</string>
     <string name="snackbar_error_logic" description="Snackbar error text for logic errors">Logic error</string>
+    <string name="snackbar_api_forbidden_request" description="Snackbar error text for forbidden API requests">API error: forbidden request</string>
     <string name="snackbar_api_usage_limit_reached" description="Snackbar info text that API usage limit is reached">API usage limit is reached. Try again tomorrow.</string>
 
     <!-- Server connection indicator -->

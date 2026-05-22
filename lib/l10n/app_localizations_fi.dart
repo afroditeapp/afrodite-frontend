@@ -1994,6 +1994,9 @@ class AppLocalizationsFi extends AppLocalizations {
   String get settings_screen_title => 'Asetukset';
 
   @override
+  String get snackbar_api_forbidden_request => 'API error: forbidden request';
+
+  @override
   String get snackbar_api_usage_limit_reached => 'API usage limit is reached. Try again tomorrow.';
 
   @override

@@ -27,6 +27,11 @@ sealed class ApiError extends AppError {
 sealed class ActionApiError extends ApiError {
   const ActionApiError();
 
+  /// Is status code HTTP 403
+  bool isForbidden() {
+    return false;
+  }
+
   /// Is status code HTTP 429
   bool isTooManyRequests() {
     return false;
@@ -39,14 +44,20 @@ class ActionApiErrorException extends ActionApiError {
   const ActionApiErrorException(this.e, {this.stackTrace});
 
   @override
+  bool isForbidden() {
+    return e.code == 403;
+  }
+
+  @override
   bool isTooManyRequests() {
     return e.code == 429;
   }
 
   @override
   void logError(Logger log) {
-    // HTTP 429 Too Many Requests
-    if (e.code == 429) {
+    if (isForbidden()) {
+      showSnackBar(R.strings.snackbar_api_forbidden_request);
+    } else if (isTooManyRequests()) {
       showSnackBar(R.strings.snackbar_api_usage_limit_reached);
     } else {
       log.error("Action API error, code: ${e.code}", null, stackTrace);
@@ -101,6 +112,11 @@ sealed class ValueApiError extends ApiError {
 
   /// Is status code HTTP 500
   bool isInternalServerError() {
+    return false;
+  }
+
+  /// Is status code HTTP 403
+  bool isForbidden() {
     return false;
   }
 
@@ -172,14 +188,20 @@ class ValueApiException extends ValueApiError {
   }
 
   @override
+  bool isForbidden() {
+    return e.code == 403;
+  }
+
+  @override
   bool isTooManyRequests() {
     return e.code == 429;
   }
 
   @override
   void logError(Logger log) {
-    // HTTP 429 Too Many Requests
-    if (e.code == 429) {
+    if (isForbidden()) {
+      showSnackBar(R.strings.snackbar_api_forbidden_request);
+    } else if (isTooManyRequests()) {
       showSnackBar(R.strings.snackbar_api_usage_limit_reached);
     } else {
       log.error("Value API error, code: ${e.code}", null, stackTrace);

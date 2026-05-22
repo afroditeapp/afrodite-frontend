@@ -2597,6 +2597,10 @@
   "@settings_screen_title": {
     "description": "Title for settings screen"
   },
+  "snackbar_api_forbidden_request": "API error: forbidden request",
+  "@snackbar_api_forbidden_request": {
+    "description": "Snackbar error text for forbidden API requests"
+  },
   "snackbar_api_usage_limit_reached": "API usage limit is reached. Try again tomorrow.",
   "@snackbar_api_usage_limit_reached": {
     "description": "Snackbar info text that API usage limit is reached"

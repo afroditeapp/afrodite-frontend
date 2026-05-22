@@ -3586,6 +3586,12 @@ abstract class AppLocalizations {
   /// **'Settings'**
   String get settings_screen_title;
 
+  /// Snackbar error text for forbidden API requests
+  ///
+  /// In en, this message translates to:
+  /// **'API error: forbidden request'**
+  String get snackbar_api_forbidden_request;
+
   /// Snackbar info text that API usage limit is reached
   ///
   /// In en, this message translates to:
