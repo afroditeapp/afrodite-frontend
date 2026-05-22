@@ -198,9 +198,7 @@ class NavigatorInitialSetup extends LoggedInRootScreen {
         // Logout action
         BlocProvider(create: (_) => LoginBloc()),
 
-        // Init AccountBloc so that the initial setup UI does not change from
-        // text field to only text when sign in with login is used.
-        BlocProvider(create: (_) => AccountBloc(r), lazy: false),
+        BlocProvider(create: (_) => AccountBloc(r)),
         BlocProvider(create: (_) => InitialSetupBloc(r)),
         BlocProvider(create: (_) => SecuritySelfieImageProcessingBloc(r)),
         BlocProvider(create: (_) => ProfilePicturesImageProcessingBloc(r)),
