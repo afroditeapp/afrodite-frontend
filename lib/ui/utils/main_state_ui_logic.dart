@@ -163,142 +163,7 @@ abstract class LoggedInRootScreen extends StatelessWidget {
   const LoggedInRootScreen({required this.r, this.navigationState, super.key});
 
   MyScreenPage<Object> rootScreen();
-  Widget blocProvider(Widget child);
 
-  @override
-  Widget build(BuildContext context) {
-    final NavigatorStateData navigatorInitialState =
-        navigationState?.navigatorState ?? NavigatorStateData.rootPage(rootScreen());
-    final bottomNavigationInitialState =
-        navigationState?.bottomNavigationState ?? BottomNavigationStateData();
-    return Provider<RepositoryInstances>(
-      create: (_) => r,
-      child: MultiBlocProvider(
-        providers: [
-          // Navigation
-          BlocProvider(create: (_) => NavigatorStateBloc(navigatorInitialState)),
-          BlocProvider(create: (_) => BottomNavigationStateBloc(bottomNavigationInitialState)),
-        ],
-        child: blocProvider(AppNavigatorAndUpdateNavigationBlocs(r: r)),
-      ),
-    );
-  }
-}
-
-class NavigatorInitialSetup extends LoggedInRootScreen {
-  const NavigatorInitialSetup({required super.r, required super.navigationState, super.key});
-
-  @override
-  MyScreenPage<Object> rootScreen() => getInitialSetupPageOrder().first;
-
-  @override
-  Widget blocProvider(Widget child) {
-    return MultiBlocProvider(
-      providers: [
-        // Logout action
-        BlocProvider(create: (_) => LoginBloc()),
-
-        BlocProvider(create: (_) => AccountBloc(r)),
-        BlocProvider(create: (_) => InitialSetupBloc(r)),
-        BlocProvider(create: (_) => SecuritySelfieImageProcessingBloc(r)),
-        BlocProvider(create: (_) => ProfilePicturesImageProcessingBloc(r)),
-        BlocProvider(create: (_) => ProfileAttributesBloc(r)),
-        BlocProvider(create: (_) => ContentBloc(r)),
-        BlocProvider(create: (_) => SelectContentBloc(r)),
-        BlocProvider(create: (_) => ChatBackupBloc(r)),
-        BlocProvider(create: (_) => ClientFeaturesConfigBloc(r)),
-      ],
-      child: child,
-    );
-  }
-}
-
-class NavigatorAccountBanned extends LoggedInRootScreen {
-  const NavigatorAccountBanned({required super.r, super.key});
-
-  @override
-  MyScreenPage<Object> rootScreen() => AccountBannedPage(r);
-
-  @override
-  Widget blocProvider(Widget child) {
-    return MultiBlocProvider(
-      providers: [
-        // Logout action
-        BlocProvider(create: (_) => LoginBloc()),
-
-        BlocProvider(create: (_) => AccountDetailsBloc(r)),
-        BlocProvider(create: (_) => DataExportBloc(r)),
-        BlocProvider(create: (_) => ChatBackupBloc(r)),
-      ],
-      child: child,
-    );
-  }
-}
-
-class NavigatorPendingRemoval extends LoggedInRootScreen {
-  const NavigatorPendingRemoval({required super.r, super.key});
-
-  @override
-  MyScreenPage<Object> rootScreen() => PendingDeletionPage(r);
-
-  @override
-  Widget blocProvider(Widget child) {
-    return MultiBlocProvider(
-      providers: [
-        // Logout action
-        BlocProvider(create: (_) => LoginBloc()),
-
-        BlocProvider(create: (_) => DataExportBloc(r)),
-        BlocProvider(create: (_) => ChatBackupBloc(r)),
-      ],
-      child: child,
-    );
-  }
-}
-
-class NavigatorUnsupportedClient extends LoggedInRootScreen {
-  const NavigatorUnsupportedClient({required super.r, super.key});
-
-  @override
-  MyScreenPage<Object> rootScreen() => UnsupportedClientPage();
-
-  @override
-  Widget blocProvider(Widget child) {
-    return child;
-  }
-}
-
-class NavigatorAgeVerificationRequired extends LoggedInRootScreen {
-  const NavigatorAgeVerificationRequired({required super.r, super.key});
-
-  @override
-  MyScreenPage<Object> rootScreen() => AgeVerificationRequiredPage(r);
-
-  @override
-  Widget blocProvider(Widget child) {
-    return MultiBlocProvider(
-      providers: [
-        // Logout action
-        BlocProvider(create: (_) => LoginBloc()),
-
-        BlocProvider(create: (_) => AccountBloc(r)),
-        BlocProvider(create: (_) => AccountDetailsBloc(r)),
-        BlocProvider(create: (_) => DataExportBloc(r)),
-        BlocProvider(create: (_) => ChatBackupBloc(r)),
-        BlocProvider(create: (_) => ClientFeaturesConfigBloc(r)),
-      ],
-      child: child,
-    );
-  }
-}
-
-class NavigatorNormal extends LoggedInRootScreen {
-  const NavigatorNormal({required super.r, required super.navigationState, super.key});
-
-  @override
-  MyScreenPage<Object> rootScreen() => NormalStatePage();
-
-  @override
   Widget blocProvider(Widget child) {
     return MultiBlocProvider(
       providers: [
@@ -356,6 +221,67 @@ class NavigatorNormal extends LoggedInRootScreen {
       child: child,
     );
   }
+
+  @override
+  Widget build(BuildContext context) {
+    final NavigatorStateData navigatorInitialState =
+        navigationState?.navigatorState ?? NavigatorStateData.rootPage(rootScreen());
+    final bottomNavigationInitialState =
+        navigationState?.bottomNavigationState ?? BottomNavigationStateData();
+    return Provider<RepositoryInstances>(
+      create: (_) => r,
+      child: MultiBlocProvider(
+        providers: [
+          // Navigation
+          BlocProvider(create: (_) => NavigatorStateBloc(navigatorInitialState)),
+          BlocProvider(create: (_) => BottomNavigationStateBloc(bottomNavigationInitialState)),
+        ],
+        child: blocProvider(AppNavigatorAndUpdateNavigationBlocs(r: r)),
+      ),
+    );
+  }
+}
+
+class NavigatorInitialSetup extends LoggedInRootScreen {
+  const NavigatorInitialSetup({required super.r, required super.navigationState, super.key});
+
+  @override
+  MyScreenPage<Object> rootScreen() => getInitialSetupPageOrder().first;
+}
+
+class NavigatorAccountBanned extends LoggedInRootScreen {
+  const NavigatorAccountBanned({required super.r, super.key});
+
+  @override
+  MyScreenPage<Object> rootScreen() => AccountBannedPage(r);
+}
+
+class NavigatorPendingRemoval extends LoggedInRootScreen {
+  const NavigatorPendingRemoval({required super.r, super.key});
+
+  @override
+  MyScreenPage<Object> rootScreen() => PendingDeletionPage(r);
+}
+
+class NavigatorUnsupportedClient extends LoggedInRootScreen {
+  const NavigatorUnsupportedClient({required super.r, super.key});
+
+  @override
+  MyScreenPage<Object> rootScreen() => UnsupportedClientPage();
+}
+
+class NavigatorAgeVerificationRequired extends LoggedInRootScreen {
+  const NavigatorAgeVerificationRequired({required super.r, super.key});
+
+  @override
+  MyScreenPage<Object> rootScreen() => AgeVerificationRequiredPage(r);
+}
+
+class NavigatorNormal extends LoggedInRootScreen {
+  const NavigatorNormal({required super.r, required super.navigationState, super.key});
+
+  @override
+  MyScreenPage<Object> rootScreen() => NormalStatePage();
 }
 
 class AppNavigatorAndUpdateNavigationBlocs extends StatelessWidget {
