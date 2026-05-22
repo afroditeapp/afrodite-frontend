@@ -70,7 +70,7 @@ class _AccountBannedScreenState extends State<AccountBannedScreen> {
     return Scaffold(
       appBar: AppBar(
         title: Text(context.strings.account_banned_screen_title),
-        actions: [loggedInAndNormalUiBlockedActionsMenu(context)],
+        actions: [loggedInBasicScreenActionsMenu(context)],
       ),
       body: LayoutBuilder(
         builder: (context, constraints) {

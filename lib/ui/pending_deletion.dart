@@ -2,10 +2,7 @@ import "package:app/api/server_connection_manager.dart";
 import "package:app/data/utils/repository_instances.dart";
 import "package:app/localizations.dart";
 import "package:app/model/freezed/logic/main/navigator_state.dart";
-import "package:app/ui/normal/settings/chat/chat_backup.dart";
-import "package:app/ui/normal/settings/data_export.dart";
 import "package:app/ui_utils/app_bar/common_actions.dart";
-import "package:app/ui_utils/app_bar/menu_actions.dart";
 import "package:app/ui_utils/dialog.dart";
 import "package:app/ui_utils/list.dart";
 import "package:app/ui_utils/snack_bar.dart";
@@ -66,23 +63,7 @@ class _PendingDeletionScreenState extends State<PendingDeletionScreen> {
     return Scaffold(
       appBar: AppBar(
         title: Text(context.strings.account_deletion_pending_screen_title),
-        actions: [
-          menuActions([
-            MenuItemButton(
-              child: Text(context.strings.data_export_screen_title_export_type_user),
-              onPressed: () {
-                openDataExportScreenMyData(context);
-              },
-            ),
-            MenuItemButton(
-              child: Text(context.strings.chat_backup_screen_title),
-              onPressed: () {
-                openChatBackupScreen(context);
-              },
-            ),
-            ...commonActionsWhenLoggedInAndAccountIsNotNormallyUsable(context),
-          ]),
-        ],
+        actions: [loggedInBasicScreenActionsMenu(context)],
       ),
       body: LayoutBuilder(
         builder: (context, constraints) {

@@ -2,7 +2,6 @@ import "package:app/localizations.dart";
 import "package:app/model/freezed/logic/main/navigator_state.dart";
 import "package:app/ui/utils/open_app_store.dart";
 import "package:app/ui_utils/app_bar/common_actions.dart";
-import "package:app/ui_utils/app_bar/menu_actions.dart";
 import "package:app/ui_utils/list.dart";
 import "package:app/ui_utils/snack_bar.dart";
 import "package:flutter/material.dart";
@@ -29,9 +28,7 @@ class UnsupportedClientScreen extends StatelessWidget {
     return Scaffold(
       appBar: AppBar(
         title: Text(context.strings.unsupported_client_screen_title),
-        actions: [
-          menuActions([commonActionLogout(context), commonActionOpenAboutDialog(context, null)]),
-        ],
+        actions: [loggedInBasicScreenActionsMenu(context)],
       ),
       body: showInfo(context),
     );

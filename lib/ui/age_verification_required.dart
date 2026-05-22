@@ -26,7 +26,7 @@ class AgeVerificationRequiredScreen extends StatelessWidget {
     return Scaffold(
       appBar: AppBar(
         title: Text(context.strings.age_verification_required_screen_title),
-        actions: [loggedInAndNormalUiBlockedActionsMenu(context)],
+        actions: [loggedInBasicScreenActionsMenu(context)],
       ),
       body: Center(
         child: Padding(

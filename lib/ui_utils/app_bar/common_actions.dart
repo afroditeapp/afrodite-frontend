@@ -1,7 +1,5 @@
 import 'package:app/model/freezed/logic/account/client_features_config.dart';
-import 'package:app/ui/normal/settings/account_settings.dart';
-import 'package:app/ui/normal/settings/chat/chat_backup.dart';
-import 'package:app/ui/normal/settings/data_export.dart';
+import 'package:app/ui/normal/settings.dart';
 import 'package:app/ui_utils/app_bar/menu_actions.dart';
 import 'package:app/ui_utils/snack_bar.dart';
 import 'package:flutter/material.dart';
@@ -62,29 +60,12 @@ MenuItemButton commonActionBlockProfile(BuildContext context, void Function() bl
   );
 }
 
-List<Widget> loggedInAndNormalUiBlockedMenuItems(BuildContext context) {
-  return [
-    // Allow access to account deletion request UI
+Widget loggedInBasicScreenActionsMenu(BuildContext context) {
+  return menuActions([
     MenuItemButton(
-      child: Text(context.strings.account_settings_screen_title),
-      onPressed: () => openAccountSettings(context),
-    ),
-    MenuItemButton(
-      child: Text(context.strings.data_export_screen_title_export_type_user),
-      onPressed: () {
-        openDataExportScreenMyData(context);
-      },
-    ),
-    MenuItemButton(
-      child: Text(context.strings.chat_backup_screen_title),
-      onPressed: () {
-        openChatBackupScreen(context);
-      },
+      child: Text(context.strings.settings_screen_title),
+      onPressed: () => openSettingsScreen(context),
     ),
     ...commonActionsWhenLoggedInAndAccountIsNotNormallyUsable(context),
-  ];
-}
-
-Widget loggedInAndNormalUiBlockedActionsMenu(BuildContext context) {
-  return menuActions(loggedInAndNormalUiBlockedMenuItems(context));
+  ]);
 }
