@@ -208,10 +208,7 @@ class NavigatorInitialSetup extends LoggedInRootScreen {
         BlocProvider(create: (_) => ContentBloc(r)),
         BlocProvider(create: (_) => SelectContentBloc(r)),
         BlocProvider(create: (_) => ChatBackupBloc(r)),
-        // Disable lazy init for ClientFeaturesConfigBloc so that
-        // location selection does not use the default map settings.
-        // Also profile name text field requires the bloc.
-        BlocProvider(create: (_) => ClientFeaturesConfigBloc(r), lazy: false),
+        BlocProvider(create: (_) => ClientFeaturesConfigBloc(r)),
       ],
       child: child,
     );
@@ -290,7 +287,7 @@ class NavigatorAgeVerificationRequired extends LoggedInRootScreen {
         BlocProvider(create: (_) => AccountDetailsBloc(r)),
         BlocProvider(create: (_) => DataExportBloc(r)),
         BlocProvider(create: (_) => ChatBackupBloc(r)),
-        BlocProvider(create: (_) => ClientFeaturesConfigBloc(r), lazy: false),
+        BlocProvider(create: (_) => ClientFeaturesConfigBloc(r)),
       ],
       child: child,
     );
