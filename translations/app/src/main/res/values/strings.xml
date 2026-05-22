@@ -651,14 +651,14 @@
     <string name="account_verification_screen_start_verification_title" description="Title shown above account verification scope and actions section">Select verification scopes and method</string>
     <string name="account_verification_screen_scope_profile_age" description="Checkbox label for account verification profile age scope">Profile age</string>
     <string name="account_verification_screen_scope_profile_name" description="Checkbox label for account verification profile name scope">Profile name</string>
-    <string name="account_verification_screen_verification_method_eudi_unsupported" description="Account verification method label for eudi when it is not yet supported">EU digital wallet (currently unsupported)</string>
+    <string name="account_verification_screen_verification_method_eudi_unsupported" description="Account verification method label for eudi when it is not yet supported">EUDI wallet (current app version does not support this method)</string>
 
     <!-- Age verification settings -->
     <string name="age_verification_screen_title" description="Title for age verification settings screen">Age verification</string>
     <string name="age_verification_screen_current_verification_status_title" description="Title shown for current age verification status section">Current verification status</string>
     <string name="age_verification_screen_age_is_18_or_older" description="Age verification status label for adult age">Age is 18 or older</string>
     <string name="age_verification_screen_start_verification_title" description="Title shown above age verification methods section">Start verification</string>
-    <string name="age_verification_screen_verification_method_eudi_unsupported" description="Age verification method label for eudi when it is not yet supported">EU digital wallet (currently unsupported)</string>
+    <string name="age_verification_screen_verification_method_eudi_unsupported" description="Age verification method label for eudi when it is not yet supported">EUDI wallet (current app version does not support this method)</string>
     <string name="age_verification_screen_error_age_already_verified" description="Age verification error: age is already verified">Age already verified</string>
     <string name="age_verification_screen_error_age_under_18" description="Age verification error: age is under 18">Age is under 18</string>
     <string name="age_verification_screen_error_verification_data_parsing_failed" description="Age verification error: verification data parsing failed">Unsupported person identification data</string>

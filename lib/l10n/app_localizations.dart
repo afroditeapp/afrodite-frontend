@@ -439,7 +439,7 @@ abstract class AppLocalizations {
   /// Account verification method label for eudi when it is not yet supported
   ///
   /// In en, this message translates to:
-  /// **'EU digital wallet (currently unsupported)'**
+  /// **'EUDI wallet (current app version does not support this method)'**
   String get account_verification_screen_verification_method_eudi_unsupported;
 
   /// Title for admin settings screen
@@ -517,7 +517,7 @@ abstract class AppLocalizations {
   /// Age verification method label for eudi when it is not yet supported
   ///
   /// In en, this message translates to:
-  /// **'EU digital wallet (currently unsupported)'**
+  /// **'EUDI wallet (current app version does not support this method)'**
   String get age_verification_screen_verification_method_eudi_unsupported;
 
   /// Title for app bar action which opens about dialog

@@ -272,7 +272,7 @@
   "@account_verification_screen_verification_in_progress_title": {
     "description": "Title shown for account verification in progress section"
   },
-  "account_verification_screen_verification_method_eudi_unsupported": "EU digital wallet (currently unsupported)",
+  "account_verification_screen_verification_method_eudi_unsupported": "EUDI wallet (current app version does not support this method)",
   "@account_verification_screen_verification_method_eudi_unsupported": {
     "description": "Account verification method label for eudi when it is not yet supported"
   },
@@ -324,7 +324,7 @@
   "@age_verification_screen_title": {
     "description": "Title for age verification settings screen"
   },
-  "age_verification_screen_verification_method_eudi_unsupported": "EU digital wallet (currently unsupported)",
+  "age_verification_screen_verification_method_eudi_unsupported": "EUDI wallet (current app version does not support this method)",
   "@age_verification_screen_verification_method_eudi_unsupported": {
     "description": "Age verification method label for eudi when it is not yet supported"
   },

@@ -221,7 +221,7 @@ class AppLocalizationsFi extends AppLocalizations {
 
   @override
   String get account_verification_screen_verification_method_eudi_unsupported =>
-      'EU digital wallet (currently unsupported)';
+      'EUDI wallet (current app version does not support this method)';
 
   @override
   String get admin_settings_title => 'Admin';
@@ -265,7 +265,7 @@ class AppLocalizationsFi extends AppLocalizations {
 
   @override
   String get age_verification_screen_verification_method_eudi_unsupported =>
-      'EU digital wallet (currently unsupported)';
+      'EUDI wallet (current app version does not support this method)';
 
   @override
   String get app_bar_action_about => 'About';
