@@ -173,7 +173,14 @@ bool _isPng(Uint8List bytes) {
       bytes[3] == 0x47;
 }
 
+const _maxImageSizeInBytes = 10 * 1024 * 1024;
+
 bool validateImage(Uint8List bytes) {
+  if (bytes.length > _maxImageSizeInBytes) {
+    showSnackBar(R.strings.initial_setup_screen_profile_pictures_file_size_too_large_error);
+    return false;
+  }
+
   if (!_isJpeg(bytes) && !_isPng(bytes)) {
     showSnackBar(R.strings.initial_setup_screen_profile_pictures_unsupported_image_error);
     return false;

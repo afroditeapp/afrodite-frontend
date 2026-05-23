@@ -2092,6 +2092,12 @@ abstract class AppLocalizations {
   /// **'My profile has this info…'**
   String get initial_setup_screen_profile_basic_info_title;
 
+  /// Snackbar error text that selected picture's file size is too large
+  ///
+  /// In en, this message translates to:
+  /// **'Selected image is over 10 MiB'**
+  String get initial_setup_screen_profile_pictures_file_size_too_large_error;
+
   /// Error text that face is not detected for primary profile image
   ///
   /// In en, this message translates to:

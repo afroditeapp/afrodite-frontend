@@ -1140,6 +1140,10 @@ class AppLocalizationsEn extends AppLocalizations {
   String get initial_setup_screen_profile_basic_info_title => 'My profile has this info…';
 
   @override
+  String get initial_setup_screen_profile_pictures_file_size_too_large_error =>
+      'Selected image is over 10 MiB';
+
+  @override
   String get initial_setup_screen_profile_pictures_primary_image_face_not_detected =>
       'Face is not detected. Please select another picture.';
 
