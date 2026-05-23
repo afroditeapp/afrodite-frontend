@@ -64,14 +64,13 @@ import 'package:openapi/api.dart';
 ///   - if status is 0:
 ///     - repeated profile entries until payload ends
 /// - [ServerMessageTypeCode.contentProcessingStateChanged] (90): payload format:
-///   - content processing server process ID as minimal i64
+///   - client-provided processing id byte (u8)
 ///   - content processing state byte:
-///     - 0: Empty
-///     - 1: InQueue
-///     - 2: Processing
-///     - 3: Completed
-///     - 4: Failed
-///     - 5: NsfwDetected
+///     - 0: InQueue
+///     - 1: Processing
+///     - 2: Completed
+///     - 3: Failed
+///     - 4: NsfwDetected
 ///   - state specific data:
 ///     - InQueue: queue number as minimal i64
 ///     - Completed:
@@ -565,23 +564,18 @@ ScheduledMaintenanceStatus? _parseScheduledMaintenanceStatus(Uint8List payload) 
 ContentProcessingStateChanged? _parseContentProcessingStateChanged(Uint8List payload) {
   final reader = ByteReader(payload);
 
-  final processIdByteCount = reader.readU8();
-  if (processIdByteCount == null) {
-    return null;
-  }
-  final processId = reader.readMinimalI64WithKnownByteCount(processIdByteCount);
+  final processId = reader.readU8();
   if (processId == null) {
     return null;
   }
 
   final stateCode = reader.readU8();
   final stateType = switch (stateCode) {
-    0 => ContentProcessingStateType.empty,
-    1 => ContentProcessingStateType.inQueue,
-    2 => ContentProcessingStateType.processing,
-    3 => ContentProcessingStateType.completed,
-    4 => ContentProcessingStateType.failed,
-    5 => ContentProcessingStateType.nsfwDetected,
+    0 => ContentProcessingStateType.inQueue,
+    1 => ContentProcessingStateType.processing,
+    2 => ContentProcessingStateType.completed,
+    3 => ContentProcessingStateType.failed,
+    4 => ContentProcessingStateType.nsfwDetected,
     _ => null,
   };
   if (stateType == null) {
@@ -617,7 +611,6 @@ ContentProcessingStateChanged? _parseContentProcessingStateChanged(Uint8List pay
       contentId = completedContentId;
       faceDetected = faceDetectedByte == 1;
       break;
-    case ContentProcessingStateType.empty:
     case ContentProcessingStateType.processing:
     case ContentProcessingStateType.failed:
     case ContentProcessingStateType.nsfwDetected:

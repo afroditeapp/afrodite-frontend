@@ -206,8 +206,6 @@ class ApiClient {
           return AccountLockedState.fromJson(value);
         case 'AccountRegistrationPlatforms':
           return AccountRegistrationPlatforms.fromJson(value);
-        case 'AccountSetup':
-          return AccountSetup.fromJson(value);
         case 'AccountStateContainer':
           return AccountStateContainer.fromJson(value);
         case 'AccountSyncVersion':
@@ -348,8 +346,6 @@ class ApiClient {
           return ContentInfoDetailed.fromJson(value);
         case 'ContentModerationState':
           return ContentModerationStateTypeTransformer().decode(value);
-        case 'ContentProcessingId':
-          return ContentProcessingId.fromJson(value);
         case 'ContentProcessingState':
           return ContentProcessingState.fromJson(value);
         case 'ContentProcessingStateType':
@@ -540,8 +536,6 @@ class ApiClient {
           return Language.fromJson(value);
         case 'LastSeenTimeFilter':
           return LastSeenTimeFilter.fromJson(value);
-        case 'LatestBirthdate':
-          return LatestBirthdate.fromJson(value);
         case 'LatestSeenMessageInfo':
           return LatestSeenMessageInfo.fromJson(value);
         case 'LatestSeenMessageInfoList':
@@ -798,6 +792,8 @@ class ApiClient {
           return PushNotificationEncryptionKey.fromJson(value);
         case 'PushNotificationInfoSyncVersion':
           return PushNotificationInfoSyncVersion.fromJson(value);
+        case 'PutContentToContentSlotResult':
+          return PutContentToContentSlotResult.fromJson(value);
         case 'ReceivedLikeId':
           return ReceivedLikeId.fromJson(value);
         case 'ReceivedLikesIteratorState':
@@ -880,8 +876,6 @@ class ApiClient {
           return ServerVersion.fromJson(value);
         case 'SetAccountBanState':
           return SetAccountBanState.fromJson(value);
-        case 'SetAccountSetup':
-          return SetAccountSetup.fromJson(value);
         case 'SetEmailLoginEnabled':
           return SetEmailLoginEnabled.fromJson(value);
         case 'SetInitialEmail':

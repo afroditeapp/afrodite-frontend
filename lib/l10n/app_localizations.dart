@@ -1966,6 +1966,12 @@ abstract class AppLocalizations {
   /// **'Unallowed content detected from the uploaded photo. This might be false positive detection.'**
   String get image_processing_ui_nsfw_detected_dialog_title;
 
+  /// Progress dialog info text that previous image processing is still ongoing on server
+  ///
+  /// In en, this message translates to:
+  /// **'Server is processing previous image upload'**
+  String get image_processing_ui_upload_content_processing_ongoing_dialog_title;
+
   /// Progress dialog info text that image upload failed
   ///
   /// In en, this message translates to:

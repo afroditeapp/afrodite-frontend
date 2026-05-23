@@ -199,19 +199,12 @@ class MediaApi {
     return null;
   }
 
-  /// Get state of content slot.
-  ///
-  /// Slots from 0 to 6 are available.  
+  /// Get current content processing state for account.
   ///
   /// Note: This method returns the HTTP [Response].
-  ///
-  /// Parameters:
-  ///
-  /// * [int] slotId (required):
-  Future<Response> getContentSlotStateWithHttpInfo(int slotId,) async {
+  Future<Response> getContentProcessingStateWithHttpInfo() async {
     // ignore: prefer_const_declarations
-    final path = r'/media_api/content_slot/{slot_id}'
-      .replaceAll('{slot_id}', slotId.toString());
+    final path = r'/media_api/content_processing_state';
 
     // ignore: prefer_final_locals
     Object? postBody;
@@ -234,15 +227,9 @@ class MediaApi {
     );
   }
 
-  /// Get state of content slot.
-  ///
-  /// Slots from 0 to 6 are available.  
-  ///
-  /// Parameters:
-  ///
-  /// * [int] slotId (required):
-  Future<ContentProcessingState?> getContentSlotState(int slotId,) async {
-    final response = await getContentSlotStateWithHttpInfo(slotId,);
+  /// Get current content processing state for account.
+  Future<ContentProcessingState?> getContentProcessingState() async {
+    final response = await getContentProcessingStateWithHttpInfo();
     if (response.statusCode >= HttpStatus.badRequest) {
       throw ApiException(response.statusCode, await _decodeBodyBytes(response));
     }
@@ -657,80 +644,6 @@ class MediaApi {
     return null;
   }
 
-  /// Upload content to server. The content is saved to content processing slot when account state is [model::AccountState::InitialSetup]. In other states the slot number is ignored and content goes directly to moderation.
-  ///
-  /// Processing ID will be returned and processing of the content will begin. Events about the content processing will be sent to the client.  The state of the processing can be also queired. The querying is required to receive the content ID.  Slots from 0 to 6 are available.  One account can only have one content in upload or processing state. New upload might potentially delete the previous if processing of it is not complete.  Content processing will fail if image content resolution width or height value is less than 512.  
-  ///
-  /// Note: This method returns the HTTP [Response].
-  ///
-  /// Parameters:
-  ///
-  /// * [int] slotId (required):
-  ///
-  /// * [bool] secureCapture (required):
-  ///   Client captured this content.
-  ///
-  /// * [MediaContentUploadType] contentType (required):
-  ///
-  /// * [MultipartFile] body (required):
-  Future<Response> putContentToContentSlotWithHttpInfo(int slotId, bool secureCapture, MediaContentUploadType contentType, MultipartFile body,) async {
-    // ignore: prefer_const_declarations
-    final path = r'/media_api/content_slot/{slot_id}'
-      .replaceAll('{slot_id}', slotId.toString());
-
-    // ignore: prefer_final_locals
-    Object? postBody = body;
-
-    final queryParams = <QueryParam>[];
-    final headerParams = <String, String>{};
-    final formParams = <String, String>{};
-
-      queryParams.addAll(_queryParams('', 'secure_capture', secureCapture));
-      queryParams.addAll(_queryParams('', 'content_type', contentType));
-
-    const contentTypes = <String>['application/octet-stream'];
-
-
-    return apiClient.invokeAPI(
-      path,
-      'PUT',
-      queryParams,
-      postBody,
-      headerParams,
-      formParams,
-      contentTypes.isEmpty ? null : contentTypes.first,
-    );
-  }
-
-  /// Upload content to server. The content is saved to content processing slot when account state is [model::AccountState::InitialSetup]. In other states the slot number is ignored and content goes directly to moderation.
-  ///
-  /// Processing ID will be returned and processing of the content will begin. Events about the content processing will be sent to the client.  The state of the processing can be also queired. The querying is required to receive the content ID.  Slots from 0 to 6 are available.  One account can only have one content in upload or processing state. New upload might potentially delete the previous if processing of it is not complete.  Content processing will fail if image content resolution width or height value is less than 512.  
-  ///
-  /// Parameters:
-  ///
-  /// * [int] slotId (required):
-  ///
-  /// * [bool] secureCapture (required):
-  ///   Client captured this content.
-  ///
-  /// * [MediaContentUploadType] contentType (required):
-  ///
-  /// * [MultipartFile] body (required):
-  Future<ContentProcessingId?> putContentToContentSlot(int slotId, bool secureCapture, MediaContentUploadType contentType, MultipartFile body,) async {
-    final response = await putContentToContentSlotWithHttpInfo(slotId, secureCapture, contentType, body,);
-    if (response.statusCode >= HttpStatus.badRequest) {
-      throw ApiException(response.statusCode, await _decodeBodyBytes(response));
-    }
-    // When a remote server returns no body with a status of 204, we shall not decode it.
-    // At the time of writing this, `dart:convert` will throw an "Unexpected end of input"
-    // FormatException when trying to decode an empty string.
-    if (response.body.isNotEmpty && response.statusCode != HttpStatus.noContent) {
-      return await apiClient.deserializeAsync(await _decodeBodyBytes(response), 'ContentProcessingId',) as ContentProcessingId;
-    
-    }
-    return null;
-  }
-
   /// Set new profile content for current account.
   ///
   /// This also moves the content to moderation if it is not already in moderation or moderated.  Also profile visibility moves from pending to normal when all profile content is moderated as accepted.  # Restrictions - All content must be owned by the account. - All content must be images.
@@ -833,5 +746,88 @@ class MediaApi {
     if (response.statusCode >= HttpStatus.badRequest) {
       throw ApiException(response.statusCode, await _decodeBodyBytes(response));
     }
+  }
+
+  /// Upload content to server for processing.
+  ///
+  /// The processed content is saved to content processing slot when account state is [model::AccountState::InitialSetup]. In other states the slot number is ignored and content goes directly to moderation. Slots from 0 to 6 are available.  When no errors are returned, processing of the content will begin. Events about the content processing will be sent to the client.  One account can only have one content in upload or processing ongoing. Ongoing upload can be cancelled by starting another upload. When processing is ongoing, uploading can't be done.  Content uploading will fail if content file size exceeds 10 MiB. Content processing will fail if image content resolution width or height value is less than 512.
+  ///
+  /// Note: This method returns the HTTP [Response].
+  ///
+  /// Parameters:
+  ///
+  /// * [int] slotId (required):
+  ///   Content slot index. Slots from 0 to 6 are available.
+  ///
+  /// * [int] processingIdFromClient (required):
+  ///   ID which is added to processing state events
+  ///
+  /// * [bool] secureCapture (required):
+  ///   Client captured this content.
+  ///
+  /// * [MediaContentUploadType] contentType (required):
+  ///
+  /// * [MultipartFile] body (required):
+  Future<Response> putUploadContentWithHttpInfo(int slotId, int processingIdFromClient, bool secureCapture, MediaContentUploadType contentType, MultipartFile body,) async {
+    // ignore: prefer_const_declarations
+    final path = r'/media_api/upload_content';
+
+    // ignore: prefer_final_locals
+    Object? postBody = body;
+
+    final queryParams = <QueryParam>[];
+    final headerParams = <String, String>{};
+    final formParams = <String, String>{};
+
+      queryParams.addAll(_queryParams('', 'slot_id', slotId));
+      queryParams.addAll(_queryParams('', 'processing_id_from_client', processingIdFromClient));
+      queryParams.addAll(_queryParams('', 'secure_capture', secureCapture));
+      queryParams.addAll(_queryParams('', 'content_type', contentType));
+
+    const contentTypes = <String>['application/octet-stream'];
+
+
+    return apiClient.invokeAPI(
+      path,
+      'PUT',
+      queryParams,
+      postBody,
+      headerParams,
+      formParams,
+      contentTypes.isEmpty ? null : contentTypes.first,
+    );
+  }
+
+  /// Upload content to server for processing.
+  ///
+  /// The processed content is saved to content processing slot when account state is [model::AccountState::InitialSetup]. In other states the slot number is ignored and content goes directly to moderation. Slots from 0 to 6 are available.  When no errors are returned, processing of the content will begin. Events about the content processing will be sent to the client.  One account can only have one content in upload or processing ongoing. Ongoing upload can be cancelled by starting another upload. When processing is ongoing, uploading can't be done.  Content uploading will fail if content file size exceeds 10 MiB. Content processing will fail if image content resolution width or height value is less than 512.
+  ///
+  /// Parameters:
+  ///
+  /// * [int] slotId (required):
+  ///   Content slot index. Slots from 0 to 6 are available.
+  ///
+  /// * [int] processingIdFromClient (required):
+  ///   ID which is added to processing state events
+  ///
+  /// * [bool] secureCapture (required):
+  ///   Client captured this content.
+  ///
+  /// * [MediaContentUploadType] contentType (required):
+  ///
+  /// * [MultipartFile] body (required):
+  Future<PutContentToContentSlotResult?> putUploadContent(int slotId, int processingIdFromClient, bool secureCapture, MediaContentUploadType contentType, MultipartFile body,) async {
+    final response = await putUploadContentWithHttpInfo(slotId, processingIdFromClient, secureCapture, contentType, body,);
+    if (response.statusCode >= HttpStatus.badRequest) {
+      throw ApiException(response.statusCode, await _decodeBodyBytes(response));
+    }
+    // When a remote server returns no body with a status of 204, we shall not decode it.
+    // At the time of writing this, `dart:convert` will throw an "Unexpected end of input"
+    // FormatException when trying to decode an empty string.
+    if (response.body.isNotEmpty && response.statusCode != HttpStatus.noContent) {
+      return await apiClient.deserializeAsync(await _decodeBodyBytes(response), 'PutContentToContentSlotResult',) as PutContentToContentSlotResult;
+    
+    }
+    return null;
   }
 }

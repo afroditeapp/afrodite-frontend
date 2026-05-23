@@ -14,6 +14,18 @@ import 'package:rxdart/rxdart.dart';
 
 final _log = Logger("SendToSlotTask");
 
+final _processingIdGenerator = _ProcessingIdGenerator();
+
+class _ProcessingIdGenerator {
+  int _nextProcessingId = 0;
+
+  int nextProcessingId() {
+    final id = _nextProcessingId;
+    _nextProcessingId = (_nextProcessingId + 1) & 255;
+    return id;
+  }
+}
+
 sealed class SendToSlotEvent {}
 
 class Uploading extends SendToSlotEvent {}
@@ -36,7 +48,12 @@ class ProcessingCompleted extends SendToSlotEvent {
 class SendToSlotError extends SendToSlotEvent {
   bool imageDataUploadTimeout;
   bool nsfwDetected;
-  SendToSlotError({this.imageDataUploadTimeout = false, this.nsfwDetected = false});
+  bool contentProcessingOngoing;
+  SendToSlotError({
+    this.imageDataUploadTimeout = false,
+    this.nsfwDetected = false,
+    this.contentProcessingOngoing = false,
+  });
 }
 
 /// Asynchronous system for sending image to a slot
@@ -87,13 +104,20 @@ class SendImageToSlotTask {
     bool secureCapture = false,
   }) async* {
     yield Uploading();
+
+    final processingId = _processingIdGenerator.nextProcessingId();
+    final current = latestStates.value;
+    current.remove(processingId);
+    latestStates.add(current);
+
     final MultipartFile data = MultipartFile.fromBytes("", imgBytes);
-    final Result<ContentProcessingId, ApiError> r;
+    final Result<PutContentToContentSlotResult, ApiError> r;
     try {
       r = await api
           .media(
-            (api) => api.putContentToContentSlot(
+            (api) => api.putUploadContent(
               slot,
+              processingId,
               secureCapture,
               MediaContentUploadType.image,
               data,
@@ -105,16 +129,20 @@ class SendImageToSlotTask {
       token.cancel();
       return;
     }
-
-    final int processingId;
     switch (r) {
       case Ok(:final v):
-        processingId = v.id;
+        if (v.error) {
+          yield SendToSlotError(contentProcessingOngoing: v.errorContentProcessingOngoing);
+          token.cancel();
+          return;
+        }
       case Err():
         yield SendToSlotError();
         token.cancel();
         return;
     }
+
+    yield UploadCompleted();
 
     while (true) {
       if (token.isCancelled) {
@@ -145,7 +173,7 @@ class SendImageToSlotTask {
           return;
         }
 
-        final currentState = await _getStateFromServerManually(slot, processingId);
+        final currentState = await _getStateFromServerManually(processingId);
         yield currentState;
         if (currentState is ProcessingCompleted || currentState is SendToSlotError) {
           token.cancel();
@@ -155,13 +183,16 @@ class SendImageToSlotTask {
     }
   }
 
-  Future<SendToSlotEvent> _getStateFromServerManually(int slot, int processingId) async {
+  Future<SendToSlotEvent> _getStateFromServerManually(int processingId) async {
     try {
       final state = await api
-          .media((api) => api.getContentSlotState(slot))
+          .media((api) => api.getContentProcessingState())
           .timeout(Duration(seconds: 10));
       switch (state) {
         case Ok(:final v):
+          if (v.processingIdFromClient != processingId) {
+            return SendToSlotError();
+          }
           final current = latestStates.value;
           current[processingId] = v;
           latestStates.add(current);
@@ -192,8 +223,6 @@ class SendImageToSlotTask {
       case ContentProcessingStateType.nsfwDetected:
         return SendToSlotError(nsfwDetected: true);
       case ContentProcessingStateType.failed:
-        return SendToSlotError();
-      case ContentProcessingStateType.empty:
         return SendToSlotError();
       case ContentProcessingStateType.completed:
         {

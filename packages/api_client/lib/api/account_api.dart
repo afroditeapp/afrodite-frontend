@@ -171,50 +171,6 @@ class AccountApi {
     return null;
   }
 
-  /// Get non-changeable user information to account.
-  ///
-  /// Note: This method returns the HTTP [Response].
-  Future<Response> getAccountSetupWithHttpInfo() async {
-    // ignore: prefer_const_declarations
-    final path = r'/account_api/account_setup';
-
-    // ignore: prefer_final_locals
-    Object? postBody;
-
-    final queryParams = <QueryParam>[];
-    final headerParams = <String, String>{};
-    final formParams = <String, String>{};
-
-    const contentTypes = <String>[];
-
-
-    return apiClient.invokeAPI(
-      path,
-      'GET',
-      queryParams,
-      postBody,
-      headerParams,
-      formParams,
-      contentTypes.isEmpty ? null : contentTypes.first,
-    );
-  }
-
-  /// Get non-changeable user information to account.
-  Future<AccountSetup?> getAccountSetup() async {
-    final response = await getAccountSetupWithHttpInfo();
-    if (response.statusCode >= HttpStatus.badRequest) {
-      throw ApiException(response.statusCode, await _decodeBodyBytes(response));
-    }
-    // When a remote server returns no body with a status of 204, we shall not decode it.
-    // At the time of writing this, `dart:convert` will throw an "Unexpected end of input"
-    // FormatException when trying to decode an empty string.
-    if (response.body.isNotEmpty && response.statusCode != HttpStatus.noContent) {
-      return await apiClient.deserializeAsync(await _decodeBodyBytes(response), 'AccountSetup',) as AccountSetup;
-    
-    }
-    return null;
-  }
-
   /// Get current account state.
   ///
   /// Note: This method returns the HTTP [Response].
@@ -339,47 +295,6 @@ class AccountApi {
     // FormatException when trying to decode an empty string.
     if (response.body.isNotEmpty && response.statusCode != HttpStatus.noContent) {
       return await apiClient.deserializeAsync(await _decodeBodyBytes(response), 'EmailAddressState',) as EmailAddressState;
-    
-    }
-    return null;
-  }
-
-  /// Performs an HTTP 'GET /account_api/latest_birthdate' operation and returns the [Response].
-  Future<Response> getLatestBirthdateWithHttpInfo() async {
-    // ignore: prefer_const_declarations
-    final path = r'/account_api/latest_birthdate';
-
-    // ignore: prefer_final_locals
-    Object? postBody;
-
-    final queryParams = <QueryParam>[];
-    final headerParams = <String, String>{};
-    final formParams = <String, String>{};
-
-    const contentTypes = <String>[];
-
-
-    return apiClient.invokeAPI(
-      path,
-      'GET',
-      queryParams,
-      postBody,
-      headerParams,
-      formParams,
-      contentTypes.isEmpty ? null : contentTypes.first,
-    );
-  }
-
-  Future<LatestBirthdate?> getLatestBirthdate() async {
-    final response = await getLatestBirthdateWithHttpInfo();
-    if (response.statusCode >= HttpStatus.badRequest) {
-      throw ApiException(response.statusCode, await _decodeBodyBytes(response));
-    }
-    // When a remote server returns no body with a status of 204, we shall not decode it.
-    // At the time of writing this, `dart:convert` will throw an "Unexpected end of input"
-    // FormatException when trying to decode an empty string.
-    if (response.body.isNotEmpty && response.statusCode != HttpStatus.noContent) {
-      return await apiClient.deserializeAsync(await _decodeBodyBytes(response), 'LatestBirthdate',) as LatestBirthdate;
     
     }
     return null;
@@ -596,50 +511,6 @@ class AccountApi {
     }
   }
 
-  /// Setup non-changeable user information during `initial setup` state.
-  ///
-  /// Note: This method returns the HTTP [Response].
-  ///
-  /// Parameters:
-  ///
-  /// * [SetAccountSetup] setAccountSetup (required):
-  Future<Response> postAccountSetupWithHttpInfo(SetAccountSetup setAccountSetup,) async {
-    // ignore: prefer_const_declarations
-    final path = r'/account_api/account_setup';
-
-    // ignore: prefer_final_locals
-    Object? postBody = setAccountSetup;
-
-    final queryParams = <QueryParam>[];
-    final headerParams = <String, String>{};
-    final formParams = <String, String>{};
-
-    const contentTypes = <String>['application/json'];
-
-
-    return apiClient.invokeAPI(
-      path,
-      'POST',
-      queryParams,
-      postBody,
-      headerParams,
-      formParams,
-      contentTypes.isEmpty ? null : contentTypes.first,
-    );
-  }
-
-  /// Setup non-changeable user information during `initial setup` state.
-  ///
-  /// Parameters:
-  ///
-  /// * [SetAccountSetup] setAccountSetup (required):
-  Future<void> postAccountSetup(SetAccountSetup setAccountSetup,) async {
-    final response = await postAccountSetupWithHttpInfo(setAccountSetup,);
-    if (response.statusCode >= HttpStatus.badRequest) {
-      throw ApiException(response.statusCode, await _decodeBodyBytes(response));
-    }
-  }
-
   /// Add account verification request to queue for current account.
   ///
   /// Adding new request requires initial setup to be completed.
@@ -786,7 +657,7 @@ class AccountApi {
 
   /// Complete initial setup.
   ///
-  /// Media content with InSlot state will be removed.  Requirements:  - Account must be in `InitialSetup` state.  - Account must have a valid AccountSetup info set.  
+  /// Media content with InSlot state will be removed.  Requirements:  - Account must be in `InitialSetup` state.  
   ///
   /// Note: This method returns the HTTP [Response].
   Future<Response> postCompleteSetupWithHttpInfo() async {
@@ -816,7 +687,7 @@ class AccountApi {
 
   /// Complete initial setup.
   ///
-  /// Media content with InSlot state will be removed.  Requirements:  - Account must be in `InitialSetup` state.  - Account must have a valid AccountSetup info set.  
+  /// Media content with InSlot state will be removed.  Requirements:  - Account must be in `InitialSetup` state.  
   Future<void> postCompleteSetup() async {
     final response = await postCompleteSetupWithHttpInfo();
     if (response.statusCode >= HttpStatus.badRequest) {
@@ -1848,7 +1719,7 @@ class AccountApi {
 
   /// Update current or pending profile visiblity value.
   ///
-  /// NOTE: Client uses this in initial setup.
+  /// NOTE: Client uses this in initial setup.  # Limits - When [AccountState::Banned], the visiblity can only be set to private.
   ///
   /// Note: This method returns the HTTP [Response].
   ///
@@ -1882,7 +1753,7 @@ class AccountApi {
 
   /// Update current or pending profile visiblity value.
   ///
-  /// NOTE: Client uses this in initial setup.
+  /// NOTE: Client uses this in initial setup.  # Limits - When [AccountState::Banned], the visiblity can only be set to private.
   ///
   /// Parameters:
   ///

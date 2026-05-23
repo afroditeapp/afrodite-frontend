@@ -39,7 +39,12 @@ class SendingInProgress extends ProcessingState {
 class SendingFailed extends ProcessingState {
   final bool nsfwDetected;
   final bool imageDataUploadTimeout;
-  SendingFailed({this.nsfwDetected = false, this.imageDataUploadTimeout = false});
+  final bool contentProcessingOngoing;
+  SendingFailed({
+    this.nsfwDetected = false,
+    this.imageDataUploadTimeout = false,
+    this.contentProcessingOngoing = false,
+  });
 }
 
 /// Image which server has processed.

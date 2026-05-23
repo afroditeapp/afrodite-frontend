@@ -104,6 +104,7 @@ class ImageProcessingBloc extends Bloc<ImageProcessingEvent, ImageProcessingData
                   processingState: SendingFailed(
                     nsfwDetected: e.nsfwDetected,
                     imageDataUploadTimeout: e.imageDataUploadTimeout,
+                    contentProcessingOngoing: e.contentProcessingOngoing,
                   ),
                 ),
               );

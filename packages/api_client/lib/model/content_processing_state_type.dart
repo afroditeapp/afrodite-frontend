@@ -23,7 +23,6 @@ class ContentProcessingStateType {
 
   String toJson() => value;
 
-  static const empty = ContentProcessingStateType._(r'Empty');
   static const inQueue = ContentProcessingStateType._(r'InQueue');
   static const processing = ContentProcessingStateType._(r'Processing');
   static const completed = ContentProcessingStateType._(r'Completed');
@@ -32,7 +31,6 @@ class ContentProcessingStateType {
 
   /// List of all possible values in this [enum][ContentProcessingStateType].
   static const values = <ContentProcessingStateType>[
-    empty,
     inQueue,
     processing,
     completed,
@@ -76,7 +74,6 @@ class ContentProcessingStateTypeTypeTransformer {
   ContentProcessingStateType? decode(dynamic data, {bool allowNull = true}) {
     if (data != null) {
       switch (data) {
-        case r'Empty': return ContentProcessingStateType.empty;
         case r'InQueue': return ContentProcessingStateType.inQueue;
         case r'Processing': return ContentProcessingStateType.processing;
         case r'Completed': return ContentProcessingStateType.completed;

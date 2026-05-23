@@ -14,31 +14,31 @@ class AgeVerificationConfig {
   /// Returns a new [AgeVerificationConfig] instance.
   AgeVerificationConfig({
     this.methods,
-    this.require = false,
+    this.required_ = false,
     this.verifyDuringInitialSetup = false,
   });
 
   AgeVerificationMethodsConfig? methods;
 
-  bool require;
+  bool required_;
 
   bool verifyDuringInitialSetup;
 
   @override
   bool operator ==(Object other) => identical(this, other) || other is AgeVerificationConfig &&
     other.methods == methods &&
-    other.require == require &&
+    other.required_ == required_ &&
     other.verifyDuringInitialSetup == verifyDuringInitialSetup;
 
   @override
   int get hashCode =>
     // ignore: unnecessary_parenthesis
     (methods == null ? 0 : methods!.hashCode) +
-    (require.hashCode) +
+    (required_.hashCode) +
     (verifyDuringInitialSetup.hashCode);
 
   @override
-  String toString() => 'AgeVerificationConfig[methods=$methods, require=$require, verifyDuringInitialSetup=$verifyDuringInitialSetup]';
+  String toString() => 'AgeVerificationConfig[methods=$methods, required_=$required_, verifyDuringInitialSetup=$verifyDuringInitialSetup]';
 
   Map<String, dynamic> toJson() {
     final json = <String, dynamic>{};
@@ -47,7 +47,7 @@ class AgeVerificationConfig {
     } else {
       json[r'methods'] = null;
     }
-      json[r'require'] = this.require;
+      json[r'required'] = this.required_;
       json[r'verify_during_initial_setup'] = this.verifyDuringInitialSetup;
     return json;
   }
@@ -72,7 +72,7 @@ class AgeVerificationConfig {
 
       return AgeVerificationConfig(
         methods: AgeVerificationMethodsConfig.fromJson(json[r'methods']),
-        require: mapValueOfType<bool>(json, r'require') ?? false,
+        required_: mapValueOfType<bool>(json, r'required') ?? false,
         verifyDuringInitialSetup: mapValueOfType<bool>(json, r'verify_during_initial_setup') ?? false,
       );
     }

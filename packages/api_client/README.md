@@ -67,16 +67,13 @@ Class | Method | HTTP request | Description
 *AccountApi* | [**getAccountAppNotificationSettings**](doc//AccountApi.md#getaccountappnotificationsettings) | **GET** /account_api/get_account_app_notification_settings | 
 *AccountApi* | [**getAccountBanTime**](doc//AccountApi.md#getaccountbantime) | **GET** /account_api/account_ban_time/{aid} | Get account ban time
 *AccountApi* | [**getAccountDeletionRequestState**](doc//AccountApi.md#getaccountdeletionrequeststate) | **GET** /account_api/get_account_deletion_request_state/{aid} | Get account deletion request state
-*AccountApi* | [**getAccountSetup**](doc//AccountApi.md#getaccountsetup) | **GET** /account_api/account_setup | Get non-changeable user information to account.
 *AccountApi* | [**getAccountState**](doc//AccountApi.md#getaccountstate) | **GET** /account_api/state | Get current account state.
 *AccountApi* | [**getAccountVerificationQueueStatus**](doc//AccountApi.md#getaccountverificationqueuestatus) | **GET** /account_api/account_verification_queue | Get account verification queue status for current account.
 *AccountApi* | [**getEmailAddressState**](doc//AccountApi.md#getemailaddressstate) | **GET** /account_api/email_address_state | 
-*AccountApi* | [**getLatestBirthdate**](doc//AccountApi.md#getlatestbirthdate) | **GET** /account_api/latest_birthdate | 
 *AccountApi* | [**getNewsItem**](doc//AccountApi.md#getnewsitem) | **GET** /account_api/news_item/{nid} | Get news item content using specific locale and fallback to locale \"en\" if news translation is not found.
 *AccountApi* | [**getVerifyEmail**](doc//AccountApi.md#getverifyemail) | **GET** /account_api/verify_email/{token} | Verify email address using the token sent via email. This endpoint is meant to be accessed via a link in the verification email. To workaround email security scanning related link accessing, the link can be opened multiple times.
 *AccountApi* | [**getVerifyNewEmail**](doc//AccountApi.md#getverifynewemail) | **GET** /account_api/verify_new_email/{token} | Verify new email address using the token sent via email. This endpoint is meant to be accessed via a link in the verification email. To workaround email security scanning related link accessing, the link can be opened multiple times.
 *AccountApi* | [**postAccountAppNotificationSettings**](doc//AccountApi.md#postaccountappnotificationsettings) | **POST** /account_api/post_account_app_notification_settings | 
-*AccountApi* | [**postAccountSetup**](doc//AccountApi.md#postaccountsetup) | **POST** /account_api/account_setup | Setup non-changeable user information during `initial setup` state.
 *AccountApi* | [**postAccountVerificationQueueItem**](doc//AccountApi.md#postaccountverificationqueueitem) | **POST** /account_api/account_verification_queue | Add account verification request to queue for current account.
 *AccountApi* | [**postAgeVerification**](doc//AccountApi.md#postageverification) | **POST** /account_api/age_verification | Verify user's age once for current account.
 *AccountApi* | [**postCancelEmailChange**](doc//AccountApi.md#postcancelemailchange) | **POST** /account_api/cancel_email_change | Cancel email changing process
@@ -224,7 +221,7 @@ Class | Method | HTTP request | Description
 *MediaApi* | [**deleteContent**](doc//MediaApi.md#deletecontent) | **DELETE** /media_api/content/{aid}/{cid} | Delete content data.
 *MediaApi* | [**getAllAccountMediaContent**](doc//MediaApi.md#getallaccountmediacontent) | **GET** /media_api/all_account_media_content/{aid} | Get list of all media content on the server for one account.
 *MediaApi* | [**getContent**](doc//MediaApi.md#getcontent) | **GET** /media_api/content/{aid}/{cid} | Get content data
-*MediaApi* | [**getContentSlotState**](doc//MediaApi.md#getcontentslotstate) | **GET** /media_api/content_slot/{slot_id} | Get state of content slot.
+*MediaApi* | [**getContentProcessingState**](doc//MediaApi.md#getcontentprocessingstate) | **GET** /media_api/content_processing_state | Get current content processing state for account.
 *MediaApi* | [**getMapTile**](doc//MediaApi.md#getmaptile) | **GET** /media_api/map_tile/{z}/{x}/{y} | Get map tile PNG file.
 *MediaApi* | [**getMediaAppNotificationSettings**](doc//MediaApi.md#getmediaappnotificationsettings) | **GET** /media_api/get_media_app_notification_settings | 
 *MediaApi* | [**getMediaContentInfo**](doc//MediaApi.md#getmediacontentinfo) | **GET** /media_api/media_content_info | Get my profile and security content
@@ -232,9 +229,9 @@ Class | Method | HTTP request | Description
 *MediaApi* | [**getProfileContentInfoBinary**](doc//MediaApi.md#getprofilecontentinfobinary) | **GET** /media_api/profile_content_info_binary/{aid} | Get current profile content for selected profile as compact binary payload.
 *MediaApi* | [**postMediaAppNotificationSettings**](doc//MediaApi.md#postmediaappnotificationsettings) | **POST** /media_api/post_media_app_notification_settings | 
 *MediaApi* | [**postProfileContentReport**](doc//MediaApi.md#postprofilecontentreport) | **POST** /media_api/profile_content_report | Report profile content.
-*MediaApi* | [**putContentToContentSlot**](doc//MediaApi.md#putcontenttocontentslot) | **PUT** /media_api/content_slot/{slot_id} | Upload content to server. The content is saved to content processing slot when account state is [model::AccountState::InitialSetup]. In other states the slot number is ignored and content goes directly to moderation.
 *MediaApi* | [**putProfileContent**](doc//MediaApi.md#putprofilecontent) | **PUT** /media_api/profile_content | Set new profile content for current account.
 *MediaApi* | [**putSecurityContentInfo**](doc//MediaApi.md#putsecuritycontentinfo) | **PUT** /media_api/security_content_info | Set current security content for current account.
+*MediaApi* | [**putUploadContent**](doc//MediaApi.md#putuploadcontent) | **PUT** /media_api/upload_content | Upload content to server for processing.
 *MediaAdminApi* | [**getImageProcessingConfig**](doc//MediaAdminApi.md#getimageprocessingconfig) | **GET** /media_api/image_processing_config | Get image processing configuration
 *MediaAdminApi* | [**getImageProcessingConfigWarnings**](doc//MediaAdminApi.md#getimageprocessingconfigwarnings) | **GET** /media_api/image_processing_config_warnings | Get image processing config warnings
 *MediaAdminApi* | [**getMediaContentFaceVerifiedNullList**](doc//MediaAdminApi.md#getmediacontentfaceverifiednulllist) | **GET** /media_api/media_content_face_verified_null_list | Get first page of accounts with security selfie and content where `face_verified` is NULL and `face_detected` is true or `face_detected_manual` is true. Oldest security content set time is first and count 25.
@@ -303,7 +300,6 @@ Class | Method | HTTP request | Description
  - [AccountIdDbValue](doc//AccountIdDbValue.md)
  - [AccountLockedState](doc//AccountLockedState.md)
  - [AccountRegistrationPlatforms](doc//AccountRegistrationPlatforms.md)
- - [AccountSetup](doc//AccountSetup.md)
  - [AccountStateContainer](doc//AccountStateContainer.md)
  - [AccountSyncVersion](doc//AccountSyncVersion.md)
  - [AccountVerificationConfig](doc//AccountVerificationConfig.md)
@@ -374,7 +370,6 @@ Class | Method | HTTP request | Description
  - [ContentInfo](doc//ContentInfo.md)
  - [ContentInfoDetailed](doc//ContentInfoDetailed.md)
  - [ContentModerationState](doc//ContentModerationState.md)
- - [ContentProcessingId](doc//ContentProcessingId.md)
  - [ContentProcessingState](doc//ContentProcessingState.md)
  - [ContentProcessingStateType](doc//ContentProcessingStateType.md)
  - [ContentSlot](doc//ContentSlot.md)
@@ -470,7 +465,6 @@ Class | Method | HTTP request | Description
  - [JitsiMeetUrl](doc//JitsiMeetUrl.md)
  - [Language](doc//Language.md)
  - [LastSeenTimeFilter](doc//LastSeenTimeFilter.md)
- - [LatestBirthdate](doc//LatestBirthdate.md)
  - [LatestSeenMessageInfo](doc//LatestSeenMessageInfo.md)
  - [LatestSeenMessageInfoList](doc//LatestSeenMessageInfoList.md)
  - [LikesConfig](doc//LikesConfig.md)
@@ -599,6 +593,7 @@ Class | Method | HTTP request | Description
  - [PushNotificationDeviceToken](doc//PushNotificationDeviceToken.md)
  - [PushNotificationEncryptionKey](doc//PushNotificationEncryptionKey.md)
  - [PushNotificationInfoSyncVersion](doc//PushNotificationInfoSyncVersion.md)
+ - [PutContentToContentSlotResult](doc//PutContentToContentSlotResult.md)
  - [ReceivedLikeId](doc//ReceivedLikeId.md)
  - [ReceivedLikesIteratorState](doc//ReceivedLikesIteratorState.md)
  - [ReceivedLikesPage](doc//ReceivedLikesPage.md)
@@ -640,7 +635,6 @@ Class | Method | HTTP request | Description
  - [ServerMessageType](doc//ServerMessageType.md)
  - [ServerVersion](doc//ServerVersion.md)
  - [SetAccountBanState](doc//SetAccountBanState.md)
- - [SetAccountSetup](doc//SetAccountSetup.md)
  - [SetEmailLoginEnabled](doc//SetEmailLoginEnabled.md)
  - [SetInitialEmail](doc//SetInitialEmail.md)
  - [SetProfileContent](doc//SetProfileContent.md)

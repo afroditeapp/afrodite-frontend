@@ -1069,6 +1069,10 @@ class AppLocalizationsFi extends AppLocalizations {
       'Unallowed content detected from the uploaded photo. This might be false positive detection.';
 
   @override
+  String get image_processing_ui_upload_content_processing_ongoing_dialog_title =>
+      'Server is processing previous image upload';
+
+  @override
   String get image_processing_ui_upload_failed_dialog_title => 'Upload failed';
 
   @override

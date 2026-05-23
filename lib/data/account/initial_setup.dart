@@ -19,11 +19,15 @@ class InitialSetupUtils {
   InitialSetupUtils(this._api);
 
   /// Returns null on success. Returns String if error.
-  Future<WaitProcessingResult> _waitContentProcessing(int slot) async {
+  Future<WaitProcessingResult> _waitContentProcessing(int processingId) async {
     while (true) {
-      final state = await _api.media((api) => api.getContentSlotState(slot)).ok();
+      final state = await _api.media((api) => api.getContentProcessingState()).ok();
       if (state == null) {
         return ProcessingError("Server did not return content processing state");
+      }
+
+      if (state.processingIdFromClient != processingId) {
+        return ProcessingError("Server did not return correct processing ID");
       }
 
       switch (state.state) {
@@ -36,8 +40,6 @@ class InitialSetupUtils {
           return ProcessingError("Image processing failed: NSFW detected");
         case ContentProcessingStateType.failed:
           return ProcessingError("Image processing failed");
-        case ContentProcessingStateType.empty:
-          return ProcessingError("Slot is empty");
         case ContentProcessingStateType.completed:
           {
             final contentId = state.cid;
@@ -63,13 +65,22 @@ class InitialSetupUtils {
     // Handle images
 
     final securitySelfie = MultipartFile.fromBytes("", securitySelfieBytes);
-    final processingId = await _api.media(
-      (api) => api.putContentToContentSlot(0, true, MediaContentUploadType.image, securitySelfie),
-    );
-    if (processingId case Err()) {
-      return "Server did not return content processing ID";
+    final slotId0 = 0;
+    final uploadResult1 = await _api
+        .media(
+          (api) => api.putUploadContent(
+            slotId0,
+            slotId0,
+            true,
+            MediaContentUploadType.image,
+            securitySelfie,
+          ),
+        )
+        .ok();
+    if (uploadResult1 == null || uploadResult1.error) {
+      return "Server rejected security selfie upload";
     }
-    final result = await _waitContentProcessing(0);
+    final result = await _waitContentProcessing(slotId0);
     final ContentId contentId0;
     switch (result) {
       case ProcessingError():
@@ -80,13 +91,22 @@ class InitialSetupUtils {
     await _api.mediaAction((api) => api.putSecurityContentInfo(contentId0));
 
     final profileImage = MultipartFile.fromBytes("", profileImageBytes);
-    final processingId2 = await _api.media(
-      (api) => api.putContentToContentSlot(1, false, MediaContentUploadType.image, profileImage),
-    );
-    if (processingId2 case Err()) {
-      return "Server did not return content processing ID";
+    final slotId1 = 1;
+    final uploadResult2 = await _api
+        .media(
+          (api) => api.putUploadContent(
+            slotId1,
+            slotId1,
+            false,
+            MediaContentUploadType.image,
+            profileImage,
+          ),
+        )
+        .ok();
+    if (uploadResult2 == null || uploadResult2.error) {
+      return "Server rejected profile image upload";
     }
-    final result2 = await _waitContentProcessing(1);
+    final result2 = await _waitContentProcessing(slotId1);
     final ContentId contentId1;
     switch (result2) {
       case ProcessingError():
@@ -101,7 +121,6 @@ class InitialSetupUtils {
     // Other setup
 
     await _api.accountAction((api) => api.postInitialEmail(SetInitialEmail(email: email)));
-    await _api.accountAction((api) => api.postAccountSetup(SetAccountSetup(isAdult: true)));
 
     final update = ProfileUpdate(age: 30, name: "X", ptext: null, attributes: []);
     await _api.profileAction((api) => api.postProfile(update));
@@ -134,15 +153,6 @@ class InitialSetupUtils {
         );
         if (r.isErr()) return errAndLog("Setting email address failed");
       }
-    }
-
-    {
-      final isAdult = data.isAdult;
-      if (isAdult == null) return errAndLog("Age info is null");
-      final r = await _api.accountAction(
-        (api) => api.postAccountSetup(SetAccountSetup(isAdult: isAdult)),
-      );
-      if (r.isErr()) return errAndLog("Setting account setup info failed");
     }
 
     {

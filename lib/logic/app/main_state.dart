@@ -100,7 +100,7 @@ class MainStateBloc extends Bloc<MainStateEvent, MainState> {
                     AgeVerifiedExists(value: final isAgeVerified),
                     ClientFeaturesConfigExists(value: final config),
                   )
-                      when (config.ageVerification?.require ?? false) && !isAgeVerified =>
+                      when (config.ageVerification?.required_ ?? false) && !isAgeVerified =>
                     MsLoggedInBasicScreen(
                       ls.repositories,
                       LoggedInBasicScreen.ageVerificationRequired,

@@ -69,7 +69,7 @@ void main() {
       final contentIdUuid = Uint8List.fromList(List<int>.generate(16, (index) => 255 - index));
       final expectedContentId = base64UrlEncode(contentIdUuid).replaceAll('=', '');
 
-      final bytes = Uint8List.fromList([90, ...encodeMinimalI64(42), 3, ...contentIdUuid, 1]);
+      final bytes = Uint8List.fromList([90, 42, 2, ...contentIdUuid, 1]);
 
       final parsed = ServerMessage.fromBytes(bytes);
 
@@ -83,7 +83,7 @@ void main() {
     });
 
     test('parses content processing in queue payload', () {
-      final bytes = Uint8List.fromList([90, ...encodeMinimalI64(11), 1, ...encodeMinimalI64(7)]);
+      final bytes = Uint8List.fromList([90, 11, 0, ...encodeMinimalI64(7)]);
 
       final parsed = ServerMessage.fromBytes(bytes);
 
