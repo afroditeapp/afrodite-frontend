@@ -115,7 +115,7 @@ class _SettingsScreenState extends State<SettingsScreen> {
 
   Widget securitySelfie(BuildContext context) {
     return Setting.createSetting(
-      Icons.image_rounded,
+      SECURITY_SELFIE_ICON,
       context.strings.current_security_selfie_screen_title,
       () {
         MyNavigator.push(context, CurrentSecuritySelfiePage());

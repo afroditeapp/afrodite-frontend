@@ -19,6 +19,8 @@ import 'package:app/model/freezed/logic/media/content.dart';
 import 'package:app/ui_utils/image.dart';
 import 'package:app/ui_utils/view_image_screen.dart';
 
+const SECURITY_SELFIE_ICON = Icons.image_rounded;
+
 class CurrentSecuritySelfiePage extends MyScreenPage<()>
     with SimpleUrlParser<CurrentSecuritySelfiePage> {
   CurrentSecuritySelfiePage()

@@ -28,6 +28,7 @@ import 'package:app/model/freezed/logic/profile/profile_filters.dart';
 import 'package:app/ui/normal/profiles/profile_filters.dart';
 import 'package:app/ui/normal/profiles/profile_grid.dart';
 import 'package:app/ui/normal/settings/account_settings.dart';
+import 'package:app/ui/normal/settings/media/current_security_selfie.dart';
 import 'package:app/ui/normal/settings.dart';
 import 'package:app/ui_utils/bottom_navigation.dart';
 
@@ -314,7 +315,21 @@ class PublicProfileViewingBlocker extends StatelessWidget {
       message = context.strings.generic_error;
     }
 
-    return buildListReplacementMessageSimple(context, message);
+    return buildListReplacementMessage(
+      child: Column(
+        mainAxisSize: MainAxisSize.min,
+        children: [
+          const Padding(padding: EdgeInsets.all(8)),
+          Text(message),
+          const Padding(padding: EdgeInsets.all(8)),
+          ElevatedButton.icon(
+            onPressed: () => MyNavigator.push(context, CurrentSecuritySelfiePage()),
+            icon: const Icon(SECURITY_SELFIE_ICON),
+            label: Text(context.strings.current_security_selfie_screen_title),
+          ),
+        ],
+      ),
+    );
   }
 
   Widget startInitialSetupButton(BuildContext context) {
