@@ -3,13 +3,12 @@ import 'dart:typed_data';
 
 import 'package:ffi/ffi.dart';
 import 'package:native_utils_common/native_utils_common.dart';
-import 'package:native_utils_ffi/src/bindings.dart';
 import 'package:native_utils_ffi/src/native_utils_ffi_bindings_generated.dart';
 
 /// If generation fails, null is returned.
 Future<(GeneratedMessageKeys?, int)> generateMessageKeys(String accountId) async {
   final cAccountId = accountId.toNativeUtf8();
-  final keyGenerationResult = getBindings().generate_message_keys(cAccountId.cast());
+  final keyGenerationResult = generate_message_keys(cAccountId.cast());
   malloc.free(cAccountId);
 
   final (public, private, result) = handleBinaryDataResult2(keyGenerationResult);
@@ -34,7 +33,7 @@ Future<(EncryptResult?, int)> encryptMessage(
   final Pointer<Uint8> cData = malloc.allocate(data.length);
   cData.asTypedList(data.length).setAll(0, data);
 
-  final encryptResult = getBindings().encrypt_message(
+  final encryptResult = encrypt_message(
     cSender,
     senderPrivateKey.length,
     cRecipient,
@@ -68,7 +67,7 @@ Future<(DecryptResult?, int)> decryptMessage(
   final Pointer<Uint8> cMessageData = malloc.allocate(pgpMessage.length);
   cMessageData.asTypedList(pgpMessage.length).setAll(0, pgpMessage);
 
-  final decryptResult = getBindings().decrypt_message(
+  final decryptResult = decrypt_message(
     cSenderPublicKey,
     senderPublicKey.length,
     cRecipientPrivateKey,
@@ -94,10 +93,7 @@ Future<(Uint8List?, int)> getMessageContent(Uint8List pgpMessage) async {
   final Pointer<Uint8> cMessageData = malloc.allocate(pgpMessage.length);
   cMessageData.asTypedList(pgpMessage.length).setAll(0, pgpMessage);
 
-  final getMessageContentResult = getBindings().get_message_content(
-    cMessageData,
-    pgpMessage.length,
-  );
+  final getMessageContentResult = get_message_content(cMessageData, pgpMessage.length);
 
   malloc.free(cMessageData);
 
@@ -120,7 +116,7 @@ Uint8List copyToList(Pointer<Uint8> data, int len) {
   } else {
     returnValue = (null, result);
   }
-  getBindings().free_binary_data_result(r);
+  free_binary_data_result(r);
   return returnValue;
 }
 
@@ -134,6 +130,6 @@ Uint8List copyToList(Pointer<Uint8> data, int len) {
   } else {
     returnValue = (null, null, result);
   }
-  getBindings().free_binary_data_result_2(r);
+  free_binary_data_result_2(r);
   return returnValue;
 }

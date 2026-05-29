@@ -8,168 +8,76 @@
 // ignore_for_file: type=lint
 import 'dart:ffi' as ffi;
 
-/// Bindings for `src/native_utils_ffi.h`.
+@ffi.Native<ffi.Void Function(BinaryDataResult2)>(isLeaf: true)
+external void free_binary_data_result_2(BinaryDataResult2 result);
+
+/// Generate a new message encryption keys.
 ///
-/// Regenerate bindings with `flutter pub run ffigen --config ffigen.yaml`.
+/// Run equivalent free function for the result.
 ///
-class NativeUtilsBindings {
-  /// Holds the symbol lookup function.
-  final ffi.Pointer<T> Function<T extends ffi.NativeType>(String symbolName) _lookup;
+/// First result value is public key and second is private key.
+@ffi.Native<BinaryDataResult2 Function(ffi.Pointer<ffi.Char>)>(isLeaf: true)
+external BinaryDataResult2 generate_message_keys(ffi.Pointer<ffi.Char> account_id);
 
-  /// The symbols are looked up in [dynamicLibrary].
-  NativeUtilsBindings(ffi.DynamicLibrary dynamicLibrary) : _lookup = dynamicLibrary.lookup;
+@ffi.Native<ffi.Void Function(BinaryDataResult)>(isLeaf: true)
+external void free_binary_data_result(BinaryDataResult result);
 
-  /// The symbols are looked up with [lookup].
-  NativeUtilsBindings.fromLookup(
-    ffi.Pointer<T> Function<T extends ffi.NativeType>(String symbolName) lookup,
-  ) : _lookup = lookup;
+/// Encrypt message data.
+///
+/// The result must be freed using free_binary_data_result.
+///
+/// First result value is PGP message and second is session key.
+@ffi.Native<
+  BinaryDataResult2 Function(
+    ffi.Pointer<ffi.Uint8>,
+    ffi.IntPtr,
+    ffi.Pointer<ffi.Uint8>,
+    ffi.IntPtr,
+    ffi.Pointer<ffi.Uint8>,
+    ffi.IntPtr,
+  )
+>(isLeaf: true)
+external BinaryDataResult2 encrypt_message(
+  ffi.Pointer<ffi.Uint8> sender_private_key,
+  int sender_private_key_len,
+  ffi.Pointer<ffi.Uint8> recipient_public_key,
+  int recipient_public_key_len,
+  ffi.Pointer<ffi.Uint8> data,
+  int data_len,
+);
 
-  void free_binary_data_result_2(BinaryDataResult2 result) {
-    return _free_binary_data_result_2(result);
-  }
+/// Decrypt message data.
+///
+/// The result must be freed using free_binary_data_result.
+///
+/// First result value is message data and second is session key.
+@ffi.Native<
+  BinaryDataResult2 Function(
+    ffi.Pointer<ffi.Uint8>,
+    ffi.IntPtr,
+    ffi.Pointer<ffi.Uint8>,
+    ffi.IntPtr,
+    ffi.Pointer<ffi.Uint8>,
+    ffi.IntPtr,
+  )
+>(isLeaf: true)
+external BinaryDataResult2 decrypt_message(
+  ffi.Pointer<ffi.Uint8> sender_public_key,
+  int sender_public_key_len,
+  ffi.Pointer<ffi.Uint8> recipient_private_key,
+  int recipient_private_key_len,
+  ffi.Pointer<ffi.Uint8> pgp_message,
+  int pgp_message_len,
+);
 
-  late final _free_binary_data_result_2Ptr =
-      _lookup<ffi.NativeFunction<ffi.Void Function(BinaryDataResult2)>>(
-        'free_binary_data_result_2',
-      );
-  late final _free_binary_data_result_2 = _free_binary_data_result_2Ptr
-      .asFunction<void Function(BinaryDataResult2)>(isLeaf: true);
-
-  /// Generate a new message encryption keys.
-  ///
-  /// Run equivalent free function for the result.
-  ///
-  /// First result value is public key and second is private key.
-  BinaryDataResult2 generate_message_keys(ffi.Pointer<ffi.Char> account_id) {
-    return _generate_message_keys(account_id);
-  }
-
-  late final _generate_message_keysPtr =
-      _lookup<ffi.NativeFunction<BinaryDataResult2 Function(ffi.Pointer<ffi.Char>)>>(
-        'generate_message_keys',
-      );
-  late final _generate_message_keys = _generate_message_keysPtr
-      .asFunction<BinaryDataResult2 Function(ffi.Pointer<ffi.Char>)>(isLeaf: true);
-
-  void free_binary_data_result(BinaryDataResult result) {
-    return _free_binary_data_result(result);
-  }
-
-  late final _free_binary_data_resultPtr =
-      _lookup<ffi.NativeFunction<ffi.Void Function(BinaryDataResult)>>('free_binary_data_result');
-  late final _free_binary_data_result = _free_binary_data_resultPtr
-      .asFunction<void Function(BinaryDataResult)>(isLeaf: true);
-
-  /// Encrypt message data.
-  ///
-  /// The result must be freed using free_binary_data_result.
-  ///
-  /// First result value is PGP message and second is session key.
-  BinaryDataResult2 encrypt_message(
-    ffi.Pointer<ffi.Uint8> sender_private_key,
-    int sender_private_key_len,
-    ffi.Pointer<ffi.Uint8> recipient_public_key,
-    int recipient_public_key_len,
-    ffi.Pointer<ffi.Uint8> data,
-    int data_len,
-  ) {
-    return _encrypt_message(
-      sender_private_key,
-      sender_private_key_len,
-      recipient_public_key,
-      recipient_public_key_len,
-      data,
-      data_len,
-    );
-  }
-
-  late final _encrypt_messagePtr =
-      _lookup<
-        ffi.NativeFunction<
-          BinaryDataResult2 Function(
-            ffi.Pointer<ffi.Uint8>,
-            ffi.IntPtr,
-            ffi.Pointer<ffi.Uint8>,
-            ffi.IntPtr,
-            ffi.Pointer<ffi.Uint8>,
-            ffi.IntPtr,
-          )
-        >
-      >('encrypt_message');
-  late final _encrypt_message = _encrypt_messagePtr
-      .asFunction<
-        BinaryDataResult2 Function(
-          ffi.Pointer<ffi.Uint8>,
-          int,
-          ffi.Pointer<ffi.Uint8>,
-          int,
-          ffi.Pointer<ffi.Uint8>,
-          int,
-        )
-      >(isLeaf: true);
-
-  /// Decrypt message data.
-  ///
-  /// The result must be freed using free_binary_data_result.
-  ///
-  /// First result value is message data and second is session key.
-  BinaryDataResult2 decrypt_message(
-    ffi.Pointer<ffi.Uint8> sender_public_key,
-    int sender_public_key_len,
-    ffi.Pointer<ffi.Uint8> recipient_private_key,
-    int recipient_private_key_len,
-    ffi.Pointer<ffi.Uint8> pgp_message,
-    int pgp_message_len,
-  ) {
-    return _decrypt_message(
-      sender_public_key,
-      sender_public_key_len,
-      recipient_private_key,
-      recipient_private_key_len,
-      pgp_message,
-      pgp_message_len,
-    );
-  }
-
-  late final _decrypt_messagePtr =
-      _lookup<
-        ffi.NativeFunction<
-          BinaryDataResult2 Function(
-            ffi.Pointer<ffi.Uint8>,
-            ffi.IntPtr,
-            ffi.Pointer<ffi.Uint8>,
-            ffi.IntPtr,
-            ffi.Pointer<ffi.Uint8>,
-            ffi.IntPtr,
-          )
-        >
-      >('decrypt_message');
-  late final _decrypt_message = _decrypt_messagePtr
-      .asFunction<
-        BinaryDataResult2 Function(
-          ffi.Pointer<ffi.Uint8>,
-          int,
-          ffi.Pointer<ffi.Uint8>,
-          int,
-          ffi.Pointer<ffi.Uint8>,
-          int,
-        )
-      >(isLeaf: true);
-
-  /// Get message content from PGP message if possible.
-  ///
-  /// The result must be freed using free_binary_data_result.
-  BinaryDataResult get_message_content(ffi.Pointer<ffi.Uint8> pgp_message, int pgp_message_len) {
-    return _get_message_content(pgp_message, pgp_message_len);
-  }
-
-  late final _get_message_contentPtr =
-      _lookup<ffi.NativeFunction<BinaryDataResult Function(ffi.Pointer<ffi.Uint8>, ffi.IntPtr)>>(
-        'get_message_content',
-      );
-  late final _get_message_content = _get_message_contentPtr
-      .asFunction<BinaryDataResult Function(ffi.Pointer<ffi.Uint8>, int)>(isLeaf: true);
-}
+/// Get message content from PGP message if possible.
+///
+/// The result must be freed using free_binary_data_result.
+@ffi.Native<BinaryDataResult Function(ffi.Pointer<ffi.Uint8>, ffi.IntPtr)>(isLeaf: true)
+external BinaryDataResult get_message_content(
+  ffi.Pointer<ffi.Uint8> pgp_message,
+  int pgp_message_len,
+);
 
 /// Message encryption API
 final class BinaryData extends ffi.Struct {
