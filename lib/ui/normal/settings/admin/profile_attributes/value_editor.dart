@@ -19,8 +19,12 @@ class ValueEditorPage extends MyScreenPageLimited<ValueEditorResult> {
   final AttributeValue value;
   final Attribute attribute;
   final Permissions permissions;
-  ValueEditorPage(this.value, this.attribute, this.permissions)
-    : super(builder: (closer) => ValueEditorScreen(value, attribute, permissions, closer));
+  final bool isSubValue;
+  ValueEditorPage(this.value, this.attribute, this.permissions, {this.isSubValue = false})
+    : super(
+        builder: (closer) =>
+            ValueEditorScreen(value, attribute, permissions, closer, isSubValue: isSubValue),
+      );
 }
 
 class ValueEditorScreen extends StatefulWidget {
@@ -28,8 +32,16 @@ class ValueEditorScreen extends StatefulWidget {
   final Attribute attribute;
   final Permissions permissions;
   final PageCloser<ValueEditorResult> closer;
+  final bool isSubValue;
 
-  const ValueEditorScreen(this.value, this.attribute, this.permissions, this.closer, {super.key});
+  const ValueEditorScreen(
+    this.value,
+    this.attribute,
+    this.permissions,
+    this.closer, {
+    super.key,
+    this.isSubValue = false,
+  });
 
   @override
   State<ValueEditorScreen> createState() => _ValueEditorScreenState();
@@ -107,7 +119,7 @@ class _ValueEditorScreenState extends State<ValueEditorScreen> {
     );
     final updatedValue = await MyNavigator.pushLimited(
       context,
-      ValueEditorPage(groupVal, tempAttr, widget.permissions),
+      ValueEditorPage(groupVal, tempAttr, widget.permissions, isSubValue: true),
     );
     if (updatedValue != null) {
       setState(() {
@@ -216,7 +228,7 @@ class _ValueEditorScreenState extends State<ValueEditorScreen> {
             value: _val.editable,
             onChanged: (val) => setState(() => _val.editable = val),
           ),
-          if (widget.attribute.mode == AttributeMode.twoLevel) ...[
+          if (widget.attribute.mode == AttributeMode.twoLevel && !widget.isSubValue) ...[
             const Divider(height: 32),
             Row(
               mainAxisAlignment: MainAxisAlignment.spaceBetween,
