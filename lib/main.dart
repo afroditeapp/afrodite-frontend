@@ -3,6 +3,7 @@ import 'dart:async';
 import 'package:app/config.dart';
 import 'package:app/data/app_version.dart';
 import 'package:app/utils/app_running_detector/app_running_detector.dart';
+import 'package:flutter/cupertino.dart';
 import 'package:flutter/foundation.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter/services.dart';
