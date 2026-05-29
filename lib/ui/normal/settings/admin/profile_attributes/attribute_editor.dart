@@ -75,9 +75,6 @@ class _AttributeEditorScreenState extends State<AttributeEditorScreen> {
 
   void _onReorderValues(List<AttributeValue> currentOrder, int oldIndex, int newIndex) {
     setState(() {
-      if (newIndex > oldIndex) {
-        newIndex -= 1;
-      }
       final reordered = [...currentOrder];
       final item = reordered.removeAt(oldIndex);
       reordered.insert(newIndex, item);
@@ -271,7 +268,7 @@ class _AttributeEditorScreenState extends State<AttributeEditorScreen> {
               physics: const NeverScrollableScrollPhysics(),
               buildDefaultDragHandles: false,
               itemCount: orderedValuesForDisplay.length,
-              onReorder: (oldIndex, newIndex) =>
+              onReorderItem: (oldIndex, newIndex) =>
                   _onReorderValues(orderedValuesForDisplay, oldIndex, newIndex),
               itemBuilder: (context, index) {
                 final val = orderedValuesForDisplay[index];

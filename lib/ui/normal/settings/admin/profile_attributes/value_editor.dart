@@ -86,9 +86,6 @@ class _ValueEditorScreenState extends State<ValueEditorScreen> {
 
   void _onReorderGroupValues(List<AttributeValue> currentOrder, int oldIndex, int newIndex) {
     setState(() {
-      if (newIndex > oldIndex) {
-        newIndex -= 1;
-      }
       final reordered = [...currentOrder];
       final item = reordered.removeAt(oldIndex);
       reordered.insert(newIndex, item);
@@ -252,7 +249,7 @@ class _ValueEditorScreenState extends State<ValueEditorScreen> {
                 physics: const NeverScrollableScrollPhysics(),
                 buildDefaultDragHandles: false,
                 itemCount: orderedGroupValuesForDisplay.length,
-                onReorder: (oldIndex, newIndex) =>
+                onReorderItem: (oldIndex, newIndex) =>
                     _onReorderGroupValues(orderedGroupValuesForDisplay, oldIndex, newIndex),
                 itemBuilder: (context, index) {
                   final groupVal = orderedGroupValuesForDisplay[index];

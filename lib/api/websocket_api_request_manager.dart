@@ -80,12 +80,10 @@ class WebSocketApiRequestManager {
   bool get _isConnected => _connectionStates.value is ConnectedToServer;
 
   WebSocketApiRequestManager({
-    required Stream<ServerMessage> serverMessages,
-    required ValueStream<ServerConnectionManagerState> connectionStates,
-    required Future<void> Function(ClientMessage message) sendMessageToServer,
-  }) : _serverMessages = serverMessages,
-       _connectionStates = connectionStates,
-       _sendMessageToServer = sendMessageToServer;
+    required this._serverMessages,
+    required this._connectionStates,
+    required this._sendMessageToServer,
+  });
 
   void init() {
     _cmdsSubscription = _listenCmds();

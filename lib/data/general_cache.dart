@@ -13,13 +13,10 @@ class GeneralCacheManager {
   final int _maxNrOfCacheObjects;
 
   GeneralCacheManager({
-    required String key,
-    Duration stalePeriod = const Duration(days: 90),
-    int maxNrOfCacheObjects = 10000,
-  }) : _key = key,
-       _stalePeriod = stalePeriod,
-       _maxNrOfCacheObjects = maxNrOfCacheObjects,
-       _dbManager = CommonDatabaseManager.getInstance();
+    required this._key,
+    this._stalePeriod = const Duration(days: 90),
+    this._maxNrOfCacheObjects = 10000,
+  }) : _dbManager = CommonDatabaseManager.getInstance();
 
   /// Get a cache entry by key
   Future<GeneralCacheFileInfo?> getFileFromCache(String key) async {

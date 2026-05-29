@@ -11,7 +11,7 @@ abstract class BaseDatabaseIterator extends IteratorType {
   int _currentIndex = 0;
   final int _queryCount;
   final AccountDatabaseManager db;
-  BaseDatabaseIterator({required this.db, int queryCount = 10}) : _queryCount = queryCount;
+  BaseDatabaseIterator({required this.db, this._queryCount = 10});
 
   @override
   void reset() {

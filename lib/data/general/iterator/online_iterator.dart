@@ -24,16 +24,15 @@ class OnlineIterator extends IteratorType {
   final AccountDatabaseManager db;
   final ProfileEntryDownloader downloader;
 
-  /// If [resetServerIterator] is true, the iterator will reset the
+  /// If [_resetServerIterator] is true, the iterator will reset the
   /// server iterator to the beginning.
   OnlineIterator({
-    bool resetServerIterator = false,
+    this._resetServerIterator = false,
     required MediaRepository media,
     required this.io,
     required this.db,
     required this.connectionManager,
-  }) : _resetServerIterator = resetServerIterator,
-       downloader = ProfileEntryDownloader(media, db, connectionManager),
+  }) : downloader = ProfileEntryDownloader(media, db, connectionManager),
        api = connectionManager;
 
   @override
