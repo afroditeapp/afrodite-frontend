@@ -41,6 +41,8 @@ import 'package:app/ui_utils/extensions/api.dart';
 import 'package:app/utils/age.dart';
 import 'package:app/utils/list.dart';
 
+const EDIT_PROFILE_ICON = Icons.edit_rounded;
+
 class EditProfilePageUrlParser extends UrlParser<EditProfilePage> {
   final RepositoryInstances r;
   EditProfilePageUrlParser(this.r);

@@ -81,7 +81,7 @@ class MyProfileScreen extends StatelessWidget {
           return FloatingActionButton(
             onPressed: onPressed,
             tooltip: context.strings.view_profile_screen_my_profile_edit_action,
-            child: const Icon(Icons.edit),
+            child: const Icon(EDIT_PROFILE_ICON),
           );
         }),
       ),

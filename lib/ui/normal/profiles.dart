@@ -28,6 +28,7 @@ import 'package:app/model/freezed/logic/profile/profile_filters.dart';
 import 'package:app/ui/normal/profiles/profile_filters.dart';
 import 'package:app/ui/normal/profiles/profile_grid.dart';
 import 'package:app/ui/normal/settings/account_settings.dart';
+import 'package:app/ui/normal/settings/profile/edit_profile.dart';
 import 'package:app/ui/normal/settings/media/current_security_selfie.dart';
 import 'package:app/ui/normal/settings.dart';
 import 'package:app/ui_utils/bottom_navigation.dart';
@@ -209,7 +210,12 @@ class PublicProfileViewingBlocker extends StatelessWidget {
                     return _handleBlocked(ChatViewingBlocker(child: child));
                   } else {
                     return _handleBlocked(
-                      primaryProfileContentIsNotAccepted(context, primaryContent, requireFace),
+                      primaryProfileContentIsNotAccepted(
+                        context,
+                        myProfileState.profile,
+                        primaryContent,
+                        requireFace,
+                      ),
                     );
                   }
                 },
@@ -278,6 +284,7 @@ class PublicProfileViewingBlocker extends StatelessWidget {
 
   Widget primaryProfileContentIsNotAccepted(
     BuildContext context,
+    MyProfileEntry? profile,
     MyContent? content,
     bool requireFaceDetected,
   ) {
@@ -296,7 +303,23 @@ class PublicProfileViewingBlocker extends StatelessWidget {
       message = context.strings.generic_error;
     }
 
-    return buildListReplacementMessageSimple(context, message);
+    return buildListReplacementMessage(
+      child: Column(
+        mainAxisSize: MainAxisSize.min,
+        children: [
+          const Padding(padding: EdgeInsets.all(8)),
+          Text(message),
+          if (profile != null) ...[
+            const Padding(padding: EdgeInsets.all(8)),
+            ElevatedButton.icon(
+              onPressed: () => MyNavigator.push(context, EditProfilePage(profile)),
+              icon: const Icon(EDIT_PROFILE_ICON),
+              label: Text(context.strings.edit_profile_screen_title),
+            ),
+          ],
+        ],
+      ),
+    );
   }
 
   Widget securityContentIsNotAccepted(BuildContext context, MyContent? content) {
