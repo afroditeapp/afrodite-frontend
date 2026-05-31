@@ -2746,6 +2746,18 @@ abstract class AppLocalizations {
   /// **'Message read receipts'**
   String get privacy_settings_message_state_seen;
 
+  /// Description when message read receipts are disabled
+  ///
+  /// In en, this message translates to:
+  /// **'You won\'t see read receipts'**
+  String get privacy_settings_message_state_seen_disabled_description;
+
+  /// Description when message read receipts are enabled
+  ///
+  /// In en, this message translates to:
+  /// **'Let others see when you\'ve read their messages'**
+  String get privacy_settings_message_state_seen_enabled_description;
+
   /// Setting for online status visibility
   ///
   /// In en, this message translates to:
@@ -2787,6 +2799,18 @@ abstract class AppLocalizations {
   /// In en, this message translates to:
   /// **'Typing indicator'**
   String get privacy_settings_typing_indicator;
+
+  /// Description when typing indicator is disabled
+  ///
+  /// In en, this message translates to:
+  /// **'You won\'t see when others are typing'**
+  String get privacy_settings_typing_indicator_disabled_description;
+
+  /// Description when typing indicator is enabled
+  ///
+  /// In en, this message translates to:
+  /// **'Let others see when you\'re typing'**
+  String get privacy_settings_typing_indicator_enabled_description;
 
   /// Title for disable filters action
   ///

@@ -1945,6 +1945,14 @@
   "@privacy_settings_message_state_seen": {
     "description": "Setting for message seen state"
   },
+  "privacy_settings_message_state_seen_disabled_description": "You won't see read receipts",
+  "@privacy_settings_message_state_seen_disabled_description": {
+    "description": "Description when message read receipts are disabled"
+  },
+  "privacy_settings_message_state_seen_enabled_description": "Let others see when you've read their messages",
+  "@privacy_settings_message_state_seen_enabled_description": {
+    "description": "Description when message read receipts are enabled"
+  },
   "privacy_settings_online_status": "Online status",
   "@privacy_settings_online_status": {
     "description": "Setting for online status visibility"
@@ -1972,6 +1980,14 @@
   "privacy_settings_typing_indicator": "Typing indicator",
   "@privacy_settings_typing_indicator": {
     "description": "Setting for typing indicator"
+  },
+  "privacy_settings_typing_indicator_disabled_description": "You won't see when others are typing",
+  "@privacy_settings_typing_indicator_disabled_description": {
+    "description": "Description when typing indicator is disabled"
+  },
+  "privacy_settings_typing_indicator_enabled_description": "Let others see when you're typing",
+  "@privacy_settings_typing_indicator_enabled_description": {
+    "description": "Description when typing indicator is enabled"
   },
   "profile_filters_screen_disable_filters_action": "Disable filters",
   "@profile_filters_screen_disable_filters_action": {

@@ -190,7 +190,11 @@
     <string name="privacy_settings_screen_title" description="Title for privacy settings screen">Privacy</string>
     <string name="privacy_settings_screen_chat_category" description="Title for chat privacy settings category">Chat</string>
     <string name="privacy_settings_message_state_seen" description="Setting for message seen state">Message read receipts</string>
+    <string name="privacy_settings_message_state_seen_disabled_description" description="Description when message read receipts are disabled">You won\'t see read receipts</string>
+    <string name="privacy_settings_message_state_seen_enabled_description" description="Description when message read receipts are enabled">Let others see when you\'ve read their messages</string>
     <string name="privacy_settings_typing_indicator" description="Setting for typing indicator">Typing indicator</string>
+    <string name="privacy_settings_typing_indicator_disabled_description" description="Description when typing indicator is disabled">You won\'t see when others are typing</string>
+    <string name="privacy_settings_typing_indicator_enabled_description" description="Description when typing indicator is enabled">Let others see when you\'re typing</string>
     <string name="privacy_settings_screen_profile_category" description="Title for profile privacy settings category">Profile</string>
     <string name="privacy_settings_last_seen_time" description="Setting for last seen time visibility">Last seen time</string>
     <string name="privacy_settings_last_seen_time_disabled_description" description="Description when last seen time is disabled">You won\'t see when others were last online</string>

@@ -144,9 +144,16 @@ class _PrivacySettingsScreenState extends State<PrivacySettingsScreen> {
   }
 
   Widget messageStateSeen(BuildContext context, PrivacySettingsData state) {
+    final value = state.valueMessageStateSeen();
     return SwitchListTile(
       title: Text(context.strings.privacy_settings_message_state_seen),
-      value: state.valueMessageStateSeen(),
+      subtitle: Text(
+        value
+            ? context.strings.privacy_settings_message_state_seen_enabled_description
+            : context.strings.privacy_settings_message_state_seen_disabled_description,
+      ),
+      value: value,
+      secondary: const Icon(Icons.done_all, color: MESSAGE_SEEN_STATUS_COLOR),
       onChanged: (value) {
         context.read<PrivacySettingsBloc>().add(ToggleMessageStateSeen());
       },
@@ -154,9 +161,16 @@ class _PrivacySettingsScreenState extends State<PrivacySettingsScreen> {
   }
 
   Widget typingIndicator(BuildContext context, PrivacySettingsData state) {
+    final value = state.valueTypingIndicator();
     return SwitchListTile(
       title: Text(context.strings.privacy_settings_typing_indicator),
-      value: state.valueTypingIndicator(),
+      subtitle: Text(
+        value
+            ? context.strings.privacy_settings_typing_indicator_enabled_description
+            : context.strings.privacy_settings_typing_indicator_disabled_description,
+      ),
+      value: value,
+      secondary: const Icon(Icons.keyboard),
       onChanged: (value) {
         context.read<PrivacySettingsBloc>().add(ToggleTypingIndicator());
       },

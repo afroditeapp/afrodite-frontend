@@ -1,3 +1,4 @@
+import 'package:app/ui_utils/consts/colors.dart';
 import 'package:database/database.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_chat_core/flutter_chat_core.dart' as chat_core;
@@ -48,7 +49,7 @@ class ChatMessage extends StatelessWidget {
 
     final timeTextStyle = TextStyle(color: foregroundColor, fontSize: 12.0);
     final statusTextStyle = message.status == chat_core.MessageStatus.seen
-        ? TextStyle(color: Colors.lightBlue, fontSize: 12.0)
+        ? TextStyle(color: MESSAGE_SEEN_STATUS_COLOR, fontSize: 12.0)
         : timeTextStyle;
 
     final screenWidth = MediaQuery.of(context).size.width;

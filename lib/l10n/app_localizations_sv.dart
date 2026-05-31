@@ -1510,6 +1510,14 @@ class AppLocalizationsSv extends AppLocalizations {
   String get privacy_settings_message_state_seen => 'Message read receipts';
 
   @override
+  String get privacy_settings_message_state_seen_disabled_description =>
+      'You won\'t see read receipts';
+
+  @override
+  String get privacy_settings_message_state_seen_enabled_description =>
+      'Let others see when you\'ve read their messages';
+
+  @override
   String get privacy_settings_online_status => 'Online status';
 
   @override
@@ -1530,6 +1538,14 @@ class AppLocalizationsSv extends AppLocalizations {
 
   @override
   String get privacy_settings_typing_indicator => 'Typing indicator';
+
+  @override
+  String get privacy_settings_typing_indicator_disabled_description =>
+      'You won\'t see when others are typing';
+
+  @override
+  String get privacy_settings_typing_indicator_enabled_description =>
+      'Let others see when you\'re typing';
 
   @override
   String get profile_filters_screen_disable_filters_action => 'Disable filters';
