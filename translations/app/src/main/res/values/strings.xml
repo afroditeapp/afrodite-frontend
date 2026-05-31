@@ -193,7 +193,11 @@
     <string name="privacy_settings_typing_indicator" description="Setting for typing indicator">Typing indicator</string>
     <string name="privacy_settings_screen_profile_category" description="Title for profile privacy settings category">Profile</string>
     <string name="privacy_settings_last_seen_time" description="Setting for last seen time visibility">Last seen time</string>
+    <string name="privacy_settings_last_seen_time_disabled_description" description="Description when last seen time is disabled">You won\'t see when others were last online</string>
+    <string name="privacy_settings_last_seen_time_enabled_description" description="Description when last seen time is enabled">Show when you were last online</string>
     <string name="privacy_settings_online_status" description="Setting for online status visibility">Online status</string>
+    <string name="privacy_settings_online_status_disabled_description" description="Description when online status is disabled">You won\'t see others\' online status</string>
+    <string name="privacy_settings_online_status_enabled_description" description="Description when online status is enabled">Show when you are online</string>
 
     <!-- Automatic profile search results screen -->
     <string name="automatic_profile_search_results_screen_title" description="Title for automatic profile search results screen">New and updated profiles</string>
@@ -297,6 +301,7 @@
     <string name="initial_setup_screen_search_settings_max_age_subtitle" description="Subtitle for max age search setting">…with max age…</string>
     <string name="initial_setup_screen_location_title" description="Title for initial setup location screen">My profile\'s location is…</string>
     <string name="initial_setup_screen_location_help_dialog_text" description="Text for initial setup location help dialog">Select a location for your profile by tapping or long pressing the map.</string>
+    <string name="initial_setup_screen_profile_privacy_settings_title" description="Title for initial setup profile privacy settings screen">Profile privacy</string>
     <string name="initial_setup_screen_first_chat_backup_title" description="Title for initial setup first chat backup screen">First chat backup</string>
     <string name="initial_setup_screen_first_chat_backup_description" description="Description for initial setup first chat backup">Chats are stored on this device only, so regular backups are recommended. Let's save the first backup.\n\nIf you have cloud storage, it is recommended to save the backup there.</string>
     <string name="initial_setup_screen_first_chat_backup_save_backup_button" description="Title for initial setup save chat backup button">Save chat backup</string>
@@ -565,9 +570,9 @@
     <string name="settings_screen_profile_category" description="Title for profile settings category">Profile</string>
     <string name="settings_screen_privacy_and_security_category" description="Title for privacy and security settings category">Privacy and security</string>
     <string name="settings_screen_profile_visiblity_setting" description="Title for profile visibility setting">Profile visibility</string>
-    <string name="settings_screen_profile_visiblity_private_description" description="Description for private profile visibility">Your profile is not visible in profile grid</string>
-    <string name="settings_screen_profile_visiblity_pending_public_description" description="Description for pending public profile visibility">Your profile will be visible in profile grid once your images are moderated as accepted</string>
-    <string name="settings_screen_profile_visiblity_public_description" description="Description for public profile visibility">Your profile is visible in profile grid</string>
+    <string name="settings_screen_profile_visiblity_private_description" description="Description for private profile visibility">Hide your profile from Profiles view</string>
+    <string name="settings_screen_profile_visiblity_pending_public_description" description="Description for pending public profile visibility">Show your profile in Profiles view once images are moderated</string>
+    <string name="settings_screen_profile_visiblity_public_description" description="Description for public profile visibility">Show your profile in Profiles view</string>
     <string name="settings_screen_data_category" description="Title for data settings category">Data</string>
     <string name="settings_screen_general_category" description="Title for general settings category">General</string>
 

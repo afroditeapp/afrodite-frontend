@@ -198,9 +198,19 @@ class InitialSetupUtils {
 
     {
       final r = await _api.accountAction(
-        (api) => api.putSettingProfileVisiblity(BooleanSetting(value: true)),
+        (api) =>
+            api.putSettingProfileVisiblity(BooleanSetting(value: data.profileVisibilityEnabled)),
       );
       if (r.isErr()) return errAndLog("Setting profile visibility failed");
+    }
+
+    {
+      final privacySettings = ProfilePrivacySettings(
+        lastSeenTime: data.profileLastSeenTimeEnabled,
+        onlineStatus: data.profileOnlineStatusEnabled,
+      );
+      final r = await _api.profileAction((api) => api.postProfilePrivacySettings(privacySettings));
+      if (r.isErr()) return errAndLog("Setting profile privacy settings failed");
     }
 
     // Images

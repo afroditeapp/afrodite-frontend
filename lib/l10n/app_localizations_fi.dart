@@ -1178,6 +1178,9 @@ class AppLocalizationsFi extends AppLocalizations {
       'Selected image is not a JPEG or PNG image';
 
   @override
+  String get initial_setup_screen_profile_privacy_settings_title => 'Profile privacy';
+
+  @override
   String get initial_setup_screen_refresh_face_detected_values_action =>
       'Refresh face detection statuses';
 
@@ -1496,10 +1499,25 @@ class AppLocalizationsFi extends AppLocalizations {
   String get privacy_settings_last_seen_time => 'Last seen time';
 
   @override
+  String get privacy_settings_last_seen_time_disabled_description =>
+      'You won\'t see when others were last online';
+
+  @override
+  String get privacy_settings_last_seen_time_enabled_description =>
+      'Show when you were last online';
+
+  @override
   String get privacy_settings_message_state_seen => 'Message read receipts';
 
   @override
   String get privacy_settings_online_status => 'Online status';
+
+  @override
+  String get privacy_settings_online_status_disabled_description =>
+      'You won\'t see others\' online status';
+
+  @override
+  String get privacy_settings_online_status_enabled_description => 'Show when you are online';
 
   @override
   String get privacy_settings_screen_chat_category => 'Chat';
@@ -1985,15 +2003,15 @@ class AppLocalizationsFi extends AppLocalizations {
 
   @override
   String get settings_screen_profile_visiblity_pending_public_description =>
-      'Your profile will be visible in profile grid once your images are moderated as accepted';
+      'Show your profile in Profiles view once images are moderated';
 
   @override
   String get settings_screen_profile_visiblity_private_description =>
-      'Your profile is not visible in profile grid';
+      'Hide your profile from Profiles view';
 
   @override
   String get settings_screen_profile_visiblity_public_description =>
-      'Your profile is visible in profile grid';
+      'Show your profile in Profiles view';
 
   @override
   String get settings_screen_profile_visiblity_setting => 'Profile visibility';

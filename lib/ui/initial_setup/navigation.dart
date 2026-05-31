@@ -9,6 +9,7 @@ import "package:app/ui/initial_setup/location.dart";
 import "package:app/ui/initial_setup/profile_attributes.dart";
 import "package:app/ui/initial_setup/profile_basic_info.dart";
 import "package:app/ui/initial_setup/profile_pictures.dart";
+import "package:app/ui/initial_setup/profile_privacy_settings.dart";
 import "package:app/ui/initial_setup/search_settings.dart";
 import "package:app/ui/initial_setup/security_selfie.dart";
 import "package:app/ui_utils/initial_setup_common.dart";
@@ -28,10 +29,12 @@ List<InitialSetupPageBase> getInitialSetupPageOrder() {
     AskProfileBasicInfoPage(),
     AskGenderPage(),
     AskSearchSettingsPage(),
-    // Required to be the third last page
+    // Required to be the fourth last page
     AskLocationPage(),
-    // Required to be the second last page
+    // Required to be the third last page
     AskProfileAttributesPage(attributeIndex: 0),
+    // Required to be the second last page
+    ProfilePrivacySetupPage(),
     // Required to be the last page
     FirstChatBackupPage(),
   ];
@@ -94,7 +97,7 @@ void _navigateToNextInitialSetupPageFromAskLocationPage(BuildContext context) {
       context.read<ProfileAttributesBloc>().state.manager?.requiredAttributes() ?? [];
   final nextAttribute = attributes.firstOrNull;
   if (nextAttribute == null) {
-    _pushInitialSetupPage(context, FirstChatBackupPage());
+    _pushInitialSetupPage(context, ProfilePrivacySetupPage());
   } else {
     _pushInitialSetupPage(context, AskProfileAttributesPage(attributeIndex: 0));
   }
@@ -113,7 +116,7 @@ void _navigateToNextInitialSetupPageFromAskProfileAttributesPage(BuildContext co
       context.read<ProfileAttributesBloc>().state.manager?.requiredAttributes() ?? [];
   final nextAttributeIndex = currentPage.attributeIndex + 1;
   if (nextAttributeIndex >= attributes.length) {
-    _pushInitialSetupPage(context, FirstChatBackupPage());
+    _pushInitialSetupPage(context, ProfilePrivacySetupPage());
   } else {
     _pushInitialSetupPage(context, AskProfileAttributesPage(attributeIndex: nextAttributeIndex));
   }

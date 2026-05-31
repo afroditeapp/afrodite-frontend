@@ -35,6 +35,9 @@ mixin _$InitialSetupData {
   LatLng? get profileLocation => throw _privateConstructorErrorInitialSetupData;
   ProfileAttributesState get profileAttributes => throw _privateConstructorErrorInitialSetupData;
   bool get firstChatBackupCreated => throw _privateConstructorErrorInitialSetupData;
+  bool get profileVisibilityEnabled => throw _privateConstructorErrorInitialSetupData;
+  bool get profileLastSeenTimeEnabled => throw _privateConstructorErrorInitialSetupData;
+  bool get profileOnlineStatusEnabled => throw _privateConstructorErrorInitialSetupData;
   bool get sendingInProgress => throw _privateConstructorErrorInitialSetupData;
   bool get loadingComplete => throw _privateConstructorErrorInitialSetupData;
 
@@ -53,6 +56,9 @@ mixin _$InitialSetupData {
     LatLng? profileLocation,
     ProfileAttributesState? profileAttributes,
     bool? firstChatBackupCreated,
+    bool? profileVisibilityEnabled,
+    bool? profileLastSeenTimeEnabled,
+    bool? profileOnlineStatusEnabled,
     bool? sendingInProgress,
     bool? loadingComplete,
   }) => throw _privateConstructorErrorInitialSetupData;
@@ -75,6 +81,9 @@ abstract class _InitialSetupData extends InitialSetupData {
     LatLng? profileLocation,
     ProfileAttributesState profileAttributes,
     bool firstChatBackupCreated,
+    bool profileVisibilityEnabled,
+    bool profileLastSeenTimeEnabled,
+    bool profileOnlineStatusEnabled,
     bool sendingInProgress,
     bool loadingComplete,
   }) = _$InitialSetupDataImpl;
@@ -87,6 +96,9 @@ class _$InitialSetupDataImpl extends _InitialSetupData {
   static const bool _searchAgeRangeInitDoneDefaultValue = false;
   static const ProfileAttributesState _profileAttributesDefaultValue = ProfileAttributesState([]);
   static const bool _firstChatBackupCreatedDefaultValue = false;
+  static const bool _profileVisibilityEnabledDefaultValue = INITIAL_SETUP_PROFILE_VISIBILITY_ENABLED_DEFAULT;
+  static const bool _profileLastSeenTimeEnabledDefaultValue = INITIAL_SETUP_PROFILE_LAST_SEEN_TIME_ENABLED_DEFAULT;
+  static const bool _profileOnlineStatusEnabledDefaultValue = INITIAL_SETUP_PROFILE_ONLINE_STATUS_ENABLED_DEFAULT;
   static const bool _sendingInProgressDefaultValue = false;
   static const bool _loadingCompleteDefaultValue = false;
 
@@ -105,6 +117,9 @@ class _$InitialSetupDataImpl extends _InitialSetupData {
     this.profileLocation,
     this.profileAttributes = _profileAttributesDefaultValue,
     this.firstChatBackupCreated = _firstChatBackupCreatedDefaultValue,
+    this.profileVisibilityEnabled = _profileVisibilityEnabledDefaultValue,
+    this.profileLastSeenTimeEnabled = _profileLastSeenTimeEnabledDefaultValue,
+    this.profileOnlineStatusEnabled = _profileOnlineStatusEnabledDefaultValue,
     this.sendingInProgress = _sendingInProgressDefaultValue,
     this.loadingComplete = _loadingCompleteDefaultValue,
   }) : super._();
@@ -138,13 +153,19 @@ class _$InitialSetupDataImpl extends _InitialSetupData {
   @override
   final bool firstChatBackupCreated;
   @override
+  final bool profileVisibilityEnabled;
+  @override
+  final bool profileLastSeenTimeEnabled;
+  @override
+  final bool profileOnlineStatusEnabled;
+  @override
   final bool sendingInProgress;
   @override
   final bool loadingComplete;
 
   @override
   String toString() {
-    return 'InitialSetupData(email: $email, isAdult: $isAdult, profileName: $profileName, profileAge: $profileAge, securitySelfie: $securitySelfie, profileImages: $profileImages, gender: $gender, genderSearchSetting: $genderSearchSetting, searchAgeRangeInitDone: $searchAgeRangeInitDone, searchAgeRangeMin: $searchAgeRangeMin, searchAgeRangeMax: $searchAgeRangeMax, profileLocation: $profileLocation, profileAttributes: $profileAttributes, firstChatBackupCreated: $firstChatBackupCreated, sendingInProgress: $sendingInProgress, loadingComplete: $loadingComplete)';
+    return 'InitialSetupData(email: $email, isAdult: $isAdult, profileName: $profileName, profileAge: $profileAge, securitySelfie: $securitySelfie, profileImages: $profileImages, gender: $gender, genderSearchSetting: $genderSearchSetting, searchAgeRangeInitDone: $searchAgeRangeInitDone, searchAgeRangeMin: $searchAgeRangeMin, searchAgeRangeMax: $searchAgeRangeMax, profileLocation: $profileLocation, profileAttributes: $profileAttributes, firstChatBackupCreated: $firstChatBackupCreated, profileVisibilityEnabled: $profileVisibilityEnabled, profileLastSeenTimeEnabled: $profileLastSeenTimeEnabled, profileOnlineStatusEnabled: $profileOnlineStatusEnabled, sendingInProgress: $sendingInProgress, loadingComplete: $loadingComplete)';
   }
 
   @override
@@ -180,6 +201,12 @@ class _$InitialSetupDataImpl extends _InitialSetupData {
           other.profileAttributes == profileAttributes) &&
         (identical(other.firstChatBackupCreated, firstChatBackupCreated) ||
           other.firstChatBackupCreated == firstChatBackupCreated) &&
+        (identical(other.profileVisibilityEnabled, profileVisibilityEnabled) ||
+          other.profileVisibilityEnabled == profileVisibilityEnabled) &&
+        (identical(other.profileLastSeenTimeEnabled, profileLastSeenTimeEnabled) ||
+          other.profileLastSeenTimeEnabled == profileLastSeenTimeEnabled) &&
+        (identical(other.profileOnlineStatusEnabled, profileOnlineStatusEnabled) ||
+          other.profileOnlineStatusEnabled == profileOnlineStatusEnabled) &&
         (identical(other.sendingInProgress, sendingInProgress) ||
           other.sendingInProgress == sendingInProgress) &&
         (identical(other.loadingComplete, loadingComplete) ||
@@ -204,6 +231,9 @@ class _$InitialSetupDataImpl extends _InitialSetupData {
     profileLocation,
     profileAttributes,
     firstChatBackupCreated,
+    profileVisibilityEnabled,
+    profileLastSeenTimeEnabled,
+    profileOnlineStatusEnabled,
     sendingInProgress,
     loadingComplete,
   );
@@ -224,6 +254,9 @@ class _$InitialSetupDataImpl extends _InitialSetupData {
     Object? profileLocation = _detectDefaultValueInCopyWith,
     Object? profileAttributes,
     Object? firstChatBackupCreated,
+    Object? profileVisibilityEnabled,
+    Object? profileLastSeenTimeEnabled,
+    Object? profileOnlineStatusEnabled,
     Object? sendingInProgress,
     Object? loadingComplete,
   }) => _$InitialSetupDataImpl(
@@ -241,6 +274,9 @@ class _$InitialSetupDataImpl extends _InitialSetupData {
     profileLocation: (profileLocation == _detectDefaultValueInCopyWith ? this.profileLocation : profileLocation) as LatLng?,
     profileAttributes: (profileAttributes ?? this.profileAttributes) as ProfileAttributesState,
     firstChatBackupCreated: (firstChatBackupCreated ?? this.firstChatBackupCreated) as bool,
+    profileVisibilityEnabled: (profileVisibilityEnabled ?? this.profileVisibilityEnabled) as bool,
+    profileLastSeenTimeEnabled: (profileLastSeenTimeEnabled ?? this.profileLastSeenTimeEnabled) as bool,
+    profileOnlineStatusEnabled: (profileOnlineStatusEnabled ?? this.profileOnlineStatusEnabled) as bool,
     sendingInProgress: (sendingInProgress ?? this.sendingInProgress) as bool,
     loadingComplete: (loadingComplete ?? this.loadingComplete) as bool,
   );

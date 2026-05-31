@@ -2,6 +2,9 @@ import 'package:app/logic/account/client_features_config.dart';
 import 'package:app/model/freezed/logic/account/client_features_config.dart';
 import 'package:app/model/freezed/logic/main/navigator_state.dart';
 import 'package:app/ui_utils/common_update_logic.dart';
+import 'package:app/ui_utils/consts/colors.dart';
+import 'package:app/ui_utils/consts/corners.dart';
+import 'package:app/ui_utils/consts/size.dart';
 import 'package:app/ui_utils/dialog.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
@@ -161,8 +164,8 @@ class _PrivacySettingsScreenState extends State<PrivacySettingsScreen> {
   }
 
   Widget lastSeenTime(BuildContext context, PrivacySettingsData state) {
-    return SwitchListTile(
-      title: Text(context.strings.privacy_settings_last_seen_time),
+    return lastSeenTimeSwitchTile(
+      context: context,
       value: state.valueLastSeenTime(),
       onChanged: (value) {
         context.read<PrivacySettingsBloc>().add(ToggleLastSeenTime());
@@ -171,12 +174,81 @@ class _PrivacySettingsScreenState extends State<PrivacySettingsScreen> {
   }
 
   Widget onlineStatus(BuildContext context, PrivacySettingsData state) {
-    return SwitchListTile(
-      title: Text(context.strings.privacy_settings_online_status),
+    return onlineStatusSwitchTile(
+      context: context,
       value: state.valueOnlineStatus(),
       onChanged: (value) {
         context.read<PrivacySettingsBloc>().add(ToggleOnlineStatus());
       },
     );
   }
+}
+
+Widget profileVisibilitySwitchTile({
+  required BuildContext context,
+  required bool value,
+  required ValueChanged<bool> onChanged,
+  String? subtitle,
+}) {
+  return SwitchListTile(
+    title: Text(context.strings.settings_screen_profile_visiblity_setting),
+    subtitle: Text(
+      subtitle ??
+          (value
+              ? context.strings.settings_screen_profile_visiblity_public_description
+              : context.strings.settings_screen_profile_visiblity_private_description),
+    ),
+    value: value,
+    secondary: const Icon(Icons.public),
+    onChanged: onChanged,
+  );
+}
+
+Widget lastSeenTimeSwitchTile({
+  required BuildContext context,
+  required bool value,
+  required ValueChanged<bool> onChanged,
+}) {
+  return SwitchListTile(
+    title: Text(context.strings.privacy_settings_last_seen_time),
+    subtitle: Text(
+      value
+          ? context.strings.privacy_settings_last_seen_time_enabled_description
+          : context.strings.privacy_settings_last_seen_time_disabled_description,
+    ),
+    value: value,
+    secondary: const Icon(Icons.access_time),
+    onChanged: onChanged,
+  );
+}
+
+Widget onlineStatusSwitchTile({
+  required BuildContext context,
+  required bool value,
+  required ValueChanged<bool> onChanged,
+}) {
+  return SwitchListTile(
+    title: Text(context.strings.privacy_settings_online_status),
+    subtitle: Text(
+      value
+          ? context.strings.privacy_settings_online_status_enabled_description
+          : context.strings.privacy_settings_online_status_disabled_description,
+    ),
+    value: value,
+    secondary: SizedBox(
+      width: 24,
+      height: 24,
+      child: Center(
+        child: Container(
+          width: PROFILE_CURRENTLY_ONLINE_SIZE,
+          height: PROFILE_CURRENTLY_ONLINE_SIZE,
+          decoration: BoxDecoration(
+            color: PROFILE_CURRENTLY_ONLINE_COLOR,
+            borderRadius: BorderRadius.circular(PROFILE_CURRENTLY_ONLINE_RADIUS),
+          ),
+        ),
+      ),
+    ),
+    onChanged: onChanged,
+  );
 }

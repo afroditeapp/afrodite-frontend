@@ -109,6 +109,21 @@ class SetFirstChatBackupCreated extends InitialSetupEvent {
   SetFirstChatBackupCreated(this.created);
 }
 
+class SetProfileVisibility extends InitialSetupEvent {
+  final bool value;
+  SetProfileVisibility(this.value);
+}
+
+class SetProfileLastSeenTime extends InitialSetupEvent {
+  final bool value;
+  SetProfileLastSeenTime(this.value);
+}
+
+class SetProfileOnlineStatus extends InitialSetupEvent {
+  final bool value;
+  SetProfileOnlineStatus(this.value);
+}
+
 class UpdateAttributeValue extends InitialSetupEvent {
   final ProfileAttributeValueUpdate update;
   UpdateAttributeValue(this.update);
@@ -252,6 +267,14 @@ class InitialSetupBloc extends Bloc<InitialSetupEvent, InitialSetupData>
           profileLocation: location,
           profileAttributes: profileAttributes,
           firstChatBackupCreated: progress.firstChatBackupCreated ?? false,
+          profileVisibilityEnabled:
+              progress.profileVisibilityEnabled ?? INITIAL_SETUP_PROFILE_VISIBILITY_ENABLED_DEFAULT,
+          profileLastSeenTimeEnabled:
+              progress.profileLastSeenTimeEnabled ??
+              INITIAL_SETUP_PROFILE_LAST_SEEN_TIME_ENABLED_DEFAULT,
+          profileOnlineStatusEnabled:
+              progress.profileOnlineStatusEnabled ??
+              INITIAL_SETUP_PROFILE_ONLINE_STATUS_ENABLED_DEFAULT,
           loadingComplete: true,
         ),
       );
@@ -363,6 +386,21 @@ class InitialSetupBloc extends Bloc<InitialSetupEvent, InitialSetupData>
     on<SetFirstChatBackupCreated>((data, emit) async {
       await db.accountAction(
         (db) => db.progress.updateInitialSetupFirstChatBackupCreated(data.created),
+      );
+    });
+    on<SetProfileVisibility>((data, emit) async {
+      await db.accountAction(
+        (db) => db.progress.updateInitialSetupProfileVisibilityEnabled(data.value),
+      );
+    });
+    on<SetProfileLastSeenTime>((data, emit) async {
+      await db.accountAction(
+        (db) => db.progress.updateInitialSetupProfileLastSeenTimeEnabled(data.value),
+      );
+    });
+    on<SetProfileOnlineStatus>((data, emit) async {
+      await db.accountAction(
+        (db) => db.progress.updateInitialSetupProfileOnlineStatusEnabled(data.value),
       );
     });
     on<UpdateAttributeValue>((data, emit) async {

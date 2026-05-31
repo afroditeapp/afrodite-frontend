@@ -1519,6 +1519,10 @@
   "@initial_setup_screen_profile_pictures_unsupported_image_error": {
     "description": "Snackbar error text that selected picture is unsupported"
   },
+  "initial_setup_screen_profile_privacy_settings_title": "Profile privacy",
+  "@initial_setup_screen_profile_privacy_settings_title": {
+    "description": "Title for initial setup profile privacy settings screen"
+  },
   "initial_setup_screen_refresh_face_detected_values_action": "Refresh face detection statuses",
   "@initial_setup_screen_refresh_face_detected_values_action": {
     "description": "Title for refresh face detected values"
@@ -1929,6 +1933,14 @@
   "@privacy_settings_last_seen_time": {
     "description": "Setting for last seen time visibility"
   },
+  "privacy_settings_last_seen_time_disabled_description": "You won't see when others were last online",
+  "@privacy_settings_last_seen_time_disabled_description": {
+    "description": "Description when last seen time is disabled"
+  },
+  "privacy_settings_last_seen_time_enabled_description": "Show when you were last online",
+  "@privacy_settings_last_seen_time_enabled_description": {
+    "description": "Description when last seen time is enabled"
+  },
   "privacy_settings_message_state_seen": "Message read receipts",
   "@privacy_settings_message_state_seen": {
     "description": "Setting for message seen state"
@@ -1936,6 +1948,14 @@
   "privacy_settings_online_status": "Online status",
   "@privacy_settings_online_status": {
     "description": "Setting for online status visibility"
+  },
+  "privacy_settings_online_status_disabled_description": "You won't see others' online status",
+  "@privacy_settings_online_status_disabled_description": {
+    "description": "Description when online status is disabled"
+  },
+  "privacy_settings_online_status_enabled_description": "Show when you are online",
+  "@privacy_settings_online_status_enabled_description": {
+    "description": "Description when online status is enabled"
   },
   "privacy_settings_screen_chat_category": "Chat",
   "@privacy_settings_screen_chat_category": {
@@ -2585,15 +2605,15 @@
   "@settings_screen_profile_category": {
     "description": "Title for profile settings category"
   },
-  "settings_screen_profile_visiblity_pending_public_description": "Your profile will be visible in profile grid once your images are moderated as accepted",
+  "settings_screen_profile_visiblity_pending_public_description": "Show your profile in Profiles view once images are moderated",
   "@settings_screen_profile_visiblity_pending_public_description": {
     "description": "Description for pending public profile visibility"
   },
-  "settings_screen_profile_visiblity_private_description": "Your profile is not visible in profile grid",
+  "settings_screen_profile_visiblity_private_description": "Hide your profile from Profiles view",
   "@settings_screen_profile_visiblity_private_description": {
     "description": "Description for private profile visibility"
   },
-  "settings_screen_profile_visiblity_public_description": "Your profile is visible in profile grid",
+  "settings_screen_profile_visiblity_public_description": "Show your profile in Profiles view",
   "@settings_screen_profile_visiblity_public_description": {
     "description": "Description for public profile visibility"
   },

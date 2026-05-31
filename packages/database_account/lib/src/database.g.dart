@@ -1449,6 +1449,48 @@ class $InitialSetupProgressTable extends schema.InitialSetupProgress
           'CHECK ("first_chat_backup_created" IN (0, 1))',
         ),
       );
+  static const VerificationMeta _profileVisibilityEnabledMeta =
+      const VerificationMeta('profileVisibilityEnabled');
+  @override
+  late final GeneratedColumn<bool> profileVisibilityEnabled =
+      GeneratedColumn<bool>(
+        'profile_visibility_enabled',
+        aliasedName,
+        true,
+        type: DriftSqlType.bool,
+        requiredDuringInsert: false,
+        defaultConstraints: GeneratedColumn.constraintIsAlways(
+          'CHECK ("profile_visibility_enabled" IN (0, 1))',
+        ),
+      );
+  static const VerificationMeta _profileLastSeenTimeEnabledMeta =
+      const VerificationMeta('profileLastSeenTimeEnabled');
+  @override
+  late final GeneratedColumn<bool> profileLastSeenTimeEnabled =
+      GeneratedColumn<bool>(
+        'profile_last_seen_time_enabled',
+        aliasedName,
+        true,
+        type: DriftSqlType.bool,
+        requiredDuringInsert: false,
+        defaultConstraints: GeneratedColumn.constraintIsAlways(
+          'CHECK ("profile_last_seen_time_enabled" IN (0, 1))',
+        ),
+      );
+  static const VerificationMeta _profileOnlineStatusEnabledMeta =
+      const VerificationMeta('profileOnlineStatusEnabled');
+  @override
+  late final GeneratedColumn<bool> profileOnlineStatusEnabled =
+      GeneratedColumn<bool>(
+        'profile_online_status_enabled',
+        aliasedName,
+        true,
+        type: DriftSqlType.bool,
+        requiredDuringInsert: false,
+        defaultConstraints: GeneratedColumn.constraintIsAlways(
+          'CHECK ("profile_online_status_enabled" IN (0, 1))',
+        ),
+      );
   @override
   List<GeneratedColumn> get $columns => [
     id,
@@ -1471,6 +1513,9 @@ class $InitialSetupProgressTable extends schema.InitialSetupProgress
     longitude,
     jsonProfileAttributes,
     firstChatBackupCreated,
+    profileVisibilityEnabled,
+    profileLastSeenTimeEnabled,
+    profileOnlineStatusEnabled,
   ];
   @override
   String get aliasedName => _alias ?? actualTableName;
@@ -1622,6 +1667,33 @@ class $InitialSetupProgressTable extends schema.InitialSetupProgress
         ),
       );
     }
+    if (data.containsKey('profile_visibility_enabled')) {
+      context.handle(
+        _profileVisibilityEnabledMeta,
+        profileVisibilityEnabled.isAcceptableOrUnknown(
+          data['profile_visibility_enabled']!,
+          _profileVisibilityEnabledMeta,
+        ),
+      );
+    }
+    if (data.containsKey('profile_last_seen_time_enabled')) {
+      context.handle(
+        _profileLastSeenTimeEnabledMeta,
+        profileLastSeenTimeEnabled.isAcceptableOrUnknown(
+          data['profile_last_seen_time_enabled']!,
+          _profileLastSeenTimeEnabledMeta,
+        ),
+      );
+    }
+    if (data.containsKey('profile_online_status_enabled')) {
+      context.handle(
+        _profileOnlineStatusEnabledMeta,
+        profileOnlineStatusEnabled.isAcceptableOrUnknown(
+          data['profile_online_status_enabled']!,
+          _profileOnlineStatusEnabledMeta,
+        ),
+      );
+    }
     return context;
   }
 
@@ -1721,6 +1793,18 @@ class $InitialSetupProgressTable extends schema.InitialSetupProgress
         DriftSqlType.bool,
         data['${effectivePrefix}first_chat_backup_created'],
       ),
+      profileVisibilityEnabled: attachedDatabase.typeMapping.read(
+        DriftSqlType.bool,
+        data['${effectivePrefix}profile_visibility_enabled'],
+      ),
+      profileLastSeenTimeEnabled: attachedDatabase.typeMapping.read(
+        DriftSqlType.bool,
+        data['${effectivePrefix}profile_last_seen_time_enabled'],
+      ),
+      profileOnlineStatusEnabled: attachedDatabase.typeMapping.read(
+        DriftSqlType.bool,
+        data['${effectivePrefix}profile_online_status_enabled'],
+      ),
     );
   }
 
@@ -1765,6 +1849,9 @@ class InitialSetupProgressData extends DataClass
   final double? longitude;
   final JsonList<ProfileAttributeValueUpdate>? jsonProfileAttributes;
   final bool? firstChatBackupCreated;
+  final bool? profileVisibilityEnabled;
+  final bool? profileLastSeenTimeEnabled;
+  final bool? profileOnlineStatusEnabled;
   const InitialSetupProgressData({
     required this.id,
     this.currentPage,
@@ -1786,6 +1873,9 @@ class InitialSetupProgressData extends DataClass
     this.longitude,
     this.jsonProfileAttributes,
     this.firstChatBackupCreated,
+    this.profileVisibilityEnabled,
+    this.profileLastSeenTimeEnabled,
+    this.profileOnlineStatusEnabled,
   });
   @override
   Map<String, Expression> toColumns(bool nullToAbsent) {
@@ -1862,6 +1952,21 @@ class InitialSetupProgressData extends DataClass
     if (!nullToAbsent || firstChatBackupCreated != null) {
       map['first_chat_backup_created'] = Variable<bool>(firstChatBackupCreated);
     }
+    if (!nullToAbsent || profileVisibilityEnabled != null) {
+      map['profile_visibility_enabled'] = Variable<bool>(
+        profileVisibilityEnabled,
+      );
+    }
+    if (!nullToAbsent || profileLastSeenTimeEnabled != null) {
+      map['profile_last_seen_time_enabled'] = Variable<bool>(
+        profileLastSeenTimeEnabled,
+      );
+    }
+    if (!nullToAbsent || profileOnlineStatusEnabled != null) {
+      map['profile_online_status_enabled'] = Variable<bool>(
+        profileOnlineStatusEnabled,
+      );
+    }
     return map;
   }
 
@@ -1926,6 +2031,17 @@ class InitialSetupProgressData extends DataClass
       firstChatBackupCreated: firstChatBackupCreated == null && nullToAbsent
           ? const Value.absent()
           : Value(firstChatBackupCreated),
+      profileVisibilityEnabled: profileVisibilityEnabled == null && nullToAbsent
+          ? const Value.absent()
+          : Value(profileVisibilityEnabled),
+      profileLastSeenTimeEnabled:
+          profileLastSeenTimeEnabled == null && nullToAbsent
+          ? const Value.absent()
+          : Value(profileLastSeenTimeEnabled),
+      profileOnlineStatusEnabled:
+          profileOnlineStatusEnabled == null && nullToAbsent
+          ? const Value.absent()
+          : Value(profileOnlineStatusEnabled),
     );
   }
 
@@ -1972,6 +2088,15 @@ class InitialSetupProgressData extends DataClass
       firstChatBackupCreated: serializer.fromJson<bool?>(
         json['firstChatBackupCreated'],
       ),
+      profileVisibilityEnabled: serializer.fromJson<bool?>(
+        json['profileVisibilityEnabled'],
+      ),
+      profileLastSeenTimeEnabled: serializer.fromJson<bool?>(
+        json['profileLastSeenTimeEnabled'],
+      ),
+      profileOnlineStatusEnabled: serializer.fromJson<bool?>(
+        json['profileOnlineStatusEnabled'],
+      ),
     );
   }
   @override
@@ -2013,6 +2138,15 @@ class InitialSetupProgressData extends DataClass
       'firstChatBackupCreated': serializer.toJson<bool?>(
         firstChatBackupCreated,
       ),
+      'profileVisibilityEnabled': serializer.toJson<bool?>(
+        profileVisibilityEnabled,
+      ),
+      'profileLastSeenTimeEnabled': serializer.toJson<bool?>(
+        profileLastSeenTimeEnabled,
+      ),
+      'profileOnlineStatusEnabled': serializer.toJson<bool?>(
+        profileOnlineStatusEnabled,
+      ),
     };
   }
 
@@ -2039,6 +2173,9 @@ class InitialSetupProgressData extends DataClass
     Value<JsonList<ProfileAttributeValueUpdate>?> jsonProfileAttributes =
         const Value.absent(),
     Value<bool?> firstChatBackupCreated = const Value.absent(),
+    Value<bool?> profileVisibilityEnabled = const Value.absent(),
+    Value<bool?> profileLastSeenTimeEnabled = const Value.absent(),
+    Value<bool?> profileOnlineStatusEnabled = const Value.absent(),
   }) => InitialSetupProgressData(
     id: id ?? this.id,
     currentPage: currentPage.present ? currentPage.value : this.currentPage,
@@ -2082,6 +2219,15 @@ class InitialSetupProgressData extends DataClass
     firstChatBackupCreated: firstChatBackupCreated.present
         ? firstChatBackupCreated.value
         : this.firstChatBackupCreated,
+    profileVisibilityEnabled: profileVisibilityEnabled.present
+        ? profileVisibilityEnabled.value
+        : this.profileVisibilityEnabled,
+    profileLastSeenTimeEnabled: profileLastSeenTimeEnabled.present
+        ? profileLastSeenTimeEnabled.value
+        : this.profileLastSeenTimeEnabled,
+    profileOnlineStatusEnabled: profileOnlineStatusEnabled.present
+        ? profileOnlineStatusEnabled.value
+        : this.profileOnlineStatusEnabled,
   );
   InitialSetupProgressData copyWithCompanion(
     InitialSetupProgressCompanion data,
@@ -2135,6 +2281,15 @@ class InitialSetupProgressData extends DataClass
       firstChatBackupCreated: data.firstChatBackupCreated.present
           ? data.firstChatBackupCreated.value
           : this.firstChatBackupCreated,
+      profileVisibilityEnabled: data.profileVisibilityEnabled.present
+          ? data.profileVisibilityEnabled.value
+          : this.profileVisibilityEnabled,
+      profileLastSeenTimeEnabled: data.profileLastSeenTimeEnabled.present
+          ? data.profileLastSeenTimeEnabled.value
+          : this.profileLastSeenTimeEnabled,
+      profileOnlineStatusEnabled: data.profileOnlineStatusEnabled.present
+          ? data.profileOnlineStatusEnabled.value
+          : this.profileOnlineStatusEnabled,
     );
   }
 
@@ -2160,13 +2315,16 @@ class InitialSetupProgressData extends DataClass
           ..write('latitude: $latitude, ')
           ..write('longitude: $longitude, ')
           ..write('jsonProfileAttributes: $jsonProfileAttributes, ')
-          ..write('firstChatBackupCreated: $firstChatBackupCreated')
+          ..write('firstChatBackupCreated: $firstChatBackupCreated, ')
+          ..write('profileVisibilityEnabled: $profileVisibilityEnabled, ')
+          ..write('profileLastSeenTimeEnabled: $profileLastSeenTimeEnabled, ')
+          ..write('profileOnlineStatusEnabled: $profileOnlineStatusEnabled')
           ..write(')'))
         .toString();
   }
 
   @override
-  int get hashCode => Object.hash(
+  int get hashCode => Object.hashAll([
     id,
     currentPage,
     email,
@@ -2187,7 +2345,10 @@ class InitialSetupProgressData extends DataClass
     longitude,
     jsonProfileAttributes,
     firstChatBackupCreated,
-  );
+    profileVisibilityEnabled,
+    profileLastSeenTimeEnabled,
+    profileOnlineStatusEnabled,
+  ]);
   @override
   bool operator ==(Object other) =>
       identical(this, other) ||
@@ -2211,7 +2372,10 @@ class InitialSetupProgressData extends DataClass
           other.latitude == this.latitude &&
           other.longitude == this.longitude &&
           other.jsonProfileAttributes == this.jsonProfileAttributes &&
-          other.firstChatBackupCreated == this.firstChatBackupCreated);
+          other.firstChatBackupCreated == this.firstChatBackupCreated &&
+          other.profileVisibilityEnabled == this.profileVisibilityEnabled &&
+          other.profileLastSeenTimeEnabled == this.profileLastSeenTimeEnabled &&
+          other.profileOnlineStatusEnabled == this.profileOnlineStatusEnabled);
 }
 
 class InitialSetupProgressCompanion
@@ -2236,6 +2400,9 @@ class InitialSetupProgressCompanion
   final Value<double?> longitude;
   final Value<JsonList<ProfileAttributeValueUpdate>?> jsonProfileAttributes;
   final Value<bool?> firstChatBackupCreated;
+  final Value<bool?> profileVisibilityEnabled;
+  final Value<bool?> profileLastSeenTimeEnabled;
+  final Value<bool?> profileOnlineStatusEnabled;
   const InitialSetupProgressCompanion({
     this.id = const Value.absent(),
     this.currentPage = const Value.absent(),
@@ -2257,6 +2424,9 @@ class InitialSetupProgressCompanion
     this.longitude = const Value.absent(),
     this.jsonProfileAttributes = const Value.absent(),
     this.firstChatBackupCreated = const Value.absent(),
+    this.profileVisibilityEnabled = const Value.absent(),
+    this.profileLastSeenTimeEnabled = const Value.absent(),
+    this.profileOnlineStatusEnabled = const Value.absent(),
   });
   InitialSetupProgressCompanion.insert({
     this.id = const Value.absent(),
@@ -2279,6 +2449,9 @@ class InitialSetupProgressCompanion
     this.longitude = const Value.absent(),
     this.jsonProfileAttributes = const Value.absent(),
     this.firstChatBackupCreated = const Value.absent(),
+    this.profileVisibilityEnabled = const Value.absent(),
+    this.profileLastSeenTimeEnabled = const Value.absent(),
+    this.profileOnlineStatusEnabled = const Value.absent(),
   });
   static Insertable<InitialSetupProgressData> custom({
     Expression<int>? id,
@@ -2301,6 +2474,9 @@ class InitialSetupProgressCompanion
     Expression<double>? longitude,
     Expression<String>? jsonProfileAttributes,
     Expression<bool>? firstChatBackupCreated,
+    Expression<bool>? profileVisibilityEnabled,
+    Expression<bool>? profileLastSeenTimeEnabled,
+    Expression<bool>? profileOnlineStatusEnabled,
   }) {
     return RawValuesInsertable({
       if (id != null) 'id': id,
@@ -2330,6 +2506,12 @@ class InitialSetupProgressCompanion
         'json_profile_attributes': jsonProfileAttributes,
       if (firstChatBackupCreated != null)
         'first_chat_backup_created': firstChatBackupCreated,
+      if (profileVisibilityEnabled != null)
+        'profile_visibility_enabled': profileVisibilityEnabled,
+      if (profileLastSeenTimeEnabled != null)
+        'profile_last_seen_time_enabled': profileLastSeenTimeEnabled,
+      if (profileOnlineStatusEnabled != null)
+        'profile_online_status_enabled': profileOnlineStatusEnabled,
     });
   }
 
@@ -2354,6 +2536,9 @@ class InitialSetupProgressCompanion
     Value<double?>? longitude,
     Value<JsonList<ProfileAttributeValueUpdate>?>? jsonProfileAttributes,
     Value<bool?>? firstChatBackupCreated,
+    Value<bool?>? profileVisibilityEnabled,
+    Value<bool?>? profileLastSeenTimeEnabled,
+    Value<bool?>? profileOnlineStatusEnabled,
   }) {
     return InitialSetupProgressCompanion(
       id: id ?? this.id,
@@ -2382,6 +2567,12 @@ class InitialSetupProgressCompanion
           jsonProfileAttributes ?? this.jsonProfileAttributes,
       firstChatBackupCreated:
           firstChatBackupCreated ?? this.firstChatBackupCreated,
+      profileVisibilityEnabled:
+          profileVisibilityEnabled ?? this.profileVisibilityEnabled,
+      profileLastSeenTimeEnabled:
+          profileLastSeenTimeEnabled ?? this.profileLastSeenTimeEnabled,
+      profileOnlineStatusEnabled:
+          profileOnlineStatusEnabled ?? this.profileOnlineStatusEnabled,
     );
   }
 
@@ -2466,6 +2657,21 @@ class InitialSetupProgressCompanion
         firstChatBackupCreated.value,
       );
     }
+    if (profileVisibilityEnabled.present) {
+      map['profile_visibility_enabled'] = Variable<bool>(
+        profileVisibilityEnabled.value,
+      );
+    }
+    if (profileLastSeenTimeEnabled.present) {
+      map['profile_last_seen_time_enabled'] = Variable<bool>(
+        profileLastSeenTimeEnabled.value,
+      );
+    }
+    if (profileOnlineStatusEnabled.present) {
+      map['profile_online_status_enabled'] = Variable<bool>(
+        profileOnlineStatusEnabled.value,
+      );
+    }
     return map;
   }
 
@@ -2491,7 +2697,10 @@ class InitialSetupProgressCompanion
           ..write('latitude: $latitude, ')
           ..write('longitude: $longitude, ')
           ..write('jsonProfileAttributes: $jsonProfileAttributes, ')
-          ..write('firstChatBackupCreated: $firstChatBackupCreated')
+          ..write('firstChatBackupCreated: $firstChatBackupCreated, ')
+          ..write('profileVisibilityEnabled: $profileVisibilityEnabled, ')
+          ..write('profileLastSeenTimeEnabled: $profileLastSeenTimeEnabled, ')
+          ..write('profileOnlineStatusEnabled: $profileOnlineStatusEnabled')
           ..write(')'))
         .toString();
   }

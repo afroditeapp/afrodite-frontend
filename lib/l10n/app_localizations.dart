@@ -2152,6 +2152,12 @@ abstract class AppLocalizations {
   /// **'Selected image is not a JPEG or PNG image'**
   String get initial_setup_screen_profile_pictures_unsupported_image_error;
 
+  /// Title for initial setup profile privacy settings screen
+  ///
+  /// In en, this message translates to:
+  /// **'Profile privacy'**
+  String get initial_setup_screen_profile_privacy_settings_title;
+
   /// Title for refresh face detected values
   ///
   /// In en, this message translates to:
@@ -2722,6 +2728,18 @@ abstract class AppLocalizations {
   /// **'Last seen time'**
   String get privacy_settings_last_seen_time;
 
+  /// Description when last seen time is disabled
+  ///
+  /// In en, this message translates to:
+  /// **'You won\'t see when others were last online'**
+  String get privacy_settings_last_seen_time_disabled_description;
+
+  /// Description when last seen time is enabled
+  ///
+  /// In en, this message translates to:
+  /// **'Show when you were last online'**
+  String get privacy_settings_last_seen_time_enabled_description;
+
   /// Setting for message seen state
   ///
   /// In en, this message translates to:
@@ -2733,6 +2751,18 @@ abstract class AppLocalizations {
   /// In en, this message translates to:
   /// **'Online status'**
   String get privacy_settings_online_status;
+
+  /// Description when online status is disabled
+  ///
+  /// In en, this message translates to:
+  /// **'You won\'t see others\' online status'**
+  String get privacy_settings_online_status_disabled_description;
+
+  /// Description when online status is enabled
+  ///
+  /// In en, this message translates to:
+  /// **'Show when you are online'**
+  String get privacy_settings_online_status_enabled_description;
 
   /// Title for chat privacy settings category
   ///
@@ -3571,19 +3601,19 @@ abstract class AppLocalizations {
   /// Description for pending public profile visibility
   ///
   /// In en, this message translates to:
-  /// **'Your profile will be visible in profile grid once your images are moderated as accepted'**
+  /// **'Show your profile in Profiles view once images are moderated'**
   String get settings_screen_profile_visiblity_pending_public_description;
 
   /// Description for private profile visibility
   ///
   /// In en, this message translates to:
-  /// **'Your profile is not visible in profile grid'**
+  /// **'Hide your profile from Profiles view'**
   String get settings_screen_profile_visiblity_private_description;
 
   /// Description for public profile visibility
   ///
   /// In en, this message translates to:
-  /// **'Your profile is visible in profile grid'**
+  /// **'Show your profile in Profiles view'**
   String get settings_screen_profile_visiblity_public_description;
 
   /// Title for profile visibility setting

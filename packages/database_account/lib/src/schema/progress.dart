@@ -46,6 +46,11 @@ class InitialSetupProgress extends SingleRowTable {
 
   // First chat backup
   BoolColumn get firstChatBackupCreated => boolean().nullable()();
+
+  // Profile privacy settings
+  BoolColumn get profileVisibilityEnabled => boolean().nullable()();
+  BoolColumn get profileLastSeenTimeEnabled => boolean().nullable()();
+  BoolColumn get profileOnlineStatusEnabled => boolean().nullable()();
 }
 
 class EditProfileProgress extends SingleRowTable {

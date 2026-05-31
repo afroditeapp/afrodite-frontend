@@ -55,6 +55,9 @@ class DaoReadProgress extends DatabaseAccessor<AccountDatabase> with _$DaoReadPr
         longitude: r.longitude,
         profileAttributes: r.jsonProfileAttributes?.value,
         firstChatBackupCreated: r.firstChatBackupCreated,
+        profileVisibilityEnabled: r.profileVisibilityEnabled,
+        profileLastSeenTimeEnabled: r.profileLastSeenTimeEnabled,
+        profileOnlineStatusEnabled: r.profileOnlineStatusEnabled,
       );
     });
   }

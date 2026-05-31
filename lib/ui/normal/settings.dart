@@ -153,18 +153,17 @@ class _SettingsScreenState extends State<SettingsScreen> {
       _ => context.strings.generic_error,
     };
 
-    return SwitchListTile(
-      title: Text(context.strings.settings_screen_profile_visiblity_setting),
+    return profileVisibilitySwitchTile(
+      context: context,
       value: visibility.isPublic(),
-      subtitle: Text(descriptionForVisibility),
-      onChanged: (bool value) {
+      subtitle: descriptionForVisibility,
+      onChanged: (value) {
         if (state.updateState is! UpdateIdle) {
           showSnackBar(context.strings.generic_previous_action_in_progress);
         } else {
           context.read<ProfileVisibilityBloc>().add(ToggleVisibilityAndSaveSettings());
         }
       },
-      secondary: const Icon(Icons.public),
     );
   }
 

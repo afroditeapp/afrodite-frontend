@@ -127,6 +127,33 @@ class DaoWriteProgress extends DatabaseAccessor<AccountDatabase> with _$DaoWrite
     );
   }
 
+  Future<void> updateInitialSetupProfileVisibilityEnabled(bool? value) async {
+    await into(initialSetupProgress).insertOnConflictUpdate(
+      InitialSetupProgressCompanion.insert(
+        id: SingleRowTable.ID,
+        profileVisibilityEnabled: Value(value),
+      ),
+    );
+  }
+
+  Future<void> updateInitialSetupProfileLastSeenTimeEnabled(bool? value) async {
+    await into(initialSetupProgress).insertOnConflictUpdate(
+      InitialSetupProgressCompanion.insert(
+        id: SingleRowTable.ID,
+        profileLastSeenTimeEnabled: Value(value),
+      ),
+    );
+  }
+
+  Future<void> updateInitialSetupProfileOnlineStatusEnabled(bool? value) async {
+    await into(initialSetupProgress).insertOnConflictUpdate(
+      InitialSetupProgressCompanion.insert(
+        id: SingleRowTable.ID,
+        profileOnlineStatusEnabled: Value(value),
+      ),
+    );
+  }
+
   Future<void> clearInitialSetupProgress() async {
     await (delete(initialSetupProgress)..where((t) => t.id.equals(SingleRowTable.ID.value))).go();
   }

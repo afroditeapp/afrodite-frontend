@@ -119,6 +119,11 @@ class InitialSetupProgressEntry {
   // First chat backup
   final bool? firstChatBackupCreated;
 
+  // Profile privacy settings
+  final bool? profileVisibilityEnabled;
+  final bool? profileLastSeenTimeEnabled;
+  final bool? profileOnlineStatusEnabled;
+
   const InitialSetupProgressEntry({
     this.email,
     this.isAdult,
@@ -138,6 +143,9 @@ class InitialSetupProgressEntry {
     this.longitude,
     this.profileAttributes,
     this.firstChatBackupCreated,
+    this.profileVisibilityEnabled,
+    this.profileLastSeenTimeEnabled,
+    this.profileOnlineStatusEnabled,
   });
 }
 
