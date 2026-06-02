@@ -1245,6 +1245,14 @@
   "@generic_reply": {
     "description": "Generic reply action text"
   },
+  "generic_report_verb": "Report",
+  "@generic_report_verb": {
+    "description": "Generic report verb"
+  },
+  "generic_report_verb_question": "Report?",
+  "@generic_report_verb_question": {
+    "description": "Generic report question"
+  },
   "generic_resend": "Resend",
   "@generic_resend": {
     "description": "Generic resend text"
@@ -2373,9 +2381,21 @@
   "@receive_chat_backup_waiting_for_source": {
     "description": "Status text when waiting for source device"
   },
-  "report_chat_message_screen_confirm_dialog_title": "Report chat message?",
-  "@report_chat_message_screen_confirm_dialog_title": {
-    "description": "Chat message reporting confirmation dialog title"
+  "report_chat_message_screen_selection_status_count": "{p0}/{p1} messages selected",
+  "@report_chat_message_screen_selection_status_count": {
+    "description": "Status text showing how many messages are selected for reporting. %s is the count and max count",
+    "placeholders": {
+      "p0": {
+        "type": "String"
+      },
+      "p1": {
+        "type": "String"
+      }
+    }
+  },
+  "report_chat_message_screen_selection_status_none": "Select max 10 messages",
+  "@report_chat_message_screen_selection_status_none": {
+    "description": "Status text when no messages are selected for reporting"
   },
   "report_chat_message_screen_server_signed_message_not_found": "Server signed message not found",
   "@report_chat_message_screen_server_signed_message_not_found": {
@@ -2415,10 +2435,6 @@
       }
     }
   },
-  "report_screen_custom_report_boolean_dialog_title": "Report?",
-  "@report_screen_custom_report_boolean_dialog_title": {
-    "description": "Title for dialog for custom report boolean reporting"
-  },
   "report_screen_profile_image_action": "Profile image",
   "@report_screen_profile_image_action": {
     "description": "Title for report profile image action"
@@ -2454,10 +2470,6 @@
   "report_screen_snackbar_too_many_reports_error": "Report failed. Too many reports.",
   "@report_screen_snackbar_too_many_reports_error": {
     "description": "Snackbar text for too many reports error"
-  },
-  "report_screen_title": "Report",
-  "@report_screen_title": {
-    "description": "Title for report screen"
   },
   "scan_pairing_code_instruction": "Point your camera at the QR code",
   "@scan_pairing_code_instruction": {

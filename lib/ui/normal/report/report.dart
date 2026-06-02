@@ -39,7 +39,7 @@ Widget showReportAction(BuildContext context, AccountId accountId, ProfileEntry?
         ),
       );
     },
-    child: Text(context.strings.report_screen_title),
+    child: Text(context.strings.generic_report_verb),
   );
 }
 
@@ -124,7 +124,7 @@ class _ReportScreenState extends State<ReportScreen> {
   @override
   Widget build(BuildContext context) {
     return Scaffold(
-      appBar: AppBar(title: Text(context.strings.report_screen_title)),
+      appBar: AppBar(title: Text(context.strings.generic_report_verb)),
       body: screenContent(context),
     );
   }
@@ -269,7 +269,7 @@ class _ReportScreenState extends State<ReportScreen> {
         reportListTile(report.translatedName(context), () async {
           final r = await showConfirmDialog(
             context,
-            context.strings.report_screen_custom_report_boolean_dialog_title,
+            context.strings.generic_report_verb_question,
             details: context.strings.report_screen_custom_report_boolean_dialog_description(name),
             yesNoActions: true,
           );

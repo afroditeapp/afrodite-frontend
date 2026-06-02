@@ -1756,6 +1756,18 @@ abstract class AppLocalizations {
   /// **'Reply'**
   String get generic_reply;
 
+  /// Generic report verb
+  ///
+  /// In en, this message translates to:
+  /// **'Report'**
+  String get generic_report_verb;
+
+  /// Generic report question
+  ///
+  /// In en, this message translates to:
+  /// **'Report?'**
+  String get generic_report_verb_question;
+
   /// Generic resend text
   ///
   /// In en, this message translates to:
@@ -3292,11 +3304,17 @@ abstract class AppLocalizations {
   /// **'Waiting for source device'**
   String get receive_chat_backup_waiting_for_source;
 
-  /// Chat message reporting confirmation dialog title
+  /// Status text showing how many messages are selected for reporting. %s is the count and max count
   ///
   /// In en, this message translates to:
-  /// **'Report chat message?'**
-  String get report_chat_message_screen_confirm_dialog_title;
+  /// **'{p0}/{p1} messages selected'**
+  String report_chat_message_screen_selection_status_count(String p0, String p1);
+
+  /// Status text when no messages are selected for reporting
+  ///
+  /// In en, this message translates to:
+  /// **'Select max 10 messages'**
+  String get report_chat_message_screen_selection_status_none;
 
   /// Snackbar text for server signed message not found error
   ///
@@ -3339,12 +3357,6 @@ abstract class AppLocalizations {
   /// In en, this message translates to:
   /// **'Report user as \'{p0}\'?'**
   String report_screen_custom_report_boolean_dialog_description(String p0);
-
-  /// Title for dialog for custom report boolean reporting
-  ///
-  /// In en, this message translates to:
-  /// **'Report?'**
-  String get report_screen_custom_report_boolean_dialog_title;
 
   /// Title for report profile image action
   ///
@@ -3399,12 +3411,6 @@ abstract class AppLocalizations {
   /// In en, this message translates to:
   /// **'Report failed. Too many reports.'**
   String get report_screen_snackbar_too_many_reports_error;
-
-  /// Title for report screen
-  ///
-  /// In en, this message translates to:
-  /// **'Report'**
-  String get report_screen_title;
 
   /// Instruction for scanning QR code
   ///

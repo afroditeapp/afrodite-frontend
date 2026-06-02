@@ -961,6 +961,12 @@ class AppLocalizationsEn extends AppLocalizations {
   String get generic_reply => 'Reply';
 
   @override
+  String get generic_report_verb => 'Report';
+
+  @override
+  String get generic_report_verb_question => 'Report?';
+
+  @override
   String get generic_resend => 'Resend';
 
   @override
@@ -1836,7 +1842,12 @@ class AppLocalizationsEn extends AppLocalizations {
   String get receive_chat_backup_waiting_for_source => 'Waiting for source device';
 
   @override
-  String get report_chat_message_screen_confirm_dialog_title => 'Report chat message?';
+  String report_chat_message_screen_selection_status_count(String p0, String p1) {
+    return '$p0/$p1 messages selected';
+  }
+
+  @override
+  String get report_chat_message_screen_selection_status_none => 'Select max 10 messages';
 
   @override
   String get report_chat_message_screen_server_signed_message_not_found =>
@@ -1867,9 +1878,6 @@ class AppLocalizationsEn extends AppLocalizations {
   }
 
   @override
-  String get report_screen_custom_report_boolean_dialog_title => 'Report?';
-
-  @override
   String get report_screen_profile_image_action => 'Profile image';
 
   @override
@@ -1895,9 +1903,6 @@ class AppLocalizationsEn extends AppLocalizations {
 
   @override
   String get report_screen_snackbar_too_many_reports_error => 'Report failed. Too many reports.';
-
-  @override
-  String get report_screen_title => 'Report';
 
   @override
   String get scan_pairing_code_instruction => 'Point your camera at the QR code';

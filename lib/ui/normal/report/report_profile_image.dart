@@ -41,7 +41,7 @@ class _ReportProfileImageScreen extends State<ReportProfileImageScreen> {
   @override
   Widget build(BuildContext context) {
     return Scaffold(
-      appBar: AppBar(title: Text(context.strings.report_screen_title)),
+      appBar: AppBar(title: Text(context.strings.generic_report_verb)),
       body: list(context),
     );
   }

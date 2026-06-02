@@ -65,6 +65,8 @@
     <string name="generic_delete_question" description="Generic delete question">Delete?</string>
     <string name="generic_cancel_question" description="Generic cancel question">Cancel?</string>
     <string name="generic_download_question" description="Generic download question">Download?</string>
+    <string name="generic_report_verb" description="Generic report verb">Report</string>
+    <string name="generic_report_verb_question" description="Generic report question">Report?</string>
     <string name="generic_logout_failed" description="Generic logout failed text">Logout failed</string>
     <string name="generic_copy" description="Generic copy text">Copy</string>
     <string name="generic_reply" description="Generic reply action text">Reply</string>
@@ -742,7 +744,6 @@
     <string name="unsupported_client_screen_info" description="Info text that app update is required">Current app version is not supported. Please update the app.</string>
 
     <!-- Report screen -->
-    <string name="report_screen_title" description="Title for report screen">Report</string>
     <string name="report_screen_profile_name_action" description="Title for report profile name action">Profile name</string>
     <string name="report_screen_profile_name_dialog_title" description="Profile name reporting confirmation dialog title">Report profile name?</string>
     <string name="report_screen_profile_name_changed_error" description="Snackbar text for when reporting old profile name">Report failed. Profile name has changed.</string>
@@ -753,7 +754,6 @@
     <string name="report_screen_chat_message_action" description="Title for report chat message action">Chat message</string>
     <string name="report_screen_snackbar_report_successful" description="Snackbar text for successful report">Reported</string>
     <string name="report_screen_snackbar_too_many_reports_error" description="Snackbar text for too many reports error">Report failed. Too many reports.</string>
-    <string name="report_screen_custom_report_boolean_dialog_title" description="Title for dialog for custom report boolean reporting">Report?</string>
     <string name="report_screen_custom_report_boolean_dialog_description" description="Text for dialog for custom report boolean reporting">Report user as '%s'?</string>
 
     <!-- Report profile image screen -->
@@ -762,9 +762,10 @@
     <string name="report_profile_image_screen_profile_image_changed_error" description="Snackbar text displayed when reporting old profile image">Report failed. Profile image has changed.</string>
 
     <!-- Report chat message screen -->
-    <string name="report_chat_message_screen_confirm_dialog_title" description="Chat message reporting confirmation dialog title">Report chat message?</string>
     <string name="report_chat_message_screen_server_signed_message_not_found" description="Snackbar text for server signed message not found error">Server signed message not found</string>
     <string name="report_chat_message_screen_symmetric_message_encryption_key_not_found" description="Snackbar text for symmetric message encryption key not found error">Symmetric message encryption key not found</string>
+    <string name="report_chat_message_screen_selection_status_none" description="Status text when no messages are selected for reporting">Select max 10 messages</string>
+    <string name="report_chat_message_screen_selection_status_count" description="Status text showing how many messages are selected for reporting. %s is the count and max count">%s/%s messages selected</string>
 
     <!-- Admin features -->
 
