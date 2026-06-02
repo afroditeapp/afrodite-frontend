@@ -30,7 +30,6 @@ import 'package:app/ui_utils/common_update_logic.dart';
 import 'package:app/ui_utils/dialog.dart';
 import 'package:app/ui_utils/snack_bar.dart';
 import 'package:app/utils/api.dart';
-import 'package:openapi/api.dart';
 
 void openSettingsScreen(BuildContext context) {
   MyNavigator.push(context, SettingsPage());
@@ -142,19 +141,9 @@ class _SettingsScreenState extends State<SettingsScreen> {
   }
 
   Widget profileVisibilitySetting(BuildContext context, ProfileVisibilityData state) {
-    final ProfileVisibility visibility = state.valueVisibility();
-    final String descriptionForVisibility = switch (visibility) {
-      ProfileVisibility.private =>
-        context.strings.settings_screen_profile_visiblity_private_description,
-      ProfileVisibility.public =>
-        context.strings.settings_screen_profile_visiblity_public_description,
-      _ => context.strings.generic_error,
-    };
-
     return profileVisibilitySwitchTile(
       context: context,
-      value: visibility.isPublic(),
-      subtitle: descriptionForVisibility,
+      value: state.valueVisibility().isPublic(),
       onChanged: (value) {
         if (state.updateState is! UpdateIdle) {
           showSnackBar(context.strings.generic_previous_action_in_progress);

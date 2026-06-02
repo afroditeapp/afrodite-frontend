@@ -202,15 +202,13 @@ Widget profileVisibilitySwitchTile({
   required BuildContext context,
   required bool value,
   required ValueChanged<bool> onChanged,
-  String? subtitle,
 }) {
   return SwitchListTile(
     title: Text(context.strings.settings_screen_profile_visiblity_setting),
     subtitle: Text(
-      subtitle ??
-          (value
-              ? context.strings.settings_screen_profile_visiblity_public_description
-              : context.strings.settings_screen_profile_visiblity_private_description),
+      value
+          ? context.strings.settings_screen_profile_visiblity_public_description
+          : context.strings.settings_screen_profile_visiblity_private_description,
     ),
     value: value,
     secondary: const Icon(Icons.public),
