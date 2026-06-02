@@ -1734,21 +1734,21 @@
   "@moderation_state_accepted": {
     "description": "Moderation state for accepted content"
   },
-  "moderation_state_rejected_by_bot": "Rejected by bot",
-  "@moderation_state_rejected_by_bot": {
-    "description": "Moderation state rejected by bot"
+  "moderation_state_rejected_by_admin": "Rejected by admin",
+  "@moderation_state_rejected_by_admin": {
+    "description": "Moderation state rejected by admin"
   },
-  "moderation_state_rejected_by_human": "Rejected by human",
-  "@moderation_state_rejected_by_human": {
-    "description": "Moderation state rejected by human"
+  "moderation_state_rejected_by_admin_bot": "Rejected by admin bot",
+  "@moderation_state_rejected_by_admin_bot": {
+    "description": "Moderation state rejected by admin bot"
   },
-  "moderation_state_waiting_bot_or_human_moderation": "Waiting bot or human moderation",
-  "@moderation_state_waiting_bot_or_human_moderation": {
-    "description": "Moderation state waiting bot or human moderation"
+  "moderation_state_waiting_admin": "Waiting admin",
+  "@moderation_state_waiting_admin": {
+    "description": "Moderation state waiting admin"
   },
-  "moderation_state_waiting_human_moderation": "Waiting human moderation",
-  "@moderation_state_waiting_human_moderation": {
-    "description": "Moderation state waiting human moderation"
+  "moderation_state_waiting_admin_bot": "Waiting admin bot",
+  "@moderation_state_waiting_admin_bot": {
+    "description": "Moderation state waiting admin bot"
   },
   "news_list_screen_create_new": "Create new?",
   "@news_list_screen_create_new": {
@@ -2175,10 +2175,6 @@
   "@profile_grid_screen_filtering_favorite_profiles_is_not_supported": {
     "description": "Snackbar text that filtering favorite profiles is not supported"
   },
-  "profile_grid_screen_initial_moderation_ongoing": "You can view profiles and others can see your profile after your profile images are moderated.",
-  "@profile_grid_screen_initial_moderation_ongoing": {
-    "description": "Info text that initial moderation is ongoing"
-  },
   "profile_grid_screen_no_favorite_profiles_found_description": "Mark a profile as a favorite to add it here.",
   "@profile_grid_screen_no_favorite_profiles_found_description": {
     "description": "Description that no favorite profiles were found"
@@ -2206,6 +2202,10 @@
   "profile_grid_screen_primary_profile_content_face_not_detected": "Face is not detected from first profile picture",
   "@profile_grid_screen_primary_profile_content_face_not_detected": {
     "description": "Text displayed when face is not detected from primary profile content"
+  },
+  "profile_grid_screen_primary_profile_content_is_in_moderation": "You can view profiles and others can see your profile after the first profile picture is moderated",
+  "@profile_grid_screen_primary_profile_content_is_in_moderation": {
+    "description": "Info text that primary profile content is in moderation"
   },
   "profile_grid_screen_primary_profile_content_is_not_accepted": "First profile picture is not accepted",
   "@profile_grid_screen_primary_profile_content_is_not_accepted": {
@@ -2604,10 +2604,6 @@
   "settings_screen_profile_category": "Profile",
   "@settings_screen_profile_category": {
     "description": "Title for profile settings category"
-  },
-  "settings_screen_profile_visiblity_pending_public_description": "Show your profile in Profiles view once images are moderated",
-  "@settings_screen_profile_visiblity_pending_public_description": {
-    "description": "Description for pending public profile visibility"
   },
   "settings_screen_profile_visiblity_private_description": "Hide your profile from Profiles view",
   "@settings_screen_profile_visiblity_private_description": {

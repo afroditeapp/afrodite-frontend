@@ -23,23 +23,23 @@ class ProfileStringModerationState {
 
   String toJson() => value;
 
-  static const waitingBotOrHumanModeration = ProfileStringModerationState._(r'WaitingBotOrHumanModeration');
-  static const waitingHumanModeration = ProfileStringModerationState._(r'WaitingHumanModeration');
-  static const acceptedByBot = ProfileStringModerationState._(r'AcceptedByBot');
-  static const acceptedByHuman = ProfileStringModerationState._(r'AcceptedByHuman');
+  static const waitingAdminBot = ProfileStringModerationState._(r'WaitingAdminBot');
+  static const waitingAdmin = ProfileStringModerationState._(r'WaitingAdmin');
+  static const acceptedByAdminBot = ProfileStringModerationState._(r'AcceptedByAdminBot');
+  static const acceptedByAdmin = ProfileStringModerationState._(r'AcceptedByAdmin');
   static const acceptedByAllowlist = ProfileStringModerationState._(r'AcceptedByAllowlist');
-  static const rejectedByBot = ProfileStringModerationState._(r'RejectedByBot');
-  static const rejectedByHuman = ProfileStringModerationState._(r'RejectedByHuman');
+  static const rejectedByAdminBot = ProfileStringModerationState._(r'RejectedByAdminBot');
+  static const rejectedByAdmin = ProfileStringModerationState._(r'RejectedByAdmin');
 
   /// List of all possible values in this [enum][ProfileStringModerationState].
   static const values = <ProfileStringModerationState>[
-    waitingBotOrHumanModeration,
-    waitingHumanModeration,
-    acceptedByBot,
-    acceptedByHuman,
+    waitingAdminBot,
+    waitingAdmin,
+    acceptedByAdminBot,
+    acceptedByAdmin,
     acceptedByAllowlist,
-    rejectedByBot,
-    rejectedByHuman,
+    rejectedByAdminBot,
+    rejectedByAdmin,
   ];
 
   static ProfileStringModerationState? fromJson(dynamic value) => ProfileStringModerationStateTypeTransformer().decode(value);
@@ -78,13 +78,13 @@ class ProfileStringModerationStateTypeTransformer {
   ProfileStringModerationState? decode(dynamic data, {bool allowNull = true}) {
     if (data != null) {
       switch (data) {
-        case r'WaitingBotOrHumanModeration': return ProfileStringModerationState.waitingBotOrHumanModeration;
-        case r'WaitingHumanModeration': return ProfileStringModerationState.waitingHumanModeration;
-        case r'AcceptedByBot': return ProfileStringModerationState.acceptedByBot;
-        case r'AcceptedByHuman': return ProfileStringModerationState.acceptedByHuman;
+        case r'WaitingAdminBot': return ProfileStringModerationState.waitingAdminBot;
+        case r'WaitingAdmin': return ProfileStringModerationState.waitingAdmin;
+        case r'AcceptedByAdminBot': return ProfileStringModerationState.acceptedByAdminBot;
+        case r'AcceptedByAdmin': return ProfileStringModerationState.acceptedByAdmin;
         case r'AcceptedByAllowlist': return ProfileStringModerationState.acceptedByAllowlist;
-        case r'RejectedByBot': return ProfileStringModerationState.rejectedByBot;
-        case r'RejectedByHuman': return ProfileStringModerationState.rejectedByHuman;
+        case r'RejectedByAdminBot': return ProfileStringModerationState.rejectedByAdminBot;
+        case r'RejectedByAdmin': return ProfileStringModerationState.rejectedByAdmin;
         default:
           if (!allowNull) {
             throw ArgumentError('Unknown enum value to decode: $data');

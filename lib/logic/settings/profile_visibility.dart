@@ -68,17 +68,10 @@ class ProfileVisibilityBloc extends Bloc<ProfileVisibilityEvent, ProfileVisibili
   }
 
   ProfileVisibility _toggleVisibility(ProfileVisibility currentProfileVisibility) {
-    if (currentProfileVisibility == ProfileVisibility.pendingPrivate) {
-      return ProfileVisibility.pendingPublic;
-    } else if (currentProfileVisibility == ProfileVisibility.private) {
+    if (currentProfileVisibility == ProfileVisibility.private) {
       return ProfileVisibility.public;
-    } else if (currentProfileVisibility == ProfileVisibility.pendingPublic) {
-      return ProfileVisibility.pendingPrivate;
-    } else if (currentProfileVisibility == ProfileVisibility.public) {
-      return ProfileVisibility.private;
     } else {
-      // Should never happen
-      return ProfileVisibility.pendingPrivate;
+      return ProfileVisibility.private;
     }
   }
 

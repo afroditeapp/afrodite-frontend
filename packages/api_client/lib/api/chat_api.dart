@@ -991,7 +991,7 @@ class ChatApi {
 
   /// Report chat message.
   ///
-  /// The report target must be a match.
+  /// The report target must be a match. Supports reporting at most 10 messages per request.
   ///
   /// Note: This method returns the HTTP [Response].
   ///
@@ -1025,7 +1025,7 @@ class ChatApi {
 
   /// Report chat message.
   ///
-  /// The report target must be a match.
+  /// The report target must be a match. Supports reporting at most 10 messages per request.
   ///
   /// Parameters:
   ///

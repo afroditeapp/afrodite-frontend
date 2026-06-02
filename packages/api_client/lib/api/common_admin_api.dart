@@ -615,47 +615,6 @@ class CommonAdminApi {
     return null;
   }
 
-  /// Performs an HTTP 'GET /common_api/waiting_report_page' operation and returns the [Response].
-  Future<Response> getWaitingReportPageWithHttpInfo() async {
-    // ignore: prefer_const_declarations
-    final path = r'/common_api/waiting_report_page';
-
-    // ignore: prefer_final_locals
-    Object? postBody;
-
-    final queryParams = <QueryParam>[];
-    final headerParams = <String, String>{};
-    final formParams = <String, String>{};
-
-    const contentTypes = <String>[];
-
-
-    return apiClient.invokeAPI(
-      path,
-      'GET',
-      queryParams,
-      postBody,
-      headerParams,
-      formParams,
-      contentTypes.isEmpty ? null : contentTypes.first,
-    );
-  }
-
-  Future<GetReportList?> getWaitingReportPage() async {
-    final response = await getWaitingReportPageWithHttpInfo();
-    if (response.statusCode >= HttpStatus.badRequest) {
-      throw ApiException(response.statusCode, await _decodeBodyBytes(response));
-    }
-    // When a remote server returns no body with a status of 204, we shall not decode it.
-    // At the time of writing this, `dart:convert` will throw an "Unexpected end of input"
-    // FormatException when trying to decode an empty string.
-    if (response.body.isNotEmpty && response.statusCode != HttpStatus.noContent) {
-      return await apiClient.deserializeAsync(await _decodeBodyBytes(response), 'GetReportList',) as GetReportList;
-    
-    }
-    return null;
-  }
-
   /// Save admin notification settings.
   ///
   /// # Access Requires [Permissions::admin_subscribe_admin_notifications].
@@ -1228,16 +1187,68 @@ class CommonAdminApi {
     return null;
   }
 
-  /// Performs an HTTP 'POST /common_api/process_report' operation and returns the [Response].
+  /// Get max 25 waiting reports from oldest to newest.
+  ///
+  /// Note: This method returns the HTTP [Response].
+  ///
   /// Parameters:
   ///
-  /// * [ProcessReport] processReport (required):
-  Future<Response> postProcessReportWithHttpInfo(ProcessReport processReport,) async {
+  /// * [GetWaitingReportsPage] getWaitingReportsPage (required):
+  Future<Response> postGetWaitingReportsPageWithHttpInfo(GetWaitingReportsPage getWaitingReportsPage,) async {
     // ignore: prefer_const_declarations
-    final path = r'/common_api/process_report';
+    final path = r'/common_api/waiting_reports_page';
 
     // ignore: prefer_final_locals
-    Object? postBody = processReport;
+    Object? postBody = getWaitingReportsPage;
+
+    final queryParams = <QueryParam>[];
+    final headerParams = <String, String>{};
+    final formParams = <String, String>{};
+
+    const contentTypes = <String>['application/json'];
+
+
+    return apiClient.invokeAPI(
+      path,
+      'POST',
+      queryParams,
+      postBody,
+      headerParams,
+      formParams,
+      contentTypes.isEmpty ? null : contentTypes.first,
+    );
+  }
+
+  /// Get max 25 waiting reports from oldest to newest.
+  ///
+  /// Parameters:
+  ///
+  /// * [GetWaitingReportsPage] getWaitingReportsPage (required):
+  Future<GetReportList?> postGetWaitingReportsPage(GetWaitingReportsPage getWaitingReportsPage,) async {
+    final response = await postGetWaitingReportsPageWithHttpInfo(getWaitingReportsPage,);
+    if (response.statusCode >= HttpStatus.badRequest) {
+      throw ApiException(response.statusCode, await _decodeBodyBytes(response));
+    }
+    // When a remote server returns no body with a status of 204, we shall not decode it.
+    // At the time of writing this, `dart:convert` will throw an "Unexpected end of input"
+    // FormatException when trying to decode an empty string.
+    if (response.body.isNotEmpty && response.statusCode != HttpStatus.noContent) {
+      return await apiClient.deserializeAsync(await _decodeBodyBytes(response), 'GetReportList',) as GetReportList;
+    
+    }
+    return null;
+  }
+
+  /// Performs an HTTP 'POST /common_api/process_reports' operation and returns the [Response].
+  /// Parameters:
+  ///
+  /// * [ProcessReports] processReports (required):
+  Future<Response> postProcessReportsWithHttpInfo(ProcessReports processReports,) async {
+    // ignore: prefer_const_declarations
+    final path = r'/common_api/process_reports';
+
+    // ignore: prefer_final_locals
+    Object? postBody = processReports;
 
     final queryParams = <QueryParam>[];
     final headerParams = <String, String>{};
@@ -1259,9 +1270,9 @@ class CommonAdminApi {
 
   /// Parameters:
   ///
-  /// * [ProcessReport] processReport (required):
-  Future<void> postProcessReport(ProcessReport processReport,) async {
-    final response = await postProcessReportWithHttpInfo(processReport,);
+  /// * [ProcessReports] processReports (required):
+  Future<void> postProcessReports(ProcessReports processReports,) async {
+    final response = await postProcessReportsWithHttpInfo(processReports,);
     if (response.statusCode >= HttpStatus.badRequest) {
       throw ApiException(response.statusCode, await _decodeBodyBytes(response));
     }

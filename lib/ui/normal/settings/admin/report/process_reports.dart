@@ -66,7 +66,7 @@ class ReportIo extends ContentIo<WrappedReportDetailed> {
   @override
   Future<Result<List<WrappedReportDetailed>, ()>> getNextContent() async {
     return await api
-        .commonAdmin((api) => api.getWaitingReportPage())
+        .commonAdmin((api) => api.postGetWaitingReportsPage(GetWaitingReportsPage()))
         .andThenEmptyErr(
           (v) => handleReportList(api, addedReports, v.values, onlyNotProcessed: true),
         );
@@ -83,8 +83,10 @@ class ReportIo extends ContentIo<WrappedReportDetailed> {
       target: content.info.target,
       reportType: content.info.reportType,
       content: content.content,
+      // TODO(prod): support marking reports invalid
+      valid: true,
     );
-    await api.commonAdminAction((api) => api.postProcessReport(info));
+    await api.commonAdminAction((api) => api.postProcessReports(ProcessReports(values: [info])));
   }
 }
 

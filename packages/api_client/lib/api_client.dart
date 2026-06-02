@@ -308,6 +308,8 @@ class ApiClient {
           return ChatEmailNotificationSettings.fromJson(value);
         case 'ChatMessageReport':
           return ChatMessageReport.fromJson(value);
+        case 'ChatMessageReportData':
+          return ChatMessageReportData.fromJson(value);
         case 'ChatPrivacySettings':
           return ChatPrivacySettings.fromJson(value);
         case 'CheckOnlineStatusConfig':
@@ -502,6 +504,8 @@ class ApiClient {
           return GetReportList.fromJson(value);
         case 'GetSentMessage':
           return GetSentMessage.fromJson(value);
+        case 'GetWaitingReportsPage':
+          return GetWaitingReportsPage.fromJson(value);
         case 'ImageProcessingDynamicConfig':
           return ImageProcessingDynamicConfig.fromJson(value);
         case 'ImageProcessingWarnings':
@@ -698,6 +702,8 @@ class ApiClient {
           return PredefinedBannerTypeTransformer().decode(value);
         case 'ProcessReport':
           return ProcessReport.fromJson(value);
+        case 'ProcessReports':
+          return ProcessReports.fromJson(value);
         case 'Profile':
           return Profile.fromJson(value);
         case 'ProfileAgeCounts':

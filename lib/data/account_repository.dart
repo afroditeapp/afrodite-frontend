@@ -27,7 +27,7 @@ final _log = Logger("AccountRepository");
 
 enum AccountRepositoryState { initRequired, initComplete }
 
-const ProfileVisibility PROFILE_VISIBILITY_DEFAULT = ProfileVisibility.pendingPrivate;
+const ProfileVisibility _PROFILE_VISIBILITY_DEFAULT = ProfileVisibility.private;
 
 class AccountRepository extends DataRepositoryWithLifecycle {
   final ConnectedActionScheduler _syncHandler;
@@ -426,7 +426,7 @@ class CachedValues {
   final BehaviorSubject<String?> _cachedEmailAddress = BehaviorSubject.seeded(null);
   StreamSubscription<String?>? _cachedEmailSubscription;
   final BehaviorSubject<ProfileVisibility> _cachedProfileVisibility = BehaviorSubject.seeded(
-    PROFILE_VISIBILITY_DEFAULT,
+    _PROFILE_VISIBILITY_DEFAULT,
   );
   StreamSubscription<ProfileVisibility>? _cachedProfileVisibilitySubscription;
   final BehaviorSubject<AccountState?> _cachedAccountState = BehaviorSubject.seeded(null);
@@ -450,7 +450,7 @@ class CachedValues {
     _cachedProfileVisibilitySubscription = db
         .accountStreamOrDefault(
           (db) => db.account.watchProfileVisibility(),
-          PROFILE_VISIBILITY_DEFAULT,
+          _PROFILE_VISIBILITY_DEFAULT,
         )
         .listen((v) {
           _cachedProfileVisibility.add(v);

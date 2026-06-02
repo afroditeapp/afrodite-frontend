@@ -25,11 +25,13 @@ class AccountBannedAdminType {
 
   static const human = AccountBannedAdminType._(r'Human');
   static const bot = AccountBannedAdminType._(r'Bot');
+  static const server = AccountBannedAdminType._(r'Server');
 
   /// List of all possible values in this [enum][AccountBannedAdminType].
   static const values = <AccountBannedAdminType>[
     human,
     bot,
+    server,
   ];
 
   static AccountBannedAdminType? fromJson(dynamic value) => AccountBannedAdminTypeTypeTransformer().decode(value);
@@ -70,6 +72,7 @@ class AccountBannedAdminTypeTypeTransformer {
       switch (data) {
         case r'Human': return AccountBannedAdminType.human;
         case r'Bot': return AccountBannedAdminType.bot;
+        case r'Server': return AccountBannedAdminType.server;
         default:
           if (!allowNull) {
             throw ArgumentError('Unknown enum value to decode: $data');

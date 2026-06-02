@@ -24,22 +24,22 @@ class ContentModerationState {
   String toJson() => value;
 
   static const inSlot = ContentModerationState._(r'InSlot');
-  static const waitingBotOrHumanModeration = ContentModerationState._(r'WaitingBotOrHumanModeration');
-  static const waitingHumanModeration = ContentModerationState._(r'WaitingHumanModeration');
-  static const acceptedByBot = ContentModerationState._(r'AcceptedByBot');
-  static const acceptedByHuman = ContentModerationState._(r'AcceptedByHuman');
-  static const rejectedByBot = ContentModerationState._(r'RejectedByBot');
-  static const rejectedByHuman = ContentModerationState._(r'RejectedByHuman');
+  static const waitingAdminBot = ContentModerationState._(r'WaitingAdminBot');
+  static const waitingAdmin = ContentModerationState._(r'WaitingAdmin');
+  static const acceptedByAdminBot = ContentModerationState._(r'AcceptedByAdminBot');
+  static const acceptedByAdmin = ContentModerationState._(r'AcceptedByAdmin');
+  static const rejectedByAdminBot = ContentModerationState._(r'RejectedByAdminBot');
+  static const rejectedByAdmin = ContentModerationState._(r'RejectedByAdmin');
 
   /// List of all possible values in this [enum][ContentModerationState].
   static const values = <ContentModerationState>[
     inSlot,
-    waitingBotOrHumanModeration,
-    waitingHumanModeration,
-    acceptedByBot,
-    acceptedByHuman,
-    rejectedByBot,
-    rejectedByHuman,
+    waitingAdminBot,
+    waitingAdmin,
+    acceptedByAdminBot,
+    acceptedByAdmin,
+    rejectedByAdminBot,
+    rejectedByAdmin,
   ];
 
   static ContentModerationState? fromJson(dynamic value) => ContentModerationStateTypeTransformer().decode(value);
@@ -79,12 +79,12 @@ class ContentModerationStateTypeTransformer {
     if (data != null) {
       switch (data) {
         case r'InSlot': return ContentModerationState.inSlot;
-        case r'WaitingBotOrHumanModeration': return ContentModerationState.waitingBotOrHumanModeration;
-        case r'WaitingHumanModeration': return ContentModerationState.waitingHumanModeration;
-        case r'AcceptedByBot': return ContentModerationState.acceptedByBot;
-        case r'AcceptedByHuman': return ContentModerationState.acceptedByHuman;
-        case r'RejectedByBot': return ContentModerationState.rejectedByBot;
-        case r'RejectedByHuman': return ContentModerationState.rejectedByHuman;
+        case r'WaitingAdminBot': return ContentModerationState.waitingAdminBot;
+        case r'WaitingAdmin': return ContentModerationState.waitingAdmin;
+        case r'AcceptedByAdminBot': return ContentModerationState.acceptedByAdminBot;
+        case r'AcceptedByAdmin': return ContentModerationState.acceptedByAdmin;
+        case r'RejectedByAdminBot': return ContentModerationState.rejectedByAdminBot;
+        case r'RejectedByAdmin': return ContentModerationState.rejectedByAdmin;
         default:
           if (!allowNull) {
             throw ArgumentError('Unknown enum value to decode: $data');

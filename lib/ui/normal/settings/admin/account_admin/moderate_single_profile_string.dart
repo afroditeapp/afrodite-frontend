@@ -116,13 +116,13 @@ class _ModerateSingleProfileStringScreenState extends State<ModerateSingleProfil
     }
     final state = data?.moderationInfo?.state;
     final accepted = switch (state) {
-      ProfileStringModerationState.waitingBotOrHumanModeration ||
-      ProfileStringModerationState.waitingHumanModeration => null,
-      ProfileStringModerationState.rejectedByBot ||
-      ProfileStringModerationState.rejectedByHuman => false,
+      ProfileStringModerationState.waitingAdminBot ||
+      ProfileStringModerationState.waitingAdmin => null,
+      ProfileStringModerationState.rejectedByAdminBot ||
+      ProfileStringModerationState.rejectedByAdmin => false,
       ProfileStringModerationState.acceptedByAllowlist ||
-      ProfileStringModerationState.acceptedByBot ||
-      ProfileStringModerationState.acceptedByHuman => true,
+      ProfileStringModerationState.acceptedByAdminBot ||
+      ProfileStringModerationState.acceptedByAdmin => true,
       _ => null,
     };
     return SingleChildScrollView(

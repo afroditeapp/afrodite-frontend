@@ -3,7 +3,6 @@ import "package:openapi/api.dart";
 
 import "package:freezed_annotation/freezed_annotation.dart";
 import 'package:flutter/foundation.dart';
-import "package:app/utils/api.dart";
 
 part 'account.freezed.dart';
 
@@ -20,8 +19,4 @@ class AccountBlocData with _$AccountBlocData {
     required Permissions permissions,
     required ProfileVisibility visibility,
   }) = _AccountBlocData;
-
-  bool isInitialModerationOngoing() {
-    return visibility.isInitialModerationOngoing();
-  }
 }

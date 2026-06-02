@@ -41,8 +41,8 @@ class MyContent extends ContentIdAndAccepted {
     this.rejectedDetails,
   ) : super(
         id,
-        state == ContentModerationState.acceptedByBot ||
-            state == ContentModerationState.acceptedByHuman,
+        state == ContentModerationState.acceptedByAdmin ||
+            state == ContentModerationState.acceptedByAdminBot,
         faceDetected,
         faceVerified: faceVerified,
       );

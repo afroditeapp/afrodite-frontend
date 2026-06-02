@@ -125,10 +125,10 @@
     <string name="moderation_state" description="Beginning of moderation state text">Moderation state: %s</string>
     <string name="moderation_rejected_category" description="Beginning of moderation rejected reason category text">Rejection category: %s</string>
     <string name="moderation_rejected_details" description="Beginning of moderation rejected reason details text">Rejection details: %s</string>
-    <string name="moderation_state_waiting_bot_or_human_moderation" description="Moderation state waiting bot or human moderation">Waiting bot or human moderation</string>
-    <string name="moderation_state_waiting_human_moderation" description="Moderation state waiting human moderation">Waiting human moderation</string>
-    <string name="moderation_state_rejected_by_bot" description="Moderation state rejected by bot">Rejected by bot</string>
-    <string name="moderation_state_rejected_by_human" description="Moderation state rejected by human">Rejected by human</string>
+    <string name="moderation_state_waiting_admin_bot" description="Moderation state waiting admin bot">Waiting admin bot</string>
+    <string name="moderation_state_waiting_admin" description="Moderation state waiting admin">Waiting admin</string>
+    <string name="moderation_state_rejected_by_admin_bot" description="Moderation state rejected by admin bot">Rejected by admin bot</string>
+    <string name="moderation_state_rejected_by_admin" description="Moderation state rejected by admin">Rejected by admin</string>
     <string name="moderation_state_accepted" description="Moderation state for accepted content">Accepted</string>
 
     <!-- Notification category groups -->
@@ -345,7 +345,6 @@
     <string name="profile_grid_screen_email_not_verified" description="Info text which is shown when email is not verified">Please verify your email address. A verification link has been sent to your email. If you don't see it, check your spam folder.</string>
     <string name="profile_grid_screen_email_not_verified_button" description="Button text for account settings action when email is not verified">Account settings</string>
     <string name="profile_grid_screen_profile_is_private_info" description="Info text which is shown when profile visibility is set to private">To view profiles, set your profile visibility to public from app settings.</string>
-    <string name="profile_grid_screen_initial_moderation_ongoing" description="Info text that initial moderation is ongoing">You can view profiles and others can see your profile after your profile images are moderated.</string>
     <string name="profile_grid_screen_no_profiles_found_title" description="Title that no profiles were found">No profiles found</string>
     <string name="profile_grid_screen_no_profiles_found_description_filters_enabled" description="Description displayed when there is no profiles and some filter is enabled">Change or disable filters</string>
     <string name="profile_grid_screen_no_profiles_found_description_filters_disabled" description="Description displayed when there is no profiles and there is no filters enabled">Spread the word about the app in social media</string>
@@ -354,6 +353,7 @@
     <string name="profile_grid_screen_security_content_is_not_accepted" description="Text displayed when security selfie is not accepted">Security selfie is not accepted</string>
     <string name="profile_grid_screen_security_content_does_not_exist" description="Text displayed when security selfie does not exist">Security selfie does not exist</string>
     <string name="profile_grid_screen_security_content_face_not_detected" description="Text displayed when face is not detected from security selfie">Face is not detected from security selfie</string>
+    <string name="profile_grid_screen_primary_profile_content_is_in_moderation" description="Info text that primary profile content is in moderation">You can view profiles and others can see your profile after the first profile picture is moderated</string>
     <string name="profile_grid_screen_primary_profile_content_is_not_accepted" description="Text displayed when primary profile content is not accepted">First profile picture is not accepted</string>
     <string name="profile_grid_screen_primary_profile_content_face_not_detected" description="Text displayed when face is not detected from primary profile content">Face is not detected from first profile picture</string>
     <string name="profile_grid_screen_primary_profile_content_does_not_exist" description="Text displayed when primary profile content does not exist">First profile picture does not exist</string>
@@ -571,7 +571,6 @@
     <string name="settings_screen_privacy_and_security_category" description="Title for privacy and security settings category">Privacy and security</string>
     <string name="settings_screen_profile_visiblity_setting" description="Title for profile visibility setting">Profile visibility</string>
     <string name="settings_screen_profile_visiblity_private_description" description="Description for private profile visibility">Hide your profile from Profiles view</string>
-    <string name="settings_screen_profile_visiblity_pending_public_description" description="Description for pending public profile visibility">Show your profile in Profiles view once images are moderated</string>
     <string name="settings_screen_profile_visiblity_public_description" description="Description for public profile visibility">Show your profile in Profiles view</string>
     <string name="settings_screen_data_category" description="Title for data settings category">Data</string>
     <string name="settings_screen_general_category" description="Title for general settings category">General</string>

@@ -317,21 +317,20 @@ Widget _statusInfo(
 ) {
   final String moderationState = switch (content.state) {
     ContentModerationState.inSlot => "In slot",
-    ContentModerationState.waitingBotOrHumanModeration =>
-      context.strings.moderation_state_waiting_bot_or_human_moderation,
-    ContentModerationState.waitingHumanModeration =>
-      context.strings.moderation_state_waiting_human_moderation,
-    ContentModerationState.acceptedByBot => "Accepted by bot",
-    ContentModerationState.acceptedByHuman => "Accepted by human",
-    ContentModerationState.rejectedByBot => context.strings.moderation_state_rejected_by_bot,
-    ContentModerationState.rejectedByHuman => context.strings.moderation_state_rejected_by_human,
+    ContentModerationState.waitingAdminBot => context.strings.moderation_state_waiting_admin_bot,
+    ContentModerationState.waitingAdmin => context.strings.moderation_state_waiting_admin,
+    ContentModerationState.acceptedByAdminBot => "Accepted by admin bot",
+    ContentModerationState.acceptedByAdmin => "Accepted by admin",
+    ContentModerationState.rejectedByAdminBot =>
+      context.strings.moderation_state_rejected_by_admin_bot,
+    ContentModerationState.rejectedByAdmin => context.strings.moderation_state_rejected_by_admin,
     _ => "null",
   };
 
   final Widget? moderationStateChangeButton;
   if (changeModerationStateAction != null &&
-      (content.state == ContentModerationState.acceptedByBot ||
-          content.state == ContentModerationState.acceptedByHuman)) {
+      (content.state == ContentModerationState.acceptedByAdminBot ||
+          content.state == ContentModerationState.acceptedByAdmin)) {
     moderationStateChangeButton = _createModerationStateChangeButton(
       context,
       accountId,
@@ -342,8 +341,8 @@ Widget _statusInfo(
       changeModerationStateAction,
     );
   } else if (changeModerationStateAction != null &&
-      (content.state == ContentModerationState.rejectedByBot ||
-          content.state == ContentModerationState.rejectedByHuman)) {
+      (content.state == ContentModerationState.rejectedByAdminBot ||
+          content.state == ContentModerationState.rejectedByAdmin)) {
     moderationStateChangeButton = _createModerationStateChangeButton(
       context,
       accountId,

@@ -99,7 +99,7 @@ Class | Method | HTTP request | Description
 *AccountApi* | [**postSetAccountDeletionRequestState**](doc//AccountApi.md#postsetaccountdeletionrequeststate) | **POST** /account_api/set_account_deletion_request_state/{aid} | Request account deletion or cancel the deletion
 *AccountApi* | [**postSetEmailLoginEnabled**](doc//AccountApi.md#postsetemailloginenabled) | **POST** /account_api/set_email_login_enabled | Enable or disable email login for an account.
 *AccountApi* | [**postSignInWithLogin**](doc//AccountApi.md#postsigninwithlogin) | **POST** /account_api/sign_in_with_login | Start new session with sign in with Apple or Google.
-*AccountApi* | [**putSettingProfileVisiblity**](doc//AccountApi.md#putsettingprofilevisiblity) | **PUT** /account_api/settings/profile_visibility | Update current or pending profile visiblity value.
+*AccountApi* | [**putSettingProfileVisiblity**](doc//AccountApi.md#putsettingprofilevisiblity) | **PUT** /account_api/settings/profile_visibility | Update current profile visiblity value.
 *AccountApi* | [**putSettingUnlimitedLikes**](doc//AccountApi.md#putsettingunlimitedlikes) | **PUT** /account_api/settings/unlimited_likes | 
 *AccountAdminApi* | [**deleteNewsItem**](doc//AccountAdminApi.md#deletenewsitem) | **DELETE** /account_api/delete_news/{nid} | 
 *AccountAdminApi* | [**deleteNewsTranslation**](doc//AccountAdminApi.md#deletenewstranslation) | **DELETE** /account_api/delete_news_translation/{nid}/{locale} | 
@@ -197,7 +197,6 @@ Class | Method | HTTP request | Description
 *CommonAdminApi* | [**getServerVersion**](doc//CommonAdminApi.md#getserverversion) | **GET** /common_api/server_version | Get server version.
 *CommonAdminApi* | [**getSoftwareUpdateStatus**](doc//CommonAdminApi.md#getsoftwareupdatestatus) | **GET** /common_api/software_info | Get software version information from manager instance.
 *CommonAdminApi* | [**getSystemInfo**](doc//CommonAdminApi.md#getsysteminfo) | **GET** /common_api/system_info | Get system information from manager instance.
-*CommonAdminApi* | [**getWaitingReportPage**](doc//CommonAdminApi.md#getwaitingreportpage) | **GET** /common_api/waiting_report_page | 
 *CommonAdminApi* | [**postAdminNotificationSettings**](doc//CommonAdminApi.md#postadminnotificationsettings) | **POST** /common_api/admin_notification_settings | Save admin notification settings.
 *CommonAdminApi* | [**postAdminNotificationSubscriptions**](doc//CommonAdminApi.md#postadminnotificationsubscriptions) | **POST** /common_api/admin_notification_subscriptions | Save admin notification subscriptions.
 *CommonAdminApi* | [**postBotConfig**](doc//CommonAdminApi.md#postbotconfig) | **POST** /common_api/bot_config | Save bot config.
@@ -209,7 +208,8 @@ Class | Method | HTTP request | Description
 *CommonAdminApi* | [**postGetIpCountryStatistics**](doc//CommonAdminApi.md#postgetipcountrystatistics) | **POST** /common_api/ip_country_statistics | Get IP country statistics.
 *CommonAdminApi* | [**postGetPerfData**](doc//CommonAdminApi.md#postgetperfdata) | **POST** /common_api/perf_data | Get performance data
 *CommonAdminApi* | [**postGetReportIteratorPage**](doc//CommonAdminApi.md#postgetreportiteratorpage) | **POST** /common_api/report_iterator_page | Get report iterator page.
-*CommonAdminApi* | [**postProcessReport**](doc//CommonAdminApi.md#postprocessreport) | **POST** /common_api/process_report | 
+*CommonAdminApi* | [**postGetWaitingReportsPage**](doc//CommonAdminApi.md#postgetwaitingreportspage) | **POST** /common_api/waiting_reports_page | Get max 25 waiting reports from oldest to newest.
+*CommonAdminApi* | [**postProcessReports**](doc//CommonAdminApi.md#postprocessreports) | **POST** /common_api/process_reports | 
 *CommonAdminApi* | [**postScheduleTask**](doc//CommonAdminApi.md#postscheduletask) | **POST** /common_api/schedule_task | Schedule task.
 *CommonAdminApi* | [**postTriggerServerDataReset**](doc//CommonAdminApi.md#posttriggerserverdatareset) | **POST** /common_api/trigger_server_data_reset | Trigger server data reset.
 *CommonAdminApi* | [**postTriggerServerRestart**](doc//CommonAdminApi.md#posttriggerserverrestart) | **POST** /common_api/trigger_server_restart | Trigger server restart.
@@ -351,6 +351,7 @@ Class | Method | HTTP request | Description
  - [ChatConfig](doc//ChatConfig.md)
  - [ChatEmailNotificationSettings](doc//ChatEmailNotificationSettings.md)
  - [ChatMessageReport](doc//ChatMessageReport.md)
+ - [ChatMessageReportData](doc//ChatMessageReportData.md)
  - [ChatPrivacySettings](doc//ChatPrivacySettings.md)
  - [CheckOnlineStatusConfig](doc//CheckOnlineStatusConfig.md)
  - [ClientConfig](doc//ClientConfig.md)
@@ -448,6 +449,7 @@ Class | Method | HTTP request | Description
  - [GetPushNotificationInfo](doc//GetPushNotificationInfo.md)
  - [GetReportList](doc//GetReportList.md)
  - [GetSentMessage](doc//GetSentMessage.md)
+ - [GetWaitingReportsPage](doc//GetWaitingReportsPage.md)
  - [ImageProcessingDynamicConfig](doc//ImageProcessingDynamicConfig.md)
  - [ImageProcessingWarnings](doc//ImageProcessingWarnings.md)
  - [InfoBanner](doc//InfoBanner.md)
@@ -546,6 +548,7 @@ Class | Method | HTTP request | Description
  - [PostVideoCallUrlResult](doc//PostVideoCallUrlResult.md)
  - [PredefinedBanner](doc//PredefinedBanner.md)
  - [ProcessReport](doc//ProcessReport.md)
+ - [ProcessReports](doc//ProcessReports.md)
  - [Profile](doc//Profile.md)
  - [ProfileAgeCounts](doc//ProfileAgeCounts.md)
  - [ProfileAgeRangeVerificationAdminInfo](doc//ProfileAgeRangeVerificationAdminInfo.md)

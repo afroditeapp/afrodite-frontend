@@ -85,6 +85,7 @@ lib/model/chat_app_notification_settings.dart
 lib/model/chat_config.dart
 lib/model/chat_email_notification_settings.dart
 lib/model/chat_message_report.dart
+lib/model/chat_message_report_data.dart
 lib/model/chat_privacy_settings.dart
 lib/model/check_online_status_config.dart
 lib/model/client_config.dart
@@ -182,6 +183,7 @@ lib/model/get_profile_string_state.dart
 lib/model/get_push_notification_info.dart
 lib/model/get_report_list.dart
 lib/model/get_sent_message.dart
+lib/model/get_waiting_reports_page.dart
 lib/model/image_processing_dynamic_config.dart
 lib/model/image_processing_warnings.dart
 lib/model/info_banner.dart
@@ -280,6 +282,7 @@ lib/model/post_start_data_export.dart
 lib/model/post_video_call_url_result.dart
 lib/model/predefined_banner.dart
 lib/model/process_report.dart
+lib/model/process_reports.dart
 lib/model/profile.dart
 lib/model/profile_age_counts.dart
 lib/model/profile_age_range_verification_admin_info.dart

@@ -165,8 +165,7 @@ class PublicProfileViewingBlocker extends StatelessWidget {
           return _handleBlocked(startInitialSetupButton(context));
         } else if (!data.emailVerified) {
           return _handleBlocked(emailNotVerified(context));
-        } else if (data.visibility == ProfileVisibility.public ||
-            data.visibility == ProfileVisibility.pendingPublic) {
+        } else if (data.visibility.isPublic()) {
           return checkMyContent(data.visibility);
         } else {
           return _handleBlocked(profileIsSetToPrivateInfo(context));
@@ -183,10 +182,12 @@ class PublicProfileViewingBlocker extends StatelessWidget {
         }
 
         final securityContent = contentState.securityContent;
-        if (visiblity == ProfileVisibility.pendingPublic &&
-            securityContent?.state.waitingModeration() == true) {
-          return _handleBlocked(profileIsInModerationInfo(context));
-        } else if (securityContent?.accepted == true && securityContent?.faceDetected == true) {
+        final securityContentIsValid =
+            securityContent?.accepted == true && securityContent?.faceDetected == true;
+        final securityContentIsWaitingModeration =
+            securityContent?.state.waitingModeration() == true;
+
+        if (securityContentIsValid || securityContentIsWaitingModeration) {
           return BlocBuilder<ClientFeaturesConfigBloc, ClientFeaturesConfigData>(
             builder: (context, configData) {
               return BlocBuilder<MyProfileBloc, MyProfileData>(
@@ -202,9 +203,8 @@ class PublicProfileViewingBlocker extends StatelessWidget {
                       false;
                   final faceDetected = primaryContent?.faceDetected == true;
 
-                  if (visiblity == ProfileVisibility.pendingPublic &&
-                      primaryContent?.state.waitingModeration() == true) {
-                    return _handleBlocked(profileIsInModerationInfo(context));
+                  if (primaryContent?.state.waitingModeration() == true) {
+                    return _handleBlocked(primaryProfileContentIsInModeration(context));
                   } else if (primaryContent?.accepted == true && (!requireFace || faceDetected)) {
                     // Public profile viewing allowed
                     return _handleBlocked(ChatViewingBlocker(child: child));
@@ -268,7 +268,7 @@ class PublicProfileViewingBlocker extends StatelessWidget {
     );
   }
 
-  Widget profileIsInModerationInfo(BuildContext context) {
+  Widget primaryProfileContentIsInModeration(BuildContext context) {
     return buildListReplacementMessage(
       child: Column(
         mainAxisSize: MainAxisSize.min,
@@ -276,7 +276,7 @@ class PublicProfileViewingBlocker extends StatelessWidget {
           const Padding(padding: EdgeInsets.all(16)),
           const Icon(Icons.hourglass_top_rounded, size: 48),
           const Padding(padding: EdgeInsets.all(16)),
-          Text(context.strings.profile_grid_screen_initial_moderation_ongoing),
+          Text(context.strings.profile_grid_screen_primary_profile_content_is_in_moderation),
         ],
       ),
     );

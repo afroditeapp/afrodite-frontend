@@ -145,14 +145,18 @@ class _ReportChatMessageScreen extends State<ReportChatMessageScreen> {
             );
             return;
           }
-
+          // TODO(prod): Support reporting max 10 sequential messages
           final result = await repositories.api
               .chat(
                 (api) => api.postChatMessageReport(
                   UpdateChatMessageReport(
                     target: widget.accountId,
-                    serverSignedMessageBase64: base64Encode(serverSignedMessage),
-                    decryptionKeyBase64: base64Encode(symmetricKey),
+                    messages: [
+                      ChatMessageReportData(
+                        serverSignedMessageBase64: base64Encode(serverSignedMessage),
+                        decryptionKeyBase64: base64Encode(symmetricKey),
+                      ),
+                    ],
                   ),
                 ),
               )

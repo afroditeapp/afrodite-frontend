@@ -1717,7 +1717,7 @@ class AccountApi {
     return null;
   }
 
-  /// Update current or pending profile visiblity value.
+  /// Update current profile visiblity value.
   ///
   /// NOTE: Client uses this in initial setup.  # Limits - When [AccountState::Banned], the visiblity can only be set to private.
   ///
@@ -1751,7 +1751,7 @@ class AccountApi {
     );
   }
 
-  /// Update current or pending profile visiblity value.
+  /// Update current profile visiblity value.
   ///
   /// NOTE: Client uses this in initial setup.  # Limits - When [AccountState::Banned], the visiblity can only be set to private.
   ///

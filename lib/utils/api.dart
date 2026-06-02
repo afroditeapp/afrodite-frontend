@@ -4,13 +4,8 @@ import 'package:app/model/freezed/logic/account/initial_setup.dart';
 import 'package:utils/utils.dart';
 
 extension ProfileVisibilityExtensions on ProfileVisibility {
-  bool isInitialModerationOngoing() {
-    return this == ProfileVisibility.pendingPrivate || this == ProfileVisibility.pendingPublic;
-  }
-
-  /// Convert visibility to boolean without the pending state
   bool isPublic() {
-    return this == ProfileVisibility.public || this == ProfileVisibility.pendingPublic;
+    return this == ProfileVisibility.public;
   }
 }
 
@@ -112,8 +107,8 @@ extension UtcDateTimeExtensions on UtcDateTime {
 
 extension ContentInfoDetailedExtensions on ContentInfoDetailed {
   bool accepted() {
-    return state == ContentModerationState.acceptedByBot ||
-        state == ContentModerationState.acceptedByHuman;
+    return state == ContentModerationState.acceptedByAdminBot ||
+        state == ContentModerationState.acceptedByAdmin;
   }
 }
 
@@ -189,24 +184,24 @@ extension ClientFeaturesConfigExtensions on ClientFeaturesConfig {
 
 extension ProfileStringModerationStateExtensions on ProfileStringModerationState {
   bool isRejected() {
-    return this == ProfileStringModerationState.rejectedByBot ||
-        this == ProfileStringModerationState.rejectedByHuman;
+    return this == ProfileStringModerationState.rejectedByAdminBot ||
+        this == ProfileStringModerationState.rejectedByAdmin;
   }
 }
 
 extension ContentModerationStateExtensions on ContentModerationState {
   bool isRejected() {
-    return this == ContentModerationState.rejectedByBot ||
-        this == ContentModerationState.rejectedByHuman;
+    return this == ContentModerationState.rejectedByAdminBot ||
+        this == ContentModerationState.rejectedByAdmin;
   }
 
   bool isAccepted() {
-    return this == ContentModerationState.acceptedByBot ||
-        this == ContentModerationState.acceptedByHuman;
+    return this == ContentModerationState.acceptedByAdminBot ||
+        this == ContentModerationState.acceptedByAdmin;
   }
 
   bool waitingModeration() {
-    return this == ContentModerationState.waitingBotOrHumanModeration ||
-        this == ContentModerationState.waitingHumanModeration;
+    return this == ContentModerationState.waitingAdminBot ||
+        this == ContentModerationState.waitingAdmin;
   }
 }

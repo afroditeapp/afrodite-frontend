@@ -23,15 +23,11 @@ class ProfileVisibility {
 
   String toJson() => value;
 
-  static const pendingPrivate = ProfileVisibility._(r'PendingPrivate');
-  static const pendingPublic = ProfileVisibility._(r'PendingPublic');
   static const private = ProfileVisibility._(r'Private');
   static const public = ProfileVisibility._(r'Public');
 
   /// List of all possible values in this [enum][ProfileVisibility].
   static const values = <ProfileVisibility>[
-    pendingPrivate,
-    pendingPublic,
     private,
     public,
   ];
@@ -72,8 +68,6 @@ class ProfileVisibilityTypeTransformer {
   ProfileVisibility? decode(dynamic data, {bool allowNull = true}) {
     if (data != null) {
       switch (data) {
-        case r'PendingPrivate': return ProfileVisibility.pendingPrivate;
-        case r'PendingPublic': return ProfileVisibility.pendingPublic;
         case r'Private': return ProfileVisibility.private;
         case r'Public': return ProfileVisibility.public;
         default:

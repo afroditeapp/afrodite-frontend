@@ -7,16 +7,15 @@ import 'package:app/localizations.dart';
 extension ProfileStringModerationStateUiExtensions on ProfileStringModerationState {
   String? toUiString(BuildContext context) {
     return switch (this) {
-      ProfileStringModerationState.waitingBotOrHumanModeration =>
-        context.strings.moderation_state_waiting_bot_or_human_moderation,
-      ProfileStringModerationState.waitingHumanModeration =>
-        context.strings.moderation_state_waiting_human_moderation,
-      ProfileStringModerationState.acceptedByBot ||
-      ProfileStringModerationState.acceptedByHuman => context.strings.moderation_state_accepted,
-      ProfileStringModerationState.rejectedByBot =>
-        context.strings.moderation_state_rejected_by_bot,
-      ProfileStringModerationState.rejectedByHuman =>
-        context.strings.moderation_state_rejected_by_human,
+      ProfileStringModerationState.waitingAdminBot =>
+        context.strings.moderation_state_waiting_admin_bot,
+      ProfileStringModerationState.waitingAdmin => context.strings.moderation_state_waiting_admin,
+      ProfileStringModerationState.acceptedByAdminBot ||
+      ProfileStringModerationState.acceptedByAdmin => context.strings.moderation_state_accepted,
+      ProfileStringModerationState.rejectedByAdminBot =>
+        context.strings.moderation_state_rejected_by_admin_bot,
+      ProfileStringModerationState.rejectedByAdmin =>
+        context.strings.moderation_state_rejected_by_admin,
       _ => null,
     };
   }
@@ -26,14 +25,13 @@ extension ContentModerationStateUiExtensions on ContentModerationState {
   String? toUiString(BuildContext context) {
     return switch (this) {
       ContentModerationState.inSlot => null,
-      ContentModerationState.waitingBotOrHumanModeration =>
-        context.strings.moderation_state_waiting_bot_or_human_moderation,
-      ContentModerationState.waitingHumanModeration =>
-        context.strings.moderation_state_waiting_human_moderation,
-      ContentModerationState.acceptedByBot ||
-      ContentModerationState.acceptedByHuman => context.strings.moderation_state_accepted,
-      ContentModerationState.rejectedByBot => context.strings.moderation_state_rejected_by_bot,
-      ContentModerationState.rejectedByHuman => context.strings.moderation_state_rejected_by_human,
+      ContentModerationState.waitingAdminBot => context.strings.moderation_state_waiting_admin_bot,
+      ContentModerationState.waitingAdmin => context.strings.moderation_state_waiting_admin,
+      ContentModerationState.acceptedByAdminBot ||
+      ContentModerationState.acceptedByAdmin => context.strings.moderation_state_accepted,
+      ContentModerationState.rejectedByAdminBot =>
+        context.strings.moderation_state_rejected_by_admin_bot,
+      ContentModerationState.rejectedByAdmin => context.strings.moderation_state_rejected_by_admin,
       _ => null,
     };
   }

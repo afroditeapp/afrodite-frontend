@@ -590,7 +590,7 @@ class MediaApi {
 
   /// Report profile content.
   ///
-  /// If profile content is reported and it is bot moderated, the content's moderation state changes to [model_media::ContentModerationState::WaitingHumanModeration].
+  /// If profile content is reported and it is bot moderated, the content's moderation state changes to [model_media::ContentModerationState::WaitingAdmin].
   ///
   /// Note: This method returns the HTTP [Response].
   ///
@@ -624,7 +624,7 @@ class MediaApi {
 
   /// Report profile content.
   ///
-  /// If profile content is reported and it is bot moderated, the content's moderation state changes to [model_media::ContentModerationState::WaitingHumanModeration].
+  /// If profile content is reported and it is bot moderated, the content's moderation state changes to [model_media::ContentModerationState::WaitingAdmin].
   ///
   /// Parameters:
   ///

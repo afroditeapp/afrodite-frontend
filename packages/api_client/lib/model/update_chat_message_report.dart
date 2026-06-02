@@ -13,37 +13,31 @@ part of openapi.api;
 class UpdateChatMessageReport {
   /// Returns a new [UpdateChatMessageReport] instance.
   UpdateChatMessageReport({
-    required this.decryptionKeyBase64,
-    required this.serverSignedMessageBase64,
+    this.messages = const [],
     required this.target,
   });
 
-  String decryptionKeyBase64;
-
-  String serverSignedMessageBase64;
+  List<ChatMessageReportData> messages;
 
   AccountId target;
 
   @override
   bool operator ==(Object other) => identical(this, other) || other is UpdateChatMessageReport &&
-    other.decryptionKeyBase64 == decryptionKeyBase64 &&
-    other.serverSignedMessageBase64 == serverSignedMessageBase64 &&
+    _deepEquality.equals(other.messages, messages) &&
     other.target == target;
 
   @override
   int get hashCode =>
     // ignore: unnecessary_parenthesis
-    (decryptionKeyBase64.hashCode) +
-    (serverSignedMessageBase64.hashCode) +
+    (messages.hashCode) +
     (target.hashCode);
 
   @override
-  String toString() => 'UpdateChatMessageReport[decryptionKeyBase64=$decryptionKeyBase64, serverSignedMessageBase64=$serverSignedMessageBase64, target=$target]';
+  String toString() => 'UpdateChatMessageReport[messages=$messages, target=$target]';
 
   Map<String, dynamic> toJson() {
     final json = <String, dynamic>{};
-      json[r'decryption_key_base64'] = this.decryptionKeyBase64;
-      json[r'server_signed_message_base64'] = this.serverSignedMessageBase64;
+      json[r'messages'] = this.messages;
       json[r'target'] = this.target;
     return json;
   }
@@ -67,8 +61,7 @@ class UpdateChatMessageReport {
       }());
 
       return UpdateChatMessageReport(
-        decryptionKeyBase64: mapValueOfType<String>(json, r'decryption_key_base64')!,
-        serverSignedMessageBase64: mapValueOfType<String>(json, r'server_signed_message_base64')!,
+        messages: ChatMessageReportData.listFromJson(json[r'messages']),
         target: AccountId.fromJson(json[r'target'])!,
       );
     }
@@ -117,8 +110,7 @@ class UpdateChatMessageReport {
 
   /// The list of required keys that must be present in a JSON.
   static const requiredKeys = <String>{
-    'decryption_key_base64',
-    'server_signed_message_base64',
+    'messages',
     'target',
   };
 }

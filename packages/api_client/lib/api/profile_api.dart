@@ -1130,7 +1130,7 @@ class ProfileApi {
 
   /// Report profile name
   ///
-  /// If profile name is reported and it is bot moderated, the name's moderation state changes to [model_profile::ProfileStringModerationState::WaitingHumanModeration].
+  /// If profile name is reported and it is bot moderated, the name's moderation state changes to [model_profile::ProfileStringModerationState::WaitingAdmin].
   ///
   /// Note: This method returns the HTTP [Response].
   ///
@@ -1164,7 +1164,7 @@ class ProfileApi {
 
   /// Report profile name
   ///
-  /// If profile name is reported and it is bot moderated, the name's moderation state changes to [model_profile::ProfileStringModerationState::WaitingHumanModeration].
+  /// If profile name is reported and it is bot moderated, the name's moderation state changes to [model_profile::ProfileStringModerationState::WaitingAdmin].
   ///
   /// Parameters:
   ///
@@ -1186,7 +1186,7 @@ class ProfileApi {
 
   /// Report profile text
   ///
-  /// If profile text is reported and it is bot moderated, the text's moderation state changes to [model_profile::ProfileStringModerationState::WaitingHumanModeration].
+  /// If profile text is reported and it is bot moderated, the text's moderation state changes to [model_profile::ProfileStringModerationState::WaitingAdmin].
   ///
   /// Note: This method returns the HTTP [Response].
   ///
@@ -1220,7 +1220,7 @@ class ProfileApi {
 
   /// Report profile text
   ///
-  /// If profile text is reported and it is bot moderated, the text's moderation state changes to [model_profile::ProfileStringModerationState::WaitingHumanModeration].
+  /// If profile text is reported and it is bot moderated, the text's moderation state changes to [model_profile::ProfileStringModerationState::WaitingAdmin].
   ///
   /// Parameters:
   ///

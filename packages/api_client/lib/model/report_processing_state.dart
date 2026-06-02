@@ -24,12 +24,18 @@ class ReportProcessingState {
   String toJson() => value;
 
   static const waiting = ReportProcessingState._(r'Waiting');
-  static const done = ReportProcessingState._(r'Done');
+  static const validByAdminBot = ReportProcessingState._(r'ValidByAdminBot');
+  static const validByAdmin = ReportProcessingState._(r'ValidByAdmin');
+  static const invalidByAdminBot = ReportProcessingState._(r'InvalidByAdminBot');
+  static const invalidByAdmin = ReportProcessingState._(r'InvalidByAdmin');
 
   /// List of all possible values in this [enum][ReportProcessingState].
   static const values = <ReportProcessingState>[
     waiting,
-    done,
+    validByAdminBot,
+    validByAdmin,
+    invalidByAdminBot,
+    invalidByAdmin,
   ];
 
   static ReportProcessingState? fromJson(dynamic value) => ReportProcessingStateTypeTransformer().decode(value);
@@ -69,7 +75,10 @@ class ReportProcessingStateTypeTransformer {
     if (data != null) {
       switch (data) {
         case r'Waiting': return ReportProcessingState.waiting;
-        case r'Done': return ReportProcessingState.done;
+        case r'ValidByAdminBot': return ReportProcessingState.validByAdminBot;
+        case r'ValidByAdmin': return ReportProcessingState.validByAdmin;
+        case r'InvalidByAdminBot': return ReportProcessingState.invalidByAdminBot;
+        case r'InvalidByAdmin': return ReportProcessingState.invalidByAdmin;
         default:
           if (!allowNull) {
             throw ArgumentError('Unknown enum value to decode: $data');

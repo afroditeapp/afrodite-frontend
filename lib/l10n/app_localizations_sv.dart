@@ -1345,16 +1345,16 @@ class AppLocalizationsSv extends AppLocalizations {
   String get moderation_state_accepted => 'Accepted';
 
   @override
-  String get moderation_state_rejected_by_bot => 'Rejected by bot';
+  String get moderation_state_rejected_by_admin => 'Rejected by admin';
 
   @override
-  String get moderation_state_rejected_by_human => 'Rejected by human';
+  String get moderation_state_rejected_by_admin_bot => 'Rejected by admin bot';
 
   @override
-  String get moderation_state_waiting_bot_or_human_moderation => 'Waiting bot or human moderation';
+  String get moderation_state_waiting_admin => 'Waiting admin';
 
   @override
-  String get moderation_state_waiting_human_moderation => 'Waiting human moderation';
+  String get moderation_state_waiting_admin_bot => 'Waiting admin bot';
 
   @override
   String get news_list_screen_create_new => 'Create new?';
@@ -1671,10 +1671,6 @@ class AppLocalizationsSv extends AppLocalizations {
       'Filtering favorite profiles is not supported';
 
   @override
-  String get profile_grid_screen_initial_moderation_ongoing =>
-      'You can view profiles and others can see your profile after your profile images are moderated.';
-
-  @override
   String get profile_grid_screen_no_favorite_profiles_found_description =>
       'Mark a profile as a favorite to add it here.';
 
@@ -1699,6 +1695,10 @@ class AppLocalizationsSv extends AppLocalizations {
   @override
   String get profile_grid_screen_primary_profile_content_face_not_detected =>
       'Face is not detected from first profile picture';
+
+  @override
+  String get profile_grid_screen_primary_profile_content_is_in_moderation =>
+      'You can view profiles and others can see your profile after the first profile picture is moderated';
 
   @override
   String get profile_grid_screen_primary_profile_content_is_not_accepted =>
@@ -2000,10 +2000,6 @@ class AppLocalizationsSv extends AppLocalizations {
 
   @override
   String get settings_screen_profile_category => 'Profile';
-
-  @override
-  String get settings_screen_profile_visiblity_pending_public_description =>
-      'Show your profile in Profiles view once images are moderated';
 
   @override
   String get settings_screen_profile_visiblity_private_description =>

@@ -144,10 +144,8 @@ class _SettingsScreenState extends State<SettingsScreen> {
   Widget profileVisibilitySetting(BuildContext context, ProfileVisibilityData state) {
     final ProfileVisibility visibility = state.valueVisibility();
     final String descriptionForVisibility = switch (visibility) {
-      ProfileVisibility.pendingPrivate || ProfileVisibility.private =>
+      ProfileVisibility.private =>
         context.strings.settings_screen_profile_visiblity_private_description,
-      ProfileVisibility.pendingPublic =>
-        context.strings.settings_screen_profile_visiblity_pending_public_description,
       ProfileVisibility.public =>
         context.strings.settings_screen_profile_visiblity_public_description,
       _ => context.strings.generic_error,

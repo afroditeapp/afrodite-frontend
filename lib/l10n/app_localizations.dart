@@ -2452,29 +2452,29 @@ abstract class AppLocalizations {
   /// **'Accepted'**
   String get moderation_state_accepted;
 
-  /// Moderation state rejected by bot
+  /// Moderation state rejected by admin
   ///
   /// In en, this message translates to:
-  /// **'Rejected by bot'**
-  String get moderation_state_rejected_by_bot;
+  /// **'Rejected by admin'**
+  String get moderation_state_rejected_by_admin;
 
-  /// Moderation state rejected by human
+  /// Moderation state rejected by admin bot
   ///
   /// In en, this message translates to:
-  /// **'Rejected by human'**
-  String get moderation_state_rejected_by_human;
+  /// **'Rejected by admin bot'**
+  String get moderation_state_rejected_by_admin_bot;
 
-  /// Moderation state waiting bot or human moderation
+  /// Moderation state waiting admin
   ///
   /// In en, this message translates to:
-  /// **'Waiting bot or human moderation'**
-  String get moderation_state_waiting_bot_or_human_moderation;
+  /// **'Waiting admin'**
+  String get moderation_state_waiting_admin;
 
-  /// Moderation state waiting human moderation
+  /// Moderation state waiting admin bot
   ///
   /// In en, this message translates to:
-  /// **'Waiting human moderation'**
-  String get moderation_state_waiting_human_moderation;
+  /// **'Waiting admin bot'**
+  String get moderation_state_waiting_admin_bot;
 
   /// Dialog title for create new news item confirmation dialog
   ///
@@ -3010,12 +3010,6 @@ abstract class AppLocalizations {
   /// **'Filtering favorite profiles is not supported'**
   String get profile_grid_screen_filtering_favorite_profiles_is_not_supported;
 
-  /// Info text that initial moderation is ongoing
-  ///
-  /// In en, this message translates to:
-  /// **'You can view profiles and others can see your profile after your profile images are moderated.'**
-  String get profile_grid_screen_initial_moderation_ongoing;
-
   /// Description that no favorite profiles were found
   ///
   /// In en, this message translates to:
@@ -3057,6 +3051,12 @@ abstract class AppLocalizations {
   /// In en, this message translates to:
   /// **'Face is not detected from first profile picture'**
   String get profile_grid_screen_primary_profile_content_face_not_detected;
+
+  /// Info text that primary profile content is in moderation
+  ///
+  /// In en, this message translates to:
+  /// **'You can view profiles and others can see your profile after the first profile picture is moderated'**
+  String get profile_grid_screen_primary_profile_content_is_in_moderation;
 
   /// Text displayed when primary profile content is not accepted
   ///
@@ -3597,12 +3597,6 @@ abstract class AppLocalizations {
   /// In en, this message translates to:
   /// **'Profile'**
   String get settings_screen_profile_category;
-
-  /// Description for pending public profile visibility
-  ///
-  /// In en, this message translates to:
-  /// **'Show your profile in Profiles view once images are moderated'**
-  String get settings_screen_profile_visiblity_pending_public_description;
 
   /// Description for private profile visibility
   ///

@@ -17,6 +17,7 @@ class ProcessReport {
     required this.creator,
     required this.reportType,
     required this.target,
+    required this.valid,
   });
 
   ReportContent content;
@@ -27,12 +28,16 @@ class ProcessReport {
 
   AccountId target;
 
+  /// True marks the report as Valid, false marks it as Invalid.
+  bool valid;
+
   @override
   bool operator ==(Object other) => identical(this, other) || other is ProcessReport &&
     other.content == content &&
     other.creator == creator &&
     other.reportType == reportType &&
-    other.target == target;
+    other.target == target &&
+    other.valid == valid;
 
   @override
   int get hashCode =>
@@ -40,10 +45,11 @@ class ProcessReport {
     (content.hashCode) +
     (creator.hashCode) +
     (reportType.hashCode) +
-    (target.hashCode);
+    (target.hashCode) +
+    (valid.hashCode);
 
   @override
-  String toString() => 'ProcessReport[content=$content, creator=$creator, reportType=$reportType, target=$target]';
+  String toString() => 'ProcessReport[content=$content, creator=$creator, reportType=$reportType, target=$target, valid=$valid]';
 
   Map<String, dynamic> toJson() {
     final json = <String, dynamic>{};
@@ -51,6 +57,7 @@ class ProcessReport {
       json[r'creator'] = this.creator;
       json[r'report_type'] = this.reportType;
       json[r'target'] = this.target;
+      json[r'valid'] = this.valid;
     return json;
   }
 
@@ -77,6 +84,7 @@ class ProcessReport {
         creator: AccountId.fromJson(json[r'creator'])!,
         reportType: ReportType.fromJson(json[r'report_type'])!,
         target: AccountId.fromJson(json[r'target'])!,
+        valid: mapValueOfType<bool>(json, r'valid')!,
       );
     }
     return null;
@@ -128,6 +136,7 @@ class ProcessReport {
     'creator',
     'report_type',
     'target',
+    'valid',
   };
 }
 
