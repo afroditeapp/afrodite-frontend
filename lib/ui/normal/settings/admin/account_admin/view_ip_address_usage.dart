@@ -3,9 +3,10 @@ import 'package:app/data/utils/repository_instances.dart';
 import 'package:app/localizations.dart';
 import 'package:app/logic/account/client_features_config.dart';
 import 'package:app/model/freezed/logic/main/navigator_state.dart';
+import 'package:app/ui_utils/extensions/locale.dart';
 import 'package:app/ui_utils/padding.dart';
+import 'package:app/ui_utils/time.dart';
 import 'package:app/utils/api.dart';
-import 'package:app/utils/time.dart';
 import 'package:flutter/material.dart';
 import 'package:app/ui_utils/snack_bar.dart';
 import 'package:app/utils/result.dart';
@@ -119,8 +120,9 @@ class IpInfoWidget extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
-    final latest = "Latest usage: ${fullTimeString(ip.l.toUtcDateTime())}";
-    final first = "First usage: ${fullTimeString(ip.f.toUtcDateTime())}";
+    final localeString = Localizations.localeOf(context).localeString();
+    final latest = "Latest usage: ${fullTimeString(ip.l.toUtcDateTime(), localeString)}";
+    final first = "First usage: ${fullTimeString(ip.f.toUtcDateTime(), localeString)}";
 
     final String? listInfo;
     if (ip.lists.isNotEmpty) {

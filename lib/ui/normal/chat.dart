@@ -6,8 +6,9 @@ import 'package:app/data/utils/repository_instances.dart';
 import 'package:app/ui/normal/chat/chat_backup_remainder.dart';
 import 'package:app/ui/normal/chat/chat_data_outdated_widget.dart';
 import 'package:app/ui_utils/profile_thumbnail_status_indicators.dart';
+import 'package:app/ui_utils/extensions/locale.dart';
+import 'package:app/ui_utils/time.dart' as ui_time;
 import 'package:app/utils/result.dart';
-import 'package:app/utils/time.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:logging/logging.dart';
@@ -447,7 +448,11 @@ class ConversationListItem extends StatelessWidget {
         ),
         const Spacer(),
         if (messageTime != null) const Padding(padding: EdgeInsets.only(left: 8)),
-        if (messageTime != null) Text(timeString(messageTime), style: textStyle),
+        if (messageTime != null)
+          Text(
+            ui_time.timeString(messageTime, Localizations.localeOf(context).localeString()),
+            style: textStyle,
+          ),
       ],
     );
   }

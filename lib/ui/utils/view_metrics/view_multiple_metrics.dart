@@ -7,7 +7,8 @@ import 'package:app/ui_utils/dialog.dart';
 import 'package:app/ui_utils/padding.dart';
 import 'package:app/ui_utils/slider.dart';
 import 'package:app/utils/api.dart';
-import 'package:app/utils/time.dart';
+import 'package:app/ui_utils/extensions/locale.dart';
+import 'package:app/ui_utils/time.dart';
 import 'package:collection/collection.dart';
 import 'package:fl_chart/fl_chart.dart';
 import 'package:flutter/material.dart';
@@ -345,7 +346,8 @@ class _ViewMultipleMetricsState extends State<ViewMultipleMetrics>
                 final utcTime = UnixTime(ut: touchedSpot.x.toInt()).toUtcDateTime();
                 final String text;
                 if (index == 0) {
-                  text = "${fullTimeString(utcTime)}\n$name ${touchedSpot.y.toInt()}";
+                  text =
+                      "${fullTimeString(utcTime, Localizations.localeOf(context).localeString())}\n$name ${touchedSpot.y.toInt()}";
                 } else {
                   text = "$name ${touchedSpot.y.toInt()}";
                 }
@@ -370,7 +372,10 @@ class _ViewMultipleMetricsState extends State<ViewMultipleMetrics>
                     value == xMax ||
                     (value >= xAxisCenterAreaMin && value <= xAxisCenterAreaMax);
                 final utcTime = UnixTime(ut: value.toInt()).toUtcDateTime();
-                final timeText = timeString(utcTime);
+                final timeText = timeString(
+                  utcTime,
+                  Localizations.localeOf(context).localeString(),
+                );
                 if (upperTimeText) {
                   return Padding(padding: const EdgeInsets.only(top: 4), child: Text(timeText));
                 } else {

@@ -1,6 +1,7 @@
 import 'package:app/ui/utils/view_metrics.dart';
 import 'package:app/utils/api.dart';
-import 'package:app/utils/time.dart';
+import 'package:app/ui_utils/extensions/locale.dart';
+import 'package:app/ui_utils/time.dart';
 import 'package:fl_chart/fl_chart.dart';
 import 'package:flutter/material.dart';
 import 'package:openapi/api.dart';
@@ -142,7 +143,8 @@ class _ViewSingleMetricState extends State<ViewSingleMetric> {
             getTooltipItems: (touchedSpots) {
               return touchedSpots.map((touchedSpot) {
                 final utcTime = UnixTime(ut: touchedSpot.x.toInt()).toUtcDateTime();
-                final text = "${fullTimeString(utcTime)}\n${touchedSpot.y.toInt()}";
+                final text =
+                    "${fullTimeString(utcTime, Localizations.localeOf(context).localeString())}\n${touchedSpot.y.toInt()}";
                 return LineTooltipItem(text, Theme.of(context).textTheme.labelLarge!);
               }).toList();
             },
@@ -162,7 +164,10 @@ class _ViewSingleMetricState extends State<ViewSingleMetric> {
                     value == data.last.x ||
                     (value >= xAxisCenterAreaMin && value <= xAxisCenterAreaMax);
                 final utcTime = UnixTime(ut: value.toInt()).toUtcDateTime();
-                final timeText = timeString(utcTime);
+                final timeText = timeString(
+                  utcTime,
+                  Localizations.localeOf(context).localeString(),
+                );
                 if (upperTimeText) {
                   return Padding(padding: const EdgeInsets.only(top: 4), child: Text(timeText));
                 } else {

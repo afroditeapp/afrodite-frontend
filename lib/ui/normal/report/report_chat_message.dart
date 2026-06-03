@@ -6,7 +6,8 @@ import 'package:app/ui/normal/chat/utils.dart';
 import 'package:app/ui_utils/snack_bar.dart';
 import 'package:app/ui_utils/consts/padding.dart';
 import 'package:app/utils/result.dart';
-import 'package:app/utils/time.dart';
+import 'package:app/ui_utils/extensions/locale.dart';
+import 'package:app/ui_utils/time.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:openapi/api.dart';
@@ -199,7 +200,7 @@ class _ReportChatMessageScreen extends State<ReportChatMessageScreen> {
     final timeTextWidget = Padding(
       padding: const EdgeInsets.symmetric(horizontal: 8.0),
       child: Text(
-        timeString(entry.userVisibleTime()),
+        timeString(entry.userVisibleTime(), Localizations.localeOf(context).localeString()),
         style: Theme.of(context).textTheme.bodySmall,
         overflow: TextOverflow.ellipsis,
       ),

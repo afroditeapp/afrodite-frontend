@@ -4,7 +4,8 @@ import 'package:app/model/freezed/logic/account/info_banners.dart';
 import 'package:app/localizations.dart';
 import 'package:app/ui_utils/attribute/icon.dart';
 import 'package:app/ui_utils/extensions/api.dart';
-import 'package:app/utils/time.dart';
+import 'package:app/ui_utils/extensions/locale.dart';
+import 'package:app/ui_utils/time.dart';
 import 'package:database/database.dart';
 import 'package:flutter/foundation.dart';
 import 'package:flutter/material.dart';
@@ -107,13 +108,14 @@ class InfoBannersWidget extends StatelessWidget {
       return bodies;
     }
 
-    final startTimeString = fullTimeString(startTime);
+    final localeString = Localizations.localeOf(context).localeString();
+    final startTimeString = fullTimeString(startTime, localeString);
     final endTime = state?.endTime;
     String endTimeString;
     if (endTime == null) {
       endTimeString = "";
     } else {
-      endTimeString = fullTimeString(endTime);
+      endTimeString = fullTimeString(endTime, localeString);
       final startDate = startTimeString.split(" ").firstOrNull;
       if (startDate != null && endTimeString.startsWith(startDate)) {
         endTimeString = endTimeString.replaceFirst(startDate, "").trimLeft();

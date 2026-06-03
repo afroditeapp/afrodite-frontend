@@ -11,13 +11,14 @@ import 'package:app/model/freezed/logic/account/client_features_config.dart';
 import 'package:app/model/freezed/logic/profile/my_profile.dart';
 import 'package:app/model/freezed/logic/main/navigator_state.dart';
 import 'package:app/ui/normal/profiles/profile_filters/profile_verification_flags.dart';
+import 'package:app/ui_utils/extensions/locale.dart';
 import 'package:app/ui_utils/snack_bar.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:openapi/api.dart';
 import 'package:app/utils/result.dart';
 import 'package:app/utils/api.dart';
-import 'package:app/utils/time.dart';
+import 'package:app/ui_utils/time.dart';
 
 bool isAccessToAccountVerificationScreenPossible({
   required AccountVerificationMethodsConfig methods,
@@ -340,7 +341,10 @@ class _AccountVerificationSettingsScreenState extends State<AccountVerificationS
             leading: const Icon(Icons.history),
             title: Text(
               context.strings.account_verification_screen_previous_verification_time(
-                fullTimeWithSecondsString(_previousVerificationUnixTime!.toUtcDateTime()),
+                fullTimeWithSecondsString(
+                  _previousVerificationUnixTime!.toUtcDateTime(),
+                  Localizations.localeOf(context).localeString(),
+                ),
               ),
             ),
           ),

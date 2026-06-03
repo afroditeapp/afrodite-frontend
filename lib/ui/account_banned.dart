@@ -6,7 +6,8 @@ import "package:app/ui_utils/extensions/api.dart";
 import "package:app/ui_utils/list.dart";
 import "package:app/utils/api.dart";
 import "package:app/utils/result.dart";
-import "package:app/utils/time.dart";
+import 'package:app/ui_utils/extensions/locale.dart';
+import 'package:app/ui_utils/time.dart';
 import "package:flutter/material.dart";
 import "package:app/localizations.dart";
 import "package:openapi/api.dart";
@@ -109,7 +110,10 @@ class _AccountBannedScreenState extends State<AccountBannedScreen> {
     } else {
       final String? banReason = result.reasonDetails?.value;
       final String? banReasonCategory = _banReasonCategoryText(context, result.reasonCategory);
-      final localTime = fullTimeString(bannedUntil.toUtcDateTime());
+      final localTime = fullTimeString(
+        bannedUntil.toUtcDateTime(),
+        Localizations.localeOf(context).localeString(),
+      );
       widgets = [
         Text(context.strings.account_banned_screen_time_text(localTime)),
         const Padding(padding: EdgeInsets.only(top: 8)),

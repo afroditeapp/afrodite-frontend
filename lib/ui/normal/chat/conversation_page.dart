@@ -12,6 +12,7 @@ import 'package:app/ui/normal/chat/chat_list/lazy_quotation.dart';
 import 'package:app/ui/normal/chat/utils.dart';
 import 'package:app/ui/normal/report/report.dart';
 import 'package:app/ui_utils/dialog.dart';
+import 'package:app/ui_utils/extensions/locale.dart';
 import 'package:app/ui_utils/navigation/url.dart';
 import 'package:app/ui_utils/profile_thumbnail_status_indicators.dart';
 import 'package:app/utils/api.dart';
@@ -338,6 +339,7 @@ class ConversationScreenState extends State<ConversationScreen> {
             messageStateSeenEnabled:
                 widget.chatPrivacySettings.messageStateSeen &&
                 clientFeaturesChat?.messageStateSeen == true,
+            localeString: Localizations.localeOf(context).localeString(),
           );
         }
       },

@@ -12,7 +12,8 @@ import 'package:app/ui_utils/extensions/api.dart';
 import 'package:app/ui_utils/dialog.dart';
 import 'package:app/ui_utils/image.dart';
 import 'package:app/ui_utils/moderation.dart';
-import 'package:app/utils/time.dart';
+import 'package:app/ui_utils/extensions/locale.dart';
+import 'package:app/ui_utils/time.dart';
 import 'package:database/database.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
@@ -292,7 +293,8 @@ Widget _statusInfo(
     if (currentTime.difference(deletionAllowed).inSeconds >= 0) {
       deleteButton = _createDeleteButton(context, accountId, content.cid);
     } else {
-      final timeString = fullTimeString(deletionAllowed);
+      final localeString = Localizations.localeOf(context).localeString();
+      final timeString = fullTimeString(deletionAllowed, localeString);
       stateTexts.add(
         context.strings.content_management_screen_content_deletion_allowed_wait_time(timeString),
       );

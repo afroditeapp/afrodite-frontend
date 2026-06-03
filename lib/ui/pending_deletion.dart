@@ -8,7 +8,8 @@ import "package:app/ui_utils/list.dart";
 import "package:app/ui_utils/snack_bar.dart";
 import "package:app/utils/api.dart";
 import "package:app/utils/result.dart";
-import "package:app/utils/time.dart";
+import 'package:app/ui_utils/extensions/locale.dart';
+import 'package:app/ui_utils/time.dart';
 import "package:flutter/material.dart";
 import "package:openapi/api.dart";
 
@@ -96,7 +97,10 @@ class _PendingDeletionScreenState extends State<PendingDeletionScreen> {
     if (deletionAllowedTime == null) {
       widgets = [Text(context.strings.generic_error_occurred)];
     } else {
-      final localTime = fullTimeString(deletionAllowedTime.toUtcDateTime());
+      final localTime = fullTimeString(
+        deletionAllowedTime.toUtcDateTime(),
+        Localizations.localeOf(context).localeString(),
+      );
       widgets = [
         Text(context.strings.account_deletion_pending_screen_time_text(localTime)),
         const Padding(padding: EdgeInsets.only(top: 8)),

@@ -4,7 +4,8 @@ import 'package:app/localizations.dart';
 import 'package:app/model/freezed/logic/main/navigator_state.dart';
 import 'package:app/ui_utils/padding.dart';
 import 'package:app/utils/api.dart';
-import 'package:app/utils/time.dart';
+import 'package:app/ui_utils/extensions/locale.dart';
+import 'package:app/ui_utils/time.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:openapi/api.dart';
@@ -81,14 +82,14 @@ class _EditMaintenanceNotificationScreenState extends State<EditMaintenanceNotif
         if (startTime == null) {
           start = "null";
         } else {
-          start = fullTimeString(startTime);
+          start = fullTimeString(startTime, Localizations.localeOf(context).localeString());
         }
         final endTime = _currentState?.end?.toUtcDateTime();
         final String end;
         if (endTime == null) {
           end = "null";
         } else {
-          end = fullTimeString(endTime);
+          end = fullTimeString(endTime, Localizations.localeOf(context).localeString());
         }
 
         final widgets = [
@@ -125,9 +126,9 @@ class _EditMaintenanceNotificationScreenState extends State<EditMaintenanceNotif
           showSnackBar(context.strings.generic_previous_action_in_progress);
           return;
         }
-
-        final startTime = _startTime.timeInfo();
-        final endTime = _endTime.timeInfo();
+        final localeString = Localizations.localeOf(context).localeString();
+        final startTime = _startTime.timeInfo(localeString);
+        final endTime = _endTime.timeInfo(localeString);
         final maintenanceStatus = ServerMaintenanceStatus(start: startTime?.$1, end: endTime?.$1);
         final startTimeText = startTime?.$2 ?? "null";
         final endTimeText = endTime?.$2 ?? "null";
@@ -186,7 +187,7 @@ class EditDateAndTimeController with ChangeNotifier {
     notifyListeners();
   }
 
-  (UnixTime, String)? timeInfo() {
+  (UnixTime, String)? timeInfo(String localeString) {
     final currentSelection = _selectedDate;
     if (currentSelection != null) {
       var currentDateSelection = UtcDateTime.fromDateTime(currentSelection);
@@ -195,15 +196,13 @@ class EditDateAndTimeController with ChangeNotifier {
       if (hour != null && minute != null) {
         currentDateSelection = currentDateSelection.add(Duration(hours: hour, minutes: minute));
       }
-      return (currentDateSelection.toUnixTime(), fullTimeString(currentDateSelection));
+      return (
+        currentDateSelection.toUnixTime(),
+        fullTimeString(currentDateSelection, localeString),
+      );
     } else {
       return null;
     }
-  }
-
-  @override
-  String toString() {
-    return timeInfo()?.$2.toString() ?? "null";
   }
 }
 
@@ -270,7 +269,9 @@ class _EditDateAndTimeState extends State<EditDateAndTime> {
       const Padding(padding: EdgeInsets.all(8.0)),
       timeButton,
       const Padding(padding: EdgeInsets.all(8.0)),
-      Text(widget.controller.toString()),
+      Text(
+        widget.controller.timeInfo(Localizations.localeOf(context).localeString())?.$2 ?? "null",
+      ),
     ];
 
     return Column(

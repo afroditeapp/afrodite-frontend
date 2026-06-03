@@ -4,7 +4,8 @@ import 'package:app/localizations.dart';
 import 'package:app/model/freezed/logic/main/navigator_state.dart';
 import 'package:app/ui_utils/padding.dart';
 import 'package:app/utils/api.dart';
-import 'package:app/utils/time.dart';
+import 'package:app/ui_utils/extensions/locale.dart';
+import 'package:app/ui_utils/time.dart';
 import 'package:flutter/material.dart';
 import 'package:openapi/api.dart';
 import 'package:app/ui_utils/dialog.dart';
@@ -294,7 +295,14 @@ class _ServerTasksScreenState extends State<ServerTasksScreen> {
       crossAxisAlignment: CrossAxisAlignment.start,
       children: [
         hPad(Text("Start time", style: Theme.of(context).textTheme.titleSmall)),
-        hPad(Text(fullTimeString(info.time.toUtcDateTime()))),
+        hPad(
+          Text(
+            fullTimeString(
+              info.time.toUtcDateTime(),
+              Localizations.localeOf(context).localeString(),
+            ),
+          ),
+        ),
         const Padding(padding: EdgeInsets.all(8.0)),
         hPad(Text("Notify server", style: Theme.of(context).textTheme.titleSmall)),
         hPad(Text(info.notifyServer.toString())),

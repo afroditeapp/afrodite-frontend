@@ -15,7 +15,8 @@ import 'package:app/ui/normal/settings.dart';
 import 'package:app/ui_utils/common_update_logic.dart';
 import 'package:app/ui_utils/dialog.dart';
 import 'package:app/ui_utils/padding.dart';
-import 'package:app/utils/time.dart';
+import 'package:app/ui_utils/extensions/locale.dart';
+import 'package:app/ui_utils/time.dart';
 import 'package:utils/utils.dart';
 
 void openAccountSettings(BuildContext context) {
@@ -196,7 +197,10 @@ class _AccountSettingsScreenState extends State<AccountSettingsScreen> {
             hPad(
               Text(
                 context.strings.account_settings_screen_pending_email_completion_time(
-                  fullTimeString(emailChangeCompletionTime),
+                  fullTimeString(
+                    emailChangeCompletionTime,
+                    Localizations.localeOf(context).localeString(),
+                  ),
                 ),
               ),
             ),

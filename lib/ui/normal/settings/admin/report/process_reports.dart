@@ -17,7 +17,8 @@ import 'package:app/utils/api.dart';
 import 'package:app/utils/app_error.dart';
 import 'package:app/utils/list.dart';
 import 'package:app/utils/result.dart';
-import 'package:app/utils/time.dart';
+import 'package:app/ui_utils/extensions/locale.dart';
+import 'package:app/ui_utils/time.dart';
 import 'package:database/database.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
@@ -233,7 +234,10 @@ C = custom report""";
       } else {
         senderRecipientInfo = "${creatorInfo.name.toString()} -> ${targetInfo.name.toString()}";
       }
-      final time = timeString(chatMessage.messageTime.toUtcDateTime());
+      final time = timeString(
+        chatMessage.messageTime.toUtcDateTime(),
+        Localizations.localeOf(context).localeString(),
+      );
       final message = Message.parseFromBytes(base64Decode(chatMessage.messageBase64));
       final String messageText = "\n${messageToText(context, message)}";
       report = Text(

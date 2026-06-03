@@ -19,7 +19,8 @@ import 'package:app/ui/normal/settings/news/edit_news.dart';
 import 'package:app/ui_utils/consts/animation.dart';
 import 'package:app/ui_utils/list.dart';
 import 'package:app/utils/api.dart';
-import 'package:app/utils/time.dart';
+import 'package:app/ui_utils/extensions/locale.dart';
+import 'package:app/ui_utils/time.dart';
 import 'package:url_launcher/url_launcher_string.dart';
 
 Future<void> openViewNewsScreen(BuildContext context, NewsId id, void Function() refreshNewsList) {
@@ -144,14 +145,18 @@ class ViewNewsScreenState extends State<ViewNewsScreen> {
 
   Widget viewItem(BuildContext context, NewsItem item) {
     String details = "";
+    final localeString = Localizations.localeOf(context).localeString();
     final latestPublicationTime = item.time;
     if (latestPublicationTime != null) {
-      final latestPublicationTimeString = timeString(latestPublicationTime.toUtcDateTime());
+      final latestPublicationTimeString = timeString(
+        latestPublicationTime.toUtcDateTime(),
+        localeString,
+      );
       details = context.strings.view_news_screen_published(latestPublicationTimeString);
     }
     final editTime = item.editUnixTime;
     if (editTime != null) {
-      final editTimeText = timeString(UnixTime(ut: editTime).toUtcDateTime());
+      final editTimeText = timeString(UnixTime(ut: editTime).toUtcDateTime(), localeString);
       details += "\n${context.strings.view_news_screen_edited(editTimeText)}";
     }
     return SingleChildScrollView(

@@ -13,7 +13,8 @@ import 'package:app/model/freezed/logic/profile/statistics.dart';
 import 'package:app/ui_utils/consts/animation.dart';
 import 'package:app/ui_utils/list.dart';
 import 'package:app/utils/api.dart';
-import 'package:app/utils/time.dart';
+import 'package:app/ui_utils/extensions/locale.dart';
+import 'package:app/ui_utils/time.dart';
 import 'package:utils/utils.dart';
 
 Future<void> openStatisticsScreen(BuildContext context) {
@@ -115,7 +116,10 @@ class StatisticsScreenState extends State<StatisticsScreen> {
   }
 
   Widget viewItem(BuildContext context, GetProfileStatisticsResult item) {
-    final dataTime = fullTimeString(item.generationTime.toUtcDateTime());
+    final dataTime = fullTimeString(
+      item.generationTime.toUtcDateTime(),
+      Localizations.localeOf(context).localeString(),
+    );
     final adminSettingsAvailable = context
         .read<AccountBloc>()
         .state

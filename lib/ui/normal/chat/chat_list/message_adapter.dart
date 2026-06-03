@@ -1,7 +1,7 @@
 import 'package:app/data/chat/message_database_iterator.dart';
 import 'package:app/localizations.dart';
+import 'package:app/ui_utils/time.dart';
 import 'package:app/utils/api.dart';
-import 'package:app/utils/time.dart';
 import 'package:database/database.dart';
 import 'package:flutter_chat_core/flutter_chat_core.dart' as chat;
 
@@ -11,12 +11,14 @@ class MessageAdapter {
     IteratorMessage message,
     String currentUserId, {
     required bool messageStateSeenEnabled,
+    required String localeString,
   }) {
     return switch (message) {
       IteratorMessageEntry(:final entry) => messageEntryToFlutterChatMessage(
         entry,
         currentUserId,
         messageStateSeenEnabled: messageStateSeenEnabled,
+        localeString: localeString,
       ),
       MessageDateChange(:final date) => chat.Message.system(
         id: 'date_${date.millisecondsSinceEpoch}',
@@ -32,6 +34,7 @@ class MessageAdapter {
     MessageEntry entry,
     String currentUserId, {
     required bool messageStateSeenEnabled,
+    required String localeString,
   }) {
     final isCurrentUser = entry.messageState.toSentState() != null;
     final authorId = isCurrentUser ? currentUserId : entry.remoteAccountId.aid;
@@ -102,7 +105,7 @@ class MessageAdapter {
 
     if (resentMessage is ResentMessage) {
       metadata['footer'] = R.strings.conversation_screen_message_resent_info(
-        timeString(resentMessage.sentUnixTime.toUtcDateTime()),
+        timeString(resentMessage.sentUnixTime.toUtcDateTime(), localeString),
         resentMessage.messageNumber.mn.toString(),
       );
       message = resentMessage.message.removeResentMessages();
@@ -189,6 +192,7 @@ class MessageAdapter {
     List<IteratorMessage> messages,
     String currentUserId, {
     required bool messageStateSeenEnabled,
+    required String localeString,
   }) {
     return messages
         .map(
@@ -196,6 +200,7 @@ class MessageAdapter {
             entry,
             currentUserId,
             messageStateSeenEnabled: messageStateSeenEnabled,
+            localeString: localeString,
           ),
         )
         .toList();

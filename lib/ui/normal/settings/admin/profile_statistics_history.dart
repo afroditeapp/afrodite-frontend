@@ -14,7 +14,8 @@ import 'package:app/ui_utils/dropdown_menu.dart';
 import 'package:app/ui_utils/list.dart';
 import 'package:app/utils/age.dart';
 import 'package:app/utils/api.dart';
-import 'package:app/utils/time.dart';
+import 'package:app/ui_utils/extensions/locale.dart';
+import 'package:app/ui_utils/time.dart';
 
 Future<void> openProfileStatisticsHistoryScreen(BuildContext context) {
   return MyNavigator.pushLimited(context, ProfileStatisticsHistoryPage());
@@ -112,7 +113,10 @@ class ProfileStatisticsHistoryScreenState extends State<ProfileStatisticsHistory
               getTooltipItems: (touchedSpots) {
                 return touchedSpots.map((touchedSpot) {
                   final time = UnixTime(ut: touchedSpot.x.toInt()).toUtcDateTime();
-                  final timeStringValue = fullTimeString(time);
+                  final timeStringValue = fullTimeString(
+                    time,
+                    Localizations.localeOf(context).localeString(),
+                  );
                   final value = "$timeStringValue, ${touchedSpot.y}";
                   return LineTooltipItem(value, Theme.of(context).textTheme.labelLarge!);
                 }).toList();

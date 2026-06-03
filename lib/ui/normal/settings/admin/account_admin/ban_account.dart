@@ -8,7 +8,8 @@ import 'package:app/ui_utils/dialog.dart';
 import 'package:app/ui_utils/extensions/api.dart';
 import 'package:app/ui_utils/padding.dart';
 import 'package:app/utils/api.dart';
-import 'package:app/utils/time.dart';
+import 'package:app/ui_utils/extensions/locale.dart';
+import 'package:app/ui_utils/time.dart';
 import 'package:flutter/material.dart';
 import 'package:app/ui_utils/snack_bar.dart';
 import 'package:app/utils/result.dart';
@@ -133,7 +134,10 @@ class _BanAccountScreenState extends State<BanAccountScreen> {
     final bannedUntilUnixTime = bannedInfo.bannedUntil;
     final String? bannedUntil;
     if (bannedUntilUnixTime != null) {
-      bannedUntil = fullTimeString(bannedUntilUnixTime.toUtcDateTime());
+      bannedUntil = fullTimeString(
+        bannedUntilUnixTime.toUtcDateTime(),
+        Localizations.localeOf(context).localeString(),
+      );
     } else {
       bannedUntil = null;
     }
@@ -271,8 +275,8 @@ class _BanAccountScreenState extends State<BanAccountScreen> {
     }
 
     final time = UtcDateTime.now().add(Duration(seconds: seconds));
-    final timeString = fullTimeString(time);
-    return Text("Banned until: $timeString");
+    final timeStringVal = fullTimeString(time, Localizations.localeOf(context).localeString());
+    return Text("Banned until: $timeStringVal");
   }
 
   @override

@@ -21,7 +21,8 @@ import 'package:app/ui_utils/list.dart';
 import 'package:app/ui_utils/snack_bar.dart';
 import 'package:app/utils/result.dart';
 import 'package:app/utils/api.dart';
-import 'package:app/utils/time.dart';
+import 'package:app/ui_utils/extensions/locale.dart';
+import 'package:app/ui_utils/time.dart';
 
 Future<void> openNewsList(BuildContext context) {
   return MyNavigator.push(context, NewsListPage());
@@ -212,7 +213,10 @@ class NewsListScreenState extends State<NewsListScreen> {
           final time = item.newsItem.time;
           final String timeDetails;
           if (time != null) {
-            timeDetails = timeString(time.toUtcDateTime());
+            timeDetails = timeString(
+              time.toUtcDateTime(),
+              Localizations.localeOf(context).localeString(),
+            );
           } else {
             timeDetails = context.strings.generic_empty;
           }

@@ -15,6 +15,7 @@ import 'package:app/ui/normal/chat/chat_list/slideable.dart';
 import 'package:app/ui/normal/chat/conversation_page.dart';
 import 'package:app/ui/normal/chat/chat_list/message_adapter.dart';
 import 'package:app/ui/normal/chat/utils.dart';
+import 'package:app/ui_utils/extensions/locale.dart';
 import 'package:app/ui_utils/dialog.dart';
 import 'package:app/ui_utils/list.dart';
 import 'package:app/ui_utils/snack_bar.dart';
@@ -43,6 +44,7 @@ class ChatList extends StatefulWidget {
   final TypingIndicatorManager typingIndicatorManager;
   final bool typingIndicatorEnabled;
   final bool messageStateSeenEnabled;
+  final String localeString;
 
   const ChatList(
     this.profileEntry,
@@ -55,6 +57,7 @@ class ChatList extends StatefulWidget {
     required this.typingIndicatorManager,
     required this.typingIndicatorEnabled,
     required this.messageStateSeenEnabled,
+    required this.localeString,
     super.key,
   });
 
@@ -87,6 +90,7 @@ class _ChatListState extends State<ChatList> {
       widget.initialMessages,
       widget.currentUser.aid,
       messageStateSeenEnabled: widget.messageStateSeenEnabled,
+      localeString: widget.localeString,
     );
 
     _chatController = chat_core.InMemoryChatController(messages: initialMessages);
@@ -114,6 +118,7 @@ class _ChatListState extends State<ChatList> {
       db: widget.db,
       typingIndicatorEnabled: widget.typingIndicatorEnabled,
       messageStateSeenEnabled: widget.messageStateSeenEnabled,
+      localeString: widget.localeString,
     );
 
     _startUnreadMessagesResetWatcher();
@@ -309,11 +314,11 @@ class _ChatListState extends State<ChatList> {
                 } else if (messageDate.isAtSameMomentAs(yesterday)) {
                   formattedDate = context.strings.generic_yesterday;
                 } else if (messageDate.year == now.year) {
-                  final locale = Localizations.localeOf(ctx).toString();
+                  final locale = Localizations.localeOf(ctx).localeString();
                   final formatter = DateFormat.MMMd(locale);
                   formattedDate = formatter.format(dateTime);
                 } else {
-                  final locale = Localizations.localeOf(ctx).toString();
+                  final locale = Localizations.localeOf(ctx).localeString();
                   final formatter = DateFormat.yMMMd(locale);
                   formattedDate = formatter.format(dateTime);
                 }
@@ -707,6 +712,7 @@ class _MessageStateWatcherState extends State<_MessageStateWatcher> {
                 entry,
                 widget.currentUserId,
                 messageStateSeenEnabled: widget.messageStateSeenEnabled,
+                localeString: Localizations.localeOf(context).localeString(),
               );
               WidgetsBinding.instance.addPostFrameCallback((_) {
                 final index = widget.chatController.messages.indexWhere(

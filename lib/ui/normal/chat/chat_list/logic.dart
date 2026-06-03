@@ -40,6 +40,7 @@ class ChatListLogic {
   final AccountDatabaseManager db;
   final bool typingIndicatorEnabled;
   final bool messageStateSeenEnabled;
+  final String localeString;
 
   static const String _typingIndicatorMessageId = 'typing_indicator_message';
 
@@ -63,6 +64,7 @@ class ChatListLogic {
     required this.db,
     required this.typingIndicatorEnabled,
     required this.messageStateSeenEnabled,
+    required this.localeString,
   }) {
     _setupEventSubscription();
   }
@@ -126,6 +128,7 @@ class ChatListLogic {
         newMessages,
         currentUser.aid,
         messageStateSeenEnabled: messageStateSeenEnabled,
+        localeString: localeString,
       );
 
       final lastMessage = chatController.messages.lastOrNull;
@@ -166,6 +169,7 @@ class ChatListLogic {
       oldMessages.reversed.toList(),
       currentUser.aid,
       messageStateSeenEnabled: messageStateSeenEnabled,
+      localeString: localeString,
     );
 
     await chatController.insertAllMessages(chatMessages, index: 0, animated: false);
