@@ -755,6 +755,7 @@
     <string name="report_screen_snackbar_report_successful" description="Snackbar text for successful report">Reported</string>
     <string name="report_screen_snackbar_too_many_reports_error" description="Snackbar text for too many reports error">Report failed. Too many reports.</string>
     <string name="report_screen_custom_report_boolean_dialog_description" description="Text for dialog for custom report boolean reporting">Report user as '%s'?</string>
+    <string name="report_screen_false_reports_warning" description="Warning text about false reports leading to a ban">False reports may result in a ban</string>
 
     <!-- Report profile image screen -->
     <string name="report_profile_image_screen_confirm_dialog_title" description="Profile image reporting confirmation dialog title">Report profile image?</string>

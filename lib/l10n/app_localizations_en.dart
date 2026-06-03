@@ -1878,6 +1878,9 @@ class AppLocalizationsEn extends AppLocalizations {
   }
 
   @override
+  String get report_screen_false_reports_warning => 'False reports may result in a ban';
+
+  @override
   String get report_screen_profile_image_action => 'Profile image';
 
   @override

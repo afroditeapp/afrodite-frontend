@@ -2435,6 +2435,10 @@
       }
     }
   },
+  "report_screen_false_reports_warning": "False reports may result in a ban",
+  "@report_screen_false_reports_warning": {
+    "description": "Warning text about false reports leading to a ban"
+  },
   "report_screen_profile_image_action": "Profile image",
   "@report_screen_profile_image_action": {
     "description": "Title for report profile image action"

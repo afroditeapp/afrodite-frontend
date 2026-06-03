@@ -143,6 +143,19 @@ class _ReportScreenState extends State<ReportScreen> {
   List<Widget> reportList(BuildContext context, CustomReportsConfig config) {
     List<Widget> settings = [];
 
+    settings.add(
+      Padding(
+        padding: const EdgeInsets.symmetric(horizontal: 16, vertical: 8),
+        child: Row(
+          children: [
+            Icon(Icons.warning, color: Colors.orange),
+            const SizedBox(width: 8),
+            Expanded(child: Text(context.strings.report_screen_false_reports_warning)),
+          ],
+        ),
+      ),
+    );
+
     final repositories = context.read<RepositoryInstances>();
 
     final profileEntry = widget.profile;

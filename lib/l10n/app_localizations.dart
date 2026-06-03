@@ -3358,6 +3358,12 @@ abstract class AppLocalizations {
   /// **'Report user as \'{p0}\'?'**
   String report_screen_custom_report_boolean_dialog_description(String p0);
 
+  /// Warning text about false reports leading to a ban
+  ///
+  /// In en, this message translates to:
+  /// **'False reports may result in a ban'**
+  String get report_screen_false_reports_warning;
+
   /// Title for report profile image action
   ///
   /// In en, this message translates to:
