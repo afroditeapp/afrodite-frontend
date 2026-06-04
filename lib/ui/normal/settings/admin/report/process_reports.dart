@@ -84,8 +84,7 @@ class ReportIo extends ContentIo<WrappedReportDetailed> {
       target: content.info.target,
       reportType: content.info.reportType,
       content: content.content,
-      // TODO(prod): support marking reports invalid
-      valid: true,
+      valid: accept,
     );
     await api.commonAdminAction((api) => api.postProcessReports(ProcessReports(values: [info])));
   }
@@ -136,7 +135,7 @@ Future<Result<List<WrappedReportDetailed>, ApiError>> handleReportList(
 
 class ReportUiBuilder extends ContentUiBuilder<WrappedReportDetailed> {
   @override
-  bool get allowRejecting => false;
+  bool get allowRejecting => true;
 
   @override
   bool get rejectionDetailsSupported => false;
