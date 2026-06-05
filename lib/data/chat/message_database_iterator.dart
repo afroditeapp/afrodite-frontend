@@ -69,7 +69,7 @@ class MessageDatabaseIterator {
   // Get max 10 next messages.
   Future<List<IteratorMessage>> nextList() async {
     if (nextLocalKey < 0) {
-      return [];
+      return createOldestDateChangeMessageIfNeeded();
     }
 
     const queryCount = 10;
@@ -108,6 +108,26 @@ class MessageDatabaseIterator {
       previousMessage = message;
     }
 
-    return result;
+    if (result.isEmpty) {
+      return createOldestDateChangeMessageIfNeeded();
+    } else {
+      return result;
+    }
+  }
+
+  List<IteratorMessage> createOldestDateChangeMessageIfNeeded() {
+    final currentPreviousMessage = previousMessage;
+    if (currentPreviousMessage != null) {
+      previousMessage = null;
+      final prevDate = currentPreviousMessage.userVisibleTime().dateTime.toLocal();
+      final prevDateOnly = DateTime(prevDate.year, prevDate.month, prevDate.day);
+      final now = DateTime.now();
+      final today = DateTime(now.year, now.month, now.day);
+      if (!prevDateOnly.isAtSameMomentAs(today)) {
+        return [MessageDateChange(prevDateOnly)];
+      }
+    }
+
+    return [];
   }
 }
