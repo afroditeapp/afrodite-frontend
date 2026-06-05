@@ -17,9 +17,12 @@ class LoginResult {
     this.email,
     this.error = false,
     this.errorAccountLocked = false,
-    this.errorAccountRegistrationDisabled = false,
     this.errorEmailAlreadyUsed = false,
     this.errorInvalidEmailLoginToken = false,
+    this.errorLoginAllPlatformsDisabled = false,
+    this.errorLoginPlatformDisabled = false,
+    this.errorRegistrationAllPlatformsDisabled = false,
+    this.errorRegistrationPlatformDisabled = false,
     this.errorSignInWithEmailUnverified = false,
     this.errorUnsupportedClient = false,
     this.tokens,
@@ -40,12 +43,18 @@ class LoginResult {
 
   bool errorAccountLocked;
 
-  bool errorAccountRegistrationDisabled;
-
   /// This might be true, when registering new account using sign in with login method.
   bool errorEmailAlreadyUsed;
 
   bool errorInvalidEmailLoginToken;
+
+  bool errorLoginAllPlatformsDisabled;
+
+  bool errorLoginPlatformDisabled;
+
+  bool errorRegistrationAllPlatformsDisabled;
+
+  bool errorRegistrationPlatformDisabled;
 
   bool errorSignInWithEmailUnverified;
 
@@ -60,9 +69,12 @@ class LoginResult {
     other.email == email &&
     other.error == error &&
     other.errorAccountLocked == errorAccountLocked &&
-    other.errorAccountRegistrationDisabled == errorAccountRegistrationDisabled &&
     other.errorEmailAlreadyUsed == errorEmailAlreadyUsed &&
     other.errorInvalidEmailLoginToken == errorInvalidEmailLoginToken &&
+    other.errorLoginAllPlatformsDisabled == errorLoginAllPlatformsDisabled &&
+    other.errorLoginPlatformDisabled == errorLoginPlatformDisabled &&
+    other.errorRegistrationAllPlatformsDisabled == errorRegistrationAllPlatformsDisabled &&
+    other.errorRegistrationPlatformDisabled == errorRegistrationPlatformDisabled &&
     other.errorSignInWithEmailUnverified == errorSignInWithEmailUnverified &&
     other.errorUnsupportedClient == errorUnsupportedClient &&
     other.tokens == tokens;
@@ -74,15 +86,18 @@ class LoginResult {
     (email == null ? 0 : email!.hashCode) +
     (error.hashCode) +
     (errorAccountLocked.hashCode) +
-    (errorAccountRegistrationDisabled.hashCode) +
     (errorEmailAlreadyUsed.hashCode) +
     (errorInvalidEmailLoginToken.hashCode) +
+    (errorLoginAllPlatformsDisabled.hashCode) +
+    (errorLoginPlatformDisabled.hashCode) +
+    (errorRegistrationAllPlatformsDisabled.hashCode) +
+    (errorRegistrationPlatformDisabled.hashCode) +
     (errorSignInWithEmailUnverified.hashCode) +
     (errorUnsupportedClient.hashCode) +
     (tokens == null ? 0 : tokens!.hashCode);
 
   @override
-  String toString() => 'LoginResult[aid=$aid, email=$email, error=$error, errorAccountLocked=$errorAccountLocked, errorAccountRegistrationDisabled=$errorAccountRegistrationDisabled, errorEmailAlreadyUsed=$errorEmailAlreadyUsed, errorInvalidEmailLoginToken=$errorInvalidEmailLoginToken, errorSignInWithEmailUnverified=$errorSignInWithEmailUnverified, errorUnsupportedClient=$errorUnsupportedClient, tokens=$tokens]';
+  String toString() => 'LoginResult[aid=$aid, email=$email, error=$error, errorAccountLocked=$errorAccountLocked, errorEmailAlreadyUsed=$errorEmailAlreadyUsed, errorInvalidEmailLoginToken=$errorInvalidEmailLoginToken, errorLoginAllPlatformsDisabled=$errorLoginAllPlatformsDisabled, errorLoginPlatformDisabled=$errorLoginPlatformDisabled, errorRegistrationAllPlatformsDisabled=$errorRegistrationAllPlatformsDisabled, errorRegistrationPlatformDisabled=$errorRegistrationPlatformDisabled, errorSignInWithEmailUnverified=$errorSignInWithEmailUnverified, errorUnsupportedClient=$errorUnsupportedClient, tokens=$tokens]';
 
   Map<String, dynamic> toJson() {
     final json = <String, dynamic>{};
@@ -98,9 +113,12 @@ class LoginResult {
     }
       json[r'error'] = this.error;
       json[r'error_account_locked'] = this.errorAccountLocked;
-      json[r'error_account_registration_disabled'] = this.errorAccountRegistrationDisabled;
       json[r'error_email_already_used'] = this.errorEmailAlreadyUsed;
       json[r'error_invalid_email_login_token'] = this.errorInvalidEmailLoginToken;
+      json[r'error_login_all_platforms_disabled'] = this.errorLoginAllPlatformsDisabled;
+      json[r'error_login_platform_disabled'] = this.errorLoginPlatformDisabled;
+      json[r'error_registration_all_platforms_disabled'] = this.errorRegistrationAllPlatformsDisabled;
+      json[r'error_registration_platform_disabled'] = this.errorRegistrationPlatformDisabled;
       json[r'error_sign_in_with_email_unverified'] = this.errorSignInWithEmailUnverified;
       json[r'error_unsupported_client'] = this.errorUnsupportedClient;
     if (this.tokens != null) {
@@ -134,9 +152,12 @@ class LoginResult {
         email: mapValueOfType<String>(json, r'email'),
         error: mapValueOfType<bool>(json, r'error') ?? false,
         errorAccountLocked: mapValueOfType<bool>(json, r'error_account_locked') ?? false,
-        errorAccountRegistrationDisabled: mapValueOfType<bool>(json, r'error_account_registration_disabled') ?? false,
         errorEmailAlreadyUsed: mapValueOfType<bool>(json, r'error_email_already_used') ?? false,
         errorInvalidEmailLoginToken: mapValueOfType<bool>(json, r'error_invalid_email_login_token') ?? false,
+        errorLoginAllPlatformsDisabled: mapValueOfType<bool>(json, r'error_login_all_platforms_disabled') ?? false,
+        errorLoginPlatformDisabled: mapValueOfType<bool>(json, r'error_login_platform_disabled') ?? false,
+        errorRegistrationAllPlatformsDisabled: mapValueOfType<bool>(json, r'error_registration_all_platforms_disabled') ?? false,
+        errorRegistrationPlatformDisabled: mapValueOfType<bool>(json, r'error_registration_platform_disabled') ?? false,
         errorSignInWithEmailUnverified: mapValueOfType<bool>(json, r'error_sign_in_with_email_unverified') ?? false,
         errorUnsupportedClient: mapValueOfType<bool>(json, r'error_unsupported_client') ?? false,
         tokens: AuthPair.fromJson(json[r'tokens']),

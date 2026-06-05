@@ -204,6 +204,8 @@ class ApiClient {
           return AccountIdDbValue.fromJson(value);
         case 'AccountLockedState':
           return AccountLockedState.fromJson(value);
+        case 'AccountLoginPlatforms':
+          return AccountLoginPlatforms.fromJson(value);
         case 'AccountRegistrationPlatforms':
           return AccountRegistrationPlatforms.fromJson(value);
         case 'AccountStateContainer':
@@ -216,6 +218,8 @@ class ApiClient {
           return AccountVerificationErrorFlagsValue.fromJson(value);
         case 'AccountVerificationMethodsConfig':
           return AccountVerificationMethodsConfig.fromJson(value);
+        case 'AccountVerificationPlatforms':
+          return AccountVerificationPlatforms.fromJson(value);
         case 'AccountVerificationQueueAdminItem':
           return AccountVerificationQueueAdminItem.fromJson(value);
         case 'AccountVerificationQueueItem':
@@ -256,6 +260,8 @@ class ApiClient {
           return AgeVerificationMethodTypeTransformer().decode(value);
         case 'AgeVerificationMethodsConfig':
           return AgeVerificationMethodsConfig.fromJson(value);
+        case 'AgeVerificationPlatforms':
+          return AgeVerificationPlatforms.fromJson(value);
         case 'ApiUsageCount':
           return ApiUsageCount.fromJson(value);
         case 'ApiUsageStatistics':
@@ -472,8 +478,6 @@ class ApiClient {
           return GetLatestPublicKeyId.fromJson(value);
         case 'GetMediaContentFaceVerifiedNullList':
           return GetMediaContentFaceVerifiedNullList.fromJson(value);
-        case 'GetMediaContentPendingModerationList':
-          return GetMediaContentPendingModerationList.fromJson(value);
         case 'GetMediaContentResult':
           return GetMediaContentResult.fromJson(value);
         case 'GetMyProfileResult':
@@ -494,18 +498,16 @@ class ApiClient {
           return GetProfileStatisticsHistoryResult.fromJson(value);
         case 'GetProfileStatisticsResult':
           return GetProfileStatisticsResult.fromJson(value);
-        case 'GetProfileStringPendingModerationList':
-          return GetProfileStringPendingModerationList.fromJson(value);
         case 'GetProfileStringState':
           return GetProfileStringState.fromJson(value);
         case 'GetPushNotificationInfo':
           return GetPushNotificationInfo.fromJson(value);
         case 'GetReportList':
           return GetReportList.fromJson(value);
+        case 'GetReportQueuePage':
+          return GetReportQueuePage.fromJson(value);
         case 'GetSentMessage':
           return GetSentMessage.fromJson(value);
-        case 'GetWaitingReportsPage':
-          return GetWaitingReportsPage.fromJson(value);
         case 'ImageProcessingDynamicConfig':
           return ImageProcessingDynamicConfig.fromJson(value);
         case 'ImageProcessingWarnings':
@@ -588,10 +590,16 @@ class ApiClient {
           return MediaAppNotificationSettings.fromJson(value);
         case 'MediaContentFaceVerifiedNullByAccount':
           return MediaContentFaceVerifiedNullByAccount.fromJson(value);
+        case 'MediaContentModerationQueuePage':
+          return MediaContentModerationQueuePage.fromJson(value);
+        case 'MediaContentModerationQueueType':
+          return MediaContentModerationQueueTypeTypeTransformer().decode(value);
         case 'MediaContentModerationRejectedReasonCategory':
           return MediaContentModerationRejectedReasonCategory.fromJson(value);
         case 'MediaContentModerationRejectedReasonDetails':
           return MediaContentModerationRejectedReasonDetails.fromJson(value);
+        case 'MediaContentModerationType':
+          return MediaContentModerationTypeTypeTransformer().decode(value);
         case 'MediaContentPendingModeration':
           return MediaContentPendingModeration.fromJson(value);
         case 'MediaContentSyncVersion':
@@ -616,8 +624,6 @@ class ApiClient {
           return MinDistanceKm.fromJson(value);
         case 'ModerationAction':
           return ModerationActionTypeTransformer().decode(value);
-        case 'ModerationQueueType':
-          return ModerationQueueTypeTypeTransformer().decode(value);
         case 'MyContentInfo':
           return MyContentInfo.fromJson(value);
         case 'MyProfileContent':
@@ -764,6 +770,10 @@ class ApiClient {
           return ProfileStringModerationContentTypeTypeTransformer().decode(value);
         case 'ProfileStringModerationInfo':
           return ProfileStringModerationInfo.fromJson(value);
+        case 'ProfileStringModerationQueuePage':
+          return ProfileStringModerationQueuePage.fromJson(value);
+        case 'ProfileStringModerationQueueType':
+          return ProfileStringModerationQueueTypeTypeTransformer().decode(value);
         case 'ProfileStringModerationRejectedReasonCategory':
           return ProfileStringModerationRejectedReasonCategory.fromJson(value);
         case 'ProfileStringModerationRejectedReasonDetails':
@@ -836,6 +846,8 @@ class ApiClient {
           return ReportIteratorQuery.fromJson(value);
         case 'ReportProcessingState':
           return ReportProcessingStateTypeTransformer().decode(value);
+        case 'ReportQueueType':
+          return ReportQueueTypeTypeTransformer().decode(value);
         case 'ReportType':
           return ReportType.fromJson(value);
         case 'RequestEmailLoginToken':
@@ -924,8 +936,8 @@ class ApiClient {
           return UnreadNewsCount.fromJson(value);
         case 'UnreadNewsCountResult':
           return UnreadNewsCountResult.fromJson(value);
-        case 'UpdateChatMessageReport':
-          return UpdateChatMessageReport.fromJson(value);
+        case 'UpdateChatMessageReports':
+          return UpdateChatMessageReports.fromJson(value);
         case 'UpdateCustomReportEmpty':
           return UpdateCustomReportEmpty.fromJson(value);
         case 'UpdateNewsTranslation':

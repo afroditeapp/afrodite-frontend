@@ -13,16 +13,34 @@ part of openapi.api;
 class AccountVerificationScopesConfig {
   /// Returns a new [AccountVerificationScopesConfig] instance.
   AccountVerificationScopesConfig({
-    this.profileAgeRange = false,
-    this.profileName = false,
-    this.securityContent = false,
+    this.profileAgeRange,
+    this.profileName,
+    this.securityContent,
   });
 
-  bool profileAgeRange;
+  ///
+  /// Please note: This property should have been non-nullable! Since the specification file
+  /// does not include a default value (using the "default:" property), however, the generated
+  /// source code must fall back to having a nullable type.
+  /// Consider adding a "default:" property in the specification file to hide this note.
+  ///
+  AccountVerificationPlatforms? profileAgeRange;
 
-  bool profileName;
+  ///
+  /// Please note: This property should have been non-nullable! Since the specification file
+  /// does not include a default value (using the "default:" property), however, the generated
+  /// source code must fall back to having a nullable type.
+  /// Consider adding a "default:" property in the specification file to hide this note.
+  ///
+  AccountVerificationPlatforms? profileName;
 
-  bool securityContent;
+  ///
+  /// Please note: This property should have been non-nullable! Since the specification file
+  /// does not include a default value (using the "default:" property), however, the generated
+  /// source code must fall back to having a nullable type.
+  /// Consider adding a "default:" property in the specification file to hide this note.
+  ///
+  AccountVerificationPlatforms? securityContent;
 
   @override
   bool operator ==(Object other) => identical(this, other) || other is AccountVerificationScopesConfig &&
@@ -33,18 +51,30 @@ class AccountVerificationScopesConfig {
   @override
   int get hashCode =>
     // ignore: unnecessary_parenthesis
-    (profileAgeRange.hashCode) +
-    (profileName.hashCode) +
-    (securityContent.hashCode);
+    (profileAgeRange == null ? 0 : profileAgeRange!.hashCode) +
+    (profileName == null ? 0 : profileName!.hashCode) +
+    (securityContent == null ? 0 : securityContent!.hashCode);
 
   @override
   String toString() => 'AccountVerificationScopesConfig[profileAgeRange=$profileAgeRange, profileName=$profileName, securityContent=$securityContent]';
 
   Map<String, dynamic> toJson() {
     final json = <String, dynamic>{};
+    if (this.profileAgeRange != null) {
       json[r'profile_age_range'] = this.profileAgeRange;
+    } else {
+      json[r'profile_age_range'] = null;
+    }
+    if (this.profileName != null) {
       json[r'profile_name'] = this.profileName;
+    } else {
+      json[r'profile_name'] = null;
+    }
+    if (this.securityContent != null) {
       json[r'security_content'] = this.securityContent;
+    } else {
+      json[r'security_content'] = null;
+    }
     return json;
   }
 
@@ -67,9 +97,9 @@ class AccountVerificationScopesConfig {
       }());
 
       return AccountVerificationScopesConfig(
-        profileAgeRange: mapValueOfType<bool>(json, r'profile_age_range') ?? false,
-        profileName: mapValueOfType<bool>(json, r'profile_name') ?? false,
-        securityContent: mapValueOfType<bool>(json, r'security_content') ?? false,
+        profileAgeRange: AccountVerificationPlatforms.fromJson(json[r'profile_age_range']),
+        profileName: AccountVerificationPlatforms.fromJson(json[r'profile_name']),
+        securityContent: AccountVerificationPlatforms.fromJson(json[r'security_content']),
       );
     }
     return null;

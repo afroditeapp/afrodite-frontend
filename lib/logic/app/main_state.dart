@@ -18,6 +18,7 @@ import "package:flutter/foundation.dart";
 import "package:flutter_bloc/flutter_bloc.dart";
 import "package:app/data/login_repository.dart";
 import 'package:app/data/utils/login_repository_types.dart';
+import 'package:app/ui_utils/extensions/api.dart';
 import "package:database/database.dart";
 import "package:logging/logging.dart";
 import "package:rxdart/rxdart.dart";
@@ -100,7 +101,7 @@ class MainStateBloc extends Bloc<MainStateEvent, MainState> {
                     AgeVerifiedExists(value: final isAgeVerified),
                     ClientFeaturesConfigExists(value: final config),
                   )
-                      when (config.ageVerification?.required_ ?? false) && !isAgeVerified =>
+                      when (config.ageVerification.isRequiredOnCurrentPlatform) && !isAgeVerified =>
                     MsLoggedInBasicScreen(
                       ls.repositories,
                       LoggedInBasicScreen.ageVerificationRequired,

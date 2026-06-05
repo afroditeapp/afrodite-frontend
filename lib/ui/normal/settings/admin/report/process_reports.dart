@@ -67,7 +67,10 @@ class ReportIo extends ContentIo<WrappedReportDetailed> {
   @override
   Future<Result<List<WrappedReportDetailed>, ()>> getNextContent() async {
     return await api
-        .commonAdmin((api) => api.postGetWaitingReportsPage(GetWaitingReportsPage()))
+        .commonAdmin(
+          (api) =>
+              api.postGetReportQueuePage(GetReportQueuePage(queueType: ReportQueueType.waiting)),
+        )
         .andThenEmptyErr(
           (v) => handleReportList(api, addedReports, v.values, onlyNotProcessed: true),
         );

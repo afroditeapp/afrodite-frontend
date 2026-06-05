@@ -1,4 +1,5 @@
 import 'package:app/ui/normal/settings/admin/report/process_reports.dart';
+import 'package:flutter/foundation.dart';
 import 'package:flutter/widgets.dart';
 import 'package:intl/intl.dart';
 import 'package:openapi/api.dart';
@@ -132,4 +133,53 @@ extension StringResourceUiExtensions on StringResource {
       return default_;
     }
   }
+}
+
+extension AccountVerificationPlatformsX on AccountVerificationPlatforms {
+  bool get isActiveOnCurrentPlatform {
+    if (kIsWeb) return web;
+    if (defaultTargetPlatform == TargetPlatform.android) return android;
+    if (defaultTargetPlatform == TargetPlatform.iOS) return ios;
+    return false;
+  }
+}
+
+extension AgeVerificationPlatformsX on AgeVerificationPlatforms {
+  bool get isActiveOnCurrentPlatform {
+    if (kIsWeb) return web;
+    if (defaultTargetPlatform == TargetPlatform.android) return android;
+    if (defaultTargetPlatform == TargetPlatform.iOS) return ios;
+    return false;
+  }
+}
+
+extension AccountVerificationMethodsConfigX on AccountVerificationMethodsConfig? {
+  bool get allDisabled => !debugEnabled && !eudiEnabled;
+
+  bool get debugEnabled => this?.debug?.isActiveOnCurrentPlatform ?? false;
+
+  bool get eudiEnabled => this?.eudi?.isActiveOnCurrentPlatform ?? false;
+}
+
+extension AgeVerificationMethodsConfigX on AgeVerificationMethodsConfig? {
+  bool get allDisabled => !debugEnabled && !eudiEnabled;
+
+  bool get debugEnabled => this?.debug?.isActiveOnCurrentPlatform ?? false;
+
+  bool get eudiEnabled => this?.eudi?.isActiveOnCurrentPlatform ?? false;
+}
+
+extension AccountVerificationScopesConfigX on AccountVerificationScopesConfig? {
+  bool get securityContentEnabled => this?.securityContent?.isActiveOnCurrentPlatform ?? false;
+
+  bool get profileAgeRangeEnabled => this?.profileAgeRange?.isActiveOnCurrentPlatform ?? false;
+
+  bool get profileNameEnabled => this?.profileName?.isActiveOnCurrentPlatform ?? false;
+}
+
+extension AgeVerificationConfigX on AgeVerificationConfig? {
+  bool get isRequiredOnCurrentPlatform => this?.required_?.isActiveOnCurrentPlatform ?? false;
+
+  bool get verifyDuringInitialSetupOnCurrentPlatform =>
+      this?.verifyDuringInitialSetup?.isActiveOnCurrentPlatform ?? false;
 }

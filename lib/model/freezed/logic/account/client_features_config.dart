@@ -78,9 +78,9 @@ class ClientFeaturesConfigData with _$ClientFeaturesConfigData {
     final scopes = config.accountVerification?.scopes;
     return VerificationConfig(
       face: config.features?.faceVerification ?? false,
-      securityContent: scopes?.securityContent ?? false,
-      profileAgeRange: scopes?.profileAgeRange ?? false,
-      profileName: scopes?.profileName ?? false,
+      securityContent: scopes.securityContentEnabled,
+      profileAgeRange: scopes.profileAgeRangeEnabled,
+      profileName: scopes.profileNameEnabled,
     );
   }
 }

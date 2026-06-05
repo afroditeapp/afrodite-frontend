@@ -149,7 +149,7 @@ Class | Method | HTTP request | Description
 *ChatApi* | [**postBlockProfile**](doc//ChatApi.md#postblockprofile) | **POST** /chat_api/block_profile | Block profile
 *ChatApi* | [**postChatAppNotificationSettings**](doc//ChatApi.md#postchatappnotificationsettings) | **POST** /chat_api/post_chat_app_notification_settings | 
 *ChatApi* | [**postChatEmailNotificationSettings**](doc//ChatApi.md#postchatemailnotificationsettings) | **POST** /chat_api/post_chat_email_notification_settings | 
-*ChatApi* | [**postChatMessageReport**](doc//ChatApi.md#postchatmessagereport) | **POST** /chat_api/chat_message_report | Report chat message.
+*ChatApi* | [**postChatMessageReports**](doc//ChatApi.md#postchatmessagereports) | **POST** /chat_api/chat_message_reports | Report chat message.
 *ChatApi* | [**postChatPrivacySettings**](doc//ChatApi.md#postchatprivacysettings) | **POST** /chat_api/post_chat_privacy_settings | 
 *ChatApi* | [**postCreateVideoCallUrl**](doc//ChatApi.md#postcreatevideocallurl) | **POST** /chat_api/post_create_video_call_url | Create video call URL to a meeting with an user.
 *ChatApi* | [**postDeleteMessageDeliveryInfo**](doc//ChatApi.md#postdeletemessagedeliveryinfo) | **POST** /chat_api/delete_message_delivery_info | Delete message delivery info entries by their database IDs.
@@ -208,7 +208,7 @@ Class | Method | HTTP request | Description
 *CommonAdminApi* | [**postGetIpCountryStatistics**](doc//CommonAdminApi.md#postgetipcountrystatistics) | **POST** /common_api/ip_country_statistics | Get IP country statistics.
 *CommonAdminApi* | [**postGetPerfData**](doc//CommonAdminApi.md#postgetperfdata) | **POST** /common_api/perf_data | Get performance data
 *CommonAdminApi* | [**postGetReportIteratorPage**](doc//CommonAdminApi.md#postgetreportiteratorpage) | **POST** /common_api/report_iterator_page | Get report iterator page.
-*CommonAdminApi* | [**postGetWaitingReportsPage**](doc//CommonAdminApi.md#postgetwaitingreportspage) | **POST** /common_api/waiting_reports_page | Get max 25 waiting reports from oldest to newest.
+*CommonAdminApi* | [**postGetReportQueuePage**](doc//CommonAdminApi.md#postgetreportqueuepage) | **POST** /common_api/report_queue_page | Get max 25 reports from the report queue. Returns reports from oldest to newest.
 *CommonAdminApi* | [**postProcessReports**](doc//CommonAdminApi.md#postprocessreports) | **POST** /common_api/process_reports | 
 *CommonAdminApi* | [**postScheduleTask**](doc//CommonAdminApi.md#postscheduletask) | **POST** /common_api/schedule_task | Schedule task.
 *CommonAdminApi* | [**postTriggerServerDataReset**](doc//CommonAdminApi.md#posttriggerserverdatareset) | **POST** /common_api/trigger_server_data_reset | Trigger server data reset.
@@ -235,7 +235,7 @@ Class | Method | HTTP request | Description
 *MediaAdminApi* | [**getImageProcessingConfig**](doc//MediaAdminApi.md#getimageprocessingconfig) | **GET** /media_api/image_processing_config | Get image processing configuration
 *MediaAdminApi* | [**getImageProcessingConfigWarnings**](doc//MediaAdminApi.md#getimageprocessingconfigwarnings) | **GET** /media_api/image_processing_config_warnings | Get image processing config warnings
 *MediaAdminApi* | [**getMediaContentFaceVerifiedNullList**](doc//MediaAdminApi.md#getmediacontentfaceverifiednulllist) | **GET** /media_api/media_content_face_verified_null_list | Get first page of accounts with security selfie and content where `face_verified` is NULL and `face_detected` is true or `face_detected_manual` is true. Oldest security content set time is first and count 25.
-*MediaAdminApi* | [**getMediaContentPendingModerationList**](doc//MediaAdminApi.md#getmediacontentpendingmoderationlist) | **GET** /media_api/media_content_pending_moderation | Get first page of pending media content moderations. Oldest item is first and count 25.
+*MediaAdminApi* | [**getMediaContentModerationQueuePage**](doc//MediaAdminApi.md#getmediacontentmoderationqueuepage) | **GET** /media_api/media_content_moderation_queue_page | Get the first page from media content moderation queue. The first item is the oldest item and max 25 items are returned.
 *MediaAdminApi* | [**getSecurityContentAdminInfo**](doc//MediaAdminApi.md#getsecuritycontentadmininfo) | **GET** /media_api/security_content_admin_info/{aid} | Get current security content for selected profile.
 *MediaAdminApi* | [**postImageProcessingConfig**](doc//MediaAdminApi.md#postimageprocessingconfig) | **POST** /media_api/image_processing_config | Update image processing configuration
 *MediaAdminApi* | [**postMediaContentFaceDetectedValue**](doc//MediaAdminApi.md#postmediacontentfacedetectedvalue) | **POST** /media_api/media_content_face_detected_value | Change media content face detected value
@@ -277,7 +277,7 @@ Class | Method | HTTP request | Description
 *ProfileAdminApi* | [**getProfileAttributesSchema**](doc//ProfileAdminApi.md#getprofileattributesschema) | **GET** /profile_api/profile_attributes_schema | Get profile attributes schema from DB.
 *ProfileAdminApi* | [**getProfileNameVerificationAdminInfo**](doc//ProfileAdminApi.md#getprofilenameverificationadmininfo) | **GET** /profile_api/profile_name_verification_admin_info/{aid} | Get profile name verification values.
 *ProfileAdminApi* | [**getProfileStatisticsHistory**](doc//ProfileAdminApi.md#getprofilestatisticshistory) | **GET** /profile_api/profile_statistics_history | 
-*ProfileAdminApi* | [**getProfileStringPendingModerationList**](doc//ProfileAdminApi.md#getprofilestringpendingmoderationlist) | **GET** /profile_api/profile_string_pending_moderation | Get first page of pending profile string moderations. Oldest item is first and count 25.
+*ProfileAdminApi* | [**getProfileStringModerationQueuePage**](doc//ProfileAdminApi.md#getprofilestringmoderationqueuepage) | **GET** /profile_api/profile_string_moderation_queue_page | Get the first page from profile string moderation queue. The first item is the oldest item and max 25 items are returned.
 *ProfileAdminApi* | [**getProfileStringState**](doc//ProfileAdminApi.md#getprofilestringstate) | **GET** /profile_api/get_profile_string_state/{aid} | Get profile string state
 *ProfileAdminApi* | [**postModerateProfileString**](doc//ProfileAdminApi.md#postmoderateprofilestring) | **POST** /profile_api/moderate_profile_string | Rejected category and details can be set only when [PostModerateProfileString::value] is rejected.
 *ProfileAdminApi* | [**postProfileAgeRangeVerifiedValue**](doc//ProfileAdminApi.md#postprofileagerangeverifiedvalue) | **POST** /profile_api/profile_age_range_verified_value | Change profile age range verified value.
@@ -299,12 +299,14 @@ Class | Method | HTTP request | Description
  - [AccountId](doc//AccountId.md)
  - [AccountIdDbValue](doc//AccountIdDbValue.md)
  - [AccountLockedState](doc//AccountLockedState.md)
+ - [AccountLoginPlatforms](doc//AccountLoginPlatforms.md)
  - [AccountRegistrationPlatforms](doc//AccountRegistrationPlatforms.md)
  - [AccountStateContainer](doc//AccountStateContainer.md)
  - [AccountSyncVersion](doc//AccountSyncVersion.md)
  - [AccountVerificationConfig](doc//AccountVerificationConfig.md)
  - [AccountVerificationErrorFlagsValue](doc//AccountVerificationErrorFlagsValue.md)
  - [AccountVerificationMethodsConfig](doc//AccountVerificationMethodsConfig.md)
+ - [AccountVerificationPlatforms](doc//AccountVerificationPlatforms.md)
  - [AccountVerificationQueueAdminItem](doc//AccountVerificationQueueAdminItem.md)
  - [AccountVerificationQueueItem](doc//AccountVerificationQueueItem.md)
  - [AccountVerificationQueueStatus](doc//AccountVerificationQueueStatus.md)
@@ -325,6 +327,7 @@ Class | Method | HTTP request | Description
  - [AgeVerificationConfig](doc//AgeVerificationConfig.md)
  - [AgeVerificationMethod](doc//AgeVerificationMethod.md)
  - [AgeVerificationMethodsConfig](doc//AgeVerificationMethodsConfig.md)
+ - [AgeVerificationPlatforms](doc//AgeVerificationPlatforms.md)
  - [ApiUsageCount](doc//ApiUsageCount.md)
  - [ApiUsageStatistics](doc//ApiUsageStatistics.md)
  - [Attribute](doc//Attribute.md)
@@ -433,7 +436,6 @@ Class | Method | HTTP request | Description
  - [GetIpCountryStatisticsSettings](doc//GetIpCountryStatisticsSettings.md)
  - [GetLatestPublicKeyId](doc//GetLatestPublicKeyId.md)
  - [GetMediaContentFaceVerifiedNullList](doc//GetMediaContentFaceVerifiedNullList.md)
- - [GetMediaContentPendingModerationList](doc//GetMediaContentPendingModerationList.md)
  - [GetMediaContentResult](doc//GetMediaContentResult.md)
  - [GetMyProfileResult](doc//GetMyProfileResult.md)
  - [GetNewsItemResult](doc//GetNewsItemResult.md)
@@ -444,12 +446,11 @@ Class | Method | HTTP request | Description
  - [GetProfileResult](doc//GetProfileResult.md)
  - [GetProfileStatisticsHistoryResult](doc//GetProfileStatisticsHistoryResult.md)
  - [GetProfileStatisticsResult](doc//GetProfileStatisticsResult.md)
- - [GetProfileStringPendingModerationList](doc//GetProfileStringPendingModerationList.md)
  - [GetProfileStringState](doc//GetProfileStringState.md)
  - [GetPushNotificationInfo](doc//GetPushNotificationInfo.md)
  - [GetReportList](doc//GetReportList.md)
+ - [GetReportQueuePage](doc//GetReportQueuePage.md)
  - [GetSentMessage](doc//GetSentMessage.md)
- - [GetWaitingReportsPage](doc//GetWaitingReportsPage.md)
  - [ImageProcessingDynamicConfig](doc//ImageProcessingDynamicConfig.md)
  - [ImageProcessingWarnings](doc//ImageProcessingWarnings.md)
  - [InfoBanner](doc//InfoBanner.md)
@@ -491,8 +492,11 @@ Class | Method | HTTP request | Description
  - [MaxDistanceKm](doc//MaxDistanceKm.md)
  - [MediaAppNotificationSettings](doc//MediaAppNotificationSettings.md)
  - [MediaContentFaceVerifiedNullByAccount](doc//MediaContentFaceVerifiedNullByAccount.md)
+ - [MediaContentModerationQueuePage](doc//MediaContentModerationQueuePage.md)
+ - [MediaContentModerationQueueType](doc//MediaContentModerationQueueType.md)
  - [MediaContentModerationRejectedReasonCategory](doc//MediaContentModerationRejectedReasonCategory.md)
  - [MediaContentModerationRejectedReasonDetails](doc//MediaContentModerationRejectedReasonDetails.md)
+ - [MediaContentModerationType](doc//MediaContentModerationType.md)
  - [MediaContentPendingModeration](doc//MediaContentPendingModeration.md)
  - [MediaContentSyncVersion](doc//MediaContentSyncVersion.md)
  - [MediaContentType](doc//MediaContentType.md)
@@ -505,7 +509,6 @@ Class | Method | HTTP request | Description
  - [MessageNumber](doc//MessageNumber.md)
  - [MinDistanceKm](doc//MinDistanceKm.md)
  - [ModerationAction](doc//ModerationAction.md)
- - [ModerationQueueType](doc//ModerationQueueType.md)
  - [MyContentInfo](doc//MyContentInfo.md)
  - [MyProfileContent](doc//MyProfileContent.md)
  - [NewReceivedLikesCount](doc//NewReceivedLikesCount.md)
@@ -579,6 +582,8 @@ Class | Method | HTTP request | Description
  - [ProfileStatisticsHistoryValueType](doc//ProfileStatisticsHistoryValueType.md)
  - [ProfileStringModerationContentType](doc//ProfileStringModerationContentType.md)
  - [ProfileStringModerationInfo](doc//ProfileStringModerationInfo.md)
+ - [ProfileStringModerationQueuePage](doc//ProfileStringModerationQueuePage.md)
+ - [ProfileStringModerationQueueType](doc//ProfileStringModerationQueueType.md)
  - [ProfileStringModerationRejectedReasonCategory](doc//ProfileStringModerationRejectedReasonCategory.md)
  - [ProfileStringModerationRejectedReasonDetails](doc//ProfileStringModerationRejectedReasonDetails.md)
  - [ProfileStringModerationState](doc//ProfileStringModerationState.md)
@@ -615,6 +620,7 @@ Class | Method | HTTP request | Description
  - [ReportIteratorMode](doc//ReportIteratorMode.md)
  - [ReportIteratorQuery](doc//ReportIteratorQuery.md)
  - [ReportProcessingState](doc//ReportProcessingState.md)
+ - [ReportQueueType](doc//ReportQueueType.md)
  - [ReportType](doc//ReportType.md)
  - [RequestEmailLoginToken](doc//RequestEmailLoginToken.md)
  - [RequestEmailLoginTokenResult](doc//RequestEmailLoginTokenResult.md)
@@ -659,7 +665,7 @@ Class | Method | HTTP request | Description
  - [UnixTime](doc//UnixTime.md)
  - [UnreadNewsCount](doc//UnreadNewsCount.md)
  - [UnreadNewsCountResult](doc//UnreadNewsCountResult.md)
- - [UpdateChatMessageReport](doc//UpdateChatMessageReport.md)
+ - [UpdateChatMessageReports](doc//UpdateChatMessageReports.md)
  - [UpdateCustomReportEmpty](doc//UpdateCustomReportEmpty.md)
  - [UpdateNewsTranslation](doc//UpdateNewsTranslation.md)
  - [UpdateNewsTranslationResult](doc//UpdateNewsTranslationResult.md)

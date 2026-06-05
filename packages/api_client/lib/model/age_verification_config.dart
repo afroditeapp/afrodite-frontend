@@ -14,15 +14,27 @@ class AgeVerificationConfig {
   /// Returns a new [AgeVerificationConfig] instance.
   AgeVerificationConfig({
     this.methods,
-    this.required_ = false,
-    this.verifyDuringInitialSetup = false,
+    this.required_,
+    this.verifyDuringInitialSetup,
   });
 
   AgeVerificationMethodsConfig? methods;
 
-  bool required_;
+  ///
+  /// Please note: This property should have been non-nullable! Since the specification file
+  /// does not include a default value (using the "default:" property), however, the generated
+  /// source code must fall back to having a nullable type.
+  /// Consider adding a "default:" property in the specification file to hide this note.
+  ///
+  AgeVerificationPlatforms? required_;
 
-  bool verifyDuringInitialSetup;
+  ///
+  /// Please note: This property should have been non-nullable! Since the specification file
+  /// does not include a default value (using the "default:" property), however, the generated
+  /// source code must fall back to having a nullable type.
+  /// Consider adding a "default:" property in the specification file to hide this note.
+  ///
+  AgeVerificationPlatforms? verifyDuringInitialSetup;
 
   @override
   bool operator ==(Object other) => identical(this, other) || other is AgeVerificationConfig &&
@@ -34,8 +46,8 @@ class AgeVerificationConfig {
   int get hashCode =>
     // ignore: unnecessary_parenthesis
     (methods == null ? 0 : methods!.hashCode) +
-    (required_.hashCode) +
-    (verifyDuringInitialSetup.hashCode);
+    (required_ == null ? 0 : required_!.hashCode) +
+    (verifyDuringInitialSetup == null ? 0 : verifyDuringInitialSetup!.hashCode);
 
   @override
   String toString() => 'AgeVerificationConfig[methods=$methods, required_=$required_, verifyDuringInitialSetup=$verifyDuringInitialSetup]';
@@ -47,8 +59,16 @@ class AgeVerificationConfig {
     } else {
       json[r'methods'] = null;
     }
+    if (this.required_ != null) {
       json[r'required'] = this.required_;
+    } else {
+      json[r'required'] = null;
+    }
+    if (this.verifyDuringInitialSetup != null) {
       json[r'verify_during_initial_setup'] = this.verifyDuringInitialSetup;
+    } else {
+      json[r'verify_during_initial_setup'] = null;
+    }
     return json;
   }
 
@@ -72,8 +92,8 @@ class AgeVerificationConfig {
 
       return AgeVerificationConfig(
         methods: AgeVerificationMethodsConfig.fromJson(json[r'methods']),
-        required_: mapValueOfType<bool>(json, r'required') ?? false,
-        verifyDuringInitialSetup: mapValueOfType<bool>(json, r'verify_during_initial_setup') ?? false,
+        required_: AgeVerificationPlatforms.fromJson(json[r'required']),
+        verifyDuringInitialSetup: AgeVerificationPlatforms.fromJson(json[r'verify_during_initial_setup']),
       );
     }
     return null;

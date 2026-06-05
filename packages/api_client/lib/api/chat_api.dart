@@ -997,13 +997,13 @@ class ChatApi {
   ///
   /// Parameters:
   ///
-  /// * [UpdateChatMessageReport] updateChatMessageReport (required):
-  Future<Response> postChatMessageReportWithHttpInfo(UpdateChatMessageReport updateChatMessageReport,) async {
+  /// * [UpdateChatMessageReports] updateChatMessageReports (required):
+  Future<Response> postChatMessageReportsWithHttpInfo(UpdateChatMessageReports updateChatMessageReports,) async {
     // ignore: prefer_const_declarations
-    final path = r'/chat_api/chat_message_report';
+    final path = r'/chat_api/chat_message_reports';
 
     // ignore: prefer_final_locals
-    Object? postBody = updateChatMessageReport;
+    Object? postBody = updateChatMessageReports;
 
     final queryParams = <QueryParam>[];
     final headerParams = <String, String>{};
@@ -1029,9 +1029,9 @@ class ChatApi {
   ///
   /// Parameters:
   ///
-  /// * [UpdateChatMessageReport] updateChatMessageReport (required):
-  Future<UpdateReportResult?> postChatMessageReport(UpdateChatMessageReport updateChatMessageReport,) async {
-    final response = await postChatMessageReportWithHttpInfo(updateChatMessageReport,);
+  /// * [UpdateChatMessageReports] updateChatMessageReports (required):
+  Future<UpdateReportResult?> postChatMessageReports(UpdateChatMessageReports updateChatMessageReports,) async {
+    final response = await postChatMessageReportsWithHttpInfo(updateChatMessageReports,);
     if (response.statusCode >= HttpStatus.badRequest) {
       throw ApiException(response.statusCode, await _decodeBodyBytes(response));
     }

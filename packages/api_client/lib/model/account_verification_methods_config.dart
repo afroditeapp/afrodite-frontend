@@ -13,13 +13,25 @@ part of openapi.api;
 class AccountVerificationMethodsConfig {
   /// Returns a new [AccountVerificationMethodsConfig] instance.
   AccountVerificationMethodsConfig({
-    this.debug = false,
-    this.eudi = false,
+    this.debug,
+    this.eudi,
   });
 
-  bool debug;
+  ///
+  /// Please note: This property should have been non-nullable! Since the specification file
+  /// does not include a default value (using the "default:" property), however, the generated
+  /// source code must fall back to having a nullable type.
+  /// Consider adding a "default:" property in the specification file to hide this note.
+  ///
+  AccountVerificationPlatforms? debug;
 
-  bool eudi;
+  ///
+  /// Please note: This property should have been non-nullable! Since the specification file
+  /// does not include a default value (using the "default:" property), however, the generated
+  /// source code must fall back to having a nullable type.
+  /// Consider adding a "default:" property in the specification file to hide this note.
+  ///
+  AccountVerificationPlatforms? eudi;
 
   @override
   bool operator ==(Object other) => identical(this, other) || other is AccountVerificationMethodsConfig &&
@@ -29,16 +41,24 @@ class AccountVerificationMethodsConfig {
   @override
   int get hashCode =>
     // ignore: unnecessary_parenthesis
-    (debug.hashCode) +
-    (eudi.hashCode);
+    (debug == null ? 0 : debug!.hashCode) +
+    (eudi == null ? 0 : eudi!.hashCode);
 
   @override
   String toString() => 'AccountVerificationMethodsConfig[debug=$debug, eudi=$eudi]';
 
   Map<String, dynamic> toJson() {
     final json = <String, dynamic>{};
+    if (this.debug != null) {
       json[r'debug'] = this.debug;
+    } else {
+      json[r'debug'] = null;
+    }
+    if (this.eudi != null) {
       json[r'eudi'] = this.eudi;
+    } else {
+      json[r'eudi'] = null;
+    }
     return json;
   }
 
@@ -61,8 +81,8 @@ class AccountVerificationMethodsConfig {
       }());
 
       return AccountVerificationMethodsConfig(
-        debug: mapValueOfType<bool>(json, r'debug') ?? false,
-        eudi: mapValueOfType<bool>(json, r'eudi') ?? false,
+        debug: AccountVerificationPlatforms.fromJson(json[r'debug']),
+        eudi: AccountVerificationPlatforms.fromJson(json[r'eudi']),
       );
     }
     return null;

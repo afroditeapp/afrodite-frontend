@@ -19,30 +19,27 @@ const IMAGE_MODERATION_ROW_HEIGHT = 300.0;
 class ModerateImagesPage extends MyScreenPageLimited<()> {
   ModerateImagesPage(
     RepositoryInstances r, {
-    required ModerationQueueType queueType,
-    required bool showContentWhichBotsCanModerate,
+    required MediaContentModerationType moderationType,
+    required MediaContentModerationQueueType queueType,
   }) : super(
-         builder: (_) => ModerateImagesScreen(
-           r,
-           queueType: queueType,
-           showContentWhichBotsCanModerate: showContentWhichBotsCanModerate,
-         ),
+         builder: (_) =>
+             ModerateImagesScreen(r, moderationType: moderationType, queueType: queueType),
        );
 }
 
 class ModerateImagesScreen extends ContentDecicionScreen<WrappedMediaContentPendingModeration> {
-  final ModerationQueueType queueType;
-  final bool showContentWhichBotsCanModerate;
+  final MediaContentModerationType moderationType;
+  final MediaContentModerationQueueType queueType;
   ModerateImagesScreen(
     RepositoryInstances r, {
+    required this.moderationType,
     required this.queueType,
-    required this.showContentWhichBotsCanModerate,
     super.key,
   }) : super(
          api: r.api,
          title: "Moderate profile images",
          infoMessageRowHeight: IMAGE_MODERATION_ROW_HEIGHT,
-         io: MediaContentIo(r.api, r.media, showContentWhichBotsCanModerate, queueType),
+         io: MediaContentIo(r.api, r.media, moderationType, queueType),
          builder: MediaContentUiBuilder(),
        );
 }
@@ -68,10 +65,10 @@ class WrappedMediaContentPendingModeration extends MediaContentPendingModeration
 class MediaContentIo extends ContentIo<WrappedMediaContentPendingModeration> {
   final ApiManager api;
   final MediaRepository media;
-  final bool showContentWhichBotsCanModerate;
-  final ModerationQueueType queue;
+  final MediaContentModerationType moderationType;
+  final MediaContentModerationQueueType queueType;
 
-  MediaContentIo(this.api, this.media, this.showContentWhichBotsCanModerate, this.queue);
+  MediaContentIo(this.api, this.media, this.moderationType, this.queueType);
 
   @override
   String? initialRejectedDetails(WrappedMediaContentPendingModeration content) {
@@ -81,23 +78,23 @@ class MediaContentIo extends ContentIo<WrappedMediaContentPendingModeration> {
   @override
   Future<Result<List<WrappedMediaContentPendingModeration>, ()>> getNextContent() async {
     final r = await api.mediaAdmin(
-      (api) => api.getMediaContentPendingModerationList(
+      (api) => api.getMediaContentModerationQueuePage(
         MediaContentType.jpegImage,
-        queue,
-        showContentWhichBotsCanModerate,
+        moderationType,
+        queueType,
       ),
     );
 
-    final GetMediaContentPendingModerationList list;
+    final MediaContentModerationQueuePage page;
     switch (r) {
       case Err():
         return const Err(());
       case Ok():
-        list = r.v;
+        page = r.v;
     }
 
     List<WrappedMediaContentPendingModeration> newList = [];
-    for (final v in list.values) {
+    for (final v in page.values) {
       var securitySelfie = await api
           .mediaAdmin((api) => api.getSecurityContentAdminInfo(v.accountId.aid))
           .ok()

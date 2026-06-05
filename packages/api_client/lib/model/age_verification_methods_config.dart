@@ -13,13 +13,25 @@ part of openapi.api;
 class AgeVerificationMethodsConfig {
   /// Returns a new [AgeVerificationMethodsConfig] instance.
   AgeVerificationMethodsConfig({
-    this.debug = false,
-    this.eudi = false,
+    this.debug,
+    this.eudi,
   });
 
-  bool debug;
+  ///
+  /// Please note: This property should have been non-nullable! Since the specification file
+  /// does not include a default value (using the "default:" property), however, the generated
+  /// source code must fall back to having a nullable type.
+  /// Consider adding a "default:" property in the specification file to hide this note.
+  ///
+  AgeVerificationPlatforms? debug;
 
-  bool eudi;
+  ///
+  /// Please note: This property should have been non-nullable! Since the specification file
+  /// does not include a default value (using the "default:" property), however, the generated
+  /// source code must fall back to having a nullable type.
+  /// Consider adding a "default:" property in the specification file to hide this note.
+  ///
+  AgeVerificationPlatforms? eudi;
 
   @override
   bool operator ==(Object other) => identical(this, other) || other is AgeVerificationMethodsConfig &&
@@ -29,16 +41,24 @@ class AgeVerificationMethodsConfig {
   @override
   int get hashCode =>
     // ignore: unnecessary_parenthesis
-    (debug.hashCode) +
-    (eudi.hashCode);
+    (debug == null ? 0 : debug!.hashCode) +
+    (eudi == null ? 0 : eudi!.hashCode);
 
   @override
   String toString() => 'AgeVerificationMethodsConfig[debug=$debug, eudi=$eudi]';
 
   Map<String, dynamic> toJson() {
     final json = <String, dynamic>{};
+    if (this.debug != null) {
       json[r'debug'] = this.debug;
+    } else {
+      json[r'debug'] = null;
+    }
+    if (this.eudi != null) {
       json[r'eudi'] = this.eudi;
+    } else {
+      json[r'eudi'] = null;
+    }
     return json;
   }
 
@@ -61,8 +81,8 @@ class AgeVerificationMethodsConfig {
       }());
 
       return AgeVerificationMethodsConfig(
-        debug: mapValueOfType<bool>(json, r'debug') ?? false,
-        eudi: mapValueOfType<bool>(json, r'eudi') ?? false,
+        debug: AgeVerificationPlatforms.fromJson(json[r'debug']),
+        eudi: AgeVerificationPlatforms.fromJson(json[r'eudi']),
       );
     }
     return null;

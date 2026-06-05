@@ -3,6 +3,7 @@ import 'package:app/data/utils/repository_instances.dart';
 import 'package:app/logic/app/navigator_state.dart';
 import 'package:app/model/freezed/logic/main/navigator_state.dart';
 import 'package:app/localizations.dart';
+import 'package:app/ui_utils/extensions/api.dart';
 import 'package:app/ui_utils/snack_bar.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
@@ -10,7 +11,7 @@ import 'package:openapi/api.dart';
 import 'package:app/utils/result.dart';
 
 bool isAccessToAgeVerificationScreenPossible({required AgeVerificationMethodsConfig methods}) {
-  return methods != AgeVerificationMethodsConfig();
+  return !methods.allDisabled;
 }
 
 void openAgeVerificationSettings(BuildContext context, AgeVerificationMethodsConfig methods) {
@@ -144,7 +145,7 @@ class _AgeVerificationContentState extends State<AgeVerificationContent> {
 
   List<Widget> _verificationMethodTiles(BuildContext context) {
     return [
-      if (widget.methods.debug)
+      if (widget.methods.debugEnabled)
         ListTile(
           leading: const Icon(Icons.task_alt),
           title: const Text('Debug verify'),
@@ -154,7 +155,7 @@ class _AgeVerificationContentState extends State<AgeVerificationContent> {
             verificationData: '',
           ),
         ),
-      if (widget.methods.eudi)
+      if (widget.methods.eudiEnabled)
         ListTile(
           leading: Icon(Icons.badge_outlined),
           title: Text(context.strings.age_verification_screen_verification_method_eudi_unsupported),

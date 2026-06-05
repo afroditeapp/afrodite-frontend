@@ -91,107 +91,110 @@ class _ModeratorTasksScreenState extends State<ModeratorTasksScreen> {
       return;
     }
 
-    final GetMediaContentPendingModerationList? contentBotInitial;
-    final GetMediaContentPendingModerationList? contentHumanInitial;
-    final GetMediaContentPendingModerationList? contentBot;
-    final GetMediaContentPendingModerationList? contentHuman;
+    final MediaContentModerationQueuePage? contentBotInitial;
+    final MediaContentModerationQueuePage? contentHumanInitial;
+    final MediaContentModerationQueuePage? contentBot;
+    final MediaContentModerationQueuePage? contentHuman;
     if (permissions.adminModerateMediaContent) {
       contentBotInitial = await widget.api
           .mediaAdmin(
-            (api) => api.getMediaContentPendingModerationList(
+            (api) => api.getMediaContentModerationQueuePage(
               MediaContentType.jpegImage,
-              ModerationQueueType.initialMediaModeration,
-              true,
+              MediaContentModerationType.initial,
+              MediaContentModerationQueueType.waitingAdminBot,
             ),
           )
           .ok();
       contentHumanInitial = await widget.api
           .mediaAdmin(
-            (api) => api.getMediaContentPendingModerationList(
+            (api) => api.getMediaContentModerationQueuePage(
               MediaContentType.jpegImage,
-              ModerationQueueType.initialMediaModeration,
-              false,
+              MediaContentModerationType.initial,
+              MediaContentModerationQueueType.waitingAdmin,
             ),
           )
           .ok();
       contentBot = await widget.api
           .mediaAdmin(
-            (api) => api.getMediaContentPendingModerationList(
+            (api) => api.getMediaContentModerationQueuePage(
               MediaContentType.jpegImage,
-              ModerationQueueType.mediaModeration,
-              true,
+              MediaContentModerationType.normal,
+              MediaContentModerationQueueType.waitingAdminBot,
             ),
           )
           .ok();
       contentHuman = await widget.api
           .mediaAdmin(
-            (api) => api.getMediaContentPendingModerationList(
+            (api) => api.getMediaContentModerationQueuePage(
               MediaContentType.jpegImage,
-              ModerationQueueType.mediaModeration,
-              false,
+              MediaContentModerationType.normal,
+              MediaContentModerationQueueType.waitingAdmin,
             ),
           )
           .ok();
     } else {
-      final empty = GetMediaContentPendingModerationList();
+      final empty = MediaContentModerationQueuePage();
       contentBotInitial = empty;
       contentHumanInitial = empty;
       contentBot = empty;
       contentHuman = empty;
     }
 
-    final GetProfileStringPendingModerationList? profileNamesBot;
-    final GetProfileStringPendingModerationList? profileNamesHuman;
+    final ProfileStringModerationQueuePage? profileNamesBot;
+    final ProfileStringModerationQueuePage? profileNamesHuman;
     if (permissions.adminModerateProfileNames) {
       profileNamesBot = await widget.api
           .profileAdmin(
-            (api) => api.getProfileStringPendingModerationList(
+            (api) => api.getProfileStringModerationQueuePage(
               ProfileStringModerationContentType.profileName,
-              true,
+              ProfileStringModerationQueueType.waitingAdminBot,
             ),
           )
           .ok();
       profileNamesHuman = await widget.api
           .profileAdmin(
-            (api) => api.getProfileStringPendingModerationList(
+            (api) => api.getProfileStringModerationQueuePage(
               ProfileStringModerationContentType.profileName,
-              false,
+              ProfileStringModerationQueueType.waitingAdmin,
             ),
           )
           .ok();
     } else {
-      profileNamesBot = GetProfileStringPendingModerationList();
-      profileNamesHuman = GetProfileStringPendingModerationList();
+      profileNamesBot = ProfileStringModerationQueuePage();
+      profileNamesHuman = ProfileStringModerationQueuePage();
     }
 
-    final GetProfileStringPendingModerationList? profileTextsBot;
-    final GetProfileStringPendingModerationList? profileTextsHuman;
+    final ProfileStringModerationQueuePage? profileTextsBot;
+    final ProfileStringModerationQueuePage? profileTextsHuman;
     if (permissions.adminModerateProfileTexts) {
       profileTextsBot = await widget.api
           .profileAdmin(
-            (api) => api.getProfileStringPendingModerationList(
+            (api) => api.getProfileStringModerationQueuePage(
               ProfileStringModerationContentType.profileText,
-              true,
+              ProfileStringModerationQueueType.waitingAdminBot,
             ),
           )
           .ok();
       profileTextsHuman = await widget.api
           .profileAdmin(
-            (api) => api.getProfileStringPendingModerationList(
+            (api) => api.getProfileStringModerationQueuePage(
               ProfileStringModerationContentType.profileText,
-              false,
+              ProfileStringModerationQueueType.waitingAdmin,
             ),
           )
           .ok();
     } else {
-      profileTextsBot = GetProfileStringPendingModerationList();
-      profileTextsHuman = GetProfileStringPendingModerationList();
+      profileTextsBot = ProfileStringModerationQueuePage();
+      profileTextsHuman = ProfileStringModerationQueuePage();
     }
 
     final GetReportList? reports;
     if (permissions.adminModerateProfileNames) {
       reports = await widget.api
-          .commonAdmin((api) => api.postGetWaitingReportsPage(GetWaitingReportsPage()))
+          .commonAdmin(
+            (api) =>
+                api.postGetReportQueuePage(GetReportQueuePage(queueType: ReportQueueType.waiting)),
+          )
           .ok();
     } else {
       reports = GetReportList();
@@ -273,8 +276,8 @@ class _ModeratorTasksScreenState extends State<ModeratorTasksScreen> {
             context,
             ModerateImagesPage(
               r,
-              queueType: ModerationQueueType.initialMediaModeration,
-              showContentWhichBotsCanModerate: true,
+              moderationType: MediaContentModerationType.initial,
+              queueType: MediaContentModerationQueueType.waitingAdminBot,
             ),
           ),
         ),
@@ -286,8 +289,8 @@ class _ModeratorTasksScreenState extends State<ModeratorTasksScreen> {
             context,
             ModerateImagesPage(
               r,
-              queueType: ModerationQueueType.initialMediaModeration,
-              showContentWhichBotsCanModerate: false,
+              moderationType: MediaContentModerationType.initial,
+              queueType: MediaContentModerationQueueType.waitingAdmin,
             ),
           ),
         ),
@@ -299,8 +302,8 @@ class _ModeratorTasksScreenState extends State<ModeratorTasksScreen> {
             context,
             ModerateImagesPage(
               r,
-              queueType: ModerationQueueType.mediaModeration,
-              showContentWhichBotsCanModerate: true,
+              moderationType: MediaContentModerationType.normal,
+              queueType: MediaContentModerationQueueType.waitingAdminBot,
             ),
           ),
         ),
@@ -312,8 +315,8 @@ class _ModeratorTasksScreenState extends State<ModeratorTasksScreen> {
             context,
             ModerateImagesPage(
               r,
-              queueType: ModerationQueueType.mediaModeration,
-              showContentWhichBotsCanModerate: false,
+              moderationType: MediaContentModerationType.normal,
+              queueType: MediaContentModerationQueueType.waitingAdmin,
             ),
           ),
         ),
@@ -326,7 +329,7 @@ class _ModeratorTasksScreenState extends State<ModeratorTasksScreen> {
             ModerateProfileStringsPage(
               r,
               contentType: ProfileStringModerationContentType.profileName,
-              showTextsWhichBotsCanModerate: true,
+              queueType: ProfileStringModerationQueueType.waitingAdminBot,
             ),
           ),
         ),
@@ -339,7 +342,7 @@ class _ModeratorTasksScreenState extends State<ModeratorTasksScreen> {
             ModerateProfileStringsPage(
               r,
               contentType: ProfileStringModerationContentType.profileName,
-              showTextsWhichBotsCanModerate: false,
+              queueType: ProfileStringModerationQueueType.waitingAdmin,
             ),
           ),
         ),
@@ -352,7 +355,7 @@ class _ModeratorTasksScreenState extends State<ModeratorTasksScreen> {
             ModerateProfileStringsPage(
               r,
               contentType: ProfileStringModerationContentType.profileText,
-              showTextsWhichBotsCanModerate: true,
+              queueType: ProfileStringModerationQueueType.waitingAdminBot,
             ),
           ),
         ),
@@ -365,7 +368,7 @@ class _ModeratorTasksScreenState extends State<ModeratorTasksScreen> {
             ModerateProfileStringsPage(
               r,
               contentType: ProfileStringModerationContentType.profileText,
-              showTextsWhichBotsCanModerate: false,
+              queueType: ProfileStringModerationQueueType.waitingAdmin,
             ),
           ),
         ),

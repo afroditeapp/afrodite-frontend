@@ -1,3 +1,4 @@
+import 'package:app/ui_utils/extensions/api.dart';
 import 'package:openapi/api.dart';
 
 class ProfileVerificationStatusFlags {
@@ -22,7 +23,7 @@ bool shouldShowAccountVerificationRequiredLimit({
   required AccountVerificationMethodsConfig? methods,
   required int myProfileVerificationStatus,
 }) {
-  if (methods == null || methods == AccountVerificationMethodsConfig()) {
+  if (methods.allDisabled) {
     return false;
   }
 

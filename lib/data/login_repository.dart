@@ -367,7 +367,7 @@ class LoginRepository extends AppSingleton {
     if (loginResult.errorUnsupportedClient) {
       return Err(CseUnsupportedClient());
     }
-    if (loginResult.errorAccountRegistrationDisabled) {
+    if (loginResult.errorRegistrationAllPlatformsDisabled) {
       return Err(CseAccountRegistrationDisabled());
     }
     if (loginResult.errorSignInWithEmailUnverified) {

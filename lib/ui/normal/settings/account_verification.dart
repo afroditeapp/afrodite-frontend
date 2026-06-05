@@ -13,6 +13,7 @@ import 'package:app/model/freezed/logic/main/navigator_state.dart';
 import 'package:app/ui/normal/profiles/profile_filters/profile_verification_flags.dart';
 import 'package:app/ui_utils/extensions/locale.dart';
 import 'package:app/ui_utils/snack_bar.dart';
+import 'package:app/ui_utils/extensions/api.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:openapi/api.dart';
@@ -24,7 +25,7 @@ bool isAccessToAccountVerificationScreenPossible({
   required AccountVerificationMethodsConfig methods,
   required VerificationConfig verificationConfig,
 }) {
-  return methods != AccountVerificationMethodsConfig() &&
+  return !methods.allDisabled &&
       (verificationConfig.securityContent ||
           verificationConfig.profileAgeRange ||
           verificationConfig.profileName);
@@ -457,7 +458,7 @@ class _AccountVerificationSettingsScreenState extends State<AccountVerificationS
     final selectedScope = _selectedVerificationScope(verificationConfig);
     return [
       ..._verificationScopeCheckboxTiles(context, verificationConfig),
-      if (widget.methods.debug)
+      if (widget.methods.debugEnabled)
         ListTile(
           leading: const Icon(Icons.task_alt),
           title: const Text('Debug accept'),
@@ -468,7 +469,7 @@ class _AccountVerificationSettingsScreenState extends State<AccountVerificationS
             verificationData: 'accept',
           ),
         ),
-      if (widget.methods.debug)
+      if (widget.methods.debugEnabled)
         ListTile(
           leading: const Icon(Icons.cancel_outlined),
           title: const Text('Debug reject'),
@@ -479,7 +480,7 @@ class _AccountVerificationSettingsScreenState extends State<AccountVerificationS
             verificationData: 'reject',
           ),
         ),
-      if (widget.methods.eudi)
+      if (widget.methods.eudiEnabled)
         ListTile(
           leading: const Icon(Icons.badge_outlined),
           title: Text(

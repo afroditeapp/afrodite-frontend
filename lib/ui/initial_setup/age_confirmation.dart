@@ -10,6 +10,7 @@ import "package:app/data/utils/repository_instances.dart";
 import "package:app/ui/initial_setup/navigation.dart";
 import "package:app/ui/normal/settings/age_verification.dart";
 import "package:app/ui_utils/initial_setup_common.dart";
+import "package:app/ui_utils/extensions/api.dart";
 import "package:openapi/api.dart";
 
 class AgeConfirmationPage extends InitialSetupPageBase with SimpleUrlParser<AgeConfirmationPage> {
@@ -54,7 +55,7 @@ class _AgeConfirmationScreenInternal extends StatelessWidget {
             final ageVerificationConfig = configState.config.ageVerification;
             final ageVerificationMethods = ageVerificationConfig?.methods;
             final verifyDuringInitialSetup =
-                ageVerificationConfig?.verifyDuringInitialSetup == true;
+                ageVerificationConfig.verifyDuringInitialSetupOnCurrentPlatform;
 
             if (verifyDuringInitialSetup &&
                 ageVerificationMethods != null &&

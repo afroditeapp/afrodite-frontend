@@ -156,7 +156,7 @@ class MediaAdminApi {
     return null;
   }
 
-  /// Get first page of pending media content moderations. Oldest item is first and count 25.
+  /// Get the first page from media content moderation queue. The first item is the oldest item and max 25 items are returned.
   ///
   /// Note: This method returns the HTTP [Response].
   ///
@@ -164,12 +164,12 @@ class MediaAdminApi {
   ///
   /// * [MediaContentType] contentType (required):
   ///
-  /// * [ModerationQueueType] queue (required):
+  /// * [MediaContentModerationType] moderationType (required):
   ///
-  /// * [bool] showContentWhichBotsCanModerate (required):
-  Future<Response> getMediaContentPendingModerationListWithHttpInfo(MediaContentType contentType, ModerationQueueType queue, bool showContentWhichBotsCanModerate,) async {
+  /// * [MediaContentModerationQueueType] queueType (required):
+  Future<Response> getMediaContentModerationQueuePageWithHttpInfo(MediaContentType contentType, MediaContentModerationType moderationType, MediaContentModerationQueueType queueType,) async {
     // ignore: prefer_const_declarations
-    final path = r'/media_api/media_content_pending_moderation';
+    final path = r'/media_api/media_content_moderation_queue_page';
 
     // ignore: prefer_final_locals
     Object? postBody;
@@ -179,8 +179,8 @@ class MediaAdminApi {
     final formParams = <String, String>{};
 
       queryParams.addAll(_queryParams('', 'content_type', contentType));
-      queryParams.addAll(_queryParams('', 'queue', queue));
-      queryParams.addAll(_queryParams('', 'show_content_which_bots_can_moderate', showContentWhichBotsCanModerate));
+      queryParams.addAll(_queryParams('', 'moderation_type', moderationType));
+      queryParams.addAll(_queryParams('', 'queue_type', queueType));
 
     const contentTypes = <String>[];
 
@@ -196,17 +196,17 @@ class MediaAdminApi {
     );
   }
 
-  /// Get first page of pending media content moderations. Oldest item is first and count 25.
+  /// Get the first page from media content moderation queue. The first item is the oldest item and max 25 items are returned.
   ///
   /// Parameters:
   ///
   /// * [MediaContentType] contentType (required):
   ///
-  /// * [ModerationQueueType] queue (required):
+  /// * [MediaContentModerationType] moderationType (required):
   ///
-  /// * [bool] showContentWhichBotsCanModerate (required):
-  Future<GetMediaContentPendingModerationList?> getMediaContentPendingModerationList(MediaContentType contentType, ModerationQueueType queue, bool showContentWhichBotsCanModerate,) async {
-    final response = await getMediaContentPendingModerationListWithHttpInfo(contentType, queue, showContentWhichBotsCanModerate,);
+  /// * [MediaContentModerationQueueType] queueType (required):
+  Future<MediaContentModerationQueuePage?> getMediaContentModerationQueuePage(MediaContentType contentType, MediaContentModerationType moderationType, MediaContentModerationQueueType queueType,) async {
+    final response = await getMediaContentModerationQueuePageWithHttpInfo(contentType, moderationType, queueType,);
     if (response.statusCode >= HttpStatus.badRequest) {
       throw ApiException(response.statusCode, await _decodeBodyBytes(response));
     }
@@ -214,7 +214,7 @@ class MediaAdminApi {
     // At the time of writing this, `dart:convert` will throw an "Unexpected end of input"
     // FormatException when trying to decode an empty string.
     if (response.body.isNotEmpty && response.statusCode != HttpStatus.noContent) {
-      return await apiClient.deserializeAsync(await _decodeBodyBytes(response), 'GetMediaContentPendingModerationList',) as GetMediaContentPendingModerationList;
+      return await apiClient.deserializeAsync(await _decodeBodyBytes(response), 'MediaContentModerationQueuePage',) as MediaContentModerationQueuePage;
     
     }
     return null;

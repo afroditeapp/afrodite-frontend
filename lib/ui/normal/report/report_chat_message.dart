@@ -289,8 +289,8 @@ class _ReportChatMessageScreen extends State<ReportChatMessageScreen> {
 
     final result = await repositories.api
         .chat(
-          (api) => api.postChatMessageReport(
-            UpdateChatMessageReport(target: widget.accountId, messages: reportDataList),
+          (api) => api.postChatMessageReports(
+            UpdateChatMessageReports(target: widget.accountId, messages: reportDataList),
           ),
         )
         .ok();

@@ -404,9 +404,9 @@ class ProfileAdminApi {
     return null;
   }
 
-  /// Get first page of pending profile string moderations. Oldest item is first and count 25.
+  /// Get the first page from profile string moderation queue. The first item is the oldest item and max 25 items are returned.
   ///
-  /// # Access * [Permissions::admin_moderate_profile_names] or   [Permissions::admin_moderate_profile_texts] depending   on [GetProfilePendingModerationParams::content_type].
+  /// # Access * [Permissions::admin_moderate_profile_names] or   [Permissions::admin_moderate_profile_texts] depending   on [GetProfileStringModerationQueuePageParams::content_type].
   ///
   /// Note: This method returns the HTTP [Response].
   ///
@@ -414,10 +414,10 @@ class ProfileAdminApi {
   ///
   /// * [ProfileStringModerationContentType] contentType (required):
   ///
-  /// * [bool] showValuesWhichBotsCanModerate (required):
-  Future<Response> getProfileStringPendingModerationListWithHttpInfo(ProfileStringModerationContentType contentType, bool showValuesWhichBotsCanModerate,) async {
+  /// * [ProfileStringModerationQueueType] queueType (required):
+  Future<Response> getProfileStringModerationQueuePageWithHttpInfo(ProfileStringModerationContentType contentType, ProfileStringModerationQueueType queueType,) async {
     // ignore: prefer_const_declarations
-    final path = r'/profile_api/profile_string_pending_moderation';
+    final path = r'/profile_api/profile_string_moderation_queue_page';
 
     // ignore: prefer_final_locals
     Object? postBody;
@@ -427,7 +427,7 @@ class ProfileAdminApi {
     final formParams = <String, String>{};
 
       queryParams.addAll(_queryParams('', 'content_type', contentType));
-      queryParams.addAll(_queryParams('', 'show_values_which_bots_can_moderate', showValuesWhichBotsCanModerate));
+      queryParams.addAll(_queryParams('', 'queue_type', queueType));
 
     const contentTypes = <String>[];
 
@@ -443,17 +443,17 @@ class ProfileAdminApi {
     );
   }
 
-  /// Get first page of pending profile string moderations. Oldest item is first and count 25.
+  /// Get the first page from profile string moderation queue. The first item is the oldest item and max 25 items are returned.
   ///
-  /// # Access * [Permissions::admin_moderate_profile_names] or   [Permissions::admin_moderate_profile_texts] depending   on [GetProfilePendingModerationParams::content_type].
+  /// # Access * [Permissions::admin_moderate_profile_names] or   [Permissions::admin_moderate_profile_texts] depending   on [GetProfileStringModerationQueuePageParams::content_type].
   ///
   /// Parameters:
   ///
   /// * [ProfileStringModerationContentType] contentType (required):
   ///
-  /// * [bool] showValuesWhichBotsCanModerate (required):
-  Future<GetProfileStringPendingModerationList?> getProfileStringPendingModerationList(ProfileStringModerationContentType contentType, bool showValuesWhichBotsCanModerate,) async {
-    final response = await getProfileStringPendingModerationListWithHttpInfo(contentType, showValuesWhichBotsCanModerate,);
+  /// * [ProfileStringModerationQueueType] queueType (required):
+  Future<ProfileStringModerationQueuePage?> getProfileStringModerationQueuePage(ProfileStringModerationContentType contentType, ProfileStringModerationQueueType queueType,) async {
+    final response = await getProfileStringModerationQueuePageWithHttpInfo(contentType, queueType,);
     if (response.statusCode >= HttpStatus.badRequest) {
       throw ApiException(response.statusCode, await _decodeBodyBytes(response));
     }
@@ -461,7 +461,7 @@ class ProfileAdminApi {
     // At the time of writing this, `dart:convert` will throw an "Unexpected end of input"
     // FormatException when trying to decode an empty string.
     if (response.body.isNotEmpty && response.statusCode != HttpStatus.noContent) {
-      return await apiClient.deserializeAsync(await _decodeBodyBytes(response), 'GetProfileStringPendingModerationList',) as GetProfileStringPendingModerationList;
+      return await apiClient.deserializeAsync(await _decodeBodyBytes(response), 'ProfileStringModerationQueuePage',) as ProfileStringModerationQueuePage;
     
     }
     return null;

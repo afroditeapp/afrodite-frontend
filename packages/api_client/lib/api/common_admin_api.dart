@@ -1187,19 +1187,19 @@ class CommonAdminApi {
     return null;
   }
 
-  /// Get max 25 waiting reports from oldest to newest.
+  /// Get max 25 reports from the report queue. Returns reports from oldest to newest.
   ///
   /// Note: This method returns the HTTP [Response].
   ///
   /// Parameters:
   ///
-  /// * [GetWaitingReportsPage] getWaitingReportsPage (required):
-  Future<Response> postGetWaitingReportsPageWithHttpInfo(GetWaitingReportsPage getWaitingReportsPage,) async {
+  /// * [GetReportQueuePage] getReportQueuePage (required):
+  Future<Response> postGetReportQueuePageWithHttpInfo(GetReportQueuePage getReportQueuePage,) async {
     // ignore: prefer_const_declarations
-    final path = r'/common_api/waiting_reports_page';
+    final path = r'/common_api/report_queue_page';
 
     // ignore: prefer_final_locals
-    Object? postBody = getWaitingReportsPage;
+    Object? postBody = getReportQueuePage;
 
     final queryParams = <QueryParam>[];
     final headerParams = <String, String>{};
@@ -1219,13 +1219,13 @@ class CommonAdminApi {
     );
   }
 
-  /// Get max 25 waiting reports from oldest to newest.
+  /// Get max 25 reports from the report queue. Returns reports from oldest to newest.
   ///
   /// Parameters:
   ///
-  /// * [GetWaitingReportsPage] getWaitingReportsPage (required):
-  Future<GetReportList?> postGetWaitingReportsPage(GetWaitingReportsPage getWaitingReportsPage,) async {
-    final response = await postGetWaitingReportsPageWithHttpInfo(getWaitingReportsPage,);
+  /// * [GetReportQueuePage] getReportQueuePage (required):
+  Future<GetReportList?> postGetReportQueuePage(GetReportQueuePage getReportQueuePage,) async {
+    final response = await postGetReportQueuePageWithHttpInfo(getReportQueuePage,);
     if (response.statusCode >= HttpStatus.badRequest) {
       throw ApiException(response.statusCode, await _decodeBodyBytes(response));
     }

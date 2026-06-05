@@ -115,6 +115,12 @@ String parameterToString(dynamic value) {
   if (value is LimitedActionStatus) {
     return LimitedActionStatusTypeTransformer().encode(value).toString();
   }
+  if (value is MediaContentModerationQueueType) {
+    return MediaContentModerationQueueTypeTypeTransformer().encode(value).toString();
+  }
+  if (value is MediaContentModerationType) {
+    return MediaContentModerationTypeTypeTransformer().encode(value).toString();
+  }
   if (value is MediaContentType) {
     return MediaContentTypeTypeTransformer().encode(value).toString();
   }
@@ -123,9 +129,6 @@ String parameterToString(dynamic value) {
   }
   if (value is ModerationAction) {
     return ModerationActionTypeTransformer().encode(value).toString();
-  }
-  if (value is ModerationQueueType) {
-    return ModerationQueueTypeTypeTransformer().encode(value).toString();
   }
   if (value is PendingAppNotificationType) {
     return PendingAppNotificationTypeTypeTransformer().encode(value).toString();
@@ -138,6 +141,9 @@ String parameterToString(dynamic value) {
   }
   if (value is ProfileStringModerationContentType) {
     return ProfileStringModerationContentTypeTypeTransformer().encode(value).toString();
+  }
+  if (value is ProfileStringModerationQueueType) {
+    return ProfileStringModerationQueueTypeTypeTransformer().encode(value).toString();
   }
   if (value is ProfileStringModerationState) {
     return ProfileStringModerationStateTypeTransformer().encode(value).toString();
@@ -153,6 +159,9 @@ String parameterToString(dynamic value) {
   }
   if (value is ReportProcessingState) {
     return ReportProcessingStateTypeTransformer().encode(value).toString();
+  }
+  if (value is ReportQueueType) {
+    return ReportQueueTypeTypeTransformer().encode(value).toString();
   }
   if (value is ScheduledTaskType) {
     return ScheduledTaskTypeTypeTransformer().encode(value).toString();

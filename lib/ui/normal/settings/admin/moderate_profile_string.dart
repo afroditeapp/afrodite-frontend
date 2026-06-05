@@ -15,13 +15,10 @@ class ModerateProfileStringsPage extends MyScreenPageLimited<()> {
   ModerateProfileStringsPage(
     RepositoryInstances r, {
     required ProfileStringModerationContentType contentType,
-    required bool showTextsWhichBotsCanModerate,
+    required ProfileStringModerationQueueType queueType,
   }) : super(
-         builder: (_) => ModerateProfileStringsScreen(
-           r,
-           contentType: contentType,
-           showTextsWhichBotsCanModerate: showTextsWhichBotsCanModerate,
-         ),
+         builder: (_) =>
+             ModerateProfileStringsScreen(r, contentType: contentType, queueType: queueType),
        );
 }
 
@@ -29,13 +26,13 @@ class ModerateProfileStringsScreen extends ContentDecicionScreen<WrappedProfileS
   ModerateProfileStringsScreen(
     RepositoryInstances r, {
     required ProfileStringModerationContentType contentType,
-    required bool showTextsWhichBotsCanModerate,
+    required ProfileStringModerationQueueType queueType,
     super.key,
   }) : super(
          api: r.api,
          title: "Moderate ${contentType.adminUiTextPlular()}",
          infoMessageRowHeight: ROW_HEIGHT,
-         io: ProfileStringIo(r.api, contentType, showTextsWhichBotsCanModerate),
+         io: ProfileStringIo(r.api, contentType, queueType),
          builder: ProfileTextUiBuilder(),
        );
 }
@@ -59,9 +56,9 @@ class WrappedProfileStringModeration extends ProfileStringPendingModeration
 class ProfileStringIo extends ContentIo<WrappedProfileStringModeration> {
   final ApiManager api;
   final ProfileStringModerationContentType contentType;
-  final bool showTextsWhichBotsCanModerate;
+  final ProfileStringModerationQueueType queueType;
 
-  ProfileStringIo(this.api, this.contentType, this.showTextsWhichBotsCanModerate);
+  ProfileStringIo(this.api, this.contentType, this.queueType);
 
   @override
   String? initialRejectedDetails(WrappedProfileStringModeration content) {
@@ -71,10 +68,7 @@ class ProfileStringIo extends ContentIo<WrappedProfileStringModeration> {
   @override
   Future<Result<List<WrappedProfileStringModeration>, ()>> getNextContent() async {
     return await api
-        .profileAdmin(
-          (api) =>
-              api.getProfileStringPendingModerationList(contentType, showTextsWhichBotsCanModerate),
-        )
+        .profileAdmin((api) => api.getProfileStringModerationQueuePage(contentType, queueType))
         .mapOk(
           (v) => v.values
               .map(

@@ -13,26 +13,52 @@ part of openapi.api;
 class DynamicServerConfig {
   /// Returns a new [DynamicServerConfig] instance.
   DynamicServerConfig({
-    required this.accountRegistrationPlatforms,
+    this.accountLoginPlatforms,
+    this.accountRegistrationPlatforms,
   });
 
-  AccountRegistrationPlatforms accountRegistrationPlatforms;
+  ///
+  /// Please note: This property should have been non-nullable! Since the specification file
+  /// does not include a default value (using the "default:" property), however, the generated
+  /// source code must fall back to having a nullable type.
+  /// Consider adding a "default:" property in the specification file to hide this note.
+  ///
+  AccountLoginPlatforms? accountLoginPlatforms;
+
+  ///
+  /// Please note: This property should have been non-nullable! Since the specification file
+  /// does not include a default value (using the "default:" property), however, the generated
+  /// source code must fall back to having a nullable type.
+  /// Consider adding a "default:" property in the specification file to hide this note.
+  ///
+  AccountRegistrationPlatforms? accountRegistrationPlatforms;
 
   @override
   bool operator ==(Object other) => identical(this, other) || other is DynamicServerConfig &&
+    other.accountLoginPlatforms == accountLoginPlatforms &&
     other.accountRegistrationPlatforms == accountRegistrationPlatforms;
 
   @override
   int get hashCode =>
     // ignore: unnecessary_parenthesis
-    (accountRegistrationPlatforms.hashCode);
+    (accountLoginPlatforms == null ? 0 : accountLoginPlatforms!.hashCode) +
+    (accountRegistrationPlatforms == null ? 0 : accountRegistrationPlatforms!.hashCode);
 
   @override
-  String toString() => 'DynamicServerConfig[accountRegistrationPlatforms=$accountRegistrationPlatforms]';
+  String toString() => 'DynamicServerConfig[accountLoginPlatforms=$accountLoginPlatforms, accountRegistrationPlatforms=$accountRegistrationPlatforms]';
 
   Map<String, dynamic> toJson() {
     final json = <String, dynamic>{};
+    if (this.accountLoginPlatforms != null) {
+      json[r'account_login_platforms'] = this.accountLoginPlatforms;
+    } else {
+      json[r'account_login_platforms'] = null;
+    }
+    if (this.accountRegistrationPlatforms != null) {
       json[r'account_registration_platforms'] = this.accountRegistrationPlatforms;
+    } else {
+      json[r'account_registration_platforms'] = null;
+    }
     return json;
   }
 
@@ -55,7 +81,8 @@ class DynamicServerConfig {
       }());
 
       return DynamicServerConfig(
-        accountRegistrationPlatforms: AccountRegistrationPlatforms.fromJson(json[r'account_registration_platforms'])!,
+        accountLoginPlatforms: AccountLoginPlatforms.fromJson(json[r'account_login_platforms']),
+        accountRegistrationPlatforms: AccountRegistrationPlatforms.fromJson(json[r'account_registration_platforms']),
       );
     }
     return null;
@@ -103,7 +130,6 @@ class DynamicServerConfig {
 
   /// The list of required keys that must be present in a JSON.
   static const requiredKeys = <String>{
-    'account_registration_platforms',
   };
 }
 
