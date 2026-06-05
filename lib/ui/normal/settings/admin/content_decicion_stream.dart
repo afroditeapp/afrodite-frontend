@@ -37,6 +37,7 @@ class _ContentDecicionScreenState<C extends ContentInfoGetter>
   late final ContentDecicionStreamLogic<C> _logic;
 
   late final Stream<ContentDecicionStreamStatus> _stream;
+  bool _scrollUpActionIsAccept = true;
 
   /// List item size changes cause issues when scrolling upwards, so
   /// cache latest state for each row.
@@ -54,7 +55,7 @@ class _ContentDecicionScreenState<C extends ContentInfoGetter>
   void positionListener() {
     final firstVisible = _listener.itemPositions.value.firstOrNull;
     if (firstVisible != null && widget.builder.allowAccepting) {
-      _logic.moderateRow(firstVisible.index - 1, true);
+      _logic.moderateRow(firstVisible.index - 1, _scrollUpActionIsAccept);
     }
   }
 
@@ -65,6 +66,23 @@ class _ContentDecicionScreenState<C extends ContentInfoGetter>
       appBar: AppBar(
         title: Text(widget.title),
         actions: [
+          if (widget.builder.allowAccepting && widget.builder.allowRejecting)
+            TextButton.icon(
+              onPressed: () {
+                setState(() {
+                  if (_scrollUpActionIsAccept) {
+                    _scrollUpActionIsAccept = false;
+                  } else {
+                    _scrollUpActionIsAccept = true;
+                  }
+                });
+              },
+              icon: Icon(
+                Icons.arrow_upward,
+                color: _scrollUpActionIsAccept ? Colors.green : Colors.red,
+              ),
+              label: Text(_scrollUpActionIsAccept ? "Accept" : "Reject"),
+            ),
           if (instructions != null)
             IconButton(
               onPressed: () {
