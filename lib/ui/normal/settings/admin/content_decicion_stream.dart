@@ -324,51 +324,20 @@ class _UpdatingContentDecicionListItemState<C extends ContentInfoGetter>
   }
 
   Future<String?> showRejectWithDetailsDialog(BuildContext context) {
-    final detailsController = TextEditingController();
-
     return MyNavigator.showDialog<RejectWithDetailsDialogResult>(
-          context: context,
-          page: RejectWithDetailsDialog(
-            builder: (dialogContext, closer) {
-              return AlertDialog(
-                title: const Text("Reject"),
-                content: TextField(
-                  controller: detailsController,
-                  autofocus: true,
-                  minLines: 1,
-                  maxLines: 4,
-                  decoration: const InputDecoration(hintText: "Rejection details"),
-                ),
-                actions: [
-                  TextButton(
-                    onPressed: () => closer.close(
-                      dialogContext,
-                      const RejectWithDetailsDialogResult(submit: false, details: ''),
-                    ),
-                    child: Text(dialogContext.strings.generic_cancel),
-                  ),
-                  TextButton(
-                    onPressed: () => closer.close(
-                      dialogContext,
-                      RejectWithDetailsDialogResult(submit: true, details: detailsController.text),
-                    ),
-                    child: Text(dialogContext.strings.generic_ok),
-                  ),
-                ],
-              );
-            },
-          ),
-        )
-        .then((value) {
-          if (value == null) {
-            return null;
-          }
-          if (value.submit) {
-            return value.details;
-          }
-          return null;
-        })
-        .whenComplete(detailsController.dispose);
+      context: context,
+      page: RejectWithDetailsDialog(
+        builder: (_, closer) => RejectWithDetailsActionDialog(closer: closer),
+      ),
+    ).then((value) {
+      if (value == null) {
+        return null;
+      }
+      if (value.submit) {
+        return value.details;
+      }
+      return null;
+    });
   }
 
   Widget openAdminSettingsAction(
@@ -400,6 +369,54 @@ class RejectWithDetailsDialogResult {
   final bool submit;
   final String details;
   const RejectWithDetailsDialogResult({required this.submit, required this.details});
+}
+
+class RejectWithDetailsActionDialog extends StatefulWidget {
+  final PageCloser<RejectWithDetailsDialogResult> closer;
+  const RejectWithDetailsActionDialog({required this.closer, super.key});
+
+  @override
+  State<RejectWithDetailsActionDialog> createState() => _RejectWithDetailsActionDialogState();
+}
+
+class _RejectWithDetailsActionDialogState extends State<RejectWithDetailsActionDialog> {
+  final detailsController = TextEditingController();
+
+  @override
+  Widget build(BuildContext context) {
+    return AlertDialog(
+      title: const Text("Reject"),
+      content: TextField(
+        controller: detailsController,
+        autofocus: true,
+        minLines: 1,
+        maxLines: 4,
+        decoration: const InputDecoration(hintText: "Rejection details"),
+      ),
+      actions: [
+        TextButton(
+          onPressed: () => widget.closer.close(
+            context,
+            const RejectWithDetailsDialogResult(submit: false, details: ''),
+          ),
+          child: Text(context.strings.generic_cancel),
+        ),
+        TextButton(
+          onPressed: () => widget.closer.close(
+            context,
+            RejectWithDetailsDialogResult(submit: true, details: detailsController.text),
+          ),
+          child: Text(context.strings.generic_ok),
+        ),
+      ],
+    );
+  }
+
+  @override
+  void dispose() {
+    detailsController.dispose();
+    super.dispose();
+  }
 }
 
 Widget buildEmptyText(BuildContext context, double height) {
