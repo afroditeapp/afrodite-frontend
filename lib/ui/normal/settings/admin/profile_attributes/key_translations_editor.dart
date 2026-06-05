@@ -1,3 +1,4 @@
+import 'package:app/logic/app/navigator_state.dart';
 import 'package:app/model/freezed/logic/main/navigator_state.dart';
 import 'package:app/ui/normal/settings/admin/profile_attributes/utils.dart';
 import 'package:app/ui_utils/snack_bar.dart';
@@ -50,36 +51,23 @@ class _KeyTranslationsEditorScreenState extends State<KeyTranslationsEditorScree
     }).toList();
   }
 
-  void _addLanguage() {
-    final controller = TextEditingController();
-    showDialog<void>(
+  void _addLanguage() async {
+    final result = await MyNavigator.showDialog<AddLanguageDialogResult>(
       context: context,
-      builder: (context) {
-        return AlertDialog(
-          title: const Text("Add Language"),
-          content: TextField(
-            controller: controller,
-            decoration: const InputDecoration(labelText: "2-letter code (e.g., en, fi)"),
-            maxLength: 2,
-          ),
-          actions: [
-            TextButton(onPressed: () => Navigator.of(context).pop(), child: const Text("Cancel")),
-            TextButton(
-              onPressed: () {
-                final code = controller.text.trim().toLowerCase();
-                if (code.length == 2 && !_translations.any((l) => l.lang == code)) {
-                  setState(() {
-                    _translations.add(Language(lang: code, values: []));
-                  });
-                  Navigator.of(context).pop();
-                }
-              },
-              child: const Text("Add"),
-            ),
-          ],
-        );
-      },
+      page: AddLanguageDialogPage(builder: (_, closer) => AddLanguageActionDialog(closer: closer)),
     );
+
+    final lang = result?.lang;
+    if (lang == null) {
+      return;
+    }
+
+    final code = lang.trim().toLowerCase();
+    if (code.length == 2 && !_translations.any((l) => l.lang == code)) {
+      setState(() {
+        _translations.add(Language(lang: code, values: []));
+      });
+    }
   }
 
   @override
@@ -159,5 +147,56 @@ class _KeyTranslationsEditorScreenState extends State<KeyTranslationsEditorScree
         ],
       ),
     );
+  }
+}
+
+class AddLanguageDialogResult {
+  final String? lang;
+  const AddLanguageDialogResult._({required this.lang});
+  const AddLanguageDialogResult(String lang) : this._(lang: lang);
+  const AddLanguageDialogResult.cancelled() : this._(lang: null);
+}
+
+class AddLanguageDialogPage extends MyDialogPage<AddLanguageDialogResult> {
+  AddLanguageDialogPage({required super.builder});
+}
+
+class AddLanguageActionDialog extends StatefulWidget {
+  final PageCloser<AddLanguageDialogResult> closer;
+  const AddLanguageActionDialog({required this.closer, super.key});
+
+  @override
+  State<AddLanguageActionDialog> createState() => _AddLanguageActionDialogState();
+}
+
+class _AddLanguageActionDialogState extends State<AddLanguageActionDialog> {
+  final controller = TextEditingController();
+
+  @override
+  Widget build(BuildContext context) {
+    return AlertDialog(
+      title: const Text("Add Language"),
+      content: TextField(
+        controller: controller,
+        decoration: const InputDecoration(labelText: "2-letter code (e.g., en, fi)"),
+        maxLength: 2,
+      ),
+      actions: [
+        TextButton(
+          onPressed: () => widget.closer.close(context, const AddLanguageDialogResult.cancelled()),
+          child: const Text("Cancel"),
+        ),
+        TextButton(
+          onPressed: () => widget.closer.close(context, AddLanguageDialogResult(controller.text)),
+          child: const Text("Add"),
+        ),
+      ],
+    );
+  }
+
+  @override
+  void dispose() {
+    controller.dispose();
+    super.dispose();
   }
 }

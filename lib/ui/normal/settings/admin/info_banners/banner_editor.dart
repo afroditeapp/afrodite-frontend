@@ -1,3 +1,4 @@
+import 'package:app/logic/app/navigator_state.dart';
 import 'package:app/model/freezed/logic/main/navigator_state.dart';
 import 'package:app/ui/normal/settings/admin/profile_attributes/utils.dart';
 import 'package:app/ui_utils/snack_bar.dart';
@@ -252,52 +253,22 @@ class _TextInfoBannerEditorState extends State<TextInfoBannerEditor> {
   }
 
   Future<void> _addTranslation(Map<String, String> target, String title) async {
-    final localeController = TextEditingController();
-    final valueController = TextEditingController();
-
-    final shouldAdd = await showDialog<bool>(
+    final result = await MyNavigator.showDialog<AddTranslationDialogResult>(
       context: context,
-      builder: (context) {
-        return AlertDialog(
-          title: Text("Add $title translation"),
-          content: Column(
-            mainAxisSize: MainAxisSize.min,
-            children: [
-              TextField(
-                controller: localeController,
-                decoration: const InputDecoration(
-                  labelText: "2-letter code (e.g., en, fi)",
-                  border: OutlineInputBorder(),
-                ),
-                maxLength: 2,
-              ),
-              const SizedBox(height: 12),
-              TextField(
-                controller: valueController,
-                decoration: const InputDecoration(labelText: "Text", border: OutlineInputBorder()),
-                minLines: 1,
-                maxLines: 4,
-              ),
-            ],
-          ),
-          actions: [
-            TextButton(
-              onPressed: () => Navigator.of(context).pop(false),
-              child: const Text("Cancel"),
-            ),
-            TextButton(onPressed: () => Navigator.of(context).pop(true), child: const Text("Add")),
-          ],
-          scrollable: true,
-        );
-      },
+      page: AddTranslationDialogPage(
+        builder: (_, closer) => AddTranslationActionDialog(closer: closer, title: title),
+      ),
     );
 
-    if (shouldAdd != true) {
+    final localeOrNull = result?.locale;
+    final valueOrNull = result?.value;
+
+    if (localeOrNull == null || valueOrNull == null) {
       return;
     }
 
-    final locale = localeController.text.trim().toLowerCase();
-    final value = valueController.text.trim();
+    final locale = localeOrNull.trim().toLowerCase();
+    final value = valueOrNull.trim();
 
     if (locale.isEmpty) {
       showSnackBar("Locale is required.");
@@ -486,5 +457,81 @@ class _TextInfoBannerEditorState extends State<TextInfoBannerEditor> {
         ],
       ],
     );
+  }
+}
+
+class AddTranslationDialogResult {
+  final String? locale;
+  final String? value;
+  const AddTranslationDialogResult._({required this.locale, required this.value});
+  const AddTranslationDialogResult(String locale, String value)
+    : this._(locale: locale, value: value);
+  const AddTranslationDialogResult.cancelled() : this._(locale: null, value: null);
+}
+
+class AddTranslationDialogPage extends MyDialogPage<AddTranslationDialogResult> {
+  AddTranslationDialogPage({required super.builder});
+}
+
+class AddTranslationActionDialog extends StatefulWidget {
+  final PageCloser<AddTranslationDialogResult> closer;
+  final String title;
+  const AddTranslationActionDialog({required this.closer, required this.title, super.key});
+
+  @override
+  State<AddTranslationActionDialog> createState() => _AddTranslationActionDialogState();
+}
+
+class _AddTranslationActionDialogState extends State<AddTranslationActionDialog> {
+  final localeController = TextEditingController();
+  final valueController = TextEditingController();
+
+  @override
+  Widget build(BuildContext context) {
+    return AlertDialog(
+      title: Text("Add ${widget.title} translation"),
+      content: Column(
+        mainAxisSize: MainAxisSize.min,
+        children: [
+          TextField(
+            controller: localeController,
+            decoration: const InputDecoration(
+              labelText: "2-letter code (e.g., en, fi)",
+              border: OutlineInputBorder(),
+            ),
+            maxLength: 2,
+          ),
+          const SizedBox(height: 12),
+          TextField(
+            controller: valueController,
+            decoration: const InputDecoration(labelText: "Text", border: OutlineInputBorder()),
+            minLines: 1,
+            maxLines: 4,
+          ),
+        ],
+      ),
+      actions: [
+        TextButton(
+          onPressed: () =>
+              widget.closer.close(context, const AddTranslationDialogResult.cancelled()),
+          child: const Text("Cancel"),
+        ),
+        TextButton(
+          onPressed: () => widget.closer.close(
+            context,
+            AddTranslationDialogResult(localeController.text, valueController.text),
+          ),
+          child: const Text("Add"),
+        ),
+      ],
+      scrollable: true,
+    );
+  }
+
+  @override
+  void dispose() {
+    localeController.dispose();
+    valueController.dispose();
+    super.dispose();
   }
 }
