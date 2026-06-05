@@ -1231,10 +1231,6 @@ class AppLocalizationsSv extends AppLocalizations {
   String get likes_screen_title => 'Requests';
 
   @override
-  String get login_screen_account_registration_disabled =>
-      'Registering new accounts is currently disabled';
-
-  @override
   String get login_screen_connecting_websocket_failed =>
       'Connecting WebSocket failed. Try again later.';
 
@@ -1281,6 +1277,9 @@ class AppLocalizationsSv extends AppLocalizations {
   String get login_screen_ios_pwa_install_step4 => '4. Open the app from your home screen';
 
   @override
+  String get login_screen_login_all_platforms_disabled => 'App admin has disabled login';
+
+  @override
   String get login_screen_login_api_request_failed => 'Login API request failed. Try again later.';
 
   @override
@@ -1294,6 +1293,20 @@ class AppLocalizationsSv extends AppLocalizations {
 
   @override
   String get login_screen_login_note_text_tos => 'Terms of Service';
+
+  @override
+  String login_screen_login_platform_disabled(String p0) {
+    return 'App admin has disabled login on current platform ($p0)';
+  }
+
+  @override
+  String get login_screen_registration_all_platforms_disabled =>
+      'App admin has disabled registering new accounts';
+
+  @override
+  String login_screen_registration_platform_disabled(String p0) {
+    return 'App admin has disabled registering new accounts on current platform ($p0)';
+  }
 
   @override
   String get login_screen_sign_in_with_email_unverified =>

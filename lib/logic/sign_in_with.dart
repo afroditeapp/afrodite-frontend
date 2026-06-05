@@ -1,11 +1,13 @@
 import "package:flutter_bloc/flutter_bloc.dart";
 import "package:app/config.dart";
+import "package:app/data/app_version.dart";
 import "package:app/data/login_repository.dart";
 import "package:app/data/utils/login_repository_types.dart";
 import "package:app/localizations.dart";
 import "package:app/model/freezed/logic/sign_in_with.dart";
 import "package:app/ui_utils/snack_bar.dart";
 import "package:app/utils.dart";
+import "package:openapi/api.dart";
 
 sealed class SignInWithBlocEvent {}
 
@@ -64,8 +66,14 @@ String signInErrorToString(CommonSignInError error) {
       return R.strings.login_screen_login_api_request_failed;
     case CseUnsupportedClient():
       return R.strings.generic_error_app_version_is_unsupported;
-    case CseAccountRegistrationDisabled():
-      return R.strings.login_screen_account_registration_disabled;
+    case CseRegistrationAllPlatformsDisabled():
+      return R.strings.login_screen_registration_all_platforms_disabled;
+    case CseRegistrationPlatformDisabled():
+      return R.strings.login_screen_registration_platform_disabled(platformNameFromClientType());
+    case CseLoginAllPlatformsDisabled():
+      return R.strings.login_screen_login_all_platforms_disabled;
+    case CseLoginPlatformDisabled():
+      return R.strings.login_screen_login_platform_disabled(platformNameFromClientType());
     case CseSignInWithEmailUnverified():
       return R.strings.login_screen_sign_in_with_email_unverified;
     case CseEmailAlreadyUsed():
@@ -82,5 +90,18 @@ String signInErrorToString(CommonSignInError error) {
       return R.strings.generic_data_sync_failed;
     case CseOtherError():
       return R.strings.generic_error;
+  }
+}
+
+String platformNameFromClientType() {
+  final clientType = AppVersionManager.getInstance().clientInfo().clientType;
+  if (clientType == ClientType.android) {
+    return "Android";
+  } else if (clientType == ClientType.ios) {
+    return "iOS";
+  } else if (clientType == ClientType.web) {
+    return "Web";
+  } else {
+    return "null";
   }
 }

@@ -1583,10 +1583,6 @@
   "@likes_screen_title": {
     "description": "Title for likes screen"
   },
-  "login_screen_account_registration_disabled": "Registering new accounts is currently disabled",
-  "@login_screen_account_registration_disabled": {
-    "description": "Snackbar error message when registering new accounts is disabled"
-  },
   "login_screen_connecting_websocket_failed": "Connecting WebSocket failed. Try again later.",
   "@login_screen_connecting_websocket_failed": {
     "description": "Snackbar text for connecting WebSocket failed"
@@ -1643,6 +1639,10 @@
   "@login_screen_ios_pwa_install_step4": {
     "description": "Fourth step for iOS PWA installation"
   },
+  "login_screen_login_all_platforms_disabled": "App admin has disabled login",
+  "@login_screen_login_all_platforms_disabled": {
+    "description": "Snackbar error message when login is disabled on all platforms"
+  },
   "login_screen_login_api_request_failed": "Login API request failed. Try again later.",
   "@login_screen_login_api_request_failed": {
     "description": "Snackbar text for login API request failed"
@@ -1662,6 +1662,28 @@
   "login_screen_login_note_text_tos": "Terms of Service",
   "@login_screen_login_note_text_tos": {
     "description": "Text for terms of service link"
+  },
+  "login_screen_login_platform_disabled": "App admin has disabled login on current platform ({p0})",
+  "@login_screen_login_platform_disabled": {
+    "description": "Snackbar error message when login is disabled on current platform",
+    "placeholders": {
+      "p0": {
+        "type": "String"
+      }
+    }
+  },
+  "login_screen_registration_all_platforms_disabled": "App admin has disabled registering new accounts",
+  "@login_screen_registration_all_platforms_disabled": {
+    "description": "Snackbar error message when registration is disabled on all platforms"
+  },
+  "login_screen_registration_platform_disabled": "App admin has disabled registering new accounts on current platform ({p0})",
+  "@login_screen_registration_platform_disabled": {
+    "description": "Snackbar error message when registration is disabled on current platform",
+    "placeholders": {
+      "p0": {
+        "type": "String"
+      }
+    }
   },
   "login_screen_sign_in_with_email_unverified": "Email address of the selected account is not verified",
   "@login_screen_sign_in_with_email_unverified": {

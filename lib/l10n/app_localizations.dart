@@ -2248,12 +2248,6 @@ abstract class AppLocalizations {
   /// **'Requests'**
   String get likes_screen_title;
 
-  /// Snackbar error message when registering new accounts is disabled
-  ///
-  /// In en, this message translates to:
-  /// **'Registering new accounts is currently disabled'**
-  String get login_screen_account_registration_disabled;
-
   /// Snackbar text for connecting WebSocket failed
   ///
   /// In en, this message translates to:
@@ -2338,6 +2332,12 @@ abstract class AppLocalizations {
   /// **'4. Open the app from your home screen'**
   String get login_screen_ios_pwa_install_step4;
 
+  /// Snackbar error message when login is disabled on all platforms
+  ///
+  /// In en, this message translates to:
+  /// **'App admin has disabled login'**
+  String get login_screen_login_all_platforms_disabled;
+
   /// Snackbar text for login API request failed
   ///
   /// In en, this message translates to:
@@ -2367,6 +2367,24 @@ abstract class AppLocalizations {
   /// In en, this message translates to:
   /// **'Terms of Service'**
   String get login_screen_login_note_text_tos;
+
+  /// Snackbar error message when login is disabled on current platform
+  ///
+  /// In en, this message translates to:
+  /// **'App admin has disabled login on current platform ({p0})'**
+  String login_screen_login_platform_disabled(String p0);
+
+  /// Snackbar error message when registration is disabled on all platforms
+  ///
+  /// In en, this message translates to:
+  /// **'App admin has disabled registering new accounts'**
+  String get login_screen_registration_all_platforms_disabled;
+
+  /// Snackbar error message when registration is disabled on current platform
+  ///
+  /// In en, this message translates to:
+  /// **'App admin has disabled registering new accounts on current platform ({p0})'**
+  String login_screen_registration_platform_disabled(String p0);
 
   /// Snackbar error message when sign in with account email is not verified
   ///
