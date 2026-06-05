@@ -952,9 +952,6 @@ class AppLocalizationsFi extends AppLocalizations {
   String get generic_refresh => 'Refresh';
 
   @override
-  String get generic_reject_question => 'Reject?';
-
-  @override
   String get generic_remind => 'Remind';
 
   @override

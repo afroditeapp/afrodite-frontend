@@ -1233,10 +1233,6 @@
   "@generic_refresh": {
     "description": "Generic refresh text"
   },
-  "generic_reject_question": "Reject?",
-  "@generic_reject_question": {
-    "description": "Generic reject question"
-  },
   "generic_remind": "Remind",
   "@generic_remind": {
     "description": "Generic remind text"

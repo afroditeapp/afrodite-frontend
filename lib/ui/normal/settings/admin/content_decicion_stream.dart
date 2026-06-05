@@ -215,12 +215,24 @@ class _UpdatingContentDecicionListItemState<C extends ContentInfoGetter>
     String? currentRejectedDetails,
   ) {
     Widget builder(BuildContext dialogContext, PageCloser<()> closer) {
+      final acceptAction = SimpleDialogOption(
+        onPressed: () {
+          closer.close(dialogContext, ());
+          showConfirmDialog(context, "Accept?").then((value) {
+            if (value == true) {
+              widget.logic.moderateRow(index, true, ignoreSentToServer: true);
+            }
+          });
+        },
+        child: const Text("Accept"),
+      );
+
       final rejectAction = SimpleDialogOption(
         onPressed: () {
           closer.close(dialogContext, ());
-          showConfirmDialog(context, dialogContext.strings.generic_reject_question).then((value) {
+          showConfirmDialog(context, "Reject?").then((value) {
             if (value == true) {
-              widget.logic.moderateRow(index, false);
+              widget.logic.moderateRow(index, false, ignoreSentToServer: true);
             }
           });
         },
@@ -230,7 +242,12 @@ class _UpdatingContentDecicionListItemState<C extends ContentInfoGetter>
       final rejectWithCurrentDetailsAction = SimpleDialogOption(
         onPressed: () {
           closer.close(dialogContext, ());
-          widget.logic.moderateRow(index, false, rejectedDetails: currentRejectedDetails);
+          widget.logic.moderateRow(
+            index,
+            false,
+            rejectedDetails: currentRejectedDetails,
+            ignoreSentToServer: true,
+          );
         },
         child: const Text("Reject (current details)"),
       );
@@ -248,6 +265,7 @@ class _UpdatingContentDecicionListItemState<C extends ContentInfoGetter>
                 index,
                 false,
                 rejectedDetails: trimmed.isEmpty ? null : trimmed,
+                ignoreSentToServer: true,
               );
             }
           });
@@ -256,21 +274,21 @@ class _UpdatingContentDecicionListItemState<C extends ContentInfoGetter>
       );
 
       final target = info.target;
+      final showAcceptAction =
+          widget.logic.acceptingIsPossible(index) && widget.builder.allowAccepting;
+      final showRejectAction =
+          widget.logic.rejectingIsPossible(index) && widget.builder.allowRejecting;
 
       return SimpleDialog(
         title: const Text("Select action"),
         children: <Widget>[
-          if (widget.logic.rejectingIsPossible(index) && widget.builder.allowRejecting)
-            rejectAction,
-          if (widget.logic.rejectingIsPossible(index) &&
-              widget.builder.allowRejecting &&
+          if (showAcceptAction) acceptAction,
+          if (showRejectAction) rejectAction,
+          if (showRejectAction &&
               widget.builder.rejectionDetailsSupported &&
               hasCurrentRejectedDetails)
             rejectWithCurrentDetailsAction,
-          if (widget.logic.rejectingIsPossible(index) &&
-              widget.builder.allowRejecting &&
-              widget.builder.rejectionDetailsSupported)
-            rejectWithDetailsAction,
+          if (showRejectAction && widget.builder.rejectionDetailsSupported) rejectWithDetailsAction,
           if (target == null)
             openAdminSettingsAction(
               context,

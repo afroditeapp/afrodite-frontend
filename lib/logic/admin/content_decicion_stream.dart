@@ -8,7 +8,16 @@ import "package:rxdart/rxdart.dart";
 
 enum ContentDecicionStreamStatus { loading, handling, allHandled }
 
-enum RowStatus { decicionNeeded, accepted, rejected }
+enum RowStatus {
+  decicionNeeded,
+  accepted,
+  rejected;
+
+  bool isAcceptingPossible() => this == decicionNeeded || this == rejected;
+
+  // Allow all to allow changing rejection details
+  bool isRejectingPossible() => true;
+}
 
 sealed class RowState<C> {}
 
@@ -39,10 +48,6 @@ class ContentRow<C> implements RowState<C> {
 
   Future<ContentRow<C>?> sendToServer(ContentIo<C> io) async {
     if (status == RowStatus.decicionNeeded) {
-      return null;
-    }
-
-    if (sentToServer) {
       return null;
     }
 
@@ -99,14 +104,19 @@ class ContentDecicionStreamLogic<C> {
     yield* loadManager.getRow(index, cacher, io);
   }
 
-  void moderateRow(int index, bool accept, {String? rejectedDetails}) async {
+  void moderateRow(
+    int index,
+    bool accept, {
+    String? rejectedDetails,
+    bool ignoreSentToServer = false,
+  }) async {
     final relay = loadManager.rows[index];
     if (relay == null) {
       return;
     }
 
     final currentState = relay.value;
-    if (currentState is ContentRow<C> && currentState.status == RowStatus.decicionNeeded) {
+    if (currentState is ContentRow<C> && (!currentState.sentToServer || ignoreSentToServer)) {
       final status = accept ? RowStatus.accepted : RowStatus.rejected;
       final newRejectedDetails = status == RowStatus.rejected ? rejectedDetails : null;
       final newState = currentState.copyWith(
@@ -122,14 +132,20 @@ class ContentDecicionStreamLogic<C> {
     }
   }
 
-  bool rejectingIsPossible(int index) {
+  bool acceptingIsPossible(int index) => _currentRowStatus(index)?.isAcceptingPossible() ?? false;
+  bool rejectingIsPossible(int index) => _currentRowStatus(index)?.isRejectingPossible() ?? false;
+
+  RowStatus? _currentRowStatus(int index) {
     final relay = loadManager.rows[index];
     if (relay == null) {
-      return false;
+      return null;
     }
 
-    final currentState = relay.value;
-    return currentState is ContentRow<C> && !currentState.sentToServer;
+    final state = relay.value;
+    if (state is ContentRow<C>) {
+      return state.status;
+    }
+    return null;
   }
 }
 

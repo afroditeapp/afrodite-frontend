@@ -1738,12 +1738,6 @@ abstract class AppLocalizations {
   /// **'Refresh'**
   String get generic_refresh;
 
-  /// Generic reject question
-  ///
-  /// In en, this message translates to:
-  /// **'Reject?'**
-  String get generic_reject_question;
-
   /// Generic remind text
   ///
   /// In en, this message translates to:

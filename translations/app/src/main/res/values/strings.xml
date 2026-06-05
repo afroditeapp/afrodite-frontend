@@ -61,7 +61,6 @@
     <string name="generic_email_sending_failed" description="Generic email sending failed text">Email sending failed</string>
     <string name="generic_email_sending_timeout" description="Generic email sending timeout text">Email sending timeout</string>
     <string name="generic_try_again_later_seconds" description="Generic try again later with seconds text">Try again after %s seconds</string>
-    <string name="generic_reject_question" description="Generic reject question">Reject?</string>
     <string name="generic_delete_question" description="Generic delete question">Delete?</string>
     <string name="generic_cancel_question" description="Generic cancel question">Cancel?</string>
     <string name="generic_download_question" description="Generic download question">Download?</string>
