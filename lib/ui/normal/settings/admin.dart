@@ -2,6 +2,7 @@ import 'package:app/data/utils/repository_instances.dart';
 import 'package:app/model/freezed/logic/main/navigator_state.dart';
 import 'package:app/ui/normal/settings/admin/edit_admin_notifications.dart';
 import 'package:app/ui/normal/settings/admin/moderator_tasks.dart';
+import 'package:app/ui/normal/settings/admin/admin_bot_processed_content_tasks.dart';
 import 'package:app/ui/normal/settings/admin/open_account_admin_settings.dart';
 import 'package:app/ui/normal/settings/admin/view_accounts.dart';
 import 'package:app/ui/normal/settings/admin/view_admins.dart';
@@ -67,6 +68,24 @@ class AdminSettingsScreen extends StatelessWidget {
           Icons.task,
           "Moderator tasks (all)",
           () => MyNavigator.push(context, ModeratorTasksPage(r, showAll: true)),
+        ),
+      );
+    }
+    if (permissions.adminModerateMediaContent ||
+        permissions.adminModerateProfileNames ||
+        permissions.adminModerateProfileTexts) {
+      settings.add(
+        Setting.createSetting(
+          Icons.task,
+          "Admin bot processed content tasks (todo)",
+          () => MyNavigator.push(context, AdminBotProcessedContentTasksPage(r)),
+        ),
+      );
+      settings.add(
+        Setting.createSetting(
+          Icons.task,
+          "Admin bot processed content tasks (all)",
+          () => MyNavigator.push(context, AdminBotProcessedContentTasksPage(r, showAll: true)),
         ),
       );
     }
