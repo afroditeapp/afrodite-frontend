@@ -58,14 +58,14 @@ class AdminSettingsScreen extends StatelessWidget {
       settings.add(
         Setting.createSetting(
           Icons.task,
-          "Moderator tasks (show todo list)",
+          "Moderator tasks (todo)",
           () => MyNavigator.push(context, ModeratorTasksPage(r)),
         ),
       );
       settings.add(
         Setting.createSetting(
           Icons.task,
-          "Moderator tasks (show all)",
+          "Moderator tasks (all)",
           () => MyNavigator.push(context, ModeratorTasksPage(r, showAll: true)),
         ),
       );

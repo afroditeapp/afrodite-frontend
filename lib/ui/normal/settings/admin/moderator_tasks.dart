@@ -271,7 +271,7 @@ class _ModeratorTasksScreenState extends State<ModeratorTasksScreen> {
       if (data.contentBotInitial)
         Setting.createSetting(
           Icons.image,
-          "Moderate images (initial moderation, bot and human)",
+          "Moderate images (initial, bot)",
           () => MyNavigator.pushLimited(
             context,
             ModerateImagesPage(
@@ -284,7 +284,7 @@ class _ModeratorTasksScreenState extends State<ModeratorTasksScreen> {
       if (data.contentHumanInitial)
         Setting.createSetting(
           Icons.image,
-          "Moderate images (initial moderation, human)",
+          "Moderate images (initial, human)",
           () => MyNavigator.pushLimited(
             context,
             ModerateImagesPage(
@@ -297,7 +297,7 @@ class _ModeratorTasksScreenState extends State<ModeratorTasksScreen> {
       if (data.contentBot)
         Setting.createSetting(
           Icons.image,
-          "Moderate images (normal, bot and human)",
+          "Moderate images (normal, bot)",
           () => MyNavigator.pushLimited(
             context,
             ModerateImagesPage(
@@ -323,7 +323,7 @@ class _ModeratorTasksScreenState extends State<ModeratorTasksScreen> {
       if (data.profileNamesBot)
         Setting.createSetting(
           Icons.text_fields,
-          "Moderate profile names (bot and human)",
+          "Moderate profile names (bot)",
           () => MyNavigator.pushLimited(
             context,
             ModerateProfileStringsPage(
@@ -349,7 +349,7 @@ class _ModeratorTasksScreenState extends State<ModeratorTasksScreen> {
       if (data.profileTextsBot)
         Setting.createSetting(
           Icons.text_fields,
-          "Moderate profile texts (bot and human)",
+          "Moderate profile texts (bot)",
           () => MyNavigator.pushLimited(
             context,
             ModerateProfileStringsPage(
