@@ -128,10 +128,43 @@ class _DynamicServerConfigScreenState extends State<DynamicServerConfigScreen> {
   }
 
   Widget _displayConfig(BuildContext context, Permissions permissions) {
-    final platforms = _config?.accountRegistrationPlatforms;
+    final loginPlatforms = _config?.accountLoginPlatforms;
+    final registrationPlatforms = _config?.accountRegistrationPlatforms;
     return Column(
       crossAxisAlignment: CrossAxisAlignment.start,
       children: [
+        ListTile(
+          title: Text("Account Login Platforms", style: Theme.of(context).textTheme.titleSmall),
+          subtitle: const Text("Enable or disable account login by platform."),
+        ),
+        SwitchListTile(
+          title: const Text("Android"),
+          value: loginPlatforms?.android ?? false,
+          onChanged: (value) => setState(() {
+            if (loginPlatforms != null) {
+              loginPlatforms.android = value;
+            }
+          }),
+        ),
+        SwitchListTile(
+          title: const Text("iOS"),
+          value: loginPlatforms?.ios ?? false,
+          onChanged: (value) => setState(() {
+            if (loginPlatforms != null) {
+              loginPlatforms.ios = value;
+            }
+          }),
+        ),
+        SwitchListTile(
+          title: const Text("Web"),
+          value: loginPlatforms?.web ?? false,
+          onChanged: (value) => setState(() {
+            if (loginPlatforms != null) {
+              loginPlatforms.web = value;
+            }
+          }),
+        ),
+        const Divider(),
         ListTile(
           title: Text(
             "Account Registration Platforms",
@@ -141,28 +174,28 @@ class _DynamicServerConfigScreenState extends State<DynamicServerConfigScreen> {
         ),
         SwitchListTile(
           title: const Text("Android"),
-          value: platforms?.android ?? false,
+          value: registrationPlatforms?.android ?? false,
           onChanged: (value) => setState(() {
-            if (platforms != null) {
-              platforms.android = value;
+            if (registrationPlatforms != null) {
+              registrationPlatforms.android = value;
             }
           }),
         ),
         SwitchListTile(
           title: const Text("iOS"),
-          value: platforms?.ios ?? false,
+          value: registrationPlatforms?.ios ?? false,
           onChanged: (value) => setState(() {
-            if (platforms != null) {
-              platforms.ios = value;
+            if (registrationPlatforms != null) {
+              registrationPlatforms.ios = value;
             }
           }),
         ),
         SwitchListTile(
           title: const Text("Web"),
-          value: platforms?.web ?? false,
+          value: registrationPlatforms?.web ?? false,
           onChanged: (value) => setState(() {
-            if (platforms != null) {
-              platforms.web = value;
+            if (registrationPlatforms != null) {
+              registrationPlatforms.web = value;
             }
           }),
         ),
