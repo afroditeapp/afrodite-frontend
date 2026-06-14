@@ -13,6 +13,7 @@ import 'package:app/localizations.dart';
 import 'package:app/logic/app/navigator_state.dart';
 import 'package:app/ui/normal/settings.dart';
 import 'package:app/ui/normal/settings/admin/moderate_images.dart';
+import 'package:app/ui/normal/settings/admin/report/process_reports.dart';
 
 class AdminBotProcessedContentTasksPage extends MyScreenPage<()> {
   AdminBotProcessedContentTasksPage(RepositoryInstances r, {bool showAll = false})
@@ -28,6 +29,8 @@ class RequiredData {
   final bool profileNamesBotRejected;
   final bool profileTextsBot;
   final bool profileTextsBotRejected;
+  final bool reportsBot;
+  final bool reportsBotRejected;
 
   RequiredData({
     required this.contentBotInitial,
@@ -38,6 +41,8 @@ class RequiredData {
     required this.profileNamesBotRejected,
     required this.profileTextsBot,
     required this.profileTextsBotRejected,
+    required this.reportsBot,
+    required this.reportsBotRejected,
   });
 }
 
@@ -83,6 +88,8 @@ class _AdminBotProcessedContentTasksScreenState extends State<AdminBotProcessedC
           profileNamesBotRejected: permissions.adminModerateProfileNames,
           profileTextsBot: permissions.adminModerateProfileTexts,
           profileTextsBotRejected: permissions.adminModerateProfileTexts,
+          reportsBot: permissions.adminProcessReports,
+          reportsBotRejected: permissions.adminProcessReports,
         );
       });
       return;
@@ -185,6 +192,28 @@ class _AdminBotProcessedContentTasksScreenState extends State<AdminBotProcessedC
       profileTextsBotRejected = ProfileStringModerationQueuePage();
     }
 
+    final GetReportList? reportsBot;
+    final GetReportList? reportsBotRejected;
+    if (permissions.adminProcessReports) {
+      reportsBot = await widget.api
+          .commonAdmin(
+            (api) => api.postGetReportQueuePage(
+              GetReportQueuePage(queueType: ReportQueueType.acceptedByAdminBot),
+            ),
+          )
+          .ok();
+      reportsBotRejected = await widget.api
+          .commonAdmin(
+            (api) => api.postGetReportQueuePage(
+              GetReportQueuePage(queueType: ReportQueueType.rejectedByAdminBot),
+            ),
+          )
+          .ok();
+    } else {
+      reportsBot = GetReportList();
+      reportsBotRejected = GetReportList();
+    }
+
     if (!context.mounted) {
       return;
     }
@@ -196,7 +225,9 @@ class _AdminBotProcessedContentTasksScreenState extends State<AdminBotProcessedC
         profileNamesBot == null ||
         profileNamesBotRejected == null ||
         profileTextsBot == null ||
-        profileTextsBotRejected == null) {
+        profileTextsBotRejected == null ||
+        reportsBot == null ||
+        reportsBotRejected == null) {
       showSnackBar(R.strings.generic_error);
       setState(() {
         isLoading = false;
@@ -214,6 +245,8 @@ class _AdminBotProcessedContentTasksScreenState extends State<AdminBotProcessedC
           profileNamesBotRejected: profileNamesBotRejected?.values.isNotEmpty ?? false,
           profileTextsBot: profileTextsBot?.values.isNotEmpty ?? false,
           profileTextsBotRejected: profileTextsBotRejected?.values.isNotEmpty ?? false,
+          reportsBot: reportsBot?.values.isNotEmpty ?? false,
+          reportsBotRejected: reportsBotRejected?.values.isNotEmpty ?? false,
         );
       });
     }
@@ -353,6 +386,24 @@ class _AdminBotProcessedContentTasksScreenState extends State<AdminBotProcessedC
               contentType: ProfileStringModerationContentType.profileText,
               queueType: ProfileStringModerationQueueType.rejectedByAdminBot,
             ),
+          ),
+        ),
+      if (data.reportsBot)
+        Setting.createSetting(
+          Icons.report,
+          "Process reports (bot accepted)",
+          () => MyNavigator.pushLimited(
+            context,
+            ProcessReportsPage(r, queueType: ReportQueueType.acceptedByAdminBot),
+          ),
+        ),
+      if (data.reportsBotRejected)
+        Setting.createSetting(
+          Icons.report,
+          "Process reports (bot rejected)",
+          () => MyNavigator.pushLimited(
+            context,
+            ProcessReportsPage(r, queueType: ReportQueueType.rejectedByAdminBot),
           ),
         ),
     ];

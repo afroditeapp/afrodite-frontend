@@ -27,17 +27,18 @@ import 'package:openapi/api.dart';
 const double ROW_HEIGHT = 100;
 
 class ProcessReportsPage extends MyScreenPageLimited<()> {
-  ProcessReportsPage(RepositoryInstances r) : super(builder: (_) => ProcessReportsScreen(r));
+  ProcessReportsPage(RepositoryInstances r, {required ReportQueueType queueType})
+    : super(builder: (_) => ProcessReportsScreen(r, queueType: queueType));
 }
 
 class ProcessReportsScreen extends ContentDecicionScreen<WrappedReportDetailed> {
-  ProcessReportsScreen(RepositoryInstances r, {super.key})
+  ProcessReportsScreen(RepositoryInstances r, {required ReportQueueType queueType, super.key})
     : super(
         api: r.api,
         title: "Process reports",
         screenInstructions: ReportUiBuilder.instructions,
         infoMessageRowHeight: ROW_HEIGHT,
-        io: ReportIo(r.api),
+        io: ReportIo(r.api, queueType),
         builder: ReportUiBuilder(),
       );
 }
@@ -60,17 +61,15 @@ class WrappedReportDetailed extends ReportDetailed implements ContentInfoGetter 
 
 class ReportIo extends ContentIo<WrappedReportDetailed> {
   final ApiManager api;
-  ReportIo(this.api);
+  final ReportQueueType queueType;
+  ReportIo(this.api, this.queueType);
 
   Set<ReportId> addedReports = {};
 
   @override
   Future<Result<List<WrappedReportDetailed>, ()>> getNextContent() async {
     return await api
-        .commonAdmin(
-          (api) =>
-              api.postGetReportQueuePage(GetReportQueuePage(queueType: ReportQueueType.waiting)),
-        )
+        .commonAdmin((api) => api.postGetReportQueuePage(GetReportQueuePage(queueType: queueType)))
         .andThenEmptyErr(
           (v) => handleReportList(api, addedReports, v.values, onlyNotProcessed: true),
         );

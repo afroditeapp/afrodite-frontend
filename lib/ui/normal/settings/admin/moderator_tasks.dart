@@ -376,7 +376,10 @@ class _ModeratorTasksScreenState extends State<ModeratorTasksScreen> {
         Setting.createSetting(
           Icons.report,
           "Process reports",
-          () => MyNavigator.pushLimited(context, ProcessReportsPage(r)),
+          () => MyNavigator.pushLimited(
+            context,
+            ProcessReportsPage(r, queueType: ReportQueueType.waiting),
+          ),
         ),
     ];
     return settings.map((v) => v.toListTile());
