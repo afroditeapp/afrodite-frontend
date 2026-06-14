@@ -4,6 +4,7 @@ import 'package:app/ui/normal/settings/admin/bot_config/account_verification_con
 import 'package:app/ui/normal/settings/admin/bot_config/content_moderation_config.dart';
 import 'package:app/ui/normal/settings/admin/bot_config/face_verification_config.dart';
 import 'package:app/ui/normal/settings/admin/bot_config/profile_string_moderation_config.dart';
+import 'package:app/ui/normal/settings/admin/bot_config/report_processing_config.dart';
 import 'package:flutter/material.dart';
 import 'package:openapi/api.dart';
 
@@ -155,6 +156,28 @@ class _EditAdminBotConfigScreenState extends State<EditAdminBotConfigScreen> {
 
                     if (result != null) {
                       setState(() => _config.profileTextModeration = result);
+                    }
+                  }
+                : null,
+          ),
+          const Divider(),
+          SwitchListTile(
+            title: const Text("Report Processing"),
+            value: _config.reportProcessingEnabled,
+            onChanged: (v) => setState(() => _config.reportProcessingEnabled = v),
+          ),
+          ListTile(
+            title: const Text("Configure report processing"),
+            trailing: const Icon(Icons.chevron_right),
+            enabled: _config.reportProcessingEnabled,
+            onTap: _config.reportProcessingEnabled
+                ? () async {
+                    final result = await MyNavigator.pushLimited(
+                      context,
+                      EditReportProcessingConfigPage(_config.reportProcessing),
+                    );
+                    if (result != null) {
+                      setState(() => _config.reportProcessing = result);
                     }
                   }
                 : null,
