@@ -10,9 +10,9 @@
 
 part of openapi.api;
 
-class AdminProfileStringModerationConfig {
-  /// Returns a new [AdminProfileStringModerationConfig] instance.
-  AdminProfileStringModerationConfig({
+class AdminBotProfileStringModerationConfig {
+  /// Returns a new [AdminBotProfileStringModerationConfig] instance.
+  AdminBotProfileStringModerationConfig({
     this.acceptSingleVisibleCharacter = false,
     required this.defaultAction,
     required this.llm,
@@ -24,13 +24,13 @@ class AdminProfileStringModerationConfig {
 
   ModerationAction defaultAction;
 
-  LlmStringModerationConfig llm;
+  AdminBotStringModerationLlmConfig llm;
 
   /// Large language model based moderation. Actions: reject (or move_to_human) and accept
   bool llmEnabled;
 
   @override
-  bool operator ==(Object other) => identical(this, other) || other is AdminProfileStringModerationConfig &&
+  bool operator ==(Object other) => identical(this, other) || other is AdminBotProfileStringModerationConfig &&
     other.acceptSingleVisibleCharacter == acceptSingleVisibleCharacter &&
     other.defaultAction == defaultAction &&
     other.llm == llm &&
@@ -45,7 +45,7 @@ class AdminProfileStringModerationConfig {
     (llmEnabled.hashCode);
 
   @override
-  String toString() => 'AdminProfileStringModerationConfig[acceptSingleVisibleCharacter=$acceptSingleVisibleCharacter, defaultAction=$defaultAction, llm=$llm, llmEnabled=$llmEnabled]';
+  String toString() => 'AdminBotProfileStringModerationConfig[acceptSingleVisibleCharacter=$acceptSingleVisibleCharacter, defaultAction=$defaultAction, llm=$llm, llmEnabled=$llmEnabled]';
 
   Map<String, dynamic> toJson() {
     final json = <String, dynamic>{};
@@ -56,10 +56,10 @@ class AdminProfileStringModerationConfig {
     return json;
   }
 
-  /// Returns a new [AdminProfileStringModerationConfig] instance and imports its values from
+  /// Returns a new [AdminBotProfileStringModerationConfig] instance and imports its values from
   /// [value] if it's a [Map], null otherwise.
   // ignore: prefer_constructors_over_static_methods
-  static AdminProfileStringModerationConfig? fromJson(dynamic value) {
+  static AdminBotProfileStringModerationConfig? fromJson(dynamic value) {
     if (value is Map) {
       final json = value.cast<String, dynamic>();
 
@@ -68,27 +68,27 @@ class AdminProfileStringModerationConfig {
       // Note 2: this code is stripped in release mode!
       assert(() {
         requiredKeys.forEach((key) {
-          assert(json.containsKey(key), 'Required key "AdminProfileStringModerationConfig[$key]" is missing from JSON.');
-          assert(json[key] != null, 'Required key "AdminProfileStringModerationConfig[$key]" has a null value in JSON.');
+          assert(json.containsKey(key), 'Required key "AdminBotProfileStringModerationConfig[$key]" is missing from JSON.');
+          assert(json[key] != null, 'Required key "AdminBotProfileStringModerationConfig[$key]" has a null value in JSON.');
         });
         return true;
       }());
 
-      return AdminProfileStringModerationConfig(
+      return AdminBotProfileStringModerationConfig(
         acceptSingleVisibleCharacter: mapValueOfType<bool>(json, r'accept_single_visible_character') ?? false,
         defaultAction: ModerationAction.fromJson(json[r'default_action'])!,
-        llm: LlmStringModerationConfig.fromJson(json[r'llm'])!,
+        llm: AdminBotStringModerationLlmConfig.fromJson(json[r'llm'])!,
         llmEnabled: mapValueOfType<bool>(json, r'llm_enabled') ?? false,
       );
     }
     return null;
   }
 
-  static List<AdminProfileStringModerationConfig> listFromJson(dynamic json, {bool growable = false,}) {
-    final result = <AdminProfileStringModerationConfig>[];
+  static List<AdminBotProfileStringModerationConfig> listFromJson(dynamic json, {bool growable = false,}) {
+    final result = <AdminBotProfileStringModerationConfig>[];
     if (json is List && json.isNotEmpty) {
       for (final row in json) {
-        final value = AdminProfileStringModerationConfig.fromJson(row);
+        final value = AdminBotProfileStringModerationConfig.fromJson(row);
         if (value != null) {
           result.add(value);
         }
@@ -97,12 +97,12 @@ class AdminProfileStringModerationConfig {
     return result.toList(growable: growable);
   }
 
-  static Map<String, AdminProfileStringModerationConfig> mapFromJson(dynamic json) {
-    final map = <String, AdminProfileStringModerationConfig>{};
+  static Map<String, AdminBotProfileStringModerationConfig> mapFromJson(dynamic json) {
+    final map = <String, AdminBotProfileStringModerationConfig>{};
     if (json is Map && json.isNotEmpty) {
       json = json.cast<String, dynamic>(); // ignore: parameter_assignments
       for (final entry in json.entries) {
-        final value = AdminProfileStringModerationConfig.fromJson(entry.value);
+        final value = AdminBotProfileStringModerationConfig.fromJson(entry.value);
         if (value != null) {
           map[entry.key] = value;
         }
@@ -111,14 +111,14 @@ class AdminProfileStringModerationConfig {
     return map;
   }
 
-  // maps a json object with a list of AdminProfileStringModerationConfig-objects as value to a dart map
-  static Map<String, List<AdminProfileStringModerationConfig>> mapListFromJson(dynamic json, {bool growable = false,}) {
-    final map = <String, List<AdminProfileStringModerationConfig>>{};
+  // maps a json object with a list of AdminBotProfileStringModerationConfig-objects as value to a dart map
+  static Map<String, List<AdminBotProfileStringModerationConfig>> mapListFromJson(dynamic json, {bool growable = false,}) {
+    final map = <String, List<AdminBotProfileStringModerationConfig>>{};
     if (json is Map && json.isNotEmpty) {
       // ignore: parameter_assignments
       json = json.cast<String, dynamic>();
       for (final entry in json.entries) {
-        map[entry.key] = AdminProfileStringModerationConfig.listFromJson(entry.value, growable: growable,);
+        map[entry.key] = AdminBotProfileStringModerationConfig.listFromJson(entry.value, growable: growable,);
       }
     }
     return map;

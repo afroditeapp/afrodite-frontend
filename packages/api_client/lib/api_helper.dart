@@ -55,6 +55,9 @@ String parameterToString(dynamic value) {
   if (value is DateTime) {
     return value.toUtc().toIso8601String();
   }
+  if (value is AcceptOrReject) {
+    return AcceptOrRejectTypeTransformer().encode(value).toString();
+  }
   if (value is AccountBannedAdminType) {
     return AccountBannedAdminTypeTypeTransformer().encode(value).toString();
   }
@@ -177,9 +180,6 @@ String parameterToString(dynamic value) {
   }
   if (value is TimeGranularity) {
     return TimeGranularityTypeTransformer().encode(value).toString();
-  }
-  if (value is VerificationAction) {
-    return VerificationActionTypeTransformer().encode(value).toString();
   }
   if (value is VerificationMethod) {
     return VerificationMethodTypeTransformer().encode(value).toString();

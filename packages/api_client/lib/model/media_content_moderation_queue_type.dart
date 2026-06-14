@@ -25,13 +25,15 @@ class MediaContentModerationQueueType {
 
   static const waitingAdminBot = MediaContentModerationQueueType._(r'WaitingAdminBot');
   static const waitingAdmin = MediaContentModerationQueueType._(r'WaitingAdmin');
-  static const processedByAdminBot = MediaContentModerationQueueType._(r'ProcessedByAdminBot');
+  static const acceptedByAdminBot = MediaContentModerationQueueType._(r'AcceptedByAdminBot');
+  static const rejectedByAdminBot = MediaContentModerationQueueType._(r'RejectedByAdminBot');
 
   /// List of all possible values in this [enum][MediaContentModerationQueueType].
   static const values = <MediaContentModerationQueueType>[
     waitingAdminBot,
     waitingAdmin,
-    processedByAdminBot,
+    acceptedByAdminBot,
+    rejectedByAdminBot,
   ];
 
   static MediaContentModerationQueueType? fromJson(dynamic value) => MediaContentModerationQueueTypeTypeTransformer().decode(value);
@@ -72,7 +74,8 @@ class MediaContentModerationQueueTypeTypeTransformer {
       switch (data) {
         case r'WaitingAdminBot': return MediaContentModerationQueueType.waitingAdminBot;
         case r'WaitingAdmin': return MediaContentModerationQueueType.waitingAdmin;
-        case r'ProcessedByAdminBot': return MediaContentModerationQueueType.processedByAdminBot;
+        case r'AcceptedByAdminBot': return MediaContentModerationQueueType.acceptedByAdminBot;
+        case r'RejectedByAdminBot': return MediaContentModerationQueueType.rejectedByAdminBot;
         default:
           if (!allowNull) {
             throw ArgumentError('Unknown enum value to decode: $data');

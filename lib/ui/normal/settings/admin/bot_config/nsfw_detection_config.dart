@@ -4,14 +4,14 @@ import 'package:app/ui_utils/padding.dart';
 import 'package:flutter/material.dart';
 import 'package:openapi/api.dart';
 
-class EditNsfwDetectionConfigPage extends MyScreenPageLimited<AdminNsfwDetectionConfig> {
-  EditNsfwDetectionConfigPage(AdminNsfwDetectionConfig config)
+class EditNsfwDetectionConfigPage extends MyScreenPageLimited<AdminBotNsfwDetectionConfig> {
+  EditNsfwDetectionConfigPage(AdminBotNsfwDetectionConfig config)
     : super(builder: (closer) => EditNsfwDetectionConfigScreen(config, closer));
 }
 
 class EditNsfwDetectionConfigScreen extends StatefulWidget {
-  final AdminNsfwDetectionConfig initialConfig;
-  final PageCloser<AdminNsfwDetectionConfig> closer;
+  final AdminBotNsfwDetectionConfig initialConfig;
+  final PageCloser<AdminBotNsfwDetectionConfig> closer;
   const EditNsfwDetectionConfigScreen(this.initialConfig, this.closer, {super.key});
 
   @override
@@ -19,7 +19,7 @@ class EditNsfwDetectionConfigScreen extends StatefulWidget {
 }
 
 class _EditNsfwDetectionConfigScreenState extends State<EditNsfwDetectionConfigScreen> {
-  late AdminNsfwDetectionConfig _config;
+  late AdminBotNsfwDetectionConfig _config;
 
   @override
   void initState() {

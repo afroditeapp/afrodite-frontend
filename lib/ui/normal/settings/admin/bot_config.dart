@@ -64,34 +64,6 @@ class _BotConfigScreenState extends State<BotConfigScreen> {
         _userBotsController.text = _userBots.toString();
       }
     });
-
-    if (data != null) {
-      await _showWarnings();
-    }
-  }
-
-  Future<void> _showWarnings() async {
-    final warnings = await widget.api.commonAdmin((api) => api.getBotConfigWarnings()).ok();
-    if (warnings != null && mounted) {
-      if (warnings.errorAdminBotOffline) {
-        showSnackBar("Error: getting bot config file warnings failed because admin bot is offline");
-        return;
-      } else if (warnings.error) {
-        showSnackBar("Error: getting bot config file warnings failed");
-        return;
-      }
-
-      final missing = [
-        if (warnings.contentModerationFileConfigMissing) "- content moderation",
-        if (warnings.faceVerificationFileConfigMissing) "- face verification",
-        if (warnings.profileNameModerationFileConfigMissing) "- profile name moderation",
-        if (warnings.profileTextModerationFileConfigMissing) "- profile text moderation",
-      ];
-
-      if (missing.isNotEmpty) {
-        showSnackBar("Warning: bot config file is missing config for\n${missing.join("\n")}");
-      }
-    }
   }
 
   bool _hasUnsavedChanges() {
@@ -287,7 +259,6 @@ class _BotConfigScreenState extends State<BotConfigScreen> {
     switch (result) {
       case Ok():
         showSnackBar("Config saved!");
-        await _showWarnings();
       case Err():
         showSnackBar("Config save failed!");
         return false;

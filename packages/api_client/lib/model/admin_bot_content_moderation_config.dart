@@ -10,9 +10,9 @@
 
 part of openapi.api;
 
-class AdminContentModerationConfig {
-  /// Returns a new [AdminContentModerationConfig] instance.
-  AdminContentModerationConfig({
+class AdminBotContentModerationConfig {
+  /// Returns a new [AdminBotContentModerationConfig] instance.
+  AdminBotContentModerationConfig({
     this.addedContent = false,
     required this.defaultAction,
     this.initialContent = false,
@@ -30,23 +30,23 @@ class AdminContentModerationConfig {
 
   bool initialContent;
 
-  LlmContentModerationConfig llmPrimary;
+  AdminBotContentModerationLlmConfig llmPrimary;
 
   /// Large language model based moderation. Actions: reject (can be replaced with move_to_human or ignore) and          accept (can be replaced with move_to_human or delete).
   bool llmPrimaryEnabled;
 
-  LlmContentModerationConfig llmSecondary;
+  AdminBotContentModerationLlmConfig llmSecondary;
 
   /// The secondary LLM moderation will run if primary results with ignore action.
   bool llmSecondaryEnabled;
 
-  AdminNsfwDetectionConfig nsfwDetection;
+  AdminBotNsfwDetectionConfig nsfwDetection;
 
   /// Neural network based detection. Actions: reject, move_to_human, accept and delete.
   bool nsfwDetectionEnabled;
 
   @override
-  bool operator ==(Object other) => identical(this, other) || other is AdminContentModerationConfig &&
+  bool operator ==(Object other) => identical(this, other) || other is AdminBotContentModerationConfig &&
     other.addedContent == addedContent &&
     other.defaultAction == defaultAction &&
     other.initialContent == initialContent &&
@@ -71,7 +71,7 @@ class AdminContentModerationConfig {
     (nsfwDetectionEnabled.hashCode);
 
   @override
-  String toString() => 'AdminContentModerationConfig[addedContent=$addedContent, defaultAction=$defaultAction, initialContent=$initialContent, llmPrimary=$llmPrimary, llmPrimaryEnabled=$llmPrimaryEnabled, llmSecondary=$llmSecondary, llmSecondaryEnabled=$llmSecondaryEnabled, nsfwDetection=$nsfwDetection, nsfwDetectionEnabled=$nsfwDetectionEnabled]';
+  String toString() => 'AdminBotContentModerationConfig[addedContent=$addedContent, defaultAction=$defaultAction, initialContent=$initialContent, llmPrimary=$llmPrimary, llmPrimaryEnabled=$llmPrimaryEnabled, llmSecondary=$llmSecondary, llmSecondaryEnabled=$llmSecondaryEnabled, nsfwDetection=$nsfwDetection, nsfwDetectionEnabled=$nsfwDetectionEnabled]';
 
   Map<String, dynamic> toJson() {
     final json = <String, dynamic>{};
@@ -87,10 +87,10 @@ class AdminContentModerationConfig {
     return json;
   }
 
-  /// Returns a new [AdminContentModerationConfig] instance and imports its values from
+  /// Returns a new [AdminBotContentModerationConfig] instance and imports its values from
   /// [value] if it's a [Map], null otherwise.
   // ignore: prefer_constructors_over_static_methods
-  static AdminContentModerationConfig? fromJson(dynamic value) {
+  static AdminBotContentModerationConfig? fromJson(dynamic value) {
     if (value is Map) {
       final json = value.cast<String, dynamic>();
 
@@ -99,32 +99,32 @@ class AdminContentModerationConfig {
       // Note 2: this code is stripped in release mode!
       assert(() {
         requiredKeys.forEach((key) {
-          assert(json.containsKey(key), 'Required key "AdminContentModerationConfig[$key]" is missing from JSON.');
-          assert(json[key] != null, 'Required key "AdminContentModerationConfig[$key]" has a null value in JSON.');
+          assert(json.containsKey(key), 'Required key "AdminBotContentModerationConfig[$key]" is missing from JSON.');
+          assert(json[key] != null, 'Required key "AdminBotContentModerationConfig[$key]" has a null value in JSON.');
         });
         return true;
       }());
 
-      return AdminContentModerationConfig(
+      return AdminBotContentModerationConfig(
         addedContent: mapValueOfType<bool>(json, r'added_content') ?? false,
         defaultAction: ModerationAction.fromJson(json[r'default_action'])!,
         initialContent: mapValueOfType<bool>(json, r'initial_content') ?? false,
-        llmPrimary: LlmContentModerationConfig.fromJson(json[r'llm_primary'])!,
+        llmPrimary: AdminBotContentModerationLlmConfig.fromJson(json[r'llm_primary'])!,
         llmPrimaryEnabled: mapValueOfType<bool>(json, r'llm_primary_enabled') ?? false,
-        llmSecondary: LlmContentModerationConfig.fromJson(json[r'llm_secondary'])!,
+        llmSecondary: AdminBotContentModerationLlmConfig.fromJson(json[r'llm_secondary'])!,
         llmSecondaryEnabled: mapValueOfType<bool>(json, r'llm_secondary_enabled') ?? false,
-        nsfwDetection: AdminNsfwDetectionConfig.fromJson(json[r'nsfw_detection'])!,
+        nsfwDetection: AdminBotNsfwDetectionConfig.fromJson(json[r'nsfw_detection'])!,
         nsfwDetectionEnabled: mapValueOfType<bool>(json, r'nsfw_detection_enabled') ?? false,
       );
     }
     return null;
   }
 
-  static List<AdminContentModerationConfig> listFromJson(dynamic json, {bool growable = false,}) {
-    final result = <AdminContentModerationConfig>[];
+  static List<AdminBotContentModerationConfig> listFromJson(dynamic json, {bool growable = false,}) {
+    final result = <AdminBotContentModerationConfig>[];
     if (json is List && json.isNotEmpty) {
       for (final row in json) {
-        final value = AdminContentModerationConfig.fromJson(row);
+        final value = AdminBotContentModerationConfig.fromJson(row);
         if (value != null) {
           result.add(value);
         }
@@ -133,12 +133,12 @@ class AdminContentModerationConfig {
     return result.toList(growable: growable);
   }
 
-  static Map<String, AdminContentModerationConfig> mapFromJson(dynamic json) {
-    final map = <String, AdminContentModerationConfig>{};
+  static Map<String, AdminBotContentModerationConfig> mapFromJson(dynamic json) {
+    final map = <String, AdminBotContentModerationConfig>{};
     if (json is Map && json.isNotEmpty) {
       json = json.cast<String, dynamic>(); // ignore: parameter_assignments
       for (final entry in json.entries) {
-        final value = AdminContentModerationConfig.fromJson(entry.value);
+        final value = AdminBotContentModerationConfig.fromJson(entry.value);
         if (value != null) {
           map[entry.key] = value;
         }
@@ -147,14 +147,14 @@ class AdminContentModerationConfig {
     return map;
   }
 
-  // maps a json object with a list of AdminContentModerationConfig-objects as value to a dart map
-  static Map<String, List<AdminContentModerationConfig>> mapListFromJson(dynamic json, {bool growable = false,}) {
-    final map = <String, List<AdminContentModerationConfig>>{};
+  // maps a json object with a list of AdminBotContentModerationConfig-objects as value to a dart map
+  static Map<String, List<AdminBotContentModerationConfig>> mapListFromJson(dynamic json, {bool growable = false,}) {
+    final map = <String, List<AdminBotContentModerationConfig>>{};
     if (json is Map && json.isNotEmpty) {
       // ignore: parameter_assignments
       json = json.cast<String, dynamic>();
       for (final entry in json.entries) {
-        map[entry.key] = AdminContentModerationConfig.listFromJson(entry.value, growable: growable,);
+        map[entry.key] = AdminBotContentModerationConfig.listFromJson(entry.value, growable: growable,);
       }
     }
     return map;

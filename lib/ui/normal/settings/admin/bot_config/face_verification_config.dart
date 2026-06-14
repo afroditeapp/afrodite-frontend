@@ -3,14 +3,14 @@ import 'package:app/ui_utils/padding.dart';
 import 'package:flutter/material.dart';
 import 'package:openapi/api.dart';
 
-class EditFaceVerificationConfigPage extends MyScreenPageLimited<AdminFaceVerificationConfig> {
-  EditFaceVerificationConfigPage(AdminFaceVerificationConfig config)
+class EditFaceVerificationConfigPage extends MyScreenPageLimited<AdminBotFaceVerificationConfig> {
+  EditFaceVerificationConfigPage(AdminBotFaceVerificationConfig config)
     : super(builder: (closer) => EditFaceVerificationConfigScreen(config, closer));
 }
 
 class EditFaceVerificationConfigScreen extends StatefulWidget {
-  final AdminFaceVerificationConfig initialConfig;
-  final PageCloser<AdminFaceVerificationConfig> closer;
+  final AdminBotFaceVerificationConfig initialConfig;
+  final PageCloser<AdminBotFaceVerificationConfig> closer;
   const EditFaceVerificationConfigScreen(this.initialConfig, this.closer, {super.key});
 
   @override
@@ -18,8 +18,8 @@ class EditFaceVerificationConfigScreen extends StatefulWidget {
 }
 
 class _EditFaceVerificationConfigScreenState extends State<EditFaceVerificationConfigScreen> {
-  late VerificationAction _defaultAction;
-  late LlmFaceVerificationConfig _llm;
+  late AcceptOrReject _defaultAction;
+  late AdminBotFaceVerificationLlmConfig _llm;
   late bool _llmEnabled;
   final _formKey = GlobalKey<FormState>();
 
@@ -39,7 +39,7 @@ class _EditFaceVerificationConfigScreenState extends State<EditFaceVerificationC
         if (didPop) return;
         widget.closer.close(
           context,
-          AdminFaceVerificationConfig(
+          AdminBotFaceVerificationConfig(
             defaultAction: _defaultAction,
             llm: _llm,
             llmEnabled: _llmEnabled,
@@ -62,9 +62,9 @@ class _EditFaceVerificationConfigScreenState extends State<EditFaceVerificationC
             children: [
               ListTile(
                 title: const Text("Default action"),
-                trailing: DropdownButton<VerificationAction>(
+                trailing: DropdownButton<AcceptOrReject>(
                   value: _defaultAction,
-                  items: VerificationAction.values.map((a) {
+                  items: AcceptOrReject.values.map((a) {
                     return DropdownMenuItem(value: a, child: Text(a.value));
                   }).toList(),
                   onChanged: (v) {
@@ -111,12 +111,6 @@ class _EditFaceVerificationConfigScreenState extends State<EditFaceVerificationC
             setState(() => _llm.systemText = v);
             _formKey.currentState?.validate();
           },
-        ),
-        TextFormField(
-          initialValue: _llm.maxTokens.toString(),
-          decoration: const InputDecoration(labelText: "Max Tokens"),
-          keyboardType: TextInputType.number,
-          onChanged: (v) => setState(() => _llm.maxTokens = int.tryParse(v) ?? 0),
         ),
       ],
     );

@@ -21,15 +21,23 @@ class AdminBotProcessedContentTasksPage extends MyScreenPage<()> {
 
 class RequiredData {
   final bool contentBotInitial;
+  final bool contentBotInitialRejected;
   final bool contentBot;
+  final bool contentBotRejected;
   final bool profileNamesBot;
+  final bool profileNamesBotRejected;
   final bool profileTextsBot;
+  final bool profileTextsBotRejected;
 
   RequiredData({
     required this.contentBotInitial,
+    required this.contentBotInitialRejected,
     required this.contentBot,
+    required this.contentBotRejected,
     required this.profileNamesBot,
+    required this.profileNamesBotRejected,
     required this.profileTextsBot,
+    required this.profileTextsBotRejected,
   });
 }
 
@@ -68,23 +76,38 @@ class _AdminBotProcessedContentTasksScreenState extends State<AdminBotProcessedC
         isLoading = false;
         data = RequiredData(
           contentBotInitial: permissions.adminModerateMediaContent,
+          contentBotInitialRejected: permissions.adminModerateMediaContent,
           contentBot: permissions.adminModerateMediaContent,
+          contentBotRejected: permissions.adminModerateMediaContent,
           profileNamesBot: permissions.adminModerateProfileNames,
+          profileNamesBotRejected: permissions.adminModerateProfileNames,
           profileTextsBot: permissions.adminModerateProfileTexts,
+          profileTextsBotRejected: permissions.adminModerateProfileTexts,
         );
       });
       return;
     }
 
     final MediaContentModerationQueuePage? contentBotInitial;
+    final MediaContentModerationQueuePage? contentBotInitialRejected;
     final MediaContentModerationQueuePage? contentBot;
+    final MediaContentModerationQueuePage? contentBotRejected;
     if (permissions.adminModerateMediaContent) {
       contentBotInitial = await widget.api
           .mediaAdmin(
             (api) => api.getMediaContentModerationQueuePage(
               MediaContentType.jpegImage,
               MediaContentModerationType.initial,
-              MediaContentModerationQueueType.processedByAdminBot,
+              MediaContentModerationQueueType.acceptedByAdminBot,
+            ),
+          )
+          .ok();
+      contentBotInitialRejected = await widget.api
+          .mediaAdmin(
+            (api) => api.getMediaContentModerationQueuePage(
+              MediaContentType.jpegImage,
+              MediaContentModerationType.initial,
+              MediaContentModerationQueueType.rejectedByAdminBot,
             ),
           )
           .ok();
@@ -93,42 +116,73 @@ class _AdminBotProcessedContentTasksScreenState extends State<AdminBotProcessedC
             (api) => api.getMediaContentModerationQueuePage(
               MediaContentType.jpegImage,
               MediaContentModerationType.normal,
-              MediaContentModerationQueueType.processedByAdminBot,
+              MediaContentModerationQueueType.acceptedByAdminBot,
+            ),
+          )
+          .ok();
+      contentBotRejected = await widget.api
+          .mediaAdmin(
+            (api) => api.getMediaContentModerationQueuePage(
+              MediaContentType.jpegImage,
+              MediaContentModerationType.normal,
+              MediaContentModerationQueueType.rejectedByAdminBot,
             ),
           )
           .ok();
     } else {
       final empty = MediaContentModerationQueuePage();
       contentBotInitial = empty;
+      contentBotInitialRejected = empty;
       contentBot = empty;
+      contentBotRejected = empty;
     }
 
     final ProfileStringModerationQueuePage? profileNamesBot;
+    final ProfileStringModerationQueuePage? profileNamesBotRejected;
     if (permissions.adminModerateProfileNames) {
       profileNamesBot = await widget.api
           .profileAdmin(
             (api) => api.getProfileStringModerationQueuePage(
               ProfileStringModerationContentType.profileName,
-              ProfileStringModerationQueueType.processedByAdminBot,
+              ProfileStringModerationQueueType.acceptedByAdminBot,
+            ),
+          )
+          .ok();
+      profileNamesBotRejected = await widget.api
+          .profileAdmin(
+            (api) => api.getProfileStringModerationQueuePage(
+              ProfileStringModerationContentType.profileName,
+              ProfileStringModerationQueueType.rejectedByAdminBot,
             ),
           )
           .ok();
     } else {
       profileNamesBot = ProfileStringModerationQueuePage();
+      profileNamesBotRejected = ProfileStringModerationQueuePage();
     }
 
     final ProfileStringModerationQueuePage? profileTextsBot;
+    final ProfileStringModerationQueuePage? profileTextsBotRejected;
     if (permissions.adminModerateProfileTexts) {
       profileTextsBot = await widget.api
           .profileAdmin(
             (api) => api.getProfileStringModerationQueuePage(
               ProfileStringModerationContentType.profileText,
-              ProfileStringModerationQueueType.processedByAdminBot,
+              ProfileStringModerationQueueType.acceptedByAdminBot,
+            ),
+          )
+          .ok();
+      profileTextsBotRejected = await widget.api
+          .profileAdmin(
+            (api) => api.getProfileStringModerationQueuePage(
+              ProfileStringModerationContentType.profileText,
+              ProfileStringModerationQueueType.rejectedByAdminBot,
             ),
           )
           .ok();
     } else {
       profileTextsBot = ProfileStringModerationQueuePage();
+      profileTextsBotRejected = ProfileStringModerationQueuePage();
     }
 
     if (!context.mounted) {
@@ -136,9 +190,13 @@ class _AdminBotProcessedContentTasksScreenState extends State<AdminBotProcessedC
     }
 
     if (contentBotInitial == null ||
+        contentBotInitialRejected == null ||
         contentBot == null ||
+        contentBotRejected == null ||
         profileNamesBot == null ||
-        profileTextsBot == null) {
+        profileNamesBotRejected == null ||
+        profileTextsBot == null ||
+        profileTextsBotRejected == null) {
       showSnackBar(R.strings.generic_error);
       setState(() {
         isLoading = false;
@@ -149,9 +207,13 @@ class _AdminBotProcessedContentTasksScreenState extends State<AdminBotProcessedC
         isLoading = false;
         data = RequiredData(
           contentBotInitial: contentBotInitial?.values.isNotEmpty ?? false,
+          contentBotInitialRejected: contentBotInitialRejected?.values.isNotEmpty ?? false,
           contentBot: contentBot?.values.isNotEmpty ?? false,
+          contentBotRejected: contentBotRejected?.values.isNotEmpty ?? false,
           profileNamesBot: profileNamesBot?.values.isNotEmpty ?? false,
+          profileNamesBotRejected: profileNamesBotRejected?.values.isNotEmpty ?? false,
           profileTextsBot: profileTextsBot?.values.isNotEmpty ?? false,
+          profileTextsBotRejected: profileTextsBotRejected?.values.isNotEmpty ?? false,
         );
       });
     }
@@ -192,52 +254,104 @@ class _AdminBotProcessedContentTasksScreenState extends State<AdminBotProcessedC
       if (data.contentBotInitial)
         Setting.createSetting(
           Icons.image,
-          "Moderate images (initial, bot)",
+          "Moderate images (initial, bot accepted)",
           () => MyNavigator.pushLimited(
             context,
             ModerateImagesPage(
               r,
               moderationType: MediaContentModerationType.initial,
-              queueType: MediaContentModerationQueueType.processedByAdminBot,
+              queueType: MediaContentModerationQueueType.acceptedByAdminBot,
+            ),
+          ),
+        ),
+      if (data.contentBotInitialRejected)
+        Setting.createSetting(
+          Icons.image,
+          "Moderate images (initial, bot rejected)",
+          () => MyNavigator.pushLimited(
+            context,
+            ModerateImagesPage(
+              r,
+              moderationType: MediaContentModerationType.initial,
+              queueType: MediaContentModerationQueueType.rejectedByAdminBot,
             ),
           ),
         ),
       if (data.contentBot)
         Setting.createSetting(
           Icons.image,
-          "Moderate images (normal, bot)",
+          "Moderate images (normal, bot accepted)",
           () => MyNavigator.pushLimited(
             context,
             ModerateImagesPage(
               r,
               moderationType: MediaContentModerationType.normal,
-              queueType: MediaContentModerationQueueType.processedByAdminBot,
+              queueType: MediaContentModerationQueueType.acceptedByAdminBot,
+            ),
+          ),
+        ),
+      if (data.contentBotRejected)
+        Setting.createSetting(
+          Icons.image,
+          "Moderate images (normal, bot rejected)",
+          () => MyNavigator.pushLimited(
+            context,
+            ModerateImagesPage(
+              r,
+              moderationType: MediaContentModerationType.normal,
+              queueType: MediaContentModerationQueueType.rejectedByAdminBot,
             ),
           ),
         ),
       if (data.profileNamesBot)
         Setting.createSetting(
           Icons.text_fields,
-          "Moderate profile names (bot)",
+          "Moderate profile names (bot accepted)",
           () => MyNavigator.pushLimited(
             context,
             ModerateProfileStringsPage(
               r,
               contentType: ProfileStringModerationContentType.profileName,
-              queueType: ProfileStringModerationQueueType.processedByAdminBot,
+              queueType: ProfileStringModerationQueueType.acceptedByAdminBot,
+            ),
+          ),
+        ),
+      if (data.profileNamesBotRejected)
+        Setting.createSetting(
+          Icons.text_fields,
+          "Moderate profile names (bot rejected)",
+          () => MyNavigator.pushLimited(
+            context,
+            ModerateProfileStringsPage(
+              r,
+              contentType: ProfileStringModerationContentType.profileName,
+              queueType: ProfileStringModerationQueueType.rejectedByAdminBot,
             ),
           ),
         ),
       if (data.profileTextsBot)
         Setting.createSetting(
           Icons.text_fields,
-          "Moderate profile texts (bot)",
+          "Moderate profile texts (bot accepted)",
           () => MyNavigator.pushLimited(
             context,
             ModerateProfileStringsPage(
               r,
               contentType: ProfileStringModerationContentType.profileText,
-              queueType: ProfileStringModerationQueueType.processedByAdminBot,
+              queueType: ProfileStringModerationQueueType.acceptedByAdminBot,
+            ),
+          ),
+        ),
+      if (data.profileTextsBotRejected)
+        Setting.createSetting(
+          Icons.text_fields,
+          "Moderate profile texts (bot rejected)",
+          () => MyNavigator.pushLimited(
+            context,
+            ModerateProfileStringsPage(
+              r,
+              contentType: ProfileStringModerationContentType.profileText,
+              queueType: ProfileStringModerationQueueType.rejectedByAdminBot,
             ),
           ),
         ),

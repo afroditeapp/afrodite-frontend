@@ -23,27 +23,33 @@ class AdminBotConfig {
     this.profileNameModerationEnabled = false,
     required this.profileTextModeration,
     this.profileTextModerationEnabled = false,
+    required this.reportProcessing,
+    this.reportProcessingEnabled = false,
   });
 
-  AdminAccountVerificationConfig accountVerification;
+  AdminBotAccountVerificationConfig accountVerification;
 
   bool accountVerificationEnabled;
 
-  AdminContentModerationConfig contentModeration;
+  AdminBotContentModerationConfig contentModeration;
 
   bool contentModerationEnabled;
 
-  AdminFaceVerificationConfig faceVerification;
+  AdminBotFaceVerificationConfig faceVerification;
 
   bool faceVerificationEnabled;
 
-  AdminProfileStringModerationConfig profileNameModeration;
+  AdminBotProfileStringModerationConfig profileNameModeration;
 
   bool profileNameModerationEnabled;
 
-  AdminProfileStringModerationConfig profileTextModeration;
+  AdminBotProfileStringModerationConfig profileTextModeration;
 
   bool profileTextModerationEnabled;
+
+  AdminBotReportProcessingConfig reportProcessing;
+
+  bool reportProcessingEnabled;
 
   @override
   bool operator ==(Object other) => identical(this, other) || other is AdminBotConfig &&
@@ -56,7 +62,9 @@ class AdminBotConfig {
     other.profileNameModeration == profileNameModeration &&
     other.profileNameModerationEnabled == profileNameModerationEnabled &&
     other.profileTextModeration == profileTextModeration &&
-    other.profileTextModerationEnabled == profileTextModerationEnabled;
+    other.profileTextModerationEnabled == profileTextModerationEnabled &&
+    other.reportProcessing == reportProcessing &&
+    other.reportProcessingEnabled == reportProcessingEnabled;
 
   @override
   int get hashCode =>
@@ -70,10 +78,12 @@ class AdminBotConfig {
     (profileNameModeration.hashCode) +
     (profileNameModerationEnabled.hashCode) +
     (profileTextModeration.hashCode) +
-    (profileTextModerationEnabled.hashCode);
+    (profileTextModerationEnabled.hashCode) +
+    (reportProcessing.hashCode) +
+    (reportProcessingEnabled.hashCode);
 
   @override
-  String toString() => 'AdminBotConfig[accountVerification=$accountVerification, accountVerificationEnabled=$accountVerificationEnabled, contentModeration=$contentModeration, contentModerationEnabled=$contentModerationEnabled, faceVerification=$faceVerification, faceVerificationEnabled=$faceVerificationEnabled, profileNameModeration=$profileNameModeration, profileNameModerationEnabled=$profileNameModerationEnabled, profileTextModeration=$profileTextModeration, profileTextModerationEnabled=$profileTextModerationEnabled]';
+  String toString() => 'AdminBotConfig[accountVerification=$accountVerification, accountVerificationEnabled=$accountVerificationEnabled, contentModeration=$contentModeration, contentModerationEnabled=$contentModerationEnabled, faceVerification=$faceVerification, faceVerificationEnabled=$faceVerificationEnabled, profileNameModeration=$profileNameModeration, profileNameModerationEnabled=$profileNameModerationEnabled, profileTextModeration=$profileTextModeration, profileTextModerationEnabled=$profileTextModerationEnabled, reportProcessing=$reportProcessing, reportProcessingEnabled=$reportProcessingEnabled]';
 
   Map<String, dynamic> toJson() {
     final json = <String, dynamic>{};
@@ -87,6 +97,8 @@ class AdminBotConfig {
       json[r'profile_name_moderation_enabled'] = this.profileNameModerationEnabled;
       json[r'profile_text_moderation'] = this.profileTextModeration;
       json[r'profile_text_moderation_enabled'] = this.profileTextModerationEnabled;
+      json[r'report_processing'] = this.reportProcessing;
+      json[r'report_processing_enabled'] = this.reportProcessingEnabled;
     return json;
   }
 
@@ -109,16 +121,18 @@ class AdminBotConfig {
       }());
 
       return AdminBotConfig(
-        accountVerification: AdminAccountVerificationConfig.fromJson(json[r'account_verification'])!,
+        accountVerification: AdminBotAccountVerificationConfig.fromJson(json[r'account_verification'])!,
         accountVerificationEnabled: mapValueOfType<bool>(json, r'account_verification_enabled') ?? false,
-        contentModeration: AdminContentModerationConfig.fromJson(json[r'content_moderation'])!,
+        contentModeration: AdminBotContentModerationConfig.fromJson(json[r'content_moderation'])!,
         contentModerationEnabled: mapValueOfType<bool>(json, r'content_moderation_enabled') ?? false,
-        faceVerification: AdminFaceVerificationConfig.fromJson(json[r'face_verification'])!,
+        faceVerification: AdminBotFaceVerificationConfig.fromJson(json[r'face_verification'])!,
         faceVerificationEnabled: mapValueOfType<bool>(json, r'face_verification_enabled') ?? false,
-        profileNameModeration: AdminProfileStringModerationConfig.fromJson(json[r'profile_name_moderation'])!,
+        profileNameModeration: AdminBotProfileStringModerationConfig.fromJson(json[r'profile_name_moderation'])!,
         profileNameModerationEnabled: mapValueOfType<bool>(json, r'profile_name_moderation_enabled') ?? false,
-        profileTextModeration: AdminProfileStringModerationConfig.fromJson(json[r'profile_text_moderation'])!,
+        profileTextModeration: AdminBotProfileStringModerationConfig.fromJson(json[r'profile_text_moderation'])!,
         profileTextModerationEnabled: mapValueOfType<bool>(json, r'profile_text_moderation_enabled') ?? false,
+        reportProcessing: AdminBotReportProcessingConfig.fromJson(json[r'report_processing'])!,
+        reportProcessingEnabled: mapValueOfType<bool>(json, r'report_processing_enabled') ?? false,
       );
     }
     return null;
@@ -171,6 +185,7 @@ class AdminBotConfig {
     'face_verification',
     'profile_name_moderation',
     'profile_text_moderation',
+    'report_processing',
   };
 }
 

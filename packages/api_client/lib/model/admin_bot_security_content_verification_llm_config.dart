@@ -10,50 +10,43 @@
 
 part of openapi.api;
 
-class LlmFaceVerificationConfig {
-  /// Returns a new [LlmFaceVerificationConfig] instance.
-  LlmFaceVerificationConfig({
+class AdminBotSecurityContentVerificationLlmConfig {
+  /// Returns a new [AdminBotSecurityContentVerificationLlmConfig] instance.
+  AdminBotSecurityContentVerificationLlmConfig({
     required this.expectedResponse,
-    required this.maxTokens,
     required this.systemText,
   });
 
-  /// If LLM response starts with this text or the first line of the response contains this text, the face pair is moderated as accepted. The comparisons are case insensitive.
+  /// If LLM response starts with this text or the first line of the response contains this text, the content is moderated as accepted. The comparisons are case insensitive.
   String expectedResponse;
-
-  /// Minimum value: 0
-  int maxTokens;
 
   String systemText;
 
   @override
-  bool operator ==(Object other) => identical(this, other) || other is LlmFaceVerificationConfig &&
+  bool operator ==(Object other) => identical(this, other) || other is AdminBotSecurityContentVerificationLlmConfig &&
     other.expectedResponse == expectedResponse &&
-    other.maxTokens == maxTokens &&
     other.systemText == systemText;
 
   @override
   int get hashCode =>
     // ignore: unnecessary_parenthesis
     (expectedResponse.hashCode) +
-    (maxTokens.hashCode) +
     (systemText.hashCode);
 
   @override
-  String toString() => 'LlmFaceVerificationConfig[expectedResponse=$expectedResponse, maxTokens=$maxTokens, systemText=$systemText]';
+  String toString() => 'AdminBotSecurityContentVerificationLlmConfig[expectedResponse=$expectedResponse, systemText=$systemText]';
 
   Map<String, dynamic> toJson() {
     final json = <String, dynamic>{};
       json[r'expected_response'] = this.expectedResponse;
-      json[r'max_tokens'] = this.maxTokens;
       json[r'system_text'] = this.systemText;
     return json;
   }
 
-  /// Returns a new [LlmFaceVerificationConfig] instance and imports its values from
+  /// Returns a new [AdminBotSecurityContentVerificationLlmConfig] instance and imports its values from
   /// [value] if it's a [Map], null otherwise.
   // ignore: prefer_constructors_over_static_methods
-  static LlmFaceVerificationConfig? fromJson(dynamic value) {
+  static AdminBotSecurityContentVerificationLlmConfig? fromJson(dynamic value) {
     if (value is Map) {
       final json = value.cast<String, dynamic>();
 
@@ -62,26 +55,25 @@ class LlmFaceVerificationConfig {
       // Note 2: this code is stripped in release mode!
       assert(() {
         requiredKeys.forEach((key) {
-          assert(json.containsKey(key), 'Required key "LlmFaceVerificationConfig[$key]" is missing from JSON.');
-          assert(json[key] != null, 'Required key "LlmFaceVerificationConfig[$key]" has a null value in JSON.');
+          assert(json.containsKey(key), 'Required key "AdminBotSecurityContentVerificationLlmConfig[$key]" is missing from JSON.');
+          assert(json[key] != null, 'Required key "AdminBotSecurityContentVerificationLlmConfig[$key]" has a null value in JSON.');
         });
         return true;
       }());
 
-      return LlmFaceVerificationConfig(
+      return AdminBotSecurityContentVerificationLlmConfig(
         expectedResponse: mapValueOfType<String>(json, r'expected_response')!,
-        maxTokens: mapValueOfType<int>(json, r'max_tokens')!,
         systemText: mapValueOfType<String>(json, r'system_text')!,
       );
     }
     return null;
   }
 
-  static List<LlmFaceVerificationConfig> listFromJson(dynamic json, {bool growable = false,}) {
-    final result = <LlmFaceVerificationConfig>[];
+  static List<AdminBotSecurityContentVerificationLlmConfig> listFromJson(dynamic json, {bool growable = false,}) {
+    final result = <AdminBotSecurityContentVerificationLlmConfig>[];
     if (json is List && json.isNotEmpty) {
       for (final row in json) {
-        final value = LlmFaceVerificationConfig.fromJson(row);
+        final value = AdminBotSecurityContentVerificationLlmConfig.fromJson(row);
         if (value != null) {
           result.add(value);
         }
@@ -90,12 +82,12 @@ class LlmFaceVerificationConfig {
     return result.toList(growable: growable);
   }
 
-  static Map<String, LlmFaceVerificationConfig> mapFromJson(dynamic json) {
-    final map = <String, LlmFaceVerificationConfig>{};
+  static Map<String, AdminBotSecurityContentVerificationLlmConfig> mapFromJson(dynamic json) {
+    final map = <String, AdminBotSecurityContentVerificationLlmConfig>{};
     if (json is Map && json.isNotEmpty) {
       json = json.cast<String, dynamic>(); // ignore: parameter_assignments
       for (final entry in json.entries) {
-        final value = LlmFaceVerificationConfig.fromJson(entry.value);
+        final value = AdminBotSecurityContentVerificationLlmConfig.fromJson(entry.value);
         if (value != null) {
           map[entry.key] = value;
         }
@@ -104,14 +96,14 @@ class LlmFaceVerificationConfig {
     return map;
   }
 
-  // maps a json object with a list of LlmFaceVerificationConfig-objects as value to a dart map
-  static Map<String, List<LlmFaceVerificationConfig>> mapListFromJson(dynamic json, {bool growable = false,}) {
-    final map = <String, List<LlmFaceVerificationConfig>>{};
+  // maps a json object with a list of AdminBotSecurityContentVerificationLlmConfig-objects as value to a dart map
+  static Map<String, List<AdminBotSecurityContentVerificationLlmConfig>> mapListFromJson(dynamic json, {bool growable = false,}) {
+    final map = <String, List<AdminBotSecurityContentVerificationLlmConfig>>{};
     if (json is Map && json.isNotEmpty) {
       // ignore: parameter_assignments
       json = json.cast<String, dynamic>();
       for (final entry in json.entries) {
-        map[entry.key] = LlmFaceVerificationConfig.listFromJson(entry.value, growable: growable,);
+        map[entry.key] = AdminBotSecurityContentVerificationLlmConfig.listFromJson(entry.value, growable: growable,);
       }
     }
     return map;
@@ -120,7 +112,6 @@ class LlmFaceVerificationConfig {
   /// The list of required keys that must be present in a JSON.
   static const requiredKeys = <String>{
     'expected_response',
-    'max_tokens',
     'system_text',
   };
 }

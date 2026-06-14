@@ -25,13 +25,15 @@ class ProfileStringModerationQueueType {
 
   static const waitingAdminBot = ProfileStringModerationQueueType._(r'WaitingAdminBot');
   static const waitingAdmin = ProfileStringModerationQueueType._(r'WaitingAdmin');
-  static const processedByAdminBot = ProfileStringModerationQueueType._(r'ProcessedByAdminBot');
+  static const acceptedByAdminBot = ProfileStringModerationQueueType._(r'AcceptedByAdminBot');
+  static const rejectedByAdminBot = ProfileStringModerationQueueType._(r'RejectedByAdminBot');
 
   /// List of all possible values in this [enum][ProfileStringModerationQueueType].
   static const values = <ProfileStringModerationQueueType>[
     waitingAdminBot,
     waitingAdmin,
-    processedByAdminBot,
+    acceptedByAdminBot,
+    rejectedByAdminBot,
   ];
 
   static ProfileStringModerationQueueType? fromJson(dynamic value) => ProfileStringModerationQueueTypeTypeTransformer().decode(value);
@@ -72,7 +74,8 @@ class ProfileStringModerationQueueTypeTypeTransformer {
       switch (data) {
         case r'WaitingAdminBot': return ProfileStringModerationQueueType.waitingAdminBot;
         case r'WaitingAdmin': return ProfileStringModerationQueueType.waitingAdmin;
-        case r'ProcessedByAdminBot': return ProfileStringModerationQueueType.processedByAdminBot;
+        case r'AcceptedByAdminBot': return ProfileStringModerationQueueType.acceptedByAdminBot;
+        case r'RejectedByAdminBot': return ProfileStringModerationQueueType.rejectedByAdminBot;
         default:
           if (!allowNull) {
             throw ArgumentError('Unknown enum value to decode: $data');

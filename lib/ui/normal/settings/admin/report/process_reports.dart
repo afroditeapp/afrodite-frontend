@@ -83,11 +83,11 @@ class ReportIo extends ContentIo<WrappedReportDetailed> {
     String? rejectedDetails,
   }) async {
     final info = ProcessReport(
+      accepted: accept,
       creator: content.info.creator,
       target: content.info.target,
       reportType: content.info.reportType,
       content: content.content,
-      valid: accept,
     );
     await api.commonAdminAction((api) => api.postProcessReports(ProcessReports(values: [info])));
   }

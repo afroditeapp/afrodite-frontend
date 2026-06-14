@@ -24,12 +24,14 @@ class ReportQueueType {
   String toJson() => value;
 
   static const waiting = ReportQueueType._(r'Waiting');
-  static const processedByAdminBot = ReportQueueType._(r'ProcessedByAdminBot');
+  static const acceptedByAdminBot = ReportQueueType._(r'AcceptedByAdminBot');
+  static const rejectedByAdminBot = ReportQueueType._(r'RejectedByAdminBot');
 
   /// List of all possible values in this [enum][ReportQueueType].
   static const values = <ReportQueueType>[
     waiting,
-    processedByAdminBot,
+    acceptedByAdminBot,
+    rejectedByAdminBot,
   ];
 
   static ReportQueueType? fromJson(dynamic value) => ReportQueueTypeTypeTransformer().decode(value);
@@ -69,7 +71,8 @@ class ReportQueueTypeTypeTransformer {
     if (data != null) {
       switch (data) {
         case r'Waiting': return ReportQueueType.waiting;
-        case r'ProcessedByAdminBot': return ReportQueueType.processedByAdminBot;
+        case r'AcceptedByAdminBot': return ReportQueueType.acceptedByAdminBot;
+        case r'RejectedByAdminBot': return ReportQueueType.rejectedByAdminBot;
         default:
           if (!allowNull) {
             throw ArgumentError('Unknown enum value to decode: $data');

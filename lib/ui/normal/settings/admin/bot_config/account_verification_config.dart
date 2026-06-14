@@ -4,14 +4,14 @@ import 'package:flutter/material.dart';
 import 'package:openapi/api.dart';
 
 class EditAccountVerificationConfigPage
-    extends MyScreenPageLimited<AdminAccountVerificationConfig> {
-  EditAccountVerificationConfigPage(AdminAccountVerificationConfig config)
+    extends MyScreenPageLimited<AdminBotAccountVerificationConfig> {
+  EditAccountVerificationConfigPage(AdminBotAccountVerificationConfig config)
     : super(builder: (closer) => EditAccountVerificationConfigScreen(config, closer));
 }
 
 class EditAccountVerificationConfigScreen extends StatefulWidget {
-  final AdminAccountVerificationConfig initialConfig;
-  final PageCloser<AdminAccountVerificationConfig> closer;
+  final AdminBotAccountVerificationConfig initialConfig;
+  final PageCloser<AdminBotAccountVerificationConfig> closer;
   const EditAccountVerificationConfigScreen(this.initialConfig, this.closer, {super.key});
 
   @override
@@ -20,7 +20,7 @@ class EditAccountVerificationConfigScreen extends StatefulWidget {
 }
 
 class _EditAccountVerificationConfigScreenState extends State<EditAccountVerificationConfigScreen> {
-  late AdminAccountVerificationConfig _config;
+  late AdminBotAccountVerificationConfig _config;
   final _formKey = GlobalKey<FormState>();
 
   @override
@@ -97,9 +97,9 @@ class _EditAccountVerificationConfigScreenState extends State<EditAccountVerific
       children: [
         ListTile(
           title: const Text("Default action"),
-          trailing: DropdownButton<VerificationAction>(
+          trailing: DropdownButton<AcceptOrReject>(
             value: securityContent.defaultAction,
-            items: VerificationAction.values.map((a) {
+            items: AcceptOrReject.values.map((a) {
               return DropdownMenuItem(value: a, child: Text(a.value));
             }).toList(),
             onChanged: (v) {
@@ -143,12 +143,6 @@ class _EditAccountVerificationConfigScreenState extends State<EditAccountVerific
                     setState(() => llm.systemText = v);
                     _formKey.currentState?.validate();
                   },
-                ),
-                TextFormField(
-                  initialValue: llm.maxTokens.toString(),
-                  decoration: const InputDecoration(labelText: "Max Tokens"),
-                  keyboardType: TextInputType.number,
-                  onChanged: (v) => setState(() => llm.maxTokens = int.tryParse(v) ?? 0),
                 ),
               ],
             ),

@@ -182,6 +182,8 @@ class ApiClient {
           return valueString == 'true' || valueString == '1';
         case 'DateTime':
           return value is DateTime ? value : DateTime.tryParse(value);
+        case 'AcceptOrReject':
+          return AcceptOrRejectTypeTransformer().decode(value);
         case 'AccessToken':
           return AccessToken.fromJson(value);
         case 'AccessibleAccount':
@@ -234,26 +236,54 @@ class ApiClient {
           return AddFavoriteProfileResult.fromJson(value);
         case 'AddPublicKeyResult':
           return AddPublicKeyResult.fromJson(value);
-        case 'AdminAccountVerificationConfig':
-          return AdminAccountVerificationConfig.fromJson(value);
+        case 'AdminBotAccountVerificationConfig':
+          return AdminBotAccountVerificationConfig.fromJson(value);
+        case 'AdminBotBaseLlmConfig':
+          return AdminBotBaseLlmConfig.fromJson(value);
         case 'AdminBotConfig':
           return AdminBotConfig.fromJson(value);
-        case 'AdminContentModerationConfig':
-          return AdminContentModerationConfig.fromJson(value);
-        case 'AdminFaceVerificationConfig':
-          return AdminFaceVerificationConfig.fromJson(value);
+        case 'AdminBotContentModerationConfig':
+          return AdminBotContentModerationConfig.fromJson(value);
+        case 'AdminBotContentModerationLlmConfig':
+          return AdminBotContentModerationLlmConfig.fromJson(value);
+        case 'AdminBotFaceVerificationConfig':
+          return AdminBotFaceVerificationConfig.fromJson(value);
+        case 'AdminBotFaceVerificationLlmConfig':
+          return AdminBotFaceVerificationLlmConfig.fromJson(value);
+        case 'AdminBotModerationBaseLlmConfig':
+          return AdminBotModerationBaseLlmConfig.fromJson(value);
+        case 'AdminBotNsfwDetectionConfig':
+          return AdminBotNsfwDetectionConfig.fromJson(value);
+        case 'AdminBotProfileStringModerationConfig':
+          return AdminBotProfileStringModerationConfig.fromJson(value);
+        case 'AdminBotReportProcessingConfig':
+          return AdminBotReportProcessingConfig.fromJson(value);
+        case 'AdminBotReportProcessingMessagesConfig':
+          return AdminBotReportProcessingMessagesConfig.fromJson(value);
+        case 'AdminBotReportProcessingMessagesLlmConfig':
+          return AdminBotReportProcessingMessagesLlmConfig.fromJson(value);
+        case 'AdminBotReportProcessingProfileContentConfig':
+          return AdminBotReportProcessingProfileContentConfig.fromJson(value);
+        case 'AdminBotReportProcessingProfileContentLlmConfig':
+          return AdminBotReportProcessingProfileContentLlmConfig.fromJson(value);
+        case 'AdminBotReportProcessingProfileStringConfig':
+          return AdminBotReportProcessingProfileStringConfig.fromJson(value);
+        case 'AdminBotReportProcessingProfileStringLlmConfig':
+          return AdminBotReportProcessingProfileStringLlmConfig.fromJson(value);
+        case 'AdminBotSecurityContentVerificationConfig':
+          return AdminBotSecurityContentVerificationConfig.fromJson(value);
+        case 'AdminBotSecurityContentVerificationLlmConfig':
+          return AdminBotSecurityContentVerificationLlmConfig.fromJson(value);
+        case 'AdminBotStringModerationLlmConfig':
+          return AdminBotStringModerationLlmConfig.fromJson(value);
+        case 'AdminBotStringReportBaseLlmConfig':
+          return AdminBotStringReportBaseLlmConfig.fromJson(value);
         case 'AdminInfo':
           return AdminInfo.fromJson(value);
         case 'AdminNotification':
           return AdminNotification.fromJson(value);
         case 'AdminNotificationSettings':
           return AdminNotificationSettings.fromJson(value);
-        case 'AdminNsfwDetectionConfig':
-          return AdminNsfwDetectionConfig.fromJson(value);
-        case 'AdminProfileStringModerationConfig':
-          return AdminProfileStringModerationConfig.fromJson(value);
-        case 'AdminSecurityContentVerificationConfig':
-          return AdminSecurityContentVerificationConfig.fromJson(value);
         case 'AgeVerificationConfig':
           return AgeVerificationConfig.fromJson(value);
         case 'AgeVerificationMethod':
@@ -282,6 +312,10 @@ class ApiClient {
           return AttributionConfig.fromJson(value);
         case 'AuthPair':
           return AuthPair.fromJson(value);
+        case 'AutomaticBanningDayCountConfig':
+          return AutomaticBanningDayCountConfig.fromJson(value);
+        case 'AutomaticBanningExpectedLlmResponsesConfig':
+          return AutomaticBanningExpectedLlmResponsesConfig.fromJson(value);
         case 'AutomaticProfileSearchIteratorSessionId':
           return AutomaticProfileSearchIteratorSessionId.fromJson(value);
         case 'AutomaticProfileSearchSettings':
@@ -304,8 +338,6 @@ class ApiClient {
           return BotAccount.fromJson(value);
         case 'BotConfig':
           return BotConfig.fromJson(value);
-        case 'BotConfigWarnings':
-          return BotConfigWarnings.fromJson(value);
         case 'ChatAppNotificationSettings':
           return ChatAppNotificationSettings.fromJson(value);
         case 'ChatConfig':
@@ -550,14 +582,6 @@ class ApiClient {
           return LikesConfig.fromJson(value);
         case 'LimitedActionStatus':
           return LimitedActionStatusTypeTransformer().decode(value);
-        case 'LlmContentModerationConfig':
-          return LlmContentModerationConfig.fromJson(value);
-        case 'LlmFaceVerificationConfig':
-          return LlmFaceVerificationConfig.fromJson(value);
-        case 'LlmSecurityContentVerificationConfig':
-          return LlmSecurityContentVerificationConfig.fromJson(value);
-        case 'LlmStringModerationConfig':
-          return LlmStringModerationConfig.fromJson(value);
         case 'Location':
           return Location.fromJson(value);
         case 'LoginResult':
@@ -958,8 +982,6 @@ class ApiClient {
           return UpdateReportResult.fromJson(value);
         case 'VapidPublicKey':
           return VapidPublicKey.fromJson(value);
-        case 'VerificationAction':
-          return VerificationActionTypeTransformer().decode(value);
         case 'VerificationMethod':
           return VerificationMethodTypeTransformer().decode(value);
         default:

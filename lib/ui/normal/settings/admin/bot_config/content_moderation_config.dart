@@ -5,14 +5,14 @@ import 'package:app/ui_utils/padding.dart';
 import 'package:flutter/material.dart';
 import 'package:openapi/api.dart';
 
-class EditContentModerationConfigPage extends MyScreenPageLimited<AdminContentModerationConfig> {
-  EditContentModerationConfigPage(AdminContentModerationConfig config)
+class EditContentModerationConfigPage extends MyScreenPageLimited<AdminBotContentModerationConfig> {
+  EditContentModerationConfigPage(AdminBotContentModerationConfig config)
     : super(builder: (closer) => EditContentModerationConfigScreen(config, closer));
 }
 
 class EditContentModerationConfigScreen extends StatefulWidget {
-  final AdminContentModerationConfig initialConfig;
-  final PageCloser<AdminContentModerationConfig> closer;
+  final AdminBotContentModerationConfig initialConfig;
+  final PageCloser<AdminBotContentModerationConfig> closer;
   const EditContentModerationConfigScreen(this.initialConfig, this.closer, {super.key});
 
   @override
@@ -21,7 +21,7 @@ class EditContentModerationConfigScreen extends StatefulWidget {
 }
 
 class _EditContentModerationConfigScreenState extends State<EditContentModerationConfigScreen> {
-  late AdminContentModerationConfig _config;
+  late AdminBotContentModerationConfig _config;
   final _formKey = GlobalKey<FormState>();
 
   @override
@@ -126,7 +126,7 @@ class _EditContentModerationConfigScreenState extends State<EditContentModeratio
 
   Widget _llmSection(
     String title,
-    LlmContentModerationConfig llm,
+    AdminBotContentModerationLlmConfig llm,
     bool enabled,
     void Function(bool) onEnabledChanged,
   ) {
@@ -140,7 +140,7 @@ class _EditContentModerationConfigScreenState extends State<EditContentModeratio
     );
   }
 
-  Widget _llmEditor(LlmContentModerationConfig llm) {
+  Widget _llmEditor(AdminBotContentModerationLlmConfig llm) {
     return Column(
       children: [
         TextFormField(
@@ -161,12 +161,6 @@ class _EditContentModerationConfigScreenState extends State<EditContentModeratio
             setState(() => llm.systemText = v);
             _formKey.currentState?.validate();
           },
-        ),
-        TextFormField(
-          initialValue: llm.maxTokens.toString(),
-          decoration: const InputDecoration(labelText: "Max Tokens"),
-          keyboardType: TextInputType.number,
-          onChanged: (v) => setState(() => llm.maxTokens = int.tryParse(v) ?? 0),
         ),
         SwitchListTile(
           title: const Text("Delete accepted"),

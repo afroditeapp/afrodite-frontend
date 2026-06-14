@@ -13,12 +13,15 @@ part of openapi.api;
 class ProcessReport {
   /// Returns a new [ProcessReport] instance.
   ProcessReport({
+    required this.accepted,
     required this.content,
     required this.creator,
     required this.reportType,
     required this.target,
-    required this.valid,
   });
+
+  /// True marks the report as Accepted, false marks it as Rejected.
+  bool accepted;
 
   ReportContent content;
 
@@ -28,36 +31,33 @@ class ProcessReport {
 
   AccountId target;
 
-  /// True marks the report as Valid, false marks it as Invalid.
-  bool valid;
-
   @override
   bool operator ==(Object other) => identical(this, other) || other is ProcessReport &&
+    other.accepted == accepted &&
     other.content == content &&
     other.creator == creator &&
     other.reportType == reportType &&
-    other.target == target &&
-    other.valid == valid;
+    other.target == target;
 
   @override
   int get hashCode =>
     // ignore: unnecessary_parenthesis
+    (accepted.hashCode) +
     (content.hashCode) +
     (creator.hashCode) +
     (reportType.hashCode) +
-    (target.hashCode) +
-    (valid.hashCode);
+    (target.hashCode);
 
   @override
-  String toString() => 'ProcessReport[content=$content, creator=$creator, reportType=$reportType, target=$target, valid=$valid]';
+  String toString() => 'ProcessReport[accepted=$accepted, content=$content, creator=$creator, reportType=$reportType, target=$target]';
 
   Map<String, dynamic> toJson() {
     final json = <String, dynamic>{};
+      json[r'accepted'] = this.accepted;
       json[r'content'] = this.content;
       json[r'creator'] = this.creator;
       json[r'report_type'] = this.reportType;
       json[r'target'] = this.target;
-      json[r'valid'] = this.valid;
     return json;
   }
 
@@ -80,11 +80,11 @@ class ProcessReport {
       }());
 
       return ProcessReport(
+        accepted: mapValueOfType<bool>(json, r'accepted')!,
         content: ReportContent.fromJson(json[r'content'])!,
         creator: AccountId.fromJson(json[r'creator'])!,
         reportType: ReportType.fromJson(json[r'report_type'])!,
         target: AccountId.fromJson(json[r'target'])!,
-        valid: mapValueOfType<bool>(json, r'valid')!,
       );
     }
     return null;
@@ -132,11 +132,11 @@ class ProcessReport {
 
   /// The list of required keys that must be present in a JSON.
   static const requiredKeys = <String>{
+    'accepted',
     'content',
     'creator',
     'report_type',
     'target',
-    'valid',
   };
 }
 

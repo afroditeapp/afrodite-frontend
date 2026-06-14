@@ -10,9 +10,9 @@
 
 part of openapi.api;
 
-class AdminNsfwDetectionConfig {
-  /// Returns a new [AdminNsfwDetectionConfig] instance.
-  AdminNsfwDetectionConfig({
+class AdminBotNsfwDetectionConfig {
+  /// Returns a new [AdminBotNsfwDetectionConfig] instance.
+  AdminBotNsfwDetectionConfig({
     required this.accept,
     required this.delete,
     required this.moveToHuman,
@@ -32,7 +32,7 @@ class AdminNsfwDetectionConfig {
   NsfwDetectionThresholds reject;
 
   @override
-  bool operator ==(Object other) => identical(this, other) || other is AdminNsfwDetectionConfig &&
+  bool operator ==(Object other) => identical(this, other) || other is AdminBotNsfwDetectionConfig &&
     other.accept == accept &&
     other.delete == delete &&
     other.moveToHuman == moveToHuman &&
@@ -47,7 +47,7 @@ class AdminNsfwDetectionConfig {
     (reject.hashCode);
 
   @override
-  String toString() => 'AdminNsfwDetectionConfig[accept=$accept, delete=$delete, moveToHuman=$moveToHuman, reject=$reject]';
+  String toString() => 'AdminBotNsfwDetectionConfig[accept=$accept, delete=$delete, moveToHuman=$moveToHuman, reject=$reject]';
 
   Map<String, dynamic> toJson() {
     final json = <String, dynamic>{};
@@ -58,10 +58,10 @@ class AdminNsfwDetectionConfig {
     return json;
   }
 
-  /// Returns a new [AdminNsfwDetectionConfig] instance and imports its values from
+  /// Returns a new [AdminBotNsfwDetectionConfig] instance and imports its values from
   /// [value] if it's a [Map], null otherwise.
   // ignore: prefer_constructors_over_static_methods
-  static AdminNsfwDetectionConfig? fromJson(dynamic value) {
+  static AdminBotNsfwDetectionConfig? fromJson(dynamic value) {
     if (value is Map) {
       final json = value.cast<String, dynamic>();
 
@@ -70,13 +70,13 @@ class AdminNsfwDetectionConfig {
       // Note 2: this code is stripped in release mode!
       assert(() {
         requiredKeys.forEach((key) {
-          assert(json.containsKey(key), 'Required key "AdminNsfwDetectionConfig[$key]" is missing from JSON.');
-          assert(json[key] != null, 'Required key "AdminNsfwDetectionConfig[$key]" has a null value in JSON.');
+          assert(json.containsKey(key), 'Required key "AdminBotNsfwDetectionConfig[$key]" is missing from JSON.');
+          assert(json[key] != null, 'Required key "AdminBotNsfwDetectionConfig[$key]" has a null value in JSON.');
         });
         return true;
       }());
 
-      return AdminNsfwDetectionConfig(
+      return AdminBotNsfwDetectionConfig(
         accept: NsfwDetectionThresholds.fromJson(json[r'accept'])!,
         delete: NsfwDetectionThresholds.fromJson(json[r'delete'])!,
         moveToHuman: NsfwDetectionThresholds.fromJson(json[r'move_to_human'])!,
@@ -86,11 +86,11 @@ class AdminNsfwDetectionConfig {
     return null;
   }
 
-  static List<AdminNsfwDetectionConfig> listFromJson(dynamic json, {bool growable = false,}) {
-    final result = <AdminNsfwDetectionConfig>[];
+  static List<AdminBotNsfwDetectionConfig> listFromJson(dynamic json, {bool growable = false,}) {
+    final result = <AdminBotNsfwDetectionConfig>[];
     if (json is List && json.isNotEmpty) {
       for (final row in json) {
-        final value = AdminNsfwDetectionConfig.fromJson(row);
+        final value = AdminBotNsfwDetectionConfig.fromJson(row);
         if (value != null) {
           result.add(value);
         }
@@ -99,12 +99,12 @@ class AdminNsfwDetectionConfig {
     return result.toList(growable: growable);
   }
 
-  static Map<String, AdminNsfwDetectionConfig> mapFromJson(dynamic json) {
-    final map = <String, AdminNsfwDetectionConfig>{};
+  static Map<String, AdminBotNsfwDetectionConfig> mapFromJson(dynamic json) {
+    final map = <String, AdminBotNsfwDetectionConfig>{};
     if (json is Map && json.isNotEmpty) {
       json = json.cast<String, dynamic>(); // ignore: parameter_assignments
       for (final entry in json.entries) {
-        final value = AdminNsfwDetectionConfig.fromJson(entry.value);
+        final value = AdminBotNsfwDetectionConfig.fromJson(entry.value);
         if (value != null) {
           map[entry.key] = value;
         }
@@ -113,14 +113,14 @@ class AdminNsfwDetectionConfig {
     return map;
   }
 
-  // maps a json object with a list of AdminNsfwDetectionConfig-objects as value to a dart map
-  static Map<String, List<AdminNsfwDetectionConfig>> mapListFromJson(dynamic json, {bool growable = false,}) {
-    final map = <String, List<AdminNsfwDetectionConfig>>{};
+  // maps a json object with a list of AdminBotNsfwDetectionConfig-objects as value to a dart map
+  static Map<String, List<AdminBotNsfwDetectionConfig>> mapListFromJson(dynamic json, {bool growable = false,}) {
+    final map = <String, List<AdminBotNsfwDetectionConfig>>{};
     if (json is Map && json.isNotEmpty) {
       // ignore: parameter_assignments
       json = json.cast<String, dynamic>();
       for (final entry in json.entries) {
-        map[entry.key] = AdminNsfwDetectionConfig.listFromJson(entry.value, growable: growable,);
+        map[entry.key] = AdminBotNsfwDetectionConfig.listFromJson(entry.value, growable: growable,);
       }
     }
     return map;

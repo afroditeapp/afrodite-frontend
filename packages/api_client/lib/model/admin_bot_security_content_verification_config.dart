@@ -10,23 +10,23 @@
 
 part of openapi.api;
 
-class AdminSecurityContentVerificationConfig {
-  /// Returns a new [AdminSecurityContentVerificationConfig] instance.
-  AdminSecurityContentVerificationConfig({
+class AdminBotSecurityContentVerificationConfig {
+  /// Returns a new [AdminBotSecurityContentVerificationConfig] instance.
+  AdminBotSecurityContentVerificationConfig({
     required this.defaultAction,
     required this.llm,
     this.llmEnabled = false,
   });
 
-  VerificationAction defaultAction;
+  AcceptOrReject defaultAction;
 
-  LlmSecurityContentVerificationConfig llm;
+  AdminBotSecurityContentVerificationLlmConfig llm;
 
   /// Large language model based security content verification. Actions: reject and accept.
   bool llmEnabled;
 
   @override
-  bool operator ==(Object other) => identical(this, other) || other is AdminSecurityContentVerificationConfig &&
+  bool operator ==(Object other) => identical(this, other) || other is AdminBotSecurityContentVerificationConfig &&
     other.defaultAction == defaultAction &&
     other.llm == llm &&
     other.llmEnabled == llmEnabled;
@@ -39,7 +39,7 @@ class AdminSecurityContentVerificationConfig {
     (llmEnabled.hashCode);
 
   @override
-  String toString() => 'AdminSecurityContentVerificationConfig[defaultAction=$defaultAction, llm=$llm, llmEnabled=$llmEnabled]';
+  String toString() => 'AdminBotSecurityContentVerificationConfig[defaultAction=$defaultAction, llm=$llm, llmEnabled=$llmEnabled]';
 
   Map<String, dynamic> toJson() {
     final json = <String, dynamic>{};
@@ -49,10 +49,10 @@ class AdminSecurityContentVerificationConfig {
     return json;
   }
 
-  /// Returns a new [AdminSecurityContentVerificationConfig] instance and imports its values from
+  /// Returns a new [AdminBotSecurityContentVerificationConfig] instance and imports its values from
   /// [value] if it's a [Map], null otherwise.
   // ignore: prefer_constructors_over_static_methods
-  static AdminSecurityContentVerificationConfig? fromJson(dynamic value) {
+  static AdminBotSecurityContentVerificationConfig? fromJson(dynamic value) {
     if (value is Map) {
       final json = value.cast<String, dynamic>();
 
@@ -61,26 +61,26 @@ class AdminSecurityContentVerificationConfig {
       // Note 2: this code is stripped in release mode!
       assert(() {
         requiredKeys.forEach((key) {
-          assert(json.containsKey(key), 'Required key "AdminSecurityContentVerificationConfig[$key]" is missing from JSON.');
-          assert(json[key] != null, 'Required key "AdminSecurityContentVerificationConfig[$key]" has a null value in JSON.');
+          assert(json.containsKey(key), 'Required key "AdminBotSecurityContentVerificationConfig[$key]" is missing from JSON.');
+          assert(json[key] != null, 'Required key "AdminBotSecurityContentVerificationConfig[$key]" has a null value in JSON.');
         });
         return true;
       }());
 
-      return AdminSecurityContentVerificationConfig(
-        defaultAction: VerificationAction.fromJson(json[r'default_action'])!,
-        llm: LlmSecurityContentVerificationConfig.fromJson(json[r'llm'])!,
+      return AdminBotSecurityContentVerificationConfig(
+        defaultAction: AcceptOrReject.fromJson(json[r'default_action'])!,
+        llm: AdminBotSecurityContentVerificationLlmConfig.fromJson(json[r'llm'])!,
         llmEnabled: mapValueOfType<bool>(json, r'llm_enabled') ?? false,
       );
     }
     return null;
   }
 
-  static List<AdminSecurityContentVerificationConfig> listFromJson(dynamic json, {bool growable = false,}) {
-    final result = <AdminSecurityContentVerificationConfig>[];
+  static List<AdminBotSecurityContentVerificationConfig> listFromJson(dynamic json, {bool growable = false,}) {
+    final result = <AdminBotSecurityContentVerificationConfig>[];
     if (json is List && json.isNotEmpty) {
       for (final row in json) {
-        final value = AdminSecurityContentVerificationConfig.fromJson(row);
+        final value = AdminBotSecurityContentVerificationConfig.fromJson(row);
         if (value != null) {
           result.add(value);
         }
@@ -89,12 +89,12 @@ class AdminSecurityContentVerificationConfig {
     return result.toList(growable: growable);
   }
 
-  static Map<String, AdminSecurityContentVerificationConfig> mapFromJson(dynamic json) {
-    final map = <String, AdminSecurityContentVerificationConfig>{};
+  static Map<String, AdminBotSecurityContentVerificationConfig> mapFromJson(dynamic json) {
+    final map = <String, AdminBotSecurityContentVerificationConfig>{};
     if (json is Map && json.isNotEmpty) {
       json = json.cast<String, dynamic>(); // ignore: parameter_assignments
       for (final entry in json.entries) {
-        final value = AdminSecurityContentVerificationConfig.fromJson(entry.value);
+        final value = AdminBotSecurityContentVerificationConfig.fromJson(entry.value);
         if (value != null) {
           map[entry.key] = value;
         }
@@ -103,14 +103,14 @@ class AdminSecurityContentVerificationConfig {
     return map;
   }
 
-  // maps a json object with a list of AdminSecurityContentVerificationConfig-objects as value to a dart map
-  static Map<String, List<AdminSecurityContentVerificationConfig>> mapListFromJson(dynamic json, {bool growable = false,}) {
-    final map = <String, List<AdminSecurityContentVerificationConfig>>{};
+  // maps a json object with a list of AdminBotSecurityContentVerificationConfig-objects as value to a dart map
+  static Map<String, List<AdminBotSecurityContentVerificationConfig>> mapListFromJson(dynamic json, {bool growable = false,}) {
+    final map = <String, List<AdminBotSecurityContentVerificationConfig>>{};
     if (json is Map && json.isNotEmpty) {
       // ignore: parameter_assignments
       json = json.cast<String, dynamic>();
       for (final entry in json.entries) {
-        map[entry.key] = AdminSecurityContentVerificationConfig.listFromJson(entry.value, growable: growable,);
+        map[entry.key] = AdminBotSecurityContentVerificationConfig.listFromJson(entry.value, growable: growable,);
       }
     }
     return map;

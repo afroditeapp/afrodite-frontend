@@ -24,18 +24,18 @@ class ReportProcessingState {
   String toJson() => value;
 
   static const waiting = ReportProcessingState._(r'Waiting');
-  static const validByAdminBot = ReportProcessingState._(r'ValidByAdminBot');
-  static const validByAdmin = ReportProcessingState._(r'ValidByAdmin');
-  static const invalidByAdminBot = ReportProcessingState._(r'InvalidByAdminBot');
-  static const invalidByAdmin = ReportProcessingState._(r'InvalidByAdmin');
+  static const acceptedByAdminBot = ReportProcessingState._(r'AcceptedByAdminBot');
+  static const acceptedByAdmin = ReportProcessingState._(r'AcceptedByAdmin');
+  static const rejectedByAdminBot = ReportProcessingState._(r'RejectedByAdminBot');
+  static const rejectedByAdmin = ReportProcessingState._(r'RejectedByAdmin');
 
   /// List of all possible values in this [enum][ReportProcessingState].
   static const values = <ReportProcessingState>[
     waiting,
-    validByAdminBot,
-    validByAdmin,
-    invalidByAdminBot,
-    invalidByAdmin,
+    acceptedByAdminBot,
+    acceptedByAdmin,
+    rejectedByAdminBot,
+    rejectedByAdmin,
   ];
 
   static ReportProcessingState? fromJson(dynamic value) => ReportProcessingStateTypeTransformer().decode(value);
@@ -75,10 +75,10 @@ class ReportProcessingStateTypeTransformer {
     if (data != null) {
       switch (data) {
         case r'Waiting': return ReportProcessingState.waiting;
-        case r'ValidByAdminBot': return ReportProcessingState.validByAdminBot;
-        case r'ValidByAdmin': return ReportProcessingState.validByAdmin;
-        case r'InvalidByAdminBot': return ReportProcessingState.invalidByAdminBot;
-        case r'InvalidByAdmin': return ReportProcessingState.invalidByAdmin;
+        case r'AcceptedByAdminBot': return ReportProcessingState.acceptedByAdminBot;
+        case r'AcceptedByAdmin': return ReportProcessingState.acceptedByAdmin;
+        case r'RejectedByAdminBot': return ReportProcessingState.rejectedByAdminBot;
+        case r'RejectedByAdmin': return ReportProcessingState.rejectedByAdmin;
         default:
           if (!allowNull) {
             throw ArgumentError('Unknown enum value to decode: $data');

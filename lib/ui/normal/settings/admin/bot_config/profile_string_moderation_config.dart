@@ -4,14 +4,14 @@ import 'package:flutter/material.dart';
 import 'package:openapi/api.dart';
 
 class EditProfileStringModerationConfigPage
-    extends MyScreenPageLimited<AdminProfileStringModerationConfig> {
-  EditProfileStringModerationConfigPage(AdminProfileStringModerationConfig config)
+    extends MyScreenPageLimited<AdminBotProfileStringModerationConfig> {
+  EditProfileStringModerationConfigPage(AdminBotProfileStringModerationConfig config)
     : super(builder: (closer) => EditProfileStringModerationConfigScreen(config, closer));
 }
 
 class EditProfileStringModerationConfigScreen extends StatefulWidget {
-  final AdminProfileStringModerationConfig initialConfig;
-  final PageCloser<AdminProfileStringModerationConfig> closer;
+  final AdminBotProfileStringModerationConfig initialConfig;
+  final PageCloser<AdminBotProfileStringModerationConfig> closer;
   const EditProfileStringModerationConfigScreen(this.initialConfig, this.closer, {super.key});
 
   @override
@@ -23,7 +23,7 @@ class _EditProfileStringModerationConfigScreenState
     extends State<EditProfileStringModerationConfigScreen> {
   late bool _acceptSingleVisibleCharacter;
   late ModerationAction _defaultAction;
-  late LlmStringModerationConfig _llm;
+  late AdminBotStringModerationLlmConfig _llm;
   late bool _llmEnabled;
   final _formKey = GlobalKey<FormState>();
 
@@ -44,7 +44,7 @@ class _EditProfileStringModerationConfigScreenState
         if (didPop) return;
         widget.closer.close(
           context,
-          AdminProfileStringModerationConfig(
+          AdminBotProfileStringModerationConfig(
             acceptSingleVisibleCharacter: _acceptSingleVisibleCharacter,
             defaultAction: _defaultAction,
             llm: _llm,
@@ -134,12 +134,6 @@ class _EditProfileStringModerationConfigScreenState
             setState(() => _llm.userTextTemplate = v);
             _formKey.currentState?.validate();
           },
-        ),
-        TextFormField(
-          initialValue: _llm.maxTokens.toString(),
-          decoration: const InputDecoration(labelText: "Max Tokens"),
-          keyboardType: TextInputType.number,
-          onChanged: (v) => setState(() => _llm.maxTokens = int.tryParse(v) ?? 0),
         ),
         SwitchListTile(
           title: const Text("Move rejected to human"),

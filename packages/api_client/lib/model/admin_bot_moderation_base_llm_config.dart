@@ -10,69 +10,55 @@
 
 part of openapi.api;
 
-class LlmStringModerationConfig {
-  /// Returns a new [LlmStringModerationConfig] instance.
-  LlmStringModerationConfig({
+class AdminBotModerationBaseLlmConfig {
+  /// Returns a new [AdminBotModerationBaseLlmConfig] instance.
+  AdminBotModerationBaseLlmConfig({
     this.addLlmOutputToUserVisibleRejectionDetails = false,
     required this.expectedResponse,
-    required this.maxTokens,
     this.moveRejectedToHumanModeration = false,
     required this.systemText,
-    required this.userTextTemplate,
   });
 
   bool addLlmOutputToUserVisibleRejectionDetails;
 
-  /// If LLM response starts with this text or the first line of the response contains this text, the profile text is moderated as accepted. The comparisons are case insensitive.
+  /// If LLM response starts with this text or the first line of the response contains this text, the content is moderated as accepted. The comparisons are case insensitive.
   String expectedResponse;
-
-  /// Minimum value: 0
-  int maxTokens;
 
   bool moveRejectedToHumanModeration;
 
   String systemText;
 
-  /// Placeholder \"{text}\" is replaced with text which will be moderated.
-  String userTextTemplate;
-
   @override
-  bool operator ==(Object other) => identical(this, other) || other is LlmStringModerationConfig &&
+  bool operator ==(Object other) => identical(this, other) || other is AdminBotModerationBaseLlmConfig &&
     other.addLlmOutputToUserVisibleRejectionDetails == addLlmOutputToUserVisibleRejectionDetails &&
     other.expectedResponse == expectedResponse &&
-    other.maxTokens == maxTokens &&
     other.moveRejectedToHumanModeration == moveRejectedToHumanModeration &&
-    other.systemText == systemText &&
-    other.userTextTemplate == userTextTemplate;
+    other.systemText == systemText;
 
   @override
   int get hashCode =>
     // ignore: unnecessary_parenthesis
     (addLlmOutputToUserVisibleRejectionDetails.hashCode) +
     (expectedResponse.hashCode) +
-    (maxTokens.hashCode) +
     (moveRejectedToHumanModeration.hashCode) +
-    (systemText.hashCode) +
-    (userTextTemplate.hashCode);
+    (systemText.hashCode);
 
   @override
-  String toString() => 'LlmStringModerationConfig[addLlmOutputToUserVisibleRejectionDetails=$addLlmOutputToUserVisibleRejectionDetails, expectedResponse=$expectedResponse, maxTokens=$maxTokens, moveRejectedToHumanModeration=$moveRejectedToHumanModeration, systemText=$systemText, userTextTemplate=$userTextTemplate]';
+  String toString() => 'AdminBotModerationBaseLlmConfig[addLlmOutputToUserVisibleRejectionDetails=$addLlmOutputToUserVisibleRejectionDetails, expectedResponse=$expectedResponse, moveRejectedToHumanModeration=$moveRejectedToHumanModeration, systemText=$systemText]';
 
   Map<String, dynamic> toJson() {
     final json = <String, dynamic>{};
       json[r'add_llm_output_to_user_visible_rejection_details'] = this.addLlmOutputToUserVisibleRejectionDetails;
       json[r'expected_response'] = this.expectedResponse;
-      json[r'max_tokens'] = this.maxTokens;
       json[r'move_rejected_to_human_moderation'] = this.moveRejectedToHumanModeration;
       json[r'system_text'] = this.systemText;
-      json[r'user_text_template'] = this.userTextTemplate;
     return json;
   }
 
-  /// Returns a new [LlmStringModerationConfig] instance and imports its values from
+  /// Returns a new [AdminBotModerationBaseLlmConfig] instance and imports its values from
   /// [value] if it's a [Map], null otherwise.
   // ignore: prefer_constructors_over_static_methods
-  static LlmStringModerationConfig? fromJson(dynamic value) {
+  static AdminBotModerationBaseLlmConfig? fromJson(dynamic value) {
     if (value is Map) {
       final json = value.cast<String, dynamic>();
 
@@ -81,29 +67,27 @@ class LlmStringModerationConfig {
       // Note 2: this code is stripped in release mode!
       assert(() {
         requiredKeys.forEach((key) {
-          assert(json.containsKey(key), 'Required key "LlmStringModerationConfig[$key]" is missing from JSON.');
-          assert(json[key] != null, 'Required key "LlmStringModerationConfig[$key]" has a null value in JSON.');
+          assert(json.containsKey(key), 'Required key "AdminBotModerationBaseLlmConfig[$key]" is missing from JSON.');
+          assert(json[key] != null, 'Required key "AdminBotModerationBaseLlmConfig[$key]" has a null value in JSON.');
         });
         return true;
       }());
 
-      return LlmStringModerationConfig(
+      return AdminBotModerationBaseLlmConfig(
         addLlmOutputToUserVisibleRejectionDetails: mapValueOfType<bool>(json, r'add_llm_output_to_user_visible_rejection_details') ?? false,
         expectedResponse: mapValueOfType<String>(json, r'expected_response')!,
-        maxTokens: mapValueOfType<int>(json, r'max_tokens')!,
         moveRejectedToHumanModeration: mapValueOfType<bool>(json, r'move_rejected_to_human_moderation') ?? false,
         systemText: mapValueOfType<String>(json, r'system_text')!,
-        userTextTemplate: mapValueOfType<String>(json, r'user_text_template')!,
       );
     }
     return null;
   }
 
-  static List<LlmStringModerationConfig> listFromJson(dynamic json, {bool growable = false,}) {
-    final result = <LlmStringModerationConfig>[];
+  static List<AdminBotModerationBaseLlmConfig> listFromJson(dynamic json, {bool growable = false,}) {
+    final result = <AdminBotModerationBaseLlmConfig>[];
     if (json is List && json.isNotEmpty) {
       for (final row in json) {
-        final value = LlmStringModerationConfig.fromJson(row);
+        final value = AdminBotModerationBaseLlmConfig.fromJson(row);
         if (value != null) {
           result.add(value);
         }
@@ -112,12 +96,12 @@ class LlmStringModerationConfig {
     return result.toList(growable: growable);
   }
 
-  static Map<String, LlmStringModerationConfig> mapFromJson(dynamic json) {
-    final map = <String, LlmStringModerationConfig>{};
+  static Map<String, AdminBotModerationBaseLlmConfig> mapFromJson(dynamic json) {
+    final map = <String, AdminBotModerationBaseLlmConfig>{};
     if (json is Map && json.isNotEmpty) {
       json = json.cast<String, dynamic>(); // ignore: parameter_assignments
       for (final entry in json.entries) {
-        final value = LlmStringModerationConfig.fromJson(entry.value);
+        final value = AdminBotModerationBaseLlmConfig.fromJson(entry.value);
         if (value != null) {
           map[entry.key] = value;
         }
@@ -126,14 +110,14 @@ class LlmStringModerationConfig {
     return map;
   }
 
-  // maps a json object with a list of LlmStringModerationConfig-objects as value to a dart map
-  static Map<String, List<LlmStringModerationConfig>> mapListFromJson(dynamic json, {bool growable = false,}) {
-    final map = <String, List<LlmStringModerationConfig>>{};
+  // maps a json object with a list of AdminBotModerationBaseLlmConfig-objects as value to a dart map
+  static Map<String, List<AdminBotModerationBaseLlmConfig>> mapListFromJson(dynamic json, {bool growable = false,}) {
+    final map = <String, List<AdminBotModerationBaseLlmConfig>>{};
     if (json is Map && json.isNotEmpty) {
       // ignore: parameter_assignments
       json = json.cast<String, dynamic>();
       for (final entry in json.entries) {
-        map[entry.key] = LlmStringModerationConfig.listFromJson(entry.value, growable: growable,);
+        map[entry.key] = AdminBotModerationBaseLlmConfig.listFromJson(entry.value, growable: growable,);
       }
     }
     return map;
@@ -142,9 +126,7 @@ class LlmStringModerationConfig {
   /// The list of required keys that must be present in a JSON.
   static const requiredKeys = <String>{
     'expected_response',
-    'max_tokens',
     'system_text',
-    'user_text_template',
   };
 }
 

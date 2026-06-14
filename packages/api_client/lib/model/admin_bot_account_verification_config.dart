@@ -10,9 +10,9 @@
 
 part of openapi.api;
 
-class AdminAccountVerificationConfig {
-  /// Returns a new [AdminAccountVerificationConfig] instance.
-  AdminAccountVerificationConfig({
+class AdminBotAccountVerificationConfig {
+  /// Returns a new [AdminBotAccountVerificationConfig] instance.
+  AdminBotAccountVerificationConfig({
     this.profileAgeRangeEnabled = false,
     this.profileNameEnabled = false,
     required this.securityContent,
@@ -23,12 +23,12 @@ class AdminAccountVerificationConfig {
 
   bool profileNameEnabled;
 
-  AdminSecurityContentVerificationConfig securityContent;
+  AdminBotSecurityContentVerificationConfig securityContent;
 
   bool securityContentEnabled;
 
   @override
-  bool operator ==(Object other) => identical(this, other) || other is AdminAccountVerificationConfig &&
+  bool operator ==(Object other) => identical(this, other) || other is AdminBotAccountVerificationConfig &&
     other.profileAgeRangeEnabled == profileAgeRangeEnabled &&
     other.profileNameEnabled == profileNameEnabled &&
     other.securityContent == securityContent &&
@@ -43,7 +43,7 @@ class AdminAccountVerificationConfig {
     (securityContentEnabled.hashCode);
 
   @override
-  String toString() => 'AdminAccountVerificationConfig[profileAgeRangeEnabled=$profileAgeRangeEnabled, profileNameEnabled=$profileNameEnabled, securityContent=$securityContent, securityContentEnabled=$securityContentEnabled]';
+  String toString() => 'AdminBotAccountVerificationConfig[profileAgeRangeEnabled=$profileAgeRangeEnabled, profileNameEnabled=$profileNameEnabled, securityContent=$securityContent, securityContentEnabled=$securityContentEnabled]';
 
   Map<String, dynamic> toJson() {
     final json = <String, dynamic>{};
@@ -54,10 +54,10 @@ class AdminAccountVerificationConfig {
     return json;
   }
 
-  /// Returns a new [AdminAccountVerificationConfig] instance and imports its values from
+  /// Returns a new [AdminBotAccountVerificationConfig] instance and imports its values from
   /// [value] if it's a [Map], null otherwise.
   // ignore: prefer_constructors_over_static_methods
-  static AdminAccountVerificationConfig? fromJson(dynamic value) {
+  static AdminBotAccountVerificationConfig? fromJson(dynamic value) {
     if (value is Map) {
       final json = value.cast<String, dynamic>();
 
@@ -66,27 +66,27 @@ class AdminAccountVerificationConfig {
       // Note 2: this code is stripped in release mode!
       assert(() {
         requiredKeys.forEach((key) {
-          assert(json.containsKey(key), 'Required key "AdminAccountVerificationConfig[$key]" is missing from JSON.');
-          assert(json[key] != null, 'Required key "AdminAccountVerificationConfig[$key]" has a null value in JSON.');
+          assert(json.containsKey(key), 'Required key "AdminBotAccountVerificationConfig[$key]" is missing from JSON.');
+          assert(json[key] != null, 'Required key "AdminBotAccountVerificationConfig[$key]" has a null value in JSON.');
         });
         return true;
       }());
 
-      return AdminAccountVerificationConfig(
+      return AdminBotAccountVerificationConfig(
         profileAgeRangeEnabled: mapValueOfType<bool>(json, r'profile_age_range_enabled') ?? false,
         profileNameEnabled: mapValueOfType<bool>(json, r'profile_name_enabled') ?? false,
-        securityContent: AdminSecurityContentVerificationConfig.fromJson(json[r'security_content'])!,
+        securityContent: AdminBotSecurityContentVerificationConfig.fromJson(json[r'security_content'])!,
         securityContentEnabled: mapValueOfType<bool>(json, r'security_content_enabled') ?? false,
       );
     }
     return null;
   }
 
-  static List<AdminAccountVerificationConfig> listFromJson(dynamic json, {bool growable = false,}) {
-    final result = <AdminAccountVerificationConfig>[];
+  static List<AdminBotAccountVerificationConfig> listFromJson(dynamic json, {bool growable = false,}) {
+    final result = <AdminBotAccountVerificationConfig>[];
     if (json is List && json.isNotEmpty) {
       for (final row in json) {
-        final value = AdminAccountVerificationConfig.fromJson(row);
+        final value = AdminBotAccountVerificationConfig.fromJson(row);
         if (value != null) {
           result.add(value);
         }
@@ -95,12 +95,12 @@ class AdminAccountVerificationConfig {
     return result.toList(growable: growable);
   }
 
-  static Map<String, AdminAccountVerificationConfig> mapFromJson(dynamic json) {
-    final map = <String, AdminAccountVerificationConfig>{};
+  static Map<String, AdminBotAccountVerificationConfig> mapFromJson(dynamic json) {
+    final map = <String, AdminBotAccountVerificationConfig>{};
     if (json is Map && json.isNotEmpty) {
       json = json.cast<String, dynamic>(); // ignore: parameter_assignments
       for (final entry in json.entries) {
-        final value = AdminAccountVerificationConfig.fromJson(entry.value);
+        final value = AdminBotAccountVerificationConfig.fromJson(entry.value);
         if (value != null) {
           map[entry.key] = value;
         }
@@ -109,14 +109,14 @@ class AdminAccountVerificationConfig {
     return map;
   }
 
-  // maps a json object with a list of AdminAccountVerificationConfig-objects as value to a dart map
-  static Map<String, List<AdminAccountVerificationConfig>> mapListFromJson(dynamic json, {bool growable = false,}) {
-    final map = <String, List<AdminAccountVerificationConfig>>{};
+  // maps a json object with a list of AdminBotAccountVerificationConfig-objects as value to a dart map
+  static Map<String, List<AdminBotAccountVerificationConfig>> mapListFromJson(dynamic json, {bool growable = false,}) {
+    final map = <String, List<AdminBotAccountVerificationConfig>>{};
     if (json is Map && json.isNotEmpty) {
       // ignore: parameter_assignments
       json = json.cast<String, dynamic>();
       for (final entry in json.entries) {
-        map[entry.key] = AdminAccountVerificationConfig.listFromJson(entry.value, growable: growable,);
+        map[entry.key] = AdminBotAccountVerificationConfig.listFromJson(entry.value, growable: growable,);
       }
     }
     return map;
