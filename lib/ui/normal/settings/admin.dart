@@ -6,6 +6,7 @@ import 'package:app/ui/normal/settings/admin/admin_bot_processed_content_tasks.d
 import 'package:app/ui/normal/settings/admin/open_account_admin_settings.dart';
 import 'package:app/ui/normal/settings/admin/view_accounts.dart';
 import 'package:app/ui/normal/settings/admin/view_admins.dart';
+import 'package:app/ui/normal/settings/admin/custom_email/custom_email_list.dart';
 import 'package:app/ui/normal/settings/admin/profile_attributes/schema_editor.dart';
 import 'package:app/ui/normal/settings/server.dart';
 import 'package:app/ui/normal/settings/metrics.dart';
@@ -159,6 +160,15 @@ class AdminSettingsScreen extends StatelessWidget {
         ),
       );
     }
+    if (permissions.adminCustomEmail) {
+      settings.add(
+        Setting.createSetting(
+          Icons.email,
+          "Custom emails",
+          () => MyNavigator.pushLimited(context, CustomEmailListPage(r)),
+        ),
+      );
+    }
     if (permissions.adminSubscribeAdminNotifications) {
       settings.add(
         Setting.createSetting(
@@ -204,6 +214,7 @@ class AdminSettingsPermissions {
       _permissions.adminEditProfileAttributesSchemaVisibleContent;
   bool get adminFindAccountByEmailAddress => _permissions.adminFindAccountByEmailAddress;
   bool get adminSubscribeAdminNotifications => _permissions.adminSubscribeAdminNotifications;
+  bool get adminCustomEmail => _permissions.adminCustomEmail;
   AdminSettingsPermissions(this._permissions);
 
   Permissions get apiPermissions => _permissions;
@@ -234,6 +245,7 @@ class AdminSettingsPermissions {
         adminEditProfileAttributesSchema ||
         adminEditProfileAttributesSchemaVisibleContent ||
         adminFindAccountByEmailAddress ||
-        adminSubscribeAdminNotifications;
+        adminSubscribeAdminNotifications ||
+        adminCustomEmail;
   }
 }
