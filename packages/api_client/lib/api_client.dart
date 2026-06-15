@@ -396,6 +396,12 @@ class ApiClient {
           return ConversationId.fromJson(value);
         case 'CurrentAccountInteractionState':
           return CurrentAccountInteractionStateTypeTransformer().decode(value);
+        case 'CustomEmail':
+          return CustomEmail.fromJson(value);
+        case 'CustomEmailId':
+          return CustomEmailId.fromJson(value);
+        case 'CustomEmailTranslation':
+          return CustomEmailTranslation.fromJson(value);
         case 'CustomReport':
           return CustomReport.fromJson(value);
         case 'CustomReportLanguage':
@@ -492,6 +498,8 @@ class ApiClient {
           return GetClientVersionStatisticsSettings.fromJson(value);
         case 'GetConversationId':
           return GetConversationId.fromJson(value);
+        case 'GetCustomEmailConfig':
+          return GetCustomEmailConfig.fromJson(value);
         case 'GetCustomReportsConfigResult':
           return GetCustomReportsConfigResult.fromJson(value);
         case 'GetDynamicClientFeaturesConfigResult':
@@ -898,6 +906,8 @@ class ApiClient {
           return SecurityContentAdminInfo.fromJson(value);
         case 'SeenMessage':
           return SeenMessage.fromJson(value);
+        case 'SendCustomEmail':
+          return SendCustomEmail.fromJson(value);
         case 'SendLike':
           return SendLike.fromJson(value);
         case 'SendLikeResult':
@@ -962,6 +972,8 @@ class ApiClient {
           return UnreadNewsCountResult.fromJson(value);
         case 'UpdateChatMessageReports':
           return UpdateChatMessageReports.fromJson(value);
+        case 'UpdateCustomEmail':
+          return UpdateCustomEmail.fromJson(value);
         case 'UpdateCustomReportEmpty':
           return UpdateCustomReportEmpty.fromJson(value);
         case 'UpdateNewsTranslation':

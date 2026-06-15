@@ -368,6 +368,104 @@ class AccountAdminApi {
     return null;
   }
 
+  /// Performs an HTTP 'GET /account_api/custom_email_config' operation and returns the [Response].
+  Future<Response> getCustomEmailConfigWithHttpInfo() async {
+    // ignore: prefer_const_declarations
+    final path = r'/account_api/custom_email_config';
+
+    // ignore: prefer_final_locals
+    Object? postBody;
+
+    final queryParams = <QueryParam>[];
+    final headerParams = <String, String>{};
+    final formParams = <String, String>{};
+
+    const contentTypes = <String>[];
+
+
+    return apiClient.invokeAPI(
+      path,
+      'GET',
+      queryParams,
+      postBody,
+      headerParams,
+      formParams,
+      contentTypes.isEmpty ? null : contentTypes.first,
+    );
+  }
+
+  Future<GetCustomEmailConfig?> getCustomEmailConfig() async {
+    final response = await getCustomEmailConfigWithHttpInfo();
+    if (response.statusCode >= HttpStatus.badRequest) {
+      throw ApiException(response.statusCode, await _decodeBodyBytes(response));
+    }
+    // When a remote server returns no body with a status of 204, we shall not decode it.
+    // At the time of writing this, `dart:convert` will throw an "Unexpected end of input"
+    // FormatException when trying to decode an empty string.
+    if (response.body.isNotEmpty && response.statusCode != HttpStatus.noContent) {
+      return await apiClient.deserializeAsync(await _decodeBodyBytes(response), 'GetCustomEmailConfig',) as GetCustomEmailConfig;
+    
+    }
+    return null;
+  }
+
+  /// List all custom emails, newest first.
+  ///
+  /// Note: This method returns the HTTP [Response].
+  ///
+  /// Parameters:
+  ///
+  /// * [int] page (required):
+  Future<Response> getCustomEmailListWithHttpInfo(int page,) async {
+    // ignore: prefer_const_declarations
+    final path = r'/account_api/custom_email_list';
+
+    // ignore: prefer_final_locals
+    Object? postBody;
+
+    final queryParams = <QueryParam>[];
+    final headerParams = <String, String>{};
+    final formParams = <String, String>{};
+
+      queryParams.addAll(_queryParams('', 'page', page));
+
+    const contentTypes = <String>[];
+
+
+    return apiClient.invokeAPI(
+      path,
+      'GET',
+      queryParams,
+      postBody,
+      headerParams,
+      formParams,
+      contentTypes.isEmpty ? null : contentTypes.first,
+    );
+  }
+
+  /// List all custom emails, newest first.
+  ///
+  /// Parameters:
+  ///
+  /// * [int] page (required):
+  Future<List<CustomEmail>?> getCustomEmailList(int page,) async {
+    final response = await getCustomEmailListWithHttpInfo(page,);
+    if (response.statusCode >= HttpStatus.badRequest) {
+      throw ApiException(response.statusCode, await _decodeBodyBytes(response));
+    }
+    // When a remote server returns no body with a status of 204, we shall not decode it.
+    // At the time of writing this, `dart:convert` will throw an "Unexpected end of input"
+    // FormatException when trying to decode an empty string.
+    if (response.body.isNotEmpty && response.statusCode != HttpStatus.noContent) {
+      final responseBody = await _decodeBodyBytes(response);
+      return (await apiClient.deserializeAsync(responseBody, 'List<CustomEmail>') as List)
+        .cast<CustomEmail>()
+        .toList(growable: false);
+
+    }
+    return null;
+  }
+
   /// Get email address state for admin.
   ///
   /// Requires `admin_view_email_address` permission.
@@ -684,6 +782,50 @@ class AccountAdminApi {
     }
   }
 
+  /// Create a new custom email message draft.
+  ///
+  /// Note: This method returns the HTTP [Response].
+  Future<Response> postCreateCustomEmailWithHttpInfo() async {
+    // ignore: prefer_const_declarations
+    final path = r'/account_api/create_custom_email';
+
+    // ignore: prefer_final_locals
+    Object? postBody;
+
+    final queryParams = <QueryParam>[];
+    final headerParams = <String, String>{};
+    final formParams = <String, String>{};
+
+    const contentTypes = <String>[];
+
+
+    return apiClient.invokeAPI(
+      path,
+      'POST',
+      queryParams,
+      postBody,
+      headerParams,
+      formParams,
+      contentTypes.isEmpty ? null : contentTypes.first,
+    );
+  }
+
+  /// Create a new custom email message draft.
+  Future<CustomEmailId?> postCreateCustomEmail() async {
+    final response = await postCreateCustomEmailWithHttpInfo();
+    if (response.statusCode >= HttpStatus.badRequest) {
+      throw ApiException(response.statusCode, await _decodeBodyBytes(response));
+    }
+    // When a remote server returns no body with a status of 204, we shall not decode it.
+    // At the time of writing this, `dart:convert` will throw an "Unexpected end of input"
+    // FormatException when trying to decode an empty string.
+    if (response.body.isNotEmpty && response.statusCode != HttpStatus.noContent) {
+      return await apiClient.deserializeAsync(await _decodeBodyBytes(response), 'CustomEmailId',) as CustomEmailId;
+    
+    }
+    return null;
+  }
+
   /// Performs an HTTP 'POST /account_api/create_news_item' operation and returns the [Response].
   Future<Response> postCreateNewsItemWithHttpInfo() async {
     // ignore: prefer_const_declarations
@@ -873,6 +1015,84 @@ class AccountAdminApi {
   /// * [SaveInfoBanners] saveInfoBanners (required):
   Future<void> postSaveInfoBanners(SaveInfoBanners saveInfoBanners,) async {
     final response = await postSaveInfoBannersWithHttpInfo(saveInfoBanners,);
+    if (response.statusCode >= HttpStatus.badRequest) {
+      throw ApiException(response.statusCode, await _decodeBodyBytes(response));
+    }
+  }
+
+  /// Performs an HTTP 'POST /account_api/send_custom_email_draft_to_my_email_address' operation and returns the [Response].
+  /// Parameters:
+  ///
+  /// * [SendCustomEmail] sendCustomEmail (required):
+  Future<Response> postSendCustomEmailDraftToMyEmailAddressWithHttpInfo(SendCustomEmail sendCustomEmail,) async {
+    // ignore: prefer_const_declarations
+    final path = r'/account_api/send_custom_email_draft_to_my_email_address';
+
+    // ignore: prefer_final_locals
+    Object? postBody = sendCustomEmail;
+
+    final queryParams = <QueryParam>[];
+    final headerParams = <String, String>{};
+    final formParams = <String, String>{};
+
+    const contentTypes = <String>['application/json'];
+
+
+    return apiClient.invokeAPI(
+      path,
+      'POST',
+      queryParams,
+      postBody,
+      headerParams,
+      formParams,
+      contentTypes.isEmpty ? null : contentTypes.first,
+    );
+  }
+
+  /// Parameters:
+  ///
+  /// * [SendCustomEmail] sendCustomEmail (required):
+  Future<void> postSendCustomEmailDraftToMyEmailAddress(SendCustomEmail sendCustomEmail,) async {
+    final response = await postSendCustomEmailDraftToMyEmailAddressWithHttpInfo(sendCustomEmail,);
+    if (response.statusCode >= HttpStatus.badRequest) {
+      throw ApiException(response.statusCode, await _decodeBodyBytes(response));
+    }
+  }
+
+  /// Performs an HTTP 'POST /account_api/send_custom_email_to_all_accounts' operation and returns the [Response].
+  /// Parameters:
+  ///
+  /// * [SendCustomEmail] sendCustomEmail (required):
+  Future<Response> postSendCustomEmailToAllAccountsWithHttpInfo(SendCustomEmail sendCustomEmail,) async {
+    // ignore: prefer_const_declarations
+    final path = r'/account_api/send_custom_email_to_all_accounts';
+
+    // ignore: prefer_final_locals
+    Object? postBody = sendCustomEmail;
+
+    final queryParams = <QueryParam>[];
+    final headerParams = <String, String>{};
+    final formParams = <String, String>{};
+
+    const contentTypes = <String>['application/json'];
+
+
+    return apiClient.invokeAPI(
+      path,
+      'POST',
+      queryParams,
+      postBody,
+      headerParams,
+      formParams,
+      contentTypes.isEmpty ? null : contentTypes.first,
+    );
+  }
+
+  /// Parameters:
+  ///
+  /// * [SendCustomEmail] sendCustomEmail (required):
+  Future<void> postSendCustomEmailToAllAccounts(SendCustomEmail sendCustomEmail,) async {
+    final response = await postSendCustomEmailToAllAccountsWithHttpInfo(sendCustomEmail,);
     if (response.statusCode >= HttpStatus.badRequest) {
       throw ApiException(response.statusCode, await _decodeBodyBytes(response));
     }
@@ -1071,6 +1291,54 @@ class AccountAdminApi {
   /// * [Permissions] permissions (required):
   Future<void> postSetPermissions(String aid, Permissions permissions,) async {
     final response = await postSetPermissionsWithHttpInfo(aid, permissions,);
+    if (response.statusCode >= HttpStatus.badRequest) {
+      throw ApiException(response.statusCode, await _decodeBodyBytes(response));
+    }
+  }
+
+  /// Update a custom email message draft.
+  ///
+  /// Translation with \"default\" locale must exist and all translations must have non empty subject and body.
+  ///
+  /// Note: This method returns the HTTP [Response].
+  ///
+  /// Parameters:
+  ///
+  /// * [UpdateCustomEmail] updateCustomEmail (required):
+  Future<Response> postUpdateCustomEmailWithHttpInfo(UpdateCustomEmail updateCustomEmail,) async {
+    // ignore: prefer_const_declarations
+    final path = r'/account_api/update_custom_email';
+
+    // ignore: prefer_final_locals
+    Object? postBody = updateCustomEmail;
+
+    final queryParams = <QueryParam>[];
+    final headerParams = <String, String>{};
+    final formParams = <String, String>{};
+
+    const contentTypes = <String>['application/json'];
+
+
+    return apiClient.invokeAPI(
+      path,
+      'POST',
+      queryParams,
+      postBody,
+      headerParams,
+      formParams,
+      contentTypes.isEmpty ? null : contentTypes.first,
+    );
+  }
+
+  /// Update a custom email message draft.
+  ///
+  /// Translation with \"default\" locale must exist and all translations must have non empty subject and body.
+  ///
+  /// Parameters:
+  ///
+  /// * [UpdateCustomEmail] updateCustomEmail (required):
+  Future<void> postUpdateCustomEmail(UpdateCustomEmail updateCustomEmail,) async {
+    final response = await postUpdateCustomEmailWithHttpInfo(updateCustomEmail,);
     if (response.statusCode >= HttpStatus.badRequest) {
       throw ApiException(response.statusCode, await _decodeBodyBytes(response));
     }

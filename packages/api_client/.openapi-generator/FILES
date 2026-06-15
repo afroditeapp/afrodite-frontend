@@ -129,6 +129,9 @@ lib/model/content_processing_state_type.dart
 lib/model/content_slot.dart
 lib/model/conversation_id.dart
 lib/model/current_account_interaction_state.dart
+lib/model/custom_email.dart
+lib/model/custom_email_id.dart
+lib/model/custom_email_translation.dart
 lib/model/custom_report.dart
 lib/model/custom_report_language.dart
 lib/model/custom_report_translation.dart
@@ -177,6 +180,7 @@ lib/model/get_client_language.dart
 lib/model/get_client_version_statistics_result.dart
 lib/model/get_client_version_statistics_settings.dart
 lib/model/get_conversation_id.dart
+lib/model/get_custom_email_config.dart
 lib/model/get_custom_reports_config_result.dart
 lib/model/get_dynamic_client_features_config_result.dart
 lib/model/get_initial_profile_age_result.dart
@@ -380,6 +384,7 @@ lib/model/search_age_range.dart
 lib/model/search_groups.dart
 lib/model/security_content_admin_info.dart
 lib/model/seen_message.dart
+lib/model/send_custom_email.dart
 lib/model/send_like.dart
 lib/model/send_like_result.dart
 lib/model/send_message_result.dart
@@ -412,6 +417,7 @@ lib/model/unix_time.dart
 lib/model/unread_news_count.dart
 lib/model/unread_news_count_result.dart
 lib/model/update_chat_message_reports.dart
+lib/model/update_custom_email.dart
 lib/model/update_custom_report_empty.dart
 lib/model/update_news_translation.dart
 lib/model/update_news_translation_result.dart

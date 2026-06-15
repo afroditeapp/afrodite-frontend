@@ -10,37 +10,36 @@
 
 part of openapi.api;
 
-class ReportType {
-  /// Returns a new [ReportType] instance.
-  ReportType({
-    required this.t,
+class SendCustomEmail {
+  /// Returns a new [SendCustomEmail] instance.
+  SendCustomEmail({
+    required this.emailId,
   });
 
-  /// This is i8 so that max value is 127. That makes SQLite to store the value using single byte.
-  int t;
+  CustomEmailId emailId;
 
   @override
-  bool operator ==(Object other) => identical(this, other) || other is ReportType &&
-    other.t == t;
+  bool operator ==(Object other) => identical(this, other) || other is SendCustomEmail &&
+    other.emailId == emailId;
 
   @override
   int get hashCode =>
     // ignore: unnecessary_parenthesis
-    (t.hashCode);
+    (emailId.hashCode);
 
   @override
-  String toString() => 'ReportType[t=$t]';
+  String toString() => 'SendCustomEmail[emailId=$emailId]';
 
   Map<String, dynamic> toJson() {
     final json = <String, dynamic>{};
-      json[r't'] = this.t;
+      json[r'email_id'] = this.emailId;
     return json;
   }
 
-  /// Returns a new [ReportType] instance and imports its values from
+  /// Returns a new [SendCustomEmail] instance and imports its values from
   /// [value] if it's a [Map], null otherwise.
   // ignore: prefer_constructors_over_static_methods
-  static ReportType? fromJson(dynamic value) {
+  static SendCustomEmail? fromJson(dynamic value) {
     if (value is Map) {
       final json = value.cast<String, dynamic>();
 
@@ -49,24 +48,24 @@ class ReportType {
       // Note 2: this code is stripped in release mode!
       assert(() {
         requiredKeys.forEach((key) {
-          assert(json.containsKey(key), 'Required key "ReportType[$key]" is missing from JSON.');
-          assert(json[key] != null, 'Required key "ReportType[$key]" has a null value in JSON.');
+          assert(json.containsKey(key), 'Required key "SendCustomEmail[$key]" is missing from JSON.');
+          assert(json[key] != null, 'Required key "SendCustomEmail[$key]" has a null value in JSON.');
         });
         return true;
       }());
 
-      return ReportType(
-        t: mapValueOfType<int>(json, r't')!,
+      return SendCustomEmail(
+        emailId: CustomEmailId.fromJson(json[r'email_id'])!,
       );
     }
     return null;
   }
 
-  static List<ReportType> listFromJson(dynamic json, {bool growable = false,}) {
-    final result = <ReportType>[];
+  static List<SendCustomEmail> listFromJson(dynamic json, {bool growable = false,}) {
+    final result = <SendCustomEmail>[];
     if (json is List && json.isNotEmpty) {
       for (final row in json) {
-        final value = ReportType.fromJson(row);
+        final value = SendCustomEmail.fromJson(row);
         if (value != null) {
           result.add(value);
         }
@@ -75,12 +74,12 @@ class ReportType {
     return result.toList(growable: growable);
   }
 
-  static Map<String, ReportType> mapFromJson(dynamic json) {
-    final map = <String, ReportType>{};
+  static Map<String, SendCustomEmail> mapFromJson(dynamic json) {
+    final map = <String, SendCustomEmail>{};
     if (json is Map && json.isNotEmpty) {
       json = json.cast<String, dynamic>(); // ignore: parameter_assignments
       for (final entry in json.entries) {
-        final value = ReportType.fromJson(entry.value);
+        final value = SendCustomEmail.fromJson(entry.value);
         if (value != null) {
           map[entry.key] = value;
         }
@@ -89,14 +88,14 @@ class ReportType {
     return map;
   }
 
-  // maps a json object with a list of ReportType-objects as value to a dart map
-  static Map<String, List<ReportType>> mapListFromJson(dynamic json, {bool growable = false,}) {
-    final map = <String, List<ReportType>>{};
+  // maps a json object with a list of SendCustomEmail-objects as value to a dart map
+  static Map<String, List<SendCustomEmail>> mapListFromJson(dynamic json, {bool growable = false,}) {
+    final map = <String, List<SendCustomEmail>>{};
     if (json is Map && json.isNotEmpty) {
       // ignore: parameter_assignments
       json = json.cast<String, dynamic>();
       for (final entry in json.entries) {
-        map[entry.key] = ReportType.listFromJson(entry.value, growable: growable,);
+        map[entry.key] = SendCustomEmail.listFromJson(entry.value, growable: growable,);
       }
     }
     return map;
@@ -104,7 +103,7 @@ class ReportType {
 
   /// The list of required keys that must be present in a JSON.
   static const requiredKeys = <String>{
-    't',
+    'email_id',
   };
 }
 

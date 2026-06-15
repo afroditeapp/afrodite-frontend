@@ -214,7 +214,7 @@ C = custom report""";
     final profileText = content.content.profileText;
     final profileContent = content.content.profileContent;
     final chatMessage = content.content.chatMessage;
-    final customReport = content.info.reportType.n >= FIRST_CUSTOM_REPORT_TYPE_NUMBER;
+    final customReport = content.info.reportType.t >= FIRST_CUSTOM_REPORT_TYPE_NUMBER;
     final target = content.target;
     final Widget report;
 
@@ -247,7 +247,7 @@ C = custom report""";
     } else if (customReport) {
       report = BlocBuilder<CustomReportsConfigBloc, CustomReportsConfig>(
         builder: (context, config) {
-          final reportId = content.info.reportType.n - FIRST_CUSTOM_REPORT_TYPE_NUMBER;
+          final reportId = content.info.reportType.t - FIRST_CUSTOM_REPORT_TYPE_NUMBER;
           final customReportInfo = config.reports.getAtOrNull(reportId);
           if (customReportInfo != null) {
             final text = customReportInfo.translatedName(context);
