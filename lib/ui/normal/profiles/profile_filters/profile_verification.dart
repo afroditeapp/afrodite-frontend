@@ -221,14 +221,7 @@ Widget accountVerificationRequiredLimitBanner(
 }) {
   return Row(
     children: [
-      Expanded(
-        child: Text(
-          text,
-          style: Theme.of(
-            context,
-          ).textTheme.bodyMedium?.copyWith(color: Theme.of(context).colorScheme.onPrimaryContainer),
-        ),
-      ),
+      Expanded(child: Text(text)),
       const Padding(padding: EdgeInsets.only(left: 8)),
       TextButton(
         onPressed: () => openAccountVerificationSettings(context, methods),
