@@ -6,7 +6,7 @@ import 'package:flutter/services.dart';
 import 'package:app/data/notification_manager.dart';
 
 Future<Uint8List> loadLetsEncryptRootCertificates() async {
-  final data = await rootBundle.load("assets/isrg-root-x1-and-x2.pem");
+  final data = await rootBundle.load("assets/isrg-roots-x1-x2-ye-yr.pem");
   return data.buffer.asUint8List();
 }
 
