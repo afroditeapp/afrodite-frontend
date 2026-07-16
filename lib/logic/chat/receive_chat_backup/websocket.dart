@@ -43,10 +43,10 @@ class ReceiveChatBackupWebSocket {
 
   Future<bool> connect(AccessToken accessToken, String targetData) async {
     final serverAddress = await LoginRepository.getInstance().accountServerAddress.first;
-    final websocketAddress = _addWebSocketRoutePathToAddress(serverAddress);
-
     try {
-      final webSocket = await WebSocketBuilder.connect(websocketAddress, ["v1"]);
+      final webSocket = await WebSocketBuilder.connect(serverAddress, [
+        "v1",
+      ], path: "/chat_api/backup_transfer");
       if (webSocket == null) {
         _eventController.add(WebSocketConnectionError());
         return false;
@@ -94,16 +94,6 @@ class ReceiveChatBackupWebSocket {
       _eventController.add(WebSocketConnectionError());
       return false;
     }
-  }
-
-  String _addWebSocketRoutePathToAddress(String baseUrl) {
-    final base = Uri.parse(baseUrl);
-    return Uri(
-      scheme: base.scheme,
-      host: base.host,
-      port: base.port,
-      path: "/chat_api/backup_transfer",
-    ).toString();
   }
 
   Future<void> close() async {

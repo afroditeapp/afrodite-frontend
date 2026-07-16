@@ -89,19 +89,6 @@ enum ConnectionProtocolState {
   receiveEvents,
 }
 
-String _addWebSocketRoutePathToAddress(String baseUrl) {
-  final base = Uri.parse(baseUrl);
-
-  final newAddress = Uri(
-    scheme: base.scheme,
-    host: base.host,
-    port: base.port,
-    path: "/common_api/connect",
-  ).toString();
-
-  return newAddress;
-}
-
 class ServerConnection {
   final WebSocketWrapper _connection;
   final AccountDatabaseManager db;
@@ -126,12 +113,14 @@ class ServerConnection {
     AccountDatabaseManager db,
     Sink<ServerWsEvent> serverEvents,
   ) async {
-    final websocketAddress = _addWebSocketRoutePathToAddress(serverAddress);
-
     final protocols = ["v1", "t${accessToken.token}", clientVersionInfoString()];
 
     try {
-      final webSocket = await WebSocketBuilder.connect(websocketAddress, protocols);
+      final webSocket = await WebSocketBuilder.connect(
+        serverAddress,
+        protocols,
+        path: "/common_api/connect",
+      );
 
       if (webSocket == null) {
         return const Err(ServerConnectionError.connectionFailure);

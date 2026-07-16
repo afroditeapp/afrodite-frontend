@@ -3,6 +3,7 @@ import 'dart:io';
 import 'package:device_info_plus/device_info_plus.dart';
 import 'package:flutter/foundation.dart';
 import 'package:flutter/services.dart';
+import 'package:app/config.dart';
 import 'package:app/data/notification_manager.dart';
 
 Future<Uint8List> loadLetsEncryptRootCertificates() async {
@@ -10,7 +11,18 @@ Future<Uint8List> loadLetsEncryptRootCertificates() async {
   return data.buffer.asUint8List();
 }
 
-Future<SecurityContext> createSecurityContextForBackendConnection() async {
+Future<SecurityContext> createSecurityContextForBackendConnection(String serverAddress) async {
+  if (!kIsWeb && kReleaseMode) {
+    final parsedCurrent = Uri.parse(serverAddress);
+    final parsedDefault = Uri.parse(defaultServerUrl());
+    if (parsedCurrent.host == parsedDefault.host) {
+      // Cert pinning: only trust bundled Let's Encrypt roots for default server
+      final context = SecurityContext(withTrustedRoots: false);
+      context.setTrustedCertificatesBytes(await loadLetsEncryptRootCertificates());
+      return context;
+    }
+  }
+
   if (!kIsWeb && Platform.isAndroid) {
     DeviceInfoPlugin deviceInfo = DeviceInfoPlugin();
     AndroidDeviceInfo androidInfo = await deviceInfo.androidInfo;

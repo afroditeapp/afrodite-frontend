@@ -10,17 +10,24 @@ import "package:web_socket/io_web_socket.dart";
 import "package:web_socket/web_socket.dart" as ws;
 
 class WebSocketBuilder {
-  /// Creates a WebSocket connection to the specified URL with custom protocols.
+  /// Creates a WebSocket connection to the specified [serverAddress] with
+  /// custom [protocols].
   ///
   /// For web platforms, connects directly using ws:// or wss:// protocol.
   /// For native platforms, performs HTTP upgrade handshake with proper headers.
   ///
-  /// [websocketAddress] - The WebSocket URL to connect to
+  /// [serverAddress] - The HTTP server base URL
+  /// [path] - The WebSocket endpoint path (e.g. /common_api/connect)
   /// [protocols] - List of WebSocket sub-protocols.
   ///
   /// Returns null if the connection fails (e.g., non-101 response status).
-  static Future<ws.WebSocket?> connect(String websocketAddress, List<String> protocols) async {
+  static Future<ws.WebSocket?> connect(
+    String serverAddress,
+    List<String> protocols, {
+    required String path,
+  }) async {
     final effectiveProtocols = protocols;
+    final websocketAddress = _buildWebSocketAddress(serverAddress, path);
 
     if (kIsWeb) {
       if (!websocketAddress.startsWith("http")) {
@@ -33,7 +40,7 @@ class WebSocketBuilder {
       final key = base64.encode(bytes);
 
       final client = IOClient(
-        HttpClient(context: await createSecurityContextForBackendConnection()),
+        HttpClient(context: await createSecurityContextForBackendConnection(serverAddress)),
       );
       final headers = {
         HttpHeaders.connectionHeader: "upgrade",
@@ -54,5 +61,10 @@ class WebSocketBuilder {
       final socket = WebSocket.fromUpgradedSocket(await response.detachSocket(), serverSide: false);
       return IOWebSocket.fromWebSocket(socket);
     }
+  }
+
+  static String _buildWebSocketAddress(String serverAddress, String path) {
+    final base = Uri.parse(serverAddress);
+    return Uri(scheme: base.scheme, host: base.host, port: base.port, path: path).toString();
   }
 }

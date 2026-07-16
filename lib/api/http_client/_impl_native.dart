@@ -10,6 +10,6 @@ Future<Client> nonWebHttpClient(String serverAddress) async {
     return Client();
   }
   return IOClient(
-    HttpClient(context: await createSecurityContextForBackendConnection()),
+    HttpClient(context: await createSecurityContextForBackendConnection(serverAddress)),
   );
 }
