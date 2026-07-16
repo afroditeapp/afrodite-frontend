@@ -1,6 +1,7 @@
 import 'dart:io';
 
 import 'package:app/assets.dart';
+import 'package:app/config_services.dart';
 import 'package:app/localizations.dart';
 import 'package:app/logic/sign_in_with.dart';
 import 'package:app/ui_utils/consts/colors.dart';
@@ -86,7 +87,7 @@ Widget firstSignInButton(BuildContext context) {
         ),
       ),
     );
-  } else if (Platform.isIOS) {
+  } else if (Platform.isIOS && signInWithAppleServiceIdForAndroidAndWebLogin().isNotEmpty) {
     return signInWithAppleButton(context);
   } else {
     return signInWithGoogleButton(context);
@@ -94,10 +95,12 @@ Widget firstSignInButton(BuildContext context) {
 }
 
 Widget secondSignInButton(BuildContext context) {
-  if (!kIsWeb && Platform.isIOS) {
+  if (!kIsWeb && Platform.isIOS && signInWithAppleServiceIdForAndroidAndWebLogin().isNotEmpty) {
     return signInWithGoogleButton(context);
-  } else {
+  } else if (signInWithAppleServiceIdForAndroidAndWebLogin().isNotEmpty) {
     return signInWithAppleButton(context);
+  } else {
+    return SizedBox.shrink();
   }
 }
 
