@@ -41,11 +41,13 @@ extension MediaManualAdditions on MediaApi {
     String accountId,
     String contentId,
     bool isMatch,
+    String quality,
   ) async {
     final response = await getContentWithHttpInfo(
       accountId,
       contentId,
       isMatch: isMatch,
+      q: quality,
     );
     if (response.statusCode >= HttpStatus.badRequest) {
       throw ApiException(response.statusCode, "Image loading failed");

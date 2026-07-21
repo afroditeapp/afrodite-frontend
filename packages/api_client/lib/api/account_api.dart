@@ -1345,7 +1345,9 @@ class AccountApi {
     return null;
   }
 
-  /// Set initial email when initial setup is ongoing
+  /// Set initial email address for bots and accounts owned by demo account when initial setup is ongoing.
+  ///
+  /// Does nothing if the provided email address is the same as the current email address.
   ///
   /// Note: This method returns the HTTP [Response].
   ///
@@ -1377,7 +1379,9 @@ class AccountApi {
     );
   }
 
-  /// Set initial email when initial setup is ongoing
+  /// Set initial email address for bots and accounts owned by demo account when initial setup is ongoing.
+  ///
+  /// Does nothing if the provided email address is the same as the current email address.
   ///
   /// Parameters:
   ///

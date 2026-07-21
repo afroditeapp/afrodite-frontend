@@ -57,7 +57,7 @@ class MediaRepository extends DataRepositoryWithLifecycle {
     await connectionManager.tryWaitUntilConnected();
 
     return await api
-        .media((api) => api.getContentFixed(imageOwner.aid, id.cid, isMatch))
+        .media((api) => api.getContentFixed(imageOwner.aid, id.cid, isMatch, "h"))
         .onErr(() => _log.error("Image loading error"))
         .ok();
   }

@@ -91,7 +91,7 @@ Class | Method | HTTP request | Description
 *AccountApi* | [**postGetNewsPage**](doc//AccountApi.md#postgetnewspage) | **POST** /account_api/news_page | 
 *AccountApi* | [**postGetUnreadNewsCount**](doc//AccountApi.md#postgetunreadnewscount) | **POST** /account_api/news_count | The unread news count for public news.
 *AccountApi* | [**postInitEmailChange**](doc//AccountApi.md#postinitemailchange) | **POST** /account_api/init_email_change | Initiate email change process by providing a new email address.
-*AccountApi* | [**postInitialEmail**](doc//AccountApi.md#postinitialemail) | **POST** /account_api/initial_email | Set initial email when initial setup is ongoing
+*AccountApi* | [**postInitialEmail**](doc//AccountApi.md#postinitialemail) | **POST** /account_api/initial_email | Set initial email address for bots and accounts owned by demo account when initial setup is ongoing.
 *AccountApi* | [**postLogout**](doc//AccountApi.md#postlogout) | **POST** /account_api/logout | 
 *AccountApi* | [**postRequestEmailLoginToken**](doc//AccountApi.md#postrequestemaillogintoken) | **POST** /account_api/request_email_login_token | Request email login token to be sent via email.
 *AccountApi* | [**postResetNewsPaging**](doc//AccountApi.md#postresetnewspaging) | **POST** /account_api/reset_news_paging | 

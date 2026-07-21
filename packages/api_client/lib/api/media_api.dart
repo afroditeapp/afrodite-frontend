@@ -129,7 +129,7 @@ class MediaApi {
 
   /// Get content data
   ///
-  /// # Access  ## Own content Unrestricted access.  ## Public other content Normal account state required. Only accepted content can be accessed.  ## Private other content If owner of the requested content is a match and the requested content is in current profile content, then the requested content can be accessed if query parameter `is_match` is set to `true`.  Only accepted content can be accessed.  ## Admin access - [Permissions::admin_view_all_profiles] - [Permissions::admin_moderate_media_content] - [Permissions::admin_edit_media_content_face_verified_value] - [Permissions::admin_edit_security_content_verified_value] - [Permissions::admin_process_reports]  
+  /// # Access  ## Own content Unrestricted access.  ## Public other content Normal account state required. Only accepted content can be accessed.  ## Private other content If owner of the requested content is a match and the requested content is in current profile content, then the requested content can be accessed if query parameter `is_match` is set to `true`.  Only accepted content can be accessed.  ## Admin access - [Permissions::admin_view_all_profiles] - [Permissions::admin_moderate_media_content] - [Permissions::admin_edit_media_content_face_verified_value] - [Permissions::admin_edit_security_content_verified_value] - [Permissions::admin_process_reports]  # Content quality  When content owner or admins requests content, high quality version is returned even if lower quality version is requested.  For any other case preferred quality is used if API has not too much concurrent access.  
   ///
   /// Note: This method returns the HTTP [Response].
   ///
@@ -141,7 +141,10 @@ class MediaApi {
   ///
   /// * [bool] isMatch:
   ///   If false media content access is allowed when profile is set as public. If true media content access is allowed when users are a match.
-  Future<Response> getContentWithHttpInfo(String aid, String cid, { bool? isMatch, }) async {
+  ///
+  /// * [String] q:
+  ///   Preferred content quality. Use value: h (high), m (medium), or l (low). Server may downgrade quality based on load. Response header \"q\" contains the actual quality returned.
+  Future<Response> getContentWithHttpInfo(String aid, String cid, { bool? isMatch, String? q, }) async {
     // ignore: prefer_const_declarations
     final path = r'/media_api/content/{aid}/{cid}'
       .replaceAll('{aid}', aid)
@@ -156,6 +159,9 @@ class MediaApi {
 
     if (isMatch != null) {
       queryParams.addAll(_queryParams('', 'is_match', isMatch));
+    }
+    if (q != null) {
+      queryParams.addAll(_queryParams('', 'q', q));
     }
 
     const contentTypes = <String>[];
@@ -174,7 +180,7 @@ class MediaApi {
 
   /// Get content data
   ///
-  /// # Access  ## Own content Unrestricted access.  ## Public other content Normal account state required. Only accepted content can be accessed.  ## Private other content If owner of the requested content is a match and the requested content is in current profile content, then the requested content can be accessed if query parameter `is_match` is set to `true`.  Only accepted content can be accessed.  ## Admin access - [Permissions::admin_view_all_profiles] - [Permissions::admin_moderate_media_content] - [Permissions::admin_edit_media_content_face_verified_value] - [Permissions::admin_edit_security_content_verified_value] - [Permissions::admin_process_reports]  
+  /// # Access  ## Own content Unrestricted access.  ## Public other content Normal account state required. Only accepted content can be accessed.  ## Private other content If owner of the requested content is a match and the requested content is in current profile content, then the requested content can be accessed if query parameter `is_match` is set to `true`.  Only accepted content can be accessed.  ## Admin access - [Permissions::admin_view_all_profiles] - [Permissions::admin_moderate_media_content] - [Permissions::admin_edit_media_content_face_verified_value] - [Permissions::admin_edit_security_content_verified_value] - [Permissions::admin_process_reports]  # Content quality  When content owner or admins requests content, high quality version is returned even if lower quality version is requested.  For any other case preferred quality is used if API has not too much concurrent access.  
   ///
   /// Parameters:
   ///
@@ -184,8 +190,11 @@ class MediaApi {
   ///
   /// * [bool] isMatch:
   ///   If false media content access is allowed when profile is set as public. If true media content access is allowed when users are a match.
-  Future<MultipartFile?> getContent(String aid, String cid, { bool? isMatch, }) async {
-    final response = await getContentWithHttpInfo(aid, cid,  isMatch: isMatch, );
+  ///
+  /// * [String] q:
+  ///   Preferred content quality. Use value: h (high), m (medium), or l (low). Server may downgrade quality based on load. Response header \"q\" contains the actual quality returned.
+  Future<MultipartFile?> getContent(String aid, String cid, { bool? isMatch, String? q, }) async {
+    final response = await getContentWithHttpInfo(aid, cid,  isMatch: isMatch, q: q, );
     if (response.statusCode >= HttpStatus.badRequest) {
       throw ApiException(response.statusCode, await _decodeBodyBytes(response));
     }
