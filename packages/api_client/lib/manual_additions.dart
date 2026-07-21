@@ -27,6 +27,13 @@ extension CommonManualAdditions on CommonApi {
   }
 }
 
+class ContentQualityResult {
+  final Uint8List? data;
+  final String? quality;
+
+  ContentQualityResult({this.data, this.quality});
+}
+
 extension MediaManualAdditions on MediaApi {
   /// Get content
   ///
@@ -37,7 +44,7 @@ extension MediaManualAdditions on MediaApi {
   /// * [String] accountId (required):
   ///
   /// * [String] contentId (required):
-  Future<Uint8List?> getContentFixed(
+  Future<ContentQualityResult> getContentFixed(
     String accountId,
     String contentId,
     bool isMatch,
@@ -55,11 +62,12 @@ extension MediaManualAdditions on MediaApi {
     // When a remote server returns no body with a status of 204, we shall not decode it.
     // At the time of writing this, `dart:convert` will throw an "Unexpected end of input"
     // FormatException when trying to decode an empty string.
-    if (response.body.isNotEmpty &&
-        response.statusCode != HttpStatus.noContent) {
-      return response.bodyBytes;
-    }
-    return null;
+    final data = response.body.isNotEmpty &&
+            response.statusCode != HttpStatus.noContent
+        ? response.bodyBytes
+        : null;
+    final q = response.headers['q'];
+    return ContentQualityResult(data: data, quality: q);
   }
 
   /// Get map tile PNG file.

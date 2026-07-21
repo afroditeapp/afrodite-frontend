@@ -1,3 +1,4 @@
+import 'dart:async';
 import 'dart:io';
 import 'dart:math';
 import 'dart:ui';
@@ -13,6 +14,7 @@ import 'package:flutter/material.dart';
 import 'package:flutter/services.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:openapi/api.dart';
+import 'package:openapi/manual_additions.dart';
 import 'package:app/data/media_repository.dart';
 import 'package:app/logic/account/client_features_config.dart';
 import 'package:app/ui/normal/settings/location.dart';
@@ -36,38 +38,125 @@ class ImageCacheData extends AppSingleton {
 
   final GeneralCacheManager cacheManager;
 
+  /// 3 hours before retrying with preferred quality.
+  static const _preferredQualityRetryDelay = Duration(hours: 3);
+
   /// Get image bytes for profile picture.
+  /// Checks DB for stored quality info and retries with preferred quality if needed.
   Future<Uint8List?> getImage(
     AccountId imageOwner,
     ContentId id, {
     bool isMatch = false,
     required MediaRepository media,
   }) async {
+    final userPreferredQuality = "h";
+
+    final storedQualityResult = await media.db.accountData(
+      (r) => r.contentQuality.getQualityInfo(imageOwner.aid, id.cid),
+    );
+    final storedQuality = storedQualityResult.ok();
+
+    final String preferredQuality;
+
+    if (storedQuality != null && storedQuality.quality == "h") {
+      // API forces high quality version in some cases
+      preferredQuality = "h";
+    } else if (storedQuality != null && storedQuality.quality != userPreferredQuality) {
+      final elapsed = UtcDateTime.now().difference(storedQuality.lastRequestTime);
+      if (elapsed >= _preferredQualityRetryDelay) {
+        preferredQuality = userPreferredQuality;
+      } else {
+        preferredQuality = storedQuality.quality;
+      }
+    } else {
+      preferredQuality = userPreferredQuality;
+    }
+
+    final result = await _getImageWithQuality(
+      imageOwner,
+      id,
+      isMatch: isMatch,
+      preferredQuality: preferredQuality,
+      media: media,
+    );
+
+    if (result == null) return null;
+
+    final receivedQuality = result.quality;
+    if (receivedQuality != null) {
+      final saveQualityInfo =
+          storedQuality == null ||
+          (storedQuality.quality == "l" && receivedQuality != "l") ||
+          (storedQuality.quality == "m" && receivedQuality == "h");
+      await media.db.accountAction(
+        (w) => w.contentQuality.setQualityInfo(
+          accountId: imageOwner.aid,
+          contentId: id.cid,
+          quality: saveQualityInfo ? receivedQuality : storedQuality.quality,
+          lastRequestTime: UtcDateTime.now(),
+        ),
+      );
+      final useCachedQuality = storedQuality != null && !saveQualityInfo;
+      if (useCachedQuality) {
+        // Previous API request returned lower quality version than
+        // locally available.
+        final r = await _getImageWithQuality(
+          imageOwner,
+          id,
+          isMatch: isMatch,
+          preferredQuality: storedQuality.quality,
+          media: media,
+        );
+        return r?.data;
+      }
+    }
+
+    return result.data;
+  }
+
+  Future<ContentQualityResult?> _getImageWithQuality(
+    AccountId imageOwner,
+    ContentId id, {
+    bool isMatch = false,
+    required String preferredQuality,
+    required MediaRepository media,
+  }) async {
     if (kIsWeb) {
       // Web uses XMLHttpRequest for caching
-      return await media.getImage(imageOwner, id, isMatch: isMatch);
+      return await media.getImage(
+        imageOwner,
+        id,
+        isMatch: isMatch,
+        preferredQuality: preferredQuality,
+      );
     }
-    final imgKey = "img:${imageOwner.aid}${id.cid}";
+    final imgKey = "img:${imageOwner.aid}${id.cid}:q$preferredQuality";
     final fileInfo = await cacheManager.getFileFromCache(imgKey);
     if (fileInfo != null) {
       try {
-        return await fileInfo.file.readAsBytes();
+        final bytes = await fileInfo.file.readAsBytes();
+        return ContentQualityResult(data: bytes);
       } catch (_) {
         // Fallback to image downloading
       }
     }
 
-    final imageData = await media.getImage(imageOwner, id, isMatch: isMatch);
-    if (imageData == null || imageData.isEmpty) {
+    final result = await media.getImage(
+      imageOwner,
+      id,
+      isMatch: isMatch,
+      preferredQuality: preferredQuality,
+    );
+    if (result == null || result.data == null || result.data!.isEmpty) {
       return null;
     }
 
     try {
-      await cacheManager.putFile("null", imageData, key: imgKey);
+      await cacheManager.putFile("null", result.data!, key: imgKey);
     } catch (_) {
       // Ignore errors
     }
-    return imageData;
+    return result;
   }
 
   /// Get PNG file bytes for map tile.

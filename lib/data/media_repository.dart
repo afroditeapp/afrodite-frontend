@@ -53,11 +53,28 @@ class MediaRepository extends DataRepositoryWithLifecycle {
     await reloadMyMediaContent();
   }
 
-  Future<Uint8List?> getImage(AccountId imageOwner, ContentId id, {bool isMatch = false}) async {
+  @override
+  Future<void> onResumeAppUsage() async {
+    final cleanedCount = await db
+        .accountDataWrite((db) => db.contentQuality.cleanupStaleContentQualityIfNeeded())
+        .ok();
+    if (cleanedCount == null) {
+      _log.warning("Content quality cleanup failed on app resume");
+    } else if (cleanedCount > 0) {
+      _log.fine("Content quality cleanup removed $cleanedCount quality info entries on app resume");
+    }
+  }
+
+  Future<ContentQualityResult?> getImage(
+    AccountId imageOwner,
+    ContentId id, {
+    bool isMatch = false,
+    String preferredQuality = "h",
+  }) async {
     await connectionManager.tryWaitUntilConnected();
 
     return await api
-        .media((api) => api.getContentFixed(imageOwner.aid, id.cid, isMatch, "h"))
+        .media((api) => api.getContentFixed(imageOwner.aid, id.cid, isMatch, preferredQuality))
         .onErr(() => _log.error("Image loading error"))
         .ok();
   }
