@@ -85,6 +85,13 @@ class AppUpdateAvailableDialogState {
   });
 }
 
+class UserPreferredContentQuality {
+  static const DEFAULT = "h";
+
+  final String? quality;
+  const UserPreferredContentQuality({this.quality});
+}
+
 class InitialSetupProgressEntry {
   final String? email;
   final bool? isAdult;

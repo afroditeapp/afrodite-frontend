@@ -7,5 +7,8 @@ part 'ui_settings.freezed.dart';
 @freezed
 class UiSettingsData with _$UiSettingsData {
   UiSettingsData._();
-  factory UiSettingsData({@Default(GridSettings()) GridSettings gridSettings}) = _UiSettingsData;
+  factory UiSettingsData({
+    @Default(GridSettings()) GridSettings gridSettings,
+    @Default(UserPreferredContentQuality()) UserPreferredContentQuality userPreferredContentQuality,
+  }) = _UiSettingsData;
 }

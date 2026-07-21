@@ -5,6 +5,7 @@ import 'package:app/model/freezed/logic/profile/my_profile.dart';
 import 'package:app/model/freezed/logic/profile/profile_filters.dart';
 import 'package:app/ui/normal/settings.dart';
 import 'package:app/ui_utils/common_update_logic.dart';
+import 'package:app/ui_utils/consts/padding.dart';
 import 'package:app/ui_utils/dialog.dart';
 import 'package:app/ui_utils/extensions/other.dart';
 import 'package:app/ui_utils/padding.dart';
@@ -114,6 +115,12 @@ class _ProfileGridSettingsScreenState extends State<ProfileGridSettingsScreen> {
               context.strings.profile_grid_settings_screen_profiles_screen,
             ),
             randomProfileOrderSetting(context),
+            settingsCategoryTitle(
+              context,
+              context.strings.profile_grid_settings_screen_images_title,
+            ),
+            imageQualitySetting(context, state),
+            const Padding(padding: EdgeInsets.only(top: LIST_END_EMPTY_AREA)),
           ],
         );
       },
@@ -238,6 +245,28 @@ class _ProfileGridSettingsScreenState extends State<ProfileGridSettingsScreen> {
           },
         );
       },
+    );
+  }
+
+  Widget imageQualitySetting(BuildContext context, UiSettingsData state) {
+    final selectedQuality =
+        state.userPreferredContentQuality.quality ?? UserPreferredContentQuality.DEFAULT;
+    return Padding(
+      padding: const EdgeInsets.symmetric(horizontal: 16),
+      child: DropdownButtonFormField<String>(
+        initialValue: selectedQuality,
+        decoration: InputDecoration(
+          labelText: context.strings.profile_grid_settings_screen_preferred_image_quality,
+        ),
+        items: [
+          DropdownMenuItem(value: "h", child: Text(context.strings.generic_large)),
+          DropdownMenuItem(value: "m", child: Text(context.strings.generic_medium)),
+          DropdownMenuItem(value: "l", child: Text(context.strings.generic_small)),
+        ],
+        onChanged: (value) {
+          context.read<UiSettingsBloc>().add(UpdateUserPreferredContentQuality(value));
+        },
+      ),
     );
   }
 }

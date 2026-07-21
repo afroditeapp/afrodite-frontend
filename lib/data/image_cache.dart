@@ -49,7 +49,11 @@ class ImageCacheData extends AppSingleton {
     bool isMatch = false,
     required MediaRepository media,
   }) async {
-    final userPreferredQuality = "h";
+    final userPreferredQualityResult = await media.db.accountData(
+      (r) => r.app.getUserPreferredContentQuality(),
+    );
+    final userPreferredQuality =
+        userPreferredQualityResult.ok()?.quality ?? UserPreferredContentQuality.DEFAULT;
 
     final storedQualityResult = await media.db.accountData(
       (r) => r.contentQuality.getQualityInfo(imageOwner.aid, id.cid),

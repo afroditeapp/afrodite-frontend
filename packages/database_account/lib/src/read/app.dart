@@ -1,6 +1,10 @@
 import 'package:database_account/src/database.dart';
 import 'package:database_model/database_model.dart'
-    show AppUpdateAvailableDialogState, ChatBackupReminder, GridSettings;
+    show
+        AppUpdateAvailableDialogState,
+        ChatBackupReminder,
+        GridSettings,
+        UserPreferredContentQuality;
 import 'package:database_utils/database_utils.dart';
 import 'package:drift/drift.dart';
 import 'package:openapi/api.dart' as api;
@@ -20,6 +24,7 @@ part 'app.g.dart';
     schema.News,
     schema.PushNotification,
     schema.AppUpdateAvailableDialog,
+    schema.UserPreferredContentQuality,
   ],
 )
 class DaoReadApp extends DatabaseAccessor<AccountDatabase> with _$DaoReadAppMixin {
@@ -133,5 +138,20 @@ class DaoReadApp extends DatabaseAccessor<AccountDatabase> with _$DaoReadAppMixi
         blockDialogsUntil: r.blockDialogsUntil,
       );
     });
+  }
+
+  Stream<UserPreferredContentQuality> watchUserPreferredContentQuality() {
+    return (select(
+      userPreferredContentQuality,
+    )..where((t) => t.id.equals(SingleRowTable.ID.value))).watchSingleOrNull().map((r) {
+      return UserPreferredContentQuality(quality: r?.quality);
+    });
+  }
+
+  Future<UserPreferredContentQuality> getUserPreferredContentQuality() async {
+    final r = await (select(
+      userPreferredContentQuality,
+    )..where((t) => t.id.equals(SingleRowTable.ID.value))).getSingleOrNull();
+    return UserPreferredContentQuality(quality: r?.quality);
   }
 }

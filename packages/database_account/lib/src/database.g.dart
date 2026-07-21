@@ -5953,6 +5953,227 @@ class ContentQualityCleanupStateCompanion
   }
 }
 
+class $UserPreferredContentQualityTable
+    extends schema.UserPreferredContentQuality
+    with
+        TableInfo<
+          $UserPreferredContentQualityTable,
+          UserPreferredContentQualityData
+        > {
+  @override
+  final GeneratedDatabase attachedDatabase;
+  final String? _alias;
+  $UserPreferredContentQualityTable(this.attachedDatabase, [this._alias]);
+  static const VerificationMeta _idMeta = const VerificationMeta('id');
+  @override
+  late final GeneratedColumn<int> id = GeneratedColumn<int>(
+    'id',
+    aliasedName,
+    false,
+    hasAutoIncrement: true,
+    type: DriftSqlType.int,
+    requiredDuringInsert: false,
+    defaultConstraints: GeneratedColumn.constraintIsAlways(
+      'PRIMARY KEY AUTOINCREMENT',
+    ),
+  );
+  static const VerificationMeta _qualityMeta = const VerificationMeta(
+    'quality',
+  );
+  @override
+  late final GeneratedColumn<String> quality = GeneratedColumn<String>(
+    'quality',
+    aliasedName,
+    true,
+    type: DriftSqlType.string,
+    requiredDuringInsert: false,
+  );
+  @override
+  List<GeneratedColumn> get $columns => [id, quality];
+  @override
+  String get aliasedName => _alias ?? actualTableName;
+  @override
+  String get actualTableName => $name;
+  static const String $name = 'user_preferred_content_quality';
+  @override
+  VerificationContext validateIntegrity(
+    Insertable<UserPreferredContentQualityData> instance, {
+    bool isInserting = false,
+  }) {
+    final context = VerificationContext();
+    final data = instance.toColumns(true);
+    if (data.containsKey('id')) {
+      context.handle(_idMeta, id.isAcceptableOrUnknown(data['id']!, _idMeta));
+    }
+    if (data.containsKey('quality')) {
+      context.handle(
+        _qualityMeta,
+        quality.isAcceptableOrUnknown(data['quality']!, _qualityMeta),
+      );
+    }
+    return context;
+  }
+
+  @override
+  Set<GeneratedColumn> get $primaryKey => {id};
+  @override
+  UserPreferredContentQualityData map(
+    Map<String, dynamic> data, {
+    String? tablePrefix,
+  }) {
+    final effectivePrefix = tablePrefix != null ? '$tablePrefix.' : '';
+    return UserPreferredContentQualityData(
+      id: attachedDatabase.typeMapping.read(
+        DriftSqlType.int,
+        data['${effectivePrefix}id'],
+      )!,
+      quality: attachedDatabase.typeMapping.read(
+        DriftSqlType.string,
+        data['${effectivePrefix}quality'],
+      ),
+    );
+  }
+
+  @override
+  $UserPreferredContentQualityTable createAlias(String alias) {
+    return $UserPreferredContentQualityTable(attachedDatabase, alias);
+  }
+}
+
+class UserPreferredContentQualityData extends DataClass
+    implements Insertable<UserPreferredContentQualityData> {
+  final int id;
+
+  /// "h" = high, "m" = medium, "l" = low, null = use default
+  final String? quality;
+  const UserPreferredContentQualityData({required this.id, this.quality});
+  @override
+  Map<String, Expression> toColumns(bool nullToAbsent) {
+    final map = <String, Expression>{};
+    map['id'] = Variable<int>(id);
+    if (!nullToAbsent || quality != null) {
+      map['quality'] = Variable<String>(quality);
+    }
+    return map;
+  }
+
+  UserPreferredContentQualityCompanion toCompanion(bool nullToAbsent) {
+    return UserPreferredContentQualityCompanion(
+      id: Value(id),
+      quality: quality == null && nullToAbsent
+          ? const Value.absent()
+          : Value(quality),
+    );
+  }
+
+  factory UserPreferredContentQualityData.fromJson(
+    Map<String, dynamic> json, {
+    ValueSerializer? serializer,
+  }) {
+    serializer ??= driftRuntimeOptions.defaultSerializer;
+    return UserPreferredContentQualityData(
+      id: serializer.fromJson<int>(json['id']),
+      quality: serializer.fromJson<String?>(json['quality']),
+    );
+  }
+  @override
+  Map<String, dynamic> toJson({ValueSerializer? serializer}) {
+    serializer ??= driftRuntimeOptions.defaultSerializer;
+    return <String, dynamic>{
+      'id': serializer.toJson<int>(id),
+      'quality': serializer.toJson<String?>(quality),
+    };
+  }
+
+  UserPreferredContentQualityData copyWith({
+    int? id,
+    Value<String?> quality = const Value.absent(),
+  }) => UserPreferredContentQualityData(
+    id: id ?? this.id,
+    quality: quality.present ? quality.value : this.quality,
+  );
+  UserPreferredContentQualityData copyWithCompanion(
+    UserPreferredContentQualityCompanion data,
+  ) {
+    return UserPreferredContentQualityData(
+      id: data.id.present ? data.id.value : this.id,
+      quality: data.quality.present ? data.quality.value : this.quality,
+    );
+  }
+
+  @override
+  String toString() {
+    return (StringBuffer('UserPreferredContentQualityData(')
+          ..write('id: $id, ')
+          ..write('quality: $quality')
+          ..write(')'))
+        .toString();
+  }
+
+  @override
+  int get hashCode => Object.hash(id, quality);
+  @override
+  bool operator ==(Object other) =>
+      identical(this, other) ||
+      (other is UserPreferredContentQualityData &&
+          other.id == this.id &&
+          other.quality == this.quality);
+}
+
+class UserPreferredContentQualityCompanion
+    extends UpdateCompanion<UserPreferredContentQualityData> {
+  final Value<int> id;
+  final Value<String?> quality;
+  const UserPreferredContentQualityCompanion({
+    this.id = const Value.absent(),
+    this.quality = const Value.absent(),
+  });
+  UserPreferredContentQualityCompanion.insert({
+    this.id = const Value.absent(),
+    this.quality = const Value.absent(),
+  });
+  static Insertable<UserPreferredContentQualityData> custom({
+    Expression<int>? id,
+    Expression<String>? quality,
+  }) {
+    return RawValuesInsertable({
+      if (id != null) 'id': id,
+      if (quality != null) 'quality': quality,
+    });
+  }
+
+  UserPreferredContentQualityCompanion copyWith({
+    Value<int>? id,
+    Value<String?>? quality,
+  }) {
+    return UserPreferredContentQualityCompanion(
+      id: id ?? this.id,
+      quality: quality ?? this.quality,
+    );
+  }
+
+  @override
+  Map<String, Expression> toColumns(bool nullToAbsent) {
+    final map = <String, Expression>{};
+    if (id.present) {
+      map['id'] = Variable<int>(id.value);
+    }
+    if (quality.present) {
+      map['quality'] = Variable<String>(quality.value);
+    }
+    return map;
+  }
+
+  @override
+  String toString() {
+    return (StringBuffer('UserPreferredContentQualityCompanion(')
+          ..write('id: $id, ')
+          ..write('quality: $quality')
+          ..write(')'))
+        .toString();
+  }
+}
+
 class $EditProfileProgressTable extends schema.EditProfileProgress
     with TableInfo<$EditProfileProgressTable, EditProfileProgressData> {
   @override
@@ -21967,6 +22188,8 @@ abstract class _$AccountDatabase extends GeneratedDatabase {
   late final $ContentQualityTable contentQuality = $ContentQualityTable(this);
   late final $ContentQualityCleanupStateTable contentQualityCleanupState =
       $ContentQualityCleanupStateTable(this);
+  late final $UserPreferredContentQualityTable userPreferredContentQuality =
+      $UserPreferredContentQualityTable(this);
   late final $EditProfileProgressTable editProfileProgress =
       $EditProfileProgressTable(this);
   late final $DraftMessageTable draftMessage = $DraftMessageTable(this);
@@ -22168,6 +22391,7 @@ abstract class _$AccountDatabase extends GeneratedDatabase {
     clientVersionInfo,
     contentQuality,
     contentQualityCleanupState,
+    userPreferredContentQuality,
     editProfileProgress,
     draftMessage,
     serverMaintenance,

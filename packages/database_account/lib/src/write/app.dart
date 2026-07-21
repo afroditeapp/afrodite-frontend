@@ -22,6 +22,7 @@ part 'app.g.dart';
     schema.PushNotification,
     schema.AppUpdateAvailableDialog,
     schema.ClientVersionInfo,
+    schema.UserPreferredContentQuality,
     schema.Profile,
     schema.ProfileExtra,
     schema.ProfileContent,
@@ -272,6 +273,12 @@ class DaoWriteApp extends DatabaseAccessor<AccountDatabase> with _$DaoWriteAppMi
   Future<void> updateChatBackupLastDialogOpenedTime(UtcDateTime time) async {
     await into(chatBackupReminder).insertOnConflictUpdate(
       ChatBackupReminderCompanion.insert(id: SingleRowTable.ID, lastDialogOpenedTime: Value(time)),
+    );
+  }
+
+  Future<void> updateUserPreferredContentQuality(String? quality) async {
+    await into(userPreferredContentQuality).insertOnConflictUpdate(
+      UserPreferredContentQualityCompanion.insert(id: SingleRowTable.ID, quality: Value(quality)),
     );
   }
 }

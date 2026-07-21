@@ -19,4 +19,6 @@ mixin _$DaoReadAppMixin on DatabaseAccessor<AccountDatabase> {
       attachedDatabase.pushNotification;
   $AppUpdateAvailableDialogTable get appUpdateAvailableDialog =>
       attachedDatabase.appUpdateAvailableDialog;
+  $UserPreferredContentQualityTable get userPreferredContentQuality =>
+      attachedDatabase.userPreferredContentQuality;
 }

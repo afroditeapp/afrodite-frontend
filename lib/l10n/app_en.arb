@@ -2302,6 +2302,26 @@
   "@profile_grid_settings_screen_all_grids_title": {
     "description": "Title for common settings to all profile grids"
   },
+  "profile_grid_settings_screen_image_quality_high": "High",
+  "@profile_grid_settings_screen_image_quality_high": {
+    "description": "High image quality"
+  },
+  "profile_grid_settings_screen_image_quality_low": "Low",
+  "@profile_grid_settings_screen_image_quality_low": {
+    "description": "Low image quality"
+  },
+  "profile_grid_settings_screen_image_quality_medium": "Medium",
+  "@profile_grid_settings_screen_image_quality_medium": {
+    "description": "Medium image quality"
+  },
+  "profile_grid_settings_screen_images_title": "Images",
+  "@profile_grid_settings_screen_images_title": {
+    "description": "Title for images settings category"
+  },
+  "profile_grid_settings_screen_preferred_image_quality": "Preferred image quality",
+  "@profile_grid_settings_screen_preferred_image_quality": {
+    "description": "Title for preferred image quality setting"
+  },
   "profile_grid_settings_screen_profiles_screen": "Profiles screen",
   "@profile_grid_settings_screen_profiles_screen": {
     "description": "Title for profiles screen settings category"

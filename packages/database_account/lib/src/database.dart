@@ -14,7 +14,7 @@ import 'package:database_account/src/read/progress.dart';
 import 'package:database_account/src/read/common/common.dart';
 import 'package:database_account/src/read/media/media.dart';
 import 'package:database_account/src/read/media/my_media.dart';
-import 'package:database_account/src/read/content_quality.dart';
+import 'package:database_account/src/read/app/content_quality.dart';
 import 'package:database_account/src/read/profile/my_profile.dart';
 import 'package:database_account/src/read/profile/privacy.dart';
 import 'package:database_account/src/read/profile/profile.dart';
@@ -35,7 +35,7 @@ import 'package:database_account/src/write/progress.dart';
 import 'package:database_account/src/write/common/common.dart';
 import 'package:database_account/src/write/media/media.dart';
 import 'package:database_account/src/write/media/my_media.dart';
-import 'package:database_account/src/write/content_quality.dart';
+import 'package:database_account/src/write/app/content_quality.dart';
 import 'package:database_account/src/write/profile/my_profile.dart';
 import 'package:database_account/src/write/profile/privacy.dart';
 import 'package:database_account/src/write/profile/profile.dart';
@@ -69,6 +69,7 @@ part 'database.g.dart';
     schema.ClientVersionInfo,
     schema.ContentQuality,
     schema.ContentQualityCleanupState,
+    schema.UserPreferredContentQuality,
     schema.EditProfileProgress,
     schema.DraftMessage,
     // Common

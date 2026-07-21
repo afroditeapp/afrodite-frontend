@@ -1776,6 +1776,21 @@ class AppLocalizationsFi extends AppLocalizations {
   String get profile_grid_settings_screen_all_grids_title => 'All profile grids';
 
   @override
+  String get profile_grid_settings_screen_image_quality_high => 'High';
+
+  @override
+  String get profile_grid_settings_screen_image_quality_low => 'Low';
+
+  @override
+  String get profile_grid_settings_screen_image_quality_medium => 'Medium';
+
+  @override
+  String get profile_grid_settings_screen_images_title => 'Images';
+
+  @override
+  String get profile_grid_settings_screen_preferred_image_quality => 'Preferred image quality';
+
+  @override
   String get profile_grid_settings_screen_profiles_screen => 'Profiles screen';
 
   @override

@@ -3178,6 +3178,36 @@ abstract class AppLocalizations {
   /// **'All profile grids'**
   String get profile_grid_settings_screen_all_grids_title;
 
+  /// High image quality
+  ///
+  /// In en, this message translates to:
+  /// **'High'**
+  String get profile_grid_settings_screen_image_quality_high;
+
+  /// Low image quality
+  ///
+  /// In en, this message translates to:
+  /// **'Low'**
+  String get profile_grid_settings_screen_image_quality_low;
+
+  /// Medium image quality
+  ///
+  /// In en, this message translates to:
+  /// **'Medium'**
+  String get profile_grid_settings_screen_image_quality_medium;
+
+  /// Title for images settings category
+  ///
+  /// In en, this message translates to:
+  /// **'Images'**
+  String get profile_grid_settings_screen_images_title;
+
+  /// Title for preferred image quality setting
+  ///
+  /// In en, this message translates to:
+  /// **'Preferred image quality'**
+  String get profile_grid_settings_screen_preferred_image_quality;
+
   /// Title for profiles screen settings category
   ///
   /// In en, this message translates to:

@@ -73,6 +73,11 @@ class ContentQualityCleanupState extends SingleRowTable {
       integer().map(NullAwareTypeConverter.wrap(const UtcDateTimeConverter())).nullable()();
 }
 
+class UserPreferredContentQuality extends SingleRowTable {
+  /// "h" = high, "m" = medium, "l" = low, null = use default
+  TextColumn get quality => text().nullable()();
+}
+
 class AppNotificationSettings extends SingleRowTable {
   BoolColumn get messages => boolean().nullable()();
   BoolColumn get likes => boolean().nullable()();

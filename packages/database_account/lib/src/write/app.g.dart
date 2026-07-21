@@ -23,6 +23,8 @@ mixin _$DaoWriteAppMixin on DatabaseAccessor<AccountDatabase> {
       attachedDatabase.appUpdateAvailableDialog;
   $ClientVersionInfoTable get clientVersionInfo =>
       attachedDatabase.clientVersionInfo;
+  $UserPreferredContentQualityTable get userPreferredContentQuality =>
+      attachedDatabase.userPreferredContentQuality;
   $ProfileTable get profile => attachedDatabase.profile;
   $ProfileExtraTable get profileExtra => attachedDatabase.profileExtra;
   $ProfileContentTable get profileContent => attachedDatabase.profileContent;
