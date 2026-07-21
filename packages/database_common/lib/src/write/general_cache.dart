@@ -9,20 +9,25 @@ class DaoWriteGeneralCache extends DatabaseAccessor<CommonDatabase>
     with _$DaoWriteGeneralCacheMixin {
   DaoWriteGeneralCache(super.db);
 
-  /// Insert or update a cache entry
-  Future<void> upsertCacheEntry({
+  /// Insert or update a cache entry, returns the row id
+  Future<int> upsertCacheEntry({
     required String cacheKey,
     required String entryKey,
-    required Uint8List data,
     required DateTime lastAccessed,
   }) async {
-    await into(generalCache).insertOnConflictUpdate(
+    return await into(generalCache).insertOnConflictUpdate(
       GeneralCacheCompanion.insert(
         cacheKey: cacheKey,
         entryKey: entryKey,
-        data: data,
         lastAccessed: lastAccessed,
       ),
+    );
+  }
+
+  /// Mark a cache entry as successfully saved to disk
+  Future<void> markSavedSuccessfully(int id) async {
+    await (update(generalCache)..where((tbl) => tbl.id.equals(id))).write(
+      const GeneralCacheCompanion(savedSuccessfully: Value(true)),
     );
   }
 
@@ -40,26 +45,9 @@ class DaoWriteGeneralCache extends DatabaseAccessor<CommonDatabase>
     )..where((tbl) => tbl.cacheKey.equals(cacheKey) & tbl.entryKey.equals(entryKey))).go();
   }
 
-  /// Delete all cache entries for a specific cache key
-  Future<void> deleteAllForCacheKey(String cacheKey) async {
-    await (delete(generalCache)..where((tbl) => tbl.cacheKey.equals(cacheKey))).go();
-  }
-
-  /// Delete oldest entries for a specific cache key
-  Future<void> deleteOldestEntries(String cacheKey, int count) async {
-    if (count <= 0) return;
-
-    // Get IDs of oldest entries
-    final oldestQuery = select(generalCache)
-      ..where((tbl) => tbl.cacheKey.equals(cacheKey))
-      ..orderBy([(tbl) => OrderingTerm.asc(tbl.lastAccessed)])
-      ..limit(count);
-
-    final oldestEntries = await oldestQuery.get();
-    final idsToDelete = oldestEntries.map((e) => e.id).toList();
-
-    if (idsToDelete.isNotEmpty) {
-      await (delete(generalCache)..where((tbl) => tbl.id.isIn(idsToDelete))).go();
-    }
+  /// Delete entries by IDs
+  Future<void> deleteIds(List<int> ids) async {
+    if (ids.isEmpty) return;
+    await (delete(generalCache)..where((tbl) => tbl.id.isIn(ids))).go();
   }
 }

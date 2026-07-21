@@ -128,6 +128,22 @@ class CommonDatabaseManager extends AppSingleton {
     }
   }
 
+  Future<Result<T, DatabaseError>> commonActionReturn<T>(
+    Future<T> Function(CommonDatabaseWrite) action,
+  ) async {
+    try {
+      return Ok(await action(_commonDatabase.write));
+    } on CouldNotRollBackException catch (e, stackTrace) {
+      return handleDbException(e, stackTrace);
+    } on DriftWrappedException catch (e, stackTrace) {
+      return handleDbException(e, stackTrace);
+    } on InvalidDataException catch (e, stackTrace) {
+      return handleDbException(e, stackTrace);
+    } on DriftRemoteException catch (e, stackTrace) {
+      return handleDbException(e, stackTrace);
+    }
+  }
+
   // Access current account database
 
   Future<AccountDatabaseManager> getAccountDatabaseManager(AccountId accountId) async {

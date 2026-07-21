@@ -1,16 +1,19 @@
 import 'dart:async';
-import 'dart:typed_data';
+import 'dart:io';
 
 import 'package:app/database/common_database_manager.dart';
 import 'package:app/utils/result.dart';
-import 'package:drift/drift.dart';
+import 'package:flutter/foundation.dart';
+import 'package:path/path.dart' as p;
+import 'package:path_provider/path_provider.dart';
 
-/// A cache manager that stores cache entries in the common database.
+/// A cache manager that stores cache entries on disk.
 class GeneralCacheManager {
   final CommonDatabaseManager _dbManager;
   final String _key;
   final Duration _stalePeriod;
   final int _maxNrOfCacheObjects;
+  late final Directory _cacheDir;
 
   GeneralCacheManager({
     required this._key,
@@ -18,7 +21,20 @@ class GeneralCacheManager {
     this._maxNrOfCacheObjects = 10000,
   }) : _dbManager = CommonDatabaseManager.getInstance();
 
-  /// Get a cache entry by key
+  /// Must be called before using this cache manager.
+  Future<void> init() async {
+    if (kIsWeb) {
+      return;
+    }
+    final appCacheDir = await getApplicationCacheDirectory();
+    final dir = Directory(p.join(appCacheDir.path, 'general_cache'));
+    if (!await dir.exists()) {
+      await dir.create(recursive: true);
+    }
+    _cacheDir = dir;
+  }
+
+  /// Get a cache entry by key. Returns null if not cached, stale, or file missing.
   Future<GeneralCacheFileInfo?> getFileFromCache(String key) async {
     try {
       final entry = await _dbManager
@@ -29,10 +45,22 @@ class GeneralCacheManager {
         return null;
       }
 
+      // Check that file was saved successfully
+      if (!entry.savedSuccessfully) {
+        await _deleteEntryAndFile(entry.id, key);
+        return null;
+      }
+
       // Check if entry is stale
       final now = DateTime.now();
       if (now.difference(entry.lastAccessed).compareTo(_stalePeriod) > 0) {
-        // Entry is stale, delete it
+        await _deleteEntryAndFile(entry.id, key);
+        return null;
+      }
+
+      // Read file from disk
+      final file = File(p.join(_cacheDir.path, entry.id.toString()));
+      if (!await file.exists()) {
         await _dbManager.commonAction((db) => db.generalCache.deleteCacheEntry(_key, key));
         return null;
       }
@@ -40,7 +68,11 @@ class GeneralCacheManager {
       // Update last accessed time
       await _dbManager.commonAction((db) => db.generalCache.updateLastAccessed(_key, key, now));
 
-      return GeneralCacheFileInfo(key: key, data: entry.data, lastAccessed: entry.lastAccessed);
+      return GeneralCacheFileInfo(
+        key: key,
+        data: await file.readAsBytes(),
+        lastAccessed: entry.lastAccessed,
+      );
     } catch (e) {
       // Return null on error
       return null;
@@ -48,38 +80,28 @@ class GeneralCacheManager {
   }
 
   /// Put a file into the cache
-  Future<void> putFile(String unusedUrl, Uint8List fileBytes, {required String key}) async {
+  Future<void> putFile(Uint8List fileBytes, {required String key}) async {
     try {
       // Check current cache size and remove oldest entries if needed
       await _enforceMaxCacheSize();
 
-      // Insert or update the cache entry
-      await _dbManager.commonAction(
+      // Insert DB entry first to get the row id
+      final idResult = await _dbManager.commonActionReturn(
         (db) => db.generalCache.upsertCacheEntry(
           cacheKey: _key,
           entryKey: key,
-          data: fileBytes,
           lastAccessed: DateTime.now(),
         ),
       );
-    } catch (e) {
-      // Ignore errors as per the original implementation
-    }
-  }
+      final id = idResult.ok();
+      if (id == null) return;
 
-  /// Remove a cache entry
-  Future<void> removeFile(String key) async {
-    try {
-      await _dbManager.commonAction((db) => db.generalCache.deleteCacheEntry(_key, key));
-    } catch (e) {
-      // Ignore errors
-    }
-  }
+      // Write file to disk using the DB row id as filename
+      final file = File(p.join(_cacheDir.path, id.toString()));
+      await file.writeAsBytes(fileBytes);
 
-  /// Clear all cache entries for this cache manager
-  Future<void> emptyCache() async {
-    try {
-      await _dbManager.commonAction((db) => db.generalCache.deleteAllForCacheKey(_key));
+      // Mark as successfully saved
+      await _dbManager.commonAction((db) => db.generalCache.markSavedSuccessfully(id));
     } catch (e) {
       // Ignore errors
     }
@@ -91,12 +113,37 @@ class GeneralCacheManager {
       final count =
           await _dbManager.commonData((db) => db.generalCache.getCacheEntryCount(_key)).ok() ?? 0;
       if (count >= _maxNrOfCacheObjects) {
-        // Remove oldest entries
         final toRemove = count - _maxNrOfCacheObjects + 1;
-        await _dbManager.commonAction((db) => db.generalCache.deleteOldestEntries(_key, toRemove));
+        final ids = await _dbManager
+            .commonData((db) => db.generalCache.getOldestEntryIds(_key, toRemove))
+            .ok();
+        if (ids != null && ids.isNotEmpty) {
+          await _deleteFiles(ids);
+          await _dbManager.commonAction((db) => db.generalCache.deleteIds(ids));
+        }
       }
     } catch (e) {
       // Ignore errors
+    }
+  }
+
+  Future<void> _deleteEntryAndFile(int id, String key) async {
+    await _deleteFile(id);
+    await _dbManager.commonAction((db) => db.generalCache.deleteCacheEntry(_key, key));
+  }
+
+  Future<void> _deleteFile(int id) async {
+    try {
+      final file = File(p.join(_cacheDir.path, id.toString()));
+      if (await file.exists()) {
+        await file.delete();
+      }
+    } catch (_) {}
+  }
+
+  Future<void> _deleteFiles(List<int> ids) async {
+    for (final id in ids) {
+      await _deleteFile(id);
     }
   }
 }

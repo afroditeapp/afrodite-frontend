@@ -156,7 +156,7 @@ class ImageCacheData extends AppSingleton {
     }
 
     try {
-      await cacheManager.putFile("null", result.data!, key: imgKey);
+      await cacheManager.putFile(result.data!, key: imgKey);
     } catch (_) {
       // Ignore errors
     }
@@ -204,7 +204,7 @@ class ImageCacheData extends AppSingleton {
         if (tilePngData.isEmpty) {
           return null;
         }
-        await cacheManager.putFile("null", tilePngData, key: mapTileCacheKey);
+        await cacheManager.putFile(tilePngData, key: mapTileCacheKey);
       } catch (_) {
         // Ignore errors
       }
@@ -215,7 +215,7 @@ class ImageCacheData extends AppSingleton {
 
   @override
   Future<void> init() async {
-    // nothing to do
+    await cacheManager.init();
   }
 }
 

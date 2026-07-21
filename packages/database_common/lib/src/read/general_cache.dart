@@ -23,4 +23,14 @@ class DaoReadGeneralCache extends DatabaseAccessor<CommonDatabase> with _$DaoRea
     final result = await query.getSingle();
     return result.read(generalCache.id.count()) ?? 0;
   }
+
+  /// Get oldest entry IDs for a cache key (for eviction)
+  Future<List<int>> getOldestEntryIds(String cacheKey, int count) async {
+    final query = select(generalCache)
+      ..where((tbl) => tbl.cacheKey.equals(cacheKey))
+      ..orderBy([(tbl) => OrderingTerm.asc(tbl.lastAccessed)])
+      ..limit(count);
+    final entries = await query.get();
+    return entries.map((e) => e.id).toList();
+  }
 }

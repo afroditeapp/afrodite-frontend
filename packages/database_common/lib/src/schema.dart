@@ -48,8 +48,8 @@ class GeneralCache extends Table {
   /// Entry key within the cache
   TextColumn get entryKey => text()();
 
-  /// Cached data as bytes
-  BlobColumn get data => blob()();
+  /// Whether the file was saved successfully to disk
+  BoolColumn get savedSuccessfully => boolean().withDefault(const Constant(false))();
 
   /// Last accessed timestamp
   DateTimeColumn get lastAccessed => dateTime()();

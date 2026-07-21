@@ -1794,14 +1794,20 @@ class $GeneralCacheTable extends schema.GeneralCache
     type: DriftSqlType.string,
     requiredDuringInsert: true,
   );
-  static const VerificationMeta _dataMeta = const VerificationMeta('data');
+  static const VerificationMeta _savedSuccessfullyMeta = const VerificationMeta(
+    'savedSuccessfully',
+  );
   @override
-  late final GeneratedColumn<Uint8List> data = GeneratedColumn<Uint8List>(
-    'data',
+  late final GeneratedColumn<bool> savedSuccessfully = GeneratedColumn<bool>(
+    'saved_successfully',
     aliasedName,
     false,
-    type: DriftSqlType.blob,
-    requiredDuringInsert: true,
+    type: DriftSqlType.bool,
+    requiredDuringInsert: false,
+    defaultConstraints: GeneratedColumn.constraintIsAlways(
+      'CHECK ("saved_successfully" IN (0, 1))',
+    ),
+    defaultValue: const Constant(false),
   );
   static const VerificationMeta _lastAccessedMeta = const VerificationMeta(
     'lastAccessed',
@@ -1819,7 +1825,7 @@ class $GeneralCacheTable extends schema.GeneralCache
     id,
     cacheKey,
     entryKey,
-    data,
+    savedSuccessfully,
     lastAccessed,
   ];
   @override
@@ -1853,13 +1859,14 @@ class $GeneralCacheTable extends schema.GeneralCache
     } else if (isInserting) {
       context.missing(_entryKeyMeta);
     }
-    if (data.containsKey('data')) {
+    if (data.containsKey('saved_successfully')) {
       context.handle(
-        _dataMeta,
-        this.data.isAcceptableOrUnknown(data['data']!, _dataMeta),
+        _savedSuccessfullyMeta,
+        savedSuccessfully.isAcceptableOrUnknown(
+          data['saved_successfully']!,
+          _savedSuccessfullyMeta,
+        ),
       );
-    } else if (isInserting) {
-      context.missing(_dataMeta);
     }
     if (data.containsKey('last_accessed')) {
       context.handle(
@@ -1897,9 +1904,9 @@ class $GeneralCacheTable extends schema.GeneralCache
         DriftSqlType.string,
         data['${effectivePrefix}entry_key'],
       )!,
-      data: attachedDatabase.typeMapping.read(
-        DriftSqlType.blob,
-        data['${effectivePrefix}data'],
+      savedSuccessfully: attachedDatabase.typeMapping.read(
+        DriftSqlType.bool,
+        data['${effectivePrefix}saved_successfully'],
       )!,
       lastAccessed: attachedDatabase.typeMapping.read(
         DriftSqlType.dateTime,
@@ -1924,8 +1931,8 @@ class GeneralCacheData extends DataClass
   /// Entry key within the cache
   final String entryKey;
 
-  /// Cached data as bytes
-  final Uint8List data;
+  /// Whether the file was saved successfully to disk
+  final bool savedSuccessfully;
 
   /// Last accessed timestamp
   final DateTime lastAccessed;
@@ -1933,7 +1940,7 @@ class GeneralCacheData extends DataClass
     required this.id,
     required this.cacheKey,
     required this.entryKey,
-    required this.data,
+    required this.savedSuccessfully,
     required this.lastAccessed,
   });
   @override
@@ -1942,7 +1949,7 @@ class GeneralCacheData extends DataClass
     map['id'] = Variable<int>(id);
     map['cache_key'] = Variable<String>(cacheKey);
     map['entry_key'] = Variable<String>(entryKey);
-    map['data'] = Variable<Uint8List>(data);
+    map['saved_successfully'] = Variable<bool>(savedSuccessfully);
     map['last_accessed'] = Variable<DateTime>(lastAccessed);
     return map;
   }
@@ -1952,7 +1959,7 @@ class GeneralCacheData extends DataClass
       id: Value(id),
       cacheKey: Value(cacheKey),
       entryKey: Value(entryKey),
-      data: Value(data),
+      savedSuccessfully: Value(savedSuccessfully),
       lastAccessed: Value(lastAccessed),
     );
   }
@@ -1966,7 +1973,7 @@ class GeneralCacheData extends DataClass
       id: serializer.fromJson<int>(json['id']),
       cacheKey: serializer.fromJson<String>(json['cacheKey']),
       entryKey: serializer.fromJson<String>(json['entryKey']),
-      data: serializer.fromJson<Uint8List>(json['data']),
+      savedSuccessfully: serializer.fromJson<bool>(json['savedSuccessfully']),
       lastAccessed: serializer.fromJson<DateTime>(json['lastAccessed']),
     );
   }
@@ -1977,7 +1984,7 @@ class GeneralCacheData extends DataClass
       'id': serializer.toJson<int>(id),
       'cacheKey': serializer.toJson<String>(cacheKey),
       'entryKey': serializer.toJson<String>(entryKey),
-      'data': serializer.toJson<Uint8List>(data),
+      'savedSuccessfully': serializer.toJson<bool>(savedSuccessfully),
       'lastAccessed': serializer.toJson<DateTime>(lastAccessed),
     };
   }
@@ -1986,13 +1993,13 @@ class GeneralCacheData extends DataClass
     int? id,
     String? cacheKey,
     String? entryKey,
-    Uint8List? data,
+    bool? savedSuccessfully,
     DateTime? lastAccessed,
   }) => GeneralCacheData(
     id: id ?? this.id,
     cacheKey: cacheKey ?? this.cacheKey,
     entryKey: entryKey ?? this.entryKey,
-    data: data ?? this.data,
+    savedSuccessfully: savedSuccessfully ?? this.savedSuccessfully,
     lastAccessed: lastAccessed ?? this.lastAccessed,
   );
   GeneralCacheData copyWithCompanion(GeneralCacheCompanion data) {
@@ -2000,7 +2007,9 @@ class GeneralCacheData extends DataClass
       id: data.id.present ? data.id.value : this.id,
       cacheKey: data.cacheKey.present ? data.cacheKey.value : this.cacheKey,
       entryKey: data.entryKey.present ? data.entryKey.value : this.entryKey,
-      data: data.data.present ? data.data.value : this.data,
+      savedSuccessfully: data.savedSuccessfully.present
+          ? data.savedSuccessfully.value
+          : this.savedSuccessfully,
       lastAccessed: data.lastAccessed.present
           ? data.lastAccessed.value
           : this.lastAccessed,
@@ -2013,20 +2022,15 @@ class GeneralCacheData extends DataClass
           ..write('id: $id, ')
           ..write('cacheKey: $cacheKey, ')
           ..write('entryKey: $entryKey, ')
-          ..write('data: $data, ')
+          ..write('savedSuccessfully: $savedSuccessfully, ')
           ..write('lastAccessed: $lastAccessed')
           ..write(')'))
         .toString();
   }
 
   @override
-  int get hashCode => Object.hash(
-    id,
-    cacheKey,
-    entryKey,
-    $driftBlobEquality.hash(data),
-    lastAccessed,
-  );
+  int get hashCode =>
+      Object.hash(id, cacheKey, entryKey, savedSuccessfully, lastAccessed);
   @override
   bool operator ==(Object other) =>
       identical(this, other) ||
@@ -2034,7 +2038,7 @@ class GeneralCacheData extends DataClass
           other.id == this.id &&
           other.cacheKey == this.cacheKey &&
           other.entryKey == this.entryKey &&
-          $driftBlobEquality.equals(other.data, this.data) &&
+          other.savedSuccessfully == this.savedSuccessfully &&
           other.lastAccessed == this.lastAccessed);
 }
 
@@ -2042,37 +2046,36 @@ class GeneralCacheCompanion extends UpdateCompanion<GeneralCacheData> {
   final Value<int> id;
   final Value<String> cacheKey;
   final Value<String> entryKey;
-  final Value<Uint8List> data;
+  final Value<bool> savedSuccessfully;
   final Value<DateTime> lastAccessed;
   const GeneralCacheCompanion({
     this.id = const Value.absent(),
     this.cacheKey = const Value.absent(),
     this.entryKey = const Value.absent(),
-    this.data = const Value.absent(),
+    this.savedSuccessfully = const Value.absent(),
     this.lastAccessed = const Value.absent(),
   });
   GeneralCacheCompanion.insert({
     this.id = const Value.absent(),
     required String cacheKey,
     required String entryKey,
-    required Uint8List data,
+    this.savedSuccessfully = const Value.absent(),
     required DateTime lastAccessed,
   }) : cacheKey = Value(cacheKey),
        entryKey = Value(entryKey),
-       data = Value(data),
        lastAccessed = Value(lastAccessed);
   static Insertable<GeneralCacheData> custom({
     Expression<int>? id,
     Expression<String>? cacheKey,
     Expression<String>? entryKey,
-    Expression<Uint8List>? data,
+    Expression<bool>? savedSuccessfully,
     Expression<DateTime>? lastAccessed,
   }) {
     return RawValuesInsertable({
       if (id != null) 'id': id,
       if (cacheKey != null) 'cache_key': cacheKey,
       if (entryKey != null) 'entry_key': entryKey,
-      if (data != null) 'data': data,
+      if (savedSuccessfully != null) 'saved_successfully': savedSuccessfully,
       if (lastAccessed != null) 'last_accessed': lastAccessed,
     });
   }
@@ -2081,14 +2084,14 @@ class GeneralCacheCompanion extends UpdateCompanion<GeneralCacheData> {
     Value<int>? id,
     Value<String>? cacheKey,
     Value<String>? entryKey,
-    Value<Uint8List>? data,
+    Value<bool>? savedSuccessfully,
     Value<DateTime>? lastAccessed,
   }) {
     return GeneralCacheCompanion(
       id: id ?? this.id,
       cacheKey: cacheKey ?? this.cacheKey,
       entryKey: entryKey ?? this.entryKey,
-      data: data ?? this.data,
+      savedSuccessfully: savedSuccessfully ?? this.savedSuccessfully,
       lastAccessed: lastAccessed ?? this.lastAccessed,
     );
   }
@@ -2105,8 +2108,8 @@ class GeneralCacheCompanion extends UpdateCompanion<GeneralCacheData> {
     if (entryKey.present) {
       map['entry_key'] = Variable<String>(entryKey.value);
     }
-    if (data.present) {
-      map['data'] = Variable<Uint8List>(data.value);
+    if (savedSuccessfully.present) {
+      map['saved_successfully'] = Variable<bool>(savedSuccessfully.value);
     }
     if (lastAccessed.present) {
       map['last_accessed'] = Variable<DateTime>(lastAccessed.value);
@@ -2120,7 +2123,7 @@ class GeneralCacheCompanion extends UpdateCompanion<GeneralCacheData> {
           ..write('id: $id, ')
           ..write('cacheKey: $cacheKey, ')
           ..write('entryKey: $entryKey, ')
-          ..write('data: $data, ')
+          ..write('savedSuccessfully: $savedSuccessfully, ')
           ..write('lastAccessed: $lastAccessed')
           ..write(')'))
         .toString();
