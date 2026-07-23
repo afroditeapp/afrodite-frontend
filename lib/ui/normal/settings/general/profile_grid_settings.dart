@@ -259,9 +259,18 @@ class _ProfileGridSettingsScreenState extends State<ProfileGridSettingsScreen> {
           labelText: context.strings.profile_grid_settings_screen_preferred_image_quality,
         ),
         items: [
-          DropdownMenuItem(value: "h", child: Text(context.strings.generic_large)),
-          DropdownMenuItem(value: "m", child: Text(context.strings.generic_medium)),
-          DropdownMenuItem(value: "l", child: Text(context.strings.generic_small)),
+          DropdownMenuItem(
+            value: "h",
+            child: Text(context.strings.profile_grid_settings_screen_image_quality_high),
+          ),
+          DropdownMenuItem(
+            value: "m",
+            child: Text(context.strings.profile_grid_settings_screen_image_quality_medium),
+          ),
+          DropdownMenuItem(
+            value: "l",
+            child: Text(context.strings.profile_grid_settings_screen_image_quality_low),
+          ),
         ],
         onChanged: (value) {
           context.read<UiSettingsBloc>().add(UpdateUserPreferredContentQuality(value));
