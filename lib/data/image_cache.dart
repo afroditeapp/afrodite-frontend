@@ -62,6 +62,18 @@ class ImageCacheData extends AppSingleton {
     final userPreferredQuality =
         userPreferredQualityResult.ok()?.quality ?? UserPreferredContentQuality.DEFAULT;
 
+    if (kIsWeb) {
+      // Web uses XMLHttpRequest for caching
+      final r = await _getImageWithQuality(
+        imageOwner,
+        id,
+        isMatch: isMatch,
+        preferredQuality: userPreferredQuality,
+        media: media,
+      );
+      return r?.data;
+    }
+
     final storedQualityResult = await media.db.accountData(
       (r) => r.contentQuality.getQualityInfo(imageOwner.aid, id.cid),
     );
