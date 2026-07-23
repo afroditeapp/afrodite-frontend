@@ -66,7 +66,7 @@ extension MediaManualAdditions on MediaApi {
             response.statusCode != HttpStatus.noContent
         ? response.bodyBytes
         : null;
-    final q = response.headers['q'];
+    final q = response.headers['etag']?.replaceAll('"', '');
     return ContentQualityResult(data: data, quality: q);
   }
 
