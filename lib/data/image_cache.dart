@@ -22,6 +22,8 @@ import 'package:utils/utils.dart';
 
 import 'package:image/image.dart' as img;
 import 'package:app/model/freezed/utils/account_img_key.dart';
+import 'package:app/ui_utils/snack_bar.dart';
+import 'package:app/localizations.dart';
 
 class ImageCacheData extends AppSingleton {
   ImageCacheData._private()
@@ -40,6 +42,11 @@ class ImageCacheData extends AppSingleton {
 
   /// 3 hours before retrying with preferred quality.
   static const _preferredQualityRetryDelay = Duration(hours: 3);
+
+  /// 1 hour cooldown for showing image quality degraded snackbar.
+  static const _degradedQualitySnackbarCooldown = Duration(hours: 1);
+
+  UtcDateTime? _lastDegradedQualitySnackbarTime;
 
   /// Get image bytes for profile picture.
   /// Checks DB for stored quality info and retries with preferred quality if needed.
@@ -118,6 +125,28 @@ class ImageCacheData extends AppSingleton {
     return result.data;
   }
 
+  /// Check if received quality is lower than requested and show snackbar.
+  void _checkShowDegradedQualitySnackbar(String requestedQuality, String? receivedQuality) {
+    if (receivedQuality == null) return;
+    if (_qualityIsDegraded(requestedQuality, receivedQuality)) {
+      final now = UtcDateTime.now();
+      final last = _lastDegradedQualitySnackbarTime;
+      if (last == null || now.difference(last) >= _degradedQualitySnackbarCooldown) {
+        _lastDegradedQualitySnackbarTime = now;
+        showSnackBar(R.strings.snackbar_image_quality_degraded);
+      }
+    }
+  }
+
+  /// Returns true if [received] is lower quality than [requested].
+  /// Quality order: l < m < h
+  bool _qualityIsDegraded(String requested, String received) {
+    const qualityOrder = {'l': 0, 'm': 1, 'h': 2};
+    final reqVal = qualityOrder[requested] ?? 2;
+    final recVal = qualityOrder[received] ?? 0;
+    return recVal < reqVal;
+  }
+
   Future<ContentQualityResult?> _getImageWithQuality(
     AccountId imageOwner,
     ContentId id, {
@@ -127,12 +156,16 @@ class ImageCacheData extends AppSingleton {
   }) async {
     if (kIsWeb) {
       // Web uses XMLHttpRequest for caching
-      return await media.getImage(
+      final result = await media.getImage(
         imageOwner,
         id,
         isMatch: isMatch,
         preferredQuality: preferredQuality,
       );
+      if (result != null) {
+        _checkShowDegradedQualitySnackbar(preferredQuality, result.quality);
+      }
+      return result;
     }
     final imgKey = "img:${imageOwner.aid}${id.cid}:q$preferredQuality";
     final fileInfo = await cacheManager.getFileFromCache(imgKey);
@@ -153,6 +186,10 @@ class ImageCacheData extends AppSingleton {
     );
     if (result == null || result.data == null || result.data!.isEmpty) {
       return null;
+    }
+
+    if (result.quality != null) {
+      _checkShowDegradedQualitySnackbar(preferredQuality, result.quality);
     }
 
     try {

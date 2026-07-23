@@ -3742,6 +3742,12 @@ abstract class AppLocalizations {
   /// **'Logic error'**
   String get snackbar_error_logic;
 
+  /// Snackbar text when server returns lower image quality than requested
+  ///
+  /// In en, this message translates to:
+  /// **'Many users are viewing profiles - image quality may be degraded'**
+  String get snackbar_image_quality_degraded;
+
   /// Splash screen error text that app is already running
   ///
   /// In en, this message translates to:

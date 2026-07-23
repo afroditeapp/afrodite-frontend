@@ -114,6 +114,7 @@
     <string name="snackbar_error_logic" description="Snackbar error text for logic errors">Logic error</string>
     <string name="snackbar_api_forbidden_request" description="Snackbar error text for forbidden API requests">API error: forbidden request</string>
     <string name="snackbar_api_usage_limit_reached" description="Snackbar info text that API usage limit is reached">API usage limit is reached. Try again tomorrow.</string>
+    <string name="snackbar_image_quality_degraded" description="Snackbar text when server returns lower image quality than requested">Many users are viewing profiles - image quality may be degraded</string>
 
     <!-- Server connection indicator -->
     <string name="server_connection_indicator_reconnecting_in_seconds" description="Server connection indicator text showing countdown">Reconnecting in %ss</string>

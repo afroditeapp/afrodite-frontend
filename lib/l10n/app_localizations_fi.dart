@@ -2086,6 +2086,10 @@ class AppLocalizationsFi extends AppLocalizations {
   String get snackbar_error_logic => 'Logic error';
 
   @override
+  String get snackbar_image_quality_degraded =>
+      'Many users are viewing profiles - image quality may be degraded';
+
+  @override
   String get splash_screen_app_is_already_running => 'App is already running';
 
   @override
