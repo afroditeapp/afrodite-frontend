@@ -37,25 +37,3 @@ class ClientVersionInfo extends SingleRowTable {
   IntColumn get minorVersion => integer()();
   IntColumn get patchVersion => integer()();
 }
-
-/// General cache table for storing cached data
-class GeneralCache extends Table {
-  IntColumn get id => integer().autoIncrement()();
-
-  /// Cache key (e.g., "image_cache", "map_cache")
-  TextColumn get cacheKey => text()();
-
-  /// Entry key within the cache
-  TextColumn get entryKey => text()();
-
-  /// Whether the file was saved successfully to disk
-  BoolColumn get savedSuccessfully => boolean().withDefault(const Constant(false))();
-
-  /// Last accessed timestamp
-  DateTimeColumn get lastAccessed => dateTime()();
-
-  @override
-  List<Set<Column>> get uniqueKeys => [
-    {cacheKey, entryKey},
-  ];
-}

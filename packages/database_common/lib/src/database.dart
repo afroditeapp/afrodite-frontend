@@ -1,11 +1,9 @@
 import 'package:database_common/src/read/app.dart';
 import 'package:database_common/src/read/demo_account.dart';
 import 'package:database_common/src/read/login_session.dart';
-import 'package:database_common/src/read/general_cache.dart';
 import 'package:database_common/src/write/app.dart';
 import 'package:database_common/src/write/demo_account.dart';
 import 'package:database_common/src/write/login_session.dart';
-import 'package:database_common/src/write/general_cache.dart';
 import 'package:database_converter/database_converter.dart';
 import 'package:database_utils/database_utils.dart';
 import 'package:drift/drift.dart';
@@ -24,19 +22,16 @@ part 'database.g.dart';
     schema.AccountId,
     schema.ServerUrl,
     schema.CurrentLocale,
-    schema.GeneralCache,
   ],
   daos: [
     // Read
     DaoReadApp,
     DaoReadDemoAccount,
     DaoReadLoginSession,
-    DaoReadGeneralCache,
     // Write
     DaoWriteApp,
     DaoWriteDemoAccount,
     DaoWriteLoginSession,
-    DaoWriteGeneralCache,
   ],
 )
 class CommonDatabase extends _$CommonDatabase {
@@ -55,7 +50,6 @@ class CommonDatabaseRead {
   DaoReadDemoAccount get demoAccount => db.daoReadDemoAccount;
   DaoReadApp get app => db.daoReadApp;
   DaoReadLoginSession get loginSession => db.daoReadLoginSession;
-  DaoReadGeneralCache get generalCache => db.daoReadGeneralCache;
 }
 
 class CommonDatabaseWrite {
@@ -64,5 +58,4 @@ class CommonDatabaseWrite {
   DaoWriteDemoAccount get demoAccount => db.daoWriteDemoAccount;
   DaoWriteApp get app => db.daoWriteApp;
   DaoWriteLoginSession get loginSession => db.daoWriteLoginSession;
-  DaoWriteGeneralCache get generalCache => db.daoWriteGeneralCache;
 }
