@@ -28,7 +28,6 @@ import 'package:app/localizations.dart';
 class ImageCacheData extends AppSingleton {
   ImageCacheData._private()
     : cacheManager = GeneralCacheManager(
-        key: "image_cache",
         stalePeriod: const Duration(days: 90),
         // Images are about 100 KiB each, so 10 000 images is about 1 GiB
         maxNrOfCacheObjects: 10000,

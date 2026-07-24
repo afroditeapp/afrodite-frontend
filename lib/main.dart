@@ -16,6 +16,7 @@ import 'package:app/data/image_cache.dart';
 import 'package:app/data/notification_manager.dart';
 import 'package:app/data/push_notification_manager.dart';
 import 'package:app/database/common_database_manager.dart';
+import 'package:app/database/cache_database_manager.dart';
 import 'package:app/localizations.dart';
 
 import 'package:app/logic/app/main_state.dart';
@@ -216,6 +217,7 @@ class GlobalInitManager extends AppSingletonNoInit {
 
   Future<void> _continueInit() async {
     await CommonDatabaseManager.getInstance().init();
+    await CacheDatabaseManager.getInstance().init();
 
     await ErrorManager.getInstance().init();
     await ImageCacheData.getInstance().init();

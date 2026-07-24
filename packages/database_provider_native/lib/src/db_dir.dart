@@ -27,6 +27,11 @@ class DbDirUtils {
     return _dbPath("common.db");
   }
 
+  static Future<String> cacheDbPath() async {
+    final cacheDir = await getApplicationCacheDirectory();
+    return p.join(cacheDir.path, "cache.db");
+  }
+
   static Future<String> accountDbPath(String account) async {
     final dbName = "$account.account.db";
     return await _dbPath(dbName);

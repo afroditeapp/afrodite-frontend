@@ -1,7 +1,7 @@
 import 'dart:async';
 import 'dart:io';
 
-import 'package:app/database/common_database_manager.dart';
+import 'package:app/database/cache_database_manager.dart';
 import 'package:app/utils/result.dart';
 import 'package:flutter/foundation.dart';
 import 'package:path/path.dart' as p;
@@ -9,17 +9,15 @@ import 'package:path_provider/path_provider.dart';
 
 /// A cache manager that stores cache entries on disk.
 class GeneralCacheManager {
-  final CommonDatabaseManager _dbManager;
-  final String _key;
   final Duration _stalePeriod;
   final int _maxNrOfCacheObjects;
   late final Directory _cacheDir;
+  final CacheDatabaseManager _cacheDb = CacheDatabaseManager.getInstance();
 
   GeneralCacheManager({
-    required this._key,
     this._stalePeriod = const Duration(days: 90),
     this._maxNrOfCacheObjects = 10000,
-  }) : _dbManager = CommonDatabaseManager.getInstance();
+  });
 
   /// Must be called before using this cache manager.
   Future<void> init() async {
@@ -37,9 +35,7 @@ class GeneralCacheManager {
   /// Get a cache entry by key. Returns null if not cached, stale, or file missing.
   Future<GeneralCacheFileInfo?> getFileFromCache(String key) async {
     try {
-      final entry = await _dbManager
-          .commonData((db) => db.generalCache.getCacheEntry(_key, key))
-          .ok();
+      final entry = await _cacheDb.cacheData((db) => db.cacheEntry.getCacheEntry(key)).ok();
 
       if (entry == null) {
         return null;
@@ -61,12 +57,12 @@ class GeneralCacheManager {
       // Read file from disk
       final file = File(p.join(_cacheDir.path, entry.id.toString()));
       if (!await file.exists()) {
-        await _dbManager.commonAction((db) => db.generalCache.deleteCacheEntry(_key, key));
+        await _cacheDb.cacheAction((db) => db.cacheEntry.deleteCacheEntry(key));
         return null;
       }
 
       // Update last accessed time
-      await _dbManager.commonAction((db) => db.generalCache.updateLastAccessed(_key, key, now));
+      await _cacheDb.cacheAction((db) => db.cacheEntry.updateLastAccessed(key, now));
 
       return GeneralCacheFileInfo(
         key: key,
@@ -86,12 +82,8 @@ class GeneralCacheManager {
       await _enforceMaxCacheSize();
 
       // Insert DB entry first to get the row id
-      final idResult = await _dbManager.commonActionReturn(
-        (db) => db.generalCache.upsertCacheEntry(
-          cacheKey: _key,
-          entryKey: key,
-          lastAccessed: DateTime.now(),
-        ),
+      final idResult = await _cacheDb.cacheActionReturn(
+        (db) => db.cacheEntry.upsertCacheEntry(entryKey: key, lastAccessed: DateTime.now()),
       );
       final id = idResult.ok();
       if (id == null) return;
@@ -101,7 +93,7 @@ class GeneralCacheManager {
       await file.writeAsBytes(fileBytes);
 
       // Mark as successfully saved
-      await _dbManager.commonAction((db) => db.generalCache.markSavedSuccessfully(id));
+      await _cacheDb.cacheAction((db) => db.cacheEntry.markSavedSuccessfully(id));
     } catch (e) {
       // Ignore errors
     }
@@ -110,16 +102,15 @@ class GeneralCacheManager {
   /// Enforce maximum cache size by removing oldest entries
   Future<void> _enforceMaxCacheSize() async {
     try {
-      final count =
-          await _dbManager.commonData((db) => db.generalCache.getCacheEntryCount(_key)).ok() ?? 0;
+      final count = await _cacheDb.cacheData((db) => db.cacheEntry.getCacheEntryCount()).ok() ?? 0;
       if (count >= _maxNrOfCacheObjects) {
         final toRemove = count - _maxNrOfCacheObjects + 1;
-        final ids = await _dbManager
-            .commonData((db) => db.generalCache.getOldestEntryIds(_key, toRemove))
+        final ids = await _cacheDb
+            .cacheData((db) => db.cacheEntry.getOldestEntryIds(toRemove))
             .ok();
         if (ids != null && ids.isNotEmpty) {
           await _deleteFiles(ids);
-          await _dbManager.commonAction((db) => db.generalCache.deleteIds(ids));
+          await _cacheDb.cacheAction((db) => db.cacheEntry.deleteIds(ids));
         }
       }
     } catch (e) {
@@ -129,7 +120,7 @@ class GeneralCacheManager {
 
   Future<void> _deleteEntryAndFile(int id, String key) async {
     await _deleteFile(id);
-    await _dbManager.commonAction((db) => db.generalCache.deleteCacheEntry(_key, key));
+    await _cacheDb.cacheAction((db) => db.cacheEntry.deleteCacheEntry(key));
   }
 
   Future<void> _deleteFile(int id) async {

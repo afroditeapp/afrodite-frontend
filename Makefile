@@ -52,6 +52,8 @@ update-freezed-code:
 
 update-drift-code-account:
 	cd packages/database_account && dart run build_runner build
+update-drift-code-cache:
+	cd packages/database_cache && dart run build_runner build
 update-drift-code-common:
 	cd packages/database_common && dart run build_runner build
 
@@ -139,6 +141,7 @@ clean:
 	flutter clean
 	cd packages/database && flutter clean
 	cd packages/database_account && flutter clean
+	cd packages/database_cache && flutter clean
 	cd packages/database_common && flutter clean
 	cd packages/database_converter && flutter clean
 	cd packages/database_model && flutter clean
@@ -162,6 +165,7 @@ code-stats:
 	lib \
 	packages/database \
 	packages/database_account \
+	packages/database_cache \
 	packages/database_common \
 	packages/database_converter \
 	packages/database_model \

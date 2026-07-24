@@ -41,6 +41,8 @@ String dbFileToDbName(DbFile dbFile) {
       return "common.db";
     case AccountDbFile():
       return "account_${dbFile.accountId}.db";
+    case CacheDbFile():
+      return "cache.db";
   }
 }
 

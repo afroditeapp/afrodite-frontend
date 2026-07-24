@@ -26,6 +26,7 @@ workspace:
   - packages/api_client
   - packages/database
   - packages/database_account
+  - packages/database_cache
   - packages/database_common
   - packages/database_converter
   - packages/database_model
@@ -71,6 +72,9 @@ dependencies:
 
   database:
     path: "packages/database"
+
+  database_cache:
+    path: "packages/database_cache"
 
   database_utils:
     path: "packages/database_utils"

@@ -22,6 +22,8 @@ class AccountDbFile extends DbFile {
   AccountDbFile(this.accountId);
 }
 
+class CacheDbFile extends DbFile {}
+
 class SingleRowTable extends Table {
   static const Value<int> ID = Value(0);
   IntColumn get id => integer().autoIncrement()();
