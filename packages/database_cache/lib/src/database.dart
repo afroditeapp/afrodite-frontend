@@ -1,20 +1,13 @@
 import 'package:database_cache/src/read/cache_entry.dart';
-import 'package:database_cache/src/read/content_quality.dart';
 import 'package:database_cache/src/write/cache_entry.dart';
-import 'package:database_cache/src/write/content_quality.dart';
-import 'package:database_converter/database_converter.dart';
 import 'package:database_utils/database_utils.dart';
 import 'package:drift/drift.dart';
-import 'package:utils/utils.dart';
 import 'schema.dart' as schema;
 
 part 'database.g.dart';
 
 /// Cache database for storing image cache metadata in system cache directory.
-@DriftDatabase(
-  tables: [schema.CacheEntry, schema.ContentQuality, schema.ContentQualityCleanupState],
-  daos: [DaoReadCacheEntry, DaoReadContentQuality, DaoWriteCacheEntry, DaoWriteContentQuality],
-)
+@DriftDatabase(tables: [schema.CacheEntry], daos: [DaoReadCacheEntry, DaoWriteCacheEntry])
 class CacheDatabase extends _$CacheDatabase {
   CacheDatabase(QueryExcecutorProvider dbProvider) : super(dbProvider.getQueryExcecutor());
 
@@ -30,7 +23,6 @@ class CacheDatabaseRead {
   CacheDatabaseRead(this.db);
 
   DaoReadCacheEntry get cacheEntry => db.daoReadCacheEntry;
-  DaoReadContentQuality get contentQuality => db.daoReadContentQuality;
 }
 
 class CacheDatabaseWrite {
@@ -38,5 +30,4 @@ class CacheDatabaseWrite {
   CacheDatabaseWrite(this.db);
 
   DaoWriteCacheEntry get cacheEntry => db.daoWriteCacheEntry;
-  DaoWriteContentQuality get contentQuality => db.daoWriteContentQuality;
 }

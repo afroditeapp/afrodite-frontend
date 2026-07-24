@@ -5,7 +5,6 @@ import 'dart:ui';
 
 import 'package:app/data/general_cache.dart';
 import 'package:app/data/utils/repository_instances.dart';
-import 'package:app/database/cache_database_manager.dart';
 import 'package:app/ui/utils/view_profile.dart';
 import 'package:app/ui_utils/crop_image_screen.dart';
 import 'package:app/ui_utils/profile_thumbnail_image.dart';
@@ -40,16 +39,12 @@ class ImageCacheData extends AppSingleton {
 
   final GeneralCacheManager cacheManager;
 
-  /// 3 hours before retrying with preferred quality.
-  static const _preferredQualityRetryDelay = Duration(hours: 3);
-
   /// 1 hour cooldown for showing image quality degraded snackbar.
   static const _degradedQualitySnackbarCooldown = Duration(hours: 1);
 
   UtcDateTime? _lastDegradedQualitySnackbarTime;
 
   /// Get image bytes for profile picture.
-  /// Checks DB for stored quality info and retries with preferred quality if needed.
   Future<Uint8List?> getImage(
     AccountId imageOwner,
     ContentId id, {
@@ -62,79 +57,14 @@ class ImageCacheData extends AppSingleton {
     final userPreferredQuality =
         userPreferredQualityResult.ok()?.quality ?? UserPreferredContentQuality.DEFAULT;
 
-    if (kIsWeb) {
-      // Web uses XMLHttpRequest for caching
-      final r = await _getImageWithQuality(
-        imageOwner,
-        id,
-        isMatch: isMatch,
-        preferredQuality: userPreferredQuality,
-        media: media,
-      );
-      return r?.data;
-    }
-
-    final cacheDb = CacheDatabaseManager.getInstance();
-    final storedQuality = (await cacheDb.cacheData(
-      (r) => r.contentQuality.getQualityInfo(imageOwner.aid, id.cid),
-    )).ok();
-
-    final String preferredQuality;
-
-    if (storedQuality != null && storedQuality.quality == "h") {
-      // API forces high quality version in some cases
-      preferredQuality = "h";
-    } else if (storedQuality != null && storedQuality.quality != userPreferredQuality) {
-      final elapsed = UtcDateTime.now().difference(storedQuality.lastRequestTime);
-      if (elapsed >= _preferredQualityRetryDelay) {
-        preferredQuality = userPreferredQuality;
-      } else {
-        preferredQuality = storedQuality.quality;
-      }
-    } else {
-      preferredQuality = userPreferredQuality;
-    }
-
-    final result = await _getImageWithQuality(
+    final r = await _getImageWithQuality(
       imageOwner,
       id,
       isMatch: isMatch,
-      preferredQuality: preferredQuality,
+      preferredQuality: userPreferredQuality,
       media: media,
     );
-
-    if (result == null) return null;
-
-    final receivedQuality = result.quality;
-    if (receivedQuality != null) {
-      final saveQualityInfo =
-          storedQuality == null ||
-          (storedQuality.quality == "l" && receivedQuality != "l") ||
-          (storedQuality.quality == "m" && receivedQuality == "h");
-      await cacheDb.cacheAction(
-        (w) => w.contentQuality.setQualityInfo(
-          accountId: imageOwner.aid,
-          contentId: id.cid,
-          quality: saveQualityInfo ? receivedQuality : storedQuality.quality,
-          lastRequestTime: UtcDateTime.now(),
-        ),
-      );
-      final useCachedQuality = storedQuality != null && !saveQualityInfo;
-      if (useCachedQuality) {
-        // Previous API request returned lower quality version than
-        // locally available.
-        final r = await _getImageWithQuality(
-          imageOwner,
-          id,
-          isMatch: isMatch,
-          preferredQuality: storedQuality.quality,
-          media: media,
-        );
-        return r?.data;
-      }
-    }
-
-    return result.data;
+    return r?.data;
   }
 
   /// Check if received quality is lower than requested and show snackbar.
