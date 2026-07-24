@@ -3,6 +3,6 @@
 part of 'content_quality.dart';
 
 // ignore_for_file: type=lint
-mixin _$DaoReadContentQualityMixin on DatabaseAccessor<AccountDatabase> {
+mixin _$DaoReadContentQualityMixin on DatabaseAccessor<CacheDatabase> {
   $ContentQualityTable get contentQuality => attachedDatabase.contentQuality;
 }

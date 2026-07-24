@@ -1,11 +1,11 @@
-import 'package:database_account/src/database.dart';
-import 'package:database_account/src/schema.dart' as schema;
+import 'package:database_cache/src/database.dart';
+import 'package:database_cache/src/schema.dart' as schema;
 import 'package:drift/drift.dart';
 
 part 'content_quality.g.dart';
 
 @DriftAccessor(tables: [schema.ContentQuality])
-class DaoReadContentQuality extends DatabaseAccessor<AccountDatabase>
+class DaoReadContentQuality extends DatabaseAccessor<CacheDatabase>
     with _$DaoReadContentQualityMixin {
   DaoReadContentQuality(super.db);
 

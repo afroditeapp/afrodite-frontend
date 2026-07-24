@@ -30,6 +30,15 @@ class CacheDatabaseManager {
     _db = CacheDatabase(_dbProvider);
     final result = await _dbProvider.getQueryExcecutor().ensureOpen(_db);
     _log.info("CacheDatabase ensureOpen result: $result");
+
+    final cleanedCount = await cacheActionReturn(
+      (db) => db.contentQuality.cleanupStaleContentQualityIfNeeded(),
+    ).ok();
+    if (cleanedCount == null) {
+      _log.warning("Content quality cleanup failed on app resume");
+    } else if (cleanedCount > 0) {
+      _log.fine("Content quality cleanup removed $cleanedCount quality info entries on app resume");
+    }
   }
 
   Future<Result<T, DatabaseError>> cacheData<T extends Object?>(

@@ -5,6 +5,7 @@ import 'dart:ui';
 
 import 'package:app/data/general_cache.dart';
 import 'package:app/data/utils/repository_instances.dart';
+import 'package:app/database/cache_database_manager.dart';
 import 'package:app/ui/utils/view_profile.dart';
 import 'package:app/ui_utils/crop_image_screen.dart';
 import 'package:app/ui_utils/profile_thumbnail_image.dart';
@@ -73,10 +74,10 @@ class ImageCacheData extends AppSingleton {
       return r?.data;
     }
 
-    final storedQualityResult = await media.db.accountData(
+    final cacheDb = CacheDatabaseManager.getInstance();
+    final storedQuality = (await cacheDb.cacheData(
       (r) => r.contentQuality.getQualityInfo(imageOwner.aid, id.cid),
-    );
-    final storedQuality = storedQualityResult.ok();
+    )).ok();
 
     final String preferredQuality;
 
@@ -110,7 +111,7 @@ class ImageCacheData extends AppSingleton {
           storedQuality == null ||
           (storedQuality.quality == "l" && receivedQuality != "l") ||
           (storedQuality.quality == "m" && receivedQuality == "h");
-      await media.db.accountAction(
+      await cacheDb.cacheAction(
         (w) => w.contentQuality.setQualityInfo(
           accountId: imageOwner.aid,
           contentId: id.cid,

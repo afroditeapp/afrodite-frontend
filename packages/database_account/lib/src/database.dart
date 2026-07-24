@@ -14,7 +14,6 @@ import 'package:database_account/src/read/progress.dart';
 import 'package:database_account/src/read/common/common.dart';
 import 'package:database_account/src/read/media/media.dart';
 import 'package:database_account/src/read/media/my_media.dart';
-import 'package:database_account/src/read/app/content_quality.dart';
 import 'package:database_account/src/read/profile/my_profile.dart';
 import 'package:database_account/src/read/profile/privacy.dart';
 import 'package:database_account/src/read/profile/profile.dart';
@@ -35,7 +34,6 @@ import 'package:database_account/src/write/progress.dart';
 import 'package:database_account/src/write/common/common.dart';
 import 'package:database_account/src/write/media/media.dart';
 import 'package:database_account/src/write/media/my_media.dart';
-import 'package:database_account/src/write/app/content_quality.dart';
 import 'package:database_account/src/write/profile/my_profile.dart';
 import 'package:database_account/src/write/profile/privacy.dart';
 import 'package:database_account/src/write/profile/profile.dart';
@@ -67,8 +65,6 @@ part 'database.g.dart';
     schema.PushNotification,
     schema.AppUpdateAvailableDialog,
     schema.ClientVersionInfo,
-    schema.ContentQuality,
-    schema.ContentQualityCleanupState,
     schema.UserPreferredContentQuality,
     schema.EditProfileProgress,
     schema.DraftMessage,
@@ -138,7 +134,6 @@ part 'database.g.dart';
     // Media
     DaoReadMedia,
     DaoReadMyMedia,
-    DaoReadContentQuality,
     // Profile
     DaoReadProfile,
     DaoReadMyProfile,
@@ -168,7 +163,6 @@ part 'database.g.dart';
     // Media
     DaoWriteMedia,
     DaoWriteMyMedia,
-    DaoWriteContentQuality,
     // Profile
     DaoWriteProfile,
     DaoWriteMyProfile,
@@ -210,7 +204,6 @@ class AccountDatabaseRead {
   // Media
   DaoReadMedia get media => db.daoReadMedia;
   DaoReadMyMedia get myMedia => db.daoReadMyMedia;
-  DaoReadContentQuality get contentQuality => db.daoReadContentQuality;
   // Profile
   DaoReadProfile get profile => db.daoReadProfile;
   DaoReadMyProfile get myProfile => db.daoReadMyProfile;
@@ -242,7 +235,6 @@ class AccountDatabaseWrite {
   // Media
   DaoWriteMedia get media => db.daoWriteMedia;
   DaoWriteMyMedia get myMedia => db.daoWriteMyMedia;
-  DaoWriteContentQuality get contentQuality => db.daoWriteContentQuality;
   // Profile
   DaoWriteProfile get profile => db.daoWriteProfile;
   DaoWriteMyProfile get myProfile => db.daoWriteMyProfile;

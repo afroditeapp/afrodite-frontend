@@ -54,25 +54,6 @@ class ProfileDataCleanupState extends SingleRowTable {
       integer().map(NullAwareTypeConverter.wrap(const UtcDateTimeConverter())).nullable()();
 }
 
-class ContentQuality extends Table {
-  TextColumn get accountId => text()();
-  TextColumn get contentId => text()();
-
-  /// Quality returned by server: "h", "m", or "l"
-  TextColumn get quality => text()();
-
-  /// Timestamp when the request was made
-  IntColumn get lastRequestTime => integer().map(const UtcDateTimeConverter())();
-
-  @override
-  Set<Column<Object>> get primaryKey => {accountId, contentId};
-}
-
-class ContentQualityCleanupState extends SingleRowTable {
-  IntColumn get lastCleanupTime =>
-      integer().map(NullAwareTypeConverter.wrap(const UtcDateTimeConverter())).nullable()();
-}
-
 class UserPreferredContentQuality extends SingleRowTable {
   /// "h" = high, "m" = medium, "l" = low, null = use default
   TextColumn get quality => text().nullable()();

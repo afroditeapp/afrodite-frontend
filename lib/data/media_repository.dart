@@ -1,6 +1,6 @@
 import 'dart:async';
+import 'dart:typed_data';
 
-import 'package:drift/drift.dart';
 import 'package:logging/logging.dart';
 import 'package:openapi/api.dart';
 import 'package:openapi/manual_additions.dart';
@@ -51,18 +51,6 @@ class MediaRepository extends DataRepositoryWithLifecycle {
   @override
   Future<void> onInitialSetupComplete() async {
     await reloadMyMediaContent();
-  }
-
-  @override
-  Future<void> onResumeAppUsage() async {
-    final cleanedCount = await db
-        .accountDataWrite((db) => db.contentQuality.cleanupStaleContentQualityIfNeeded())
-        .ok();
-    if (cleanedCount == null) {
-      _log.warning("Content quality cleanup failed on app resume");
-    } else if (cleanedCount > 0) {
-      _log.fine("Content quality cleanup removed $cleanedCount quality info entries on app resume");
-    }
   }
 
   Future<ContentQualityResult?> getImage(
