@@ -21,10 +21,10 @@ class DaoReadCacheEntry extends DatabaseAccessor<CacheDatabase> with _$DaoReadCa
     return result.read(cacheEntry.id.count()) ?? 0;
   }
 
-  /// Get oldest entry IDs (for eviction)
+  /// Get oldest entry IDs by expireAt (for eviction)
   Future<List<int>> getOldestEntryIds(int count) async {
     final query = select(cacheEntry)
-      ..orderBy([(tbl) => OrderingTerm.asc(tbl.lastAccessed)])
+      ..orderBy([(tbl) => OrderingTerm.asc(tbl.expireAt)])
       ..limit(count);
     final entries = await query.get();
     return entries.map((e) => e.id).toList();

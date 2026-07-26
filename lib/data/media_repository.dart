@@ -58,26 +58,40 @@ class MediaRepository extends DataRepositoryWithLifecycle {
     ContentId id, {
     bool isMatch = false,
     String preferredQuality = "h",
+    String? ifNoneMatch,
   }) async {
     await connectionManager.tryWaitUntilConnected();
 
     return await api
-        .media((api) => api.getContentFixed(imageOwner.aid, id.cid, isMatch, preferredQuality))
+        .media(
+          (api) => api.getContentFixed(
+            imageOwner.aid,
+            id.cid,
+            isMatch,
+            preferredQuality,
+            ifNoneMatch: ifNoneMatch,
+          ),
+        )
         .onErr(() => _log.error("Image loading error"))
         .ok();
   }
 
-  Future<MapTileResult> getMapTile(int z, int x, int y, int version) async {
+  Future<MapTileResult> getMapTile(int z, int x, int y, int version, {String? ifNoneMatch}) async {
     await connectionManager.tryWaitUntilConnected();
 
     final data = await api.mediaWrapper().requestValue(
-      (api) => api.getMapTileFixed(z, x, y.toString(), version),
+      (api) => api.getMapTileFixed(z, x, y.toString(), version, ifNoneMatch: ifNoneMatch),
       logError: false,
     );
 
     switch (data) {
       case Ok(:final v):
-        return MapTileSuccess(v);
+        switch (v) {
+          case MapTileContentNotModified(:final data, :final etag, :final cacheControlMaxAge):
+            return MapTileNotModified(data, etag, cacheControlMaxAge);
+          case MapTileContentData(:final data, :final etag, :final cacheControlMaxAge):
+            return MapTileSuccess(data, etag, cacheControlMaxAge);
+        }
       case Err(:final e):
         if (e.isNotFoundError()) {
           // No map tile available
@@ -149,7 +163,16 @@ sealed class MapTileResult {}
 
 class MapTileSuccess extends MapTileResult {
   Uint8List pngData;
-  MapTileSuccess(this.pngData);
+  String etag;
+  Duration cacheControlMaxAge;
+  MapTileSuccess(this.pngData, this.etag, this.cacheControlMaxAge);
+}
+
+class MapTileNotModified extends MapTileResult {
+  Uint8List? data;
+  String etag;
+  Duration cacheControlMaxAge;
+  MapTileNotModified(this.data, this.etag, this.cacheControlMaxAge);
 }
 
 class MapTileError extends MapTileResult {}

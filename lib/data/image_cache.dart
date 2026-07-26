@@ -28,8 +28,7 @@ import 'package:app/localizations.dart';
 class ImageCacheData extends AppSingleton {
   ImageCacheData._private()
     : cacheManager = GeneralCacheManager(
-        stalePeriod: const Duration(days: 90),
-        // Images are about 100 KiB each, so 10 000 images is about 1 GiB
+        // Images are about 100 KiB each on high quality, so 10 000 images is about 1 GiB
         maxNrOfCacheObjects: 10000,
       );
   static final _instance = ImageCacheData._private();
@@ -64,12 +63,11 @@ class ImageCacheData extends AppSingleton {
       preferredQuality: userPreferredQuality,
       media: media,
     );
-    return r?.data;
+    return r;
   }
 
   /// Check if received quality is lower than requested and show snackbar.
-  void _checkShowDegradedQualitySnackbar(String requestedQuality, String? receivedQuality) {
-    if (receivedQuality == null) return;
+  void _checkShowDegradedQualitySnackbar(String requestedQuality, String receivedQuality) {
     if (_qualityIsDegraded(requestedQuality, receivedQuality)) {
       final now = UtcDateTime.now();
       final last = _lastDegradedQualitySnackbarTime;
@@ -89,7 +87,7 @@ class ImageCacheData extends AppSingleton {
     return recVal < reqVal;
   }
 
-  Future<ContentQualityResult?> _getImageWithQuality(
+  Future<Uint8List?> _getImageWithQuality(
     AccountId imageOwner,
     ContentId id, {
     bool isMatch = false,
@@ -104,20 +102,20 @@ class ImageCacheData extends AppSingleton {
         isMatch: isMatch,
         preferredQuality: preferredQuality,
       );
-      if (result != null) {
-        _checkShowDegradedQualitySnackbar(preferredQuality, result.quality);
+      if (result case ContentQualityData(:final etag) || ContentQualityNotModified(:final etag)) {
+        _checkShowDegradedQualitySnackbar(preferredQuality, etag);
       }
-      return result;
+      return switch (result) {
+        ContentQualityData(:final data) => data,
+        ContentQualityNotModified(:final data) => data,
+        _ => null,
+      };
     }
     final imgKey = "img:${imageOwner.aid}${id.cid}:q$preferredQuality";
     final fileInfo = await cacheManager.getFileFromCache(imgKey);
-    if (fileInfo != null) {
-      try {
-        final bytes = await fileInfo.file.readAsBytes();
-        return ContentQualityResult(data: bytes);
-      } catch (_) {
-        // Fallback to image downloading
-      }
+    if (fileInfo != null && fileInfo.isFresh) {
+      // Still fresh, return cached data
+      return fileInfo.data;
     }
 
     final result = await media.getImage(
@@ -125,21 +123,34 @@ class ImageCacheData extends AppSingleton {
       id,
       isMatch: isMatch,
       preferredQuality: preferredQuality,
+      ifNoneMatch: fileInfo?.etag,
     );
-    if (result == null || result.data == null || result.data!.isEmpty) {
+    if (result != null) {
+      switch (result) {
+        case ContentQualityNotModified(:final etag, :final cacheControlMaxAge):
+          _checkShowDegradedQualitySnackbar(preferredQuality, etag);
+          await cacheManager.renewTimestamps(imgKey, cacheControlMaxAge: cacheControlMaxAge);
+          return fileInfo?.data;
+        case ContentQualityData(:final data, :final etag, :final cacheControlMaxAge):
+          _checkShowDegradedQualitySnackbar(preferredQuality, etag);
+          if (data.isEmpty) {
+            return null;
+          }
+          try {
+            await cacheManager.putFile(
+              data,
+              key: imgKey,
+              etag: etag,
+              cacheControlMaxAge: cacheControlMaxAge,
+            );
+          } catch (_) {
+            // Ignore errors
+          }
+          return result.data;
+      }
+    } else {
       return null;
     }
-
-    if (result.quality != null) {
-      _checkShowDegradedQualitySnackbar(preferredQuality, result.quality);
-    }
-
-    try {
-      await cacheManager.putFile(result.data!, key: imgKey);
-    } catch (_) {
-      // Ignore errors
-    }
-    return result;
   }
 
   /// Get PNG file bytes for map tile.
@@ -150,46 +161,53 @@ class ImageCacheData extends AppSingleton {
     int version, {
     required MediaRepository media,
   }) async {
-    final String? mapTileCacheKey;
     if (kIsWeb) {
       // Web uses XMLHttpRequest for caching
-      mapTileCacheKey = null;
-    } else {
-      final key = createMapTileKey(z, x, y, version);
-      mapTileCacheKey = key;
-      final fileInfo = await cacheManager.getFileFromCache(key);
-      if (fileInfo != null) {
-        try {
-          return await fileInfo.file.readAsBytes();
-        } catch (_) {
-          // Fallback to image downloading
-        }
-      }
-    }
-
-    final tileResult = await media.getMapTile(z, x, y, version);
-    final Uint8List tilePngData;
-    switch (tileResult) {
-      case MapTileSuccess tileResult:
-        tilePngData = tileResult.pngData;
-      case MapTileNotAvailable():
-        tilePngData = _cachedEmptyMapTile();
-      case MapTileError():
-        return null;
-    }
-
-    if (mapTileCacheKey != null) {
-      try {
-        if (tilePngData.isEmpty) {
+      final tileResult = await media.getMapTile(z, x, y, version);
+      switch (tileResult) {
+        case MapTileSuccess(:final pngData):
+          return pngData;
+        case MapTileNotAvailable():
+          return _cachedEmptyMapTile();
+        case MapTileError():
           return null;
-        }
-        await cacheManager.putFile(tilePngData, key: mapTileCacheKey);
-      } catch (_) {
-        // Ignore errors
+        case MapTileNotModified(:final data):
+          return data;
       }
     }
 
-    return tilePngData;
+    final key = createMapTileKey(z, x, y, version);
+    final fileInfo = await cacheManager.getFileFromCache(key);
+    if (fileInfo != null && fileInfo.isFresh) {
+      return fileInfo.data;
+    }
+
+    final tileResult = await media.getMapTile(z, x, y, version, ifNoneMatch: fileInfo?.etag);
+    switch (tileResult) {
+      case MapTileNotModified(:final cacheControlMaxAge):
+        await cacheManager.renewTimestamps(key, cacheControlMaxAge: cacheControlMaxAge);
+        return fileInfo?.data;
+      case MapTileSuccess(:final pngData, :final etag, :final cacheControlMaxAge):
+        try {
+          if (pngData.isEmpty) {
+            return null;
+          }
+          await cacheManager.putFile(
+            pngData,
+            key: key,
+            etag: etag,
+            cacheControlMaxAge: cacheControlMaxAge,
+          );
+          return pngData;
+        } catch (_) {
+          // Ignore errors
+          return pngData;
+        }
+      case MapTileNotAvailable():
+        return _cachedEmptyMapTile();
+      case MapTileError():
+        return fileInfo?.data;
+    }
   }
 
   @override

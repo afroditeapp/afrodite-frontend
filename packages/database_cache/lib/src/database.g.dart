@@ -49,12 +49,32 @@ class $CacheEntryTable extends schema.CacheEntry
     ),
     defaultValue: const Constant(false),
   );
-  static const VerificationMeta _lastAccessedMeta = const VerificationMeta(
-    'lastAccessed',
+  static const VerificationMeta _etagMeta = const VerificationMeta('etag');
+  @override
+  late final GeneratedColumn<String> etag = GeneratedColumn<String>(
+    'etag',
+    aliasedName,
+    true,
+    type: DriftSqlType.string,
+    requiredDuringInsert: false,
+  );
+  static const VerificationMeta _staleAtMeta = const VerificationMeta(
+    'staleAt',
   );
   @override
-  late final GeneratedColumn<DateTime> lastAccessed = GeneratedColumn<DateTime>(
-    'last_accessed',
+  late final GeneratedColumn<DateTime> staleAt = GeneratedColumn<DateTime>(
+    'stale_at',
+    aliasedName,
+    false,
+    type: DriftSqlType.dateTime,
+    requiredDuringInsert: true,
+  );
+  static const VerificationMeta _expireAtMeta = const VerificationMeta(
+    'expireAt',
+  );
+  @override
+  late final GeneratedColumn<DateTime> expireAt = GeneratedColumn<DateTime>(
+    'expire_at',
     aliasedName,
     false,
     type: DriftSqlType.dateTime,
@@ -65,7 +85,9 @@ class $CacheEntryTable extends schema.CacheEntry
     id,
     entryKey,
     savedSuccessfully,
-    lastAccessed,
+    etag,
+    staleAt,
+    expireAt,
   ];
   @override
   String get aliasedName => _alias ?? actualTableName;
@@ -99,16 +121,27 @@ class $CacheEntryTable extends schema.CacheEntry
         ),
       );
     }
-    if (data.containsKey('last_accessed')) {
+    if (data.containsKey('etag')) {
       context.handle(
-        _lastAccessedMeta,
-        lastAccessed.isAcceptableOrUnknown(
-          data['last_accessed']!,
-          _lastAccessedMeta,
-        ),
+        _etagMeta,
+        etag.isAcceptableOrUnknown(data['etag']!, _etagMeta),
+      );
+    }
+    if (data.containsKey('stale_at')) {
+      context.handle(
+        _staleAtMeta,
+        staleAt.isAcceptableOrUnknown(data['stale_at']!, _staleAtMeta),
       );
     } else if (isInserting) {
-      context.missing(_lastAccessedMeta);
+      context.missing(_staleAtMeta);
+    }
+    if (data.containsKey('expire_at')) {
+      context.handle(
+        _expireAtMeta,
+        expireAt.isAcceptableOrUnknown(data['expire_at']!, _expireAtMeta),
+      );
+    } else if (isInserting) {
+      context.missing(_expireAtMeta);
     }
     return context;
   }
@@ -131,9 +164,17 @@ class $CacheEntryTable extends schema.CacheEntry
         DriftSqlType.bool,
         data['${effectivePrefix}saved_successfully'],
       )!,
-      lastAccessed: attachedDatabase.typeMapping.read(
+      etag: attachedDatabase.typeMapping.read(
+        DriftSqlType.string,
+        data['${effectivePrefix}etag'],
+      ),
+      staleAt: attachedDatabase.typeMapping.read(
         DriftSqlType.dateTime,
-        data['${effectivePrefix}last_accessed'],
+        data['${effectivePrefix}stale_at'],
+      )!,
+      expireAt: attachedDatabase.typeMapping.read(
+        DriftSqlType.dateTime,
+        data['${effectivePrefix}expire_at'],
       )!,
     );
   }
@@ -153,13 +194,21 @@ class CacheEntryData extends DataClass implements Insertable<CacheEntryData> {
   /// Whether the file was saved successfully to disk
   final bool savedSuccessfully;
 
-  /// Last accessed timestamp
-  final DateTime lastAccessed;
+  /// Server ETag for conditional requests
+  final String? etag;
+
+  /// When this entry becomes stale and should be revalidated
+  final DateTime staleAt;
+
+  /// When this entry should be deleted unconditionally
+  final DateTime expireAt;
   const CacheEntryData({
     required this.id,
     required this.entryKey,
     required this.savedSuccessfully,
-    required this.lastAccessed,
+    this.etag,
+    required this.staleAt,
+    required this.expireAt,
   });
   @override
   Map<String, Expression> toColumns(bool nullToAbsent) {
@@ -167,7 +216,11 @@ class CacheEntryData extends DataClass implements Insertable<CacheEntryData> {
     map['id'] = Variable<int>(id);
     map['entry_key'] = Variable<String>(entryKey);
     map['saved_successfully'] = Variable<bool>(savedSuccessfully);
-    map['last_accessed'] = Variable<DateTime>(lastAccessed);
+    if (!nullToAbsent || etag != null) {
+      map['etag'] = Variable<String>(etag);
+    }
+    map['stale_at'] = Variable<DateTime>(staleAt);
+    map['expire_at'] = Variable<DateTime>(expireAt);
     return map;
   }
 
@@ -176,7 +229,9 @@ class CacheEntryData extends DataClass implements Insertable<CacheEntryData> {
       id: Value(id),
       entryKey: Value(entryKey),
       savedSuccessfully: Value(savedSuccessfully),
-      lastAccessed: Value(lastAccessed),
+      etag: etag == null && nullToAbsent ? const Value.absent() : Value(etag),
+      staleAt: Value(staleAt),
+      expireAt: Value(expireAt),
     );
   }
 
@@ -189,7 +244,9 @@ class CacheEntryData extends DataClass implements Insertable<CacheEntryData> {
       id: serializer.fromJson<int>(json['id']),
       entryKey: serializer.fromJson<String>(json['entryKey']),
       savedSuccessfully: serializer.fromJson<bool>(json['savedSuccessfully']),
-      lastAccessed: serializer.fromJson<DateTime>(json['lastAccessed']),
+      etag: serializer.fromJson<String?>(json['etag']),
+      staleAt: serializer.fromJson<DateTime>(json['staleAt']),
+      expireAt: serializer.fromJson<DateTime>(json['expireAt']),
     );
   }
   @override
@@ -199,7 +256,9 @@ class CacheEntryData extends DataClass implements Insertable<CacheEntryData> {
       'id': serializer.toJson<int>(id),
       'entryKey': serializer.toJson<String>(entryKey),
       'savedSuccessfully': serializer.toJson<bool>(savedSuccessfully),
-      'lastAccessed': serializer.toJson<DateTime>(lastAccessed),
+      'etag': serializer.toJson<String?>(etag),
+      'staleAt': serializer.toJson<DateTime>(staleAt),
+      'expireAt': serializer.toJson<DateTime>(expireAt),
     };
   }
 
@@ -207,12 +266,16 @@ class CacheEntryData extends DataClass implements Insertable<CacheEntryData> {
     int? id,
     String? entryKey,
     bool? savedSuccessfully,
-    DateTime? lastAccessed,
+    Value<String?> etag = const Value.absent(),
+    DateTime? staleAt,
+    DateTime? expireAt,
   }) => CacheEntryData(
     id: id ?? this.id,
     entryKey: entryKey ?? this.entryKey,
     savedSuccessfully: savedSuccessfully ?? this.savedSuccessfully,
-    lastAccessed: lastAccessed ?? this.lastAccessed,
+    etag: etag.present ? etag.value : this.etag,
+    staleAt: staleAt ?? this.staleAt,
+    expireAt: expireAt ?? this.expireAt,
   );
   CacheEntryData copyWithCompanion(CacheEntryCompanion data) {
     return CacheEntryData(
@@ -221,9 +284,9 @@ class CacheEntryData extends DataClass implements Insertable<CacheEntryData> {
       savedSuccessfully: data.savedSuccessfully.present
           ? data.savedSuccessfully.value
           : this.savedSuccessfully,
-      lastAccessed: data.lastAccessed.present
-          ? data.lastAccessed.value
-          : this.lastAccessed,
+      etag: data.etag.present ? data.etag.value : this.etag,
+      staleAt: data.staleAt.present ? data.staleAt.value : this.staleAt,
+      expireAt: data.expireAt.present ? data.expireAt.value : this.expireAt,
     );
   }
 
@@ -233,14 +296,16 @@ class CacheEntryData extends DataClass implements Insertable<CacheEntryData> {
           ..write('id: $id, ')
           ..write('entryKey: $entryKey, ')
           ..write('savedSuccessfully: $savedSuccessfully, ')
-          ..write('lastAccessed: $lastAccessed')
+          ..write('etag: $etag, ')
+          ..write('staleAt: $staleAt, ')
+          ..write('expireAt: $expireAt')
           ..write(')'))
         .toString();
   }
 
   @override
   int get hashCode =>
-      Object.hash(id, entryKey, savedSuccessfully, lastAccessed);
+      Object.hash(id, entryKey, savedSuccessfully, etag, staleAt, expireAt);
   @override
   bool operator ==(Object other) =>
       identical(this, other) ||
@@ -248,38 +313,51 @@ class CacheEntryData extends DataClass implements Insertable<CacheEntryData> {
           other.id == this.id &&
           other.entryKey == this.entryKey &&
           other.savedSuccessfully == this.savedSuccessfully &&
-          other.lastAccessed == this.lastAccessed);
+          other.etag == this.etag &&
+          other.staleAt == this.staleAt &&
+          other.expireAt == this.expireAt);
 }
 
 class CacheEntryCompanion extends UpdateCompanion<CacheEntryData> {
   final Value<int> id;
   final Value<String> entryKey;
   final Value<bool> savedSuccessfully;
-  final Value<DateTime> lastAccessed;
+  final Value<String?> etag;
+  final Value<DateTime> staleAt;
+  final Value<DateTime> expireAt;
   const CacheEntryCompanion({
     this.id = const Value.absent(),
     this.entryKey = const Value.absent(),
     this.savedSuccessfully = const Value.absent(),
-    this.lastAccessed = const Value.absent(),
+    this.etag = const Value.absent(),
+    this.staleAt = const Value.absent(),
+    this.expireAt = const Value.absent(),
   });
   CacheEntryCompanion.insert({
     this.id = const Value.absent(),
     required String entryKey,
     this.savedSuccessfully = const Value.absent(),
-    required DateTime lastAccessed,
+    this.etag = const Value.absent(),
+    required DateTime staleAt,
+    required DateTime expireAt,
   }) : entryKey = Value(entryKey),
-       lastAccessed = Value(lastAccessed);
+       staleAt = Value(staleAt),
+       expireAt = Value(expireAt);
   static Insertable<CacheEntryData> custom({
     Expression<int>? id,
     Expression<String>? entryKey,
     Expression<bool>? savedSuccessfully,
-    Expression<DateTime>? lastAccessed,
+    Expression<String>? etag,
+    Expression<DateTime>? staleAt,
+    Expression<DateTime>? expireAt,
   }) {
     return RawValuesInsertable({
       if (id != null) 'id': id,
       if (entryKey != null) 'entry_key': entryKey,
       if (savedSuccessfully != null) 'saved_successfully': savedSuccessfully,
-      if (lastAccessed != null) 'last_accessed': lastAccessed,
+      if (etag != null) 'etag': etag,
+      if (staleAt != null) 'stale_at': staleAt,
+      if (expireAt != null) 'expire_at': expireAt,
     });
   }
 
@@ -287,13 +365,17 @@ class CacheEntryCompanion extends UpdateCompanion<CacheEntryData> {
     Value<int>? id,
     Value<String>? entryKey,
     Value<bool>? savedSuccessfully,
-    Value<DateTime>? lastAccessed,
+    Value<String?>? etag,
+    Value<DateTime>? staleAt,
+    Value<DateTime>? expireAt,
   }) {
     return CacheEntryCompanion(
       id: id ?? this.id,
       entryKey: entryKey ?? this.entryKey,
       savedSuccessfully: savedSuccessfully ?? this.savedSuccessfully,
-      lastAccessed: lastAccessed ?? this.lastAccessed,
+      etag: etag ?? this.etag,
+      staleAt: staleAt ?? this.staleAt,
+      expireAt: expireAt ?? this.expireAt,
     );
   }
 
@@ -309,8 +391,14 @@ class CacheEntryCompanion extends UpdateCompanion<CacheEntryData> {
     if (savedSuccessfully.present) {
       map['saved_successfully'] = Variable<bool>(savedSuccessfully.value);
     }
-    if (lastAccessed.present) {
-      map['last_accessed'] = Variable<DateTime>(lastAccessed.value);
+    if (etag.present) {
+      map['etag'] = Variable<String>(etag.value);
+    }
+    if (staleAt.present) {
+      map['stale_at'] = Variable<DateTime>(staleAt.value);
+    }
+    if (expireAt.present) {
+      map['expire_at'] = Variable<DateTime>(expireAt.value);
     }
     return map;
   }
@@ -321,7 +409,9 @@ class CacheEntryCompanion extends UpdateCompanion<CacheEntryData> {
           ..write('id: $id, ')
           ..write('entryKey: $entryKey, ')
           ..write('savedSuccessfully: $savedSuccessfully, ')
-          ..write('lastAccessed: $lastAccessed')
+          ..write('etag: $etag, ')
+          ..write('staleAt: $staleAt, ')
+          ..write('expireAt: $expireAt')
           ..write(')'))
         .toString();
   }

@@ -7,17 +7,16 @@ import 'package:flutter/foundation.dart';
 import 'package:path/path.dart' as p;
 import 'package:path_provider/path_provider.dart';
 
-/// A cache manager that stores cache entries on disk.
+/// Extra time beyond staleAt before entry is deleted unconditionally.
+const _expireExtraDuration = Duration(days: 90);
+
+/// A cache manager that stores cache entries on disk with ETag support.
 class GeneralCacheManager {
-  final Duration _stalePeriod;
   final int _maxNrOfCacheObjects;
   late final Directory _cacheDir;
   final CacheDatabaseManager _cacheDb = CacheDatabaseManager.getInstance();
 
-  GeneralCacheManager({
-    this._stalePeriod = const Duration(days: 90),
-    this._maxNrOfCacheObjects = 10000,
-  });
+  GeneralCacheManager({this._maxNrOfCacheObjects = 10000});
 
   /// Must be called before using this cache manager.
   Future<void> init() async {
@@ -32,7 +31,7 @@ class GeneralCacheManager {
     _cacheDir = dir;
   }
 
-  /// Get a cache entry by key. Returns null if not cached, stale, or file missing.
+  /// Get a cache entry by key. Returns null if not cached, expired, or file missing.
   Future<GeneralCacheFileInfo?> getFileFromCache(String key) async {
     try {
       final entry = await _cacheDb.cacheData((db) => db.cacheEntry.getCacheEntry(key)).ok();
@@ -47,9 +46,10 @@ class GeneralCacheManager {
         return null;
       }
 
-      // Check if entry is stale
       final now = DateTime.now();
-      if (now.difference(entry.lastAccessed).compareTo(_stalePeriod) > 0) {
+
+      // If entry is past expireAt, delete it unconditionally
+      if (now.isAfter(entry.expireAt)) {
         await _deleteEntryAndFile(entry.id, key);
         return null;
       }
@@ -61,39 +61,65 @@ class GeneralCacheManager {
         return null;
       }
 
-      // Update last accessed time
-      await _cacheDb.cacheAction((db) => db.cacheEntry.updateLastAccessed(key, now));
-
       return GeneralCacheFileInfo(
         key: key,
         data: await file.readAsBytes(),
-        lastAccessed: entry.lastAccessed,
+        etag: entry.etag,
+        staleAt: entry.staleAt,
+        expireAt: entry.expireAt,
       );
     } catch (e) {
-      // Return null on error
       return null;
     }
   }
 
-  /// Put a file into the cache
-  Future<void> putFile(Uint8List fileBytes, {required String key}) async {
+  /// Put a file into the cache.
+  /// [etag] is the server ETag for conditional revalidation.
+  /// [cacheControlMaxAge] max-age from Cache-Control header, or null for default.
+  Future<void> putFile(
+    Uint8List fileBytes, {
+    required String key,
+    required String etag,
+    required Duration cacheControlMaxAge,
+  }) async {
     try {
-      // Check current cache size and remove oldest entries if needed
       await _enforceMaxCacheSize();
 
-      // Insert DB entry first to get the row id
+      final now = DateTime.now();
+      final staleAt = now.add(cacheControlMaxAge);
+      final expireAt = staleAt.add(_expireExtraDuration);
+
       final idResult = await _cacheDb.cacheActionReturn(
-        (db) => db.cacheEntry.upsertCacheEntry(entryKey: key, lastAccessed: DateTime.now()),
+        (db) => db.cacheEntry.upsertCacheEntry(
+          entryKey: key,
+          staleAt: staleAt,
+          expireAt: expireAt,
+          etag: etag,
+        ),
       );
       final id = idResult.ok();
       if (id == null) return;
 
-      // Write file to disk using the DB row id as filename
       final file = File(p.join(_cacheDir.path, id.toString()));
       await file.writeAsBytes(fileBytes);
 
-      // Mark as successfully saved
       await _cacheDb.cacheAction((db) => db.cacheEntry.markSavedSuccessfully(id));
+    } catch (e) {
+      // Ignore errors
+    }
+  }
+
+  /// Renew timestamps after a 304 (conditional revalidation) response.
+  /// [cacheControlMaxAge] max-age from Cache-Control header, or null for default.
+  Future<void> renewTimestamps(String key, {required Duration cacheControlMaxAge}) async {
+    try {
+      final now = DateTime.now();
+      final staleAt = now.add(cacheControlMaxAge);
+      final expireAt = staleAt.add(_expireExtraDuration);
+
+      await _cacheDb.cacheAction(
+        (db) => db.cacheEntry.updateTimestamps(entryKey: key, staleAt: staleAt, expireAt: expireAt),
+      );
     } catch (e) {
       // Ignore errors
     }
@@ -143,9 +169,20 @@ class GeneralCacheManager {
 class GeneralCacheFileInfo {
   final String key;
   final Uint8List data;
-  final DateTime lastAccessed;
+  final String? etag;
+  final DateTime staleAt;
+  final DateTime expireAt;
 
-  GeneralCacheFileInfo({required this.key, required this.data, required this.lastAccessed});
+  GeneralCacheFileInfo({
+    required this.key,
+    required this.data,
+    this.etag,
+    required this.staleAt,
+    required this.expireAt,
+  });
+
+  /// Whether the cached data is still fresh (no revalidation needed).
+  bool get isFresh => DateTime.now().isBefore(staleAt);
 
   /// For compatibility with flutter_cache_manager API
   GeneralCacheFile get file => GeneralCacheFile(data);

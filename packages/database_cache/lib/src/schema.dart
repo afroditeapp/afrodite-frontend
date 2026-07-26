@@ -11,6 +11,12 @@ class CacheEntry extends Table {
   /// Whether the file was saved successfully to disk
   BoolColumn get savedSuccessfully => boolean().withDefault(const Constant(false))();
 
-  /// Last accessed timestamp
-  DateTimeColumn get lastAccessed => dateTime()();
+  /// Server ETag for conditional requests
+  TextColumn get etag => text().nullable()();
+
+  /// When this entry becomes stale and should be revalidated
+  DateTimeColumn get staleAt => dateTime()();
+
+  /// When this entry should be deleted unconditionally
+  DateTimeColumn get expireAt => dateTime()();
 }

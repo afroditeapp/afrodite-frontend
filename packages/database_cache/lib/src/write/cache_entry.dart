@@ -9,9 +9,19 @@ class DaoWriteCacheEntry extends DatabaseAccessor<CacheDatabase> with _$DaoWrite
   DaoWriteCacheEntry(super.db);
 
   /// Insert or update a cache entry, returns the row id
-  Future<int> upsertCacheEntry({required String entryKey, required DateTime lastAccessed}) async {
+  Future<int> upsertCacheEntry({
+    required String entryKey,
+    required DateTime staleAt,
+    required DateTime expireAt,
+    String? etag,
+  }) async {
     return await into(cacheEntry).insertOnConflictUpdate(
-      CacheEntryCompanion.insert(entryKey: entryKey, lastAccessed: lastAccessed),
+      CacheEntryCompanion.insert(
+        entryKey: entryKey,
+        staleAt: staleAt,
+        expireAt: expireAt,
+        etag: Value(etag),
+      ),
     );
   }
 
@@ -22,10 +32,14 @@ class DaoWriteCacheEntry extends DatabaseAccessor<CacheDatabase> with _$DaoWrite
     );
   }
 
-  /// Update last accessed time
-  Future<void> updateLastAccessed(String entryKey, DateTime lastAccessed) async {
+  /// Update timestamps after 304 (conditional revalidation)
+  Future<void> updateTimestamps({
+    required String entryKey,
+    required DateTime staleAt,
+    required DateTime expireAt,
+  }) async {
     await (update(cacheEntry)..where((tbl) => tbl.entryKey.equals(entryKey))).write(
-      CacheEntryCompanion(lastAccessed: Value(lastAccessed)),
+      CacheEntryCompanion(staleAt: Value(staleAt), expireAt: Value(expireAt)),
     );
   }
 
