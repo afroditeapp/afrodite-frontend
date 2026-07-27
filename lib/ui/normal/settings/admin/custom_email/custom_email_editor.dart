@@ -147,7 +147,10 @@ class _CustomEmailEditorScreenState extends State<CustomEmailEditorScreen> {
   Future<void> _saveAndSendToAll() async {
     if (!await _save()) return;
 
-    final send = SendCustomEmail(emailId: widget.email.id);
+    final send = SendCustomEmail(
+      emailId: widget.email.id,
+      targetGroup: CustomEmailTargetGroup.allAccounts,
+    );
     final result = await widget.api
         .accountAdminAction((api) => api.postSendCustomEmailToAllAccounts(send))
         .ok();
@@ -166,7 +169,10 @@ class _CustomEmailEditorScreenState extends State<CustomEmailEditorScreen> {
   Future<void> _saveAndSendDraft() async {
     if (!await _save()) return;
 
-    final send = SendCustomEmail(emailId: widget.email.id);
+    final send = SendCustomEmail(
+      emailId: widget.email.id,
+      targetGroup: CustomEmailTargetGroup.allAccounts,
+    );
     final result = await widget.api
         .accountAdminAction((api) => api.postSendCustomEmailDraftToMyEmailAddress(send))
         .ok();

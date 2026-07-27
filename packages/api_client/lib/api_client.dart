@@ -296,6 +296,14 @@ class ApiClient {
           return ApiUsageCount.fromJson(value);
         case 'ApiUsageStatistics':
           return ApiUsageStatistics.fromJson(value);
+        case 'AssociationConfig':
+          return AssociationConfig.fromJson(value);
+        case 'AssociationMember':
+          return AssociationMember.fromJson(value);
+        case 'AssociationMembersPage':
+          return AssociationMembersPage.fromJson(value);
+        case 'AssociationMembership':
+          return AssociationMembership.fromJson(value);
         case 'Attribute':
           return Attribute.fromJson(value);
         case 'AttributeHash':
@@ -400,6 +408,8 @@ class ApiClient {
           return CustomEmail.fromJson(value);
         case 'CustomEmailId':
           return CustomEmailId.fromJson(value);
+        case 'CustomEmailTargetGroup':
+          return CustomEmailTargetGroupTypeTransformer().decode(value);
         case 'CustomEmailTranslation':
           return CustomEmailTranslation.fromJson(value);
         case 'CustomReport':
@@ -484,6 +494,14 @@ class ApiClient {
           return GetApiUsageStatisticsResult.fromJson(value);
         case 'GetApiUsageStatisticsSettings':
           return GetApiUsageStatisticsSettings.fromJson(value);
+        case 'GetAssociationMember':
+          return GetAssociationMember.fromJson(value);
+        case 'GetAssociationMembersOnlyInfo':
+          return GetAssociationMembersOnlyInfo.fromJson(value);
+        case 'GetAssociationMembersPage':
+          return GetAssociationMembersPage.fromJson(value);
+        case 'GetAssociationMembership':
+          return GetAssociationMembership.fromJson(value);
         case 'GetBotsResult':
           return GetBotsResult.fromJson(value);
         case 'GetChatMessageReports':
@@ -598,6 +616,10 @@ class ApiClient {
           return MaintenanceTask.fromJson(value);
         case 'ManagerInstanceNameList':
           return ManagerInstanceNameList.fromJson(value);
+        case 'ManualAssociationMembershipRegistry':
+          return ManualAssociationMembershipRegistry.fromJson(value);
+        case 'ManualAssociationMembershipRegistryInput':
+          return ManualAssociationMembershipRegistryInput.fromJson(value);
         case 'ManualServerMaintenanceInfoForAnotherServer':
           return ManualServerMaintenanceInfoForAnotherServer.fromJson(value);
         case 'MapBounds':
@@ -642,6 +664,8 @@ class ApiClient {
           return MediaContentUploadTypeTypeTransformer().decode(value);
         case 'MediaVerificationStatus':
           return MediaVerificationStatus.fromJson(value);
+        case 'MembershipType':
+          return MembershipType.fromJson(value);
         case 'MessageDeliveryInfo':
           return MessageDeliveryInfo.fromJson(value);
         case 'MessageDeliveryInfoIdList':
@@ -970,6 +994,10 @@ class ApiClient {
           return UnreadNewsCount.fromJson(value);
         case 'UnreadNewsCountResult':
           return UnreadNewsCountResult.fromJson(value);
+        case 'UpdateAssociationMembership':
+          return UpdateAssociationMembership.fromJson(value);
+        case 'UpdateAssociationMembershipType':
+          return UpdateAssociationMembershipType.fromJson(value);
         case 'UpdateChatMessageReports':
           return UpdateChatMessageReports.fromJson(value);
         case 'UpdateCustomEmail':

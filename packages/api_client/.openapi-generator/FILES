@@ -79,6 +79,10 @@ lib/model/age_verification_methods_config.dart
 lib/model/age_verification_platforms.dart
 lib/model/api_usage_count.dart
 lib/model/api_usage_statistics.dart
+lib/model/association_config.dart
+lib/model/association_member.dart
+lib/model/association_members_page.dart
+lib/model/association_membership.dart
 lib/model/attribute.dart
 lib/model/attribute_hash.dart
 lib/model/attribute_mode.dart
@@ -131,6 +135,7 @@ lib/model/conversation_id.dart
 lib/model/current_account_interaction_state.dart
 lib/model/custom_email.dart
 lib/model/custom_email_id.dart
+lib/model/custom_email_target_group.dart
 lib/model/custom_email_translation.dart
 lib/model/custom_report.dart
 lib/model/custom_report_language.dart
@@ -173,6 +178,10 @@ lib/model/get_account_verification_queue_next_item_result.dart
 lib/model/get_all_admins_result.dart
 lib/model/get_api_usage_statistics_result.dart
 lib/model/get_api_usage_statistics_settings.dart
+lib/model/get_association_member.dart
+lib/model/get_association_members_only_info.dart
+lib/model/get_association_members_page.dart
+lib/model/get_association_membership.dart
 lib/model/get_bots_result.dart
 lib/model/get_chat_message_reports.dart
 lib/model/get_client_features_config_result.dart
@@ -230,6 +239,8 @@ lib/model/location.dart
 lib/model/login_result.dart
 lib/model/maintenance_task.dart
 lib/model/manager_instance_name_list.dart
+lib/model/manual_association_membership_registry.dart
+lib/model/manual_association_membership_registry_input.dart
 lib/model/manual_server_maintenance_info_for_another_server.dart
 lib/model/map_bounds.dart
 lib/model/map_config.dart
@@ -252,6 +263,7 @@ lib/model/media_content_sync_version.dart
 lib/model/media_content_type.dart
 lib/model/media_content_upload_type.dart
 lib/model/media_verification_status.dart
+lib/model/membership_type.dart
 lib/model/message_delivery_info.dart
 lib/model/message_delivery_info_id_list.dart
 lib/model/message_delivery_info_list.dart
@@ -416,6 +428,8 @@ lib/model/typing_indicator_config.dart
 lib/model/unix_time.dart
 lib/model/unread_news_count.dart
 lib/model/unread_news_count_result.dart
+lib/model/update_association_membership.dart
+lib/model/update_association_membership_type.dart
 lib/model/update_chat_message_reports.dart
 lib/model/update_custom_email.dart
 lib/model/update_custom_report_empty.dart

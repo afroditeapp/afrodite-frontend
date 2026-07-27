@@ -523,6 +523,54 @@ class AccountAdminApi {
     return null;
   }
 
+  /// Get the manual association membership registry.
+  ///
+  /// # Access  Permission [model::Permissions::admin_view_association_membership] is required.
+  ///
+  /// Note: This method returns the HTTP [Response].
+  Future<Response> getManualAssociationMembershipRegistryWithHttpInfo() async {
+    // ignore: prefer_const_declarations
+    final path = r'/account_api/manual_association_membership_registry';
+
+    // ignore: prefer_final_locals
+    Object? postBody;
+
+    final queryParams = <QueryParam>[];
+    final headerParams = <String, String>{};
+    final formParams = <String, String>{};
+
+    const contentTypes = <String>[];
+
+
+    return apiClient.invokeAPI(
+      path,
+      'GET',
+      queryParams,
+      postBody,
+      headerParams,
+      formParams,
+      contentTypes.isEmpty ? null : contentTypes.first,
+    );
+  }
+
+  /// Get the manual association membership registry.
+  ///
+  /// # Access  Permission [model::Permissions::admin_view_association_membership] is required.
+  Future<ManualAssociationMembershipRegistry?> getManualAssociationMembershipRegistry() async {
+    final response = await getManualAssociationMembershipRegistryWithHttpInfo();
+    if (response.statusCode >= HttpStatus.badRequest) {
+      throw ApiException(response.statusCode, await _decodeBodyBytes(response));
+    }
+    // When a remote server returns no body with a status of 204, we shall not decode it.
+    // At the time of writing this, `dart:convert` will throw an "Unexpected end of input"
+    // FormatException when trying to decode an empty string.
+    if (response.body.isNotEmpty && response.statusCode != HttpStatus.noContent) {
+      return await apiClient.deserializeAsync(await _decodeBodyBytes(response), 'ManualAssociationMembershipRegistry',) as ManualAssociationMembershipRegistry;
+    
+    }
+    return null;
+  }
+
   /// Get [model::Permissions] for specific account.
   ///
   /// # Access  Permission [model::Permissions::admin_view_permissions] is required.
@@ -916,6 +964,166 @@ class AccountAdminApi {
     }
   }
 
+  /// Remove association membership of an account.
+  ///
+  /// # Access  Permission [model::Permissions::admin_edit_association_membership] is required.
+  ///
+  /// Note: This method returns the HTTP [Response].
+  ///
+  /// Parameters:
+  ///
+  /// * [AccountId] accountId (required):
+  Future<Response> postDeleteAssociationMembershipWithHttpInfo(AccountId accountId,) async {
+    // ignore: prefer_const_declarations
+    final path = r'/account_api/delete_association_membership';
+
+    // ignore: prefer_final_locals
+    Object? postBody = accountId;
+
+    final queryParams = <QueryParam>[];
+    final headerParams = <String, String>{};
+    final formParams = <String, String>{};
+
+    const contentTypes = <String>['application/json'];
+
+
+    return apiClient.invokeAPI(
+      path,
+      'POST',
+      queryParams,
+      postBody,
+      headerParams,
+      formParams,
+      contentTypes.isEmpty ? null : contentTypes.first,
+    );
+  }
+
+  /// Remove association membership of an account.
+  ///
+  /// # Access  Permission [model::Permissions::admin_edit_association_membership] is required.
+  ///
+  /// Parameters:
+  ///
+  /// * [AccountId] accountId (required):
+  Future<void> postDeleteAssociationMembership(AccountId accountId,) async {
+    final response = await postDeleteAssociationMembershipWithHttpInfo(accountId,);
+    if (response.statusCode >= HttpStatus.badRequest) {
+      throw ApiException(response.statusCode, await _decodeBodyBytes(response));
+    }
+  }
+
+  /// Get a single association member entry for an account.
+  ///
+  /// # Access  Permission [model::Permissions::admin_view_association_membership] is required.
+  ///
+  /// Note: This method returns the HTTP [Response].
+  ///
+  /// Parameters:
+  ///
+  /// * [AccountId] accountId (required):
+  Future<Response> postGetAssociationMemberWithHttpInfo(AccountId accountId,) async {
+    // ignore: prefer_const_declarations
+    final path = r'/account_api/association_member';
+
+    // ignore: prefer_final_locals
+    Object? postBody = accountId;
+
+    final queryParams = <QueryParam>[];
+    final headerParams = <String, String>{};
+    final formParams = <String, String>{};
+
+    const contentTypes = <String>['application/json'];
+
+
+    return apiClient.invokeAPI(
+      path,
+      'POST',
+      queryParams,
+      postBody,
+      headerParams,
+      formParams,
+      contentTypes.isEmpty ? null : contentTypes.first,
+    );
+  }
+
+  /// Get a single association member entry for an account.
+  ///
+  /// # Access  Permission [model::Permissions::admin_view_association_membership] is required.
+  ///
+  /// Parameters:
+  ///
+  /// * [AccountId] accountId (required):
+  Future<GetAssociationMember?> postGetAssociationMember(AccountId accountId,) async {
+    final response = await postGetAssociationMemberWithHttpInfo(accountId,);
+    if (response.statusCode >= HttpStatus.badRequest) {
+      throw ApiException(response.statusCode, await _decodeBodyBytes(response));
+    }
+    // When a remote server returns no body with a status of 204, we shall not decode it.
+    // At the time of writing this, `dart:convert` will throw an "Unexpected end of input"
+    // FormatException when trying to decode an empty string.
+    if (response.body.isNotEmpty && response.statusCode != HttpStatus.noContent) {
+      return await apiClient.deserializeAsync(await _decodeBodyBytes(response), 'GetAssociationMember',) as GetAssociationMember;
+    
+    }
+    return null;
+  }
+
+  /// Get a paged list of association members with an account.
+  ///
+  /// # Access  Permission [model::Permissions::admin_view_association_membership] is required.
+  ///
+  /// Note: This method returns the HTTP [Response].
+  ///
+  /// Parameters:
+  ///
+  /// * [GetAssociationMembersPage] getAssociationMembersPage (required):
+  Future<Response> postGetAssociationMembersPageWithHttpInfo(GetAssociationMembersPage getAssociationMembersPage,) async {
+    // ignore: prefer_const_declarations
+    final path = r'/account_api/association_members_page';
+
+    // ignore: prefer_final_locals
+    Object? postBody = getAssociationMembersPage;
+
+    final queryParams = <QueryParam>[];
+    final headerParams = <String, String>{};
+    final formParams = <String, String>{};
+
+    const contentTypes = <String>['application/json'];
+
+
+    return apiClient.invokeAPI(
+      path,
+      'POST',
+      queryParams,
+      postBody,
+      headerParams,
+      formParams,
+      contentTypes.isEmpty ? null : contentTypes.first,
+    );
+  }
+
+  /// Get a paged list of association members with an account.
+  ///
+  /// # Access  Permission [model::Permissions::admin_view_association_membership] is required.
+  ///
+  /// Parameters:
+  ///
+  /// * [GetAssociationMembersPage] getAssociationMembersPage (required):
+  Future<AssociationMembersPage?> postGetAssociationMembersPage(GetAssociationMembersPage getAssociationMembersPage,) async {
+    final response = await postGetAssociationMembersPageWithHttpInfo(getAssociationMembersPage,);
+    if (response.statusCode >= HttpStatus.badRequest) {
+      throw ApiException(response.statusCode, await _decodeBodyBytes(response));
+    }
+    // When a remote server returns no body with a status of 204, we shall not decode it.
+    // At the time of writing this, `dart:convert` will throw an "Unexpected end of input"
+    // FormatException when trying to decode an empty string.
+    if (response.body.isNotEmpty && response.statusCode != HttpStatus.noContent) {
+      return await apiClient.deserializeAsync(await _decodeBodyBytes(response), 'AssociationMembersPage',) as AssociationMembersPage;
+    
+    }
+    return null;
+  }
+
   /// Get client version statistics.
   ///
   /// HTTP method is POST to allow JSON request body.  # Permissions Requires admin_server_view_info.
@@ -970,6 +1178,54 @@ class AccountAdminApi {
     
     }
     return null;
+  }
+
+  /// Set the manual association membership registry.
+  ///
+  /// # Access  Permission [model::Permissions::admin_edit_association_membership] is required.
+  ///
+  /// Note: This method returns the HTTP [Response].
+  ///
+  /// Parameters:
+  ///
+  /// * [ManualAssociationMembershipRegistryInput] manualAssociationMembershipRegistryInput (required):
+  Future<Response> postManualAssociationMembershipRegistryWithHttpInfo(ManualAssociationMembershipRegistryInput manualAssociationMembershipRegistryInput,) async {
+    // ignore: prefer_const_declarations
+    final path = r'/account_api/manual_association_membership_registry';
+
+    // ignore: prefer_final_locals
+    Object? postBody = manualAssociationMembershipRegistryInput;
+
+    final queryParams = <QueryParam>[];
+    final headerParams = <String, String>{};
+    final formParams = <String, String>{};
+
+    const contentTypes = <String>['application/json'];
+
+
+    return apiClient.invokeAPI(
+      path,
+      'POST',
+      queryParams,
+      postBody,
+      headerParams,
+      formParams,
+      contentTypes.isEmpty ? null : contentTypes.first,
+    );
+  }
+
+  /// Set the manual association membership registry.
+  ///
+  /// # Access  Permission [model::Permissions::admin_edit_association_membership] is required.
+  ///
+  /// Parameters:
+  ///
+  /// * [ManualAssociationMembershipRegistryInput] manualAssociationMembershipRegistryInput (required):
+  Future<void> postManualAssociationMembershipRegistry(ManualAssociationMembershipRegistryInput manualAssociationMembershipRegistryInput,) async {
+    final response = await postManualAssociationMembershipRegistryWithHttpInfo(manualAssociationMembershipRegistryInput,);
+    if (response.statusCode >= HttpStatus.badRequest) {
+      throw ApiException(response.statusCode, await _decodeBodyBytes(response));
+    }
   }
 
   /// Save info banners to dynamic client config.
@@ -1291,6 +1547,54 @@ class AccountAdminApi {
   /// * [Permissions] permissions (required):
   Future<void> postSetPermissions(String aid, Permissions permissions,) async {
     final response = await postSetPermissionsWithHttpInfo(aid, permissions,);
+    if (response.statusCode >= HttpStatus.badRequest) {
+      throw ApiException(response.statusCode, await _decodeBodyBytes(response));
+    }
+  }
+
+  /// Change the membership type of an existing association membership.
+  ///
+  /// # Access  Permission [model::Permissions::admin_edit_association_membership] is required.
+  ///
+  /// Note: This method returns the HTTP [Response].
+  ///
+  /// Parameters:
+  ///
+  /// * [UpdateAssociationMembershipType] updateAssociationMembershipType (required):
+  Future<Response> postUpdateAssociationMembershipTypeWithHttpInfo(UpdateAssociationMembershipType updateAssociationMembershipType,) async {
+    // ignore: prefer_const_declarations
+    final path = r'/account_api/update_association_membership_type';
+
+    // ignore: prefer_final_locals
+    Object? postBody = updateAssociationMembershipType;
+
+    final queryParams = <QueryParam>[];
+    final headerParams = <String, String>{};
+    final formParams = <String, String>{};
+
+    const contentTypes = <String>['application/json'];
+
+
+    return apiClient.invokeAPI(
+      path,
+      'POST',
+      queryParams,
+      postBody,
+      headerParams,
+      formParams,
+      contentTypes.isEmpty ? null : contentTypes.first,
+    );
+  }
+
+  /// Change the membership type of an existing association membership.
+  ///
+  /// # Access  Permission [model::Permissions::admin_edit_association_membership] is required.
+  ///
+  /// Parameters:
+  ///
+  /// * [UpdateAssociationMembershipType] updateAssociationMembershipType (required):
+  Future<void> postUpdateAssociationMembershipType(UpdateAssociationMembershipType updateAssociationMembershipType,) async {
+    final response = await postUpdateAssociationMembershipTypeWithHttpInfo(updateAssociationMembershipType,);
     if (response.statusCode >= HttpStatus.badRequest) {
       throw ApiException(response.statusCode, await _decodeBodyBytes(response));
     }

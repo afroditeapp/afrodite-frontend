@@ -16,6 +16,42 @@ class AccountApi {
 
   final ApiClient apiClient;
 
+  /// Remove association membership.
+  ///
+  /// Note: This method returns the HTTP [Response].
+  Future<Response> deleteAssociationMembershipWithHttpInfo() async {
+    // ignore: prefer_const_declarations
+    final path = r'/account_api/association_membership';
+
+    // ignore: prefer_final_locals
+    Object? postBody;
+
+    final queryParams = <QueryParam>[];
+    final headerParams = <String, String>{};
+    final formParams = <String, String>{};
+
+    const contentTypes = <String>[];
+
+
+    return apiClient.invokeAPI(
+      path,
+      'DELETE',
+      queryParams,
+      postBody,
+      headerParams,
+      formParams,
+      contentTypes.isEmpty ? null : contentTypes.first,
+    );
+  }
+
+  /// Remove association membership.
+  Future<void> deleteAssociationMembership() async {
+    final response = await deleteAssociationMembershipWithHttpInfo();
+    if (response.statusCode >= HttpStatus.badRequest) {
+      throw ApiException(response.statusCode, await _decodeBodyBytes(response));
+    }
+  }
+
   /// Performs an HTTP 'GET /account_api/get_account_app_notification_settings' operation and returns the [Response].
   Future<Response> getAccountAppNotificationSettingsWithHttpInfo() async {
     // ignore: prefer_const_declarations
@@ -259,6 +295,94 @@ class AccountApi {
     return null;
   }
 
+  /// Get association members-only info markdown text.
+  ///
+  /// Note: This method returns the HTTP [Response].
+  Future<Response> getAssociationMembersOnlyInfoWithHttpInfo() async {
+    // ignore: prefer_const_declarations
+    final path = r'/account_api/association_members_only_info';
+
+    // ignore: prefer_final_locals
+    Object? postBody;
+
+    final queryParams = <QueryParam>[];
+    final headerParams = <String, String>{};
+    final formParams = <String, String>{};
+
+    const contentTypes = <String>[];
+
+
+    return apiClient.invokeAPI(
+      path,
+      'GET',
+      queryParams,
+      postBody,
+      headerParams,
+      formParams,
+      contentTypes.isEmpty ? null : contentTypes.first,
+    );
+  }
+
+  /// Get association members-only info markdown text.
+  Future<GetAssociationMembersOnlyInfo?> getAssociationMembersOnlyInfo() async {
+    final response = await getAssociationMembersOnlyInfoWithHttpInfo();
+    if (response.statusCode >= HttpStatus.badRequest) {
+      throw ApiException(response.statusCode, await _decodeBodyBytes(response));
+    }
+    // When a remote server returns no body with a status of 204, we shall not decode it.
+    // At the time of writing this, `dart:convert` will throw an "Unexpected end of input"
+    // FormatException when trying to decode an empty string.
+    if (response.body.isNotEmpty && response.statusCode != HttpStatus.noContent) {
+      return await apiClient.deserializeAsync(await _decodeBodyBytes(response), 'GetAssociationMembersOnlyInfo',) as GetAssociationMembersOnlyInfo;
+    
+    }
+    return null;
+  }
+
+  /// Get current association membership.
+  ///
+  /// Note: This method returns the HTTP [Response].
+  Future<Response> getAssociationMembershipWithHttpInfo() async {
+    // ignore: prefer_const_declarations
+    final path = r'/account_api/association_membership';
+
+    // ignore: prefer_final_locals
+    Object? postBody;
+
+    final queryParams = <QueryParam>[];
+    final headerParams = <String, String>{};
+    final formParams = <String, String>{};
+
+    const contentTypes = <String>[];
+
+
+    return apiClient.invokeAPI(
+      path,
+      'GET',
+      queryParams,
+      postBody,
+      headerParams,
+      formParams,
+      contentTypes.isEmpty ? null : contentTypes.first,
+    );
+  }
+
+  /// Get current association membership.
+  Future<GetAssociationMembership?> getAssociationMembership() async {
+    final response = await getAssociationMembershipWithHttpInfo();
+    if (response.statusCode >= HttpStatus.badRequest) {
+      throw ApiException(response.statusCode, await _decodeBodyBytes(response));
+    }
+    // When a remote server returns no body with a status of 204, we shall not decode it.
+    // At the time of writing this, `dart:convert` will throw an "Unexpected end of input"
+    // FormatException when trying to decode an empty string.
+    if (response.body.isNotEmpty && response.statusCode != HttpStatus.noContent) {
+      return await apiClient.deserializeAsync(await _decodeBodyBytes(response), 'GetAssociationMembership',) as GetAssociationMembership;
+    
+    }
+    return null;
+  }
+
   /// Performs an HTTP 'GET /account_api/email_address_state' operation and returns the [Response].
   Future<Response> getEmailAddressStateWithHttpInfo() async {
     // ignore: prefer_const_declarations
@@ -370,20 +494,12 @@ class AccountApi {
     return null;
   }
 
-  /// Verify email address using the token sent via email. This endpoint is meant to be accessed via a link in the verification email. To workaround email security scanning related link accessing, the link can be opened multiple times.
-  ///
-  /// This modifies server state even if the HTTP method is GET.  Returns plain text response indicating success or failure.
+  /// Show email verification form page. Token is passed via query parameter to prevent email scanners from accidentally verifying the email.
   ///
   /// Note: This method returns the HTTP [Response].
-  ///
-  /// Parameters:
-  ///
-  /// * [String] token (required):
-  ///   Base64 URL safe without padding
-  Future<Response> getVerifyEmailWithHttpInfo(String token,) async {
+  Future<Response> getVerifyEmailWithHttpInfo() async {
     // ignore: prefer_const_declarations
-    final path = r'/account_api/verify_email/{token}'
-      .replaceAll('{token}', token);
+    final path = r'/verify_email';
 
     // ignore: prefer_final_locals
     Object? postBody;
@@ -406,35 +522,20 @@ class AccountApi {
     );
   }
 
-  /// Verify email address using the token sent via email. This endpoint is meant to be accessed via a link in the verification email. To workaround email security scanning related link accessing, the link can be opened multiple times.
-  ///
-  /// This modifies server state even if the HTTP method is GET.  Returns plain text response indicating success or failure.
-  ///
-  /// Parameters:
-  ///
-  /// * [String] token (required):
-  ///   Base64 URL safe without padding
-  Future<void> getVerifyEmail(String token,) async {
-    final response = await getVerifyEmailWithHttpInfo(token,);
+  /// Show email verification form page. Token is passed via query parameter to prevent email scanners from accidentally verifying the email.
+  Future<void> getVerifyEmail() async {
+    final response = await getVerifyEmailWithHttpInfo();
     if (response.statusCode >= HttpStatus.badRequest) {
       throw ApiException(response.statusCode, await _decodeBodyBytes(response));
     }
   }
 
-  /// Verify new email address using the token sent via email. This endpoint is meant to be accessed via a link in the verification email. To workaround email security scanning related link accessing, the link can be opened multiple times.
-  ///
-  /// This modifies server state even if the HTTP method is GET.  Returns plain text response indicating success or failure.
+  /// Show email change verification form page. Token is passed via query parameter to prevent email scanners from accidentally verifying the new email.
   ///
   /// Note: This method returns the HTTP [Response].
-  ///
-  /// Parameters:
-  ///
-  /// * [String] token (required):
-  ///   Base64 URL safe without padding
-  Future<Response> getVerifyNewEmailWithHttpInfo(String token,) async {
+  Future<Response> getVerifyNewEmailWithHttpInfo() async {
     // ignore: prefer_const_declarations
-    final path = r'/account_api/verify_new_email/{token}'
-      .replaceAll('{token}', token);
+    final path = r'/verify_new_email';
 
     // ignore: prefer_final_locals
     Object? postBody;
@@ -457,16 +558,9 @@ class AccountApi {
     );
   }
 
-  /// Verify new email address using the token sent via email. This endpoint is meant to be accessed via a link in the verification email. To workaround email security scanning related link accessing, the link can be opened multiple times.
-  ///
-  /// This modifies server state even if the HTTP method is GET.  Returns plain text response indicating success or failure.
-  ///
-  /// Parameters:
-  ///
-  /// * [String] token (required):
-  ///   Base64 URL safe without padding
-  Future<void> getVerifyNewEmail(String token,) async {
-    final response = await getVerifyNewEmailWithHttpInfo(token,);
+  /// Show email change verification form page. Token is passed via query parameter to prevent email scanners from accidentally verifying the new email.
+  Future<void> getVerifyNewEmail() async {
+    final response = await getVerifyNewEmailWithHttpInfo();
     if (response.statusCode >= HttpStatus.badRequest) {
       throw ApiException(response.statusCode, await _decodeBodyBytes(response));
     }
@@ -617,6 +711,54 @@ class AccountApi {
     
     }
     return null;
+  }
+
+  /// Create or update association membership.
+  ///
+  /// When membership already exists, the full name and domicile fields are editable.
+  ///
+  /// Note: This method returns the HTTP [Response].
+  ///
+  /// Parameters:
+  ///
+  /// * [UpdateAssociationMembership] updateAssociationMembership (required):
+  Future<Response> postAssociationMembershipWithHttpInfo(UpdateAssociationMembership updateAssociationMembership,) async {
+    // ignore: prefer_const_declarations
+    final path = r'/account_api/association_membership';
+
+    // ignore: prefer_final_locals
+    Object? postBody = updateAssociationMembership;
+
+    final queryParams = <QueryParam>[];
+    final headerParams = <String, String>{};
+    final formParams = <String, String>{};
+
+    const contentTypes = <String>['application/json'];
+
+
+    return apiClient.invokeAPI(
+      path,
+      'POST',
+      queryParams,
+      postBody,
+      headerParams,
+      formParams,
+      contentTypes.isEmpty ? null : contentTypes.first,
+    );
+  }
+
+  /// Create or update association membership.
+  ///
+  /// When membership already exists, the full name and domicile fields are editable.
+  ///
+  /// Parameters:
+  ///
+  /// * [UpdateAssociationMembership] updateAssociationMembership (required):
+  Future<void> postAssociationMembership(UpdateAssociationMembership updateAssociationMembership,) async {
+    final response = await postAssociationMembershipWithHttpInfo(updateAssociationMembership,);
+    if (response.statusCode >= HttpStatus.badRequest) {
+      throw ApiException(response.statusCode, await _decodeBodyBytes(response));
+    }
   }
 
   /// Cancel email changing process
@@ -1719,6 +1861,78 @@ class AccountApi {
     
     }
     return null;
+  }
+
+  /// Verify email address using the token from the form submission.
+  ///
+  /// Note: This method returns the HTTP [Response].
+  Future<Response> postVerifyEmailWithHttpInfo() async {
+    // ignore: prefer_const_declarations
+    final path = r'/verify_email';
+
+    // ignore: prefer_final_locals
+    Object? postBody;
+
+    final queryParams = <QueryParam>[];
+    final headerParams = <String, String>{};
+    final formParams = <String, String>{};
+
+    const contentTypes = <String>['application/x-www-form-urlencoded'];
+
+
+    return apiClient.invokeAPI(
+      path,
+      'POST',
+      queryParams,
+      postBody,
+      headerParams,
+      formParams,
+      contentTypes.isEmpty ? null : contentTypes.first,
+    );
+  }
+
+  /// Verify email address using the token from the form submission.
+  Future<void> postVerifyEmail() async {
+    final response = await postVerifyEmailWithHttpInfo();
+    if (response.statusCode >= HttpStatus.badRequest) {
+      throw ApiException(response.statusCode, await _decodeBodyBytes(response));
+    }
+  }
+
+  /// Verify new email address using the token from the form submission.
+  ///
+  /// Note: This method returns the HTTP [Response].
+  Future<Response> postVerifyNewEmailWithHttpInfo() async {
+    // ignore: prefer_const_declarations
+    final path = r'/verify_new_email';
+
+    // ignore: prefer_final_locals
+    Object? postBody;
+
+    final queryParams = <QueryParam>[];
+    final headerParams = <String, String>{};
+    final formParams = <String, String>{};
+
+    const contentTypes = <String>['application/x-www-form-urlencoded'];
+
+
+    return apiClient.invokeAPI(
+      path,
+      'POST',
+      queryParams,
+      postBody,
+      headerParams,
+      formParams,
+      contentTypes.isEmpty ? null : contentTypes.first,
+    );
+  }
+
+  /// Verify new email address using the token from the form submission.
+  Future<void> postVerifyNewEmail() async {
+    final response = await postVerifyNewEmailWithHttpInfo();
+    if (response.statusCode >= HttpStatus.badRequest) {
+      throw ApiException(response.statusCode, await _decodeBodyBytes(response));
+    }
   }
 
   /// Update current profile visiblity value.

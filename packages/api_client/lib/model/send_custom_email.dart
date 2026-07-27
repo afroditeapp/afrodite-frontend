@@ -14,25 +14,31 @@ class SendCustomEmail {
   /// Returns a new [SendCustomEmail] instance.
   SendCustomEmail({
     required this.emailId,
+    required this.targetGroup,
   });
 
   CustomEmailId emailId;
 
+  CustomEmailTargetGroup targetGroup;
+
   @override
   bool operator ==(Object other) => identical(this, other) || other is SendCustomEmail &&
-    other.emailId == emailId;
+    other.emailId == emailId &&
+    other.targetGroup == targetGroup;
 
   @override
   int get hashCode =>
     // ignore: unnecessary_parenthesis
-    (emailId.hashCode);
+    (emailId.hashCode) +
+    (targetGroup.hashCode);
 
   @override
-  String toString() => 'SendCustomEmail[emailId=$emailId]';
+  String toString() => 'SendCustomEmail[emailId=$emailId, targetGroup=$targetGroup]';
 
   Map<String, dynamic> toJson() {
     final json = <String, dynamic>{};
       json[r'email_id'] = this.emailId;
+      json[r'target_group'] = this.targetGroup;
     return json;
   }
 
@@ -56,6 +62,7 @@ class SendCustomEmail {
 
       return SendCustomEmail(
         emailId: CustomEmailId.fromJson(json[r'email_id'])!,
+        targetGroup: CustomEmailTargetGroup.fromJson(json[r'target_group'])!,
       );
     }
     return null;
@@ -104,6 +111,7 @@ class SendCustomEmail {
   /// The list of required keys that must be present in a JSON.
   static const requiredKeys = <String>{
     'email_id',
+    'target_group',
   };
 }
 

@@ -94,6 +94,9 @@ String parameterToString(dynamic value) {
   if (value is CurrentAccountInteractionState) {
     return CurrentAccountInteractionStateTypeTransformer().encode(value).toString();
   }
+  if (value is CustomEmailTargetGroup) {
+    return CustomEmailTargetGroupTypeTransformer().encode(value).toString();
+  }
   if (value is CustomReportType) {
     return CustomReportTypeTypeTransformer().encode(value).toString();
   }

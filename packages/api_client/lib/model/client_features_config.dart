@@ -15,6 +15,7 @@ class ClientFeaturesConfig {
   ClientFeaturesConfig({
     this.accountVerification,
     this.ageVerification,
+    this.association,
     this.attribution,
     this.chat,
     this.features,
@@ -27,6 +28,8 @@ class ClientFeaturesConfig {
   AccountVerificationConfig? accountVerification;
 
   AgeVerificationConfig? ageVerification;
+
+  AssociationConfig? association;
 
   AttributionConfig? attribution;
 
@@ -46,6 +49,7 @@ class ClientFeaturesConfig {
   bool operator ==(Object other) => identical(this, other) || other is ClientFeaturesConfig &&
     other.accountVerification == accountVerification &&
     other.ageVerification == ageVerification &&
+    other.association == association &&
     other.attribution == attribution &&
     other.chat == chat &&
     other.features == features &&
@@ -59,6 +63,7 @@ class ClientFeaturesConfig {
     // ignore: unnecessary_parenthesis
     (accountVerification == null ? 0 : accountVerification!.hashCode) +
     (ageVerification == null ? 0 : ageVerification!.hashCode) +
+    (association == null ? 0 : association!.hashCode) +
     (attribution == null ? 0 : attribution!.hashCode) +
     (chat == null ? 0 : chat!.hashCode) +
     (features == null ? 0 : features!.hashCode) +
@@ -68,7 +73,7 @@ class ClientFeaturesConfig {
     (profile == null ? 0 : profile!.hashCode);
 
   @override
-  String toString() => 'ClientFeaturesConfig[accountVerification=$accountVerification, ageVerification=$ageVerification, attribution=$attribution, chat=$chat, features=$features, likes=$likes, map=$map, news=$news, profile=$profile]';
+  String toString() => 'ClientFeaturesConfig[accountVerification=$accountVerification, ageVerification=$ageVerification, association=$association, attribution=$attribution, chat=$chat, features=$features, likes=$likes, map=$map, news=$news, profile=$profile]';
 
   Map<String, dynamic> toJson() {
     final json = <String, dynamic>{};
@@ -81,6 +86,11 @@ class ClientFeaturesConfig {
       json[r'age_verification'] = this.ageVerification;
     } else {
       json[r'age_verification'] = null;
+    }
+    if (this.association != null) {
+      json[r'association'] = this.association;
+    } else {
+      json[r'association'] = null;
     }
     if (this.attribution != null) {
       json[r'attribution'] = this.attribution;
@@ -141,6 +151,7 @@ class ClientFeaturesConfig {
       return ClientFeaturesConfig(
         accountVerification: AccountVerificationConfig.fromJson(json[r'account_verification']),
         ageVerification: AgeVerificationConfig.fromJson(json[r'age_verification']),
+        association: AssociationConfig.fromJson(json[r'association']),
         attribution: AttributionConfig.fromJson(json[r'attribution']),
         chat: ChatConfig.fromJson(json[r'chat']),
         features: FeaturesConfig.fromJson(json[r'features']),
