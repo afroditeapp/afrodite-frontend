@@ -1,4 +1,5 @@
 import 'package:app/data/utils/repository_instances.dart';
+import 'package:app/logic/account/client_features_config.dart';
 import 'package:app/model/freezed/logic/main/navigator_state.dart';
 import 'package:app/ui/normal/settings/admin/edit_admin_notifications.dart';
 import 'package:app/ui/normal/settings/admin/moderator_tasks.dart';
@@ -6,6 +7,7 @@ import 'package:app/ui/normal/settings/admin/admin_bot_processed_content_tasks.d
 import 'package:app/ui/normal/settings/admin/open_account_admin_settings.dart';
 import 'package:app/ui/normal/settings/admin/view_accounts.dart';
 import 'package:app/ui/normal/settings/admin/view_admins.dart';
+import 'package:app/ui/normal/settings/admin/manual_association_membership_registry.dart';
 import 'package:app/ui/normal/settings/admin/custom_email/custom_email_list.dart';
 import 'package:app/ui/normal/settings/admin/profile_attributes/schema_editor.dart';
 import 'package:app/ui/normal/settings/server.dart';
@@ -169,6 +171,22 @@ class AdminSettingsScreen extends StatelessWidget {
         ),
       );
     }
+    if (permissions.adminViewAssociationMembership &&
+        context.read<ClientFeaturesConfigBloc>().state.config.association != null) {
+      settings.add(
+        Setting.createSetting(
+          Icons.people,
+          "Association membership registry (manual)",
+          () => MyNavigator.pushLimited(
+            context,
+            ManualAssociationMembershipRegistryPage(
+              r,
+              canEdit: permissions.adminEditAssociationMembership,
+            ),
+          ),
+        ),
+      );
+    }
     if (permissions.adminSubscribeAdminNotifications) {
       settings.add(
         Setting.createSetting(
@@ -215,6 +233,8 @@ class AdminSettingsPermissions {
   bool get adminFindAccountByEmailAddress => _permissions.adminFindAccountByEmailAddress;
   bool get adminSubscribeAdminNotifications => _permissions.adminSubscribeAdminNotifications;
   bool get adminCustomEmail => _permissions.adminCustomEmail;
+  bool get adminViewAssociationMembership => _permissions.adminViewAssociationMembership;
+  bool get adminEditAssociationMembership => _permissions.adminEditAssociationMembership;
   AdminSettingsPermissions(this._permissions);
 
   Permissions get apiPermissions => _permissions;
@@ -246,6 +266,8 @@ class AdminSettingsPermissions {
         adminEditProfileAttributesSchemaVisibleContent ||
         adminFindAccountByEmailAddress ||
         adminSubscribeAdminNotifications ||
-        adminCustomEmail;
+        adminCustomEmail ||
+        adminViewAssociationMembership ||
+        adminEditAssociationMembership;
   }
 }
