@@ -111,7 +111,7 @@ class ImageCacheData extends AppSingleton {
         _ => null,
       };
     }
-    final imgKey = "img:${imageOwner.aid}${id.cid}:q$preferredQuality";
+    final imgKey = "img:${imageOwner.aid}${id.cid}$preferredQuality";
     final fileInfo = await cacheManager.getFileFromCache(imgKey);
     if (fileInfo != null && fileInfo.isFresh) {
       // Still fresh, return cached data
