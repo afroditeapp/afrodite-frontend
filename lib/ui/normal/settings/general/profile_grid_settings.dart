@@ -11,6 +11,7 @@ import 'package:app/ui_utils/extensions/other.dart';
 import 'package:app/ui_utils/padding.dart';
 import 'package:app/ui_utils/profile_thumbnail_image_or_error.dart';
 import 'package:app/ui_utils/snack_bar.dart';
+import 'package:app/utils/api.dart';
 import 'package:database/database.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
@@ -250,25 +251,25 @@ class _ProfileGridSettingsScreenState extends State<ProfileGridSettingsScreen> {
 
   Widget imageQualitySetting(BuildContext context, UiSettingsData state) {
     final selectedQuality =
-        state.userPreferredContentQuality.quality ?? UserPreferredContentQuality.DEFAULT;
+        state.userPreferredContentQuality.quality ?? ContentQualityVariant.default_.value;
     return Padding(
       padding: const EdgeInsets.symmetric(horizontal: 16),
-      child: DropdownButtonFormField<String>(
+      child: DropdownButtonFormField<int>(
         initialValue: selectedQuality,
         decoration: InputDecoration(
           labelText: context.strings.profile_grid_settings_screen_preferred_image_quality,
         ),
         items: [
           DropdownMenuItem(
-            value: "h",
+            value: ContentQualityVariant.high.value,
             child: Text(context.strings.profile_grid_settings_screen_image_quality_high),
           ),
           DropdownMenuItem(
-            value: "m",
+            value: ContentQualityVariant.medium.value,
             child: Text(context.strings.profile_grid_settings_screen_image_quality_medium),
           ),
           DropdownMenuItem(
-            value: "l",
+            value: ContentQualityVariant.low.value,
             child: Text(context.strings.profile_grid_settings_screen_image_quality_low),
           ),
         ],

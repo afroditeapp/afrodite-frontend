@@ -57,7 +57,7 @@ class MediaRepository extends DataRepositoryWithLifecycle {
     AccountId imageOwner,
     ContentId id, {
     bool isMatch = false,
-    String preferredQuality = "h",
+    required String preferredQuality,
     String? ifNoneMatch,
   }) async {
     await connectionManager.tryWaitUntilConnected();

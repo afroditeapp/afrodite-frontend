@@ -5411,11 +5411,11 @@ class $UserPreferredContentQualityTable
     'quality',
   );
   @override
-  late final GeneratedColumn<String> quality = GeneratedColumn<String>(
+  late final GeneratedColumn<int> quality = GeneratedColumn<int>(
     'quality',
     aliasedName,
     true,
-    type: DriftSqlType.string,
+    type: DriftSqlType.int,
     requiredDuringInsert: false,
   );
   @override
@@ -5458,7 +5458,7 @@ class $UserPreferredContentQualityTable
         data['${effectivePrefix}id'],
       )!,
       quality: attachedDatabase.typeMapping.read(
-        DriftSqlType.string,
+        DriftSqlType.int,
         data['${effectivePrefix}quality'],
       ),
     );
@@ -5474,15 +5474,15 @@ class UserPreferredContentQualityData extends DataClass
     implements Insertable<UserPreferredContentQualityData> {
   final int id;
 
-  /// "h" = high, "m" = medium, "l" = low, null = use default
-  final String? quality;
+  /// null = use default
+  final int? quality;
   const UserPreferredContentQualityData({required this.id, this.quality});
   @override
   Map<String, Expression> toColumns(bool nullToAbsent) {
     final map = <String, Expression>{};
     map['id'] = Variable<int>(id);
     if (!nullToAbsent || quality != null) {
-      map['quality'] = Variable<String>(quality);
+      map['quality'] = Variable<int>(quality);
     }
     return map;
   }
@@ -5503,7 +5503,7 @@ class UserPreferredContentQualityData extends DataClass
     serializer ??= driftRuntimeOptions.defaultSerializer;
     return UserPreferredContentQualityData(
       id: serializer.fromJson<int>(json['id']),
-      quality: serializer.fromJson<String?>(json['quality']),
+      quality: serializer.fromJson<int?>(json['quality']),
     );
   }
   @override
@@ -5511,13 +5511,13 @@ class UserPreferredContentQualityData extends DataClass
     serializer ??= driftRuntimeOptions.defaultSerializer;
     return <String, dynamic>{
       'id': serializer.toJson<int>(id),
-      'quality': serializer.toJson<String?>(quality),
+      'quality': serializer.toJson<int?>(quality),
     };
   }
 
   UserPreferredContentQualityData copyWith({
     int? id,
-    Value<String?> quality = const Value.absent(),
+    Value<int?> quality = const Value.absent(),
   }) => UserPreferredContentQualityData(
     id: id ?? this.id,
     quality: quality.present ? quality.value : this.quality,
@@ -5553,7 +5553,7 @@ class UserPreferredContentQualityData extends DataClass
 class UserPreferredContentQualityCompanion
     extends UpdateCompanion<UserPreferredContentQualityData> {
   final Value<int> id;
-  final Value<String?> quality;
+  final Value<int?> quality;
   const UserPreferredContentQualityCompanion({
     this.id = const Value.absent(),
     this.quality = const Value.absent(),
@@ -5564,7 +5564,7 @@ class UserPreferredContentQualityCompanion
   });
   static Insertable<UserPreferredContentQualityData> custom({
     Expression<int>? id,
-    Expression<String>? quality,
+    Expression<int>? quality,
   }) {
     return RawValuesInsertable({
       if (id != null) 'id': id,
@@ -5574,7 +5574,7 @@ class UserPreferredContentQualityCompanion
 
   UserPreferredContentQualityCompanion copyWith({
     Value<int>? id,
-    Value<String?>? quality,
+    Value<int?>? quality,
   }) {
     return UserPreferredContentQualityCompanion(
       id: id ?? this.id,
@@ -5589,7 +5589,7 @@ class UserPreferredContentQualityCompanion
       map['id'] = Variable<int>(id.value);
     }
     if (quality.present) {
-      map['quality'] = Variable<String>(quality.value);
+      map['quality'] = Variable<int>(quality.value);
     }
     return map;
   }

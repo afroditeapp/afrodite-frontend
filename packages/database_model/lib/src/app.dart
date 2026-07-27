@@ -86,9 +86,7 @@ class AppUpdateAvailableDialogState {
 }
 
 class UserPreferredContentQuality {
-  static const DEFAULT = "h";
-
-  final String? quality;
+  final int? quality;
   const UserPreferredContentQuality({this.quality});
 }
 

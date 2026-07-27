@@ -276,7 +276,7 @@ class DaoWriteApp extends DatabaseAccessor<AccountDatabase> with _$DaoWriteAppMi
     );
   }
 
-  Future<void> updateUserPreferredContentQuality(String? quality) async {
+  Future<void> updateUserPreferredContentQuality(int? quality) async {
     await into(userPreferredContentQuality).insertOnConflictUpdate(
       UserPreferredContentQualityCompanion.insert(id: SingleRowTable.ID, quality: Value(quality)),
     );

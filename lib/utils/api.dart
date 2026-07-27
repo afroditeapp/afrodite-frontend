@@ -205,3 +205,14 @@ extension ContentModerationStateExtensions on ContentModerationState {
         this == ContentModerationState.waitingAdmin;
   }
 }
+
+enum ContentQualityVariant {
+  high(6),
+  medium(5),
+  low(4);
+
+  final int value;
+  const ContentQualityVariant(this.value);
+
+  static ContentQualityVariant get default_ => high;
+}

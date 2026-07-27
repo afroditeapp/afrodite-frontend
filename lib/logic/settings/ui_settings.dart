@@ -32,7 +32,7 @@ class UpdatePaddingMode extends UiSettingsEvent {
 }
 
 class UpdateUserPreferredContentQuality extends UiSettingsEvent {
-  final String? value;
+  final int? value;
   UpdateUserPreferredContentQuality(this.value);
 }
 
@@ -78,7 +78,7 @@ class UiSettingsBloc extends Bloc<UiSettingsEvent, UiSettingsData> {
     db.accountAction((db) => db.app.updateGridSettings(newSettings));
   }
 
-  void saveUserPreferredContentQuality(String? quality) {
+  void saveUserPreferredContentQuality(int? quality) {
     db.accountAction((db) => db.app.updateUserPreferredContentQuality(quality));
   }
 

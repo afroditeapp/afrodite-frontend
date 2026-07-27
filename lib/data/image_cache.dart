@@ -8,6 +8,7 @@ import 'package:app/data/utils/repository_instances.dart';
 import 'package:app/ui/utils/view_profile.dart';
 import 'package:app/ui_utils/crop_image_screen.dart';
 import 'package:app/ui_utils/profile_thumbnail_image.dart';
+import 'package:app/utils/api.dart';
 import 'package:database/database.dart';
 import 'package:flutter/foundation.dart';
 import 'package:flutter/material.dart';
@@ -54,7 +55,7 @@ class ImageCacheData extends AppSingleton {
       (r) => r.app.getUserPreferredContentQuality(),
     );
     final userPreferredQuality =
-        userPreferredQualityResult.ok()?.quality ?? UserPreferredContentQuality.DEFAULT;
+        userPreferredQualityResult.ok()?.quality ?? ContentQualityVariant.default_.value;
 
     final r = await _getImageWithQuality(
       imageOwner,
@@ -67,7 +68,7 @@ class ImageCacheData extends AppSingleton {
   }
 
   /// Check if received quality is lower than requested and show snackbar.
-  void _checkShowDegradedQualitySnackbar(String requestedQuality, String receivedQuality) {
+  void _checkShowDegradedQualitySnackbar(int requestedQuality, String receivedQuality) {
     if (_qualityIsDegraded(requestedQuality, receivedQuality)) {
       final now = UtcDateTime.now();
       final last = _lastDegradedQualitySnackbarTime;
@@ -79,19 +80,18 @@ class ImageCacheData extends AppSingleton {
   }
 
   /// Returns true if [received] is lower quality than [requested].
-  /// Quality order: l < m < h
-  bool _qualityIsDegraded(String requested, String received) {
-    const qualityOrder = {'l': 0, 'm': 1, 'h': 2};
-    final reqVal = qualityOrder[requested] ?? 2;
-    final recVal = qualityOrder[received] ?? 0;
-    return recVal < reqVal;
+  /// Lower int value is lower quality
+  bool _qualityIsDegraded(int requested, String received) {
+    final receivedValue = int.tryParse(received);
+    if (receivedValue == null) return true;
+    return receivedValue < requested;
   }
 
   Future<Uint8List?> _getImageWithQuality(
     AccountId imageOwner,
     ContentId id, {
     bool isMatch = false,
-    required String preferredQuality,
+    required int preferredQuality,
     required MediaRepository media,
   }) async {
     if (kIsWeb) {
@@ -100,7 +100,7 @@ class ImageCacheData extends AppSingleton {
         imageOwner,
         id,
         isMatch: isMatch,
-        preferredQuality: preferredQuality,
+        preferredQuality: preferredQuality.toString(),
       );
       if (result case ContentQualityData(:final etag) || ContentQualityNotModified(:final etag)) {
         _checkShowDegradedQualitySnackbar(preferredQuality, etag);
@@ -122,7 +122,7 @@ class ImageCacheData extends AppSingleton {
       imageOwner,
       id,
       isMatch: isMatch,
-      preferredQuality: preferredQuality,
+      preferredQuality: preferredQuality.toString(),
       ifNoneMatch: fileInfo?.etag,
     );
     if (result != null) {

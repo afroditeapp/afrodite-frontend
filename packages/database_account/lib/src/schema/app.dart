@@ -55,8 +55,8 @@ class ProfileDataCleanupState extends SingleRowTable {
 }
 
 class UserPreferredContentQuality extends SingleRowTable {
-  /// "h" = high, "m" = medium, "l" = low, null = use default
-  TextColumn get quality => text().nullable()();
+  /// null = use default
+  IntColumn get quality => integer().nullable()();
 }
 
 class AppNotificationSettings extends SingleRowTable {
