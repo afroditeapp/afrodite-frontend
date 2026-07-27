@@ -11,6 +11,7 @@ import 'package:app/model/freezed/logic/account/account.dart';
 import 'package:app/model/freezed/logic/account/account_details.dart';
 import 'package:app/ui/normal/settings/age_verification.dart';
 import 'package:app/ui/normal/settings/account_verification.dart';
+import 'package:app/ui/normal/settings/association_membership.dart';
 import 'package:app/ui/normal/settings.dart';
 import 'package:app/ui_utils/common_update_logic.dart';
 import 'package:app/ui_utils/dialog.dart';
@@ -252,6 +253,23 @@ class _AccountSettingsScreenState extends State<AccountSettingsScreen> {
               Icons.verified_user,
               context.strings.account_verification_screen_title,
               () => openAccountVerificationSettings(context, accountVerificationMethods),
+            ).toListTile();
+          },
+        ),
+        BlocBuilder<ClientFeaturesConfigBloc, ClientFeaturesConfigData>(
+          builder: (context, configState) {
+            final assoc = configState.config.association;
+            if (assoc == null ||
+                (!assoc.userCanEditExistingMembership &&
+                    !assoc.userCanViewExistingMembership &&
+                    !assoc.userCanJoinAssociation)) {
+              return const SizedBox.shrink();
+            }
+
+            return Setting.createSetting(
+              Icons.groups,
+              context.strings.association_membership_screen_title,
+              () => openAssociationMembershipSettings(context),
             ).toListTile();
           },
         ),

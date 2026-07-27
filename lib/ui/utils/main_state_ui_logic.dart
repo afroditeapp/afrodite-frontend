@@ -32,6 +32,7 @@ import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:app/logic/account/account.dart';
 import 'package:app/logic/account/account_details.dart';
+import 'package:app/logic/account/association_membership.dart';
 import 'package:app/logic/account/initial_setup.dart';
 import 'package:app/logic/account/news/news_count.dart';
 import 'package:app/logic/app/bottom_navigation_state.dart';
@@ -194,6 +195,7 @@ abstract class LoggedInRootScreen extends StatelessWidget {
         BlocProvider(create: (_) => LocationBloc(r)),
         BlocProvider(create: (_) => MyProfileBloc(r)),
         BlocProvider(create: (_) => AccountDetailsBloc(r)),
+        BlocProvider(create: (_) => AssociationMembershipBloc(r)),
         BlocProvider(create: (_) => ProfileFiltersBloc(r)),
 
         // Settings

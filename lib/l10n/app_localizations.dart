@@ -568,6 +568,54 @@ abstract class AppLocalizations {
   /// **'New app version available. Restart the app.'**
   String get app_update_available_dialog_description_web_restart;
 
+  /// Title for current membership info section
+  ///
+  /// In en, this message translates to:
+  /// **'Current membership'**
+  String get association_membership_screen_current_membership_title;
+
+  /// Label for domicile field
+  ///
+  /// In en, this message translates to:
+  /// **'Domicile'**
+  String get association_membership_screen_domicile_label;
+
+  /// Button text to end association membership
+  ///
+  /// In en, this message translates to:
+  /// **'End membership'**
+  String get association_membership_screen_end_membership_button;
+
+  /// Title for end membership confirm dialog
+  ///
+  /// In en, this message translates to:
+  /// **'End membership?'**
+  String get association_membership_screen_end_membership_confirm_title;
+
+  /// Label for full name field
+  ///
+  /// In en, this message translates to:
+  /// **'Full name'**
+  String get association_membership_screen_full_name_label;
+
+  /// Button text to join association
+  ///
+  /// In en, this message translates to:
+  /// **'Join'**
+  String get association_membership_screen_join_button;
+
+  /// Label for membership type dropdown
+  ///
+  /// In en, this message translates to:
+  /// **'Membership type'**
+  String get association_membership_screen_membership_type_label;
+
+  /// Title for association membership screen
+  ///
+  /// In en, this message translates to:
+  /// **'Association membership'**
+  String get association_membership_screen_title;
+
   /// Description text displayed when no profiles are found
   ///
   /// In en, this message translates to:

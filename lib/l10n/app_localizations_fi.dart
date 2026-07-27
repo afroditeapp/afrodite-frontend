@@ -295,6 +295,30 @@ class AppLocalizationsFi extends AppLocalizations {
       'New app version available. Restart the app.';
 
   @override
+  String get association_membership_screen_current_membership_title => 'Current membership';
+
+  @override
+  String get association_membership_screen_domicile_label => 'Domicile';
+
+  @override
+  String get association_membership_screen_end_membership_button => 'End membership';
+
+  @override
+  String get association_membership_screen_end_membership_confirm_title => 'End membership?';
+
+  @override
+  String get association_membership_screen_full_name_label => 'Full name';
+
+  @override
+  String get association_membership_screen_join_button => 'Join';
+
+  @override
+  String get association_membership_screen_membership_type_label => 'Membership type';
+
+  @override
+  String get association_membership_screen_title => 'Association membership';
+
+  @override
   String get automatic_profile_search_results_screen_no_profiles_found_description =>
       'You will be notified when this changes';
 

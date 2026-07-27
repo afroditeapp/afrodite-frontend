@@ -360,6 +360,38 @@
   "@app_update_available_dialog_description_web_restart": {
     "description": "Description text for app update available dialog on web"
   },
+  "association_membership_screen_current_membership_title": "Current membership",
+  "@association_membership_screen_current_membership_title": {
+    "description": "Title for current membership info section"
+  },
+  "association_membership_screen_domicile_label": "Domicile",
+  "@association_membership_screen_domicile_label": {
+    "description": "Label for domicile field"
+  },
+  "association_membership_screen_end_membership_button": "End membership",
+  "@association_membership_screen_end_membership_button": {
+    "description": "Button text to end association membership"
+  },
+  "association_membership_screen_end_membership_confirm_title": "End membership?",
+  "@association_membership_screen_end_membership_confirm_title": {
+    "description": "Title for end membership confirm dialog"
+  },
+  "association_membership_screen_full_name_label": "Full name",
+  "@association_membership_screen_full_name_label": {
+    "description": "Label for full name field"
+  },
+  "association_membership_screen_join_button": "Join",
+  "@association_membership_screen_join_button": {
+    "description": "Button text to join association"
+  },
+  "association_membership_screen_membership_type_label": "Membership type",
+  "@association_membership_screen_membership_type_label": {
+    "description": "Label for membership type dropdown"
+  },
+  "association_membership_screen_title": "Association membership",
+  "@association_membership_screen_title": {
+    "description": "Title for association membership screen"
+  },
   "automatic_profile_search_results_screen_no_profiles_found_description": "You will be notified when this changes",
   "@automatic_profile_search_results_screen_no_profiles_found_description": {
     "description": "Description text displayed when no profiles are found"
