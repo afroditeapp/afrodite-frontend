@@ -144,19 +144,16 @@ class _CustomEmailEditorScreenState extends State<CustomEmailEditorScreen> {
     return true;
   }
 
-  Future<void> _saveAndSendToAll() async {
+  Future<void> _saveAndSend(CustomEmailTargetGroup targetGroup) async {
     if (!await _save()) return;
 
-    final send = SendCustomEmail(
-      emailId: widget.email.id,
-      targetGroup: CustomEmailTargetGroup.allAccounts,
-    );
+    final send = SendCustomEmail(emailId: widget.email.id, targetGroup: targetGroup);
     final result = await widget.api
         .accountAdminAction((api) => api.postSendCustomEmailToAllAccounts(send))
         .ok();
 
     if (result == null) {
-      showSnackBar("Failed to send custom email to all accounts");
+      showSnackBar("Failed to send custom email");
       return;
     }
 
@@ -171,7 +168,7 @@ class _CustomEmailEditorScreenState extends State<CustomEmailEditorScreen> {
 
     final send = SendCustomEmail(
       emailId: widget.email.id,
-      targetGroup: CustomEmailTargetGroup.allAccounts,
+      targetGroup: CustomEmailTargetGroup.allAccounts, // Ignored
     );
     final result = await widget.api
         .accountAdminAction((api) => api.postSendCustomEmailDraftToMyEmailAddress(send))
@@ -227,7 +224,10 @@ class _CustomEmailEditorScreenState extends State<CustomEmailEditorScreen> {
               IconButton(
                 icon: const Icon(Icons.send),
                 tooltip: "Send email to all users",
-                onPressed: () => _showConfirmThen("Send email to all users?", _saveAndSendToAll),
+                onPressed: () => _showConfirmThen(
+                  "Send email to all users?",
+                  () => _saveAndSend(CustomEmailTargetGroup.allAccounts),
+                ),
               ),
             IconButton(
               icon: const Icon(Icons.save),
@@ -241,6 +241,14 @@ class _CustomEmailEditorScreenState extends State<CustomEmailEditorScreen> {
                     : null,
                 child: const Text("Send draft to my email"),
               ),
+              if (widget.email.sendingInitiatedUnixTime == null)
+                MenuItemButton(
+                  onPressed: () => _showConfirmThen(
+                    "Send email to association members?",
+                    () => _saveAndSend(CustomEmailTargetGroup.associationMembers),
+                  ),
+                  child: const Text("Send to association members"),
+                ),
             ]),
           ],
         ),
