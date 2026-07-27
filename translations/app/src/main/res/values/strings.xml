@@ -696,6 +696,8 @@
     <string name="profile_grid_settings_screen_image_quality_high" description="High image quality">High</string>
     <string name="profile_grid_settings_screen_image_quality_medium" description="Medium image quality">Medium</string>
     <string name="profile_grid_settings_screen_image_quality_low" description="Low image quality">Low</string>
+    <string name="profile_grid_settings_screen_image_quality_lower" description="Lower image quality">Lower</string>
+    <string name="profile_grid_settings_screen_image_quality_very_low" description="Very low image quality">Very low</string>
 
     <!-- View image screen -->
     <string name="view_image_screen_title" description="Title for view image screen">View image</string>

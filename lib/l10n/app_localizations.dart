@@ -3190,11 +3190,23 @@ abstract class AppLocalizations {
   /// **'Low'**
   String get profile_grid_settings_screen_image_quality_low;
 
+  /// Lower image quality
+  ///
+  /// In en, this message translates to:
+  /// **'Lower'**
+  String get profile_grid_settings_screen_image_quality_lower;
+
   /// Medium image quality
   ///
   /// In en, this message translates to:
   /// **'Medium'**
   String get profile_grid_settings_screen_image_quality_medium;
+
+  /// Very low image quality
+  ///
+  /// In en, this message translates to:
+  /// **'Very low'**
+  String get profile_grid_settings_screen_image_quality_very_low;
 
   /// Title for images settings category
   ///

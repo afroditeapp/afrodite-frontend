@@ -2310,9 +2310,17 @@
   "@profile_grid_settings_screen_image_quality_low": {
     "description": "Low image quality"
   },
+  "profile_grid_settings_screen_image_quality_lower": "Lower",
+  "@profile_grid_settings_screen_image_quality_lower": {
+    "description": "Lower image quality"
+  },
   "profile_grid_settings_screen_image_quality_medium": "Medium",
   "@profile_grid_settings_screen_image_quality_medium": {
     "description": "Medium image quality"
+  },
+  "profile_grid_settings_screen_image_quality_very_low": "Very low",
+  "@profile_grid_settings_screen_image_quality_very_low": {
+    "description": "Very low image quality"
   },
   "profile_grid_settings_screen_images_title": "Images",
   "@profile_grid_settings_screen_images_title": {

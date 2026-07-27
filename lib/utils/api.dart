@@ -209,7 +209,9 @@ extension ContentModerationStateExtensions on ContentModerationState {
 enum ContentQualityVariant {
   high(6),
   medium(5),
-  low(4);
+  low(4),
+  lower(3),
+  veryLow(2);
 
   final int value;
   const ContentQualityVariant(this.value);

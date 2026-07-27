@@ -272,6 +272,14 @@ class _ProfileGridSettingsScreenState extends State<ProfileGridSettingsScreen> {
             value: ContentQualityVariant.low.value,
             child: Text(context.strings.profile_grid_settings_screen_image_quality_low),
           ),
+          DropdownMenuItem(
+            value: ContentQualityVariant.lower.value,
+            child: Text(context.strings.profile_grid_settings_screen_image_quality_lower),
+          ),
+          DropdownMenuItem(
+            value: ContentQualityVariant.veryLow.value,
+            child: Text(context.strings.profile_grid_settings_screen_image_quality_very_low),
+          ),
         ],
         onChanged: (value) {
           context.read<UiSettingsBloc>().add(UpdateUserPreferredContentQuality(value));

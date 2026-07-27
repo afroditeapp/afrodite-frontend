@@ -1782,7 +1782,13 @@ class AppLocalizationsFi extends AppLocalizations {
   String get profile_grid_settings_screen_image_quality_low => 'Low';
 
   @override
+  String get profile_grid_settings_screen_image_quality_lower => 'Lower';
+
+  @override
   String get profile_grid_settings_screen_image_quality_medium => 'Medium';
+
+  @override
+  String get profile_grid_settings_screen_image_quality_very_low => 'Very low';
 
   @override
   String get profile_grid_settings_screen_images_title => 'Images';
