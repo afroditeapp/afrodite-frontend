@@ -8,6 +8,7 @@ import 'package:app/ui/normal/settings/admin/open_account_admin_settings.dart';
 import 'package:app/ui/normal/settings/admin/view_accounts.dart';
 import 'package:app/ui/normal/settings/admin/view_admins.dart';
 import 'package:app/ui/normal/settings/admin/manual_association_membership_registry.dart';
+import 'package:app/ui/normal/settings/admin/association_membership_registry.dart';
 import 'package:app/ui/normal/settings/admin/custom_email/custom_email_list.dart';
 import 'package:app/ui/normal/settings/admin/profile_attributes/schema_editor.dart';
 import 'package:app/ui/normal/settings/server.dart';
@@ -176,6 +177,13 @@ class AdminSettingsScreen extends StatelessWidget {
       settings.add(
         Setting.createSetting(
           Icons.people,
+          "Association membership registry",
+          () => MyNavigator.pushLimited(context, AssociationMembershipRegistryPage(r)),
+        ),
+      );
+      settings.add(
+        Setting.createSetting(
+          Icons.edit_note,
           "Association membership registry (manual)",
           () => MyNavigator.pushLimited(
             context,

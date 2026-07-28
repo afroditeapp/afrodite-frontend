@@ -3,6 +3,7 @@ import 'package:app/data/profile_repository.dart';
 import 'package:app/data/utils/repository_instances.dart';
 import 'package:app/localizations.dart';
 import 'package:app/logic/account/account.dart';
+import 'package:app/logic/account/client_features_config.dart';
 import 'package:app/logic/app/navigator_state.dart';
 import 'package:app/model/freezed/logic/account/account.dart';
 import 'package:app/model/freezed/logic/main/navigator_state.dart';
@@ -22,6 +23,7 @@ import 'package:app/ui/normal/settings/admin/account_admin/admin_security_conten
 import 'package:app/ui/normal/settings/admin/account_admin/view_api_usage.dart';
 import 'package:app/ui/normal/settings/admin/account_admin/view_ip_address_usage.dart';
 import 'package:app/ui/normal/settings/admin/account_admin/view_reports.dart';
+import 'package:app/ui/normal/settings/admin/association_membership_registry_detail.dart';
 import 'package:app/ui/normal/settings/data_export.dart';
 import 'package:app/ui_utils/padding.dart';
 import 'package:app/ui_utils/snack_bar.dart';
@@ -298,6 +300,24 @@ class _AccountAdminSettingsScreenState extends State<AccountAdminSettingsScreen>
       );
     }
 
+    if (permissions.adminViewAssociationMembership &&
+        context.read<ClientFeaturesConfigBloc>().state.config.association != null) {
+      list.add(
+        Setting.createSetting(
+          Icons.people,
+          "Association membership",
+          () => MyNavigator.pushLimited(
+            context,
+            AssociationMemberDetailPage(
+              r.api,
+              widget.accountId,
+              canEdit: permissions.adminEditAssociationMembership,
+            ),
+          ),
+        ).toListTile(),
+      );
+    }
+
     if (permissions.adminProcessReports) {
       const sentReports = "View sent reports";
       list.add(
@@ -422,6 +442,8 @@ class AccountAdminSettingsPermissions {
   bool get adminViewAccountState => _permissions.adminViewAccountState;
   bool get adminViewAccountApiUsage => _permissions.adminViewAccountApiUsage;
   bool get adminViewAccountIpAddressUsage => _permissions.adminViewAccountIpAddressUsage;
+  bool get adminViewAssociationMembership => _permissions.adminViewAssociationMembership;
+  bool get adminEditAssociationMembership => _permissions.adminEditAssociationMembership;
   AccountAdminSettingsPermissions(this._permissions);
 
   bool somePermissionEnabled() {
@@ -446,6 +468,8 @@ class AccountAdminSettingsPermissions {
         adminViewPermissions ||
         adminViewAccountState ||
         adminViewAccountApiUsage ||
-        adminViewAccountIpAddressUsage;
+        adminViewAccountIpAddressUsage ||
+        adminViewAssociationMembership ||
+        adminEditAssociationMembership;
   }
 }
