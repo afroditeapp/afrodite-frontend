@@ -13,41 +13,65 @@ part of openapi.api;
 class RequestEmailLoginTokenResult {
   /// Returns a new [RequestEmailLoginTokenResult] instance.
   RequestEmailLoginTokenResult({
-    required this.clientToken,
-    required this.resendWaitSeconds,
-    required this.tokenValiditySeconds,
+    this.clientToken,
+    this.error = false,
+    this.errorEmailRegistrationIpAddressLimitReached = false,
+    this.resendWaitSeconds,
+    this.tokenValiditySeconds,
   });
 
-  /// Client token to be used together with the email token. Always returned to prevent email enumeration attacks.
-  EmailLoginToken clientToken;
+  /// Client token to be used together with the email token.
+  EmailLoginToken? clientToken;
+
+  bool error;
+
+  bool errorEmailRegistrationIpAddressLimitReached;
 
   /// Minimum wait duration between token requests in seconds
-  int resendWaitSeconds;
+  int? resendWaitSeconds;
 
   /// Token validity duration in seconds
-  int tokenValiditySeconds;
+  int? tokenValiditySeconds;
 
   @override
   bool operator ==(Object other) => identical(this, other) || other is RequestEmailLoginTokenResult &&
     other.clientToken == clientToken &&
+    other.error == error &&
+    other.errorEmailRegistrationIpAddressLimitReached == errorEmailRegistrationIpAddressLimitReached &&
     other.resendWaitSeconds == resendWaitSeconds &&
     other.tokenValiditySeconds == tokenValiditySeconds;
 
   @override
   int get hashCode =>
     // ignore: unnecessary_parenthesis
-    (clientToken.hashCode) +
-    (resendWaitSeconds.hashCode) +
-    (tokenValiditySeconds.hashCode);
+    (clientToken == null ? 0 : clientToken!.hashCode) +
+    (error.hashCode) +
+    (errorEmailRegistrationIpAddressLimitReached.hashCode) +
+    (resendWaitSeconds == null ? 0 : resendWaitSeconds!.hashCode) +
+    (tokenValiditySeconds == null ? 0 : tokenValiditySeconds!.hashCode);
 
   @override
-  String toString() => 'RequestEmailLoginTokenResult[clientToken=$clientToken, resendWaitSeconds=$resendWaitSeconds, tokenValiditySeconds=$tokenValiditySeconds]';
+  String toString() => 'RequestEmailLoginTokenResult[clientToken=$clientToken, error=$error, errorEmailRegistrationIpAddressLimitReached=$errorEmailRegistrationIpAddressLimitReached, resendWaitSeconds=$resendWaitSeconds, tokenValiditySeconds=$tokenValiditySeconds]';
 
   Map<String, dynamic> toJson() {
     final json = <String, dynamic>{};
+    if (this.clientToken != null) {
       json[r'client_token'] = this.clientToken;
+    } else {
+      json[r'client_token'] = null;
+    }
+      json[r'error'] = this.error;
+      json[r'error_email_registration_ip_address_limit_reached'] = this.errorEmailRegistrationIpAddressLimitReached;
+    if (this.resendWaitSeconds != null) {
       json[r'resend_wait_seconds'] = this.resendWaitSeconds;
+    } else {
+      json[r'resend_wait_seconds'] = null;
+    }
+    if (this.tokenValiditySeconds != null) {
       json[r'token_validity_seconds'] = this.tokenValiditySeconds;
+    } else {
+      json[r'token_validity_seconds'] = null;
+    }
     return json;
   }
 
@@ -70,9 +94,11 @@ class RequestEmailLoginTokenResult {
       }());
 
       return RequestEmailLoginTokenResult(
-        clientToken: EmailLoginToken.fromJson(json[r'client_token'])!,
-        resendWaitSeconds: mapValueOfType<int>(json, r'resend_wait_seconds')!,
-        tokenValiditySeconds: mapValueOfType<int>(json, r'token_validity_seconds')!,
+        clientToken: EmailLoginToken.fromJson(json[r'client_token']),
+        error: mapValueOfType<bool>(json, r'error') ?? false,
+        errorEmailRegistrationIpAddressLimitReached: mapValueOfType<bool>(json, r'error_email_registration_ip_address_limit_reached') ?? false,
+        resendWaitSeconds: mapValueOfType<int>(json, r'resend_wait_seconds'),
+        tokenValiditySeconds: mapValueOfType<int>(json, r'token_validity_seconds'),
       );
     }
     return null;
@@ -120,9 +146,6 @@ class RequestEmailLoginTokenResult {
 
   /// The list of required keys that must be present in a JSON.
   static const requiredKeys = <String>{
-    'client_token',
-    'resend_wait_seconds',
-    'token_validity_seconds',
   };
 }
 

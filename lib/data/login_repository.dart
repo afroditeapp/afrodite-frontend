@@ -333,10 +333,14 @@ class LoginRepository extends AppSingleton {
     }
 
     final result = await _apiNoConnection
-        .account((api) => api.postRequestEmailLoginToken(RequestEmailLoginToken(email: cmd.email)))
+        .account(
+          (api) => api.postRequestEmailLoginToken(
+            RequestEmailLoginToken(email: cmd.email, loginOnly: true),
+          ),
+        )
         .ok();
 
-    if (result == null) {
+    if (result == null || result.error) {
       return Err(await _checkServerMaintenanceInfoForEmailTokenRequest());
     }
 

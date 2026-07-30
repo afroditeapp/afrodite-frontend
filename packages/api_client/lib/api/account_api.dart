@@ -1570,7 +1570,7 @@ class AccountApi {
 
   /// Request email login token to be sent via email.
   ///
-  /// The route always takes at least 5 seconds to complete to prevent timing attacks that could be used to enumerate existing email addresses.  No error is returned to prevent attackers from discovering which email addresses exist in the system.
+  /// The route always takes at least 5 seconds to complete to prevent timing attacks that could be used to enumerate existing email addresses.
   ///
   /// Note: This method returns the HTTP [Response].
   ///
@@ -1604,7 +1604,7 @@ class AccountApi {
 
   /// Request email login token to be sent via email.
   ///
-  /// The route always takes at least 5 seconds to complete to prevent timing attacks that could be used to enumerate existing email addresses.  No error is returned to prevent attackers from discovering which email addresses exist in the system.
+  /// The route always takes at least 5 seconds to complete to prevent timing attacks that could be used to enumerate existing email addresses.
   ///
   /// Parameters:
   ///

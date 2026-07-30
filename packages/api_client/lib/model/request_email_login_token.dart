@@ -14,25 +14,32 @@ class RequestEmailLoginToken {
   /// Returns a new [RequestEmailLoginToken] instance.
   RequestEmailLoginToken({
     required this.email,
+    this.loginOnly = false,
   });
 
   String email;
 
+  /// Use this to bypass [LoginResult::error_email_registration_ip_address_limit_reached] when user wants to login to existing account.
+  bool loginOnly;
+
   @override
   bool operator ==(Object other) => identical(this, other) || other is RequestEmailLoginToken &&
-    other.email == email;
+    other.email == email &&
+    other.loginOnly == loginOnly;
 
   @override
   int get hashCode =>
     // ignore: unnecessary_parenthesis
-    (email.hashCode);
+    (email.hashCode) +
+    (loginOnly.hashCode);
 
   @override
-  String toString() => 'RequestEmailLoginToken[email=$email]';
+  String toString() => 'RequestEmailLoginToken[email=$email, loginOnly=$loginOnly]';
 
   Map<String, dynamic> toJson() {
     final json = <String, dynamic>{};
       json[r'email'] = this.email;
+      json[r'login_only'] = this.loginOnly;
     return json;
   }
 
@@ -56,6 +63,7 @@ class RequestEmailLoginToken {
 
       return RequestEmailLoginToken(
         email: mapValueOfType<String>(json, r'email')!,
+        loginOnly: mapValueOfType<bool>(json, r'login_only') ?? false,
       );
     }
     return null;
