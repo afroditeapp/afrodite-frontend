@@ -72,9 +72,17 @@ class _EmailLoginScreenState extends State<EmailLoginScreen> {
         crossAxisAlignment: CrossAxisAlignment.stretch,
         children: [
           const Padding(padding: EdgeInsets.all(8)),
-          Text(
-            context.strings.email_login_screen_input_email_description,
-            style: Theme.of(context).textTheme.bodyLarge,
+          Row(
+            children: [
+              Icon(Icons.info, color: Theme.of(context).colorScheme.primary, size: 20),
+              const SizedBox(width: 8),
+              Expanded(
+                child: Text(
+                  context.strings.email_login_screen_info_text,
+                  style: Theme.of(context).textTheme.bodyLarge,
+                ),
+              ),
+            ],
           ),
           const Padding(padding: EdgeInsets.all(16)),
           TextField(

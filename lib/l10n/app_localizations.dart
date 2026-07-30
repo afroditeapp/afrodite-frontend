@@ -1426,17 +1426,17 @@ abstract class AppLocalizations {
   /// **'Email address'**
   String get email_login_screen_email_hint;
 
+  /// Notice that email login only works for existing accounts
+  ///
+  /// In en, this message translates to:
+  /// **'Registering new accounts is unsupported using this login method'**
+  String get email_login_screen_info_text;
+
   /// Description for inputting login code
   ///
   /// In en, this message translates to:
   /// **'Enter the login code sent to {p0}'**
   String email_login_screen_input_code_description(String p0);
-
-  /// Description for inputting email
-  ///
-  /// In en, this message translates to:
-  /// **'Enter your email address to receive a login code. This works only for already existing accounts.'**
-  String get email_login_screen_input_email_description;
 
   /// Button text for sending login code
   ///

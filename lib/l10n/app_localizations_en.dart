@@ -789,13 +789,13 @@ class AppLocalizationsEn extends AppLocalizations {
   String get email_login_screen_email_hint => 'Email address';
 
   @override
+  String get email_login_screen_info_text =>
+      'Registering new accounts is unsupported using this login method';
+
+  @override
   String email_login_screen_input_code_description(String p0) {
     return 'Enter the login code sent to $p0';
   }
-
-  @override
-  String get email_login_screen_input_email_description =>
-      'Enter your email address to receive a login code. This works only for already existing accounts.';
 
   @override
   String get email_login_screen_send_code_button => 'Send login code';
