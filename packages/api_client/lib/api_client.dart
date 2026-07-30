@@ -866,6 +866,10 @@ class ApiClient {
           return PushNotificationInfoSyncVersion.fromJson(value);
         case 'PutContentToContentSlotResult':
           return PutContentToContentSlotResult.fromJson(value);
+        case 'PutSignInWithApple':
+          return PutSignInWithApple.fromJson(value);
+        case 'PutSignInWithGoogle':
+          return PutSignInWithGoogle.fromJson(value);
         case 'ReceivedLikeId':
           return ReceivedLikeId.fromJson(value);
         case 'ReceivedLikesIteratorState':
@@ -966,6 +970,8 @@ class ApiClient {
           return SignInWithGoogleInfo.fromJson(value);
         case 'SignInWithLoginInfo':
           return SignInWithLoginInfo.fromJson(value);
+        case 'SignInWithState':
+          return SignInWithState.fromJson(value);
         case 'SoftwareInfo':
           return SoftwareInfo.fromJson(value);
         case 'SoftwareUpdateState':

@@ -364,6 +364,8 @@ lib/model/push_notification_device_token.dart
 lib/model/push_notification_encryption_key.dart
 lib/model/push_notification_info_sync_version.dart
 lib/model/put_content_to_content_slot_result.dart
+lib/model/put_sign_in_with_apple.dart
+lib/model/put_sign_in_with_google.dart
 lib/model/received_like_id.dart
 lib/model/received_likes_iterator_state.dart
 lib/model/received_likes_page.dart
@@ -414,6 +416,7 @@ lib/model/set_profile_name.dart
 lib/model/sign_in_with_apple_info.dart
 lib/model/sign_in_with_google_info.dart
 lib/model/sign_in_with_login_info.dart
+lib/model/sign_in_with_state.dart
 lib/model/software_info.dart
 lib/model/software_update_state.dart
 lib/model/software_update_status.dart

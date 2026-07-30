@@ -494,6 +494,50 @@ class AccountApi {
     return null;
   }
 
+  /// Get current sign in with Apple and Google state.
+  ///
+  /// Note: This method returns the HTTP [Response].
+  Future<Response> getSignInWithInfoWithHttpInfo() async {
+    // ignore: prefer_const_declarations
+    final path = r'/account_api/sign_in_with_info';
+
+    // ignore: prefer_final_locals
+    Object? postBody;
+
+    final queryParams = <QueryParam>[];
+    final headerParams = <String, String>{};
+    final formParams = <String, String>{};
+
+    const contentTypes = <String>[];
+
+
+    return apiClient.invokeAPI(
+      path,
+      'GET',
+      queryParams,
+      postBody,
+      headerParams,
+      formParams,
+      contentTypes.isEmpty ? null : contentTypes.first,
+    );
+  }
+
+  /// Get current sign in with Apple and Google state.
+  Future<SignInWithState?> getSignInWithInfo() async {
+    final response = await getSignInWithInfoWithHttpInfo();
+    if (response.statusCode >= HttpStatus.badRequest) {
+      throw ApiException(response.statusCode, await _decodeBodyBytes(response));
+    }
+    // When a remote server returns no body with a status of 204, we shall not decode it.
+    // At the time of writing this, `dart:convert` will throw an "Unexpected end of input"
+    // FormatException when trying to decode an empty string.
+    if (response.body.isNotEmpty && response.statusCode != HttpStatus.noContent) {
+      return await apiClient.deserializeAsync(await _decodeBodyBytes(response), 'SignInWithState',) as SignInWithState;
+    
+    }
+    return null;
+  }
+
   /// Show email verification form page. Token is passed via query parameter to prevent email scanners from accidentally verifying the email.
   ///
   /// Note: This method returns the HTTP [Response].
@@ -2017,6 +2061,94 @@ class AccountApi {
   /// * [BooleanSetting] booleanSetting (required):
   Future<void> putSettingUnlimitedLikes(BooleanSetting booleanSetting,) async {
     final response = await putSettingUnlimitedLikesWithHttpInfo(booleanSetting,);
+    if (response.statusCode >= HttpStatus.badRequest) {
+      throw ApiException(response.statusCode, await _decodeBodyBytes(response));
+    }
+  }
+
+  /// Associate or disassociate Apple sign in with account.
+  ///
+  /// Note: This method returns the HTTP [Response].
+  ///
+  /// Parameters:
+  ///
+  /// * [PutSignInWithApple] putSignInWithApple (required):
+  Future<Response> putSignInWithAppleWithHttpInfo(PutSignInWithApple putSignInWithApple,) async {
+    // ignore: prefer_const_declarations
+    final path = r'/account_api/sign_in_with_apple';
+
+    // ignore: prefer_final_locals
+    Object? postBody = putSignInWithApple;
+
+    final queryParams = <QueryParam>[];
+    final headerParams = <String, String>{};
+    final formParams = <String, String>{};
+
+    const contentTypes = <String>['application/json'];
+
+
+    return apiClient.invokeAPI(
+      path,
+      'PUT',
+      queryParams,
+      postBody,
+      headerParams,
+      formParams,
+      contentTypes.isEmpty ? null : contentTypes.first,
+    );
+  }
+
+  /// Associate or disassociate Apple sign in with account.
+  ///
+  /// Parameters:
+  ///
+  /// * [PutSignInWithApple] putSignInWithApple (required):
+  Future<void> putSignInWithApple(PutSignInWithApple putSignInWithApple,) async {
+    final response = await putSignInWithAppleWithHttpInfo(putSignInWithApple,);
+    if (response.statusCode >= HttpStatus.badRequest) {
+      throw ApiException(response.statusCode, await _decodeBodyBytes(response));
+    }
+  }
+
+  /// Associate or disassociate Google sign in with account.
+  ///
+  /// Note: This method returns the HTTP [Response].
+  ///
+  /// Parameters:
+  ///
+  /// * [PutSignInWithGoogle] putSignInWithGoogle (required):
+  Future<Response> putSignInWithGoogleWithHttpInfo(PutSignInWithGoogle putSignInWithGoogle,) async {
+    // ignore: prefer_const_declarations
+    final path = r'/account_api/sign_in_with_google';
+
+    // ignore: prefer_final_locals
+    Object? postBody = putSignInWithGoogle;
+
+    final queryParams = <QueryParam>[];
+    final headerParams = <String, String>{};
+    final formParams = <String, String>{};
+
+    const contentTypes = <String>['application/json'];
+
+
+    return apiClient.invokeAPI(
+      path,
+      'PUT',
+      queryParams,
+      postBody,
+      headerParams,
+      formParams,
+      contentTypes.isEmpty ? null : contentTypes.first,
+    );
+  }
+
+  /// Associate or disassociate Google sign in with account.
+  ///
+  /// Parameters:
+  ///
+  /// * [PutSignInWithGoogle] putSignInWithGoogle (required):
+  Future<void> putSignInWithGoogle(PutSignInWithGoogle putSignInWithGoogle,) async {
+    final response = await putSignInWithGoogleWithHttpInfo(putSignInWithGoogle,);
     if (response.statusCode >= HttpStatus.badRequest) {
       throw ApiException(response.statusCode, await _decodeBodyBytes(response));
     }

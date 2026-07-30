@@ -73,6 +73,7 @@ Class | Method | HTTP request | Description
 *AccountApi* | [**getAssociationMembership**](doc//AccountApi.md#getassociationmembership) | **GET** /account_api/association_membership | Get current association membership.
 *AccountApi* | [**getEmailAddressState**](doc//AccountApi.md#getemailaddressstate) | **GET** /account_api/email_address_state | 
 *AccountApi* | [**getNewsItem**](doc//AccountApi.md#getnewsitem) | **GET** /account_api/news_item/{nid} | Get news item content using specific locale and fallback to locale \"en\" if news translation is not found.
+*AccountApi* | [**getSignInWithInfo**](doc//AccountApi.md#getsigninwithinfo) | **GET** /account_api/sign_in_with_info | Get current sign in with Apple and Google state.
 *AccountApi* | [**getVerifyEmail**](doc//AccountApi.md#getverifyemail) | **GET** /verify_email | Show email verification form page. Token is passed via query parameter to prevent email scanners from accidentally verifying the email.
 *AccountApi* | [**getVerifyNewEmail**](doc//AccountApi.md#getverifynewemail) | **GET** /verify_new_email | Show email change verification form page. Token is passed via query parameter to prevent email scanners from accidentally verifying the new email.
 *AccountApi* | [**postAccountAppNotificationSettings**](doc//AccountApi.md#postaccountappnotificationsettings) | **POST** /account_api/post_account_app_notification_settings | 
@@ -106,6 +107,8 @@ Class | Method | HTTP request | Description
 *AccountApi* | [**postVerifyNewEmail**](doc//AccountApi.md#postverifynewemail) | **POST** /verify_new_email | Verify new email address using the token from the form submission.
 *AccountApi* | [**putSettingProfileVisiblity**](doc//AccountApi.md#putsettingprofilevisiblity) | **PUT** /account_api/settings/profile_visibility | Update current profile visiblity value.
 *AccountApi* | [**putSettingUnlimitedLikes**](doc//AccountApi.md#putsettingunlimitedlikes) | **PUT** /account_api/settings/unlimited_likes | 
+*AccountApi* | [**putSignInWithApple**](doc//AccountApi.md#putsigninwithapple) | **PUT** /account_api/sign_in_with_apple | Associate or disassociate Apple sign in with account.
+*AccountApi* | [**putSignInWithGoogle**](doc//AccountApi.md#putsigninwithgoogle) | **PUT** /account_api/sign_in_with_google | Associate or disassociate Google sign in with account.
 *AccountAdminApi* | [**deleteNewsItem**](doc//AccountAdminApi.md#deletenewsitem) | **DELETE** /account_api/delete_news/{nid} | 
 *AccountAdminApi* | [**deleteNewsTranslation**](doc//AccountAdminApi.md#deletenewstranslation) | **DELETE** /account_api/delete_news_translation/{nid}/{locale} | 
 *AccountAdminApi* | [**getAccountIdFromEmail**](doc//AccountAdminApi.md#getaccountidfromemail) | **GET** /account_api/get_account_id_from_email/{email} | Get account ID from email
@@ -646,6 +649,8 @@ Class | Method | HTTP request | Description
  - [PushNotificationEncryptionKey](doc//PushNotificationEncryptionKey.md)
  - [PushNotificationInfoSyncVersion](doc//PushNotificationInfoSyncVersion.md)
  - [PutContentToContentSlotResult](doc//PutContentToContentSlotResult.md)
+ - [PutSignInWithApple](doc//PutSignInWithApple.md)
+ - [PutSignInWithGoogle](doc//PutSignInWithGoogle.md)
  - [ReceivedLikeId](doc//ReceivedLikeId.md)
  - [ReceivedLikesIteratorState](doc//ReceivedLikesIteratorState.md)
  - [ReceivedLikesPage](doc//ReceivedLikesPage.md)
@@ -696,6 +701,7 @@ Class | Method | HTTP request | Description
  - [SignInWithAppleInfo](doc//SignInWithAppleInfo.md)
  - [SignInWithGoogleInfo](doc//SignInWithGoogleInfo.md)
  - [SignInWithLoginInfo](doc//SignInWithLoginInfo.md)
+ - [SignInWithState](doc//SignInWithState.md)
  - [SoftwareInfo](doc//SoftwareInfo.md)
  - [SoftwareUpdateState](doc//SoftwareUpdateState.md)
  - [SoftwareUpdateStatus](doc//SoftwareUpdateStatus.md)
