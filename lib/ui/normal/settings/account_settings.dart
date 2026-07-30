@@ -77,7 +77,7 @@ class _AccountSettingsScreenState extends State<AccountSettingsScreen> {
       pageKey: null,
       child: Scaffold(
         appBar: AppBar(title: Text(context.strings.account_settings_screen_title)),
-        body: content(),
+        body: SingleChildScrollView(child: content()),
       ),
     );
   }
