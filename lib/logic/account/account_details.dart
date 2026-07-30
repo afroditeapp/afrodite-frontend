@@ -1,3 +1,7 @@
+import "dart:async";
+
+import "package:app/api/server_connection_protocol/server.dart";
+import "package:app/api/server_connection_manager.dart";
 import "package:app/data/utils/repository_instances.dart";
 import "package:app/utils/api.dart";
 import "package:flutter_bloc/flutter_bloc.dart";
@@ -30,8 +34,21 @@ class RequestCancelEmailChange extends AccountDetailsEvent {}
 class AccountDetailsBloc extends Bloc<AccountDetailsEvent, AccountDetailsBlocData>
     with ActionRunner {
   final AccountRepository account;
+  final ServerConnectionManager _connectionManager;
+  StreamSubscription<ServerWsEvent>? _serverEventsSubscription;
 
-  AccountDetailsBloc(RepositoryInstances r) : account = r.account, super(AccountDetailsBlocData()) {
+  AccountDetailsBloc(RepositoryInstances r)
+    : account = r.account,
+      _connectionManager = r.connectionManager,
+      super(AccountDetailsBlocData()) {
+    _serverEventsSubscription = _connectionManager.serverEvents
+        .where((event) => event is ServerMessageContainer)
+        .cast<ServerMessageContainer>()
+        .listen((event) {
+          if (event.message.type == ServerMessageTypeCode.emailAddressStateChanged) {
+            add(Reload());
+          }
+        });
     on<Reload>((key, emit) async {
       await runOnce(() async {
         emit(AccountDetailsBlocData().copyWith(isLoading: true));
@@ -131,6 +148,12 @@ class AccountDetailsBloc extends Bloc<AccountDetailsEvent, AccountDetailsBlocDat
         emit(state.copyWith(updateState: const UpdateIdle()));
       });
     });
+  }
+
+  @override
+  Future<void> close() async {
+    await _serverEventsSubscription?.cancel();
+    await super.close();
   }
 }
 

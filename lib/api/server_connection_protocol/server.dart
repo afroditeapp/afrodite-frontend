@@ -26,6 +26,7 @@ import 'package:openapi/api.dart';
 /// - [ServerMessageTypeCode.accountVerificationQueuePositionChanged] (31):
 ///   payload format:
 ///   - optional queue position as 1 byte (empty payload means null)
+/// - [ServerMessageTypeCode.emailAddressStateChanged] (32): payload is empty.
 /// - [ServerMessageTypeCode.profileChanged] (60): payload is empty.
 /// - [ServerMessageTypeCode.responseResetProfilePaging] (61): payload format:
 ///   - request id byte (u8)
@@ -103,6 +104,7 @@ enum ServerMessageTypeCode {
   appUpdateAvailable(8),
   accountStateChanged(30),
   accountVerificationQueuePositionChanged(31),
+  emailAddressStateChanged(32),
   profileChanged(60),
   responseResetProfilePaging(61),
   responseNextProfilePage(62),
@@ -254,6 +256,7 @@ class ServerMessage {
       case ServerMessageTypeCode.pushNotificationInfoChanged:
       case ServerMessageTypeCode.appUpdateAvailable:
       case ServerMessageTypeCode.accountStateChanged:
+      case ServerMessageTypeCode.emailAddressStateChanged:
       case ServerMessageTypeCode.profileChanged:
       case ServerMessageTypeCode.mediaContentChanged:
       case ServerMessageTypeCode.newMessageReceived:

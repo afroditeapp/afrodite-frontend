@@ -70,6 +70,9 @@ class EventRouter {
       case ServerMessageTypeCode.accountVerificationQueuePositionChanged:
         // Handled by UI listeners which subscribe to server events directly.
         break;
+      case ServerMessageTypeCode.emailAddressStateChanged:
+        // Handled by UI listeners which subscribe to server events directly.
+        break;
       case ServerMessageTypeCode.contentProcessingStateChanged:
         final contentProcessingEvent = event.contentProcessingStateChanged;
         if (contentProcessingEvent != null) {
