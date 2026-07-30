@@ -98,5 +98,8 @@
 	<string>org.jitsi.meet</string>
 	</array>
 
+	<key>NSFaceIDUsageDescription</key>
+	<string>Face ID is needed to verify your identity before making sensitive account changes</string>
+
 </dict>
 </plist>

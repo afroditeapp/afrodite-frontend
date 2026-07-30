@@ -202,6 +202,12 @@ abstract class AppLocalizations {
   /// **'Change email address'**
   String get account_settings_screen_change_email_dialog_title;
 
+  /// Reason for local authentication when changing email
+  ///
+  /// In en, this message translates to:
+  /// **'Please authenticate to change email address'**
+  String get account_settings_screen_change_email_local_auth_reason;
+
   /// Title for delete account action
   ///
   /// In en, this message translates to:

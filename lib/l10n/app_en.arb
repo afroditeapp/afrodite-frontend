@@ -101,6 +101,10 @@
   "@account_settings_screen_change_email_dialog_title": {
     "description": "Title for change email dialog"
   },
+  "account_settings_screen_change_email_local_auth_reason": "Please authenticate to change email address",
+  "@account_settings_screen_change_email_local_auth_reason": {
+    "description": "Reason for local authentication when changing email"
+  },
   "account_settings_screen_delete_account_action": "Request account deletion",
   "@account_settings_screen_delete_account_action": {
     "description": "Title for delete account action"

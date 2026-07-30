@@ -142,6 +142,7 @@ dependencies:
   uuid: ^4.4.2
   qr_flutter: ^4.1.0
   mobile_scanner: ^7.1.3
+  local_auth: ^3.0.2
 
   # Code reviewed 2024-05-04
   app_settings:

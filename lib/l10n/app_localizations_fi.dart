@@ -76,6 +76,10 @@ class AppLocalizationsFi extends AppLocalizations {
   String get account_settings_screen_change_email_dialog_title => 'Change email address';
 
   @override
+  String get account_settings_screen_change_email_local_auth_reason =>
+      'Please authenticate to change email address';
+
+  @override
   String get account_settings_screen_delete_account_action => 'Request account deletion';
 
   @override

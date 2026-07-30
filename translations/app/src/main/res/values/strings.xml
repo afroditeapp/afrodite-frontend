@@ -633,6 +633,7 @@
     <string name="account_settings_screen_change_email_button" description="Button text for change email action">Change email</string>
     <string name="account_settings_screen_change_email_dialog_title" description="Title for change email dialog">Change email address</string>
     <string name="account_settings_screen_change_email_dialog_hint" description="Hint text for new email input">Enter new email address</string>
+    <string name="account_settings_screen_change_email_local_auth_reason" description="Reason for local authentication when changing email">Please authenticate to change email address</string>
     <string name="account_settings_screen_pending_email_title" description="Title for pending new email text">Pending new email address</string>
     <string name="account_settings_screen_pending_email_verified" description="Text for verified pending email status">Pending email verified</string>
     <string name="account_settings_screen_pending_email_not_verified" description="Text for not verified pending email status">Pending email not verified</string>
