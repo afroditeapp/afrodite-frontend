@@ -104,7 +104,7 @@ Widget secondSignInButton(BuildContext context) {
   }
 }
 
-Widget signInWithAppleButton(BuildContext context) {
+Widget signInWithAppleButton(BuildContext context, {VoidCallback? onPressed}) {
   final SignInWithAppleButtonStyle style;
   if (Theme.of(context).brightness == Brightness.light) {
     style = SignInWithAppleButtonStyle.black;
@@ -113,14 +113,14 @@ Widget signInWithAppleButton(BuildContext context) {
   }
 
   return SignInWithAppleButton(
-    onPressed: () => context.read<SignInWithBloc>().add(SignInWithAppleEvent()),
+    onPressed: onPressed ?? () => context.read<SignInWithBloc>().add(SignInWithAppleEvent()),
     borderRadius: const BorderRadius.all(Radius.circular(24.0)),
     height: SIGN_IN_BUTTON_HEIGHT,
     style: style,
   );
 }
 
-Widget signInWithGoogleButton(BuildContext context) {
+Widget signInWithGoogleButton(BuildContext context, {VoidCallback? onPressed}) {
   final String iconPath;
   if (Theme.of(context).brightness == Brightness.light) {
     iconPath = ImageAsset.signInWithGoogleButtonImageDark().path;
@@ -136,7 +136,7 @@ Widget signInWithGoogleButton(BuildContext context) {
       cacheHeight: calculateCachedImageSize(context, SIGN_IN_BUTTON_HEIGHT),
     ),
     padding: EdgeInsets.zero,
-    onPressed: () => context.read<SignInWithBloc>().add(SignInWithGoogle()),
+    onPressed: onPressed ?? () => context.read<SignInWithBloc>().add(SignInWithGoogle()),
   );
 }
 

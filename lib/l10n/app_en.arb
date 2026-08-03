@@ -1374,6 +1374,10 @@
   "@generic_unlimited": {
     "description": "Generic unlimited text"
   },
+  "generic_unlink": "Unlink",
+  "@generic_unlink": {
+    "description": "Generic unlink text"
+  },
   "generic_update": "Update",
   "@generic_update": {
     "description": "Generic update text"
@@ -2734,6 +2738,46 @@
   "settings_screen_title": "Settings",
   "@settings_screen_title": {
     "description": "Title for settings screen"
+  },
+  "sign_in_with_management_screen_apple_not_linked": "Link your Apple account to sign in with it",
+  "@sign_in_with_management_screen_apple_not_linked": {
+    "description": "Text shown when Apple sign in is not linked to the account"
+  },
+  "sign_in_with_management_screen_apple_title": "Sign in with Apple",
+  "@sign_in_with_management_screen_apple_title": {
+    "description": "Title for Apple sign in row"
+  },
+  "sign_in_with_management_screen_apple_unlink_confirm_title": "Unlink Apple account?",
+  "@sign_in_with_management_screen_apple_unlink_confirm_title": {
+    "description": "Title for unlink Apple sign in method confirm dialog"
+  },
+  "sign_in_with_management_screen_google_not_linked": "Link your Google account to sign in with it",
+  "@sign_in_with_management_screen_google_not_linked": {
+    "description": "Text shown when Google sign in is not linked to the account"
+  },
+  "sign_in_with_management_screen_google_title": "Sign in with Google",
+  "@sign_in_with_management_screen_google_title": {
+    "description": "Title for Google sign in row"
+  },
+  "sign_in_with_management_screen_google_unlink_confirm_title": "Unlink Google account?",
+  "@sign_in_with_management_screen_google_unlink_confirm_title": {
+    "description": "Title for unlink Google sign in method confirm dialog"
+  },
+  "sign_in_with_management_screen_link_failed": "Linking sign in method failed",
+  "@sign_in_with_management_screen_link_failed": {
+    "description": "Snackbar text when linking sign in method fails"
+  },
+  "sign_in_with_management_screen_local_auth_reason": "Please authenticate to manage sign in methods",
+  "@sign_in_with_management_screen_local_auth_reason": {
+    "description": "Reason for local authentication when managing sign in methods"
+  },
+  "sign_in_with_management_screen_title": "Sign in methods",
+  "@sign_in_with_management_screen_title": {
+    "description": "Title for sign in methods management screen"
+  },
+  "sign_in_with_management_screen_unlink_failed": "Unlinking sign in method failed",
+  "@sign_in_with_management_screen_unlink_failed": {
+    "description": "Snackbar text when unlinking sign in method fails"
   },
   "snackbar_api_forbidden_request": "API error: forbidden request",
   "@snackbar_api_forbidden_request": {

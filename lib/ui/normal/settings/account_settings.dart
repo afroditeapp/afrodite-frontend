@@ -2,8 +2,6 @@ import 'package:app/logic/app/navigator_state.dart';
 import 'package:app/model/freezed/logic/main/navigator_state.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
-import 'package:local_auth/local_auth.dart';
-import 'package:logging/logging.dart';
 import 'package:app/localizations.dart';
 import 'package:app/logic/account/account.dart';
 import 'package:app/logic/account/client_features_config.dart';
@@ -14,16 +12,15 @@ import 'package:app/model/freezed/logic/account/account_details.dart';
 import 'package:app/ui/normal/settings/age_verification.dart';
 import 'package:app/ui/normal/settings/account_verification.dart';
 import 'package:app/ui/normal/settings/association_membership.dart';
+import 'package:app/ui/normal/settings/sign_in_with_management.dart';
 import 'package:app/ui/normal/settings.dart';
 import 'package:app/ui_utils/common_update_logic.dart';
 import 'package:app/ui_utils/dialog.dart';
+import 'package:app/ui_utils/local_auth.dart';
 import 'package:app/ui_utils/padding.dart';
 import 'package:app/ui_utils/extensions/locale.dart';
-import 'package:app/ui_utils/snack_bar.dart';
 import 'package:app/ui_utils/time.dart';
 import 'package:utils/utils.dart';
-
-final _log = Logger("AccountSettingsScreen");
 
 void openAccountSettings(BuildContext context) {
   MyNavigator.push(context, AccountSettingsPage());
@@ -62,8 +59,6 @@ class AccountSettingsScreen extends StatefulWidget {
 }
 
 class _AccountSettingsScreenState extends State<AccountSettingsScreen> {
-  final LocalAuthentication _auth = LocalAuthentication();
-
   @override
   void initState() {
     super.initState();
@@ -166,23 +161,10 @@ class _AccountSettingsScreenState extends State<AccountSettingsScreen> {
           hPad(
             ElevatedButton(
               onPressed: () async {
-                try {
-                  final didAuthenticate = await _auth.authenticate(
-                    localizedReason:
-                        context.strings.account_settings_screen_change_email_local_auth_reason,
-                  );
-                  if (!didAuthenticate) return;
-                } on LocalAuthException catch (e) {
-                  if (e.code == LocalAuthExceptionCode.userCanceled ||
-                      e.code == LocalAuthExceptionCode.systemCanceled) {
-                    return;
-                  }
-                  if (e.code != LocalAuthExceptionCode.noCredentialsSet) {
-                    showSnackBar(R.strings.generic_error);
-                    _log.severe("Local auth failed: ${e.code}");
-                    return;
-                  }
-                }
+                final didAuthenticate = await authenticateWithLocalAuth(
+                  context.strings.account_settings_screen_change_email_local_auth_reason,
+                );
+                if (!didAuthenticate) return;
                 if (!context.mounted) return;
                 final newEmail = await showChangeEmailDialog(context);
                 if (newEmail != null) {
@@ -298,6 +280,18 @@ class _AccountSettingsScreenState extends State<AccountSettingsScreen> {
             ).toListTile();
           },
         ),
+        Setting.createSetting(
+          Icons.login,
+          context.strings.sign_in_with_management_screen_title,
+          () async {
+            final didAuthenticate = await authenticateWithLocalAuth(
+              context.strings.sign_in_with_management_screen_local_auth_reason,
+            );
+            if (!didAuthenticate) return;
+            if (!context.mounted) return;
+            openSignInWithManagement(context);
+          },
+        ).toListTile(),
         deleteAccount(),
       ],
     );

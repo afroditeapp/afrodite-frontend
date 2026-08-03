@@ -1057,6 +1057,9 @@ class AppLocalizationsEn extends AppLocalizations {
   String get generic_unlimited => 'Unlimited';
 
   @override
+  String get generic_unlink => 'Unlink';
+
+  @override
   String get generic_update => 'Update';
 
   @override
@@ -2097,6 +2100,39 @@ class AppLocalizationsEn extends AppLocalizations {
 
   @override
   String get settings_screen_title => 'Settings';
+
+  @override
+  String get sign_in_with_management_screen_apple_not_linked =>
+      'Link your Apple account to sign in with it';
+
+  @override
+  String get sign_in_with_management_screen_apple_title => 'Sign in with Apple';
+
+  @override
+  String get sign_in_with_management_screen_apple_unlink_confirm_title => 'Unlink Apple account?';
+
+  @override
+  String get sign_in_with_management_screen_google_not_linked =>
+      'Link your Google account to sign in with it';
+
+  @override
+  String get sign_in_with_management_screen_google_title => 'Sign in with Google';
+
+  @override
+  String get sign_in_with_management_screen_google_unlink_confirm_title => 'Unlink Google account?';
+
+  @override
+  String get sign_in_with_management_screen_link_failed => 'Linking sign in method failed';
+
+  @override
+  String get sign_in_with_management_screen_local_auth_reason =>
+      'Please authenticate to manage sign in methods';
+
+  @override
+  String get sign_in_with_management_screen_title => 'Sign in methods';
+
+  @override
+  String get sign_in_with_management_screen_unlink_failed => 'Unlinking sign in method failed';
 
   @override
   String get snackbar_api_forbidden_request => 'API error: forbidden request';

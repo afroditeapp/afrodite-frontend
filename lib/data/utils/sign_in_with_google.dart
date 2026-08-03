@@ -13,6 +13,7 @@ import 'package:flutter/foundation.dart';
 import 'package:google_sign_in/google_sign_in.dart';
 import 'package:logging/logging.dart';
 import 'package:openapi/api.dart';
+import 'package:rxdart/rxdart.dart';
 import 'package:utils/utils.dart';
 
 final _log = Logger("SignInWithGoogleManager");
@@ -24,6 +25,9 @@ class SignInWithGoogleManager {
   String _hashedNonceBase64Url = "";
 
   bool _initDone = false;
+  bool _linkingEnabled = false;
+  final PublishSubject<SignInWithGoogleInfo> _linkingEvents = PublishSubject();
+  Stream<SignInWithGoogleInfo> get linkingEvents => _linkingEvents.stream;
 
   Future<void> init() async {
     final nonce = generateNonceBytes().toList();
@@ -48,6 +52,21 @@ class SignInWithGoogleManager {
     if (kIsWeb) {
       GoogleSignIn.instance.authenticationEvents
           .asyncMap((signedIn) async {
+            if (_linkingEnabled) {
+              switch (signedIn) {
+                case GoogleSignInAuthenticationEventSignIn():
+                  final possibleToken = signedIn.user.authentication.idToken;
+                  if (possibleToken != null) {
+                    _linkingEvents.add(
+                      SignInWithGoogleInfo(nonce: _nonceBase64Url, token: possibleToken),
+                    );
+                  }
+                case GoogleSignInAuthenticationEventSignOut():
+                  ();
+              }
+              return;
+            }
+
             final String token;
             switch (signedIn) {
               case GoogleSignInAuthenticationEventSignIn():
@@ -79,6 +98,14 @@ class SignInWithGoogleManager {
     }
 
     _initDone = true;
+  }
+
+  void enableLinking() {
+    _linkingEnabled = true;
+  }
+
+  void disableLinking() {
+    _linkingEnabled = false;
   }
 
   Future<Result<SignInWithLoginInfo, ()>> login() async {

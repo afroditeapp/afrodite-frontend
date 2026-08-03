@@ -99,6 +99,8 @@ class LoginRepository extends AppSingleton {
 
   final SignInWithGoogleManager _google = SignInWithGoogleManager();
 
+  SignInWithGoogleManager get googleManager => _google;
+
   final RepositoryStateStreams _repositoryStateStreams = RepositoryStateStreams();
   Stream<AccountStateStreamValue> get accountState => _repositoryStateStreams.accountState;
   Stream<InitialSetupSkippedStreamValue> get initialSetupSkipped =>

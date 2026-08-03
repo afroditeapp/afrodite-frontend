@@ -71,6 +71,7 @@
     <string name="generic_reply" description="Generic reply action text">Reply</string>
     <string name="generic_edit" description="Generic edit text">Edit</string>
     <string name="generic_skip" description="Generic skip text">Skip</string>
+    <string name="generic_unlink" description="Generic unlink text">Unlink</string>
     <string name="generic_profile_loading_failed" description="Error text displayed when profile loading fails">Profile loading failed</string>
     <string name="generic_this_feature_is_disabled" description="Generic this feature is disabled text">This feature is disabled</string>
     <string name="generic_unlimited" description="Generic unlimited text">Unlimited</string>
@@ -841,5 +842,17 @@
     <string name="association_membership_screen_current_membership_title" description="Title for current membership info section">Current membership</string>
     <string name="association_membership_screen_end_membership_button" description="Button text to end association membership">End membership</string>
     <string name="association_membership_screen_end_membership_confirm_title" description="Title for end membership confirm dialog">End membership?</string>
+
+    <!-- Sign in with management -->
+    <string name="sign_in_with_management_screen_title" description="Title for sign in methods management screen">Sign in methods</string>
+    <string name="sign_in_with_management_screen_apple_title" description="Title for Apple sign in row">Sign in with Apple</string>
+    <string name="sign_in_with_management_screen_google_title" description="Title for Google sign in row">Sign in with Google</string>
+    <string name="sign_in_with_management_screen_apple_not_linked" description="Text shown when Apple sign in is not linked to the account">Link your Apple account to sign in with it</string>
+    <string name="sign_in_with_management_screen_google_not_linked" description="Text shown when Google sign in is not linked to the account">Link your Google account to sign in with it</string>
+    <string name="sign_in_with_management_screen_apple_unlink_confirm_title" description="Title for unlink Apple sign in method confirm dialog">Unlink Apple account?</string>
+    <string name="sign_in_with_management_screen_google_unlink_confirm_title" description="Title for unlink Google sign in method confirm dialog">Unlink Google account?</string>
+    <string name="sign_in_with_management_screen_local_auth_reason" description="Reason for local authentication when managing sign in methods">Please authenticate to manage sign in methods</string>
+    <string name="sign_in_with_management_screen_link_failed" description="Snackbar text when linking sign in method fails">Linking sign in method failed</string>
+    <string name="sign_in_with_management_screen_unlink_failed" description="Snackbar text when unlinking sign in method fails">Unlinking sign in method failed</string>
 
 </resources>

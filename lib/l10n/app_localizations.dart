@@ -1942,6 +1942,12 @@ abstract class AppLocalizations {
   /// **'Unlimited'**
   String get generic_unlimited;
 
+  /// Generic unlink text
+  ///
+  /// In en, this message translates to:
+  /// **'Unlink'**
+  String get generic_unlink;
+
   /// Generic update text
   ///
   /// In en, this message translates to:
@@ -3765,6 +3771,66 @@ abstract class AppLocalizations {
   /// In en, this message translates to:
   /// **'Settings'**
   String get settings_screen_title;
+
+  /// Text shown when Apple sign in is not linked to the account
+  ///
+  /// In en, this message translates to:
+  /// **'Link your Apple account to sign in with it'**
+  String get sign_in_with_management_screen_apple_not_linked;
+
+  /// Title for Apple sign in row
+  ///
+  /// In en, this message translates to:
+  /// **'Sign in with Apple'**
+  String get sign_in_with_management_screen_apple_title;
+
+  /// Title for unlink Apple sign in method confirm dialog
+  ///
+  /// In en, this message translates to:
+  /// **'Unlink Apple account?'**
+  String get sign_in_with_management_screen_apple_unlink_confirm_title;
+
+  /// Text shown when Google sign in is not linked to the account
+  ///
+  /// In en, this message translates to:
+  /// **'Link your Google account to sign in with it'**
+  String get sign_in_with_management_screen_google_not_linked;
+
+  /// Title for Google sign in row
+  ///
+  /// In en, this message translates to:
+  /// **'Sign in with Google'**
+  String get sign_in_with_management_screen_google_title;
+
+  /// Title for unlink Google sign in method confirm dialog
+  ///
+  /// In en, this message translates to:
+  /// **'Unlink Google account?'**
+  String get sign_in_with_management_screen_google_unlink_confirm_title;
+
+  /// Snackbar text when linking sign in method fails
+  ///
+  /// In en, this message translates to:
+  /// **'Linking sign in method failed'**
+  String get sign_in_with_management_screen_link_failed;
+
+  /// Reason for local authentication when managing sign in methods
+  ///
+  /// In en, this message translates to:
+  /// **'Please authenticate to manage sign in methods'**
+  String get sign_in_with_management_screen_local_auth_reason;
+
+  /// Title for sign in methods management screen
+  ///
+  /// In en, this message translates to:
+  /// **'Sign in methods'**
+  String get sign_in_with_management_screen_title;
+
+  /// Snackbar text when unlinking sign in method fails
+  ///
+  /// In en, this message translates to:
+  /// **'Unlinking sign in method failed'**
+  String get sign_in_with_management_screen_unlink_failed;
 
   /// Snackbar error text for forbidden API requests
   ///
