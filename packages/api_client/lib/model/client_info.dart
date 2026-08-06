@@ -13,9 +13,12 @@ part of openapi.api;
 class ClientInfo {
   /// Returns a new [ClientInfo] instance.
   ClientInfo({
+    this.appAttestation,
     required this.clientType,
     required this.clientVersion,
   });
+
+  AppAttestation? appAttestation;
 
   ClientType clientType;
 
@@ -23,20 +26,27 @@ class ClientInfo {
 
   @override
   bool operator ==(Object other) => identical(this, other) || other is ClientInfo &&
+    other.appAttestation == appAttestation &&
     other.clientType == clientType &&
     other.clientVersion == clientVersion;
 
   @override
   int get hashCode =>
     // ignore: unnecessary_parenthesis
+    (appAttestation == null ? 0 : appAttestation!.hashCode) +
     (clientType.hashCode) +
     (clientVersion.hashCode);
 
   @override
-  String toString() => 'ClientInfo[clientType=$clientType, clientVersion=$clientVersion]';
+  String toString() => 'ClientInfo[appAttestation=$appAttestation, clientType=$clientType, clientVersion=$clientVersion]';
 
   Map<String, dynamic> toJson() {
     final json = <String, dynamic>{};
+    if (this.appAttestation != null) {
+      json[r'app_attestation'] = this.appAttestation;
+    } else {
+      json[r'app_attestation'] = null;
+    }
       json[r'client_type'] = this.clientType;
       json[r'client_version'] = this.clientVersion;
     return json;
@@ -61,6 +71,7 @@ class ClientInfo {
       }());
 
       return ClientInfo(
+        appAttestation: AppAttestation.fromJson(json[r'app_attestation']),
         clientType: ClientType.fromJson(json[r'client_type'])!,
         clientVersion: ClientVersion.fromJson(json[r'client_version'])!,
       );

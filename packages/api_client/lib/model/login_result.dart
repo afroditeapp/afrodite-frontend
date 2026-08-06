@@ -17,6 +17,9 @@ class LoginResult {
     this.email,
     this.error = false,
     this.errorAccountLocked = false,
+    this.errorAppAttestationAppIntegrity = false,
+    this.errorAppAttestationDeviceIntegrity = false,
+    this.errorAppAttestationFailed = false,
     this.errorEmailAlreadyUsed = false,
     this.errorInvalidEmailLoginToken = false,
     this.errorLoginAllPlatformsDisabled = false,
@@ -42,6 +45,12 @@ class LoginResult {
   bool error;
 
   bool errorAccountLocked;
+
+  bool errorAppAttestationAppIntegrity;
+
+  bool errorAppAttestationDeviceIntegrity;
+
+  bool errorAppAttestationFailed;
 
   /// This might be true, when registering new account using sign in with login method.
   bool errorEmailAlreadyUsed;
@@ -69,6 +78,9 @@ class LoginResult {
     other.email == email &&
     other.error == error &&
     other.errorAccountLocked == errorAccountLocked &&
+    other.errorAppAttestationAppIntegrity == errorAppAttestationAppIntegrity &&
+    other.errorAppAttestationDeviceIntegrity == errorAppAttestationDeviceIntegrity &&
+    other.errorAppAttestationFailed == errorAppAttestationFailed &&
     other.errorEmailAlreadyUsed == errorEmailAlreadyUsed &&
     other.errorInvalidEmailLoginToken == errorInvalidEmailLoginToken &&
     other.errorLoginAllPlatformsDisabled == errorLoginAllPlatformsDisabled &&
@@ -86,6 +98,9 @@ class LoginResult {
     (email == null ? 0 : email!.hashCode) +
     (error.hashCode) +
     (errorAccountLocked.hashCode) +
+    (errorAppAttestationAppIntegrity.hashCode) +
+    (errorAppAttestationDeviceIntegrity.hashCode) +
+    (errorAppAttestationFailed.hashCode) +
     (errorEmailAlreadyUsed.hashCode) +
     (errorInvalidEmailLoginToken.hashCode) +
     (errorLoginAllPlatformsDisabled.hashCode) +
@@ -97,7 +112,7 @@ class LoginResult {
     (tokens == null ? 0 : tokens!.hashCode);
 
   @override
-  String toString() => 'LoginResult[aid=$aid, email=$email, error=$error, errorAccountLocked=$errorAccountLocked, errorEmailAlreadyUsed=$errorEmailAlreadyUsed, errorInvalidEmailLoginToken=$errorInvalidEmailLoginToken, errorLoginAllPlatformsDisabled=$errorLoginAllPlatformsDisabled, errorLoginPlatformDisabled=$errorLoginPlatformDisabled, errorRegistrationAllPlatformsDisabled=$errorRegistrationAllPlatformsDisabled, errorRegistrationPlatformDisabled=$errorRegistrationPlatformDisabled, errorSignInWithEmailUnverified=$errorSignInWithEmailUnverified, errorUnsupportedClient=$errorUnsupportedClient, tokens=$tokens]';
+  String toString() => 'LoginResult[aid=$aid, email=$email, error=$error, errorAccountLocked=$errorAccountLocked, errorAppAttestationAppIntegrity=$errorAppAttestationAppIntegrity, errorAppAttestationDeviceIntegrity=$errorAppAttestationDeviceIntegrity, errorAppAttestationFailed=$errorAppAttestationFailed, errorEmailAlreadyUsed=$errorEmailAlreadyUsed, errorInvalidEmailLoginToken=$errorInvalidEmailLoginToken, errorLoginAllPlatformsDisabled=$errorLoginAllPlatformsDisabled, errorLoginPlatformDisabled=$errorLoginPlatformDisabled, errorRegistrationAllPlatformsDisabled=$errorRegistrationAllPlatformsDisabled, errorRegistrationPlatformDisabled=$errorRegistrationPlatformDisabled, errorSignInWithEmailUnverified=$errorSignInWithEmailUnverified, errorUnsupportedClient=$errorUnsupportedClient, tokens=$tokens]';
 
   Map<String, dynamic> toJson() {
     final json = <String, dynamic>{};
@@ -113,6 +128,9 @@ class LoginResult {
     }
       json[r'error'] = this.error;
       json[r'error_account_locked'] = this.errorAccountLocked;
+      json[r'error_app_attestation_app_integrity'] = this.errorAppAttestationAppIntegrity;
+      json[r'error_app_attestation_device_integrity'] = this.errorAppAttestationDeviceIntegrity;
+      json[r'error_app_attestation_failed'] = this.errorAppAttestationFailed;
       json[r'error_email_already_used'] = this.errorEmailAlreadyUsed;
       json[r'error_invalid_email_login_token'] = this.errorInvalidEmailLoginToken;
       json[r'error_login_all_platforms_disabled'] = this.errorLoginAllPlatformsDisabled;
@@ -152,6 +170,9 @@ class LoginResult {
         email: mapValueOfType<String>(json, r'email'),
         error: mapValueOfType<bool>(json, r'error') ?? false,
         errorAccountLocked: mapValueOfType<bool>(json, r'error_account_locked') ?? false,
+        errorAppAttestationAppIntegrity: mapValueOfType<bool>(json, r'error_app_attestation_app_integrity') ?? false,
+        errorAppAttestationDeviceIntegrity: mapValueOfType<bool>(json, r'error_app_attestation_device_integrity') ?? false,
+        errorAppAttestationFailed: mapValueOfType<bool>(json, r'error_app_attestation_failed') ?? false,
         errorEmailAlreadyUsed: mapValueOfType<bool>(json, r'error_email_already_used') ?? false,
         errorInvalidEmailLoginToken: mapValueOfType<bool>(json, r'error_invalid_email_login_token') ?? false,
         errorLoginAllPlatformsDisabled: mapValueOfType<bool>(json, r'error_login_all_platforms_disabled') ?? false,

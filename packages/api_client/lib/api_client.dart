@@ -296,6 +296,8 @@ class ApiClient {
           return ApiUsageCount.fromJson(value);
         case 'ApiUsageStatistics':
           return ApiUsageStatistics.fromJson(value);
+        case 'AppAttestation':
+          return AppAttestation.fromJson(value);
         case 'AssociationConfig':
           return AssociationConfig.fromJson(value);
         case 'AssociationMember':
@@ -440,6 +442,8 @@ class ApiClient {
           return DataExportStateTypeTypeTransformer().decode(value);
         case 'DataExportType':
           return DataExportTypeTypeTransformer().decode(value);
+        case 'DebugAppAttestation':
+          return DebugAppAttestation.fromJson(value);
         case 'DeliveryInfoType':
           return DeliveryInfoTypeTypeTransformer().decode(value);
         case 'DemoAccountLoginCredentials':

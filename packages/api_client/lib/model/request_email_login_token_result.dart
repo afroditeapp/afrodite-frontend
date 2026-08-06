@@ -14,8 +14,10 @@ class RequestEmailLoginTokenResult {
   /// Returns a new [RequestEmailLoginTokenResult] instance.
   RequestEmailLoginTokenResult({
     this.clientToken,
+    this.emailLoginEmailsPerMonth,
     this.error = false,
     this.errorEmailRegistrationIpAddressLimitReached = false,
+    this.errorEmailRegistrationLimitReached = false,
     this.resendWaitSeconds,
     this.tokenValiditySeconds,
   });
@@ -23,9 +25,15 @@ class RequestEmailLoginTokenResult {
   /// Client token to be used together with the email token.
   EmailLoginToken? clientToken;
 
+  /// Maximum number of email login tokens that can be sent per month.
+  int? emailLoginEmailsPerMonth;
+
   bool error;
 
   bool errorEmailRegistrationIpAddressLimitReached;
+
+  /// This is true when the daily email registration limit has been reached. The client should guide the user to wait 24 hours or use another login method for account registration.
+  bool errorEmailRegistrationLimitReached;
 
   /// Minimum wait duration between token requests in seconds
   int? resendWaitSeconds;
@@ -36,8 +44,10 @@ class RequestEmailLoginTokenResult {
   @override
   bool operator ==(Object other) => identical(this, other) || other is RequestEmailLoginTokenResult &&
     other.clientToken == clientToken &&
+    other.emailLoginEmailsPerMonth == emailLoginEmailsPerMonth &&
     other.error == error &&
     other.errorEmailRegistrationIpAddressLimitReached == errorEmailRegistrationIpAddressLimitReached &&
+    other.errorEmailRegistrationLimitReached == errorEmailRegistrationLimitReached &&
     other.resendWaitSeconds == resendWaitSeconds &&
     other.tokenValiditySeconds == tokenValiditySeconds;
 
@@ -45,13 +55,15 @@ class RequestEmailLoginTokenResult {
   int get hashCode =>
     // ignore: unnecessary_parenthesis
     (clientToken == null ? 0 : clientToken!.hashCode) +
+    (emailLoginEmailsPerMonth == null ? 0 : emailLoginEmailsPerMonth!.hashCode) +
     (error.hashCode) +
     (errorEmailRegistrationIpAddressLimitReached.hashCode) +
+    (errorEmailRegistrationLimitReached.hashCode) +
     (resendWaitSeconds == null ? 0 : resendWaitSeconds!.hashCode) +
     (tokenValiditySeconds == null ? 0 : tokenValiditySeconds!.hashCode);
 
   @override
-  String toString() => 'RequestEmailLoginTokenResult[clientToken=$clientToken, error=$error, errorEmailRegistrationIpAddressLimitReached=$errorEmailRegistrationIpAddressLimitReached, resendWaitSeconds=$resendWaitSeconds, tokenValiditySeconds=$tokenValiditySeconds]';
+  String toString() => 'RequestEmailLoginTokenResult[clientToken=$clientToken, emailLoginEmailsPerMonth=$emailLoginEmailsPerMonth, error=$error, errorEmailRegistrationIpAddressLimitReached=$errorEmailRegistrationIpAddressLimitReached, errorEmailRegistrationLimitReached=$errorEmailRegistrationLimitReached, resendWaitSeconds=$resendWaitSeconds, tokenValiditySeconds=$tokenValiditySeconds]';
 
   Map<String, dynamic> toJson() {
     final json = <String, dynamic>{};
@@ -60,8 +72,14 @@ class RequestEmailLoginTokenResult {
     } else {
       json[r'client_token'] = null;
     }
+    if (this.emailLoginEmailsPerMonth != null) {
+      json[r'email_login_emails_per_month'] = this.emailLoginEmailsPerMonth;
+    } else {
+      json[r'email_login_emails_per_month'] = null;
+    }
       json[r'error'] = this.error;
       json[r'error_email_registration_ip_address_limit_reached'] = this.errorEmailRegistrationIpAddressLimitReached;
+      json[r'error_email_registration_limit_reached'] = this.errorEmailRegistrationLimitReached;
     if (this.resendWaitSeconds != null) {
       json[r'resend_wait_seconds'] = this.resendWaitSeconds;
     } else {
@@ -95,8 +113,10 @@ class RequestEmailLoginTokenResult {
 
       return RequestEmailLoginTokenResult(
         clientToken: EmailLoginToken.fromJson(json[r'client_token']),
+        emailLoginEmailsPerMonth: mapValueOfType<int>(json, r'email_login_emails_per_month'),
         error: mapValueOfType<bool>(json, r'error') ?? false,
         errorEmailRegistrationIpAddressLimitReached: mapValueOfType<bool>(json, r'error_email_registration_ip_address_limit_reached') ?? false,
+        errorEmailRegistrationLimitReached: mapValueOfType<bool>(json, r'error_email_registration_limit_reached') ?? false,
         resendWaitSeconds: mapValueOfType<int>(json, r'resend_wait_seconds'),
         tokenValiditySeconds: mapValueOfType<int>(json, r'token_validity_seconds'),
       );

@@ -79,6 +79,7 @@ lib/model/age_verification_methods_config.dart
 lib/model/age_verification_platforms.dart
 lib/model/api_usage_count.dart
 lib/model/api_usage_statistics.dart
+lib/model/app_attestation.dart
 lib/model/association_config.dart
 lib/model/association_member.dart
 lib/model/association_members_page.dart
@@ -151,6 +152,7 @@ lib/model/data_export_name.dart
 lib/model/data_export_state.dart
 lib/model/data_export_state_type.dart
 lib/model/data_export_type.dart
+lib/model/debug_app_attestation.dart
 lib/model/delivery_info_type.dart
 lib/model/demo_account_login_credentials.dart
 lib/model/demo_account_login_result.dart
