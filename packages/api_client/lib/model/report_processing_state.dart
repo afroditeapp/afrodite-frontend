@@ -11,35 +11,32 @@
 part of openapi.api;
 
 
-class ReportProcessingState {
-  /// Instantiate a new enum with the provided [value].
-  const ReportProcessingState._(this.value);
+enum ReportProcessingState {
+  waiting._(r'Waiting'),
+  acceptedByAdminBot._(r'AcceptedByAdminBot'),
+  acceptedByAdmin._(r'AcceptedByAdmin'),
+  rejectedByAdminBot._(r'RejectedByAdminBot'),
+  rejectedByAdmin._(r'RejectedByAdmin'),
+  ;
+
+  /// Instantiate a new enum with the provided value.
+  const ReportProcessingState._(this._value);
 
   /// The underlying value of this enum member.
-  final String value;
+  final String _value;
 
   @override
-  String toString() => value;
+  String toString() => _value;
 
-  String toJson() => value;
+  /// Encodes this enum as a value suitable for JSON.
+  String toJson() => _value;
 
-  static const waiting = ReportProcessingState._(r'Waiting');
-  static const acceptedByAdminBot = ReportProcessingState._(r'AcceptedByAdminBot');
-  static const acceptedByAdmin = ReportProcessingState._(r'AcceptedByAdmin');
-  static const rejectedByAdminBot = ReportProcessingState._(r'RejectedByAdminBot');
-  static const rejectedByAdmin = ReportProcessingState._(r'RejectedByAdmin');
-
-  /// List of all possible values in this [enum][ReportProcessingState].
-  static const values = <ReportProcessingState>[
-    waiting,
-    acceptedByAdminBot,
-    acceptedByAdmin,
-    rejectedByAdminBot,
-    rejectedByAdmin,
-  ];
-
+  /// Returns the instance of [ReportProcessingState] that was successfully decoded
+  /// from the passed [value] on success, null otherwise.
   static ReportProcessingState? fromJson(dynamic value) => ReportProcessingStateTypeTransformer().decode(value);
 
+  /// Returns a [List] containing instances of [ReportProcessingState]
+  /// that were successfully decoded from the passed [JSON][json].
   static List<ReportProcessingState> listFromJson(dynamic json, {bool growable = false,}) {
     final result = <ReportProcessingState>[];
     if (json is List && json.isNotEmpty) {
@@ -61,9 +58,11 @@ class ReportProcessingStateTypeTransformer {
 
   const ReportProcessingStateTypeTransformer._();
 
-  String encode(ReportProcessingState data) => data.value;
+  /// Encodes this enum as a value suitable for JSON.
+  String encode(ReportProcessingState data) => data._value;
 
-  /// Decodes a [dynamic value][data] to a ReportProcessingState.
+  /// Returns the instance of [ReportProcessingState] that was successfully decoded
+  /// from the passed [data] value on success, null otherwise.
   ///
   /// If [allowNull] is true and the [dynamic value][data] cannot be decoded successfully,
   /// then null is returned. However, if [allowNull] is false and the [dynamic value][data]
@@ -72,6 +71,9 @@ class ReportProcessingStateTypeTransformer {
   /// The [allowNull] is very handy when an API changes and a new enum value is added or removed,
   /// and users are still using an old app with the old code.
   ReportProcessingState? decode(dynamic data, {bool allowNull = true}) {
+    if (data is ReportProcessingState) {
+      return data;
+    }
     if (data != null) {
       switch (data) {
         case r'Waiting': return ReportProcessingState.waiting;
@@ -88,7 +90,7 @@ class ReportProcessingStateTypeTransformer {
     return null;
   }
 
-  /// Singleton [ReportProcessingStateTypeTransformer] instance.
+  /// The singleton instance of this transformer.
   static ReportProcessingStateTypeTransformer? _instance;
 }
 

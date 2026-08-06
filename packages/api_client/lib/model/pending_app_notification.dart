@@ -63,10 +63,8 @@ class PendingAppNotification {
       // Note 1: the values aren't checked for validity beyond being non-null.
       // Note 2: this code is stripped in release mode!
       assert(() {
-        requiredKeys.forEach((key) {
-          assert(json.containsKey(key), 'Required key "PendingAppNotification[$key]" is missing from JSON.');
-          assert(json[key] != null, 'Required key "PendingAppNotification[$key]" has a null value in JSON.');
-        });
+        assert(json.containsKey(r'notification_type'), 'Required key "PendingAppNotification[notification_type]" is missing from JSON.');
+        assert(json[r'notification_type'] != null, 'Required key "PendingAppNotification[notification_type]" has a null value in JSON.');
         return true;
       }());
 

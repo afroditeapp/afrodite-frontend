@@ -72,10 +72,16 @@ class ProcessReport {
       // Note 1: the values aren't checked for validity beyond being non-null.
       // Note 2: this code is stripped in release mode!
       assert(() {
-        requiredKeys.forEach((key) {
-          assert(json.containsKey(key), 'Required key "ProcessReport[$key]" is missing from JSON.');
-          assert(json[key] != null, 'Required key "ProcessReport[$key]" has a null value in JSON.');
-        });
+        assert(json.containsKey(r'accepted'), 'Required key "ProcessReport[accepted]" is missing from JSON.');
+        assert(json[r'accepted'] != null, 'Required key "ProcessReport[accepted]" has a null value in JSON.');
+        assert(json.containsKey(r'content'), 'Required key "ProcessReport[content]" is missing from JSON.');
+        assert(json[r'content'] != null, 'Required key "ProcessReport[content]" has a null value in JSON.');
+        assert(json.containsKey(r'creator'), 'Required key "ProcessReport[creator]" is missing from JSON.');
+        assert(json[r'creator'] != null, 'Required key "ProcessReport[creator]" has a null value in JSON.');
+        assert(json.containsKey(r'report_type'), 'Required key "ProcessReport[report_type]" is missing from JSON.');
+        assert(json[r'report_type'] != null, 'Required key "ProcessReport[report_type]" has a null value in JSON.');
+        assert(json.containsKey(r'target'), 'Required key "ProcessReport[target]" is missing from JSON.');
+        assert(json[r'target'] != null, 'Required key "ProcessReport[target]" has a null value in JSON.');
         return true;
       }());
 

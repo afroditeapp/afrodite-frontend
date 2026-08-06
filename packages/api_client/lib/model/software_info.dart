@@ -53,10 +53,10 @@ class SoftwareInfo {
       // Note 1: the values aren't checked for validity beyond being non-null.
       // Note 2: this code is stripped in release mode!
       assert(() {
-        requiredKeys.forEach((key) {
-          assert(json.containsKey(key), 'Required key "SoftwareInfo[$key]" is missing from JSON.');
-          assert(json[key] != null, 'Required key "SoftwareInfo[$key]" has a null value in JSON.');
-        });
+        assert(json.containsKey(r'name'), 'Required key "SoftwareInfo[name]" is missing from JSON.');
+        assert(json[r'name'] != null, 'Required key "SoftwareInfo[name]" has a null value in JSON.');
+        assert(json.containsKey(r'sha256'), 'Required key "SoftwareInfo[sha256]" is missing from JSON.');
+        assert(json[r'sha256'] != null, 'Required key "SoftwareInfo[sha256]" has a null value in JSON.');
         return true;
       }());
 

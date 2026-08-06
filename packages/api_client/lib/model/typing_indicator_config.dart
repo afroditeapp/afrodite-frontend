@@ -68,10 +68,12 @@ class TypingIndicatorConfig {
       // Note 1: the values aren't checked for validity beyond being non-null.
       // Note 2: this code is stripped in release mode!
       assert(() {
-        requiredKeys.forEach((key) {
-          assert(json.containsKey(key), 'Required key "TypingIndicatorConfig[$key]" is missing from JSON.');
-          assert(json[key] != null, 'Required key "TypingIndicatorConfig[$key]" has a null value in JSON.');
-        });
+        assert(json.containsKey(r'min_wait_seconds_between_requests_client'), 'Required key "TypingIndicatorConfig[min_wait_seconds_between_requests_client]" is missing from JSON.');
+        assert(json[r'min_wait_seconds_between_requests_client'] != null, 'Required key "TypingIndicatorConfig[min_wait_seconds_between_requests_client]" has a null value in JSON.');
+        assert(json.containsKey(r'min_wait_seconds_between_requests_server'), 'Required key "TypingIndicatorConfig[min_wait_seconds_between_requests_server]" is missing from JSON.');
+        assert(json[r'min_wait_seconds_between_requests_server'] != null, 'Required key "TypingIndicatorConfig[min_wait_seconds_between_requests_server]" has a null value in JSON.');
+        assert(json.containsKey(r'start_event_ttl_seconds'), 'Required key "TypingIndicatorConfig[start_event_ttl_seconds]" is missing from JSON.');
+        assert(json[r'start_event_ttl_seconds'] != null, 'Required key "TypingIndicatorConfig[start_event_ttl_seconds]" has a null value in JSON.');
         return true;
       }());
 

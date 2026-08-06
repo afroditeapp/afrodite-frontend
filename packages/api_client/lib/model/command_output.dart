@@ -53,10 +53,10 @@ class CommandOutput {
       // Note 1: the values aren't checked for validity beyond being non-null.
       // Note 2: this code is stripped in release mode!
       assert(() {
-        requiredKeys.forEach((key) {
-          assert(json.containsKey(key), 'Required key "CommandOutput[$key]" is missing from JSON.');
-          assert(json[key] != null, 'Required key "CommandOutput[$key]" has a null value in JSON.');
-        });
+        assert(json.containsKey(r'name'), 'Required key "CommandOutput[name]" is missing from JSON.');
+        assert(json[r'name'] != null, 'Required key "CommandOutput[name]" has a null value in JSON.');
+        assert(json.containsKey(r'output'), 'Required key "CommandOutput[output]" is missing from JSON.');
+        assert(json[r'output'] != null, 'Required key "CommandOutput[output]" has a null value in JSON.');
         return true;
       }());
 

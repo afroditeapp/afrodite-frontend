@@ -47,10 +47,8 @@ class DailyLikesLeftSyncVersion {
       // Note 1: the values aren't checked for validity beyond being non-null.
       // Note 2: this code is stripped in release mode!
       assert(() {
-        requiredKeys.forEach((key) {
-          assert(json.containsKey(key), 'Required key "DailyLikesLeftSyncVersion[$key]" is missing from JSON.');
-          assert(json[key] != null, 'Required key "DailyLikesLeftSyncVersion[$key]" has a null value in JSON.');
-        });
+        assert(json.containsKey(r'version'), 'Required key "DailyLikesLeftSyncVersion[version]" is missing from JSON.');
+        assert(json[r'version'] != null, 'Required key "DailyLikesLeftSyncVersion[version]" has a null value in JSON.');
         return true;
       }());
 

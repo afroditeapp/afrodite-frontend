@@ -53,10 +53,10 @@ class ProfileAttributesSchemaExport {
       // Note 1: the values aren't checked for validity beyond being non-null.
       // Note 2: this code is stripped in release mode!
       assert(() {
-        requiredKeys.forEach((key) {
-          assert(json.containsKey(key), 'Required key "ProfileAttributesSchemaExport[$key]" is missing from JSON.');
-          assert(json[key] != null, 'Required key "ProfileAttributesSchemaExport[$key]" has a null value in JSON.');
-        });
+        assert(json.containsKey(r'attribute_order'), 'Required key "ProfileAttributesSchemaExport[attribute_order]" is missing from JSON.');
+        assert(json[r'attribute_order'] != null, 'Required key "ProfileAttributesSchemaExport[attribute_order]" has a null value in JSON.');
+        assert(json.containsKey(r'attributes'), 'Required key "ProfileAttributesSchemaExport[attributes]" is missing from JSON.');
+        assert(json[r'attributes'] != null, 'Required key "ProfileAttributesSchemaExport[attributes]" has a null value in JSON.');
         return true;
       }());
 

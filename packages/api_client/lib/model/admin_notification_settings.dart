@@ -60,10 +60,12 @@ class AdminNotificationSettings {
       // Note 1: the values aren't checked for validity beyond being non-null.
       // Note 2: this code is stripped in release mode!
       assert(() {
-        requiredKeys.forEach((key) {
-          assert(json.containsKey(key), 'Required key "AdminNotificationSettings[$key]" is missing from JSON.');
-          assert(json[key] != null, 'Required key "AdminNotificationSettings[$key]" has a null value in JSON.');
-        });
+        assert(json.containsKey(r'daily_enabled_time_end_seconds'), 'Required key "AdminNotificationSettings[daily_enabled_time_end_seconds]" is missing from JSON.');
+        assert(json[r'daily_enabled_time_end_seconds'] != null, 'Required key "AdminNotificationSettings[daily_enabled_time_end_seconds]" has a null value in JSON.');
+        assert(json.containsKey(r'daily_enabled_time_start_seconds'), 'Required key "AdminNotificationSettings[daily_enabled_time_start_seconds]" is missing from JSON.');
+        assert(json[r'daily_enabled_time_start_seconds'] != null, 'Required key "AdminNotificationSettings[daily_enabled_time_start_seconds]" has a null value in JSON.');
+        assert(json.containsKey(r'weekdays'), 'Required key "AdminNotificationSettings[weekdays]" is missing from JSON.');
+        assert(json[r'weekdays'] != null, 'Required key "AdminNotificationSettings[weekdays]" has a null value in JSON.');
         return true;
       }());
 

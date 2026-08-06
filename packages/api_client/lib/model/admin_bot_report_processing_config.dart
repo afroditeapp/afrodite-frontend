@@ -65,10 +65,14 @@ class AdminBotReportProcessingConfig {
       // Note 1: the values aren't checked for validity beyond being non-null.
       // Note 2: this code is stripped in release mode!
       assert(() {
-        requiredKeys.forEach((key) {
-          assert(json.containsKey(key), 'Required key "AdminBotReportProcessingConfig[$key]" is missing from JSON.');
-          assert(json[key] != null, 'Required key "AdminBotReportProcessingConfig[$key]" has a null value in JSON.');
-        });
+        assert(json.containsKey(r'messages'), 'Required key "AdminBotReportProcessingConfig[messages]" is missing from JSON.');
+        assert(json[r'messages'] != null, 'Required key "AdminBotReportProcessingConfig[messages]" has a null value in JSON.');
+        assert(json.containsKey(r'profile_content'), 'Required key "AdminBotReportProcessingConfig[profile_content]" is missing from JSON.');
+        assert(json[r'profile_content'] != null, 'Required key "AdminBotReportProcessingConfig[profile_content]" has a null value in JSON.');
+        assert(json.containsKey(r'profile_name'), 'Required key "AdminBotReportProcessingConfig[profile_name]" is missing from JSON.');
+        assert(json[r'profile_name'] != null, 'Required key "AdminBotReportProcessingConfig[profile_name]" has a null value in JSON.');
+        assert(json.containsKey(r'profile_text'), 'Required key "AdminBotReportProcessingConfig[profile_text]" is missing from JSON.');
+        assert(json[r'profile_text'] != null, 'Required key "AdminBotReportProcessingConfig[profile_text]" has a null value in JSON.');
         return true;
       }());
 

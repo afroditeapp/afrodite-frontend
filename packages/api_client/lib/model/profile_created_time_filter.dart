@@ -47,10 +47,8 @@ class ProfileCreatedTimeFilter {
       // Note 1: the values aren't checked for validity beyond being non-null.
       // Note 2: this code is stripped in release mode!
       assert(() {
-        requiredKeys.forEach((key) {
-          assert(json.containsKey(key), 'Required key "ProfileCreatedTimeFilter[$key]" is missing from JSON.');
-          assert(json[key] != null, 'Required key "ProfileCreatedTimeFilter[$key]" has a null value in JSON.');
-        });
+        assert(json.containsKey(r'value'), 'Required key "ProfileCreatedTimeFilter[value]" is missing from JSON.');
+        assert(json[r'value'] != null, 'Required key "ProfileCreatedTimeFilter[value]" has a null value in JSON.');
         return true;
       }());
 

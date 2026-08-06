@@ -102,10 +102,14 @@ class AttributeValue {
       // Note 1: the values aren't checked for validity beyond being non-null.
       // Note 2: this code is stripped in release mode!
       assert(() {
-        requiredKeys.forEach((key) {
-          assert(json.containsKey(key), 'Required key "AttributeValue[$key]" is missing from JSON.');
-          assert(json[key] != null, 'Required key "AttributeValue[$key]" has a null value in JSON.');
-        });
+        assert(json.containsKey(r'id'), 'Required key "AttributeValue[id]" is missing from JSON.');
+        assert(json[r'id'] != null, 'Required key "AttributeValue[id]" has a null value in JSON.');
+        assert(json.containsKey(r'key'), 'Required key "AttributeValue[key]" is missing from JSON.');
+        assert(json[r'key'] != null, 'Required key "AttributeValue[key]" has a null value in JSON.');
+        assert(json.containsKey(r'name'), 'Required key "AttributeValue[name]" is missing from JSON.');
+        assert(json[r'name'] != null, 'Required key "AttributeValue[name]" has a null value in JSON.');
+        assert(json.containsKey(r'order_number'), 'Required key "AttributeValue[order_number]" is missing from JSON.');
+        assert(json[r'order_number'] != null, 'Required key "AttributeValue[order_number]" has a null value in JSON.');
         return true;
       }());
 

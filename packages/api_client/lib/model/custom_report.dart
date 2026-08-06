@@ -88,10 +88,16 @@ class CustomReport {
       // Note 1: the values aren't checked for validity beyond being non-null.
       // Note 2: this code is stripped in release mode!
       assert(() {
-        requiredKeys.forEach((key) {
-          assert(json.containsKey(key), 'Required key "CustomReport[$key]" is missing from JSON.');
-          assert(json[key] != null, 'Required key "CustomReport[$key]" has a null value in JSON.');
-        });
+        assert(json.containsKey(r'id'), 'Required key "CustomReport[id]" is missing from JSON.');
+        assert(json[r'id'] != null, 'Required key "CustomReport[id]" has a null value in JSON.');
+        assert(json.containsKey(r'key'), 'Required key "CustomReport[key]" is missing from JSON.');
+        assert(json[r'key'] != null, 'Required key "CustomReport[key]" has a null value in JSON.');
+        assert(json.containsKey(r'name'), 'Required key "CustomReport[name]" is missing from JSON.');
+        assert(json[r'name'] != null, 'Required key "CustomReport[name]" has a null value in JSON.');
+        assert(json.containsKey(r'order_number'), 'Required key "CustomReport[order_number]" is missing from JSON.');
+        assert(json[r'order_number'] != null, 'Required key "CustomReport[order_number]" has a null value in JSON.');
+        assert(json.containsKey(r'report_type'), 'Required key "CustomReport[report_type]" is missing from JSON.');
+        assert(json[r'report_type'] != null, 'Required key "CustomReport[report_type]" has a null value in JSON.');
         return true;
       }());
 

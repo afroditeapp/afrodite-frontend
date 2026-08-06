@@ -24,12 +24,6 @@ class ProfileLink {
   ProfileContentVersion c;
 
   /// Account's most recent disconnect time.  If the last seen time is not None, then it is Unix timestamp or -1 if the profile is currently online.
-  ///
-  /// Please note: This property should have been non-nullable! Since the specification file
-  /// does not include a default value (using the "default:" property), however, the generated
-  /// source code must fall back to having a nullable type.
-  /// Consider adding a "default:" property in the specification file to hide this note.
-  ///
   int? l;
 
   ProfileVersion p;
@@ -76,10 +70,12 @@ class ProfileLink {
       // Note 1: the values aren't checked for validity beyond being non-null.
       // Note 2: this code is stripped in release mode!
       assert(() {
-        requiredKeys.forEach((key) {
-          assert(json.containsKey(key), 'Required key "ProfileLink[$key]" is missing from JSON.');
-          assert(json[key] != null, 'Required key "ProfileLink[$key]" has a null value in JSON.');
-        });
+        assert(json.containsKey(r'a'), 'Required key "ProfileLink[a]" is missing from JSON.');
+        assert(json[r'a'] != null, 'Required key "ProfileLink[a]" has a null value in JSON.');
+        assert(json.containsKey(r'c'), 'Required key "ProfileLink[c]" is missing from JSON.');
+        assert(json[r'c'] != null, 'Required key "ProfileLink[c]" has a null value in JSON.');
+        assert(json.containsKey(r'p'), 'Required key "ProfileLink[p]" is missing from JSON.');
+        assert(json[r'p'] != null, 'Required key "ProfileLink[p]" has a null value in JSON.');
         return true;
       }());
 

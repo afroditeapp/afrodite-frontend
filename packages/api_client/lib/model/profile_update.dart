@@ -27,12 +27,6 @@ class ProfileUpdate {
   String name;
 
   /// A string wrapper that ensures the string is not empty. This type is used for TEXT columns that should not allow empty strings. In the database, these columns are NULL when there is no value, and this type represents non-NULL values that must be non-empty.
-  ///
-  /// Please note: This property should have been non-nullable! Since the specification file
-  /// does not include a default value (using the "default:" property), however, the generated
-  /// source code must fall back to having a nullable type.
-  /// Consider adding a "default:" property in the specification file to hide this note.
-  ///
   String? ptext;
 
   @override
@@ -77,10 +71,12 @@ class ProfileUpdate {
       // Note 1: the values aren't checked for validity beyond being non-null.
       // Note 2: this code is stripped in release mode!
       assert(() {
-        requiredKeys.forEach((key) {
-          assert(json.containsKey(key), 'Required key "ProfileUpdate[$key]" is missing from JSON.');
-          assert(json[key] != null, 'Required key "ProfileUpdate[$key]" has a null value in JSON.');
-        });
+        assert(json.containsKey(r'age'), 'Required key "ProfileUpdate[age]" is missing from JSON.');
+        assert(json[r'age'] != null, 'Required key "ProfileUpdate[age]" has a null value in JSON.');
+        assert(json.containsKey(r'attributes'), 'Required key "ProfileUpdate[attributes]" is missing from JSON.');
+        assert(json[r'attributes'] != null, 'Required key "ProfileUpdate[attributes]" has a null value in JSON.');
+        assert(json.containsKey(r'name'), 'Required key "ProfileUpdate[name]" is missing from JSON.');
+        assert(json[r'name'] != null, 'Required key "ProfileUpdate[name]" has a null value in JSON.');
         return true;
       }());
 

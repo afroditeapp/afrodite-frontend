@@ -11,31 +11,30 @@
 part of openapi.api;
 
 
-class StatisticsProfileVisibility {
-  /// Instantiate a new enum with the provided [value].
-  const StatisticsProfileVisibility._(this.value);
+enum StatisticsProfileVisibility {
+  public._(r'Public'),
+  private._(r'Private'),
+  all._(r'All'),
+  ;
+
+  /// Instantiate a new enum with the provided value.
+  const StatisticsProfileVisibility._(this._value);
 
   /// The underlying value of this enum member.
-  final String value;
+  final String _value;
 
   @override
-  String toString() => value;
+  String toString() => _value;
 
-  String toJson() => value;
+  /// Encodes this enum as a value suitable for JSON.
+  String toJson() => _value;
 
-  static const public = StatisticsProfileVisibility._(r'Public');
-  static const private = StatisticsProfileVisibility._(r'Private');
-  static const all = StatisticsProfileVisibility._(r'All');
-
-  /// List of all possible values in this [enum][StatisticsProfileVisibility].
-  static const values = <StatisticsProfileVisibility>[
-    public,
-    private,
-    all,
-  ];
-
+  /// Returns the instance of [StatisticsProfileVisibility] that was successfully decoded
+  /// from the passed [value] on success, null otherwise.
   static StatisticsProfileVisibility? fromJson(dynamic value) => StatisticsProfileVisibilityTypeTransformer().decode(value);
 
+  /// Returns a [List] containing instances of [StatisticsProfileVisibility]
+  /// that were successfully decoded from the passed [JSON][json].
   static List<StatisticsProfileVisibility> listFromJson(dynamic json, {bool growable = false,}) {
     final result = <StatisticsProfileVisibility>[];
     if (json is List && json.isNotEmpty) {
@@ -57,9 +56,11 @@ class StatisticsProfileVisibilityTypeTransformer {
 
   const StatisticsProfileVisibilityTypeTransformer._();
 
-  String encode(StatisticsProfileVisibility data) => data.value;
+  /// Encodes this enum as a value suitable for JSON.
+  String encode(StatisticsProfileVisibility data) => data._value;
 
-  /// Decodes a [dynamic value][data] to a StatisticsProfileVisibility.
+  /// Returns the instance of [StatisticsProfileVisibility] that was successfully decoded
+  /// from the passed [data] value on success, null otherwise.
   ///
   /// If [allowNull] is true and the [dynamic value][data] cannot be decoded successfully,
   /// then null is returned. However, if [allowNull] is false and the [dynamic value][data]
@@ -68,6 +69,9 @@ class StatisticsProfileVisibilityTypeTransformer {
   /// The [allowNull] is very handy when an API changes and a new enum value is added or removed,
   /// and users are still using an old app with the old code.
   StatisticsProfileVisibility? decode(dynamic data, {bool allowNull = true}) {
+    if (data is StatisticsProfileVisibility) {
+      return data;
+    }
     if (data != null) {
       switch (data) {
         case r'Public': return StatisticsProfileVisibility.public;
@@ -82,7 +86,7 @@ class StatisticsProfileVisibilityTypeTransformer {
     return null;
   }
 
-  /// Singleton [StatisticsProfileVisibilityTypeTransformer] instance.
+  /// The singleton instance of this transformer.
   static StatisticsProfileVisibilityTypeTransformer? _instance;
 }
 

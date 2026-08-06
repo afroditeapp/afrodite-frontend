@@ -67,10 +67,8 @@ class SoftwareUpdateStatus {
       // Note 1: the values aren't checked for validity beyond being non-null.
       // Note 2: this code is stripped in release mode!
       assert(() {
-        requiredKeys.forEach((key) {
-          assert(json.containsKey(key), 'Required key "SoftwareUpdateStatus[$key]" is missing from JSON.');
-          assert(json[key] != null, 'Required key "SoftwareUpdateStatus[$key]" has a null value in JSON.');
-        });
+        assert(json.containsKey(r'state'), 'Required key "SoftwareUpdateStatus[state]" is missing from JSON.');
+        assert(json[r'state'] != null, 'Required key "SoftwareUpdateStatus[state]" has a null value in JSON.');
         return true;
       }());
 

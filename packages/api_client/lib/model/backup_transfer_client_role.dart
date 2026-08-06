@@ -11,29 +11,29 @@
 part of openapi.api;
 
 
-class BackupTransferClientRole {
-  /// Instantiate a new enum with the provided [value].
-  const BackupTransferClientRole._(this.value);
+enum BackupTransferClientRole {
+  target._(r'Target'),
+  source_._(r'Source'),
+  ;
+
+  /// Instantiate a new enum with the provided value.
+  const BackupTransferClientRole._(this._value);
 
   /// The underlying value of this enum member.
-  final String value;
+  final String _value;
 
   @override
-  String toString() => value;
+  String toString() => _value;
 
-  String toJson() => value;
+  /// Encodes this enum as a value suitable for JSON.
+  String toJson() => _value;
 
-  static const target = BackupTransferClientRole._(r'Target');
-  static const source_ = BackupTransferClientRole._(r'Source');
-
-  /// List of all possible values in this [enum][BackupTransferClientRole].
-  static const values = <BackupTransferClientRole>[
-    target,
-    source_,
-  ];
-
+  /// Returns the instance of [BackupTransferClientRole] that was successfully decoded
+  /// from the passed [value] on success, null otherwise.
   static BackupTransferClientRole? fromJson(dynamic value) => BackupTransferClientRoleTypeTransformer().decode(value);
 
+  /// Returns a [List] containing instances of [BackupTransferClientRole]
+  /// that were successfully decoded from the passed [JSON][json].
   static List<BackupTransferClientRole> listFromJson(dynamic json, {bool growable = false,}) {
     final result = <BackupTransferClientRole>[];
     if (json is List && json.isNotEmpty) {
@@ -55,9 +55,11 @@ class BackupTransferClientRoleTypeTransformer {
 
   const BackupTransferClientRoleTypeTransformer._();
 
-  String encode(BackupTransferClientRole data) => data.value;
+  /// Encodes this enum as a value suitable for JSON.
+  String encode(BackupTransferClientRole data) => data._value;
 
-  /// Decodes a [dynamic value][data] to a BackupTransferClientRole.
+  /// Returns the instance of [BackupTransferClientRole] that was successfully decoded
+  /// from the passed [data] value on success, null otherwise.
   ///
   /// If [allowNull] is true and the [dynamic value][data] cannot be decoded successfully,
   /// then null is returned. However, if [allowNull] is false and the [dynamic value][data]
@@ -66,6 +68,9 @@ class BackupTransferClientRoleTypeTransformer {
   /// The [allowNull] is very handy when an API changes and a new enum value is added or removed,
   /// and users are still using an old app with the old code.
   BackupTransferClientRole? decode(dynamic data, {bool allowNull = true}) {
+    if (data is BackupTransferClientRole) {
+      return data;
+    }
     if (data != null) {
       switch (data) {
         case r'Target': return BackupTransferClientRole.target;
@@ -79,7 +84,7 @@ class BackupTransferClientRoleTypeTransformer {
     return null;
   }
 
-  /// Singleton [BackupTransferClientRoleTypeTransformer] instance.
+  /// The singleton instance of this transformer.
   static BackupTransferClientRoleTypeTransformer? _instance;
 }
 

@@ -11,29 +11,29 @@
 part of openapi.api;
 
 
-class DeliveryInfoType {
-  /// Instantiate a new enum with the provided [value].
-  const DeliveryInfoType._(this.value);
+enum DeliveryInfoType {
+  delivered._(r'Delivered'),
+  deliveryFailed._(r'DeliveryFailed'),
+  ;
+
+  /// Instantiate a new enum with the provided value.
+  const DeliveryInfoType._(this._value);
 
   /// The underlying value of this enum member.
-  final String value;
+  final String _value;
 
   @override
-  String toString() => value;
+  String toString() => _value;
 
-  String toJson() => value;
+  /// Encodes this enum as a value suitable for JSON.
+  String toJson() => _value;
 
-  static const delivered = DeliveryInfoType._(r'Delivered');
-  static const deliveryFailed = DeliveryInfoType._(r'DeliveryFailed');
-
-  /// List of all possible values in this [enum][DeliveryInfoType].
-  static const values = <DeliveryInfoType>[
-    delivered,
-    deliveryFailed,
-  ];
-
+  /// Returns the instance of [DeliveryInfoType] that was successfully decoded
+  /// from the passed [value] on success, null otherwise.
   static DeliveryInfoType? fromJson(dynamic value) => DeliveryInfoTypeTypeTransformer().decode(value);
 
+  /// Returns a [List] containing instances of [DeliveryInfoType]
+  /// that were successfully decoded from the passed [JSON][json].
   static List<DeliveryInfoType> listFromJson(dynamic json, {bool growable = false,}) {
     final result = <DeliveryInfoType>[];
     if (json is List && json.isNotEmpty) {
@@ -55,9 +55,11 @@ class DeliveryInfoTypeTypeTransformer {
 
   const DeliveryInfoTypeTypeTransformer._();
 
-  String encode(DeliveryInfoType data) => data.value;
+  /// Encodes this enum as a value suitable for JSON.
+  String encode(DeliveryInfoType data) => data._value;
 
-  /// Decodes a [dynamic value][data] to a DeliveryInfoType.
+  /// Returns the instance of [DeliveryInfoType] that was successfully decoded
+  /// from the passed [data] value on success, null otherwise.
   ///
   /// If [allowNull] is true and the [dynamic value][data] cannot be decoded successfully,
   /// then null is returned. However, if [allowNull] is false and the [dynamic value][data]
@@ -66,6 +68,9 @@ class DeliveryInfoTypeTypeTransformer {
   /// The [allowNull] is very handy when an API changes and a new enum value is added or removed,
   /// and users are still using an old app with the old code.
   DeliveryInfoType? decode(dynamic data, {bool allowNull = true}) {
+    if (data is DeliveryInfoType) {
+      return data;
+    }
     if (data != null) {
       switch (data) {
         case r'Delivered': return DeliveryInfoType.delivered;
@@ -79,7 +84,7 @@ class DeliveryInfoTypeTypeTransformer {
     return null;
   }
 
-  /// Singleton [DeliveryInfoTypeTypeTransformer] instance.
+  /// The singleton instance of this transformer.
   static DeliveryInfoTypeTypeTransformer? _instance;
 }
 

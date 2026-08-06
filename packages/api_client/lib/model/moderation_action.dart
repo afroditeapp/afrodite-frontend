@@ -11,31 +11,30 @@
 part of openapi.api;
 
 
-class ModerationAction {
-  /// Instantiate a new enum with the provided [value].
-  const ModerationAction._(this.value);
+enum ModerationAction {
+  accept._(r'Accept'),
+  reject._(r'Reject'),
+  moveToHuman._(r'MoveToHuman'),
+  ;
+
+  /// Instantiate a new enum with the provided value.
+  const ModerationAction._(this._value);
 
   /// The underlying value of this enum member.
-  final String value;
+  final String _value;
 
   @override
-  String toString() => value;
+  String toString() => _value;
 
-  String toJson() => value;
+  /// Encodes this enum as a value suitable for JSON.
+  String toJson() => _value;
 
-  static const accept = ModerationAction._(r'Accept');
-  static const reject = ModerationAction._(r'Reject');
-  static const moveToHuman = ModerationAction._(r'MoveToHuman');
-
-  /// List of all possible values in this [enum][ModerationAction].
-  static const values = <ModerationAction>[
-    accept,
-    reject,
-    moveToHuman,
-  ];
-
+  /// Returns the instance of [ModerationAction] that was successfully decoded
+  /// from the passed [value] on success, null otherwise.
   static ModerationAction? fromJson(dynamic value) => ModerationActionTypeTransformer().decode(value);
 
+  /// Returns a [List] containing instances of [ModerationAction]
+  /// that were successfully decoded from the passed [JSON][json].
   static List<ModerationAction> listFromJson(dynamic json, {bool growable = false,}) {
     final result = <ModerationAction>[];
     if (json is List && json.isNotEmpty) {
@@ -57,9 +56,11 @@ class ModerationActionTypeTransformer {
 
   const ModerationActionTypeTransformer._();
 
-  String encode(ModerationAction data) => data.value;
+  /// Encodes this enum as a value suitable for JSON.
+  String encode(ModerationAction data) => data._value;
 
-  /// Decodes a [dynamic value][data] to a ModerationAction.
+  /// Returns the instance of [ModerationAction] that was successfully decoded
+  /// from the passed [data] value on success, null otherwise.
   ///
   /// If [allowNull] is true and the [dynamic value][data] cannot be decoded successfully,
   /// then null is returned. However, if [allowNull] is false and the [dynamic value][data]
@@ -68,6 +69,9 @@ class ModerationActionTypeTransformer {
   /// The [allowNull] is very handy when an API changes and a new enum value is added or removed,
   /// and users are still using an old app with the old code.
   ModerationAction? decode(dynamic data, {bool allowNull = true}) {
+    if (data is ModerationAction) {
+      return data;
+    }
     if (data != null) {
       switch (data) {
         case r'Accept': return ModerationAction.accept;
@@ -82,7 +86,7 @@ class ModerationActionTypeTransformer {
     return null;
   }
 
-  /// Singleton [ModerationActionTypeTransformer] instance.
+  /// The singleton instance of this transformer.
   static ModerationActionTypeTransformer? _instance;
 }
 

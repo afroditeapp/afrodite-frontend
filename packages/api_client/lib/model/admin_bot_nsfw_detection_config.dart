@@ -69,10 +69,14 @@ class AdminBotNsfwDetectionConfig {
       // Note 1: the values aren't checked for validity beyond being non-null.
       // Note 2: this code is stripped in release mode!
       assert(() {
-        requiredKeys.forEach((key) {
-          assert(json.containsKey(key), 'Required key "AdminBotNsfwDetectionConfig[$key]" is missing from JSON.');
-          assert(json[key] != null, 'Required key "AdminBotNsfwDetectionConfig[$key]" has a null value in JSON.');
-        });
+        assert(json.containsKey(r'accept'), 'Required key "AdminBotNsfwDetectionConfig[accept]" is missing from JSON.');
+        assert(json[r'accept'] != null, 'Required key "AdminBotNsfwDetectionConfig[accept]" has a null value in JSON.');
+        assert(json.containsKey(r'delete'), 'Required key "AdminBotNsfwDetectionConfig[delete]" is missing from JSON.');
+        assert(json[r'delete'] != null, 'Required key "AdminBotNsfwDetectionConfig[delete]" has a null value in JSON.');
+        assert(json.containsKey(r'move_to_human'), 'Required key "AdminBotNsfwDetectionConfig[move_to_human]" is missing from JSON.');
+        assert(json[r'move_to_human'] != null, 'Required key "AdminBotNsfwDetectionConfig[move_to_human]" has a null value in JSON.');
+        assert(json.containsKey(r'reject'), 'Required key "AdminBotNsfwDetectionConfig[reject]" is missing from JSON.');
+        assert(json[r'reject'] != null, 'Required key "AdminBotNsfwDetectionConfig[reject]" has a null value in JSON.');
         return true;
       }());
 

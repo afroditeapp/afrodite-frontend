@@ -97,10 +97,14 @@ class MyContentInfo {
       // Note 1: the values aren't checked for validity beyond being non-null.
       // Note 2: this code is stripped in release mode!
       assert(() {
-        requiredKeys.forEach((key) {
-          assert(json.containsKey(key), 'Required key "MyContentInfo[$key]" is missing from JSON.');
-          assert(json[key] != null, 'Required key "MyContentInfo[$key]" has a null value in JSON.');
-        });
+        assert(json.containsKey(r'cid'), 'Required key "MyContentInfo[cid]" is missing from JSON.');
+        assert(json[r'cid'] != null, 'Required key "MyContentInfo[cid]" has a null value in JSON.');
+        assert(json.containsKey(r'ctype'), 'Required key "MyContentInfo[ctype]" is missing from JSON.');
+        assert(json[r'ctype'] != null, 'Required key "MyContentInfo[ctype]" has a null value in JSON.');
+        assert(json.containsKey(r'face_detected'), 'Required key "MyContentInfo[face_detected]" is missing from JSON.');
+        assert(json[r'face_detected'] != null, 'Required key "MyContentInfo[face_detected]" has a null value in JSON.');
+        assert(json.containsKey(r'state'), 'Required key "MyContentInfo[state]" is missing from JSON.');
+        assert(json[r'state'] != null, 'Required key "MyContentInfo[state]" has a null value in JSON.');
         return true;
       }());
 

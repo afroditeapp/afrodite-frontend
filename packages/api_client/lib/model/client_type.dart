@@ -11,33 +11,31 @@
 part of openapi.api;
 
 
-class ClientType {
-  /// Instantiate a new enum with the provided [value].
-  const ClientType._(this.value);
+enum ClientType {
+  android._(r'Android'),
+  ios._(r'Ios'),
+  web._(r'Web'),
+  bot._(r'Bot'),
+  ;
+
+  /// Instantiate a new enum with the provided value.
+  const ClientType._(this._value);
 
   /// The underlying value of this enum member.
-  final String value;
+  final String _value;
 
   @override
-  String toString() => value;
+  String toString() => _value;
 
-  String toJson() => value;
+  /// Encodes this enum as a value suitable for JSON.
+  String toJson() => _value;
 
-  static const android = ClientType._(r'Android');
-  static const ios = ClientType._(r'Ios');
-  static const web = ClientType._(r'Web');
-  static const bot = ClientType._(r'Bot');
-
-  /// List of all possible values in this [enum][ClientType].
-  static const values = <ClientType>[
-    android,
-    ios,
-    web,
-    bot,
-  ];
-
+  /// Returns the instance of [ClientType] that was successfully decoded
+  /// from the passed [value] on success, null otherwise.
   static ClientType? fromJson(dynamic value) => ClientTypeTypeTransformer().decode(value);
 
+  /// Returns a [List] containing instances of [ClientType]
+  /// that were successfully decoded from the passed [JSON][json].
   static List<ClientType> listFromJson(dynamic json, {bool growable = false,}) {
     final result = <ClientType>[];
     if (json is List && json.isNotEmpty) {
@@ -59,9 +57,11 @@ class ClientTypeTypeTransformer {
 
   const ClientTypeTypeTransformer._();
 
-  String encode(ClientType data) => data.value;
+  /// Encodes this enum as a value suitable for JSON.
+  String encode(ClientType data) => data._value;
 
-  /// Decodes a [dynamic value][data] to a ClientType.
+  /// Returns the instance of [ClientType] that was successfully decoded
+  /// from the passed [data] value on success, null otherwise.
   ///
   /// If [allowNull] is true and the [dynamic value][data] cannot be decoded successfully,
   /// then null is returned. However, if [allowNull] is false and the [dynamic value][data]
@@ -70,6 +70,9 @@ class ClientTypeTypeTransformer {
   /// The [allowNull] is very handy when an API changes and a new enum value is added or removed,
   /// and users are still using an old app with the old code.
   ClientType? decode(dynamic data, {bool allowNull = true}) {
+    if (data is ClientType) {
+      return data;
+    }
     if (data != null) {
       switch (data) {
         case r'Android': return ClientType.android;
@@ -85,7 +88,7 @@ class ClientTypeTypeTransformer {
     return null;
   }
 
-  /// Singleton [ClientTypeTypeTransformer] instance.
+  /// The singleton instance of this transformer.
   static ClientTypeTypeTransformer? _instance;
 }
 

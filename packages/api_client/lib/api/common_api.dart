@@ -21,7 +21,7 @@ class CommonApi {
   /// Data export state will move from [DataExportStateType::Done] or [DataExportStateType::Error] to [DataExportStateType::Empty].
   ///
   /// Note: This method returns the HTTP [Response].
-  Future<Response> deleteDataExportWithHttpInfo() async {
+  Future<Response> deleteDataExportWithHttpInfo({ Future<void>? abortTrigger, }) async {
     // ignore: prefer_const_declarations
     final path = r'/common_api/delete_data_export';
 
@@ -43,21 +43,22 @@ class CommonApi {
       headerParams,
       formParams,
       contentTypes.isEmpty ? null : contentTypes.first,
+      abortTrigger: abortTrigger,
     );
   }
 
   /// Delete current data export
   ///
   /// Data export state will move from [DataExportStateType::Done] or [DataExportStateType::Error] to [DataExportStateType::Empty].
-  Future<void> deleteDataExport() async {
-    final response = await deleteDataExportWithHttpInfo();
+  Future<void> deleteDataExport({ Future<void>? abortTrigger, }) async {
+    final response = await deleteDataExportWithHttpInfo(abortTrigger: abortTrigger,);
     if (response.statusCode >= HttpStatus.badRequest) {
       throw ApiException(response.statusCode, await _decodeBodyBytes(response));
     }
   }
 
   /// Performs an HTTP 'GET /common_api/client_config' operation and returns the [Response].
-  Future<Response> getClientConfigWithHttpInfo() async {
+  Future<Response> getClientConfigWithHttpInfo({ Future<void>? abortTrigger, }) async {
     // ignore: prefer_const_declarations
     final path = r'/common_api/client_config';
 
@@ -79,11 +80,12 @@ class CommonApi {
       headerParams,
       formParams,
       contentTypes.isEmpty ? null : contentTypes.first,
+      abortTrigger: abortTrigger,
     );
   }
 
-  Future<ClientConfig?> getClientConfig() async {
-    final response = await getClientConfigWithHttpInfo();
+  Future<ClientConfig?> getClientConfig({ Future<void>? abortTrigger, }) async {
+    final response = await getClientConfigWithHttpInfo(abortTrigger: abortTrigger,);
     if (response.statusCode >= HttpStatus.badRequest) {
       throw ApiException(response.statusCode, await _decodeBodyBytes(response));
     }
@@ -98,7 +100,7 @@ class CommonApi {
   }
 
   /// Performs an HTTP 'GET /common_api/client_language' operation and returns the [Response].
-  Future<Response> getClientLanguageWithHttpInfo() async {
+  Future<Response> getClientLanguageWithHttpInfo({ Future<void>? abortTrigger, }) async {
     // ignore: prefer_const_declarations
     final path = r'/common_api/client_language';
 
@@ -120,11 +122,12 @@ class CommonApi {
       headerParams,
       formParams,
       contentTypes.isEmpty ? null : contentTypes.first,
+      abortTrigger: abortTrigger,
     );
   }
 
-  Future<GetClientLanguage?> getClientLanguage() async {
-    final response = await getClientLanguageWithHttpInfo();
+  Future<GetClientLanguage?> getClientLanguage({ Future<void>? abortTrigger, }) async {
+    final response = await getClientLanguageWithHttpInfo(abortTrigger: abortTrigger,);
     if (response.statusCode >= HttpStatus.badRequest) {
       throw ApiException(response.statusCode, await _decodeBodyBytes(response));
     }
@@ -143,7 +146,7 @@ class CommonApi {
   /// Protocol: 1. Server sends one of these byte values as Binary message:    - 0, continue to data sync, move to step 5, at this point API can be used.    - 1, access token and refresh token refresh is needed, move to step 2.    - 2, unsupported client version, server closes the connection      without sending WebSocket Close message.    - 3, invalid access token, server closes the connection      without sending WebSocket Close message.    - 4, WebSocket connection attempts daily limit reached, server closes the      connection without sending WebSocket Close message. 2. Client sends current refresh token as Binary message. 3. Server sends new refresh token as Binary message. 4. Server sends new access token as Binary message. The client must    convert the token to base64url encoding without padding.    (At this point API can be used.) 5. Both client and server starts send messages.    - Client sends websocket binary protocol messages when needed.      The message can be empty to test connection or alternatively      message which `ClientMessageType` defines.    - Server sends websocket binary protocol messages.      The first byte is message type (`ServerMessageType`) and remaining      bytes are message payload. Client can ignore empty binary      messages used for connection testing.  The new access token is valid until this WebSocket is closed or the server detects a timeout. To prevent the timeout the client must send a WebScoket ping message before 6 minutes elapses from connection establishment or previous ping message.  `Sec-WebSocket-Protocol` header must have the following values:   - Client WebSocket protocol version string (currently \"v1\").   - Client access token string (prefix 't' and base64url encoded token     without base64url padding).   - Client info string (prefix 'c' and values separated with '_' character)     - Client type number (0 = Android, 1 = iOS, 2 = Web, 3 = Bot).     - Client major version number.     - Client minor version number.     - Client patch version number.
   ///
   /// Note: This method returns the HTTP [Response].
-  Future<Response> getConnectWebsocketWithHttpInfo() async {
+  Future<Response> getConnectWebsocketWithHttpInfo({ Future<void>? abortTrigger, }) async {
     // ignore: prefer_const_declarations
     final path = r'/common_api/connect';
 
@@ -165,14 +168,15 @@ class CommonApi {
       headerParams,
       formParams,
       contentTypes.isEmpty ? null : contentTypes.first,
+      abortTrigger: abortTrigger,
     );
   }
 
   /// Connect to server using WebSocket after getting refresh and access tokens.
   ///
   /// Protocol: 1. Server sends one of these byte values as Binary message:    - 0, continue to data sync, move to step 5, at this point API can be used.    - 1, access token and refresh token refresh is needed, move to step 2.    - 2, unsupported client version, server closes the connection      without sending WebSocket Close message.    - 3, invalid access token, server closes the connection      without sending WebSocket Close message.    - 4, WebSocket connection attempts daily limit reached, server closes the      connection without sending WebSocket Close message. 2. Client sends current refresh token as Binary message. 3. Server sends new refresh token as Binary message. 4. Server sends new access token as Binary message. The client must    convert the token to base64url encoding without padding.    (At this point API can be used.) 5. Both client and server starts send messages.    - Client sends websocket binary protocol messages when needed.      The message can be empty to test connection or alternatively      message which `ClientMessageType` defines.    - Server sends websocket binary protocol messages.      The first byte is message type (`ServerMessageType`) and remaining      bytes are message payload. Client can ignore empty binary      messages used for connection testing.  The new access token is valid until this WebSocket is closed or the server detects a timeout. To prevent the timeout the client must send a WebScoket ping message before 6 minutes elapses from connection establishment or previous ping message.  `Sec-WebSocket-Protocol` header must have the following values:   - Client WebSocket protocol version string (currently \"v1\").   - Client access token string (prefix 't' and base64url encoded token     without base64url padding).   - Client info string (prefix 'c' and values separated with '_' character)     - Client type number (0 = Android, 1 = iOS, 2 = Web, 3 = Bot).     - Client major version number.     - Client minor version number.     - Client patch version number.
-  Future<void> getConnectWebsocket() async {
-    final response = await getConnectWebsocketWithHttpInfo();
+  Future<void> getConnectWebsocket({ Future<void>? abortTrigger, }) async {
+    final response = await getConnectWebsocketWithHttpInfo(abortTrigger: abortTrigger,);
     if (response.statusCode >= HttpStatus.badRequest) {
       throw ApiException(response.statusCode, await _decodeBodyBytes(response));
     }
@@ -187,7 +191,7 @@ class CommonApi {
   /// Parameters:
   ///
   /// * [String] name (required):
-  Future<Response> getDataExportArchiveWithHttpInfo(String name,) async {
+  Future<Response> getDataExportArchiveWithHttpInfo(String name, { Future<void>? abortTrigger, }) async {
     // ignore: prefer_const_declarations
     final path = r'/common_api/data_export_archive';
 
@@ -211,6 +215,7 @@ class CommonApi {
       headerParams,
       formParams,
       contentTypes.isEmpty ? null : contentTypes.first,
+      abortTrigger: abortTrigger,
     );
   }
 
@@ -221,8 +226,8 @@ class CommonApi {
   /// Parameters:
   ///
   /// * [String] name (required):
-  Future<MultipartFile?> getDataExportArchive(String name,) async {
-    final response = await getDataExportArchiveWithHttpInfo(name,);
+  Future<MultipartFile?> getDataExportArchive(String name, { Future<void>? abortTrigger, }) async {
+    final response = await getDataExportArchiveWithHttpInfo(name, abortTrigger: abortTrigger,);
     if (response.statusCode >= HttpStatus.badRequest) {
       throw ApiException(response.statusCode, await _decodeBodyBytes(response));
     }
@@ -237,7 +242,7 @@ class CommonApi {
   }
 
   /// Performs an HTTP 'GET /common_api/data_export_state' operation and returns the [Response].
-  Future<Response> getDataExportStateWithHttpInfo() async {
+  Future<Response> getDataExportStateWithHttpInfo({ Future<void>? abortTrigger, }) async {
     // ignore: prefer_const_declarations
     final path = r'/common_api/data_export_state';
 
@@ -259,11 +264,12 @@ class CommonApi {
       headerParams,
       formParams,
       contentTypes.isEmpty ? null : contentTypes.first,
+      abortTrigger: abortTrigger,
     );
   }
 
-  Future<DataExportState?> getDataExportState() async {
-    final response = await getDataExportStateWithHttpInfo();
+  Future<DataExportState?> getDataExportState({ Future<void>? abortTrigger, }) async {
+    final response = await getDataExportStateWithHttpInfo(abortTrigger: abortTrigger,);
     if (response.statusCode >= HttpStatus.badRequest) {
       throw ApiException(response.statusCode, await _decodeBodyBytes(response));
     }
@@ -282,7 +288,7 @@ class CommonApi {
   /// The client uses this API route when connecting to production server fails and client has demo account server URL configured.
   ///
   /// Note: This method returns the HTTP [Response].
-  Future<Response> getManualServerMaintenanceInfoForAnotherServerWithHttpInfo() async {
+  Future<Response> getManualServerMaintenanceInfoForAnotherServerWithHttpInfo({ Future<void>? abortTrigger, }) async {
     // ignore: prefer_const_declarations
     final path = r'/common_api/manual_server_maintenance_info_for_another_server';
 
@@ -304,14 +310,15 @@ class CommonApi {
       headerParams,
       formParams,
       contentTypes.isEmpty ? null : contentTypes.first,
+      abortTrigger: abortTrigger,
     );
   }
 
   /// Get manual server maintenance info for another server.
   ///
   /// The client uses this API route when connecting to production server fails and client has demo account server URL configured.
-  Future<ManualServerMaintenanceInfoForAnotherServer?> getManualServerMaintenanceInfoForAnotherServer() async {
-    final response = await getManualServerMaintenanceInfoForAnotherServerWithHttpInfo();
+  Future<ManualServerMaintenanceInfoForAnotherServer?> getManualServerMaintenanceInfoForAnotherServer({ Future<void>? abortTrigger, }) async {
+    final response = await getManualServerMaintenanceInfoForAnotherServerWithHttpInfo(abortTrigger: abortTrigger,);
     if (response.statusCode >= HttpStatus.badRequest) {
       throw ApiException(response.statusCode, await _decodeBodyBytes(response));
     }
@@ -326,7 +333,7 @@ class CommonApi {
   }
 
   /// Performs an HTTP 'GET /common_api/pending_app_notifications' operation and returns the [Response].
-  Future<Response> getPendingAppNotificationsWithHttpInfo() async {
+  Future<Response> getPendingAppNotificationsWithHttpInfo({ Future<void>? abortTrigger, }) async {
     // ignore: prefer_const_declarations
     final path = r'/common_api/pending_app_notifications';
 
@@ -348,11 +355,12 @@ class CommonApi {
       headerParams,
       formParams,
       contentTypes.isEmpty ? null : contentTypes.first,
+      abortTrigger: abortTrigger,
     );
   }
 
-  Future<List<PendingAppNotification>?> getPendingAppNotifications() async {
-    final response = await getPendingAppNotificationsWithHttpInfo();
+  Future<List<PendingAppNotification>?> getPendingAppNotifications({ Future<void>? abortTrigger, }) async {
+    final response = await getPendingAppNotificationsWithHttpInfo(abortTrigger: abortTrigger,);
     if (response.statusCode >= HttpStatus.badRequest) {
       throw ApiException(response.statusCode, await _decodeBodyBytes(response));
     }
@@ -370,7 +378,7 @@ class CommonApi {
   }
 
   /// Performs an HTTP 'GET /common_api/get_push_notification_info' operation and returns the [Response].
-  Future<Response> getPushNotificationInfoWithHttpInfo() async {
+  Future<Response> getPushNotificationInfoWithHttpInfo({ Future<void>? abortTrigger, }) async {
     // ignore: prefer_const_declarations
     final path = r'/common_api/get_push_notification_info';
 
@@ -392,11 +400,12 @@ class CommonApi {
       headerParams,
       formParams,
       contentTypes.isEmpty ? null : contentTypes.first,
+      abortTrigger: abortTrigger,
     );
   }
 
-  Future<GetPushNotificationInfo?> getPushNotificationInfo() async {
-    final response = await getPushNotificationInfoWithHttpInfo();
+  Future<GetPushNotificationInfo?> getPushNotificationInfo({ Future<void>? abortTrigger, }) async {
+    final response = await getPushNotificationInfoWithHttpInfo(abortTrigger: abortTrigger,);
     if (response.statusCode >= HttpStatus.badRequest) {
       throw ApiException(response.statusCode, await _decodeBodyBytes(response));
     }
@@ -413,7 +422,7 @@ class CommonApi {
   /// Check if server is online.
   ///
   /// Note: This method returns the HTTP [Response].
-  Future<Response> getServerOnlineWithHttpInfo() async {
+  Future<Response> getServerOnlineWithHttpInfo({ Future<void>? abortTrigger, }) async {
     // ignore: prefer_const_declarations
     final path = r'/common_api/server_online';
 
@@ -435,12 +444,13 @@ class CommonApi {
       headerParams,
       formParams,
       contentTypes.isEmpty ? null : contentTypes.first,
+      abortTrigger: abortTrigger,
     );
   }
 
   /// Check if server is online.
-  Future<void> getServerOnline() async {
-    final response = await getServerOnlineWithHttpInfo();
+  Future<void> getServerOnline({ Future<void>? abortTrigger, }) async {
+    final response = await getServerOnlineWithHttpInfo(abortTrigger: abortTrigger,);
     if (response.statusCode >= HttpStatus.badRequest) {
       throw ApiException(response.statusCode, await _decodeBodyBytes(response));
     }
@@ -453,7 +463,7 @@ class CommonApi {
   /// Parameters:
   ///
   /// * [AutomaticProfileSearchIteratorSessionId] automaticProfileSearchIteratorSessionId (required):
-  Future<Response> postAutomaticProfileSearchGetNextProfilePageWithHttpInfo(AutomaticProfileSearchIteratorSessionId automaticProfileSearchIteratorSessionId,) async {
+  Future<Response> postAutomaticProfileSearchGetNextProfilePageWithHttpInfo(AutomaticProfileSearchIteratorSessionId automaticProfileSearchIteratorSessionId, { Future<void>? abortTrigger, }) async {
     // ignore: prefer_const_declarations
     final path = r'/common_api/automatic_profile_search/next';
 
@@ -475,6 +485,7 @@ class CommonApi {
       headerParams,
       formParams,
       contentTypes.isEmpty ? null : contentTypes.first,
+      abortTrigger: abortTrigger,
     );
   }
 
@@ -483,8 +494,8 @@ class CommonApi {
   /// Parameters:
   ///
   /// * [AutomaticProfileSearchIteratorSessionId] automaticProfileSearchIteratorSessionId (required):
-  Future<ProfilePage?> postAutomaticProfileSearchGetNextProfilePage(AutomaticProfileSearchIteratorSessionId automaticProfileSearchIteratorSessionId,) async {
-    final response = await postAutomaticProfileSearchGetNextProfilePageWithHttpInfo(automaticProfileSearchIteratorSessionId,);
+  Future<ProfilePage?> postAutomaticProfileSearchGetNextProfilePage(AutomaticProfileSearchIteratorSessionId automaticProfileSearchIteratorSessionId, { Future<void>? abortTrigger, }) async {
+    final response = await postAutomaticProfileSearchGetNextProfilePageWithHttpInfo(automaticProfileSearchIteratorSessionId, abortTrigger: abortTrigger,);
     if (response.statusCode >= HttpStatus.badRequest) {
       throw ApiException(response.statusCode, await _decodeBodyBytes(response));
     }
@@ -503,7 +514,7 @@ class CommonApi {
   /// After this request getting next profiles will continue from the nearest profiles.
   ///
   /// Note: This method returns the HTTP [Response].
-  Future<Response> postAutomaticProfileSearchResetProfilePagingWithHttpInfo() async {
+  Future<Response> postAutomaticProfileSearchResetProfilePagingWithHttpInfo({ Future<void>? abortTrigger, }) async {
     // ignore: prefer_const_declarations
     final path = r'/common_api/automatic_profile_search/reset';
 
@@ -525,14 +536,15 @@ class CommonApi {
       headerParams,
       formParams,
       contentTypes.isEmpty ? null : contentTypes.first,
+      abortTrigger: abortTrigger,
     );
   }
 
   /// Reset automatic profile search profile paging.
   ///
   /// After this request getting next profiles will continue from the nearest profiles.
-  Future<AutomaticProfileSearchIteratorSessionId?> postAutomaticProfileSearchResetProfilePaging() async {
-    final response = await postAutomaticProfileSearchResetProfilePagingWithHttpInfo();
+  Future<AutomaticProfileSearchIteratorSessionId?> postAutomaticProfileSearchResetProfilePaging({ Future<void>? abortTrigger, }) async {
+    final response = await postAutomaticProfileSearchResetProfilePagingWithHttpInfo(abortTrigger: abortTrigger,);
     if (response.statusCode >= HttpStatus.badRequest) {
       throw ApiException(response.statusCode, await _decodeBodyBytes(response));
     }
@@ -550,7 +562,7 @@ class CommonApi {
   /// Parameters:
   ///
   /// * [ClientLanguage] clientLanguage (required):
-  Future<Response> postClientLanguageWithHttpInfo(ClientLanguage clientLanguage,) async {
+  Future<Response> postClientLanguageWithHttpInfo(ClientLanguage clientLanguage, { Future<void>? abortTrigger, }) async {
     // ignore: prefer_const_declarations
     final path = r'/common_api/client_language';
 
@@ -572,14 +584,15 @@ class CommonApi {
       headerParams,
       formParams,
       contentTypes.isEmpty ? null : contentTypes.first,
+      abortTrigger: abortTrigger,
     );
   }
 
   /// Parameters:
   ///
   /// * [ClientLanguage] clientLanguage (required):
-  Future<void> postClientLanguage(ClientLanguage clientLanguage,) async {
-    final response = await postClientLanguageWithHttpInfo(clientLanguage,);
+  Future<void> postClientLanguage(ClientLanguage clientLanguage, { Future<void>? abortTrigger, }) async {
+    final response = await postClientLanguageWithHttpInfo(clientLanguage, abortTrigger: abortTrigger,);
     if (response.statusCode >= HttpStatus.badRequest) {
       throw ApiException(response.statusCode, await _decodeBodyBytes(response));
     }
@@ -589,7 +602,7 @@ class CommonApi {
   /// Parameters:
   ///
   /// * [List<PendingAppNotificationToDelete>] pendingAppNotificationToDelete (required):
-  Future<Response> postDeletePendingAppNotificationsWithHttpInfo(List<PendingAppNotificationToDelete> pendingAppNotificationToDelete,) async {
+  Future<Response> postDeletePendingAppNotificationsWithHttpInfo(List<PendingAppNotificationToDelete> pendingAppNotificationToDelete, { Future<void>? abortTrigger, }) async {
     // ignore: prefer_const_declarations
     final path = r'/common_api/pending_app_notifications/delete';
 
@@ -611,14 +624,15 @@ class CommonApi {
       headerParams,
       formParams,
       contentTypes.isEmpty ? null : contentTypes.first,
+      abortTrigger: abortTrigger,
     );
   }
 
   /// Parameters:
   ///
   /// * [List<PendingAppNotificationToDelete>] pendingAppNotificationToDelete (required):
-  Future<void> postDeletePendingAppNotifications(List<PendingAppNotificationToDelete> pendingAppNotificationToDelete,) async {
-    final response = await postDeletePendingAppNotificationsWithHttpInfo(pendingAppNotificationToDelete,);
+  Future<void> postDeletePendingAppNotifications(List<PendingAppNotificationToDelete> pendingAppNotificationToDelete, { Future<void>? abortTrigger, }) async {
+    final response = await postDeletePendingAppNotificationsWithHttpInfo(pendingAppNotificationToDelete, abortTrigger: abortTrigger,);
     if (response.statusCode >= HttpStatus.badRequest) {
       throw ApiException(response.statusCode, await _decodeBodyBytes(response));
     }
@@ -631,7 +645,7 @@ class CommonApi {
   /// Parameters:
   ///
   /// * [ProfileIteratorSessionId] profileIteratorSessionId (required):
-  Future<Response> postGetNextProfilePageWithHttpInfo(ProfileIteratorSessionId profileIteratorSessionId,) async {
+  Future<Response> postGetNextProfilePageWithHttpInfo(ProfileIteratorSessionId profileIteratorSessionId, { Future<void>? abortTrigger, }) async {
     // ignore: prefer_const_declarations
     final path = r'/common_api/profile/page/next';
 
@@ -653,6 +667,7 @@ class CommonApi {
       headerParams,
       formParams,
       contentTypes.isEmpty ? null : contentTypes.first,
+      abortTrigger: abortTrigger,
     );
   }
 
@@ -661,8 +676,8 @@ class CommonApi {
   /// Parameters:
   ///
   /// * [ProfileIteratorSessionId] profileIteratorSessionId (required):
-  Future<ProfilePage?> postGetNextProfilePage(ProfileIteratorSessionId profileIteratorSessionId,) async {
-    final response = await postGetNextProfilePageWithHttpInfo(profileIteratorSessionId,);
+  Future<ProfilePage?> postGetNextProfilePage(ProfileIteratorSessionId profileIteratorSessionId, { Future<void>? abortTrigger, }) async {
+    final response = await postGetNextProfilePageWithHttpInfo(profileIteratorSessionId, abortTrigger: abortTrigger,);
     if (response.statusCode >= HttpStatus.badRequest) {
       throw ApiException(response.statusCode, await _decodeBodyBytes(response));
     }
@@ -681,7 +696,7 @@ class CommonApi {
   /// After this request getting next profiles will continue from the nearest profiles.
   ///
   /// Note: This method returns the HTTP [Response].
-  Future<Response> postResetProfilePagingWithHttpInfo() async {
+  Future<Response> postResetProfilePagingWithHttpInfo({ Future<void>? abortTrigger, }) async {
     // ignore: prefer_const_declarations
     final path = r'/common_api/profile/page/reset';
 
@@ -703,14 +718,15 @@ class CommonApi {
       headerParams,
       formParams,
       contentTypes.isEmpty ? null : contentTypes.first,
+      abortTrigger: abortTrigger,
     );
   }
 
   /// Reset profile paging.
   ///
   /// After this request getting next profiles will continue from the nearest profiles.
-  Future<ProfileIteratorSessionId?> postResetProfilePaging() async {
-    final response = await postResetProfilePagingWithHttpInfo();
+  Future<ProfileIteratorSessionId?> postResetProfilePaging({ Future<void>? abortTrigger, }) async {
+    final response = await postResetProfilePagingWithHttpInfo(abortTrigger: abortTrigger,);
     if (response.statusCode >= HttpStatus.badRequest) {
       throw ApiException(response.statusCode, await _decodeBodyBytes(response));
     }
@@ -728,7 +744,7 @@ class CommonApi {
   /// Parameters:
   ///
   /// * [PushNotificationDeviceToken] pushNotificationDeviceToken (required):
-  Future<Response> postSetDeviceTokenWithHttpInfo(PushNotificationDeviceToken pushNotificationDeviceToken,) async {
+  Future<Response> postSetDeviceTokenWithHttpInfo(PushNotificationDeviceToken pushNotificationDeviceToken, { Future<void>? abortTrigger, }) async {
     // ignore: prefer_const_declarations
     final path = r'/common_api/set_device_token';
 
@@ -750,14 +766,15 @@ class CommonApi {
       headerParams,
       formParams,
       contentTypes.isEmpty ? null : contentTypes.first,
+      abortTrigger: abortTrigger,
     );
   }
 
   /// Parameters:
   ///
   /// * [PushNotificationDeviceToken] pushNotificationDeviceToken (required):
-  Future<PushNotificationEncryptionKey?> postSetDeviceToken(PushNotificationDeviceToken pushNotificationDeviceToken,) async {
-    final response = await postSetDeviceTokenWithHttpInfo(pushNotificationDeviceToken,);
+  Future<PushNotificationEncryptionKey?> postSetDeviceToken(PushNotificationDeviceToken pushNotificationDeviceToken, { Future<void>? abortTrigger, }) async {
+    final response = await postSetDeviceTokenWithHttpInfo(pushNotificationDeviceToken, abortTrigger: abortTrigger,);
     if (response.statusCode >= HttpStatus.badRequest) {
       throw ApiException(response.statusCode, await _decodeBodyBytes(response));
     }
@@ -780,7 +797,7 @@ class CommonApi {
   /// Parameters:
   ///
   /// * [PostStartDataExport] postStartDataExport (required):
-  Future<Response> postStartDataExportWithHttpInfo(PostStartDataExport postStartDataExport,) async {
+  Future<Response> postStartDataExportWithHttpInfo(PostStartDataExport postStartDataExport, { Future<void>? abortTrigger, }) async {
     // ignore: prefer_const_declarations
     final path = r'/common_api/start_data_export';
 
@@ -802,6 +819,7 @@ class CommonApi {
       headerParams,
       formParams,
       contentTypes.isEmpty ? null : contentTypes.first,
+      abortTrigger: abortTrigger,
     );
   }
 
@@ -812,8 +830,8 @@ class CommonApi {
   /// Parameters:
   ///
   /// * [PostStartDataExport] postStartDataExport (required):
-  Future<void> postStartDataExport(PostStartDataExport postStartDataExport,) async {
-    final response = await postStartDataExportWithHttpInfo(postStartDataExport,);
+  Future<void> postStartDataExport(PostStartDataExport postStartDataExport, { Future<void>? abortTrigger, }) async {
+    final response = await postStartDataExportWithHttpInfo(postStartDataExport, abortTrigger: abortTrigger,);
     if (response.statusCode >= HttpStatus.badRequest) {
       throw ApiException(response.statusCode, await _decodeBodyBytes(response));
     }

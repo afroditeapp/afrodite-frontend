@@ -53,10 +53,10 @@ class InitialProfileAge {
       // Note 1: the values aren't checked for validity beyond being non-null.
       // Note 2: this code is stripped in release mode!
       assert(() {
-        requiredKeys.forEach((key) {
-          assert(json.containsKey(key), 'Required key "InitialProfileAge[$key]" is missing from JSON.');
-          assert(json[key] != null, 'Required key "InitialProfileAge[$key]" has a null value in JSON.');
-        });
+        assert(json.containsKey(r'initial_profile_age'), 'Required key "InitialProfileAge[initial_profile_age]" is missing from JSON.');
+        assert(json[r'initial_profile_age'] != null, 'Required key "InitialProfileAge[initial_profile_age]" has a null value in JSON.');
+        assert(json.containsKey(r'initial_profile_age_set_unix_time'), 'Required key "InitialProfileAge[initial_profile_age_set_unix_time]" is missing from JSON.');
+        assert(json[r'initial_profile_age_set_unix_time'] != null, 'Required key "InitialProfileAge[initial_profile_age_set_unix_time]" has a null value in JSON.');
         return true;
       }());
 

@@ -47,10 +47,8 @@ class MediaAppNotificationSettings {
       // Note 1: the values aren't checked for validity beyond being non-null.
       // Note 2: this code is stripped in release mode!
       assert(() {
-        requiredKeys.forEach((key) {
-          assert(json.containsKey(key), 'Required key "MediaAppNotificationSettings[$key]" is missing from JSON.');
-          assert(json[key] != null, 'Required key "MediaAppNotificationSettings[$key]" has a null value in JSON.');
-        });
+        assert(json.containsKey(r'media_content_moderation'), 'Required key "MediaAppNotificationSettings[media_content_moderation]" is missing from JSON.');
+        assert(json[r'media_content_moderation'] != null, 'Required key "MediaAppNotificationSettings[media_content_moderation]" has a null value in JSON.');
         return true;
       }());
 

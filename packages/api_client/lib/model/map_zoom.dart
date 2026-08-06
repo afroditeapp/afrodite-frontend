@@ -76,10 +76,16 @@ class MapZoom {
       // Note 1: the values aren't checked for validity beyond being non-null.
       // Note 2: this code is stripped in release mode!
       assert(() {
-        requiredKeys.forEach((key) {
-          assert(json.containsKey(key), 'Required key "MapZoom[$key]" is missing from JSON.');
-          assert(json[key] != null, 'Required key "MapZoom[$key]" has a null value in JSON.');
-        });
+        assert(json.containsKey(r'location_not_selected'), 'Required key "MapZoom[location_not_selected]" is missing from JSON.');
+        assert(json[r'location_not_selected'] != null, 'Required key "MapZoom[location_not_selected]" has a null value in JSON.');
+        assert(json.containsKey(r'location_selected'), 'Required key "MapZoom[location_selected]" is missing from JSON.');
+        assert(json[r'location_selected'] != null, 'Required key "MapZoom[location_selected]" has a null value in JSON.');
+        assert(json.containsKey(r'max'), 'Required key "MapZoom[max]" is missing from JSON.');
+        assert(json[r'max'] != null, 'Required key "MapZoom[max]" has a null value in JSON.');
+        assert(json.containsKey(r'max_tile_downloading'), 'Required key "MapZoom[max_tile_downloading]" is missing from JSON.');
+        assert(json[r'max_tile_downloading'] != null, 'Required key "MapZoom[max_tile_downloading]" has a null value in JSON.');
+        assert(json.containsKey(r'min'), 'Required key "MapZoom[min]" is missing from JSON.');
+        assert(json[r'min'] != null, 'Required key "MapZoom[min]" has a null value in JSON.');
         return true;
       }());
 

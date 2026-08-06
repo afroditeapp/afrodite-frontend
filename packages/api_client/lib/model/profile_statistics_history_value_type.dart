@@ -11,43 +11,36 @@
 part of openapi.api;
 
 
-class ProfileStatisticsHistoryValueType {
-  /// Instantiate a new enum with the provided [value].
-  const ProfileStatisticsHistoryValueType._(this.value);
+enum ProfileStatisticsHistoryValueType {
+  accounts._(r'Accounts'),
+  public._(r'Public'),
+  publicMan._(r'PublicMan'),
+  publicWoman._(r'PublicWoman'),
+  publicNonBinary._(r'PublicNonBinary'),
+  ageChange._(r'AgeChange'),
+  ageChangeMan._(r'AgeChangeMan'),
+  ageChangeWoman._(r'AgeChangeWoman'),
+  ageChangeNonBinary._(r'AgeChangeNonBinary'),
+  ;
+
+  /// Instantiate a new enum with the provided value.
+  const ProfileStatisticsHistoryValueType._(this._value);
 
   /// The underlying value of this enum member.
-  final String value;
+  final String _value;
 
   @override
-  String toString() => value;
+  String toString() => _value;
 
-  String toJson() => value;
+  /// Encodes this enum as a value suitable for JSON.
+  String toJson() => _value;
 
-  static const accounts = ProfileStatisticsHistoryValueType._(r'Accounts');
-  static const public = ProfileStatisticsHistoryValueType._(r'Public');
-  static const publicMan = ProfileStatisticsHistoryValueType._(r'PublicMan');
-  static const publicWoman = ProfileStatisticsHistoryValueType._(r'PublicWoman');
-  static const publicNonBinary = ProfileStatisticsHistoryValueType._(r'PublicNonBinary');
-  static const ageChange = ProfileStatisticsHistoryValueType._(r'AgeChange');
-  static const ageChangeMan = ProfileStatisticsHistoryValueType._(r'AgeChangeMan');
-  static const ageChangeWoman = ProfileStatisticsHistoryValueType._(r'AgeChangeWoman');
-  static const ageChangeNonBinary = ProfileStatisticsHistoryValueType._(r'AgeChangeNonBinary');
-
-  /// List of all possible values in this [enum][ProfileStatisticsHistoryValueType].
-  static const values = <ProfileStatisticsHistoryValueType>[
-    accounts,
-    public,
-    publicMan,
-    publicWoman,
-    publicNonBinary,
-    ageChange,
-    ageChangeMan,
-    ageChangeWoman,
-    ageChangeNonBinary,
-  ];
-
+  /// Returns the instance of [ProfileStatisticsHistoryValueType] that was successfully decoded
+  /// from the passed [value] on success, null otherwise.
   static ProfileStatisticsHistoryValueType? fromJson(dynamic value) => ProfileStatisticsHistoryValueTypeTypeTransformer().decode(value);
 
+  /// Returns a [List] containing instances of [ProfileStatisticsHistoryValueType]
+  /// that were successfully decoded from the passed [JSON][json].
   static List<ProfileStatisticsHistoryValueType> listFromJson(dynamic json, {bool growable = false,}) {
     final result = <ProfileStatisticsHistoryValueType>[];
     if (json is List && json.isNotEmpty) {
@@ -69,9 +62,11 @@ class ProfileStatisticsHistoryValueTypeTypeTransformer {
 
   const ProfileStatisticsHistoryValueTypeTypeTransformer._();
 
-  String encode(ProfileStatisticsHistoryValueType data) => data.value;
+  /// Encodes this enum as a value suitable for JSON.
+  String encode(ProfileStatisticsHistoryValueType data) => data._value;
 
-  /// Decodes a [dynamic value][data] to a ProfileStatisticsHistoryValueType.
+  /// Returns the instance of [ProfileStatisticsHistoryValueType] that was successfully decoded
+  /// from the passed [data] value on success, null otherwise.
   ///
   /// If [allowNull] is true and the [dynamic value][data] cannot be decoded successfully,
   /// then null is returned. However, if [allowNull] is false and the [dynamic value][data]
@@ -80,6 +75,9 @@ class ProfileStatisticsHistoryValueTypeTypeTransformer {
   /// The [allowNull] is very handy when an API changes and a new enum value is added or removed,
   /// and users are still using an old app with the old code.
   ProfileStatisticsHistoryValueType? decode(dynamic data, {bool allowNull = true}) {
+    if (data is ProfileStatisticsHistoryValueType) {
+      return data;
+    }
     if (data != null) {
       switch (data) {
         case r'Accounts': return ProfileStatisticsHistoryValueType.accounts;
@@ -100,7 +98,7 @@ class ProfileStatisticsHistoryValueTypeTypeTransformer {
     return null;
   }
 
-  /// Singleton [ProfileStatisticsHistoryValueTypeTypeTransformer] instance.
+  /// The singleton instance of this transformer.
   static ProfileStatisticsHistoryValueTypeTypeTransformer? _instance;
 }
 

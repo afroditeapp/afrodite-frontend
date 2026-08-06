@@ -66,10 +66,14 @@ class ProfileAgeCounts {
       // Note 1: the values aren't checked for validity beyond being non-null.
       // Note 2: this code is stripped in release mode!
       assert(() {
-        requiredKeys.forEach((key) {
-          assert(json.containsKey(key), 'Required key "ProfileAgeCounts[$key]" is missing from JSON.');
-          assert(json[key] != null, 'Required key "ProfileAgeCounts[$key]" has a null value in JSON.');
-        });
+        assert(json.containsKey(r'men'), 'Required key "ProfileAgeCounts[men]" is missing from JSON.');
+        assert(json[r'men'] != null, 'Required key "ProfileAgeCounts[men]" has a null value in JSON.');
+        assert(json.containsKey(r'nonbinaries'), 'Required key "ProfileAgeCounts[nonbinaries]" is missing from JSON.');
+        assert(json[r'nonbinaries'] != null, 'Required key "ProfileAgeCounts[nonbinaries]" has a null value in JSON.');
+        assert(json.containsKey(r'start_age'), 'Required key "ProfileAgeCounts[start_age]" is missing from JSON.');
+        assert(json[r'start_age'] != null, 'Required key "ProfileAgeCounts[start_age]" has a null value in JSON.');
+        assert(json.containsKey(r'women'), 'Required key "ProfileAgeCounts[women]" is missing from JSON.');
+        assert(json[r'women'] != null, 'Required key "ProfileAgeCounts[women]" has a null value in JSON.');
         return true;
       }());
 

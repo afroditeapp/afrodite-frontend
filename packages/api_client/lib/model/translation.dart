@@ -55,10 +55,10 @@ class Translation {
       // Note 1: the values aren't checked for validity beyond being non-null.
       // Note 2: this code is stripped in release mode!
       assert(() {
-        requiredKeys.forEach((key) {
-          assert(json.containsKey(key), 'Required key "Translation[$key]" is missing from JSON.');
-          assert(json[key] != null, 'Required key "Translation[$key]" has a null value in JSON.');
-        });
+        assert(json.containsKey(r'key'), 'Required key "Translation[key]" is missing from JSON.');
+        assert(json[r'key'] != null, 'Required key "Translation[key]" has a null value in JSON.');
+        assert(json.containsKey(r'name'), 'Required key "Translation[name]" is missing from JSON.');
+        assert(json[r'name'] != null, 'Required key "Translation[name]" has a null value in JSON.');
         return true;
       }());
 

@@ -66,10 +66,14 @@ class AutomaticProfileSearchSettings {
       // Note 1: the values aren't checked for validity beyond being non-null.
       // Note 2: this code is stripped in release mode!
       assert(() {
-        requiredKeys.forEach((key) {
-          assert(json.containsKey(key), 'Required key "AutomaticProfileSearchSettings[$key]" is missing from JSON.');
-          assert(json[key] != null, 'Required key "AutomaticProfileSearchSettings[$key]" has a null value in JSON.');
-        });
+        assert(json.containsKey(r'attribute_filters'), 'Required key "AutomaticProfileSearchSettings[attribute_filters]" is missing from JSON.');
+        assert(json[r'attribute_filters'] != null, 'Required key "AutomaticProfileSearchSettings[attribute_filters]" has a null value in JSON.');
+        assert(json.containsKey(r'distance_filters'), 'Required key "AutomaticProfileSearchSettings[distance_filters]" is missing from JSON.');
+        assert(json[r'distance_filters'] != null, 'Required key "AutomaticProfileSearchSettings[distance_filters]" has a null value in JSON.');
+        assert(json.containsKey(r'new_profiles'), 'Required key "AutomaticProfileSearchSettings[new_profiles]" is missing from JSON.');
+        assert(json[r'new_profiles'] != null, 'Required key "AutomaticProfileSearchSettings[new_profiles]" has a null value in JSON.');
+        assert(json.containsKey(r'weekdays'), 'Required key "AutomaticProfileSearchSettings[weekdays]" is missing from JSON.');
+        assert(json[r'weekdays'] != null, 'Required key "AutomaticProfileSearchSettings[weekdays]" has a null value in JSON.');
         return true;
       }());
 

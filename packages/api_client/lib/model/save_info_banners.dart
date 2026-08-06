@@ -57,10 +57,8 @@ class SaveInfoBanners {
       // Note 1: the values aren't checked for validity beyond being non-null.
       // Note 2: this code is stripped in release mode!
       assert(() {
-        requiredKeys.forEach((key) {
-          assert(json.containsKey(key), 'Required key "SaveInfoBanners[$key]" is missing from JSON.');
-          assert(json[key] != null, 'Required key "SaveInfoBanners[$key]" has a null value in JSON.');
-        });
+        assert(json.containsKey(r'new'), 'Required key "SaveInfoBanners[new]" is missing from JSON.');
+        assert(json[r'new'] != null, 'Required key "SaveInfoBanners[new]" has a null value in JSON.');
         return true;
       }());
 

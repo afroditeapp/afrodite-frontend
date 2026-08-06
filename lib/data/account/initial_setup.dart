@@ -22,7 +22,8 @@ class InitialSetupUtils {
   Future<WaitProcessingResult> _waitContentProcessing(int processingId) async {
     while (true) {
       final state = await _api.media((api) => api.getContentProcessingState()).ok();
-      if (state == null) {
+      final stateType = state?.state;
+      if (state == null || stateType == null) {
         return ProcessingError("Server did not return content processing state");
       }
 
@@ -30,7 +31,7 @@ class InitialSetupUtils {
         return ProcessingError("Server did not return correct processing ID");
       }
 
-      switch (state.state) {
+      switch (stateType) {
         case ContentProcessingStateType.processing:
         case ContentProcessingStateType.inQueue:
           {

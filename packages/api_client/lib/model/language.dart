@@ -54,10 +54,10 @@ class Language {
       // Note 1: the values aren't checked for validity beyond being non-null.
       // Note 2: this code is stripped in release mode!
       assert(() {
-        requiredKeys.forEach((key) {
-          assert(json.containsKey(key), 'Required key "Language[$key]" is missing from JSON.');
-          assert(json[key] != null, 'Required key "Language[$key]" has a null value in JSON.');
-        });
+        assert(json.containsKey(r'lang'), 'Required key "Language[lang]" is missing from JSON.');
+        assert(json[r'lang'] != null, 'Required key "Language[lang]" has a null value in JSON.');
+        assert(json.containsKey(r'values'), 'Required key "Language[values]" is missing from JSON.');
+        assert(json[r'values'] != null, 'Required key "Language[values]" has a null value in JSON.');
         return true;
       }());
 

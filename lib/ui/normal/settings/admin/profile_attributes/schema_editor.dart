@@ -241,7 +241,7 @@ class _ProfileAttributesSchemaScreenState extends State<ProfileAttributesSchemaS
               subtitle: Column(
                 crossAxisAlignment: CrossAxisAlignment.start,
                 children: [
-                  Text("Mode: ${attr.mode.value}"),
+                  Text("Mode: ${attr.mode.toString()}"),
                   TranslationSummary(
                     translationKey: attr.key,
                     translations: attr.translations,

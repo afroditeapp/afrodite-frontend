@@ -59,10 +59,12 @@ class PostMediaContentFaceVerifiedValue {
       // Note 1: the values aren't checked for validity beyond being non-null.
       // Note 2: this code is stripped in release mode!
       assert(() {
-        requiredKeys.forEach((key) {
-          assert(json.containsKey(key), 'Required key "PostMediaContentFaceVerifiedValue[$key]" is missing from JSON.');
-          assert(json[key] != null, 'Required key "PostMediaContentFaceVerifiedValue[$key]" has a null value in JSON.');
-        });
+        assert(json.containsKey(r'account_id'), 'Required key "PostMediaContentFaceVerifiedValue[account_id]" is missing from JSON.');
+        assert(json[r'account_id'] != null, 'Required key "PostMediaContentFaceVerifiedValue[account_id]" has a null value in JSON.');
+        assert(json.containsKey(r'security_content'), 'Required key "PostMediaContentFaceVerifiedValue[security_content]" is missing from JSON.');
+        assert(json[r'security_content'] != null, 'Required key "PostMediaContentFaceVerifiedValue[security_content]" has a null value in JSON.');
+        assert(json.containsKey(r'values'), 'Required key "PostMediaContentFaceVerifiedValue[values]" is missing from JSON.');
+        assert(json[r'values'] != null, 'Required key "PostMediaContentFaceVerifiedValue[values]" has a null value in JSON.');
         return true;
       }());
 

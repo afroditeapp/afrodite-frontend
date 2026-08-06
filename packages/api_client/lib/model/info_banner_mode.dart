@@ -11,27 +11,28 @@
 part of openapi.api;
 
 
-class InfoBannerMode {
-  /// Instantiate a new enum with the provided [value].
-  const InfoBannerMode._(this.value);
+enum InfoBannerMode {
+  text._(r'Text'),
+  ;
+
+  /// Instantiate a new enum with the provided value.
+  const InfoBannerMode._(this._value);
 
   /// The underlying value of this enum member.
-  final String value;
+  final String _value;
 
   @override
-  String toString() => value;
+  String toString() => _value;
 
-  String toJson() => value;
+  /// Encodes this enum as a value suitable for JSON.
+  String toJson() => _value;
 
-  static const text = InfoBannerMode._(r'Text');
-
-  /// List of all possible values in this [enum][InfoBannerMode].
-  static const values = <InfoBannerMode>[
-    text,
-  ];
-
+  /// Returns the instance of [InfoBannerMode] that was successfully decoded
+  /// from the passed [value] on success, null otherwise.
   static InfoBannerMode? fromJson(dynamic value) => InfoBannerModeTypeTransformer().decode(value);
 
+  /// Returns a [List] containing instances of [InfoBannerMode]
+  /// that were successfully decoded from the passed [JSON][json].
   static List<InfoBannerMode> listFromJson(dynamic json, {bool growable = false,}) {
     final result = <InfoBannerMode>[];
     if (json is List && json.isNotEmpty) {
@@ -53,9 +54,11 @@ class InfoBannerModeTypeTransformer {
 
   const InfoBannerModeTypeTransformer._();
 
-  String encode(InfoBannerMode data) => data.value;
+  /// Encodes this enum as a value suitable for JSON.
+  String encode(InfoBannerMode data) => data._value;
 
-  /// Decodes a [dynamic value][data] to a InfoBannerMode.
+  /// Returns the instance of [InfoBannerMode] that was successfully decoded
+  /// from the passed [data] value on success, null otherwise.
   ///
   /// If [allowNull] is true and the [dynamic value][data] cannot be decoded successfully,
   /// then null is returned. However, if [allowNull] is false and the [dynamic value][data]
@@ -64,6 +67,9 @@ class InfoBannerModeTypeTransformer {
   /// The [allowNull] is very handy when an API changes and a new enum value is added or removed,
   /// and users are still using an old app with the old code.
   InfoBannerMode? decode(dynamic data, {bool allowNull = true}) {
+    if (data is InfoBannerMode) {
+      return data;
+    }
     if (data != null) {
       switch (data) {
         case r'Text': return InfoBannerMode.text;
@@ -76,7 +82,7 @@ class InfoBannerModeTypeTransformer {
     return null;
   }
 
-  /// Singleton [InfoBannerModeTypeTransformer] instance.
+  /// The singleton instance of this transformer.
   static InfoBannerModeTypeTransformer? _instance;
 }
 

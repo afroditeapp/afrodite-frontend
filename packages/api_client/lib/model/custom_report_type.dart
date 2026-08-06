@@ -11,27 +11,28 @@
 part of openapi.api;
 
 
-class CustomReportType {
-  /// Instantiate a new enum with the provided [value].
-  const CustomReportType._(this.value);
+enum CustomReportType {
+  empty._(r'Empty'),
+  ;
+
+  /// Instantiate a new enum with the provided value.
+  const CustomReportType._(this._value);
 
   /// The underlying value of this enum member.
-  final String value;
+  final String _value;
 
   @override
-  String toString() => value;
+  String toString() => _value;
 
-  String toJson() => value;
+  /// Encodes this enum as a value suitable for JSON.
+  String toJson() => _value;
 
-  static const empty = CustomReportType._(r'Empty');
-
-  /// List of all possible values in this [enum][CustomReportType].
-  static const values = <CustomReportType>[
-    empty,
-  ];
-
+  /// Returns the instance of [CustomReportType] that was successfully decoded
+  /// from the passed [value] on success, null otherwise.
   static CustomReportType? fromJson(dynamic value) => CustomReportTypeTypeTransformer().decode(value);
 
+  /// Returns a [List] containing instances of [CustomReportType]
+  /// that were successfully decoded from the passed [JSON][json].
   static List<CustomReportType> listFromJson(dynamic json, {bool growable = false,}) {
     final result = <CustomReportType>[];
     if (json is List && json.isNotEmpty) {
@@ -53,9 +54,11 @@ class CustomReportTypeTypeTransformer {
 
   const CustomReportTypeTypeTransformer._();
 
-  String encode(CustomReportType data) => data.value;
+  /// Encodes this enum as a value suitable for JSON.
+  String encode(CustomReportType data) => data._value;
 
-  /// Decodes a [dynamic value][data] to a CustomReportType.
+  /// Returns the instance of [CustomReportType] that was successfully decoded
+  /// from the passed [data] value on success, null otherwise.
   ///
   /// If [allowNull] is true and the [dynamic value][data] cannot be decoded successfully,
   /// then null is returned. However, if [allowNull] is false and the [dynamic value][data]
@@ -64,6 +67,9 @@ class CustomReportTypeTypeTransformer {
   /// The [allowNull] is very handy when an API changes and a new enum value is added or removed,
   /// and users are still using an old app with the old code.
   CustomReportType? decode(dynamic data, {bool allowNull = true}) {
+    if (data is CustomReportType) {
+      return data;
+    }
     if (data != null) {
       switch (data) {
         case r'Empty': return CustomReportType.empty;
@@ -76,7 +82,7 @@ class CustomReportTypeTypeTransformer {
     return null;
   }
 
-  /// Singleton [CustomReportTypeTypeTransformer] instance.
+  /// The singleton instance of this transformer.
   static CustomReportTypeTypeTransformer? _instance;
 }
 

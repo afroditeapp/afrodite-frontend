@@ -54,10 +54,10 @@ class GetReportQueuePage {
       // Note 1: the values aren't checked for validity beyond being non-null.
       // Note 2: this code is stripped in release mode!
       assert(() {
-        requiredKeys.forEach((key) {
-          assert(json.containsKey(key), 'Required key "GetReportQueuePage[$key]" is missing from JSON.');
-          assert(json[key] != null, 'Required key "GetReportQueuePage[$key]" has a null value in JSON.');
-        });
+        assert(json.containsKey(r'queue_type'), 'Required key "GetReportQueuePage[queue_type]" is missing from JSON.');
+        assert(json[r'queue_type'] != null, 'Required key "GetReportQueuePage[queue_type]" has a null value in JSON.');
+        assert(json.containsKey(r'wanted_report_types'), 'Required key "GetReportQueuePage[wanted_report_types]" is missing from JSON.');
+        assert(json[r'wanted_report_types'] != null, 'Required key "GetReportQueuePage[wanted_report_types]" has a null value in JSON.');
         return true;
       }());
 

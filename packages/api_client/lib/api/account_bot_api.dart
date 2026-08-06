@@ -25,7 +25,7 @@ class AccountBotApi {
   /// Parameters:
   ///
   /// * [AccountId] accountId (required):
-  Future<Response> postBotLoginWithHttpInfo(AccountId accountId,) async {
+  Future<Response> postBotLoginWithHttpInfo(AccountId accountId, { Future<void>? abortTrigger, }) async {
     // ignore: prefer_const_declarations
     final path = r'/account_api/bot_login';
 
@@ -47,6 +47,7 @@ class AccountBotApi {
       headerParams,
       formParams,
       contentTypes.isEmpty ? null : contentTypes.first,
+      abortTrigger: abortTrigger,
     );
   }
 
@@ -57,8 +58,8 @@ class AccountBotApi {
   /// Parameters:
   ///
   /// * [AccountId] accountId (required):
-  Future<LoginResult?> postBotLogin(AccountId accountId,) async {
-    final response = await postBotLoginWithHttpInfo(accountId,);
+  Future<LoginResult?> postBotLogin(AccountId accountId, { Future<void>? abortTrigger, }) async {
+    final response = await postBotLoginWithHttpInfo(accountId, abortTrigger: abortTrigger,);
     if (response.statusCode >= HttpStatus.badRequest) {
       throw ApiException(response.statusCode, await _decodeBodyBytes(response));
     }
@@ -77,7 +78,7 @@ class AccountBotApi {
   /// Available only from local bot API port.  Registered account is by default a user bot account. Changing the account to an admin bot account is possible using server's admin access granting feature (check GrantAdminAccessConfig).
   ///
   /// Note: This method returns the HTTP [Response].
-  Future<Response> postBotRegisterWithHttpInfo() async {
+  Future<Response> postBotRegisterWithHttpInfo({ Future<void>? abortTrigger, }) async {
     // ignore: prefer_const_declarations
     final path = r'/account_api/bot_register';
 
@@ -99,14 +100,15 @@ class AccountBotApi {
       headerParams,
       formParams,
       contentTypes.isEmpty ? null : contentTypes.first,
+      abortTrigger: abortTrigger,
     );
   }
 
   /// Register a new bot account. Returns new account ID which is UUID.
   ///
   /// Available only from local bot API port.  Registered account is by default a user bot account. Changing the account to an admin bot account is possible using server's admin access granting feature (check GrantAdminAccessConfig).
-  Future<AccountId?> postBotRegister() async {
-    final response = await postBotRegisterWithHttpInfo();
+  Future<AccountId?> postBotRegister({ Future<void>? abortTrigger, }) async {
+    final response = await postBotRegisterWithHttpInfo(abortTrigger: abortTrigger,);
     if (response.statusCode >= HttpStatus.badRequest) {
       throw ApiException(response.statusCode, await _decodeBodyBytes(response));
     }
@@ -125,7 +127,7 @@ class AccountBotApi {
   /// Available only from local bot API port.
   ///
   /// Note: This method returns the HTTP [Response].
-  Future<Response> postGetBotsWithHttpInfo() async {
+  Future<Response> postGetBotsWithHttpInfo({ Future<void>? abortTrigger, }) async {
     // ignore: prefer_const_declarations
     final path = r'/account_api/get_bots';
 
@@ -147,14 +149,15 @@ class AccountBotApi {
       headerParams,
       formParams,
       contentTypes.isEmpty ? null : contentTypes.first,
+      abortTrigger: abortTrigger,
     );
   }
 
   /// Get admin and user bot accounts by email pattern. Admin bot is admin@example.com, user bots are bot1@example.com, bot2@example.com, etc. Creates accounts if they don't exist.
   ///
   /// Available only from local bot API port.
-  Future<GetBotsResult?> postGetBots() async {
-    final response = await postGetBotsWithHttpInfo();
+  Future<GetBotsResult?> postGetBots({ Future<void>? abortTrigger, }) async {
+    final response = await postGetBotsWithHttpInfo(abortTrigger: abortTrigger,);
     if (response.statusCode >= HttpStatus.badRequest) {
       throw ApiException(response.statusCode, await _decodeBodyBytes(response));
     }
@@ -177,7 +180,7 @@ class AccountBotApi {
   /// Parameters:
   ///
   /// * [RemoteBotLogin] remoteBotLogin (required):
-  Future<Response> postRemoteBotLoginWithHttpInfo(RemoteBotLogin remoteBotLogin,) async {
+  Future<Response> postRemoteBotLoginWithHttpInfo(RemoteBotLogin remoteBotLogin, { Future<void>? abortTrigger, }) async {
     // ignore: prefer_const_declarations
     final path = r'/account_api/remote_bot_login';
 
@@ -199,6 +202,7 @@ class AccountBotApi {
       headerParams,
       formParams,
       contentTypes.isEmpty ? null : contentTypes.first,
+      abortTrigger: abortTrigger,
     );
   }
 
@@ -209,8 +213,8 @@ class AccountBotApi {
   /// Parameters:
   ///
   /// * [RemoteBotLogin] remoteBotLogin (required):
-  Future<LoginResult?> postRemoteBotLogin(RemoteBotLogin remoteBotLogin,) async {
-    final response = await postRemoteBotLoginWithHttpInfo(remoteBotLogin,);
+  Future<LoginResult?> postRemoteBotLogin(RemoteBotLogin remoteBotLogin, { Future<void>? abortTrigger, }) async {
+    final response = await postRemoteBotLoginWithHttpInfo(remoteBotLogin, abortTrigger: abortTrigger,);
     if (response.statusCode >= HttpStatus.badRequest) {
       throw ApiException(response.statusCode, await _decodeBodyBytes(response));
     }
@@ -233,7 +237,7 @@ class AccountBotApi {
   /// Parameters:
   ///
   /// * [RemoteBotPassword] remoteBotPassword (required):
-  Future<Response> postRemoteGetBotsWithHttpInfo(RemoteBotPassword remoteBotPassword,) async {
+  Future<Response> postRemoteGetBotsWithHttpInfo(RemoteBotPassword remoteBotPassword, { Future<void>? abortTrigger, }) async {
     // ignore: prefer_const_declarations
     final path = r'/account_api/remote_get_bots';
 
@@ -255,6 +259,7 @@ class AccountBotApi {
       headerParams,
       formParams,
       contentTypes.isEmpty ? null : contentTypes.first,
+      abortTrigger: abortTrigger,
     );
   }
 
@@ -265,8 +270,8 @@ class AccountBotApi {
   /// Parameters:
   ///
   /// * [RemoteBotPassword] remoteBotPassword (required):
-  Future<GetBotsResult?> postRemoteGetBots(RemoteBotPassword remoteBotPassword,) async {
-    final response = await postRemoteGetBotsWithHttpInfo(remoteBotPassword,);
+  Future<GetBotsResult?> postRemoteGetBots(RemoteBotPassword remoteBotPassword, { Future<void>? abortTrigger, }) async {
+    final response = await postRemoteGetBotsWithHttpInfo(remoteBotPassword, abortTrigger: abortTrigger,);
     if (response.statusCode >= HttpStatus.badRequest) {
       throw ApiException(response.statusCode, await _decodeBodyBytes(response));
     }

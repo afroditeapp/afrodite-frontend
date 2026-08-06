@@ -11,43 +11,36 @@
 part of openapi.api;
 
 /// App notification types  # Notification specific data  ## Admin notification  Integer payload contains the following bitflags:  * MODERATE_INITIAL_MEDIA_CONTENT_BOT = 1 << 0 * MODERATE_INITIAL_MEDIA_CONTENT_HUMAN = 1 << 1 * MODERATE_MEDIA_CONTENT_BOT = 1 << 2 * MODERATE_MEDIA_CONTENT_HUMAN = 1 << 3 * MODERATE_PROFILE_TEXTS_BOT = 1 << 4 * MODERATE_PROFILE_TEXTS_HUMAN = 1 << 5 * MODERATE_PROFILE_NAMES_BOT = 1 << 6 * MODERATE_PROFILE_NAMES_HUMAN = 1 << 7 * PROCESS_REPORTS = 1 << 8  ## News changed  Integer payload contains current unread news count.  ## Automatic profile search completed  Integer payload contains the found profile count.  ## Received likes changed  Integer payload contains current received likes count.
-class PendingAppNotificationType {
-  /// Instantiate a new enum with the provided [value].
-  const PendingAppNotificationType._(this.value);
+enum PendingAppNotificationType {
+  adminNotification._(r'AdminNotification'),
+  newsChanged._(r'NewsChanged'),
+  profileNameModerationCompleted._(r'ProfileNameModerationCompleted'),
+  profileTextModerationCompleted._(r'ProfileTextModerationCompleted'),
+  automaticProfileSearchCompleted._(r'AutomaticProfileSearchCompleted'),
+  mediaContentModerationAccepted._(r'MediaContentModerationAccepted'),
+  mediaContentModerationRejected._(r'MediaContentModerationRejected'),
+  mediaContentModerationDeleted._(r'MediaContentModerationDeleted'),
+  receivedLikesChanged._(r'ReceivedLikesChanged'),
+  ;
+
+  /// Instantiate a new enum with the provided value.
+  const PendingAppNotificationType._(this._value);
 
   /// The underlying value of this enum member.
-  final String value;
+  final String _value;
 
   @override
-  String toString() => value;
+  String toString() => _value;
 
-  String toJson() => value;
+  /// Encodes this enum as a value suitable for JSON.
+  String toJson() => _value;
 
-  static const adminNotification = PendingAppNotificationType._(r'AdminNotification');
-  static const newsChanged = PendingAppNotificationType._(r'NewsChanged');
-  static const profileNameModerationCompleted = PendingAppNotificationType._(r'ProfileNameModerationCompleted');
-  static const profileTextModerationCompleted = PendingAppNotificationType._(r'ProfileTextModerationCompleted');
-  static const automaticProfileSearchCompleted = PendingAppNotificationType._(r'AutomaticProfileSearchCompleted');
-  static const mediaContentModerationAccepted = PendingAppNotificationType._(r'MediaContentModerationAccepted');
-  static const mediaContentModerationRejected = PendingAppNotificationType._(r'MediaContentModerationRejected');
-  static const mediaContentModerationDeleted = PendingAppNotificationType._(r'MediaContentModerationDeleted');
-  static const receivedLikesChanged = PendingAppNotificationType._(r'ReceivedLikesChanged');
-
-  /// List of all possible values in this [enum][PendingAppNotificationType].
-  static const values = <PendingAppNotificationType>[
-    adminNotification,
-    newsChanged,
-    profileNameModerationCompleted,
-    profileTextModerationCompleted,
-    automaticProfileSearchCompleted,
-    mediaContentModerationAccepted,
-    mediaContentModerationRejected,
-    mediaContentModerationDeleted,
-    receivedLikesChanged,
-  ];
-
+  /// Returns the instance of [PendingAppNotificationType] that was successfully decoded
+  /// from the passed [value] on success, null otherwise.
   static PendingAppNotificationType? fromJson(dynamic value) => PendingAppNotificationTypeTypeTransformer().decode(value);
 
+  /// Returns a [List] containing instances of [PendingAppNotificationType]
+  /// that were successfully decoded from the passed [JSON][json].
   static List<PendingAppNotificationType> listFromJson(dynamic json, {bool growable = false,}) {
     final result = <PendingAppNotificationType>[];
     if (json is List && json.isNotEmpty) {
@@ -69,9 +62,11 @@ class PendingAppNotificationTypeTypeTransformer {
 
   const PendingAppNotificationTypeTypeTransformer._();
 
-  String encode(PendingAppNotificationType data) => data.value;
+  /// Encodes this enum as a value suitable for JSON.
+  String encode(PendingAppNotificationType data) => data._value;
 
-  /// Decodes a [dynamic value][data] to a PendingAppNotificationType.
+  /// Returns the instance of [PendingAppNotificationType] that was successfully decoded
+  /// from the passed [data] value on success, null otherwise.
   ///
   /// If [allowNull] is true and the [dynamic value][data] cannot be decoded successfully,
   /// then null is returned. However, if [allowNull] is false and the [dynamic value][data]
@@ -80,6 +75,9 @@ class PendingAppNotificationTypeTypeTransformer {
   /// The [allowNull] is very handy when an API changes and a new enum value is added or removed,
   /// and users are still using an old app with the old code.
   PendingAppNotificationType? decode(dynamic data, {bool allowNull = true}) {
+    if (data is PendingAppNotificationType) {
+      return data;
+    }
     if (data != null) {
       switch (data) {
         case r'AdminNotification': return PendingAppNotificationType.adminNotification;
@@ -100,7 +98,7 @@ class PendingAppNotificationTypeTypeTransformer {
     return null;
   }
 
-  /// Singleton [PendingAppNotificationTypeTypeTransformer] instance.
+  /// The singleton instance of this transformer.
   static PendingAppNotificationTypeTypeTransformer? _instance;
 }
 

@@ -53,10 +53,10 @@ class ProfileStatisticsHistoryValue {
       // Note 1: the values aren't checked for validity beyond being non-null.
       // Note 2: this code is stripped in release mode!
       assert(() {
-        requiredKeys.forEach((key) {
-          assert(json.containsKey(key), 'Required key "ProfileStatisticsHistoryValue[$key]" is missing from JSON.');
-          assert(json[key] != null, 'Required key "ProfileStatisticsHistoryValue[$key]" has a null value in JSON.');
-        });
+        assert(json.containsKey(r'c'), 'Required key "ProfileStatisticsHistoryValue[c]" is missing from JSON.');
+        assert(json[r'c'] != null, 'Required key "ProfileStatisticsHistoryValue[c]" has a null value in JSON.');
+        assert(json.containsKey(r'ut'), 'Required key "ProfileStatisticsHistoryValue[ut]" is missing from JSON.');
+        assert(json[r'ut'] != null, 'Required key "ProfileStatisticsHistoryValue[ut]" has a null value in JSON.');
         return true;
       }());
 

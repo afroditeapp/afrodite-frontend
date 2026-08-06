@@ -11,33 +11,31 @@
 part of openapi.api;
 
 
-class DataExportStateType {
-  /// Instantiate a new enum with the provided [value].
-  const DataExportStateType._(this.value);
+enum DataExportStateType {
+  empty._(r'Empty'),
+  inProgress._(r'InProgress'),
+  done._(r'Done'),
+  error._(r'Error'),
+  ;
+
+  /// Instantiate a new enum with the provided value.
+  const DataExportStateType._(this._value);
 
   /// The underlying value of this enum member.
-  final String value;
+  final String _value;
 
   @override
-  String toString() => value;
+  String toString() => _value;
 
-  String toJson() => value;
+  /// Encodes this enum as a value suitable for JSON.
+  String toJson() => _value;
 
-  static const empty = DataExportStateType._(r'Empty');
-  static const inProgress = DataExportStateType._(r'InProgress');
-  static const done = DataExportStateType._(r'Done');
-  static const error = DataExportStateType._(r'Error');
-
-  /// List of all possible values in this [enum][DataExportStateType].
-  static const values = <DataExportStateType>[
-    empty,
-    inProgress,
-    done,
-    error,
-  ];
-
+  /// Returns the instance of [DataExportStateType] that was successfully decoded
+  /// from the passed [value] on success, null otherwise.
   static DataExportStateType? fromJson(dynamic value) => DataExportStateTypeTypeTransformer().decode(value);
 
+  /// Returns a [List] containing instances of [DataExportStateType]
+  /// that were successfully decoded from the passed [JSON][json].
   static List<DataExportStateType> listFromJson(dynamic json, {bool growable = false,}) {
     final result = <DataExportStateType>[];
     if (json is List && json.isNotEmpty) {
@@ -59,9 +57,11 @@ class DataExportStateTypeTypeTransformer {
 
   const DataExportStateTypeTypeTransformer._();
 
-  String encode(DataExportStateType data) => data.value;
+  /// Encodes this enum as a value suitable for JSON.
+  String encode(DataExportStateType data) => data._value;
 
-  /// Decodes a [dynamic value][data] to a DataExportStateType.
+  /// Returns the instance of [DataExportStateType] that was successfully decoded
+  /// from the passed [data] value on success, null otherwise.
   ///
   /// If [allowNull] is true and the [dynamic value][data] cannot be decoded successfully,
   /// then null is returned. However, if [allowNull] is false and the [dynamic value][data]
@@ -70,6 +70,9 @@ class DataExportStateTypeTypeTransformer {
   /// The [allowNull] is very handy when an API changes and a new enum value is added or removed,
   /// and users are still using an old app with the old code.
   DataExportStateType? decode(dynamic data, {bool allowNull = true}) {
+    if (data is DataExportStateType) {
+      return data;
+    }
     if (data != null) {
       switch (data) {
         case r'Empty': return DataExportStateType.empty;
@@ -85,7 +88,7 @@ class DataExportStateTypeTypeTransformer {
     return null;
   }
 
-  /// Singleton [DataExportStateTypeTypeTransformer] instance.
+  /// The singleton instance of this transformer.
   static DataExportStateTypeTypeTransformer? _instance;
 }
 

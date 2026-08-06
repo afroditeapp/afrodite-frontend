@@ -53,10 +53,10 @@ class PartialProfileAttributesConfig {
       // Note 1: the values aren't checked for validity beyond being non-null.
       // Note 2: this code is stripped in release mode!
       assert(() {
-        requiredKeys.forEach((key) {
-          assert(json.containsKey(key), 'Required key "PartialProfileAttributesConfig[$key]" is missing from JSON.');
-          assert(json[key] != null, 'Required key "PartialProfileAttributesConfig[$key]" has a null value in JSON.');
-        });
+        assert(json.containsKey(r'attribute_order'), 'Required key "PartialProfileAttributesConfig[attribute_order]" is missing from JSON.');
+        assert(json[r'attribute_order'] != null, 'Required key "PartialProfileAttributesConfig[attribute_order]" has a null value in JSON.');
+        assert(json.containsKey(r'attributes'), 'Required key "PartialProfileAttributesConfig[attributes]" is missing from JSON.');
+        assert(json[r'attributes'] != null, 'Required key "PartialProfileAttributesConfig[attributes]" has a null value in JSON.');
         return true;
       }());
 

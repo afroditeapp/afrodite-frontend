@@ -11,29 +11,29 @@
 part of openapi.api;
 
 
-class CustomEmailTargetGroup {
-  /// Instantiate a new enum with the provided [value].
-  const CustomEmailTargetGroup._(this.value);
+enum CustomEmailTargetGroup {
+  allAccounts._(r'AllAccounts'),
+  associationMembers._(r'AssociationMembers'),
+  ;
+
+  /// Instantiate a new enum with the provided value.
+  const CustomEmailTargetGroup._(this._value);
 
   /// The underlying value of this enum member.
-  final String value;
+  final String _value;
 
   @override
-  String toString() => value;
+  String toString() => _value;
 
-  String toJson() => value;
+  /// Encodes this enum as a value suitable for JSON.
+  String toJson() => _value;
 
-  static const allAccounts = CustomEmailTargetGroup._(r'AllAccounts');
-  static const associationMembers = CustomEmailTargetGroup._(r'AssociationMembers');
-
-  /// List of all possible values in this [enum][CustomEmailTargetGroup].
-  static const values = <CustomEmailTargetGroup>[
-    allAccounts,
-    associationMembers,
-  ];
-
+  /// Returns the instance of [CustomEmailTargetGroup] that was successfully decoded
+  /// from the passed [value] on success, null otherwise.
   static CustomEmailTargetGroup? fromJson(dynamic value) => CustomEmailTargetGroupTypeTransformer().decode(value);
 
+  /// Returns a [List] containing instances of [CustomEmailTargetGroup]
+  /// that were successfully decoded from the passed [JSON][json].
   static List<CustomEmailTargetGroup> listFromJson(dynamic json, {bool growable = false,}) {
     final result = <CustomEmailTargetGroup>[];
     if (json is List && json.isNotEmpty) {
@@ -55,9 +55,11 @@ class CustomEmailTargetGroupTypeTransformer {
 
   const CustomEmailTargetGroupTypeTransformer._();
 
-  String encode(CustomEmailTargetGroup data) => data.value;
+  /// Encodes this enum as a value suitable for JSON.
+  String encode(CustomEmailTargetGroup data) => data._value;
 
-  /// Decodes a [dynamic value][data] to a CustomEmailTargetGroup.
+  /// Returns the instance of [CustomEmailTargetGroup] that was successfully decoded
+  /// from the passed [data] value on success, null otherwise.
   ///
   /// If [allowNull] is true and the [dynamic value][data] cannot be decoded successfully,
   /// then null is returned. However, if [allowNull] is false and the [dynamic value][data]
@@ -66,6 +68,9 @@ class CustomEmailTargetGroupTypeTransformer {
   /// The [allowNull] is very handy when an API changes and a new enum value is added or removed,
   /// and users are still using an old app with the old code.
   CustomEmailTargetGroup? decode(dynamic data, {bool allowNull = true}) {
+    if (data is CustomEmailTargetGroup) {
+      return data;
+    }
     if (data != null) {
       switch (data) {
         case r'AllAccounts': return CustomEmailTargetGroup.allAccounts;
@@ -79,7 +84,7 @@ class CustomEmailTargetGroupTypeTransformer {
     return null;
   }
 
-  /// Singleton [CustomEmailTargetGroupTypeTransformer] instance.
+  /// The singleton instance of this transformer.
   static CustomEmailTargetGroupTypeTransformer? _instance;
 }
 

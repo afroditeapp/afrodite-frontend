@@ -21,7 +21,7 @@ class CommonAdminApi {
   /// # Access Requires [Permissions::admin_subscribe_admin_notifications].
   ///
   /// Note: This method returns the HTTP [Response].
-  Future<Response> getAdminNotificationSettingsWithHttpInfo() async {
+  Future<Response> getAdminNotificationSettingsWithHttpInfo({ Future<void>? abortTrigger, }) async {
     // ignore: prefer_const_declarations
     final path = r'/common_api/admin_notification_settings';
 
@@ -43,14 +43,15 @@ class CommonAdminApi {
       headerParams,
       formParams,
       contentTypes.isEmpty ? null : contentTypes.first,
+      abortTrigger: abortTrigger,
     );
   }
 
   /// Get admin notification settings.
   ///
   /// # Access Requires [Permissions::admin_subscribe_admin_notifications].
-  Future<AdminNotificationSettings?> getAdminNotificationSettings() async {
-    final response = await getAdminNotificationSettingsWithHttpInfo();
+  Future<AdminNotificationSettings?> getAdminNotificationSettings({ Future<void>? abortTrigger, }) async {
+    final response = await getAdminNotificationSettingsWithHttpInfo(abortTrigger: abortTrigger,);
     if (response.statusCode >= HttpStatus.badRequest) {
       throw ApiException(response.statusCode, await _decodeBodyBytes(response));
     }
@@ -69,7 +70,7 @@ class CommonAdminApi {
   /// # Access Requires [Permissions::admin_subscribe_admin_notifications].
   ///
   /// Note: This method returns the HTTP [Response].
-  Future<Response> getAdminNotificationSubscriptionsWithHttpInfo() async {
+  Future<Response> getAdminNotificationSubscriptionsWithHttpInfo({ Future<void>? abortTrigger, }) async {
     // ignore: prefer_const_declarations
     final path = r'/common_api/admin_notification_subscriptions';
 
@@ -91,14 +92,15 @@ class CommonAdminApi {
       headerParams,
       formParams,
       contentTypes.isEmpty ? null : contentTypes.first,
+      abortTrigger: abortTrigger,
     );
   }
 
   /// Get admin notification subscriptions.
   ///
   /// # Access Requires [Permissions::admin_subscribe_admin_notifications].
-  Future<AdminNotification?> getAdminNotificationSubscriptions() async {
-    final response = await getAdminNotificationSubscriptionsWithHttpInfo();
+  Future<AdminNotification?> getAdminNotificationSubscriptions({ Future<void>? abortTrigger, }) async {
+    final response = await getAdminNotificationSubscriptionsWithHttpInfo(abortTrigger: abortTrigger,);
     if (response.statusCode >= HttpStatus.badRequest) {
       throw ApiException(response.statusCode, await _decodeBodyBytes(response));
     }
@@ -117,7 +119,7 @@ class CommonAdminApi {
   /// # Access * [Permissions::admin_server_view_bot_config] * Bot account
   ///
   /// Note: This method returns the HTTP [Response].
-  Future<Response> getBotConfigWithHttpInfo() async {
+  Future<Response> getBotConfigWithHttpInfo({ Future<void>? abortTrigger, }) async {
     // ignore: prefer_const_declarations
     final path = r'/common_api/bot_config';
 
@@ -139,14 +141,15 @@ class CommonAdminApi {
       headerParams,
       formParams,
       contentTypes.isEmpty ? null : contentTypes.first,
+      abortTrigger: abortTrigger,
     );
   }
 
   /// Get bot config.
   ///
   /// # Access * [Permissions::admin_server_view_bot_config] * Bot account
-  Future<BotConfig?> getBotConfig() async {
-    final response = await getBotConfigWithHttpInfo();
+  Future<BotConfig?> getBotConfig({ Future<void>? abortTrigger, }) async {
+    final response = await getBotConfigWithHttpInfo(abortTrigger: abortTrigger,);
     if (response.statusCode >= HttpStatus.badRequest) {
       throw ApiException(response.statusCode, await _decodeBodyBytes(response));
     }
@@ -165,7 +168,7 @@ class CommonAdminApi {
   /// # Access * [Permissions::admin_server_view_server_config]
   ///
   /// Note: This method returns the HTTP [Response].
-  Future<Response> getDynamicServerConfigWithHttpInfo() async {
+  Future<Response> getDynamicServerConfigWithHttpInfo({ Future<void>? abortTrigger, }) async {
     // ignore: prefer_const_declarations
     final path = r'/common_api/dynamic_server_config';
 
@@ -187,14 +190,15 @@ class CommonAdminApi {
       headerParams,
       formParams,
       contentTypes.isEmpty ? null : contentTypes.first,
+      abortTrigger: abortTrigger,
     );
   }
 
   /// Get server config.
   ///
   /// # Access * [Permissions::admin_server_view_server_config]
-  Future<DynamicServerConfig?> getDynamicServerConfig() async {
-    final response = await getDynamicServerConfigWithHttpInfo();
+  Future<DynamicServerConfig?> getDynamicServerConfig({ Future<void>? abortTrigger, }) async {
+    final response = await getDynamicServerConfigWithHttpInfo(abortTrigger: abortTrigger,);
     if (response.statusCode >= HttpStatus.badRequest) {
       throw ApiException(response.statusCode, await _decodeBodyBytes(response));
     }
@@ -209,7 +213,7 @@ class CommonAdminApi {
   }
 
   /// Performs an HTTP 'GET /common_api/latest_report_iterator_start_position' operation and returns the [Response].
-  Future<Response> getLatestReportIteratorStartPositionWithHttpInfo() async {
+  Future<Response> getLatestReportIteratorStartPositionWithHttpInfo({ Future<void>? abortTrigger, }) async {
     // ignore: prefer_const_declarations
     final path = r'/common_api/latest_report_iterator_start_position';
 
@@ -231,11 +235,12 @@ class CommonAdminApi {
       headerParams,
       formParams,
       contentTypes.isEmpty ? null : contentTypes.first,
+      abortTrigger: abortTrigger,
     );
   }
 
-  Future<UnixTime?> getLatestReportIteratorStartPosition() async {
-    final response = await getLatestReportIteratorStartPositionWithHttpInfo();
+  Future<UnixTime?> getLatestReportIteratorStartPosition({ Future<void>? abortTrigger, }) async {
+    final response = await getLatestReportIteratorStartPositionWithHttpInfo(abortTrigger: abortTrigger,);
     if (response.statusCode >= HttpStatus.badRequest) {
       throw ApiException(response.statusCode, await _decodeBodyBytes(response));
     }
@@ -254,7 +259,7 @@ class CommonAdminApi {
   /// # Permissions Requires admin_server_edit_maintenance_notification.
   ///
   /// Note: This method returns the HTTP [Response].
-  Future<Response> getMaintenanceNotificationWithHttpInfo() async {
+  Future<Response> getMaintenanceNotificationWithHttpInfo({ Future<void>? abortTrigger, }) async {
     // ignore: prefer_const_declarations
     final path = r'/common_api/maintenance_notification';
 
@@ -276,14 +281,15 @@ class CommonAdminApi {
       headerParams,
       formParams,
       contentTypes.isEmpty ? null : contentTypes.first,
+      abortTrigger: abortTrigger,
     );
   }
 
   /// Get maintenance notification.
   ///
   /// # Permissions Requires admin_server_edit_maintenance_notification.
-  Future<ServerMaintenanceStatus?> getMaintenanceNotification() async {
-    final response = await getMaintenanceNotificationWithHttpInfo();
+  Future<ServerMaintenanceStatus?> getMaintenanceNotification({ Future<void>? abortTrigger, }) async {
+    final response = await getMaintenanceNotificationWithHttpInfo(abortTrigger: abortTrigger,);
     if (response.statusCode >= HttpStatus.badRequest) {
       throw ApiException(response.statusCode, await _decodeBodyBytes(response));
     }
@@ -302,7 +308,7 @@ class CommonAdminApi {
   /// # Access * Permission [model::Permissions::admin_server_view_info] * Permission [model::Permissions::admin_server_software_update] * Permission [model::Permissions::admin_server_data_reset] * Permission [model::Permissions::admin_server_restart] * Permission [model::Permissions::admin_server_reboot] * Permission [model::Permissions::admin_server_shutdown] * Permission [model::Permissions::admin_server_scheduled_restart] * Permission [model::Permissions::admin_server_scheduled_reboot]
   ///
   /// Note: This method returns the HTTP [Response].
-  Future<Response> getManagerInstanceNamesWithHttpInfo() async {
+  Future<Response> getManagerInstanceNamesWithHttpInfo({ Future<void>? abortTrigger, }) async {
     // ignore: prefer_const_declarations
     final path = r'/common_api/manager_instance_names';
 
@@ -324,14 +330,15 @@ class CommonAdminApi {
       headerParams,
       formParams,
       contentTypes.isEmpty ? null : contentTypes.first,
+      abortTrigger: abortTrigger,
     );
   }
 
   /// Get available manager instances.
   ///
   /// # Access * Permission [model::Permissions::admin_server_view_info] * Permission [model::Permissions::admin_server_software_update] * Permission [model::Permissions::admin_server_data_reset] * Permission [model::Permissions::admin_server_restart] * Permission [model::Permissions::admin_server_reboot] * Permission [model::Permissions::admin_server_shutdown] * Permission [model::Permissions::admin_server_scheduled_restart] * Permission [model::Permissions::admin_server_scheduled_reboot]
-  Future<ManagerInstanceNameList?> getManagerInstanceNames() async {
-    final response = await getManagerInstanceNamesWithHttpInfo();
+  Future<ManagerInstanceNameList?> getManagerInstanceNames({ Future<void>? abortTrigger, }) async {
+    final response = await getManagerInstanceNamesWithHttpInfo(abortTrigger: abortTrigger,);
     if (response.statusCode >= HttpStatus.badRequest) {
       throw ApiException(response.statusCode, await _decodeBodyBytes(response));
     }
@@ -354,7 +361,7 @@ class CommonAdminApi {
   /// Parameters:
   ///
   /// * [String] managerName (required):
-  Future<Response> getScheduledTasksStatusWithHttpInfo(String managerName,) async {
+  Future<Response> getScheduledTasksStatusWithHttpInfo(String managerName, { Future<void>? abortTrigger, }) async {
     // ignore: prefer_const_declarations
     final path = r'/common_api/scheduled_tasks_status';
 
@@ -378,6 +385,7 @@ class CommonAdminApi {
       headerParams,
       formParams,
       contentTypes.isEmpty ? null : contentTypes.first,
+      abortTrigger: abortTrigger,
     );
   }
 
@@ -388,8 +396,8 @@ class CommonAdminApi {
   /// Parameters:
   ///
   /// * [String] managerName (required):
-  Future<ScheduledTaskStatus?> getScheduledTasksStatus(String managerName,) async {
-    final response = await getScheduledTasksStatusWithHttpInfo(managerName,);
+  Future<ScheduledTaskStatus?> getScheduledTasksStatus(String managerName, { Future<void>? abortTrigger, }) async {
+    final response = await getScheduledTasksStatusWithHttpInfo(managerName, abortTrigger: abortTrigger,);
     if (response.statusCode >= HttpStatus.badRequest) {
       throw ApiException(response.statusCode, await _decodeBodyBytes(response));
     }
@@ -408,7 +416,7 @@ class CommonAdminApi {
   /// # Permissions Requires admin_server_view_info.
   ///
   /// Note: This method returns the HTTP [Response].
-  Future<Response> getServerVersionWithHttpInfo() async {
+  Future<Response> getServerVersionWithHttpInfo({ Future<void>? abortTrigger, }) async {
     // ignore: prefer_const_declarations
     final path = r'/common_api/server_version';
 
@@ -430,14 +438,15 @@ class CommonAdminApi {
       headerParams,
       formParams,
       contentTypes.isEmpty ? null : contentTypes.first,
+      abortTrigger: abortTrigger,
     );
   }
 
   /// Get server version.
   ///
   /// # Permissions Requires admin_server_view_info.
-  Future<ServerVersion?> getServerVersion() async {
-    final response = await getServerVersionWithHttpInfo();
+  Future<ServerVersion?> getServerVersion({ Future<void>? abortTrigger, }) async {
+    final response = await getServerVersionWithHttpInfo(abortTrigger: abortTrigger,);
     if (response.statusCode >= HttpStatus.badRequest) {
       throw ApiException(response.statusCode, await _decodeBodyBytes(response));
     }
@@ -460,7 +469,7 @@ class CommonAdminApi {
   /// Parameters:
   ///
   /// * [String] managerName (required):
-  Future<Response> getSoftwareUpdateStatusWithHttpInfo(String managerName,) async {
+  Future<Response> getSoftwareUpdateStatusWithHttpInfo(String managerName, { Future<void>? abortTrigger, }) async {
     // ignore: prefer_const_declarations
     final path = r'/common_api/software_info';
 
@@ -484,6 +493,7 @@ class CommonAdminApi {
       headerParams,
       formParams,
       contentTypes.isEmpty ? null : contentTypes.first,
+      abortTrigger: abortTrigger,
     );
   }
 
@@ -494,8 +504,8 @@ class CommonAdminApi {
   /// Parameters:
   ///
   /// * [String] managerName (required):
-  Future<SoftwareUpdateStatus?> getSoftwareUpdateStatus(String managerName,) async {
-    final response = await getSoftwareUpdateStatusWithHttpInfo(managerName,);
+  Future<SoftwareUpdateStatus?> getSoftwareUpdateStatus(String managerName, { Future<void>? abortTrigger, }) async {
+    final response = await getSoftwareUpdateStatusWithHttpInfo(managerName, abortTrigger: abortTrigger,);
     if (response.statusCode >= HttpStatus.badRequest) {
       throw ApiException(response.statusCode, await _decodeBodyBytes(response));
     }
@@ -518,7 +528,7 @@ class CommonAdminApi {
   /// Parameters:
   ///
   /// * [String] managerName (required):
-  Future<Response> getSystemInfoWithHttpInfo(String managerName,) async {
+  Future<Response> getSystemInfoWithHttpInfo(String managerName, { Future<void>? abortTrigger, }) async {
     // ignore: prefer_const_declarations
     final path = r'/common_api/system_info';
 
@@ -542,6 +552,7 @@ class CommonAdminApi {
       headerParams,
       formParams,
       contentTypes.isEmpty ? null : contentTypes.first,
+      abortTrigger: abortTrigger,
     );
   }
 
@@ -552,8 +563,8 @@ class CommonAdminApi {
   /// Parameters:
   ///
   /// * [String] managerName (required):
-  Future<SystemInfo?> getSystemInfo(String managerName,) async {
-    final response = await getSystemInfoWithHttpInfo(managerName,);
+  Future<SystemInfo?> getSystemInfo(String managerName, { Future<void>? abortTrigger, }) async {
+    final response = await getSystemInfoWithHttpInfo(managerName, abortTrigger: abortTrigger,);
     if (response.statusCode >= HttpStatus.badRequest) {
       throw ApiException(response.statusCode, await _decodeBodyBytes(response));
     }
@@ -576,7 +587,7 @@ class CommonAdminApi {
   /// Parameters:
   ///
   /// * [AdminNotificationSettings] adminNotificationSettings (required):
-  Future<Response> postAdminNotificationSettingsWithHttpInfo(AdminNotificationSettings adminNotificationSettings,) async {
+  Future<Response> postAdminNotificationSettingsWithHttpInfo(AdminNotificationSettings adminNotificationSettings, { Future<void>? abortTrigger, }) async {
     // ignore: prefer_const_declarations
     final path = r'/common_api/admin_notification_settings';
 
@@ -598,6 +609,7 @@ class CommonAdminApi {
       headerParams,
       formParams,
       contentTypes.isEmpty ? null : contentTypes.first,
+      abortTrigger: abortTrigger,
     );
   }
 
@@ -608,8 +620,8 @@ class CommonAdminApi {
   /// Parameters:
   ///
   /// * [AdminNotificationSettings] adminNotificationSettings (required):
-  Future<void> postAdminNotificationSettings(AdminNotificationSettings adminNotificationSettings,) async {
-    final response = await postAdminNotificationSettingsWithHttpInfo(adminNotificationSettings,);
+  Future<void> postAdminNotificationSettings(AdminNotificationSettings adminNotificationSettings, { Future<void>? abortTrigger, }) async {
+    final response = await postAdminNotificationSettingsWithHttpInfo(adminNotificationSettings, abortTrigger: abortTrigger,);
     if (response.statusCode >= HttpStatus.badRequest) {
       throw ApiException(response.statusCode, await _decodeBodyBytes(response));
     }
@@ -624,7 +636,7 @@ class CommonAdminApi {
   /// Parameters:
   ///
   /// * [AdminNotification] adminNotification (required):
-  Future<Response> postAdminNotificationSubscriptionsWithHttpInfo(AdminNotification adminNotification,) async {
+  Future<Response> postAdminNotificationSubscriptionsWithHttpInfo(AdminNotification adminNotification, { Future<void>? abortTrigger, }) async {
     // ignore: prefer_const_declarations
     final path = r'/common_api/admin_notification_subscriptions';
 
@@ -646,6 +658,7 @@ class CommonAdminApi {
       headerParams,
       formParams,
       contentTypes.isEmpty ? null : contentTypes.first,
+      abortTrigger: abortTrigger,
     );
   }
 
@@ -656,8 +669,8 @@ class CommonAdminApi {
   /// Parameters:
   ///
   /// * [AdminNotification] adminNotification (required):
-  Future<void> postAdminNotificationSubscriptions(AdminNotification adminNotification,) async {
-    final response = await postAdminNotificationSubscriptionsWithHttpInfo(adminNotification,);
+  Future<void> postAdminNotificationSubscriptions(AdminNotification adminNotification, { Future<void>? abortTrigger, }) async {
+    final response = await postAdminNotificationSubscriptionsWithHttpInfo(adminNotification, abortTrigger: abortTrigger,);
     if (response.statusCode >= HttpStatus.badRequest) {
       throw ApiException(response.statusCode, await _decodeBodyBytes(response));
     }
@@ -672,7 +685,7 @@ class CommonAdminApi {
   /// Parameters:
   ///
   /// * [BotConfig] botConfig (required):
-  Future<Response> postBotConfigWithHttpInfo(BotConfig botConfig,) async {
+  Future<Response> postBotConfigWithHttpInfo(BotConfig botConfig, { Future<void>? abortTrigger, }) async {
     // ignore: prefer_const_declarations
     final path = r'/common_api/bot_config';
 
@@ -694,6 +707,7 @@ class CommonAdminApi {
       headerParams,
       formParams,
       contentTypes.isEmpty ? null : contentTypes.first,
+      abortTrigger: abortTrigger,
     );
   }
 
@@ -704,8 +718,8 @@ class CommonAdminApi {
   /// Parameters:
   ///
   /// * [BotConfig] botConfig (required):
-  Future<void> postBotConfig(BotConfig botConfig,) async {
-    final response = await postBotConfigWithHttpInfo(botConfig,);
+  Future<void> postBotConfig(BotConfig botConfig, { Future<void>? abortTrigger, }) async {
+    final response = await postBotConfigWithHttpInfo(botConfig, abortTrigger: abortTrigger,);
     if (response.statusCode >= HttpStatus.badRequest) {
       throw ApiException(response.statusCode, await _decodeBodyBytes(response));
     }
@@ -720,7 +734,7 @@ class CommonAdminApi {
   /// Parameters:
   ///
   /// * [DynamicServerConfig] dynamicServerConfig (required):
-  Future<Response> postDynamicServerConfigWithHttpInfo(DynamicServerConfig dynamicServerConfig,) async {
+  Future<Response> postDynamicServerConfigWithHttpInfo(DynamicServerConfig dynamicServerConfig, { Future<void>? abortTrigger, }) async {
     // ignore: prefer_const_declarations
     final path = r'/common_api/dynamic_server_config';
 
@@ -742,6 +756,7 @@ class CommonAdminApi {
       headerParams,
       formParams,
       contentTypes.isEmpty ? null : contentTypes.first,
+      abortTrigger: abortTrigger,
     );
   }
 
@@ -752,8 +767,8 @@ class CommonAdminApi {
   /// Parameters:
   ///
   /// * [DynamicServerConfig] dynamicServerConfig (required):
-  Future<void> postDynamicServerConfig(DynamicServerConfig dynamicServerConfig,) async {
-    final response = await postDynamicServerConfigWithHttpInfo(dynamicServerConfig,);
+  Future<void> postDynamicServerConfig(DynamicServerConfig dynamicServerConfig, { Future<void>? abortTrigger, }) async {
+    final response = await postDynamicServerConfigWithHttpInfo(dynamicServerConfig, abortTrigger: abortTrigger,);
     if (response.statusCode >= HttpStatus.badRequest) {
       throw ApiException(response.statusCode, await _decodeBodyBytes(response));
     }
@@ -768,7 +783,7 @@ class CommonAdminApi {
   /// Parameters:
   ///
   /// * [ServerMaintenanceStatus] serverMaintenanceStatus (required):
-  Future<Response> postEditMaintenanceNotificationWithHttpInfo(ServerMaintenanceStatus serverMaintenanceStatus,) async {
+  Future<Response> postEditMaintenanceNotificationWithHttpInfo(ServerMaintenanceStatus serverMaintenanceStatus, { Future<void>? abortTrigger, }) async {
     // ignore: prefer_const_declarations
     final path = r'/common_api/edit_maintenance_notification';
 
@@ -790,6 +805,7 @@ class CommonAdminApi {
       headerParams,
       formParams,
       contentTypes.isEmpty ? null : contentTypes.first,
+      abortTrigger: abortTrigger,
     );
   }
 
@@ -800,8 +816,8 @@ class CommonAdminApi {
   /// Parameters:
   ///
   /// * [ServerMaintenanceStatus] serverMaintenanceStatus (required):
-  Future<void> postEditMaintenanceNotification(ServerMaintenanceStatus serverMaintenanceStatus,) async {
-    final response = await postEditMaintenanceNotificationWithHttpInfo(serverMaintenanceStatus,);
+  Future<void> postEditMaintenanceNotification(ServerMaintenanceStatus serverMaintenanceStatus, { Future<void>? abortTrigger, }) async {
+    final response = await postEditMaintenanceNotificationWithHttpInfo(serverMaintenanceStatus, abortTrigger: abortTrigger,);
     if (response.statusCode >= HttpStatus.badRequest) {
       throw ApiException(response.statusCode, await _decodeBodyBytes(response));
     }
@@ -816,7 +832,7 @@ class CommonAdminApi {
   /// Parameters:
   ///
   /// * [GetApiUsageStatisticsSettings] getApiUsageStatisticsSettings (required):
-  Future<Response> postGetApiUsageDataWithHttpInfo(GetApiUsageStatisticsSettings getApiUsageStatisticsSettings,) async {
+  Future<Response> postGetApiUsageDataWithHttpInfo(GetApiUsageStatisticsSettings getApiUsageStatisticsSettings, { Future<void>? abortTrigger, }) async {
     // ignore: prefer_const_declarations
     final path = r'/common_api/api_usage_data';
 
@@ -838,6 +854,7 @@ class CommonAdminApi {
       headerParams,
       formParams,
       contentTypes.isEmpty ? null : contentTypes.first,
+      abortTrigger: abortTrigger,
     );
   }
 
@@ -848,8 +865,8 @@ class CommonAdminApi {
   /// Parameters:
   ///
   /// * [GetApiUsageStatisticsSettings] getApiUsageStatisticsSettings (required):
-  Future<GetApiUsageStatisticsResult?> postGetApiUsageData(GetApiUsageStatisticsSettings getApiUsageStatisticsSettings,) async {
-    final response = await postGetApiUsageDataWithHttpInfo(getApiUsageStatisticsSettings,);
+  Future<GetApiUsageStatisticsResult?> postGetApiUsageData(GetApiUsageStatisticsSettings getApiUsageStatisticsSettings, { Future<void>? abortTrigger, }) async {
+    final response = await postGetApiUsageDataWithHttpInfo(getApiUsageStatisticsSettings, abortTrigger: abortTrigger,);
     if (response.statusCode >= HttpStatus.badRequest) {
       throw ApiException(response.statusCode, await _decodeBodyBytes(response));
     }
@@ -870,7 +887,7 @@ class CommonAdminApi {
   /// Parameters:
   ///
   /// * [GetChatMessageReports] getChatMessageReports (required):
-  Future<Response> postGetChatMessageReportsWithHttpInfo(GetChatMessageReports getChatMessageReports,) async {
+  Future<Response> postGetChatMessageReportsWithHttpInfo(GetChatMessageReports getChatMessageReports, { Future<void>? abortTrigger, }) async {
     // ignore: prefer_const_declarations
     final path = r'/chat_api/get_chat_message_reports';
 
@@ -892,6 +909,7 @@ class CommonAdminApi {
       headerParams,
       formParams,
       contentTypes.isEmpty ? null : contentTypes.first,
+      abortTrigger: abortTrigger,
     );
   }
 
@@ -900,8 +918,8 @@ class CommonAdminApi {
   /// Parameters:
   ///
   /// * [GetChatMessageReports] getChatMessageReports (required):
-  Future<GetReportList?> postGetChatMessageReports(GetChatMessageReports getChatMessageReports,) async {
-    final response = await postGetChatMessageReportsWithHttpInfo(getChatMessageReports,);
+  Future<GetReportList?> postGetChatMessageReports(GetChatMessageReports getChatMessageReports, { Future<void>? abortTrigger, }) async {
+    final response = await postGetChatMessageReportsWithHttpInfo(getChatMessageReports, abortTrigger: abortTrigger,);
     if (response.statusCode >= HttpStatus.badRequest) {
       throw ApiException(response.statusCode, await _decodeBodyBytes(response));
     }
@@ -924,7 +942,7 @@ class CommonAdminApi {
   /// Parameters:
   ///
   /// * [GetIpAddressStatisticsSettings] getIpAddressStatisticsSettings (required):
-  Future<Response> postGetIpAddressUsageDataWithHttpInfo(GetIpAddressStatisticsSettings getIpAddressStatisticsSettings,) async {
+  Future<Response> postGetIpAddressUsageDataWithHttpInfo(GetIpAddressStatisticsSettings getIpAddressStatisticsSettings, { Future<void>? abortTrigger, }) async {
     // ignore: prefer_const_declarations
     final path = r'/common_api/ip_address_usage_data';
 
@@ -946,6 +964,7 @@ class CommonAdminApi {
       headerParams,
       formParams,
       contentTypes.isEmpty ? null : contentTypes.first,
+      abortTrigger: abortTrigger,
     );
   }
 
@@ -956,8 +975,8 @@ class CommonAdminApi {
   /// Parameters:
   ///
   /// * [GetIpAddressStatisticsSettings] getIpAddressStatisticsSettings (required):
-  Future<GetIpAddressStatisticsResult?> postGetIpAddressUsageData(GetIpAddressStatisticsSettings getIpAddressStatisticsSettings,) async {
-    final response = await postGetIpAddressUsageDataWithHttpInfo(getIpAddressStatisticsSettings,);
+  Future<GetIpAddressStatisticsResult?> postGetIpAddressUsageData(GetIpAddressStatisticsSettings getIpAddressStatisticsSettings, { Future<void>? abortTrigger, }) async {
+    final response = await postGetIpAddressUsageDataWithHttpInfo(getIpAddressStatisticsSettings, abortTrigger: abortTrigger,);
     if (response.statusCode >= HttpStatus.badRequest) {
       throw ApiException(response.statusCode, await _decodeBodyBytes(response));
     }
@@ -980,7 +999,7 @@ class CommonAdminApi {
   /// Parameters:
   ///
   /// * [GetIpCountryStatisticsSettings] getIpCountryStatisticsSettings (required):
-  Future<Response> postGetIpCountryStatisticsWithHttpInfo(GetIpCountryStatisticsSettings getIpCountryStatisticsSettings,) async {
+  Future<Response> postGetIpCountryStatisticsWithHttpInfo(GetIpCountryStatisticsSettings getIpCountryStatisticsSettings, { Future<void>? abortTrigger, }) async {
     // ignore: prefer_const_declarations
     final path = r'/common_api/ip_country_statistics';
 
@@ -1002,6 +1021,7 @@ class CommonAdminApi {
       headerParams,
       formParams,
       contentTypes.isEmpty ? null : contentTypes.first,
+      abortTrigger: abortTrigger,
     );
   }
 
@@ -1012,8 +1032,8 @@ class CommonAdminApi {
   /// Parameters:
   ///
   /// * [GetIpCountryStatisticsSettings] getIpCountryStatisticsSettings (required):
-  Future<GetIpCountryStatisticsResult?> postGetIpCountryStatistics(GetIpCountryStatisticsSettings getIpCountryStatisticsSettings,) async {
-    final response = await postGetIpCountryStatisticsWithHttpInfo(getIpCountryStatisticsSettings,);
+  Future<GetIpCountryStatisticsResult?> postGetIpCountryStatistics(GetIpCountryStatisticsSettings getIpCountryStatisticsSettings, { Future<void>? abortTrigger, }) async {
+    final response = await postGetIpCountryStatisticsWithHttpInfo(getIpCountryStatisticsSettings, abortTrigger: abortTrigger,);
     if (response.statusCode >= HttpStatus.badRequest) {
       throw ApiException(response.statusCode, await _decodeBodyBytes(response));
     }
@@ -1036,7 +1056,7 @@ class CommonAdminApi {
   /// Parameters:
   ///
   /// * [PerfMetricQuery] perfMetricQuery (required):
-  Future<Response> postGetPerfDataWithHttpInfo(PerfMetricQuery perfMetricQuery,) async {
+  Future<Response> postGetPerfDataWithHttpInfo(PerfMetricQuery perfMetricQuery, { Future<void>? abortTrigger, }) async {
     // ignore: prefer_const_declarations
     final path = r'/common_api/perf_data';
 
@@ -1058,6 +1078,7 @@ class CommonAdminApi {
       headerParams,
       formParams,
       contentTypes.isEmpty ? null : contentTypes.first,
+      abortTrigger: abortTrigger,
     );
   }
 
@@ -1068,8 +1089,8 @@ class CommonAdminApi {
   /// Parameters:
   ///
   /// * [PerfMetricQuery] perfMetricQuery (required):
-  Future<PerfMetricQueryResult?> postGetPerfData(PerfMetricQuery perfMetricQuery,) async {
-    final response = await postGetPerfDataWithHttpInfo(perfMetricQuery,);
+  Future<PerfMetricQueryResult?> postGetPerfData(PerfMetricQuery perfMetricQuery, { Future<void>? abortTrigger, }) async {
+    final response = await postGetPerfDataWithHttpInfo(perfMetricQuery, abortTrigger: abortTrigger,);
     if (response.statusCode >= HttpStatus.badRequest) {
       throw ApiException(response.statusCode, await _decodeBodyBytes(response));
     }
@@ -1092,7 +1113,7 @@ class CommonAdminApi {
   /// Parameters:
   ///
   /// * [ReportIteratorQuery] reportIteratorQuery (required):
-  Future<Response> postGetReportIteratorPageWithHttpInfo(ReportIteratorQuery reportIteratorQuery,) async {
+  Future<Response> postGetReportIteratorPageWithHttpInfo(ReportIteratorQuery reportIteratorQuery, { Future<void>? abortTrigger, }) async {
     // ignore: prefer_const_declarations
     final path = r'/common_api/report_iterator_page';
 
@@ -1114,6 +1135,7 @@ class CommonAdminApi {
       headerParams,
       formParams,
       contentTypes.isEmpty ? null : contentTypes.first,
+      abortTrigger: abortTrigger,
     );
   }
 
@@ -1124,8 +1146,8 @@ class CommonAdminApi {
   /// Parameters:
   ///
   /// * [ReportIteratorQuery] reportIteratorQuery (required):
-  Future<GetReportList?> postGetReportIteratorPage(ReportIteratorQuery reportIteratorQuery,) async {
-    final response = await postGetReportIteratorPageWithHttpInfo(reportIteratorQuery,);
+  Future<GetReportList?> postGetReportIteratorPage(ReportIteratorQuery reportIteratorQuery, { Future<void>? abortTrigger, }) async {
+    final response = await postGetReportIteratorPageWithHttpInfo(reportIteratorQuery, abortTrigger: abortTrigger,);
     if (response.statusCode >= HttpStatus.badRequest) {
       throw ApiException(response.statusCode, await _decodeBodyBytes(response));
     }
@@ -1146,7 +1168,7 @@ class CommonAdminApi {
   /// Parameters:
   ///
   /// * [GetReportQueuePage] getReportQueuePage (required):
-  Future<Response> postGetReportQueuePageWithHttpInfo(GetReportQueuePage getReportQueuePage,) async {
+  Future<Response> postGetReportQueuePageWithHttpInfo(GetReportQueuePage getReportQueuePage, { Future<void>? abortTrigger, }) async {
     // ignore: prefer_const_declarations
     final path = r'/common_api/report_queue_page';
 
@@ -1168,6 +1190,7 @@ class CommonAdminApi {
       headerParams,
       formParams,
       contentTypes.isEmpty ? null : contentTypes.first,
+      abortTrigger: abortTrigger,
     );
   }
 
@@ -1176,8 +1199,8 @@ class CommonAdminApi {
   /// Parameters:
   ///
   /// * [GetReportQueuePage] getReportQueuePage (required):
-  Future<GetReportList?> postGetReportQueuePage(GetReportQueuePage getReportQueuePage,) async {
-    final response = await postGetReportQueuePageWithHttpInfo(getReportQueuePage,);
+  Future<GetReportList?> postGetReportQueuePage(GetReportQueuePage getReportQueuePage, { Future<void>? abortTrigger, }) async {
+    final response = await postGetReportQueuePageWithHttpInfo(getReportQueuePage, abortTrigger: abortTrigger,);
     if (response.statusCode >= HttpStatus.badRequest) {
       throw ApiException(response.statusCode, await _decodeBodyBytes(response));
     }
@@ -1195,7 +1218,7 @@ class CommonAdminApi {
   /// Parameters:
   ///
   /// * [ProcessReports] processReports (required):
-  Future<Response> postProcessReportsWithHttpInfo(ProcessReports processReports,) async {
+  Future<Response> postProcessReportsWithHttpInfo(ProcessReports processReports, { Future<void>? abortTrigger, }) async {
     // ignore: prefer_const_declarations
     final path = r'/common_api/process_reports';
 
@@ -1217,14 +1240,15 @@ class CommonAdminApi {
       headerParams,
       formParams,
       contentTypes.isEmpty ? null : contentTypes.first,
+      abortTrigger: abortTrigger,
     );
   }
 
   /// Parameters:
   ///
   /// * [ProcessReports] processReports (required):
-  Future<void> postProcessReports(ProcessReports processReports,) async {
-    final response = await postProcessReportsWithHttpInfo(processReports,);
+  Future<void> postProcessReports(ProcessReports processReports, { Future<void>? abortTrigger, }) async {
+    final response = await postProcessReportsWithHttpInfo(processReports, abortTrigger: abortTrigger,);
     if (response.statusCode >= HttpStatus.badRequest) {
       throw ApiException(response.statusCode, await _decodeBodyBytes(response));
     }
@@ -1243,7 +1267,7 @@ class CommonAdminApi {
   /// * [ScheduledTaskType] scheduledTaskType (required):
   ///
   /// * [bool] notifyServer (required):
-  Future<Response> postScheduleTaskWithHttpInfo(String managerName, ScheduledTaskType scheduledTaskType, bool notifyServer,) async {
+  Future<Response> postScheduleTaskWithHttpInfo(String managerName, ScheduledTaskType scheduledTaskType, bool notifyServer, { Future<void>? abortTrigger, }) async {
     // ignore: prefer_const_declarations
     final path = r'/common_api/schedule_task';
 
@@ -1269,6 +1293,7 @@ class CommonAdminApi {
       headerParams,
       formParams,
       contentTypes.isEmpty ? null : contentTypes.first,
+      abortTrigger: abortTrigger,
     );
   }
 
@@ -1283,8 +1308,8 @@ class CommonAdminApi {
   /// * [ScheduledTaskType] scheduledTaskType (required):
   ///
   /// * [bool] notifyServer (required):
-  Future<void> postScheduleTask(String managerName, ScheduledTaskType scheduledTaskType, bool notifyServer,) async {
-    final response = await postScheduleTaskWithHttpInfo(managerName, scheduledTaskType, notifyServer,);
+  Future<void> postScheduleTask(String managerName, ScheduledTaskType scheduledTaskType, bool notifyServer, { Future<void>? abortTrigger, }) async {
+    final response = await postScheduleTaskWithHttpInfo(managerName, scheduledTaskType, notifyServer, abortTrigger: abortTrigger,);
     if (response.statusCode >= HttpStatus.badRequest) {
       throw ApiException(response.statusCode, await _decodeBodyBytes(response));
     }
@@ -1299,7 +1324,7 @@ class CommonAdminApi {
   /// Parameters:
   ///
   /// * [String] managerName (required):
-  Future<Response> postTriggerServerDataResetWithHttpInfo(String managerName,) async {
+  Future<Response> postTriggerServerDataResetWithHttpInfo(String managerName, { Future<void>? abortTrigger, }) async {
     // ignore: prefer_const_declarations
     final path = r'/common_api/trigger_server_data_reset';
 
@@ -1323,6 +1348,7 @@ class CommonAdminApi {
       headerParams,
       formParams,
       contentTypes.isEmpty ? null : contentTypes.first,
+      abortTrigger: abortTrigger,
     );
   }
 
@@ -1333,8 +1359,8 @@ class CommonAdminApi {
   /// Parameters:
   ///
   /// * [String] managerName (required):
-  Future<void> postTriggerServerDataReset(String managerName,) async {
-    final response = await postTriggerServerDataResetWithHttpInfo(managerName,);
+  Future<void> postTriggerServerDataReset(String managerName, { Future<void>? abortTrigger, }) async {
+    final response = await postTriggerServerDataResetWithHttpInfo(managerName, abortTrigger: abortTrigger,);
     if (response.statusCode >= HttpStatus.badRequest) {
       throw ApiException(response.statusCode, await _decodeBodyBytes(response));
     }
@@ -1349,7 +1375,7 @@ class CommonAdminApi {
   /// Parameters:
   ///
   /// * [String] managerName (required):
-  Future<Response> postTriggerServerRestartWithHttpInfo(String managerName,) async {
+  Future<Response> postTriggerServerRestartWithHttpInfo(String managerName, { Future<void>? abortTrigger, }) async {
     // ignore: prefer_const_declarations
     final path = r'/common_api/trigger_server_restart';
 
@@ -1373,6 +1399,7 @@ class CommonAdminApi {
       headerParams,
       formParams,
       contentTypes.isEmpty ? null : contentTypes.first,
+      abortTrigger: abortTrigger,
     );
   }
 
@@ -1383,8 +1410,8 @@ class CommonAdminApi {
   /// Parameters:
   ///
   /// * [String] managerName (required):
-  Future<void> postTriggerServerRestart(String managerName,) async {
-    final response = await postTriggerServerRestartWithHttpInfo(managerName,);
+  Future<void> postTriggerServerRestart(String managerName, { Future<void>? abortTrigger, }) async {
+    final response = await postTriggerServerRestartWithHttpInfo(managerName, abortTrigger: abortTrigger,);
     if (response.statusCode >= HttpStatus.badRequest) {
       throw ApiException(response.statusCode, await _decodeBodyBytes(response));
     }
@@ -1399,7 +1426,7 @@ class CommonAdminApi {
   /// Parameters:
   ///
   /// * [String] managerName (required):
-  Future<Response> postTriggerSoftwareUpdateDownloadWithHttpInfo(String managerName,) async {
+  Future<Response> postTriggerSoftwareUpdateDownloadWithHttpInfo(String managerName, { Future<void>? abortTrigger, }) async {
     // ignore: prefer_const_declarations
     final path = r'/common_api/trigger_software_update_download';
 
@@ -1423,6 +1450,7 @@ class CommonAdminApi {
       headerParams,
       formParams,
       contentTypes.isEmpty ? null : contentTypes.first,
+      abortTrigger: abortTrigger,
     );
   }
 
@@ -1433,8 +1461,8 @@ class CommonAdminApi {
   /// Parameters:
   ///
   /// * [String] managerName (required):
-  Future<void> postTriggerSoftwareUpdateDownload(String managerName,) async {
-    final response = await postTriggerSoftwareUpdateDownloadWithHttpInfo(managerName,);
+  Future<void> postTriggerSoftwareUpdateDownload(String managerName, { Future<void>? abortTrigger, }) async {
+    final response = await postTriggerSoftwareUpdateDownloadWithHttpInfo(managerName, abortTrigger: abortTrigger,);
     if (response.statusCode >= HttpStatus.badRequest) {
       throw ApiException(response.statusCode, await _decodeBodyBytes(response));
     }
@@ -1453,7 +1481,7 @@ class CommonAdminApi {
   /// * [String] name (required):
   ///
   /// * [String] sha256 (required):
-  Future<Response> postTriggerSoftwareUpdateInstallWithHttpInfo(String managerName, String name, String sha256,) async {
+  Future<Response> postTriggerSoftwareUpdateInstallWithHttpInfo(String managerName, String name, String sha256, { Future<void>? abortTrigger, }) async {
     // ignore: prefer_const_declarations
     final path = r'/common_api/trigger_software_update_install';
 
@@ -1479,6 +1507,7 @@ class CommonAdminApi {
       headerParams,
       formParams,
       contentTypes.isEmpty ? null : contentTypes.first,
+      abortTrigger: abortTrigger,
     );
   }
 
@@ -1493,8 +1522,8 @@ class CommonAdminApi {
   /// * [String] name (required):
   ///
   /// * [String] sha256 (required):
-  Future<void> postTriggerSoftwareUpdateInstall(String managerName, String name, String sha256,) async {
-    final response = await postTriggerSoftwareUpdateInstallWithHttpInfo(managerName, name, sha256,);
+  Future<void> postTriggerSoftwareUpdateInstall(String managerName, String name, String sha256, { Future<void>? abortTrigger, }) async {
+    final response = await postTriggerSoftwareUpdateInstallWithHttpInfo(managerName, name, sha256, abortTrigger: abortTrigger,);
     if (response.statusCode >= HttpStatus.badRequest) {
       throw ApiException(response.statusCode, await _decodeBodyBytes(response));
     }
@@ -1509,7 +1538,7 @@ class CommonAdminApi {
   /// Parameters:
   ///
   /// * [String] managerName (required):
-  Future<Response> postTriggerSystemRebootWithHttpInfo(String managerName,) async {
+  Future<Response> postTriggerSystemRebootWithHttpInfo(String managerName, { Future<void>? abortTrigger, }) async {
     // ignore: prefer_const_declarations
     final path = r'/common_api/trigger_system_reboot';
 
@@ -1533,6 +1562,7 @@ class CommonAdminApi {
       headerParams,
       formParams,
       contentTypes.isEmpty ? null : contentTypes.first,
+      abortTrigger: abortTrigger,
     );
   }
 
@@ -1543,8 +1573,8 @@ class CommonAdminApi {
   /// Parameters:
   ///
   /// * [String] managerName (required):
-  Future<void> postTriggerSystemReboot(String managerName,) async {
-    final response = await postTriggerSystemRebootWithHttpInfo(managerName,);
+  Future<void> postTriggerSystemReboot(String managerName, { Future<void>? abortTrigger, }) async {
+    final response = await postTriggerSystemRebootWithHttpInfo(managerName, abortTrigger: abortTrigger,);
     if (response.statusCode >= HttpStatus.badRequest) {
       throw ApiException(response.statusCode, await _decodeBodyBytes(response));
     }
@@ -1559,7 +1589,7 @@ class CommonAdminApi {
   /// Parameters:
   ///
   /// * [String] managerName (required):
-  Future<Response> postTriggerSystemShutdownWithHttpInfo(String managerName,) async {
+  Future<Response> postTriggerSystemShutdownWithHttpInfo(String managerName, { Future<void>? abortTrigger, }) async {
     // ignore: prefer_const_declarations
     final path = r'/common_api/trigger_system_shutdown';
 
@@ -1583,6 +1613,7 @@ class CommonAdminApi {
       headerParams,
       formParams,
       contentTypes.isEmpty ? null : contentTypes.first,
+      abortTrigger: abortTrigger,
     );
   }
 
@@ -1593,8 +1624,8 @@ class CommonAdminApi {
   /// Parameters:
   ///
   /// * [String] managerName (required):
-  Future<void> postTriggerSystemShutdown(String managerName,) async {
-    final response = await postTriggerSystemShutdownWithHttpInfo(managerName,);
+  Future<void> postTriggerSystemShutdown(String managerName, { Future<void>? abortTrigger, }) async {
+    final response = await postTriggerSystemShutdownWithHttpInfo(managerName, abortTrigger: abortTrigger,);
     if (response.statusCode >= HttpStatus.badRequest) {
       throw ApiException(response.statusCode, await _decodeBodyBytes(response));
     }
@@ -1611,7 +1642,7 @@ class CommonAdminApi {
   /// * [String] managerName (required):
   ///
   /// * [ScheduledTaskType] scheduledTaskType (required):
-  Future<Response> postUnscheduleTaskWithHttpInfo(String managerName, ScheduledTaskType scheduledTaskType,) async {
+  Future<Response> postUnscheduleTaskWithHttpInfo(String managerName, ScheduledTaskType scheduledTaskType, { Future<void>? abortTrigger, }) async {
     // ignore: prefer_const_declarations
     final path = r'/common_api/unschedule_task';
 
@@ -1636,6 +1667,7 @@ class CommonAdminApi {
       headerParams,
       formParams,
       contentTypes.isEmpty ? null : contentTypes.first,
+      abortTrigger: abortTrigger,
     );
   }
 
@@ -1648,8 +1680,8 @@ class CommonAdminApi {
   /// * [String] managerName (required):
   ///
   /// * [ScheduledTaskType] scheduledTaskType (required):
-  Future<void> postUnscheduleTask(String managerName, ScheduledTaskType scheduledTaskType,) async {
-    final response = await postUnscheduleTaskWithHttpInfo(managerName, scheduledTaskType,);
+  Future<void> postUnscheduleTask(String managerName, ScheduledTaskType scheduledTaskType, { Future<void>? abortTrigger, }) async {
+    final response = await postUnscheduleTaskWithHttpInfo(managerName, scheduledTaskType, abortTrigger: abortTrigger,);
     if (response.statusCode >= HttpStatus.badRequest) {
       throw ApiException(response.statusCode, await _decodeBodyBytes(response));
     }

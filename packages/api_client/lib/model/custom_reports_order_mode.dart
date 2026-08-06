@@ -11,27 +11,28 @@
 part of openapi.api;
 
 
-class CustomReportsOrderMode {
-  /// Instantiate a new enum with the provided [value].
-  const CustomReportsOrderMode._(this.value);
+enum CustomReportsOrderMode {
+  orderNumber._(r'OrderNumber'),
+  ;
+
+  /// Instantiate a new enum with the provided value.
+  const CustomReportsOrderMode._(this._value);
 
   /// The underlying value of this enum member.
-  final String value;
+  final String _value;
 
   @override
-  String toString() => value;
+  String toString() => _value;
 
-  String toJson() => value;
+  /// Encodes this enum as a value suitable for JSON.
+  String toJson() => _value;
 
-  static const orderNumber = CustomReportsOrderMode._(r'OrderNumber');
-
-  /// List of all possible values in this [enum][CustomReportsOrderMode].
-  static const values = <CustomReportsOrderMode>[
-    orderNumber,
-  ];
-
+  /// Returns the instance of [CustomReportsOrderMode] that was successfully decoded
+  /// from the passed [value] on success, null otherwise.
   static CustomReportsOrderMode? fromJson(dynamic value) => CustomReportsOrderModeTypeTransformer().decode(value);
 
+  /// Returns a [List] containing instances of [CustomReportsOrderMode]
+  /// that were successfully decoded from the passed [JSON][json].
   static List<CustomReportsOrderMode> listFromJson(dynamic json, {bool growable = false,}) {
     final result = <CustomReportsOrderMode>[];
     if (json is List && json.isNotEmpty) {
@@ -53,9 +54,11 @@ class CustomReportsOrderModeTypeTransformer {
 
   const CustomReportsOrderModeTypeTransformer._();
 
-  String encode(CustomReportsOrderMode data) => data.value;
+  /// Encodes this enum as a value suitable for JSON.
+  String encode(CustomReportsOrderMode data) => data._value;
 
-  /// Decodes a [dynamic value][data] to a CustomReportsOrderMode.
+  /// Returns the instance of [CustomReportsOrderMode] that was successfully decoded
+  /// from the passed [data] value on success, null otherwise.
   ///
   /// If [allowNull] is true and the [dynamic value][data] cannot be decoded successfully,
   /// then null is returned. However, if [allowNull] is false and the [dynamic value][data]
@@ -64,6 +67,9 @@ class CustomReportsOrderModeTypeTransformer {
   /// The [allowNull] is very handy when an API changes and a new enum value is added or removed,
   /// and users are still using an old app with the old code.
   CustomReportsOrderMode? decode(dynamic data, {bool allowNull = true}) {
+    if (data is CustomReportsOrderMode) {
+      return data;
+    }
     if (data != null) {
       switch (data) {
         case r'OrderNumber': return CustomReportsOrderMode.orderNumber;
@@ -76,7 +82,7 @@ class CustomReportsOrderModeTypeTransformer {
     return null;
   }
 
-  /// Singleton [CustomReportsOrderModeTypeTransformer] instance.
+  /// The singleton instance of this transformer.
   static CustomReportsOrderModeTypeTransformer? _instance;
 }
 

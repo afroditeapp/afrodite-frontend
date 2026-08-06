@@ -11,29 +11,29 @@
 part of openapi.api;
 
 
-class IpCountryStatisticsType {
-  /// Instantiate a new enum with the provided [value].
-  const IpCountryStatisticsType._(this.value);
+enum IpCountryStatisticsType {
+  newTcpConnections._(r'NewTcpConnections'),
+  newHttpRequests._(r'NewHttpRequests'),
+  ;
+
+  /// Instantiate a new enum with the provided value.
+  const IpCountryStatisticsType._(this._value);
 
   /// The underlying value of this enum member.
-  final String value;
+  final String _value;
 
   @override
-  String toString() => value;
+  String toString() => _value;
 
-  String toJson() => value;
+  /// Encodes this enum as a value suitable for JSON.
+  String toJson() => _value;
 
-  static const newTcpConnections = IpCountryStatisticsType._(r'NewTcpConnections');
-  static const newHttpRequests = IpCountryStatisticsType._(r'NewHttpRequests');
-
-  /// List of all possible values in this [enum][IpCountryStatisticsType].
-  static const values = <IpCountryStatisticsType>[
-    newTcpConnections,
-    newHttpRequests,
-  ];
-
+  /// Returns the instance of [IpCountryStatisticsType] that was successfully decoded
+  /// from the passed [value] on success, null otherwise.
   static IpCountryStatisticsType? fromJson(dynamic value) => IpCountryStatisticsTypeTypeTransformer().decode(value);
 
+  /// Returns a [List] containing instances of [IpCountryStatisticsType]
+  /// that were successfully decoded from the passed [JSON][json].
   static List<IpCountryStatisticsType> listFromJson(dynamic json, {bool growable = false,}) {
     final result = <IpCountryStatisticsType>[];
     if (json is List && json.isNotEmpty) {
@@ -55,9 +55,11 @@ class IpCountryStatisticsTypeTypeTransformer {
 
   const IpCountryStatisticsTypeTypeTransformer._();
 
-  String encode(IpCountryStatisticsType data) => data.value;
+  /// Encodes this enum as a value suitable for JSON.
+  String encode(IpCountryStatisticsType data) => data._value;
 
-  /// Decodes a [dynamic value][data] to a IpCountryStatisticsType.
+  /// Returns the instance of [IpCountryStatisticsType] that was successfully decoded
+  /// from the passed [data] value on success, null otherwise.
   ///
   /// If [allowNull] is true and the [dynamic value][data] cannot be decoded successfully,
   /// then null is returned. However, if [allowNull] is false and the [dynamic value][data]
@@ -66,6 +68,9 @@ class IpCountryStatisticsTypeTypeTransformer {
   /// The [allowNull] is very handy when an API changes and a new enum value is added or removed,
   /// and users are still using an old app with the old code.
   IpCountryStatisticsType? decode(dynamic data, {bool allowNull = true}) {
+    if (data is IpCountryStatisticsType) {
+      return data;
+    }
     if (data != null) {
       switch (data) {
         case r'NewTcpConnections': return IpCountryStatisticsType.newTcpConnections;
@@ -79,7 +84,7 @@ class IpCountryStatisticsTypeTypeTransformer {
     return null;
   }
 
-  /// Singleton [IpCountryStatisticsTypeTypeTransformer] instance.
+  /// The singleton instance of this transformer.
   static IpCountryStatisticsTypeTypeTransformer? _instance;
 }
 

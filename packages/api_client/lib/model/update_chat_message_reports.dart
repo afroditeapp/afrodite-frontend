@@ -53,10 +53,10 @@ class UpdateChatMessageReports {
       // Note 1: the values aren't checked for validity beyond being non-null.
       // Note 2: this code is stripped in release mode!
       assert(() {
-        requiredKeys.forEach((key) {
-          assert(json.containsKey(key), 'Required key "UpdateChatMessageReports[$key]" is missing from JSON.');
-          assert(json[key] != null, 'Required key "UpdateChatMessageReports[$key]" has a null value in JSON.');
-        });
+        assert(json.containsKey(r'messages'), 'Required key "UpdateChatMessageReports[messages]" is missing from JSON.');
+        assert(json[r'messages'] != null, 'Required key "UpdateChatMessageReports[messages]" has a null value in JSON.');
+        assert(json.containsKey(r'target'), 'Required key "UpdateChatMessageReports[target]" is missing from JSON.');
+        assert(json[r'target'] != null, 'Required key "UpdateChatMessageReports[target]" has a null value in JSON.');
         return true;
       }());
 

@@ -65,10 +65,14 @@ class ConnectionStatistics {
       // Note 1: the values aren't checked for validity beyond being non-null.
       // Note 2: this code is stripped in release mode!
       assert(() {
-        requiredKeys.forEach((key) {
-          assert(json.containsKey(key), 'Required key "ConnectionStatistics[$key]" is missing from JSON.');
-          assert(json[key] != null, 'Required key "ConnectionStatistics[$key]" has a null value in JSON.');
-        });
+        assert(json.containsKey(r'all'), 'Required key "ConnectionStatistics[all]" is missing from JSON.');
+        assert(json[r'all'] != null, 'Required key "ConnectionStatistics[all]" has a null value in JSON.');
+        assert(json.containsKey(r'men'), 'Required key "ConnectionStatistics[men]" is missing from JSON.');
+        assert(json[r'men'] != null, 'Required key "ConnectionStatistics[men]" has a null value in JSON.');
+        assert(json.containsKey(r'nonbinaries'), 'Required key "ConnectionStatistics[nonbinaries]" is missing from JSON.');
+        assert(json[r'nonbinaries'] != null, 'Required key "ConnectionStatistics[nonbinaries]" has a null value in JSON.');
+        assert(json.containsKey(r'women'), 'Required key "ConnectionStatistics[women]" is missing from JSON.');
+        assert(json[r'women'] != null, 'Required key "ConnectionStatistics[women]" has a null value in JSON.');
         return true;
       }());
 

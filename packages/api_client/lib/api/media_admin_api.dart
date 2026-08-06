@@ -21,7 +21,7 @@ class MediaAdminApi {
   /// # Permissions Requires admin_server_view_image_processing_config.
   ///
   /// Note: This method returns the HTTP [Response].
-  Future<Response> getImageProcessingConfigWithHttpInfo() async {
+  Future<Response> getImageProcessingConfigWithHttpInfo({ Future<void>? abortTrigger, }) async {
     // ignore: prefer_const_declarations
     final path = r'/media_api/image_processing_config';
 
@@ -43,14 +43,15 @@ class MediaAdminApi {
       headerParams,
       formParams,
       contentTypes.isEmpty ? null : contentTypes.first,
+      abortTrigger: abortTrigger,
     );
   }
 
   /// Get image processing configuration
   ///
   /// # Permissions Requires admin_server_view_image_processing_config.
-  Future<ImageProcessingDynamicConfig?> getImageProcessingConfig() async {
-    final response = await getImageProcessingConfigWithHttpInfo();
+  Future<ImageProcessingDynamicConfig?> getImageProcessingConfig({ Future<void>? abortTrigger, }) async {
+    final response = await getImageProcessingConfigWithHttpInfo(abortTrigger: abortTrigger,);
     if (response.statusCode >= HttpStatus.badRequest) {
       throw ApiException(response.statusCode, await _decodeBodyBytes(response));
     }
@@ -69,7 +70,7 @@ class MediaAdminApi {
   /// # Permissions Requires admin_server_view_image_processing_config.
   ///
   /// Note: This method returns the HTTP [Response].
-  Future<Response> getImageProcessingConfigWarningsWithHttpInfo() async {
+  Future<Response> getImageProcessingConfigWarningsWithHttpInfo({ Future<void>? abortTrigger, }) async {
     // ignore: prefer_const_declarations
     final path = r'/media_api/image_processing_config_warnings';
 
@@ -91,14 +92,15 @@ class MediaAdminApi {
       headerParams,
       formParams,
       contentTypes.isEmpty ? null : contentTypes.first,
+      abortTrigger: abortTrigger,
     );
   }
 
   /// Get image processing config warnings
   ///
   /// # Permissions Requires admin_server_view_image_processing_config.
-  Future<ImageProcessingWarnings?> getImageProcessingConfigWarnings() async {
-    final response = await getImageProcessingConfigWarningsWithHttpInfo();
+  Future<ImageProcessingWarnings?> getImageProcessingConfigWarnings({ Future<void>? abortTrigger, }) async {
+    final response = await getImageProcessingConfigWarningsWithHttpInfo(abortTrigger: abortTrigger,);
     if (response.statusCode >= HttpStatus.badRequest) {
       throw ApiException(response.statusCode, await _decodeBodyBytes(response));
     }
@@ -115,7 +117,7 @@ class MediaAdminApi {
   /// Get first page of accounts with security selfie and content where `face_verified` is NULL and `face_detected` is true or `face_detected_manual` is true. Oldest security content set time is first and count 25.
   ///
   /// Note: This method returns the HTTP [Response].
-  Future<Response> getMediaContentFaceVerifiedNullListWithHttpInfo() async {
+  Future<Response> getMediaContentFaceVerifiedNullListWithHttpInfo({ Future<void>? abortTrigger, }) async {
     // ignore: prefer_const_declarations
     final path = r'/media_api/media_content_face_verified_null_list';
 
@@ -137,12 +139,13 @@ class MediaAdminApi {
       headerParams,
       formParams,
       contentTypes.isEmpty ? null : contentTypes.first,
+      abortTrigger: abortTrigger,
     );
   }
 
   /// Get first page of accounts with security selfie and content where `face_verified` is NULL and `face_detected` is true or `face_detected_manual` is true. Oldest security content set time is first and count 25.
-  Future<GetMediaContentFaceVerifiedNullList?> getMediaContentFaceVerifiedNullList() async {
-    final response = await getMediaContentFaceVerifiedNullListWithHttpInfo();
+  Future<GetMediaContentFaceVerifiedNullList?> getMediaContentFaceVerifiedNullList({ Future<void>? abortTrigger, }) async {
+    final response = await getMediaContentFaceVerifiedNullListWithHttpInfo(abortTrigger: abortTrigger,);
     if (response.statusCode >= HttpStatus.badRequest) {
       throw ApiException(response.statusCode, await _decodeBodyBytes(response));
     }
@@ -167,7 +170,7 @@ class MediaAdminApi {
   /// * [MediaContentModerationType] moderationType (required):
   ///
   /// * [MediaContentModerationQueueType] queueType (required):
-  Future<Response> getMediaContentModerationQueuePageWithHttpInfo(MediaContentType contentType, MediaContentModerationType moderationType, MediaContentModerationQueueType queueType,) async {
+  Future<Response> getMediaContentModerationQueuePageWithHttpInfo(MediaContentType contentType, MediaContentModerationType moderationType, MediaContentModerationQueueType queueType, { Future<void>? abortTrigger, }) async {
     // ignore: prefer_const_declarations
     final path = r'/media_api/media_content_moderation_queue_page';
 
@@ -193,6 +196,7 @@ class MediaAdminApi {
       headerParams,
       formParams,
       contentTypes.isEmpty ? null : contentTypes.first,
+      abortTrigger: abortTrigger,
     );
   }
 
@@ -205,8 +209,8 @@ class MediaAdminApi {
   /// * [MediaContentModerationType] moderationType (required):
   ///
   /// * [MediaContentModerationQueueType] queueType (required):
-  Future<MediaContentModerationQueuePage?> getMediaContentModerationQueuePage(MediaContentType contentType, MediaContentModerationType moderationType, MediaContentModerationQueueType queueType,) async {
-    final response = await getMediaContentModerationQueuePageWithHttpInfo(contentType, moderationType, queueType,);
+  Future<MediaContentModerationQueuePage?> getMediaContentModerationQueuePage(MediaContentType contentType, MediaContentModerationType moderationType, MediaContentModerationQueueType queueType, { Future<void>? abortTrigger, }) async {
+    final response = await getMediaContentModerationQueuePageWithHttpInfo(contentType, moderationType, queueType, abortTrigger: abortTrigger,);
     if (response.statusCode >= HttpStatus.badRequest) {
       throw ApiException(response.statusCode, await _decodeBodyBytes(response));
     }
@@ -229,7 +233,7 @@ class MediaAdminApi {
   /// Parameters:
   ///
   /// * [String] aid (required):
-  Future<Response> getSecurityContentAdminInfoWithHttpInfo(String aid,) async {
+  Future<Response> getSecurityContentAdminInfoWithHttpInfo(String aid, { Future<void>? abortTrigger, }) async {
     // ignore: prefer_const_declarations
     final path = r'/media_api/security_content_admin_info/{aid}'
       .replaceAll('{aid}', aid);
@@ -252,6 +256,7 @@ class MediaAdminApi {
       headerParams,
       formParams,
       contentTypes.isEmpty ? null : contentTypes.first,
+      abortTrigger: abortTrigger,
     );
   }
 
@@ -262,8 +267,8 @@ class MediaAdminApi {
   /// Parameters:
   ///
   /// * [String] aid (required):
-  Future<SecurityContentAdminInfo?> getSecurityContentAdminInfo(String aid,) async {
-    final response = await getSecurityContentAdminInfoWithHttpInfo(aid,);
+  Future<SecurityContentAdminInfo?> getSecurityContentAdminInfo(String aid, { Future<void>? abortTrigger, }) async {
+    final response = await getSecurityContentAdminInfoWithHttpInfo(aid, abortTrigger: abortTrigger,);
     if (response.statusCode >= HttpStatus.badRequest) {
       throw ApiException(response.statusCode, await _decodeBodyBytes(response));
     }
@@ -286,7 +291,7 @@ class MediaAdminApi {
   /// Parameters:
   ///
   /// * [ImageProcessingDynamicConfig] imageProcessingDynamicConfig (required):
-  Future<Response> postImageProcessingConfigWithHttpInfo(ImageProcessingDynamicConfig imageProcessingDynamicConfig,) async {
+  Future<Response> postImageProcessingConfigWithHttpInfo(ImageProcessingDynamicConfig imageProcessingDynamicConfig, { Future<void>? abortTrigger, }) async {
     // ignore: prefer_const_declarations
     final path = r'/media_api/image_processing_config';
 
@@ -308,6 +313,7 @@ class MediaAdminApi {
       headerParams,
       formParams,
       contentTypes.isEmpty ? null : contentTypes.first,
+      abortTrigger: abortTrigger,
     );
   }
 
@@ -318,8 +324,8 @@ class MediaAdminApi {
   /// Parameters:
   ///
   /// * [ImageProcessingDynamicConfig] imageProcessingDynamicConfig (required):
-  Future<void> postImageProcessingConfig(ImageProcessingDynamicConfig imageProcessingDynamicConfig,) async {
-    final response = await postImageProcessingConfigWithHttpInfo(imageProcessingDynamicConfig,);
+  Future<void> postImageProcessingConfig(ImageProcessingDynamicConfig imageProcessingDynamicConfig, { Future<void>? abortTrigger, }) async {
+    final response = await postImageProcessingConfigWithHttpInfo(imageProcessingDynamicConfig, abortTrigger: abortTrigger,);
     if (response.statusCode >= HttpStatus.badRequest) {
       throw ApiException(response.statusCode, await _decodeBodyBytes(response));
     }
@@ -334,7 +340,7 @@ class MediaAdminApi {
   /// Parameters:
   ///
   /// * [PostMediaContentFaceDetectedValue] postMediaContentFaceDetectedValue (required):
-  Future<Response> postMediaContentFaceDetectedValueWithHttpInfo(PostMediaContentFaceDetectedValue postMediaContentFaceDetectedValue,) async {
+  Future<Response> postMediaContentFaceDetectedValueWithHttpInfo(PostMediaContentFaceDetectedValue postMediaContentFaceDetectedValue, { Future<void>? abortTrigger, }) async {
     // ignore: prefer_const_declarations
     final path = r'/media_api/media_content_face_detected_value';
 
@@ -356,6 +362,7 @@ class MediaAdminApi {
       headerParams,
       formParams,
       contentTypes.isEmpty ? null : contentTypes.first,
+      abortTrigger: abortTrigger,
     );
   }
 
@@ -366,8 +373,8 @@ class MediaAdminApi {
   /// Parameters:
   ///
   /// * [PostMediaContentFaceDetectedValue] postMediaContentFaceDetectedValue (required):
-  Future<void> postMediaContentFaceDetectedValue(PostMediaContentFaceDetectedValue postMediaContentFaceDetectedValue,) async {
-    final response = await postMediaContentFaceDetectedValueWithHttpInfo(postMediaContentFaceDetectedValue,);
+  Future<void> postMediaContentFaceDetectedValue(PostMediaContentFaceDetectedValue postMediaContentFaceDetectedValue, { Future<void>? abortTrigger, }) async {
+    final response = await postMediaContentFaceDetectedValueWithHttpInfo(postMediaContentFaceDetectedValue, abortTrigger: abortTrigger,);
     if (response.statusCode >= HttpStatus.badRequest) {
       throw ApiException(response.statusCode, await _decodeBodyBytes(response));
     }
@@ -382,7 +389,7 @@ class MediaAdminApi {
   /// Parameters:
   ///
   /// * [PostMediaContentFaceVerifiedValue] postMediaContentFaceVerifiedValue (required):
-  Future<Response> postMediaContentFaceVerifiedValueWithHttpInfo(PostMediaContentFaceVerifiedValue postMediaContentFaceVerifiedValue,) async {
+  Future<Response> postMediaContentFaceVerifiedValueWithHttpInfo(PostMediaContentFaceVerifiedValue postMediaContentFaceVerifiedValue, { Future<void>? abortTrigger, }) async {
     // ignore: prefer_const_declarations
     final path = r'/media_api/media_content_face_verified_value';
 
@@ -404,6 +411,7 @@ class MediaAdminApi {
       headerParams,
       formParams,
       contentTypes.isEmpty ? null : contentTypes.first,
+      abortTrigger: abortTrigger,
     );
   }
 
@@ -414,8 +422,8 @@ class MediaAdminApi {
   /// Parameters:
   ///
   /// * [PostMediaContentFaceVerifiedValue] postMediaContentFaceVerifiedValue (required):
-  Future<void> postMediaContentFaceVerifiedValue(PostMediaContentFaceVerifiedValue postMediaContentFaceVerifiedValue,) async {
-    final response = await postMediaContentFaceVerifiedValueWithHttpInfo(postMediaContentFaceVerifiedValue,);
+  Future<void> postMediaContentFaceVerifiedValue(PostMediaContentFaceVerifiedValue postMediaContentFaceVerifiedValue, { Future<void>? abortTrigger, }) async {
+    final response = await postMediaContentFaceVerifiedValueWithHttpInfo(postMediaContentFaceVerifiedValue, abortTrigger: abortTrigger,);
     if (response.statusCode >= HttpStatus.badRequest) {
       throw ApiException(response.statusCode, await _decodeBodyBytes(response));
     }
@@ -430,7 +438,7 @@ class MediaAdminApi {
   /// Parameters:
   ///
   /// * [PostModerateMediaContent] postModerateMediaContent (required):
-  Future<Response> postModerateMediaContentWithHttpInfo(PostModerateMediaContent postModerateMediaContent,) async {
+  Future<Response> postModerateMediaContentWithHttpInfo(PostModerateMediaContent postModerateMediaContent, { Future<void>? abortTrigger, }) async {
     // ignore: prefer_const_declarations
     final path = r'/media_api/moderate_media_content';
 
@@ -452,6 +460,7 @@ class MediaAdminApi {
       headerParams,
       formParams,
       contentTypes.isEmpty ? null : contentTypes.first,
+      abortTrigger: abortTrigger,
     );
   }
 
@@ -462,8 +471,8 @@ class MediaAdminApi {
   /// Parameters:
   ///
   /// * [PostModerateMediaContent] postModerateMediaContent (required):
-  Future<void> postModerateMediaContent(PostModerateMediaContent postModerateMediaContent,) async {
-    final response = await postModerateMediaContentWithHttpInfo(postModerateMediaContent,);
+  Future<void> postModerateMediaContent(PostModerateMediaContent postModerateMediaContent, { Future<void>? abortTrigger, }) async {
+    final response = await postModerateMediaContentWithHttpInfo(postModerateMediaContent, abortTrigger: abortTrigger,);
     if (response.statusCode >= HttpStatus.badRequest) {
       throw ApiException(response.statusCode, await _decodeBodyBytes(response));
     }
@@ -478,7 +487,7 @@ class MediaAdminApi {
   /// Parameters:
   ///
   /// * [PostSecurityContentVerifiedValue] postSecurityContentVerifiedValue (required):
-  Future<Response> postSecurityContentVerifiedValueWithHttpInfo(PostSecurityContentVerifiedValue postSecurityContentVerifiedValue,) async {
+  Future<Response> postSecurityContentVerifiedValueWithHttpInfo(PostSecurityContentVerifiedValue postSecurityContentVerifiedValue, { Future<void>? abortTrigger, }) async {
     // ignore: prefer_const_declarations
     final path = r'/media_api/security_content_verified_value';
 
@@ -500,6 +509,7 @@ class MediaAdminApi {
       headerParams,
       formParams,
       contentTypes.isEmpty ? null : contentTypes.first,
+      abortTrigger: abortTrigger,
     );
   }
 
@@ -510,8 +520,8 @@ class MediaAdminApi {
   /// Parameters:
   ///
   /// * [PostSecurityContentVerifiedValue] postSecurityContentVerifiedValue (required):
-  Future<void> postSecurityContentVerifiedValue(PostSecurityContentVerifiedValue postSecurityContentVerifiedValue,) async {
-    final response = await postSecurityContentVerifiedValueWithHttpInfo(postSecurityContentVerifiedValue,);
+  Future<void> postSecurityContentVerifiedValue(PostSecurityContentVerifiedValue postSecurityContentVerifiedValue, { Future<void>? abortTrigger, }) async {
+    final response = await postSecurityContentVerifiedValueWithHttpInfo(postSecurityContentVerifiedValue, abortTrigger: abortTrigger,);
     if (response.statusCode >= HttpStatus.badRequest) {
       throw ApiException(response.statusCode, await _decodeBodyBytes(response));
     }

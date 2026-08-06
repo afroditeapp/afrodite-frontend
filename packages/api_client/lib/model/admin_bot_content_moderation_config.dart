@@ -98,10 +98,14 @@ class AdminBotContentModerationConfig {
       // Note 1: the values aren't checked for validity beyond being non-null.
       // Note 2: this code is stripped in release mode!
       assert(() {
-        requiredKeys.forEach((key) {
-          assert(json.containsKey(key), 'Required key "AdminBotContentModerationConfig[$key]" is missing from JSON.');
-          assert(json[key] != null, 'Required key "AdminBotContentModerationConfig[$key]" has a null value in JSON.');
-        });
+        assert(json.containsKey(r'default_action'), 'Required key "AdminBotContentModerationConfig[default_action]" is missing from JSON.');
+        assert(json[r'default_action'] != null, 'Required key "AdminBotContentModerationConfig[default_action]" has a null value in JSON.');
+        assert(json.containsKey(r'llm_primary'), 'Required key "AdminBotContentModerationConfig[llm_primary]" is missing from JSON.');
+        assert(json[r'llm_primary'] != null, 'Required key "AdminBotContentModerationConfig[llm_primary]" has a null value in JSON.');
+        assert(json.containsKey(r'llm_secondary'), 'Required key "AdminBotContentModerationConfig[llm_secondary]" is missing from JSON.');
+        assert(json[r'llm_secondary'] != null, 'Required key "AdminBotContentModerationConfig[llm_secondary]" has a null value in JSON.');
+        assert(json.containsKey(r'nsfw_detection'), 'Required key "AdminBotContentModerationConfig[nsfw_detection]" is missing from JSON.');
+        assert(json[r'nsfw_detection'] != null, 'Required key "AdminBotContentModerationConfig[nsfw_detection]" has a null value in JSON.');
         return true;
       }());
 

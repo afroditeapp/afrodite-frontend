@@ -53,10 +53,10 @@ class UpdateProfileAttributesSchema {
       // Note 1: the values aren't checked for validity beyond being non-null.
       // Note 2: this code is stripped in release mode!
       assert(() {
-        requiredKeys.forEach((key) {
-          assert(json.containsKey(key), 'Required key "UpdateProfileAttributesSchema[$key]" is missing from JSON.');
-          assert(json[key] != null, 'Required key "UpdateProfileAttributesSchema[$key]" has a null value in JSON.');
-        });
+        assert(json.containsKey(r'current_state'), 'Required key "UpdateProfileAttributesSchema[current_state]" is missing from JSON.');
+        assert(json[r'current_state'] != null, 'Required key "UpdateProfileAttributesSchema[current_state]" has a null value in JSON.');
+        assert(json.containsKey(r'new_state'), 'Required key "UpdateProfileAttributesSchema[new_state]" is missing from JSON.');
+        assert(json[r'new_state'] != null, 'Required key "UpdateProfileAttributesSchema[new_state]" has a null value in JSON.');
         return true;
       }());
 

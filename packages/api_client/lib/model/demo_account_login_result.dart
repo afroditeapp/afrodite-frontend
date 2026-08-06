@@ -58,10 +58,8 @@ class DemoAccountLoginResult {
       // Note 1: the values aren't checked for validity beyond being non-null.
       // Note 2: this code is stripped in release mode!
       assert(() {
-        requiredKeys.forEach((key) {
-          assert(json.containsKey(key), 'Required key "DemoAccountLoginResult[$key]" is missing from JSON.');
-          assert(json[key] != null, 'Required key "DemoAccountLoginResult[$key]" has a null value in JSON.');
-        });
+        assert(json.containsKey(r'locked'), 'Required key "DemoAccountLoginResult[locked]" is missing from JSON.');
+        assert(json[r'locked'] != null, 'Required key "DemoAccountLoginResult[locked]" has a null value in JSON.');
         return true;
       }());
 

@@ -55,10 +55,10 @@ class MapCoordinate {
       // Note 1: the values aren't checked for validity beyond being non-null.
       // Note 2: this code is stripped in release mode!
       assert(() {
-        requiredKeys.forEach((key) {
-          assert(json.containsKey(key), 'Required key "MapCoordinate[$key]" is missing from JSON.');
-          assert(json[key] != null, 'Required key "MapCoordinate[$key]" has a null value in JSON.');
-        });
+        assert(json.containsKey(r'lat'), 'Required key "MapCoordinate[lat]" is missing from JSON.');
+        assert(json[r'lat'] != null, 'Required key "MapCoordinate[lat]" has a null value in JSON.');
+        assert(json.containsKey(r'lon'), 'Required key "MapCoordinate[lon]" is missing from JSON.');
+        assert(json[r'lon'] != null, 'Required key "MapCoordinate[lon]" has a null value in JSON.');
         return true;
       }());
 

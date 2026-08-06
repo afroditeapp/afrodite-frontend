@@ -47,10 +47,8 @@ class GetIpAddressStatisticsSettings {
       // Note 1: the values aren't checked for validity beyond being non-null.
       // Note 2: this code is stripped in release mode!
       assert(() {
-        requiredKeys.forEach((key) {
-          assert(json.containsKey(key), 'Required key "GetIpAddressStatisticsSettings[$key]" is missing from JSON.');
-          assert(json[key] != null, 'Required key "GetIpAddressStatisticsSettings[$key]" has a null value in JSON.');
-        });
+        assert(json.containsKey(r'account'), 'Required key "GetIpAddressStatisticsSettings[account]" is missing from JSON.');
+        assert(json[r'account'] != null, 'Required key "GetIpAddressStatisticsSettings[account]" has a null value in JSON.');
         return true;
       }());
 

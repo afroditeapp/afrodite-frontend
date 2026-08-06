@@ -65,10 +65,14 @@ class ReportIteratorQuery {
       // Note 1: the values aren't checked for validity beyond being non-null.
       // Note 2: this code is stripped in release mode!
       assert(() {
-        requiredKeys.forEach((key) {
-          assert(json.containsKey(key), 'Required key "ReportIteratorQuery[$key]" is missing from JSON.');
-          assert(json[key] != null, 'Required key "ReportIteratorQuery[$key]" has a null value in JSON.');
-        });
+        assert(json.containsKey(r'aid'), 'Required key "ReportIteratorQuery[aid]" is missing from JSON.');
+        assert(json[r'aid'] != null, 'Required key "ReportIteratorQuery[aid]" has a null value in JSON.');
+        assert(json.containsKey(r'mode'), 'Required key "ReportIteratorQuery[mode]" is missing from JSON.');
+        assert(json[r'mode'] != null, 'Required key "ReportIteratorQuery[mode]" has a null value in JSON.');
+        assert(json.containsKey(r'page'), 'Required key "ReportIteratorQuery[page]" is missing from JSON.');
+        assert(json[r'page'] != null, 'Required key "ReportIteratorQuery[page]" has a null value in JSON.');
+        assert(json.containsKey(r'start_position'), 'Required key "ReportIteratorQuery[start_position]" is missing from JSON.');
+        assert(json[r'start_position'] != null, 'Required key "ReportIteratorQuery[start_position]" has a null value in JSON.');
         return true;
       }());
 

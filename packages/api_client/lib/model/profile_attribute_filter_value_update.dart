@@ -27,6 +27,7 @@ class ProfileAttributeFilterValueUpdate {
   /// Value `false` ignores the settings in this object and removes current filter settings for this attribute.
   bool enabled;
 
+  /// Attribute ID
   int id;
 
   /// Same as [Self::wanted] but for unwanted values.  The unwanted values are checked always with AND operator.
@@ -82,10 +83,8 @@ class ProfileAttributeFilterValueUpdate {
       // Note 1: the values aren't checked for validity beyond being non-null.
       // Note 2: this code is stripped in release mode!
       assert(() {
-        requiredKeys.forEach((key) {
-          assert(json.containsKey(key), 'Required key "ProfileAttributeFilterValueUpdate[$key]" is missing from JSON.');
-          assert(json[key] != null, 'Required key "ProfileAttributeFilterValueUpdate[$key]" has a null value in JSON.');
-        });
+        assert(json.containsKey(r'id'), 'Required key "ProfileAttributeFilterValueUpdate[id]" is missing from JSON.');
+        assert(json[r'id'] != null, 'Required key "ProfileAttributeFilterValueUpdate[id]" has a null value in JSON.');
         return true;
       }());
 

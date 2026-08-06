@@ -81,10 +81,18 @@ class AdminBotReportProcessingMessagesLlmConfig {
       // Note 1: the values aren't checked for validity beyond being non-null.
       // Note 2: this code is stripped in release mode!
       assert(() {
-        requiredKeys.forEach((key) {
-          assert(json.containsKey(key), 'Required key "AdminBotReportProcessingMessagesLlmConfig[$key]" is missing from JSON.');
-          assert(json[key] != null, 'Required key "AdminBotReportProcessingMessagesLlmConfig[$key]" has a null value in JSON.');
-        });
+        assert(json.containsKey(r'expected_response'), 'Required key "AdminBotReportProcessingMessagesLlmConfig[expected_response]" is missing from JSON.');
+        assert(json[r'expected_response'] != null, 'Required key "AdminBotReportProcessingMessagesLlmConfig[expected_response]" has a null value in JSON.');
+        assert(json.containsKey(r'system_text'), 'Required key "AdminBotReportProcessingMessagesLlmConfig[system_text]" is missing from JSON.');
+        assert(json[r'system_text'] != null, 'Required key "AdminBotReportProcessingMessagesLlmConfig[system_text]" has a null value in JSON.');
+        assert(json.containsKey(r'user_text_template'), 'Required key "AdminBotReportProcessingMessagesLlmConfig[user_text_template]" is missing from JSON.');
+        assert(json[r'user_text_template'] != null, 'Required key "AdminBotReportProcessingMessagesLlmConfig[user_text_template]" has a null value in JSON.');
+        assert(json.containsKey(r'automatic_banning_expected_responses'), 'Required key "AdminBotReportProcessingMessagesLlmConfig[automatic_banning_expected_responses]" is missing from JSON.');
+        assert(json[r'automatic_banning_expected_responses'] != null, 'Required key "AdminBotReportProcessingMessagesLlmConfig[automatic_banning_expected_responses]" has a null value in JSON.');
+        assert(json.containsKey(r'report_creator_message_template'), 'Required key "AdminBotReportProcessingMessagesLlmConfig[report_creator_message_template]" is missing from JSON.');
+        assert(json[r'report_creator_message_template'] != null, 'Required key "AdminBotReportProcessingMessagesLlmConfig[report_creator_message_template]" has a null value in JSON.');
+        assert(json.containsKey(r'report_target_message_template'), 'Required key "AdminBotReportProcessingMessagesLlmConfig[report_target_message_template]" is missing from JSON.');
+        assert(json[r'report_target_message_template'] != null, 'Required key "AdminBotReportProcessingMessagesLlmConfig[report_target_message_template]" has a null value in JSON.');
         return true;
       }());
 

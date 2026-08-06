@@ -48,10 +48,8 @@ class ReportType {
       // Note 1: the values aren't checked for validity beyond being non-null.
       // Note 2: this code is stripped in release mode!
       assert(() {
-        requiredKeys.forEach((key) {
-          assert(json.containsKey(key), 'Required key "ReportType[$key]" is missing from JSON.');
-          assert(json[key] != null, 'Required key "ReportType[$key]" has a null value in JSON.');
-        });
+        assert(json.containsKey(r't'), 'Required key "ReportType[t]" is missing from JSON.');
+        assert(json[r't'] != null, 'Required key "ReportType[t]" has a null value in JSON.');
         return true;
       }());
 

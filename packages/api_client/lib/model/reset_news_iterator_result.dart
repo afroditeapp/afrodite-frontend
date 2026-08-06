@@ -59,10 +59,12 @@ class ResetNewsIteratorResult {
       // Note 1: the values aren't checked for validity beyond being non-null.
       // Note 2: this code is stripped in release mode!
       assert(() {
-        requiredKeys.forEach((key) {
-          assert(json.containsKey(key), 'Required key "ResetNewsIteratorResult[$key]" is missing from JSON.');
-          assert(json[key] != null, 'Required key "ResetNewsIteratorResult[$key]" has a null value in JSON.');
-        });
+        assert(json.containsKey(r'c'), 'Required key "ResetNewsIteratorResult[c]" is missing from JSON.');
+        assert(json[r'c'] != null, 'Required key "ResetNewsIteratorResult[c]" has a null value in JSON.');
+        assert(json.containsKey(r's'), 'Required key "ResetNewsIteratorResult[s]" is missing from JSON.');
+        assert(json[r's'] != null, 'Required key "ResetNewsIteratorResult[s]" has a null value in JSON.');
+        assert(json.containsKey(r'v'), 'Required key "ResetNewsIteratorResult[v]" is missing from JSON.');
+        assert(json[r'v'] != null, 'Required key "ResetNewsIteratorResult[v]" has a null value in JSON.');
         return true;
       }());
 

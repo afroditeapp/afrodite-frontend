@@ -11,39 +11,34 @@
 part of openapi.api;
 
 
-class ContentSlot {
-  /// Instantiate a new enum with the provided [value].
-  const ContentSlot._(this.value);
+enum ContentSlot {
+  content0._(r'Content0'),
+  content1._(r'Content1'),
+  content2._(r'Content2'),
+  content3._(r'Content3'),
+  content4._(r'Content4'),
+  content5._(r'Content5'),
+  content6._(r'Content6'),
+  ;
+
+  /// Instantiate a new enum with the provided value.
+  const ContentSlot._(this._value);
 
   /// The underlying value of this enum member.
-  final String value;
+  final String _value;
 
   @override
-  String toString() => value;
+  String toString() => _value;
 
-  String toJson() => value;
+  /// Encodes this enum as a value suitable for JSON.
+  String toJson() => _value;
 
-  static const content0 = ContentSlot._(r'Content0');
-  static const content1 = ContentSlot._(r'Content1');
-  static const content2 = ContentSlot._(r'Content2');
-  static const content3 = ContentSlot._(r'Content3');
-  static const content4 = ContentSlot._(r'Content4');
-  static const content5 = ContentSlot._(r'Content5');
-  static const content6 = ContentSlot._(r'Content6');
-
-  /// List of all possible values in this [enum][ContentSlot].
-  static const values = <ContentSlot>[
-    content0,
-    content1,
-    content2,
-    content3,
-    content4,
-    content5,
-    content6,
-  ];
-
+  /// Returns the instance of [ContentSlot] that was successfully decoded
+  /// from the passed [value] on success, null otherwise.
   static ContentSlot? fromJson(dynamic value) => ContentSlotTypeTransformer().decode(value);
 
+  /// Returns a [List] containing instances of [ContentSlot]
+  /// that were successfully decoded from the passed [JSON][json].
   static List<ContentSlot> listFromJson(dynamic json, {bool growable = false,}) {
     final result = <ContentSlot>[];
     if (json is List && json.isNotEmpty) {
@@ -65,9 +60,11 @@ class ContentSlotTypeTransformer {
 
   const ContentSlotTypeTransformer._();
 
-  String encode(ContentSlot data) => data.value;
+  /// Encodes this enum as a value suitable for JSON.
+  String encode(ContentSlot data) => data._value;
 
-  /// Decodes a [dynamic value][data] to a ContentSlot.
+  /// Returns the instance of [ContentSlot] that was successfully decoded
+  /// from the passed [data] value on success, null otherwise.
   ///
   /// If [allowNull] is true and the [dynamic value][data] cannot be decoded successfully,
   /// then null is returned. However, if [allowNull] is false and the [dynamic value][data]
@@ -76,6 +73,9 @@ class ContentSlotTypeTransformer {
   /// The [allowNull] is very handy when an API changes and a new enum value is added or removed,
   /// and users are still using an old app with the old code.
   ContentSlot? decode(dynamic data, {bool allowNull = true}) {
+    if (data is ContentSlot) {
+      return data;
+    }
     if (data != null) {
       switch (data) {
         case r'Content0': return ContentSlot.content0;
@@ -94,7 +94,7 @@ class ContentSlotTypeTransformer {
     return null;
   }
 
-  /// Singleton [ContentSlotTypeTransformer] instance.
+  /// The singleton instance of this transformer.
   static ContentSlotTypeTransformer? _instance;
 }
 

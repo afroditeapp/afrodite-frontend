@@ -86,10 +86,20 @@ class GetProfileStatisticsResult {
       // Note 1: the values aren't checked for validity beyond being non-null.
       // Note 2: this code is stripped in release mode!
       assert(() {
-        requiredKeys.forEach((key) {
-          assert(json.containsKey(key), 'Required key "GetProfileStatisticsResult[$key]" is missing from JSON.');
-          assert(json[key] != null, 'Required key "GetProfileStatisticsResult[$key]" has a null value in JSON.');
-        });
+        assert(json.containsKey(r'account_count_bots_excluded'), 'Required key "GetProfileStatisticsResult[account_count_bots_excluded]" is missing from JSON.');
+        assert(json[r'account_count_bots_excluded'] != null, 'Required key "GetProfileStatisticsResult[account_count_bots_excluded]" has a null value in JSON.');
+        assert(json.containsKey(r'age_counts'), 'Required key "GetProfileStatisticsResult[age_counts]" is missing from JSON.');
+        assert(json[r'age_counts'] != null, 'Required key "GetProfileStatisticsResult[age_counts]" has a null value in JSON.');
+        assert(json.containsKey(r'connections_average'), 'Required key "GetProfileStatisticsResult[connections_average]" is missing from JSON.');
+        assert(json[r'connections_average'] != null, 'Required key "GetProfileStatisticsResult[connections_average]" has a null value in JSON.');
+        assert(json.containsKey(r'connections_max'), 'Required key "GetProfileStatisticsResult[connections_max]" is missing from JSON.');
+        assert(json[r'connections_max'] != null, 'Required key "GetProfileStatisticsResult[connections_max]" has a null value in JSON.');
+        assert(json.containsKey(r'connections_min'), 'Required key "GetProfileStatisticsResult[connections_min]" is missing from JSON.');
+        assert(json[r'connections_min'] != null, 'Required key "GetProfileStatisticsResult[connections_min]" has a null value in JSON.');
+        assert(json.containsKey(r'generation_time'), 'Required key "GetProfileStatisticsResult[generation_time]" is missing from JSON.');
+        assert(json[r'generation_time'] != null, 'Required key "GetProfileStatisticsResult[generation_time]" has a null value in JSON.');
+        assert(json.containsKey(r'online_account_count_bots_excluded'), 'Required key "GetProfileStatisticsResult[online_account_count_bots_excluded]" is missing from JSON.');
+        assert(json[r'online_account_count_bots_excluded'] != null, 'Required key "GetProfileStatisticsResult[online_account_count_bots_excluded]" has a null value in JSON.');
         return true;
       }());
 

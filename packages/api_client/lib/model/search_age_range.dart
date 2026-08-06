@@ -59,10 +59,10 @@ class SearchAgeRange {
       // Note 1: the values aren't checked for validity beyond being non-null.
       // Note 2: this code is stripped in release mode!
       assert(() {
-        requiredKeys.forEach((key) {
-          assert(json.containsKey(key), 'Required key "SearchAgeRange[$key]" is missing from JSON.');
-          assert(json[key] != null, 'Required key "SearchAgeRange[$key]" has a null value in JSON.');
-        });
+        assert(json.containsKey(r'max'), 'Required key "SearchAgeRange[max]" is missing from JSON.');
+        assert(json[r'max'] != null, 'Required key "SearchAgeRange[max]" has a null value in JSON.');
+        assert(json.containsKey(r'min'), 'Required key "SearchAgeRange[min]" is missing from JSON.');
+        assert(json[r'min'] != null, 'Required key "SearchAgeRange[min]" has a null value in JSON.');
         return true;
       }());
 

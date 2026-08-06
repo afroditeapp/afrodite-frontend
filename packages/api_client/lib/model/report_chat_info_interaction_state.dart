@@ -11,33 +11,31 @@
 part of openapi.api;
 
 
-class ReportChatInfoInteractionState {
-  /// Instantiate a new enum with the provided [value].
-  const ReportChatInfoInteractionState._(this.value);
+enum ReportChatInfoInteractionState {
+  none._(r'None'),
+  creatorLiked._(r'CreatorLiked'),
+  targetLiked._(r'TargetLiked'),
+  match._(r'Match'),
+  ;
+
+  /// Instantiate a new enum with the provided value.
+  const ReportChatInfoInteractionState._(this._value);
 
   /// The underlying value of this enum member.
-  final String value;
+  final String _value;
 
   @override
-  String toString() => value;
+  String toString() => _value;
 
-  String toJson() => value;
+  /// Encodes this enum as a value suitable for JSON.
+  String toJson() => _value;
 
-  static const none = ReportChatInfoInteractionState._(r'None');
-  static const creatorLiked = ReportChatInfoInteractionState._(r'CreatorLiked');
-  static const targetLiked = ReportChatInfoInteractionState._(r'TargetLiked');
-  static const match = ReportChatInfoInteractionState._(r'Match');
-
-  /// List of all possible values in this [enum][ReportChatInfoInteractionState].
-  static const values = <ReportChatInfoInteractionState>[
-    none,
-    creatorLiked,
-    targetLiked,
-    match,
-  ];
-
+  /// Returns the instance of [ReportChatInfoInteractionState] that was successfully decoded
+  /// from the passed [value] on success, null otherwise.
   static ReportChatInfoInteractionState? fromJson(dynamic value) => ReportChatInfoInteractionStateTypeTransformer().decode(value);
 
+  /// Returns a [List] containing instances of [ReportChatInfoInteractionState]
+  /// that were successfully decoded from the passed [JSON][json].
   static List<ReportChatInfoInteractionState> listFromJson(dynamic json, {bool growable = false,}) {
     final result = <ReportChatInfoInteractionState>[];
     if (json is List && json.isNotEmpty) {
@@ -59,9 +57,11 @@ class ReportChatInfoInteractionStateTypeTransformer {
 
   const ReportChatInfoInteractionStateTypeTransformer._();
 
-  String encode(ReportChatInfoInteractionState data) => data.value;
+  /// Encodes this enum as a value suitable for JSON.
+  String encode(ReportChatInfoInteractionState data) => data._value;
 
-  /// Decodes a [dynamic value][data] to a ReportChatInfoInteractionState.
+  /// Returns the instance of [ReportChatInfoInteractionState] that was successfully decoded
+  /// from the passed [data] value on success, null otherwise.
   ///
   /// If [allowNull] is true and the [dynamic value][data] cannot be decoded successfully,
   /// then null is returned. However, if [allowNull] is false and the [dynamic value][data]
@@ -70,6 +70,9 @@ class ReportChatInfoInteractionStateTypeTransformer {
   /// The [allowNull] is very handy when an API changes and a new enum value is added or removed,
   /// and users are still using an old app with the old code.
   ReportChatInfoInteractionState? decode(dynamic data, {bool allowNull = true}) {
+    if (data is ReportChatInfoInteractionState) {
+      return data;
+    }
     if (data != null) {
       switch (data) {
         case r'None': return ReportChatInfoInteractionState.none;
@@ -85,7 +88,7 @@ class ReportChatInfoInteractionStateTypeTransformer {
     return null;
   }
 
-  /// Singleton [ReportChatInfoInteractionStateTypeTransformer] instance.
+  /// The singleton instance of this transformer.
   static ReportChatInfoInteractionStateTypeTransformer? _instance;
 }
 

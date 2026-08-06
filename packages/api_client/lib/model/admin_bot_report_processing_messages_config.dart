@@ -71,10 +71,12 @@ class AdminBotReportProcessingMessagesConfig {
       // Note 1: the values aren't checked for validity beyond being non-null.
       // Note 2: this code is stripped in release mode!
       assert(() {
-        requiredKeys.forEach((key) {
-          assert(json.containsKey(key), 'Required key "AdminBotReportProcessingMessagesConfig[$key]" is missing from JSON.');
-          assert(json[key] != null, 'Required key "AdminBotReportProcessingMessagesConfig[$key]" has a null value in JSON.');
-        });
+        assert(json.containsKey(r'automatic_banning_day_counts'), 'Required key "AdminBotReportProcessingMessagesConfig[automatic_banning_day_counts]" is missing from JSON.');
+        assert(json[r'automatic_banning_day_counts'] != null, 'Required key "AdminBotReportProcessingMessagesConfig[automatic_banning_day_counts]" has a null value in JSON.');
+        assert(json.containsKey(r'default_action'), 'Required key "AdminBotReportProcessingMessagesConfig[default_action]" is missing from JSON.');
+        assert(json[r'default_action'] != null, 'Required key "AdminBotReportProcessingMessagesConfig[default_action]" has a null value in JSON.');
+        assert(json.containsKey(r'llm'), 'Required key "AdminBotReportProcessingMessagesConfig[llm]" is missing from JSON.');
+        assert(json[r'llm'] != null, 'Required key "AdminBotReportProcessingMessagesConfig[llm]" has a null value in JSON.');
         return true;
       }());
 

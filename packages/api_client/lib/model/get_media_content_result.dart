@@ -69,10 +69,12 @@ class GetMediaContentResult {
       // Note 1: the values aren't checked for validity beyond being non-null.
       // Note 2: this code is stripped in release mode!
       assert(() {
-        requiredKeys.forEach((key) {
-          assert(json.containsKey(key), 'Required key "GetMediaContentResult[$key]" is missing from JSON.');
-          assert(json[key] != null, 'Required key "GetMediaContentResult[$key]" has a null value in JSON.');
-        });
+        assert(json.containsKey(r'profile_content'), 'Required key "GetMediaContentResult[profile_content]" is missing from JSON.');
+        assert(json[r'profile_content'] != null, 'Required key "GetMediaContentResult[profile_content]" has a null value in JSON.');
+        assert(json.containsKey(r'profile_content_version'), 'Required key "GetMediaContentResult[profile_content_version]" is missing from JSON.');
+        assert(json[r'profile_content_version'] != null, 'Required key "GetMediaContentResult[profile_content_version]" has a null value in JSON.');
+        assert(json.containsKey(r'sync_version'), 'Required key "GetMediaContentResult[sync_version]" is missing from JSON.');
+        assert(json[r'sync_version'] != null, 'Required key "GetMediaContentResult[sync_version]" has a null value in JSON.');
         return true;
       }());
 

@@ -17,7 +17,7 @@ class ChatApi {
   final ApiClient apiClient;
 
   /// Performs an HTTP 'GET /chat_api/get_chat_app_notification_settings' operation and returns the [Response].
-  Future<Response> getChatAppNotificationSettingsWithHttpInfo() async {
+  Future<Response> getChatAppNotificationSettingsWithHttpInfo({ Future<void>? abortTrigger, }) async {
     // ignore: prefer_const_declarations
     final path = r'/chat_api/get_chat_app_notification_settings';
 
@@ -39,11 +39,12 @@ class ChatApi {
       headerParams,
       formParams,
       contentTypes.isEmpty ? null : contentTypes.first,
+      abortTrigger: abortTrigger,
     );
   }
 
-  Future<ChatAppNotificationSettings?> getChatAppNotificationSettings() async {
-    final response = await getChatAppNotificationSettingsWithHttpInfo();
+  Future<ChatAppNotificationSettings?> getChatAppNotificationSettings({ Future<void>? abortTrigger, }) async {
+    final response = await getChatAppNotificationSettingsWithHttpInfo(abortTrigger: abortTrigger,);
     if (response.statusCode >= HttpStatus.badRequest) {
       throw ApiException(response.statusCode, await _decodeBodyBytes(response));
     }
@@ -58,7 +59,7 @@ class ChatApi {
   }
 
   /// Performs an HTTP 'GET /chat_api/get_chat_email_notification_settings' operation and returns the [Response].
-  Future<Response> getChatEmailNotificationSettingsWithHttpInfo() async {
+  Future<Response> getChatEmailNotificationSettingsWithHttpInfo({ Future<void>? abortTrigger, }) async {
     // ignore: prefer_const_declarations
     final path = r'/chat_api/get_chat_email_notification_settings';
 
@@ -80,11 +81,12 @@ class ChatApi {
       headerParams,
       formParams,
       contentTypes.isEmpty ? null : contentTypes.first,
+      abortTrigger: abortTrigger,
     );
   }
 
-  Future<ChatEmailNotificationSettings?> getChatEmailNotificationSettings() async {
-    final response = await getChatEmailNotificationSettingsWithHttpInfo();
+  Future<ChatEmailNotificationSettings?> getChatEmailNotificationSettings({ Future<void>? abortTrigger, }) async {
+    final response = await getChatEmailNotificationSettingsWithHttpInfo(abortTrigger: abortTrigger,);
     if (response.statusCode >= HttpStatus.badRequest) {
       throw ApiException(response.statusCode, await _decodeBodyBytes(response));
     }
@@ -99,7 +101,7 @@ class ChatApi {
   }
 
   /// Performs an HTTP 'GET /chat_api/get_chat_privacy_settings' operation and returns the [Response].
-  Future<Response> getChatPrivacySettingsWithHttpInfo() async {
+  Future<Response> getChatPrivacySettingsWithHttpInfo({ Future<void>? abortTrigger, }) async {
     // ignore: prefer_const_declarations
     final path = r'/chat_api/get_chat_privacy_settings';
 
@@ -121,11 +123,12 @@ class ChatApi {
       headerParams,
       formParams,
       contentTypes.isEmpty ? null : contentTypes.first,
+      abortTrigger: abortTrigger,
     );
   }
 
-  Future<ChatPrivacySettings?> getChatPrivacySettings() async {
-    final response = await getChatPrivacySettingsWithHttpInfo();
+  Future<ChatPrivacySettings?> getChatPrivacySettings({ Future<void>? abortTrigger, }) async {
+    final response = await getChatPrivacySettingsWithHttpInfo(abortTrigger: abortTrigger,);
     if (response.statusCode >= HttpStatus.badRequest) {
       throw ApiException(response.statusCode, await _decodeBodyBytes(response));
     }
@@ -148,7 +151,7 @@ class ChatApi {
   /// Parameters:
   ///
   /// * [String] aid (required):
-  Future<Response> getConversationIdWithHttpInfo(String aid,) async {
+  Future<Response> getConversationIdWithHttpInfo(String aid, { Future<void>? abortTrigger, }) async {
     // ignore: prefer_const_declarations
     final path = r'/chat_api/conversation_id/{aid}'
       .replaceAll('{aid}', aid);
@@ -171,6 +174,7 @@ class ChatApi {
       headerParams,
       formParams,
       contentTypes.isEmpty ? null : contentTypes.first,
+      abortTrigger: abortTrigger,
     );
   }
 
@@ -181,8 +185,8 @@ class ChatApi {
   /// Parameters:
   ///
   /// * [String] aid (required):
-  Future<GetConversationId?> getConversationId(String aid,) async {
-    final response = await getConversationIdWithHttpInfo(aid,);
+  Future<GetConversationId?> getConversationId(String aid, { Future<void>? abortTrigger, }) async {
+    final response = await getConversationIdWithHttpInfo(aid, abortTrigger: abortTrigger,);
     if (response.statusCode >= HttpStatus.badRequest) {
       throw ApiException(response.statusCode, await _decodeBodyBytes(response));
     }
@@ -199,7 +203,7 @@ class ChatApi {
   /// Get daily likes left value.
   ///
   /// Note: This method returns the HTTP [Response].
-  Future<Response> getDailyLikesLeftWithHttpInfo() async {
+  Future<Response> getDailyLikesLeftWithHttpInfo({ Future<void>? abortTrigger, }) async {
     // ignore: prefer_const_declarations
     final path = r'/chat_api/daily_likes_left';
 
@@ -221,12 +225,13 @@ class ChatApi {
       headerParams,
       formParams,
       contentTypes.isEmpty ? null : contentTypes.first,
+      abortTrigger: abortTrigger,
     );
   }
 
   /// Get daily likes left value.
-  Future<DailyLikesLeft?> getDailyLikesLeft() async {
-    final response = await getDailyLikesLeftWithHttpInfo();
+  Future<DailyLikesLeft?> getDailyLikesLeft({ Future<void>? abortTrigger, }) async {
+    final response = await getDailyLikesLeftWithHttpInfo(abortTrigger: abortTrigger,);
     if (response.statusCode >= HttpStatus.badRequest) {
       throw ApiException(response.statusCode, await _decodeBodyBytes(response));
     }
@@ -241,7 +246,7 @@ class ChatApi {
   }
 
   /// Performs an HTTP 'GET /chat_api/matches/initial_state' operation and returns the [Response].
-  Future<Response> getInitialMatchesIteratorStateWithHttpInfo() async {
+  Future<Response> getInitialMatchesIteratorStateWithHttpInfo({ Future<void>? abortTrigger, }) async {
     // ignore: prefer_const_declarations
     final path = r'/chat_api/matches/initial_state';
 
@@ -263,11 +268,12 @@ class ChatApi {
       headerParams,
       formParams,
       contentTypes.isEmpty ? null : contentTypes.first,
+      abortTrigger: abortTrigger,
     );
   }
 
-  Future<MatchesIteratorState?> getInitialMatchesIteratorState() async {
-    final response = await getInitialMatchesIteratorStateWithHttpInfo();
+  Future<MatchesIteratorState?> getInitialMatchesIteratorState({ Future<void>? abortTrigger, }) async {
+    final response = await getInitialMatchesIteratorStateWithHttpInfo(abortTrigger: abortTrigger,);
     if (response.statusCode >= HttpStatus.badRequest) {
       throw ApiException(response.statusCode, await _decodeBodyBytes(response));
     }
@@ -288,7 +294,7 @@ class ChatApi {
   /// Parameters:
   ///
   /// * [String] aid (required):
-  Future<Response> getLatestPublicKeyIdWithHttpInfo(String aid,) async {
+  Future<Response> getLatestPublicKeyIdWithHttpInfo(String aid, { Future<void>? abortTrigger, }) async {
     // ignore: prefer_const_declarations
     final path = r'/chat_api/latest_public_key_id/{aid}'
       .replaceAll('{aid}', aid);
@@ -311,6 +317,7 @@ class ChatApi {
       headerParams,
       formParams,
       contentTypes.isEmpty ? null : contentTypes.first,
+      abortTrigger: abortTrigger,
     );
   }
 
@@ -319,8 +326,8 @@ class ChatApi {
   /// Parameters:
   ///
   /// * [String] aid (required):
-  Future<GetLatestPublicKeyId?> getLatestPublicKeyId(String aid,) async {
-    final response = await getLatestPublicKeyIdWithHttpInfo(aid,);
+  Future<GetLatestPublicKeyId?> getLatestPublicKeyId(String aid, { Future<void>? abortTrigger, }) async {
+    final response = await getLatestPublicKeyIdWithHttpInfo(aid, abortTrigger: abortTrigger,);
     if (response.statusCode >= HttpStatus.badRequest) {
       throw ApiException(response.statusCode, await _decodeBodyBytes(response));
     }
@@ -339,7 +346,7 @@ class ChatApi {
   /// This endpoint returns delivery information (delivered/seen status) for all messages sent by the authenticated user.
   ///
   /// Note: This method returns the HTTP [Response].
-  Future<Response> getMessageDeliveryInfoWithHttpInfo() async {
+  Future<Response> getMessageDeliveryInfoWithHttpInfo({ Future<void>? abortTrigger, }) async {
     // ignore: prefer_const_declarations
     final path = r'/chat_api/message_delivery_info';
 
@@ -361,14 +368,15 @@ class ChatApi {
       headerParams,
       formParams,
       contentTypes.isEmpty ? null : contentTypes.first,
+      abortTrigger: abortTrigger,
     );
   }
 
   /// Get all message delivery info where the API caller is the message sender.
   ///
   /// This endpoint returns delivery information (delivered/seen status) for all messages sent by the authenticated user.
-  Future<MessageDeliveryInfoList?> getMessageDeliveryInfo() async {
-    final response = await getMessageDeliveryInfoWithHttpInfo();
+  Future<MessageDeliveryInfoList?> getMessageDeliveryInfo({ Future<void>? abortTrigger, }) async {
+    final response = await getMessageDeliveryInfoWithHttpInfo(abortTrigger: abortTrigger,);
     if (response.statusCode >= HttpStatus.badRequest) {
       throw ApiException(response.statusCode, await _decodeBodyBytes(response));
     }
@@ -383,7 +391,7 @@ class ChatApi {
   }
 
   /// Performs an HTTP 'GET /chat_api/pending_notifications' operation and returns the [Response].
-  Future<Response> getPendingChatNotificationsWithHttpInfo() async {
+  Future<Response> getPendingChatNotificationsWithHttpInfo({ Future<void>? abortTrigger, }) async {
     // ignore: prefer_const_declarations
     final path = r'/chat_api/pending_notifications';
 
@@ -405,11 +413,12 @@ class ChatApi {
       headerParams,
       formParams,
       contentTypes.isEmpty ? null : contentTypes.first,
+      abortTrigger: abortTrigger,
     );
   }
 
-  Future<List<PendingChatNotification>?> getPendingChatNotifications() async {
-    final response = await getPendingChatNotificationsWithHttpInfo();
+  Future<List<PendingChatNotification>?> getPendingChatNotifications({ Future<void>? abortTrigger, }) async {
+    final response = await getPendingChatNotificationsWithHttpInfo(abortTrigger: abortTrigger,);
     if (response.statusCode >= HttpStatus.badRequest) {
       throw ApiException(response.statusCode, await _decodeBodyBytes(response));
     }
@@ -431,7 +440,7 @@ class ChatApi {
   /// The received entries must be deleted using delete API.
   ///
   /// Note: This method returns the HTTP [Response].
-  Future<Response> getPendingLatestSeenMessagesWithHttpInfo() async {
+  Future<Response> getPendingLatestSeenMessagesWithHttpInfo({ Future<void>? abortTrigger, }) async {
     // ignore: prefer_const_declarations
     final path = r'/chat_api/pending_latest_seen_messages';
 
@@ -453,14 +462,15 @@ class ChatApi {
       headerParams,
       formParams,
       contentTypes.isEmpty ? null : contentTypes.first,
+      abortTrigger: abortTrigger,
     );
   }
 
   /// Get pending latest seen message numbers where the API caller is the message sender. Returns entries that the viewer has reported as seen but have not yet been delivered back to the sender.
   ///
   /// The received entries must be deleted using delete API.
-  Future<LatestSeenMessageInfoList?> getPendingLatestSeenMessages() async {
-    final response = await getPendingLatestSeenMessagesWithHttpInfo();
+  Future<LatestSeenMessageInfoList?> getPendingLatestSeenMessages({ Future<void>? abortTrigger, }) async {
+    final response = await getPendingLatestSeenMessagesWithHttpInfo(abortTrigger: abortTrigger,);
     if (response.statusCode >= HttpStatus.badRequest) {
       throw ApiException(response.statusCode, await _decodeBodyBytes(response));
     }
@@ -479,7 +489,7 @@ class ChatApi {
   /// The returned bytes is - List of objects  Data for single object: - Binary data length as minimal i64 - Binary data  Minimal i64 has this format: - i64 byte count (u8, values: 1, 2, 3, 4, 5, 6, 7, 8) - i64 bytes (little-endian)  Binary data is binary PGP message which contains backend signed binary data. The binary data contains: - Version (u8, values: 1) - Sender AccountId UUID big-endian bytes (16 bytes) - Recipient AccountId UUID big-endian bytes (16 bytes) - Message MessageId UUID big-endian bytes (16 bytes) - Sender public key ID (minimal i64) - Recipient public key ID (minimal i64) - Message number (minimal i64) - Unix time (minimal i64) - Message data
   ///
   /// Note: This method returns the HTTP [Response].
-  Future<Response> getPendingMessagesWithHttpInfo() async {
+  Future<Response> getPendingMessagesWithHttpInfo({ Future<void>? abortTrigger, }) async {
     // ignore: prefer_const_declarations
     final path = r'/chat_api/pending_messages';
 
@@ -501,14 +511,15 @@ class ChatApi {
       headerParams,
       formParams,
       contentTypes.isEmpty ? null : contentTypes.first,
+      abortTrigger: abortTrigger,
     );
   }
 
   /// Get list of pending messages.
   ///
   /// The returned bytes is - List of objects  Data for single object: - Binary data length as minimal i64 - Binary data  Minimal i64 has this format: - i64 byte count (u8, values: 1, 2, 3, 4, 5, 6, 7, 8) - i64 bytes (little-endian)  Binary data is binary PGP message which contains backend signed binary data. The binary data contains: - Version (u8, values: 1) - Sender AccountId UUID big-endian bytes (16 bytes) - Recipient AccountId UUID big-endian bytes (16 bytes) - Message MessageId UUID big-endian bytes (16 bytes) - Sender public key ID (minimal i64) - Recipient public key ID (minimal i64) - Message number (minimal i64) - Unix time (minimal i64) - Message data
-  Future<MultipartFile?> getPendingMessages() async {
-    final response = await getPendingMessagesWithHttpInfo();
+  Future<MultipartFile?> getPendingMessages({ Future<void>? abortTrigger, }) async {
+    final response = await getPendingMessagesWithHttpInfo(abortTrigger: abortTrigger,);
     if (response.statusCode >= HttpStatus.badRequest) {
       throw ApiException(response.statusCode, await _decodeBodyBytes(response));
     }
@@ -531,7 +542,7 @@ class ChatApi {
   /// Parameters:
   ///
   /// * [String] aid (required):
-  Future<Response> getPrivatePublicKeyInfoWithHttpInfo(String aid,) async {
+  Future<Response> getPrivatePublicKeyInfoWithHttpInfo(String aid, { Future<void>? abortTrigger, }) async {
     // ignore: prefer_const_declarations
     final path = r'/chat_api/private_public_key_info/{aid}'
       .replaceAll('{aid}', aid);
@@ -554,6 +565,7 @@ class ChatApi {
       headerParams,
       formParams,
       contentTypes.isEmpty ? null : contentTypes.first,
+      abortTrigger: abortTrigger,
     );
   }
 
@@ -564,8 +576,8 @@ class ChatApi {
   /// Parameters:
   ///
   /// * [String] aid (required):
-  Future<GetPrivatePublicKeyInfo?> getPrivatePublicKeyInfo(String aid,) async {
-    final response = await getPrivatePublicKeyInfoWithHttpInfo(aid,);
+  Future<GetPrivatePublicKeyInfo?> getPrivatePublicKeyInfo(String aid, { Future<void>? abortTrigger, }) async {
+    final response = await getPrivatePublicKeyInfoWithHttpInfo(aid, abortTrigger: abortTrigger,);
     if (response.statusCode >= HttpStatus.badRequest) {
       throw ApiException(response.statusCode, await _decodeBodyBytes(response));
     }
@@ -588,7 +600,7 @@ class ChatApi {
   /// * [String] aid (required):
   ///
   /// * [int] id (required):
-  Future<Response> getPublicKeyWithHttpInfo(String aid, int id,) async {
+  Future<Response> getPublicKeyWithHttpInfo(String aid, int id, { Future<void>? abortTrigger, }) async {
     // ignore: prefer_const_declarations
     final path = r'/chat_api/public_key/{aid}'
       .replaceAll('{aid}', aid);
@@ -613,6 +625,7 @@ class ChatApi {
       headerParams,
       formParams,
       contentTypes.isEmpty ? null : contentTypes.first,
+      abortTrigger: abortTrigger,
     );
   }
 
@@ -623,8 +636,8 @@ class ChatApi {
   /// * [String] aid (required):
   ///
   /// * [int] id (required):
-  Future<MultipartFile?> getPublicKey(String aid, int id,) async {
-    final response = await getPublicKeyWithHttpInfo(aid, id,);
+  Future<MultipartFile?> getPublicKey(String aid, int id, { Future<void>? abortTrigger, }) async {
+    final response = await getPublicKeyWithHttpInfo(aid, id, abortTrigger: abortTrigger,);
     if (response.statusCode >= HttpStatus.badRequest) {
       throw ApiException(response.statusCode, await _decodeBodyBytes(response));
     }
@@ -641,7 +654,7 @@ class ChatApi {
   /// Get list of sent blocks
   ///
   /// Note: This method returns the HTTP [Response].
-  Future<Response> getSentBlocksWithHttpInfo() async {
+  Future<Response> getSentBlocksWithHttpInfo({ Future<void>? abortTrigger, }) async {
     // ignore: prefer_const_declarations
     final path = r'/chat_api/sent_blocks';
 
@@ -663,12 +676,13 @@ class ChatApi {
       headerParams,
       formParams,
       contentTypes.isEmpty ? null : contentTypes.first,
+      abortTrigger: abortTrigger,
     );
   }
 
   /// Get list of sent blocks
-  Future<SentBlocksPage?> getSentBlocks() async {
-    final response = await getSentBlocksWithHttpInfo();
+  Future<SentBlocksPage?> getSentBlocks({ Future<void>? abortTrigger, }) async {
+    final response = await getSentBlocksWithHttpInfo(abortTrigger: abortTrigger,);
     if (response.statusCode >= HttpStatus.badRequest) {
       throw ApiException(response.statusCode, await _decodeBodyBytes(response));
     }
@@ -683,7 +697,7 @@ class ChatApi {
   }
 
   /// Performs an HTTP 'GET /chat_api/sent_message_ids' operation and returns the [Response].
-  Future<Response> getSentMessageIdsWithHttpInfo() async {
+  Future<Response> getSentMessageIdsWithHttpInfo({ Future<void>? abortTrigger, }) async {
     // ignore: prefer_const_declarations
     final path = r'/chat_api/sent_message_ids';
 
@@ -705,11 +719,12 @@ class ChatApi {
       headerParams,
       formParams,
       contentTypes.isEmpty ? null : contentTypes.first,
+      abortTrigger: abortTrigger,
     );
   }
 
-  Future<SentMessageIdList?> getSentMessageIds() async {
-    final response = await getSentMessageIdsWithHttpInfo();
+  Future<SentMessageIdList?> getSentMessageIds({ Future<void>? abortTrigger, }) async {
+    final response = await getSentMessageIdsWithHttpInfo(abortTrigger: abortTrigger,);
     if (response.statusCode >= HttpStatus.badRequest) {
       throw ApiException(response.statusCode, await _decodeBodyBytes(response));
     }
@@ -735,7 +750,7 @@ class ChatApi {
   ///
   /// * [bool] ignorePendingMessages:
   ///   Ignore pending messages error. If this is true, the public key will be added even if there are pending messages.
-  Future<Response> postAddPublicKeyWithHttpInfo(MultipartFile body, { bool? ignorePendingMessages, }) async {
+  Future<Response> postAddPublicKeyWithHttpInfo(MultipartFile body, { bool? ignorePendingMessages, Future<void>? abortTrigger, }) async {
     // ignore: prefer_const_declarations
     final path = r'/chat_api/add_public_key';
 
@@ -761,6 +776,7 @@ class ChatApi {
       headerParams,
       formParams,
       contentTypes.isEmpty ? null : contentTypes.first,
+      abortTrigger: abortTrigger,
     );
   }
 
@@ -774,8 +790,8 @@ class ChatApi {
   ///
   /// * [bool] ignorePendingMessages:
   ///   Ignore pending messages error. If this is true, the public key will be added even if there are pending messages.
-  Future<AddPublicKeyResult?> postAddPublicKey(MultipartFile body, { bool? ignorePendingMessages, }) async {
-    final response = await postAddPublicKeyWithHttpInfo(body,  ignorePendingMessages: ignorePendingMessages, );
+  Future<AddPublicKeyResult?> postAddPublicKey(MultipartFile body, { bool? ignorePendingMessages, Future<void>? abortTrigger, }) async {
+    final response = await postAddPublicKeyWithHttpInfo(body, ignorePendingMessages: ignorePendingMessages, abortTrigger: abortTrigger,);
     if (response.statusCode >= HttpStatus.badRequest) {
       throw ApiException(response.statusCode, await _decodeBodyBytes(response));
     }
@@ -793,7 +809,7 @@ class ChatApi {
   /// Parameters:
   ///
   /// * [PendingMessageAcknowledgementList] pendingMessageAcknowledgementList (required):
-  Future<Response> postAddRecipientAcknowledgementWithHttpInfo(PendingMessageAcknowledgementList pendingMessageAcknowledgementList,) async {
+  Future<Response> postAddRecipientAcknowledgementWithHttpInfo(PendingMessageAcknowledgementList pendingMessageAcknowledgementList, { Future<void>? abortTrigger, }) async {
     // ignore: prefer_const_declarations
     final path = r'/chat_api/add_recipient_acknowledgement';
 
@@ -815,14 +831,15 @@ class ChatApi {
       headerParams,
       formParams,
       contentTypes.isEmpty ? null : contentTypes.first,
+      abortTrigger: abortTrigger,
     );
   }
 
   /// Parameters:
   ///
   /// * [PendingMessageAcknowledgementList] pendingMessageAcknowledgementList (required):
-  Future<void> postAddRecipientAcknowledgement(PendingMessageAcknowledgementList pendingMessageAcknowledgementList,) async {
-    final response = await postAddRecipientAcknowledgementWithHttpInfo(pendingMessageAcknowledgementList,);
+  Future<void> postAddRecipientAcknowledgement(PendingMessageAcknowledgementList pendingMessageAcknowledgementList, { Future<void>? abortTrigger, }) async {
+    final response = await postAddRecipientAcknowledgementWithHttpInfo(pendingMessageAcknowledgementList, abortTrigger: abortTrigger,);
     if (response.statusCode >= HttpStatus.badRequest) {
       throw ApiException(response.statusCode, await _decodeBodyBytes(response));
     }
@@ -832,7 +849,7 @@ class ChatApi {
   /// Parameters:
   ///
   /// * [SentMessageIdList] sentMessageIdList (required):
-  Future<Response> postAddSenderAcknowledgementWithHttpInfo(SentMessageIdList sentMessageIdList,) async {
+  Future<Response> postAddSenderAcknowledgementWithHttpInfo(SentMessageIdList sentMessageIdList, { Future<void>? abortTrigger, }) async {
     // ignore: prefer_const_declarations
     final path = r'/chat_api/add_sender_acknowledgement';
 
@@ -854,14 +871,15 @@ class ChatApi {
       headerParams,
       formParams,
       contentTypes.isEmpty ? null : contentTypes.first,
+      abortTrigger: abortTrigger,
     );
   }
 
   /// Parameters:
   ///
   /// * [SentMessageIdList] sentMessageIdList (required):
-  Future<void> postAddSenderAcknowledgement(SentMessageIdList sentMessageIdList,) async {
-    final response = await postAddSenderAcknowledgementWithHttpInfo(sentMessageIdList,);
+  Future<void> postAddSenderAcknowledgement(SentMessageIdList sentMessageIdList, { Future<void>? abortTrigger, }) async {
+    final response = await postAddSenderAcknowledgementWithHttpInfo(sentMessageIdList, abortTrigger: abortTrigger,);
     if (response.statusCode >= HttpStatus.badRequest) {
       throw ApiException(response.statusCode, await _decodeBodyBytes(response));
     }
@@ -874,7 +892,7 @@ class ChatApi {
   /// Parameters:
   ///
   /// * [AccountId] accountId (required):
-  Future<Response> postBlockProfileWithHttpInfo(AccountId accountId,) async {
+  Future<Response> postBlockProfileWithHttpInfo(AccountId accountId, { Future<void>? abortTrigger, }) async {
     // ignore: prefer_const_declarations
     final path = r'/chat_api/block_profile';
 
@@ -896,6 +914,7 @@ class ChatApi {
       headerParams,
       formParams,
       contentTypes.isEmpty ? null : contentTypes.first,
+      abortTrigger: abortTrigger,
     );
   }
 
@@ -904,8 +923,8 @@ class ChatApi {
   /// Parameters:
   ///
   /// * [AccountId] accountId (required):
-  Future<void> postBlockProfile(AccountId accountId,) async {
-    final response = await postBlockProfileWithHttpInfo(accountId,);
+  Future<void> postBlockProfile(AccountId accountId, { Future<void>? abortTrigger, }) async {
+    final response = await postBlockProfileWithHttpInfo(accountId, abortTrigger: abortTrigger,);
     if (response.statusCode >= HttpStatus.badRequest) {
       throw ApiException(response.statusCode, await _decodeBodyBytes(response));
     }
@@ -915,7 +934,7 @@ class ChatApi {
   /// Parameters:
   ///
   /// * [ChatAppNotificationSettings] chatAppNotificationSettings (required):
-  Future<Response> postChatAppNotificationSettingsWithHttpInfo(ChatAppNotificationSettings chatAppNotificationSettings,) async {
+  Future<Response> postChatAppNotificationSettingsWithHttpInfo(ChatAppNotificationSettings chatAppNotificationSettings, { Future<void>? abortTrigger, }) async {
     // ignore: prefer_const_declarations
     final path = r'/chat_api/post_chat_app_notification_settings';
 
@@ -937,14 +956,15 @@ class ChatApi {
       headerParams,
       formParams,
       contentTypes.isEmpty ? null : contentTypes.first,
+      abortTrigger: abortTrigger,
     );
   }
 
   /// Parameters:
   ///
   /// * [ChatAppNotificationSettings] chatAppNotificationSettings (required):
-  Future<void> postChatAppNotificationSettings(ChatAppNotificationSettings chatAppNotificationSettings,) async {
-    final response = await postChatAppNotificationSettingsWithHttpInfo(chatAppNotificationSettings,);
+  Future<void> postChatAppNotificationSettings(ChatAppNotificationSettings chatAppNotificationSettings, { Future<void>? abortTrigger, }) async {
+    final response = await postChatAppNotificationSettingsWithHttpInfo(chatAppNotificationSettings, abortTrigger: abortTrigger,);
     if (response.statusCode >= HttpStatus.badRequest) {
       throw ApiException(response.statusCode, await _decodeBodyBytes(response));
     }
@@ -954,7 +974,7 @@ class ChatApi {
   /// Parameters:
   ///
   /// * [ChatEmailNotificationSettings] chatEmailNotificationSettings (required):
-  Future<Response> postChatEmailNotificationSettingsWithHttpInfo(ChatEmailNotificationSettings chatEmailNotificationSettings,) async {
+  Future<Response> postChatEmailNotificationSettingsWithHttpInfo(ChatEmailNotificationSettings chatEmailNotificationSettings, { Future<void>? abortTrigger, }) async {
     // ignore: prefer_const_declarations
     final path = r'/chat_api/post_chat_email_notification_settings';
 
@@ -976,14 +996,15 @@ class ChatApi {
       headerParams,
       formParams,
       contentTypes.isEmpty ? null : contentTypes.first,
+      abortTrigger: abortTrigger,
     );
   }
 
   /// Parameters:
   ///
   /// * [ChatEmailNotificationSettings] chatEmailNotificationSettings (required):
-  Future<void> postChatEmailNotificationSettings(ChatEmailNotificationSettings chatEmailNotificationSettings,) async {
-    final response = await postChatEmailNotificationSettingsWithHttpInfo(chatEmailNotificationSettings,);
+  Future<void> postChatEmailNotificationSettings(ChatEmailNotificationSettings chatEmailNotificationSettings, { Future<void>? abortTrigger, }) async {
+    final response = await postChatEmailNotificationSettingsWithHttpInfo(chatEmailNotificationSettings, abortTrigger: abortTrigger,);
     if (response.statusCode >= HttpStatus.badRequest) {
       throw ApiException(response.statusCode, await _decodeBodyBytes(response));
     }
@@ -998,7 +1019,7 @@ class ChatApi {
   /// Parameters:
   ///
   /// * [UpdateChatMessageReports] updateChatMessageReports (required):
-  Future<Response> postChatMessageReportsWithHttpInfo(UpdateChatMessageReports updateChatMessageReports,) async {
+  Future<Response> postChatMessageReportsWithHttpInfo(UpdateChatMessageReports updateChatMessageReports, { Future<void>? abortTrigger, }) async {
     // ignore: prefer_const_declarations
     final path = r'/chat_api/chat_message_reports';
 
@@ -1020,6 +1041,7 @@ class ChatApi {
       headerParams,
       formParams,
       contentTypes.isEmpty ? null : contentTypes.first,
+      abortTrigger: abortTrigger,
     );
   }
 
@@ -1030,8 +1052,8 @@ class ChatApi {
   /// Parameters:
   ///
   /// * [UpdateChatMessageReports] updateChatMessageReports (required):
-  Future<UpdateReportResult?> postChatMessageReports(UpdateChatMessageReports updateChatMessageReports,) async {
-    final response = await postChatMessageReportsWithHttpInfo(updateChatMessageReports,);
+  Future<UpdateReportResult?> postChatMessageReports(UpdateChatMessageReports updateChatMessageReports, { Future<void>? abortTrigger, }) async {
+    final response = await postChatMessageReportsWithHttpInfo(updateChatMessageReports, abortTrigger: abortTrigger,);
     if (response.statusCode >= HttpStatus.badRequest) {
       throw ApiException(response.statusCode, await _decodeBodyBytes(response));
     }
@@ -1049,7 +1071,7 @@ class ChatApi {
   /// Parameters:
   ///
   /// * [ChatPrivacySettings] chatPrivacySettings (required):
-  Future<Response> postChatPrivacySettingsWithHttpInfo(ChatPrivacySettings chatPrivacySettings,) async {
+  Future<Response> postChatPrivacySettingsWithHttpInfo(ChatPrivacySettings chatPrivacySettings, { Future<void>? abortTrigger, }) async {
     // ignore: prefer_const_declarations
     final path = r'/chat_api/post_chat_privacy_settings';
 
@@ -1071,14 +1093,15 @@ class ChatApi {
       headerParams,
       formParams,
       contentTypes.isEmpty ? null : contentTypes.first,
+      abortTrigger: abortTrigger,
     );
   }
 
   /// Parameters:
   ///
   /// * [ChatPrivacySettings] chatPrivacySettings (required):
-  Future<void> postChatPrivacySettings(ChatPrivacySettings chatPrivacySettings,) async {
-    final response = await postChatPrivacySettingsWithHttpInfo(chatPrivacySettings,);
+  Future<void> postChatPrivacySettings(ChatPrivacySettings chatPrivacySettings, { Future<void>? abortTrigger, }) async {
+    final response = await postChatPrivacySettingsWithHttpInfo(chatPrivacySettings, abortTrigger: abortTrigger,);
     if (response.statusCode >= HttpStatus.badRequest) {
       throw ApiException(response.statusCode, await _decodeBodyBytes(response));
     }
@@ -1093,7 +1116,7 @@ class ChatApi {
   /// Parameters:
   ///
   /// * [String] aid (required):
-  Future<Response> postCreateVideoCallUrlWithHttpInfo(String aid,) async {
+  Future<Response> postCreateVideoCallUrlWithHttpInfo(String aid, { Future<void>? abortTrigger, }) async {
     // ignore: prefer_const_declarations
     final path = r'/chat_api/post_create_video_call_url';
 
@@ -1117,6 +1140,7 @@ class ChatApi {
       headerParams,
       formParams,
       contentTypes.isEmpty ? null : contentTypes.first,
+      abortTrigger: abortTrigger,
     );
   }
 
@@ -1127,8 +1151,8 @@ class ChatApi {
   /// Parameters:
   ///
   /// * [String] aid (required):
-  Future<PostVideoCallUrlResult?> postCreateVideoCallUrl(String aid,) async {
-    final response = await postCreateVideoCallUrlWithHttpInfo(aid,);
+  Future<PostVideoCallUrlResult?> postCreateVideoCallUrl(String aid, { Future<void>? abortTrigger, }) async {
+    final response = await postCreateVideoCallUrlWithHttpInfo(aid, abortTrigger: abortTrigger,);
     if (response.statusCode >= HttpStatus.badRequest) {
       throw ApiException(response.statusCode, await _decodeBodyBytes(response));
     }
@@ -1151,7 +1175,7 @@ class ChatApi {
   /// Parameters:
   ///
   /// * [MessageDeliveryInfoIdList] messageDeliveryInfoIdList (required):
-  Future<Response> postDeleteMessageDeliveryInfoWithHttpInfo(MessageDeliveryInfoIdList messageDeliveryInfoIdList,) async {
+  Future<Response> postDeleteMessageDeliveryInfoWithHttpInfo(MessageDeliveryInfoIdList messageDeliveryInfoIdList, { Future<void>? abortTrigger, }) async {
     // ignore: prefer_const_declarations
     final path = r'/chat_api/delete_message_delivery_info';
 
@@ -1173,6 +1197,7 @@ class ChatApi {
       headerParams,
       formParams,
       contentTypes.isEmpty ? null : contentTypes.first,
+      abortTrigger: abortTrigger,
     );
   }
 
@@ -1183,8 +1208,8 @@ class ChatApi {
   /// Parameters:
   ///
   /// * [MessageDeliveryInfoIdList] messageDeliveryInfoIdList (required):
-  Future<void> postDeleteMessageDeliveryInfo(MessageDeliveryInfoIdList messageDeliveryInfoIdList,) async {
-    final response = await postDeleteMessageDeliveryInfoWithHttpInfo(messageDeliveryInfoIdList,);
+  Future<void> postDeleteMessageDeliveryInfo(MessageDeliveryInfoIdList messageDeliveryInfoIdList, { Future<void>? abortTrigger, }) async {
+    final response = await postDeleteMessageDeliveryInfoWithHttpInfo(messageDeliveryInfoIdList, abortTrigger: abortTrigger,);
     if (response.statusCode >= HttpStatus.badRequest) {
       throw ApiException(response.statusCode, await _decodeBodyBytes(response));
     }
@@ -1194,7 +1219,7 @@ class ChatApi {
   /// Parameters:
   ///
   /// * [List<PendingChatNotificationToDelete>] pendingChatNotificationToDelete (required):
-  Future<Response> postDeletePendingChatNotificationsWithHttpInfo(List<PendingChatNotificationToDelete> pendingChatNotificationToDelete,) async {
+  Future<Response> postDeletePendingChatNotificationsWithHttpInfo(List<PendingChatNotificationToDelete> pendingChatNotificationToDelete, { Future<void>? abortTrigger, }) async {
     // ignore: prefer_const_declarations
     final path = r'/chat_api/pending_notifications/delete';
 
@@ -1216,14 +1241,15 @@ class ChatApi {
       headerParams,
       formParams,
       contentTypes.isEmpty ? null : contentTypes.first,
+      abortTrigger: abortTrigger,
     );
   }
 
   /// Parameters:
   ///
   /// * [List<PendingChatNotificationToDelete>] pendingChatNotificationToDelete (required):
-  Future<void> postDeletePendingChatNotifications(List<PendingChatNotificationToDelete> pendingChatNotificationToDelete,) async {
-    final response = await postDeletePendingChatNotificationsWithHttpInfo(pendingChatNotificationToDelete,);
+  Future<void> postDeletePendingChatNotifications(List<PendingChatNotificationToDelete> pendingChatNotificationToDelete, { Future<void>? abortTrigger, }) async {
+    final response = await postDeletePendingChatNotificationsWithHttpInfo(pendingChatNotificationToDelete, abortTrigger: abortTrigger,);
     if (response.statusCode >= HttpStatus.badRequest) {
       throw ApiException(response.statusCode, await _decodeBodyBytes(response));
     }
@@ -1236,7 +1262,7 @@ class ChatApi {
   /// Parameters:
   ///
   /// * [LatestSeenMessageInfoList] latestSeenMessageInfoList (required):
-  Future<Response> postDeletePendingLatestSeenMessagesWithHttpInfo(LatestSeenMessageInfoList latestSeenMessageInfoList,) async {
+  Future<Response> postDeletePendingLatestSeenMessagesWithHttpInfo(LatestSeenMessageInfoList latestSeenMessageInfoList, { Future<void>? abortTrigger, }) async {
     // ignore: prefer_const_declarations
     final path = r'/chat_api/pending_latest_seen_messages/delete';
 
@@ -1258,6 +1284,7 @@ class ChatApi {
       headerParams,
       formParams,
       contentTypes.isEmpty ? null : contentTypes.first,
+      abortTrigger: abortTrigger,
     );
   }
 
@@ -1266,8 +1293,8 @@ class ChatApi {
   /// Parameters:
   ///
   /// * [LatestSeenMessageInfoList] latestSeenMessageInfoList (required):
-  Future<void> postDeletePendingLatestSeenMessages(LatestSeenMessageInfoList latestSeenMessageInfoList,) async {
-    final response = await postDeletePendingLatestSeenMessagesWithHttpInfo(latestSeenMessageInfoList,);
+  Future<void> postDeletePendingLatestSeenMessages(LatestSeenMessageInfoList latestSeenMessageInfoList, { Future<void>? abortTrigger, }) async {
+    final response = await postDeletePendingLatestSeenMessagesWithHttpInfo(latestSeenMessageInfoList, abortTrigger: abortTrigger,);
     if (response.statusCode >= HttpStatus.badRequest) {
       throw ApiException(response.statusCode, await _decodeBodyBytes(response));
     }
@@ -1280,7 +1307,7 @@ class ChatApi {
   /// Parameters:
   ///
   /// * [MatchesIteratorState] matchesIteratorState (required):
-  Future<Response> postGetMatchesIteratorPageWithHttpInfo(MatchesIteratorState matchesIteratorState,) async {
+  Future<Response> postGetMatchesIteratorPageWithHttpInfo(MatchesIteratorState matchesIteratorState, { Future<void>? abortTrigger, }) async {
     // ignore: prefer_const_declarations
     final path = r'/chat_api/matches';
 
@@ -1302,6 +1329,7 @@ class ChatApi {
       headerParams,
       formParams,
       contentTypes.isEmpty ? null : contentTypes.first,
+      abortTrigger: abortTrigger,
     );
   }
 
@@ -1310,8 +1338,8 @@ class ChatApi {
   /// Parameters:
   ///
   /// * [MatchesIteratorState] matchesIteratorState (required):
-  Future<MatchesPage?> postGetMatchesIteratorPage(MatchesIteratorState matchesIteratorState,) async {
-    final response = await postGetMatchesIteratorPageWithHttpInfo(matchesIteratorState,);
+  Future<MatchesPage?> postGetMatchesIteratorPage(MatchesIteratorState matchesIteratorState, { Future<void>? abortTrigger, }) async {
+    final response = await postGetMatchesIteratorPageWithHttpInfo(matchesIteratorState, abortTrigger: abortTrigger,);
     if (response.statusCode >= HttpStatus.badRequest) {
       throw ApiException(response.statusCode, await _decodeBodyBytes(response));
     }
@@ -1326,7 +1354,7 @@ class ChatApi {
   }
 
   /// Performs an HTTP 'POST /chat_api/new_received_likes_count' operation and returns the [Response].
-  Future<Response> postGetNewReceivedLikesCountWithHttpInfo() async {
+  Future<Response> postGetNewReceivedLikesCountWithHttpInfo({ Future<void>? abortTrigger, }) async {
     // ignore: prefer_const_declarations
     final path = r'/chat_api/new_received_likes_count';
 
@@ -1348,11 +1376,12 @@ class ChatApi {
       headerParams,
       formParams,
       contentTypes.isEmpty ? null : contentTypes.first,
+      abortTrigger: abortTrigger,
     );
   }
 
-  Future<NewReceivedLikesCountResult?> postGetNewReceivedLikesCount() async {
-    final response = await postGetNewReceivedLikesCountWithHttpInfo();
+  Future<NewReceivedLikesCountResult?> postGetNewReceivedLikesCount({ Future<void>? abortTrigger, }) async {
+    final response = await postGetNewReceivedLikesCountWithHttpInfo(abortTrigger: abortTrigger,);
     if (response.statusCode >= HttpStatus.badRequest) {
       throw ApiException(response.statusCode, await _decodeBodyBytes(response));
     }
@@ -1375,7 +1404,7 @@ class ChatApi {
   /// Parameters:
   ///
   /// * [ReceivedLikesIteratorState] receivedLikesIteratorState (required):
-  Future<Response> postGetReceivedLikesPageWithHttpInfo(ReceivedLikesIteratorState receivedLikesIteratorState,) async {
+  Future<Response> postGetReceivedLikesPageWithHttpInfo(ReceivedLikesIteratorState receivedLikesIteratorState, { Future<void>? abortTrigger, }) async {
     // ignore: prefer_const_declarations
     final path = r'/chat_api/received_likes';
 
@@ -1397,6 +1426,7 @@ class ChatApi {
       headerParams,
       formParams,
       contentTypes.isEmpty ? null : contentTypes.first,
+      abortTrigger: abortTrigger,
     );
   }
 
@@ -1407,8 +1437,8 @@ class ChatApi {
   /// Parameters:
   ///
   /// * [ReceivedLikesIteratorState] receivedLikesIteratorState (required):
-  Future<ReceivedLikesPage?> postGetReceivedLikesPage(ReceivedLikesIteratorState receivedLikesIteratorState,) async {
-    final response = await postGetReceivedLikesPageWithHttpInfo(receivedLikesIteratorState,);
+  Future<ReceivedLikesPage?> postGetReceivedLikesPage(ReceivedLikesIteratorState receivedLikesIteratorState, { Future<void>? abortTrigger, }) async {
+    final response = await postGetReceivedLikesPageWithHttpInfo(receivedLikesIteratorState, abortTrigger: abortTrigger,);
     if (response.statusCode >= HttpStatus.badRequest) {
       throw ApiException(response.statusCode, await _decodeBodyBytes(response));
     }
@@ -1431,7 +1461,7 @@ class ChatApi {
   /// Parameters:
   ///
   /// * [MessageId] messageId (required):
-  Future<Response> postGetSentMessageWithHttpInfo(MessageId messageId,) async {
+  Future<Response> postGetSentMessageWithHttpInfo(MessageId messageId, { Future<void>? abortTrigger, }) async {
     // ignore: prefer_const_declarations
     final path = r'/chat_api/sent_message';
 
@@ -1453,6 +1483,7 @@ class ChatApi {
       headerParams,
       formParams,
       contentTypes.isEmpty ? null : contentTypes.first,
+      abortTrigger: abortTrigger,
     );
   }
 
@@ -1463,8 +1494,8 @@ class ChatApi {
   /// Parameters:
   ///
   /// * [MessageId] messageId (required):
-  Future<GetSentMessage?> postGetSentMessage(MessageId messageId,) async {
-    final response = await postGetSentMessageWithHttpInfo(messageId,);
+  Future<GetSentMessage?> postGetSentMessage(MessageId messageId, { Future<void>? abortTrigger, }) async {
+    final response = await postGetSentMessageWithHttpInfo(messageId, abortTrigger: abortTrigger,);
     if (response.statusCode >= HttpStatus.badRequest) {
       throw ApiException(response.statusCode, await _decodeBodyBytes(response));
     }
@@ -1485,7 +1516,7 @@ class ChatApi {
   /// Parameters:
   ///
   /// * [SeenMessage] seenMessage (required):
-  Future<Response> postMarkMessageAsSeenWithHttpInfo(SeenMessage seenMessage,) async {
+  Future<Response> postMarkMessageAsSeenWithHttpInfo(SeenMessage seenMessage, { Future<void>? abortTrigger, }) async {
     // ignore: prefer_const_declarations
     final path = r'/chat_api/mark_message_as_seen';
 
@@ -1507,6 +1538,7 @@ class ChatApi {
       headerParams,
       formParams,
       contentTypes.isEmpty ? null : contentTypes.first,
+      abortTrigger: abortTrigger,
     );
   }
 
@@ -1515,8 +1547,8 @@ class ChatApi {
   /// Parameters:
   ///
   /// * [SeenMessage] seenMessage (required):
-  Future<void> postMarkMessageAsSeen(SeenMessage seenMessage,) async {
-    final response = await postMarkMessageAsSeenWithHttpInfo(seenMessage,);
+  Future<void> postMarkMessageAsSeen(SeenMessage seenMessage, { Future<void>? abortTrigger, }) async {
+    final response = await postMarkMessageAsSeenWithHttpInfo(seenMessage, abortTrigger: abortTrigger,);
     if (response.statusCode >= HttpStatus.badRequest) {
       throw ApiException(response.statusCode, await _decodeBodyBytes(response));
     }
@@ -1526,7 +1558,7 @@ class ChatApi {
   /// Parameters:
   ///
   /// * [MarkReceivedLikesViewed] markReceivedLikesViewed (required):
-  Future<Response> postMarkReceivedLikesViewedWithHttpInfo(MarkReceivedLikesViewed markReceivedLikesViewed,) async {
+  Future<Response> postMarkReceivedLikesViewedWithHttpInfo(MarkReceivedLikesViewed markReceivedLikesViewed, { Future<void>? abortTrigger, }) async {
     // ignore: prefer_const_declarations
     final path = r'/chat_api/mark_received_likes_viewed';
 
@@ -1548,21 +1580,22 @@ class ChatApi {
       headerParams,
       formParams,
       contentTypes.isEmpty ? null : contentTypes.first,
+      abortTrigger: abortTrigger,
     );
   }
 
   /// Parameters:
   ///
   /// * [MarkReceivedLikesViewed] markReceivedLikesViewed (required):
-  Future<void> postMarkReceivedLikesViewed(MarkReceivedLikesViewed markReceivedLikesViewed,) async {
-    final response = await postMarkReceivedLikesViewedWithHttpInfo(markReceivedLikesViewed,);
+  Future<void> postMarkReceivedLikesViewed(MarkReceivedLikesViewed markReceivedLikesViewed, { Future<void>? abortTrigger, }) async {
+    final response = await postMarkReceivedLikesViewedWithHttpInfo(markReceivedLikesViewed, abortTrigger: abortTrigger,);
     if (response.statusCode >= HttpStatus.badRequest) {
       throw ApiException(response.statusCode, await _decodeBodyBytes(response));
     }
   }
 
   /// Performs an HTTP 'POST /chat_api/reset_new_received_likes_count' operation and returns the [Response].
-  Future<Response> postResetNewReceivedLikesCountWithHttpInfo() async {
+  Future<Response> postResetNewReceivedLikesCountWithHttpInfo({ Future<void>? abortTrigger, }) async {
     // ignore: prefer_const_declarations
     final path = r'/chat_api/reset_new_received_likes_count';
 
@@ -1584,11 +1617,12 @@ class ChatApi {
       headerParams,
       formParams,
       contentTypes.isEmpty ? null : contentTypes.first,
+      abortTrigger: abortTrigger,
     );
   }
 
-  Future<NewReceivedLikesCountResult?> postResetNewReceivedLikesCount() async {
-    final response = await postResetNewReceivedLikesCountWithHttpInfo();
+  Future<NewReceivedLikesCountResult?> postResetNewReceivedLikesCount({ Future<void>? abortTrigger, }) async {
+    final response = await postResetNewReceivedLikesCountWithHttpInfo(abortTrigger: abortTrigger,);
     if (response.statusCode >= HttpStatus.badRequest) {
       throw ApiException(response.statusCode, await _decodeBodyBytes(response));
     }
@@ -1603,7 +1637,7 @@ class ChatApi {
   }
 
   /// Performs an HTTP 'POST /chat_api/received_likes/reset' operation and returns the [Response].
-  Future<Response> postResetReceivedLikesPagingWithHttpInfo() async {
+  Future<Response> postResetReceivedLikesPagingWithHttpInfo({ Future<void>? abortTrigger, }) async {
     // ignore: prefer_const_declarations
     final path = r'/chat_api/received_likes/reset';
 
@@ -1625,11 +1659,12 @@ class ChatApi {
       headerParams,
       formParams,
       contentTypes.isEmpty ? null : contentTypes.first,
+      abortTrigger: abortTrigger,
     );
   }
 
-  Future<ResetReceivedLikesIteratorResult?> postResetReceivedLikesPaging() async {
-    final response = await postResetReceivedLikesPagingWithHttpInfo();
+  Future<ResetReceivedLikesIteratorResult?> postResetReceivedLikesPaging({ Future<void>? abortTrigger, }) async {
+    final response = await postResetReceivedLikesPagingWithHttpInfo(abortTrigger: abortTrigger,);
     if (response.statusCode >= HttpStatus.badRequest) {
       throw ApiException(response.statusCode, await _decodeBodyBytes(response));
     }
@@ -1652,7 +1687,7 @@ class ChatApi {
   /// Parameters:
   ///
   /// * [SendLike] sendLike (required):
-  Future<Response> postSendLikeWithHttpInfo(SendLike sendLike,) async {
+  Future<Response> postSendLikeWithHttpInfo(SendLike sendLike, { Future<void>? abortTrigger, }) async {
     // ignore: prefer_const_declarations
     final path = r'/chat_api/send_like';
 
@@ -1674,6 +1709,7 @@ class ChatApi {
       headerParams,
       formParams,
       contentTypes.isEmpty ? null : contentTypes.first,
+      abortTrigger: abortTrigger,
     );
   }
 
@@ -1684,8 +1720,8 @@ class ChatApi {
   /// Parameters:
   ///
   /// * [SendLike] sendLike (required):
-  Future<SendLikeResult?> postSendLike(SendLike sendLike,) async {
-    final response = await postSendLikeWithHttpInfo(sendLike,);
+  Future<SendLikeResult?> postSendLike(SendLike sendLike, { Future<void>? abortTrigger, }) async {
+    final response = await postSendLikeWithHttpInfo(sendLike, abortTrigger: abortTrigger,);
     if (response.statusCode >= HttpStatus.badRequest) {
       throw ApiException(response.statusCode, await _decodeBodyBytes(response));
     }
@@ -1718,7 +1754,7 @@ class ChatApi {
   /// * [String] messageId (required):
   ///
   /// * [MultipartFile] body (required):
-  Future<Response> postSendMessageWithHttpInfo(int senderPublicKeyId, String recipient, int recipientPublicKeyId, String messageId, MultipartFile body,) async {
+  Future<Response> postSendMessageWithHttpInfo(int senderPublicKeyId, String recipient, int recipientPublicKeyId, String messageId, MultipartFile body, { Future<void>? abortTrigger, }) async {
     // ignore: prefer_const_declarations
     final path = r'/chat_api/send_message';
 
@@ -1745,6 +1781,7 @@ class ChatApi {
       headerParams,
       formParams,
       contentTypes.isEmpty ? null : contentTypes.first,
+      abortTrigger: abortTrigger,
     );
   }
 
@@ -1765,8 +1802,8 @@ class ChatApi {
   /// * [String] messageId (required):
   ///
   /// * [MultipartFile] body (required):
-  Future<SendMessageResult?> postSendMessage(int senderPublicKeyId, String recipient, int recipientPublicKeyId, String messageId, MultipartFile body,) async {
-    final response = await postSendMessageWithHttpInfo(senderPublicKeyId, recipient, recipientPublicKeyId, messageId, body,);
+  Future<SendMessageResult?> postSendMessage(int senderPublicKeyId, String recipient, int recipientPublicKeyId, String messageId, MultipartFile body, { Future<void>? abortTrigger, }) async {
+    final response = await postSendMessageWithHttpInfo(senderPublicKeyId, recipient, recipientPublicKeyId, messageId, body, abortTrigger: abortTrigger,);
     if (response.statusCode >= HttpStatus.badRequest) {
       throw ApiException(response.statusCode, await _decodeBodyBytes(response));
     }
@@ -1787,7 +1824,7 @@ class ChatApi {
   /// Parameters:
   ///
   /// * [AccountId] accountId (required):
-  Future<Response> postUnblockProfileWithHttpInfo(AccountId accountId,) async {
+  Future<Response> postUnblockProfileWithHttpInfo(AccountId accountId, { Future<void>? abortTrigger, }) async {
     // ignore: prefer_const_declarations
     final path = r'/chat_api/unblock_profile';
 
@@ -1809,6 +1846,7 @@ class ChatApi {
       headerParams,
       formParams,
       contentTypes.isEmpty ? null : contentTypes.first,
+      abortTrigger: abortTrigger,
     );
   }
 
@@ -1817,8 +1855,8 @@ class ChatApi {
   /// Parameters:
   ///
   /// * [AccountId] accountId (required):
-  Future<void> postUnblockProfile(AccountId accountId,) async {
-    final response = await postUnblockProfileWithHttpInfo(accountId,);
+  Future<void> postUnblockProfile(AccountId accountId, { Future<void>? abortTrigger, }) async {
+    final response = await postUnblockProfileWithHttpInfo(accountId, abortTrigger: abortTrigger,);
     if (response.statusCode >= HttpStatus.badRequest) {
       throw ApiException(response.statusCode, await _decodeBodyBytes(response));
     }

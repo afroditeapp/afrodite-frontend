@@ -53,10 +53,10 @@ class ChatPrivacySettings {
       // Note 1: the values aren't checked for validity beyond being non-null.
       // Note 2: this code is stripped in release mode!
       assert(() {
-        requiredKeys.forEach((key) {
-          assert(json.containsKey(key), 'Required key "ChatPrivacySettings[$key]" is missing from JSON.');
-          assert(json[key] != null, 'Required key "ChatPrivacySettings[$key]" has a null value in JSON.');
-        });
+        assert(json.containsKey(r'message_state_seen'), 'Required key "ChatPrivacySettings[message_state_seen]" is missing from JSON.');
+        assert(json[r'message_state_seen'] != null, 'Required key "ChatPrivacySettings[message_state_seen]" has a null value in JSON.');
+        assert(json.containsKey(r'typing_indicator'), 'Required key "ChatPrivacySettings[typing_indicator]" is missing from JSON.');
+        assert(json[r'typing_indicator'] != null, 'Required key "ChatPrivacySettings[typing_indicator]" has a null value in JSON.');
         return true;
       }());
 

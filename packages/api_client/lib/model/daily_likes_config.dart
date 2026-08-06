@@ -20,7 +20,7 @@ class DailyLikesConfig {
   /// Minimum value: 0
   int dailyLikes;
 
-  /// UTC time value
+  /// UTC time with \"hh:mm\" format.
   String resetTime;
 
   @override
@@ -55,10 +55,10 @@ class DailyLikesConfig {
       // Note 1: the values aren't checked for validity beyond being non-null.
       // Note 2: this code is stripped in release mode!
       assert(() {
-        requiredKeys.forEach((key) {
-          assert(json.containsKey(key), 'Required key "DailyLikesConfig[$key]" is missing from JSON.');
-          assert(json[key] != null, 'Required key "DailyLikesConfig[$key]" has a null value in JSON.');
-        });
+        assert(json.containsKey(r'daily_likes'), 'Required key "DailyLikesConfig[daily_likes]" is missing from JSON.');
+        assert(json[r'daily_likes'] != null, 'Required key "DailyLikesConfig[daily_likes]" has a null value in JSON.');
+        assert(json.containsKey(r'reset_time'), 'Required key "DailyLikesConfig[reset_time]" is missing from JSON.');
+        assert(json[r'reset_time'] != null, 'Required key "DailyLikesConfig[reset_time]" has a null value in JSON.');
         return true;
       }());
 

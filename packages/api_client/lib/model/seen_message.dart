@@ -54,10 +54,10 @@ class SeenMessage {
       // Note 1: the values aren't checked for validity beyond being non-null.
       // Note 2: this code is stripped in release mode!
       assert(() {
-        requiredKeys.forEach((key) {
-          assert(json.containsKey(key), 'Required key "SeenMessage[$key]" is missing from JSON.');
-          assert(json[key] != null, 'Required key "SeenMessage[$key]" has a null value in JSON.');
-        });
+        assert(json.containsKey(r'mn'), 'Required key "SeenMessage[mn]" is missing from JSON.');
+        assert(json[r'mn'] != null, 'Required key "SeenMessage[mn]" has a null value in JSON.');
+        assert(json.containsKey(r'sender'), 'Required key "SeenMessage[sender]" is missing from JSON.');
+        assert(json[r'sender'] != null, 'Required key "SeenMessage[sender]" has a null value in JSON.');
         return true;
       }());
 

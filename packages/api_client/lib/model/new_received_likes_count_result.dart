@@ -60,10 +60,12 @@ class NewReceivedLikesCountResult {
       // Note 1: the values aren't checked for validity beyond being non-null.
       // Note 2: this code is stripped in release mode!
       assert(() {
-        requiredKeys.forEach((key) {
-          assert(json.containsKey(key), 'Required key "NewReceivedLikesCountResult[$key]" is missing from JSON.');
-          assert(json[key] != null, 'Required key "NewReceivedLikesCountResult[$key]" has a null value in JSON.');
-        });
+        assert(json.containsKey(r'c'), 'Required key "NewReceivedLikesCountResult[c]" is missing from JSON.');
+        assert(json[r'c'] != null, 'Required key "NewReceivedLikesCountResult[c]" has a null value in JSON.');
+        assert(json.containsKey(r'l'), 'Required key "NewReceivedLikesCountResult[l]" is missing from JSON.');
+        assert(json[r'l'] != null, 'Required key "NewReceivedLikesCountResult[l]" has a null value in JSON.');
+        assert(json.containsKey(r'v'), 'Required key "NewReceivedLikesCountResult[v]" is missing from JSON.');
+        assert(json[r'v'] != null, 'Required key "NewReceivedLikesCountResult[v]" has a null value in JSON.');
         return true;
       }());
 

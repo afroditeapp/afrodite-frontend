@@ -53,10 +53,10 @@ class SignInWithState {
       // Note 1: the values aren't checked for validity beyond being non-null.
       // Note 2: this code is stripped in release mode!
       assert(() {
-        requiredKeys.forEach((key) {
-          assert(json.containsKey(key), 'Required key "SignInWithState[$key]" is missing from JSON.');
-          assert(json[key] != null, 'Required key "SignInWithState[$key]" has a null value in JSON.');
-        });
+        assert(json.containsKey(r'apple'), 'Required key "SignInWithState[apple]" is missing from JSON.');
+        assert(json[r'apple'] != null, 'Required key "SignInWithState[apple]" has a null value in JSON.');
+        assert(json.containsKey(r'google'), 'Required key "SignInWithState[google]" is missing from JSON.');
+        assert(json[r'google'] != null, 'Required key "SignInWithState[google]" has a null value in JSON.');
         return true;
       }());
 

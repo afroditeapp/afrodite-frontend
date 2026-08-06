@@ -17,6 +17,7 @@ class ProfileAttributeValue {
     this.v = const [],
   });
 
+  /// Attribute ID
   int id;
 
   /// For bitflag filters the list only has one u16 value.  For one level attributes the values are u16 attribute value IDs.  For two level attributes the values are u32 values with most significant u16 containing attribute value ID and least significant u16 containing group value ID.  Values are in ascending order.
@@ -54,10 +55,10 @@ class ProfileAttributeValue {
       // Note 1: the values aren't checked for validity beyond being non-null.
       // Note 2: this code is stripped in release mode!
       assert(() {
-        requiredKeys.forEach((key) {
-          assert(json.containsKey(key), 'Required key "ProfileAttributeValue[$key]" is missing from JSON.');
-          assert(json[key] != null, 'Required key "ProfileAttributeValue[$key]" has a null value in JSON.');
-        });
+        assert(json.containsKey(r'id'), 'Required key "ProfileAttributeValue[id]" is missing from JSON.');
+        assert(json[r'id'] != null, 'Required key "ProfileAttributeValue[id]" has a null value in JSON.');
+        assert(json.containsKey(r'v'), 'Required key "ProfileAttributeValue[v]" is missing from JSON.');
+        assert(json[r'v'] != null, 'Required key "ProfileAttributeValue[v]" has a null value in JSON.');
         return true;
       }());
 

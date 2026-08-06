@@ -64,10 +64,10 @@ class PostProfileAgeRangeVerifiedValue {
       // Note 1: the values aren't checked for validity beyond being non-null.
       // Note 2: this code is stripped in release mode!
       assert(() {
-        requiredKeys.forEach((key) {
-          assert(json.containsKey(key), 'Required key "PostProfileAgeRangeVerifiedValue[$key]" is missing from JSON.');
-          assert(json[key] != null, 'Required key "PostProfileAgeRangeVerifiedValue[$key]" has a null value in JSON.');
-        });
+        assert(json.containsKey(r'account_id'), 'Required key "PostProfileAgeRangeVerifiedValue[account_id]" is missing from JSON.');
+        assert(json[r'account_id'] != null, 'Required key "PostProfileAgeRangeVerifiedValue[account_id]" has a null value in JSON.');
+        assert(json.containsKey(r'current_profile_age'), 'Required key "PostProfileAgeRangeVerifiedValue[current_profile_age]" is missing from JSON.');
+        assert(json[r'current_profile_age'] != null, 'Required key "PostProfileAgeRangeVerifiedValue[current_profile_age]" has a null value in JSON.');
         return true;
       }());
 

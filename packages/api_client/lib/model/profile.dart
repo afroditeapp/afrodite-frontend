@@ -28,24 +28,12 @@ class Profile {
   List<ProfileAttributeValue> attributes;
 
   /// A string wrapper that ensures the string is not empty. This type is used for TEXT columns that should not allow empty strings. In the database, these columns are NULL when there is no value, and this type represents non-NULL values that must be non-empty.
-  ///
-  /// Please note: This property should have been non-nullable! Since the specification file
-  /// does not include a default value (using the "default:" property), however, the generated
-  /// source code must fall back to having a nullable type.
-  /// Consider adding a "default:" property in the specification file to hide this note.
-  ///
   String? name;
 
   /// The name has been accepted using allowlist or manual moderation.
   bool nameAccepted;
 
   /// A string wrapper that ensures the string is not empty. This type is used for TEXT columns that should not allow empty strings. In the database, these columns are NULL when there is no value, and this type represents non-NULL values that must be non-empty.
-  ///
-  /// Please note: This property should have been non-nullable! Since the specification file
-  /// does not include a default value (using the "default:" property), however, the generated
-  /// source code must fall back to having a nullable type.
-  /// Consider adding a "default:" property in the specification file to hide this note.
-  ///
   String? ptext;
 
   /// The profile text has been accepted by bot or human moderator.
@@ -113,10 +101,10 @@ class Profile {
       // Note 1: the values aren't checked for validity beyond being non-null.
       // Note 2: this code is stripped in release mode!
       assert(() {
-        requiredKeys.forEach((key) {
-          assert(json.containsKey(key), 'Required key "Profile[$key]" is missing from JSON.');
-          assert(json[key] != null, 'Required key "Profile[$key]" has a null value in JSON.');
-        });
+        assert(json.containsKey(r'age'), 'Required key "Profile[age]" is missing from JSON.');
+        assert(json[r'age'] != null, 'Required key "Profile[age]" has a null value in JSON.');
+        assert(json.containsKey(r'verification_status'), 'Required key "Profile[verification_status]" is missing from JSON.');
+        assert(json[r'verification_status'] != null, 'Required key "Profile[verification_status]" has a null value in JSON.');
         return true;
       }());
 

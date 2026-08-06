@@ -53,10 +53,10 @@ class AuthPair {
       // Note 1: the values aren't checked for validity beyond being non-null.
       // Note 2: this code is stripped in release mode!
       assert(() {
-        requiredKeys.forEach((key) {
-          assert(json.containsKey(key), 'Required key "AuthPair[$key]" is missing from JSON.');
-          assert(json[key] != null, 'Required key "AuthPair[$key]" has a null value in JSON.');
-        });
+        assert(json.containsKey(r'access'), 'Required key "AuthPair[access]" is missing from JSON.');
+        assert(json[r'access'] != null, 'Required key "AuthPair[access]" has a null value in JSON.');
+        assert(json.containsKey(r'refresh'), 'Required key "AuthPair[refresh]" is missing from JSON.');
+        assert(json[r'refresh'] != null, 'Required key "AuthPair[refresh]" has a null value in JSON.');
         return true;
       }());
 

@@ -33,7 +33,6 @@ extension ContentModerationStateUiExtensions on ContentModerationState {
       ContentModerationState.rejectedByAdminBot =>
         context.strings.moderation_state_rejected_by_admin_bot,
       ContentModerationState.rejectedByAdmin => context.strings.moderation_state_rejected_by_admin,
-      _ => null,
     };
   }
 }
@@ -83,8 +82,6 @@ extension ProfileStringModerationContentTypeExtensions on ProfileStringModeratio
         return "profile name";
       case ProfileStringModerationContentType.profileText:
         return "profile text";
-      case ProfileStringModerationContentType():
-        return "error";
     }
   }
 
@@ -94,8 +91,6 @@ extension ProfileStringModerationContentTypeExtensions on ProfileStringModeratio
         return "profile names";
       case ProfileStringModerationContentType.profileText:
         return "profile texts";
-      case ProfileStringModerationContentType():
-        return "error";
     }
   }
 

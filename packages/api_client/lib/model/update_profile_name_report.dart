@@ -54,10 +54,10 @@ class UpdateProfileNameReport {
       // Note 1: the values aren't checked for validity beyond being non-null.
       // Note 2: this code is stripped in release mode!
       assert(() {
-        requiredKeys.forEach((key) {
-          assert(json.containsKey(key), 'Required key "UpdateProfileNameReport[$key]" is missing from JSON.');
-          assert(json[key] != null, 'Required key "UpdateProfileNameReport[$key]" has a null value in JSON.');
-        });
+        assert(json.containsKey(r'profile_name'), 'Required key "UpdateProfileNameReport[profile_name]" is missing from JSON.');
+        assert(json[r'profile_name'] != null, 'Required key "UpdateProfileNameReport[profile_name]" has a null value in JSON.');
+        assert(json.containsKey(r'target'), 'Required key "UpdateProfileNameReport[target]" is missing from JSON.');
+        assert(json[r'target'] != null, 'Required key "UpdateProfileNameReport[target]" has a null value in JSON.');
         return true;
       }());
 

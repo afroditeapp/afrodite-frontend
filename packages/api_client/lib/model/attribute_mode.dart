@@ -11,31 +11,30 @@
 part of openapi.api;
 
 
-class AttributeMode {
-  /// Instantiate a new enum with the provided [value].
-  const AttributeMode._(this.value);
+enum AttributeMode {
+  bitflag._(r'Bitflag'),
+  oneLevel._(r'OneLevel'),
+  twoLevel._(r'TwoLevel'),
+  ;
+
+  /// Instantiate a new enum with the provided value.
+  const AttributeMode._(this._value);
 
   /// The underlying value of this enum member.
-  final String value;
+  final String _value;
 
   @override
-  String toString() => value;
+  String toString() => _value;
 
-  String toJson() => value;
+  /// Encodes this enum as a value suitable for JSON.
+  String toJson() => _value;
 
-  static const bitflag = AttributeMode._(r'Bitflag');
-  static const oneLevel = AttributeMode._(r'OneLevel');
-  static const twoLevel = AttributeMode._(r'TwoLevel');
-
-  /// List of all possible values in this [enum][AttributeMode].
-  static const values = <AttributeMode>[
-    bitflag,
-    oneLevel,
-    twoLevel,
-  ];
-
+  /// Returns the instance of [AttributeMode] that was successfully decoded
+  /// from the passed [value] on success, null otherwise.
   static AttributeMode? fromJson(dynamic value) => AttributeModeTypeTransformer().decode(value);
 
+  /// Returns a [List] containing instances of [AttributeMode]
+  /// that were successfully decoded from the passed [JSON][json].
   static List<AttributeMode> listFromJson(dynamic json, {bool growable = false,}) {
     final result = <AttributeMode>[];
     if (json is List && json.isNotEmpty) {
@@ -57,9 +56,11 @@ class AttributeModeTypeTransformer {
 
   const AttributeModeTypeTransformer._();
 
-  String encode(AttributeMode data) => data.value;
+  /// Encodes this enum as a value suitable for JSON.
+  String encode(AttributeMode data) => data._value;
 
-  /// Decodes a [dynamic value][data] to a AttributeMode.
+  /// Returns the instance of [AttributeMode] that was successfully decoded
+  /// from the passed [data] value on success, null otherwise.
   ///
   /// If [allowNull] is true and the [dynamic value][data] cannot be decoded successfully,
   /// then null is returned. However, if [allowNull] is false and the [dynamic value][data]
@@ -68,6 +69,9 @@ class AttributeModeTypeTransformer {
   /// The [allowNull] is very handy when an API changes and a new enum value is added or removed,
   /// and users are still using an old app with the old code.
   AttributeMode? decode(dynamic data, {bool allowNull = true}) {
+    if (data is AttributeMode) {
+      return data;
+    }
     if (data != null) {
       switch (data) {
         case r'Bitflag': return AttributeMode.bitflag;
@@ -82,7 +86,7 @@ class AttributeModeTypeTransformer {
     return null;
   }
 
-  /// Singleton [AttributeModeTypeTransformer] instance.
+  /// The singleton instance of this transformer.
   static AttributeModeTypeTransformer? _instance;
 }
 

@@ -59,10 +59,12 @@ class UpdateNewsTranslation {
       // Note 1: the values aren't checked for validity beyond being non-null.
       // Note 2: this code is stripped in release mode!
       assert(() {
-        requiredKeys.forEach((key) {
-          assert(json.containsKey(key), 'Required key "UpdateNewsTranslation[$key]" is missing from JSON.');
-          assert(json[key] != null, 'Required key "UpdateNewsTranslation[$key]" has a null value in JSON.');
-        });
+        assert(json.containsKey(r'body'), 'Required key "UpdateNewsTranslation[body]" is missing from JSON.');
+        assert(json[r'body'] != null, 'Required key "UpdateNewsTranslation[body]" has a null value in JSON.');
+        assert(json.containsKey(r'current_version'), 'Required key "UpdateNewsTranslation[current_version]" is missing from JSON.');
+        assert(json[r'current_version'] != null, 'Required key "UpdateNewsTranslation[current_version]" has a null value in JSON.');
+        assert(json.containsKey(r'title'), 'Required key "UpdateNewsTranslation[title]" is missing from JSON.');
+        assert(json[r'title'] != null, 'Required key "UpdateNewsTranslation[title]" has a null value in JSON.');
         return true;
       }());
 

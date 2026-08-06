@@ -48,10 +48,8 @@ class AccountIdDbValue {
       // Note 1: the values aren't checked for validity beyond being non-null.
       // Note 2: this code is stripped in release mode!
       assert(() {
-        requiredKeys.forEach((key) {
-          assert(json.containsKey(key), 'Required key "AccountIdDbValue[$key]" is missing from JSON.');
-          assert(json[key] != null, 'Required key "AccountIdDbValue[$key]" has a null value in JSON.');
-        });
+        assert(json.containsKey(r'account_db_id'), 'Required key "AccountIdDbValue[account_db_id]" is missing from JSON.');
+        assert(json[r'account_db_id'] != null, 'Required key "AccountIdDbValue[account_db_id]" has a null value in JSON.');
         return true;
       }());
 

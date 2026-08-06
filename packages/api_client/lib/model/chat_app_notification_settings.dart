@@ -53,10 +53,10 @@ class ChatAppNotificationSettings {
       // Note 1: the values aren't checked for validity beyond being non-null.
       // Note 2: this code is stripped in release mode!
       assert(() {
-        requiredKeys.forEach((key) {
-          assert(json.containsKey(key), 'Required key "ChatAppNotificationSettings[$key]" is missing from JSON.');
-          assert(json[key] != null, 'Required key "ChatAppNotificationSettings[$key]" has a null value in JSON.');
-        });
+        assert(json.containsKey(r'likes'), 'Required key "ChatAppNotificationSettings[likes]" is missing from JSON.');
+        assert(json[r'likes'] != null, 'Required key "ChatAppNotificationSettings[likes]" has a null value in JSON.');
+        assert(json.containsKey(r'messages'), 'Required key "ChatAppNotificationSettings[messages]" is missing from JSON.');
+        assert(json[r'messages'] != null, 'Required key "ChatAppNotificationSettings[messages]" has a null value in JSON.');
         return true;
       }());
 

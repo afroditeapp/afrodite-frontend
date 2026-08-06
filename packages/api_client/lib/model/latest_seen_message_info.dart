@@ -61,10 +61,12 @@ class LatestSeenMessageInfo {
       // Note 1: the values aren't checked for validity beyond being non-null.
       // Note 2: this code is stripped in release mode!
       assert(() {
-        requiredKeys.forEach((key) {
-          assert(json.containsKey(key), 'Required key "LatestSeenMessageInfo[$key]" is missing from JSON.');
-          assert(json[key] != null, 'Required key "LatestSeenMessageInfo[$key]" has a null value in JSON.');
-        });
+        assert(json.containsKey(r'mn'), 'Required key "LatestSeenMessageInfo[mn]" is missing from JSON.');
+        assert(json[r'mn'] != null, 'Required key "LatestSeenMessageInfo[mn]" has a null value in JSON.');
+        assert(json.containsKey(r'ut'), 'Required key "LatestSeenMessageInfo[ut]" is missing from JSON.');
+        assert(json[r'ut'] != null, 'Required key "LatestSeenMessageInfo[ut]" has a null value in JSON.');
+        assert(json.containsKey(r'viewer'), 'Required key "LatestSeenMessageInfo[viewer]" is missing from JSON.');
+        assert(json[r'viewer'] != null, 'Required key "LatestSeenMessageInfo[viewer]" has a null value in JSON.');
         return true;
       }());
 

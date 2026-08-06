@@ -11,29 +11,29 @@
 part of openapi.api;
 
 
-class VerificationMethod {
-  /// Instantiate a new enum with the provided [value].
-  const VerificationMethod._(this.value);
+enum VerificationMethod {
+  debug._(r'Debug'),
+  eudi._(r'Eudi'),
+  ;
+
+  /// Instantiate a new enum with the provided value.
+  const VerificationMethod._(this._value);
 
   /// The underlying value of this enum member.
-  final String value;
+  final String _value;
 
   @override
-  String toString() => value;
+  String toString() => _value;
 
-  String toJson() => value;
+  /// Encodes this enum as a value suitable for JSON.
+  String toJson() => _value;
 
-  static const debug = VerificationMethod._(r'Debug');
-  static const eudi = VerificationMethod._(r'Eudi');
-
-  /// List of all possible values in this [enum][VerificationMethod].
-  static const values = <VerificationMethod>[
-    debug,
-    eudi,
-  ];
-
+  /// Returns the instance of [VerificationMethod] that was successfully decoded
+  /// from the passed [value] on success, null otherwise.
   static VerificationMethod? fromJson(dynamic value) => VerificationMethodTypeTransformer().decode(value);
 
+  /// Returns a [List] containing instances of [VerificationMethod]
+  /// that were successfully decoded from the passed [JSON][json].
   static List<VerificationMethod> listFromJson(dynamic json, {bool growable = false,}) {
     final result = <VerificationMethod>[];
     if (json is List && json.isNotEmpty) {
@@ -55,9 +55,11 @@ class VerificationMethodTypeTransformer {
 
   const VerificationMethodTypeTransformer._();
 
-  String encode(VerificationMethod data) => data.value;
+  /// Encodes this enum as a value suitable for JSON.
+  String encode(VerificationMethod data) => data._value;
 
-  /// Decodes a [dynamic value][data] to a VerificationMethod.
+  /// Returns the instance of [VerificationMethod] that was successfully decoded
+  /// from the passed [data] value on success, null otherwise.
   ///
   /// If [allowNull] is true and the [dynamic value][data] cannot be decoded successfully,
   /// then null is returned. However, if [allowNull] is false and the [dynamic value][data]
@@ -66,6 +68,9 @@ class VerificationMethodTypeTransformer {
   /// The [allowNull] is very handy when an API changes and a new enum value is added or removed,
   /// and users are still using an old app with the old code.
   VerificationMethod? decode(dynamic data, {bool allowNull = true}) {
+    if (data is VerificationMethod) {
+      return data;
+    }
     if (data != null) {
       switch (data) {
         case r'Debug': return VerificationMethod.debug;
@@ -79,7 +84,7 @@ class VerificationMethodTypeTransformer {
     return null;
   }
 
-  /// Singleton [VerificationMethodTypeTransformer] instance.
+  /// The singleton instance of this transformer.
   static VerificationMethodTypeTransformer? _instance;
 }
 

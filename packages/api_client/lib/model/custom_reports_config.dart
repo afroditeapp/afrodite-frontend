@@ -53,10 +53,8 @@ class CustomReportsConfig {
       // Note 1: the values aren't checked for validity beyond being non-null.
       // Note 2: this code is stripped in release mode!
       assert(() {
-        requiredKeys.forEach((key) {
-          assert(json.containsKey(key), 'Required key "CustomReportsConfig[$key]" is missing from JSON.');
-          assert(json[key] != null, 'Required key "CustomReportsConfig[$key]" has a null value in JSON.');
-        });
+        assert(json.containsKey(r'report_order'), 'Required key "CustomReportsConfig[report_order]" is missing from JSON.');
+        assert(json[r'report_order'] != null, 'Required key "CustomReportsConfig[report_order]" has a null value in JSON.');
         return true;
       }());
 

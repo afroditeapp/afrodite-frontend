@@ -53,10 +53,10 @@ class MapBounds {
       // Note 1: the values aren't checked for validity beyond being non-null.
       // Note 2: this code is stripped in release mode!
       assert(() {
-        requiredKeys.forEach((key) {
-          assert(json.containsKey(key), 'Required key "MapBounds[$key]" is missing from JSON.');
-          assert(json[key] != null, 'Required key "MapBounds[$key]" has a null value in JSON.');
-        });
+        assert(json.containsKey(r'bottom_right'), 'Required key "MapBounds[bottom_right]" is missing from JSON.');
+        assert(json[r'bottom_right'] != null, 'Required key "MapBounds[bottom_right]" has a null value in JSON.');
+        assert(json.containsKey(r'top_left'), 'Required key "MapBounds[top_left]" is missing from JSON.');
+        assert(json[r'top_left'] != null, 'Required key "MapBounds[top_left]" has a null value in JSON.');
         return true;
       }());
 

@@ -11,33 +11,31 @@
 part of openapi.api;
 
 
-class MediaContentModerationQueueType {
-  /// Instantiate a new enum with the provided [value].
-  const MediaContentModerationQueueType._(this.value);
+enum MediaContentModerationQueueType {
+  waitingAdminBot._(r'WaitingAdminBot'),
+  waitingAdmin._(r'WaitingAdmin'),
+  acceptedByAdminBot._(r'AcceptedByAdminBot'),
+  rejectedByAdminBot._(r'RejectedByAdminBot'),
+  ;
+
+  /// Instantiate a new enum with the provided value.
+  const MediaContentModerationQueueType._(this._value);
 
   /// The underlying value of this enum member.
-  final String value;
+  final String _value;
 
   @override
-  String toString() => value;
+  String toString() => _value;
 
-  String toJson() => value;
+  /// Encodes this enum as a value suitable for JSON.
+  String toJson() => _value;
 
-  static const waitingAdminBot = MediaContentModerationQueueType._(r'WaitingAdminBot');
-  static const waitingAdmin = MediaContentModerationQueueType._(r'WaitingAdmin');
-  static const acceptedByAdminBot = MediaContentModerationQueueType._(r'AcceptedByAdminBot');
-  static const rejectedByAdminBot = MediaContentModerationQueueType._(r'RejectedByAdminBot');
-
-  /// List of all possible values in this [enum][MediaContentModerationQueueType].
-  static const values = <MediaContentModerationQueueType>[
-    waitingAdminBot,
-    waitingAdmin,
-    acceptedByAdminBot,
-    rejectedByAdminBot,
-  ];
-
+  /// Returns the instance of [MediaContentModerationQueueType] that was successfully decoded
+  /// from the passed [value] on success, null otherwise.
   static MediaContentModerationQueueType? fromJson(dynamic value) => MediaContentModerationQueueTypeTypeTransformer().decode(value);
 
+  /// Returns a [List] containing instances of [MediaContentModerationQueueType]
+  /// that were successfully decoded from the passed [JSON][json].
   static List<MediaContentModerationQueueType> listFromJson(dynamic json, {bool growable = false,}) {
     final result = <MediaContentModerationQueueType>[];
     if (json is List && json.isNotEmpty) {
@@ -59,9 +57,11 @@ class MediaContentModerationQueueTypeTypeTransformer {
 
   const MediaContentModerationQueueTypeTypeTransformer._();
 
-  String encode(MediaContentModerationQueueType data) => data.value;
+  /// Encodes this enum as a value suitable for JSON.
+  String encode(MediaContentModerationQueueType data) => data._value;
 
-  /// Decodes a [dynamic value][data] to a MediaContentModerationQueueType.
+  /// Returns the instance of [MediaContentModerationQueueType] that was successfully decoded
+  /// from the passed [data] value on success, null otherwise.
   ///
   /// If [allowNull] is true and the [dynamic value][data] cannot be decoded successfully,
   /// then null is returned. However, if [allowNull] is false and the [dynamic value][data]
@@ -70,6 +70,9 @@ class MediaContentModerationQueueTypeTypeTransformer {
   /// The [allowNull] is very handy when an API changes and a new enum value is added or removed,
   /// and users are still using an old app with the old code.
   MediaContentModerationQueueType? decode(dynamic data, {bool allowNull = true}) {
+    if (data is MediaContentModerationQueueType) {
+      return data;
+    }
     if (data != null) {
       switch (data) {
         case r'WaitingAdminBot': return MediaContentModerationQueueType.waitingAdminBot;
@@ -85,7 +88,7 @@ class MediaContentModerationQueueTypeTypeTransformer {
     return null;
   }
 
-  /// Singleton [MediaContentModerationQueueTypeTypeTransformer] instance.
+  /// The singleton instance of this transformer.
   static MediaContentModerationQueueTypeTypeTransformer? _instance;
 }
 

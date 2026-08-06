@@ -74,10 +74,10 @@ class GetIpCountryStatisticsSettings {
       // Note 1: the values aren't checked for validity beyond being non-null.
       // Note 2: this code is stripped in release mode!
       assert(() {
-        requiredKeys.forEach((key) {
-          assert(json.containsKey(key), 'Required key "GetIpCountryStatisticsSettings[$key]" is missing from JSON.');
-          assert(json[key] != null, 'Required key "GetIpCountryStatisticsSettings[$key]" has a null value in JSON.');
-        });
+        assert(json.containsKey(r'data_from_ram'), 'Required key "GetIpCountryStatisticsSettings[data_from_ram]" is missing from JSON.');
+        assert(json[r'data_from_ram'] != null, 'Required key "GetIpCountryStatisticsSettings[data_from_ram]" has a null value in JSON.');
+        assert(json.containsKey(r'statistics_type'), 'Required key "GetIpCountryStatisticsSettings[statistics_type]" is missing from JSON.');
+        assert(json[r'statistics_type'] != null, 'Required key "GetIpCountryStatisticsSettings[statistics_type]" has a null value in JSON.');
         return true;
       }());
 

@@ -63,10 +63,10 @@ class PostAccountVerificationQueueRemoveNextItem {
       // Note 1: the values aren't checked for validity beyond being non-null.
       // Note 2: this code is stripped in release mode!
       assert(() {
-        requiredKeys.forEach((key) {
-          assert(json.containsKey(key), 'Required key "PostAccountVerificationQueueRemoveNextItem[$key]" is missing from JSON.');
-          assert(json[key] != null, 'Required key "PostAccountVerificationQueueRemoveNextItem[$key]" has a null value in JSON.');
-        });
+        assert(json.containsKey(r'account_id'), 'Required key "PostAccountVerificationQueueRemoveNextItem[account_id]" is missing from JSON.');
+        assert(json[r'account_id'] != null, 'Required key "PostAccountVerificationQueueRemoveNextItem[account_id]" has a null value in JSON.');
+        assert(json.containsKey(r'verification_error_flags'), 'Required key "PostAccountVerificationQueueRemoveNextItem[verification_error_flags]" is missing from JSON.');
+        assert(json[r'verification_error_flags'] != null, 'Required key "PostAccountVerificationQueueRemoveNextItem[verification_error_flags]" has a null value in JSON.');
         return true;
       }());
 

@@ -53,10 +53,10 @@ class RemoteBotLogin {
       // Note 1: the values aren't checked for validity beyond being non-null.
       // Note 2: this code is stripped in release mode!
       assert(() {
-        requiredKeys.forEach((key) {
-          assert(json.containsKey(key), 'Required key "RemoteBotLogin[$key]" is missing from JSON.');
-          assert(json[key] != null, 'Required key "RemoteBotLogin[$key]" has a null value in JSON.');
-        });
+        assert(json.containsKey(r'aid'), 'Required key "RemoteBotLogin[aid]" is missing from JSON.');
+        assert(json[r'aid'] != null, 'Required key "RemoteBotLogin[aid]" has a null value in JSON.');
+        assert(json.containsKey(r'password'), 'Required key "RemoteBotLogin[password]" is missing from JSON.');
+        assert(json[r'password'] != null, 'Required key "RemoteBotLogin[password]" has a null value in JSON.');
         return true;
       }());
 

@@ -23,7 +23,7 @@ class ProfileApi {
   /// Parameters:
   ///
   /// * [AccountId] accountId (required):
-  Future<Response> deleteFavoriteProfileWithHttpInfo(AccountId accountId,) async {
+  Future<Response> deleteFavoriteProfileWithHttpInfo(AccountId accountId, { Future<void>? abortTrigger, }) async {
     // ignore: prefer_const_declarations
     final path = r'/profile_api/favorite_profile';
 
@@ -45,6 +45,7 @@ class ProfileApi {
       headerParams,
       formParams,
       contentTypes.isEmpty ? null : contentTypes.first,
+      abortTrigger: abortTrigger,
     );
   }
 
@@ -53,15 +54,15 @@ class ProfileApi {
   /// Parameters:
   ///
   /// * [AccountId] accountId (required):
-  Future<void> deleteFavoriteProfile(AccountId accountId,) async {
-    final response = await deleteFavoriteProfileWithHttpInfo(accountId,);
+  Future<void> deleteFavoriteProfile(AccountId accountId, { Future<void>? abortTrigger, }) async {
+    final response = await deleteFavoriteProfileWithHttpInfo(accountId, abortTrigger: abortTrigger,);
     if (response.statusCode >= HttpStatus.badRequest) {
       throw ApiException(response.statusCode, await _decodeBodyBytes(response));
     }
   }
 
   /// Performs an HTTP 'GET /profile_api/automatic_profile_search_settings' operation and returns the [Response].
-  Future<Response> getAutomaticProfileSearchSettingsWithHttpInfo() async {
+  Future<Response> getAutomaticProfileSearchSettingsWithHttpInfo({ Future<void>? abortTrigger, }) async {
     // ignore: prefer_const_declarations
     final path = r'/profile_api/automatic_profile_search_settings';
 
@@ -83,11 +84,12 @@ class ProfileApi {
       headerParams,
       formParams,
       contentTypes.isEmpty ? null : contentTypes.first,
+      abortTrigger: abortTrigger,
     );
   }
 
-  Future<AutomaticProfileSearchSettings?> getAutomaticProfileSearchSettings() async {
-    final response = await getAutomaticProfileSearchSettingsWithHttpInfo();
+  Future<AutomaticProfileSearchSettings?> getAutomaticProfileSearchSettings({ Future<void>? abortTrigger, }) async {
+    final response = await getAutomaticProfileSearchSettingsWithHttpInfo(abortTrigger: abortTrigger,);
     if (response.statusCode >= HttpStatus.badRequest) {
       throw ApiException(response.statusCode, await _decodeBodyBytes(response));
     }
@@ -106,7 +108,7 @@ class ProfileApi {
   /// First item is the oldest favorite (ordered using UnixTime and account ID).
   ///
   /// Note: This method returns the HTTP [Response].
-  Future<Response> getFavoriteProfilesWithHttpInfo() async {
+  Future<Response> getFavoriteProfilesWithHttpInfo({ Future<void>? abortTrigger, }) async {
     // ignore: prefer_const_declarations
     final path = r'/profile_api/favorite_profiles';
 
@@ -128,14 +130,15 @@ class ProfileApi {
       headerParams,
       formParams,
       contentTypes.isEmpty ? null : contentTypes.first,
+      abortTrigger: abortTrigger,
     );
   }
 
   /// Get list of all favorite profiles.
   ///
   /// First item is the oldest favorite (ordered using UnixTime and account ID).
-  Future<FavoriteProfilesPage?> getFavoriteProfiles() async {
-    final response = await getFavoriteProfilesWithHttpInfo();
+  Future<FavoriteProfilesPage?> getFavoriteProfiles({ Future<void>? abortTrigger, }) async {
+    final response = await getFavoriteProfilesWithHttpInfo(abortTrigger: abortTrigger,);
     if (response.statusCode >= HttpStatus.badRequest) {
       throw ApiException(response.statusCode, await _decodeBodyBytes(response));
     }
@@ -152,7 +155,7 @@ class ProfileApi {
   /// Get initial profile age which can be used for calculating current accepted profile ages.
   ///
   /// Note: This method returns the HTTP [Response].
-  Future<Response> getInitialProfileAgeWithHttpInfo() async {
+  Future<Response> getInitialProfileAgeWithHttpInfo({ Future<void>? abortTrigger, }) async {
     // ignore: prefer_const_declarations
     final path = r'/profile_api/initial_profile_age';
 
@@ -174,12 +177,13 @@ class ProfileApi {
       headerParams,
       formParams,
       contentTypes.isEmpty ? null : contentTypes.first,
+      abortTrigger: abortTrigger,
     );
   }
 
   /// Get initial profile age which can be used for calculating current accepted profile ages.
-  Future<GetInitialProfileAgeResult?> getInitialProfileAge() async {
-    final response = await getInitialProfileAgeWithHttpInfo();
+  Future<GetInitialProfileAgeResult?> getInitialProfileAge({ Future<void>? abortTrigger, }) async {
+    final response = await getInitialProfileAgeWithHttpInfo(abortTrigger: abortTrigger,);
     if (response.statusCode >= HttpStatus.badRequest) {
       throw ApiException(response.statusCode, await _decodeBodyBytes(response));
     }
@@ -196,7 +200,7 @@ class ProfileApi {
   /// Get location for account which makes this request.
   ///
   /// Note: This method returns the HTTP [Response].
-  Future<Response> getLocationWithHttpInfo() async {
+  Future<Response> getLocationWithHttpInfo({ Future<void>? abortTrigger, }) async {
     // ignore: prefer_const_declarations
     final path = r'/profile_api/location';
 
@@ -218,12 +222,13 @@ class ProfileApi {
       headerParams,
       formParams,
       contentTypes.isEmpty ? null : contentTypes.first,
+      abortTrigger: abortTrigger,
     );
   }
 
   /// Get location for account which makes this request.
-  Future<Location?> getLocation() async {
-    final response = await getLocationWithHttpInfo();
+  Future<Location?> getLocation({ Future<void>? abortTrigger, }) async {
+    final response = await getLocationWithHttpInfo(abortTrigger: abortTrigger,);
     if (response.statusCode >= HttpStatus.badRequest) {
       throw ApiException(response.statusCode, await _decodeBodyBytes(response));
     }
@@ -240,7 +245,7 @@ class ProfileApi {
   /// Get my profile
   ///
   /// Note: This method returns the HTTP [Response].
-  Future<Response> getMyProfileWithHttpInfo() async {
+  Future<Response> getMyProfileWithHttpInfo({ Future<void>? abortTrigger, }) async {
     // ignore: prefer_const_declarations
     final path = r'/profile_api/my_profile';
 
@@ -262,12 +267,13 @@ class ProfileApi {
       headerParams,
       formParams,
       contentTypes.isEmpty ? null : contentTypes.first,
+      abortTrigger: abortTrigger,
     );
   }
 
   /// Get my profile
-  Future<GetMyProfileResult?> getMyProfile() async {
-    final response = await getMyProfileWithHttpInfo();
+  Future<GetMyProfileResult?> getMyProfile({ Future<void>? abortTrigger, }) async {
+    final response = await getMyProfileWithHttpInfo(abortTrigger: abortTrigger,);
     if (response.statusCode >= HttpStatus.badRequest) {
       throw ApiException(response.statusCode, await _decodeBodyBytes(response));
     }
@@ -296,7 +302,7 @@ class ProfileApi {
   ///
   /// * [bool] isMatch:
   ///   If requested profile is not public, allow getting the profile data if the requested profile is a match.
-  Future<Response> getProfileWithHttpInfo(String aid, { String? v, bool? isMatch, }) async {
+  Future<Response> getProfileWithHttpInfo(String aid, { String? v, bool? isMatch, Future<void>? abortTrigger, }) async {
     // ignore: prefer_const_declarations
     final path = r'/profile_api/profile/{aid}'
       .replaceAll('{aid}', aid);
@@ -326,6 +332,7 @@ class ProfileApi {
       headerParams,
       formParams,
       contentTypes.isEmpty ? null : contentTypes.first,
+      abortTrigger: abortTrigger,
     );
   }
 
@@ -342,8 +349,8 @@ class ProfileApi {
   ///
   /// * [bool] isMatch:
   ///   If requested profile is not public, allow getting the profile data if the requested profile is a match.
-  Future<GetProfileResult?> getProfile(String aid, { String? v, bool? isMatch, }) async {
-    final response = await getProfileWithHttpInfo(aid,  v: v, isMatch: isMatch, );
+  Future<GetProfileResult?> getProfile(String aid, { String? v, bool? isMatch, Future<void>? abortTrigger, }) async {
+    final response = await getProfileWithHttpInfo(aid, v: v, isMatch: isMatch, abortTrigger: abortTrigger,);
     if (response.statusCode >= HttpStatus.badRequest) {
       throw ApiException(response.statusCode, await _decodeBodyBytes(response));
     }
@@ -358,7 +365,7 @@ class ProfileApi {
   }
 
   /// Performs an HTTP 'GET /profile_api/get_profile_app_notification_settings' operation and returns the [Response].
-  Future<Response> getProfileAppNotificationSettingsWithHttpInfo() async {
+  Future<Response> getProfileAppNotificationSettingsWithHttpInfo({ Future<void>? abortTrigger, }) async {
     // ignore: prefer_const_declarations
     final path = r'/profile_api/get_profile_app_notification_settings';
 
@@ -380,11 +387,12 @@ class ProfileApi {
       headerParams,
       formParams,
       contentTypes.isEmpty ? null : contentTypes.first,
+      abortTrigger: abortTrigger,
     );
   }
 
-  Future<ProfileAppNotificationSettings?> getProfileAppNotificationSettings() async {
-    final response = await getProfileAppNotificationSettingsWithHttpInfo();
+  Future<ProfileAppNotificationSettings?> getProfileAppNotificationSettings({ Future<void>? abortTrigger, }) async {
+    final response = await getProfileAppNotificationSettingsWithHttpInfo(abortTrigger: abortTrigger,);
     if (response.statusCode >= HttpStatus.badRequest) {
       throw ApiException(response.statusCode, await _decodeBodyBytes(response));
     }
@@ -413,7 +421,7 @@ class ProfileApi {
   ///
   /// * [bool] isMatch:
   ///   If requested profile is not public, allow getting the profile data if the requested profile is a match.
-  Future<Response> getProfileBinaryWithHttpInfo(String aid, { String? v, bool? isMatch, }) async {
+  Future<Response> getProfileBinaryWithHttpInfo(String aid, { String? v, bool? isMatch, Future<void>? abortTrigger, }) async {
     // ignore: prefer_const_declarations
     final path = r'/profile_api/profile_binary/{aid}'
       .replaceAll('{aid}', aid);
@@ -443,6 +451,7 @@ class ProfileApi {
       headerParams,
       formParams,
       contentTypes.isEmpty ? null : contentTypes.first,
+      abortTrigger: abortTrigger,
     );
   }
 
@@ -459,8 +468,8 @@ class ProfileApi {
   ///
   /// * [bool] isMatch:
   ///   If requested profile is not public, allow getting the profile data if the requested profile is a match.
-  Future<MultipartFile?> getProfileBinary(String aid, { String? v, bool? isMatch, }) async {
-    final response = await getProfileBinaryWithHttpInfo(aid,  v: v, isMatch: isMatch, );
+  Future<MultipartFile?> getProfileBinary(String aid, { String? v, bool? isMatch, Future<void>? abortTrigger, }) async {
+    final response = await getProfileBinaryWithHttpInfo(aid, v: v, isMatch: isMatch, abortTrigger: abortTrigger,);
     if (response.statusCode >= HttpStatus.badRequest) {
       throw ApiException(response.statusCode, await _decodeBodyBytes(response));
     }
@@ -477,7 +486,7 @@ class ProfileApi {
   /// Get current profile filters.
   ///
   /// Note: This method returns the HTTP [Response].
-  Future<Response> getProfileFiltersWithHttpInfo() async {
+  Future<Response> getProfileFiltersWithHttpInfo({ Future<void>? abortTrigger, }) async {
     // ignore: prefer_const_declarations
     final path = r'/profile_api/profile_filters';
 
@@ -499,12 +508,13 @@ class ProfileApi {
       headerParams,
       formParams,
       contentTypes.isEmpty ? null : contentTypes.first,
+      abortTrigger: abortTrigger,
     );
   }
 
   /// Get current profile filters.
-  Future<GetProfileFilters?> getProfileFilters() async {
-    final response = await getProfileFiltersWithHttpInfo();
+  Future<GetProfileFilters?> getProfileFilters({ Future<void>? abortTrigger, }) async {
+    final response = await getProfileFiltersWithHttpInfo(abortTrigger: abortTrigger,);
     if (response.statusCode >= HttpStatus.badRequest) {
       throw ApiException(response.statusCode, await _decodeBodyBytes(response));
     }
@@ -525,7 +535,7 @@ class ProfileApi {
   /// Parameters:
   ///
   /// * [String] aid (required):
-  Future<Response> getProfileFromDatabaseDebugModeBenchmarkWithHttpInfo(String aid,) async {
+  Future<Response> getProfileFromDatabaseDebugModeBenchmarkWithHttpInfo(String aid, { Future<void>? abortTrigger, }) async {
     // ignore: prefer_const_declarations
     final path = r'/profile_api/benchmark/profile/{aid}'
       .replaceAll('{aid}', aid);
@@ -548,6 +558,7 @@ class ProfileApi {
       headerParams,
       formParams,
       contentTypes.isEmpty ? null : contentTypes.first,
+      abortTrigger: abortTrigger,
     );
   }
 
@@ -556,8 +567,8 @@ class ProfileApi {
   /// Parameters:
   ///
   /// * [String] aid (required):
-  Future<Profile?> getProfileFromDatabaseDebugModeBenchmark(String aid,) async {
-    final response = await getProfileFromDatabaseDebugModeBenchmarkWithHttpInfo(aid,);
+  Future<Profile?> getProfileFromDatabaseDebugModeBenchmark(String aid, { Future<void>? abortTrigger, }) async {
+    final response = await getProfileFromDatabaseDebugModeBenchmarkWithHttpInfo(aid, abortTrigger: abortTrigger,);
     if (response.statusCode >= HttpStatus.badRequest) {
       throw ApiException(response.statusCode, await _decodeBodyBytes(response));
     }
@@ -572,7 +583,7 @@ class ProfileApi {
   }
 
   /// Performs an HTTP 'GET /profile_api/get_profile_privacy_settings' operation and returns the [Response].
-  Future<Response> getProfilePrivacySettingsWithHttpInfo() async {
+  Future<Response> getProfilePrivacySettingsWithHttpInfo({ Future<void>? abortTrigger, }) async {
     // ignore: prefer_const_declarations
     final path = r'/profile_api/get_profile_privacy_settings';
 
@@ -594,11 +605,12 @@ class ProfileApi {
       headerParams,
       formParams,
       contentTypes.isEmpty ? null : contentTypes.first,
+      abortTrigger: abortTrigger,
     );
   }
 
-  Future<ProfilePrivacySettings?> getProfilePrivacySettings() async {
-    final response = await getProfilePrivacySettingsWithHttpInfo();
+  Future<ProfilePrivacySettings?> getProfilePrivacySettings({ Future<void>? abortTrigger, }) async {
+    final response = await getProfilePrivacySettingsWithHttpInfo(abortTrigger: abortTrigger,);
     if (response.statusCode >= HttpStatus.badRequest) {
       throw ApiException(response.statusCode, await _decodeBodyBytes(response));
     }
@@ -623,7 +635,7 @@ class ProfileApi {
   ///
   /// * [bool] generateNewStatistics:
   ///   Non default value is only for admins.
-  Future<Response> getProfileStatisticsWithHttpInfo({ StatisticsProfileVisibility? profileVisibility, bool? generateNewStatistics, }) async {
+  Future<Response> getProfileStatisticsWithHttpInfo({ StatisticsProfileVisibility? profileVisibility, bool? generateNewStatistics, Future<void>? abortTrigger, }) async {
     // ignore: prefer_const_declarations
     final path = r'/profile_api/profile_statistics';
 
@@ -652,6 +664,7 @@ class ProfileApi {
       headerParams,
       formParams,
       contentTypes.isEmpty ? null : contentTypes.first,
+      abortTrigger: abortTrigger,
     );
   }
 
@@ -664,8 +677,8 @@ class ProfileApi {
   ///
   /// * [bool] generateNewStatistics:
   ///   Non default value is only for admins.
-  Future<GetProfileStatisticsResult?> getProfileStatistics({ StatisticsProfileVisibility? profileVisibility, bool? generateNewStatistics, }) async {
-    final response = await getProfileStatisticsWithHttpInfo( profileVisibility: profileVisibility, generateNewStatistics: generateNewStatistics, );
+  Future<GetProfileStatisticsResult?> getProfileStatistics({ StatisticsProfileVisibility? profileVisibility, bool? generateNewStatistics, Future<void>? abortTrigger, }) async {
+    final response = await getProfileStatisticsWithHttpInfo(profileVisibility: profileVisibility, generateNewStatistics: generateNewStatistics, abortTrigger: abortTrigger,);
     if (response.statusCode >= HttpStatus.badRequest) {
       throw ApiException(response.statusCode, await _decodeBodyBytes(response));
     }
@@ -682,7 +695,7 @@ class ProfileApi {
   /// Get account's current search age range
   ///
   /// Note: This method returns the HTTP [Response].
-  Future<Response> getSearchAgeRangeWithHttpInfo() async {
+  Future<Response> getSearchAgeRangeWithHttpInfo({ Future<void>? abortTrigger, }) async {
     // ignore: prefer_const_declarations
     final path = r'/profile_api/search_age_range';
 
@@ -704,12 +717,13 @@ class ProfileApi {
       headerParams,
       formParams,
       contentTypes.isEmpty ? null : contentTypes.first,
+      abortTrigger: abortTrigger,
     );
   }
 
   /// Get account's current search age range
-  Future<SearchAgeRange?> getSearchAgeRange() async {
-    final response = await getSearchAgeRangeWithHttpInfo();
+  Future<SearchAgeRange?> getSearchAgeRange({ Future<void>? abortTrigger, }) async {
+    final response = await getSearchAgeRangeWithHttpInfo(abortTrigger: abortTrigger,);
     if (response.statusCode >= HttpStatus.badRequest) {
       throw ApiException(response.statusCode, await _decodeBodyBytes(response));
     }
@@ -726,7 +740,7 @@ class ProfileApi {
   /// Get account's current search groups (gender and what gender user is looking for)
   ///
   /// Note: This method returns the HTTP [Response].
-  Future<Response> getSearchGroupsWithHttpInfo() async {
+  Future<Response> getSearchGroupsWithHttpInfo({ Future<void>? abortTrigger, }) async {
     // ignore: prefer_const_declarations
     final path = r'/profile_api/search_groups';
 
@@ -748,12 +762,13 @@ class ProfileApi {
       headerParams,
       formParams,
       contentTypes.isEmpty ? null : contentTypes.first,
+      abortTrigger: abortTrigger,
     );
   }
 
   /// Get account's current search groups (gender and what gender user is looking for)
-  Future<SearchGroups?> getSearchGroups() async {
-    final response = await getSearchGroupsWithHttpInfo();
+  Future<SearchGroups?> getSearchGroups({ Future<void>? abortTrigger, }) async {
+    final response = await getSearchGroupsWithHttpInfo(abortTrigger: abortTrigger,);
     if (response.statusCode >= HttpStatus.badRequest) {
       throw ApiException(response.statusCode, await _decodeBodyBytes(response));
     }
@@ -771,7 +786,7 @@ class ProfileApi {
   /// Parameters:
   ///
   /// * [AutomaticProfileSearchSettings] automaticProfileSearchSettings (required):
-  Future<Response> postAutomaticProfileSearchSettingsWithHttpInfo(AutomaticProfileSearchSettings automaticProfileSearchSettings,) async {
+  Future<Response> postAutomaticProfileSearchSettingsWithHttpInfo(AutomaticProfileSearchSettings automaticProfileSearchSettings, { Future<void>? abortTrigger, }) async {
     // ignore: prefer_const_declarations
     final path = r'/profile_api/automatic_profile_search_settings';
 
@@ -793,14 +808,15 @@ class ProfileApi {
       headerParams,
       formParams,
       contentTypes.isEmpty ? null : contentTypes.first,
+      abortTrigger: abortTrigger,
     );
   }
 
   /// Parameters:
   ///
   /// * [AutomaticProfileSearchSettings] automaticProfileSearchSettings (required):
-  Future<void> postAutomaticProfileSearchSettings(AutomaticProfileSearchSettings automaticProfileSearchSettings,) async {
-    final response = await postAutomaticProfileSearchSettingsWithHttpInfo(automaticProfileSearchSettings,);
+  Future<void> postAutomaticProfileSearchSettings(AutomaticProfileSearchSettings automaticProfileSearchSettings, { Future<void>? abortTrigger, }) async {
+    final response = await postAutomaticProfileSearchSettingsWithHttpInfo(automaticProfileSearchSettings, abortTrigger: abortTrigger,);
     if (response.statusCode >= HttpStatus.badRequest) {
       throw ApiException(response.statusCode, await _decodeBodyBytes(response));
     }
@@ -813,7 +829,7 @@ class ProfileApi {
   /// Parameters:
   ///
   /// * [AccountId] accountId (required):
-  Future<Response> postFavoriteProfileWithHttpInfo(AccountId accountId,) async {
+  Future<Response> postFavoriteProfileWithHttpInfo(AccountId accountId, { Future<void>? abortTrigger, }) async {
     // ignore: prefer_const_declarations
     final path = r'/profile_api/favorite_profile';
 
@@ -835,6 +851,7 @@ class ProfileApi {
       headerParams,
       formParams,
       contentTypes.isEmpty ? null : contentTypes.first,
+      abortTrigger: abortTrigger,
     );
   }
 
@@ -843,8 +860,8 @@ class ProfileApi {
   /// Parameters:
   ///
   /// * [AccountId] accountId (required):
-  Future<AddFavoriteProfileResult?> postFavoriteProfile(AccountId accountId,) async {
-    final response = await postFavoriteProfileWithHttpInfo(accountId,);
+  Future<AddFavoriteProfileResult?> postFavoriteProfile(AccountId accountId, { Future<void>? abortTrigger, }) async {
+    final response = await postFavoriteProfileWithHttpInfo(accountId, abortTrigger: abortTrigger,);
     if (response.statusCode >= HttpStatus.badRequest) {
       throw ApiException(response.statusCode, await _decodeBodyBytes(response));
     }
@@ -867,7 +884,7 @@ class ProfileApi {
   /// Parameters:
   ///
   /// * [ProfileAttributesConfigQuery] profileAttributesConfigQuery (required):
-  Future<Response> postGetQueryProfileAttributesConfigWithHttpInfo(ProfileAttributesConfigQuery profileAttributesConfigQuery,) async {
+  Future<Response> postGetQueryProfileAttributesConfigWithHttpInfo(ProfileAttributesConfigQuery profileAttributesConfigQuery, { Future<void>? abortTrigger, }) async {
     // ignore: prefer_const_declarations
     final path = r'/profile_api/query_profile_attributes_config';
 
@@ -889,6 +906,7 @@ class ProfileApi {
       headerParams,
       formParams,
       contentTypes.isEmpty ? null : contentTypes.first,
+      abortTrigger: abortTrigger,
     );
   }
 
@@ -899,8 +917,8 @@ class ProfileApi {
   /// Parameters:
   ///
   /// * [ProfileAttributesConfigQuery] profileAttributesConfigQuery (required):
-  Future<ProfileAttributesConfigQueryResult?> postGetQueryProfileAttributesConfig(ProfileAttributesConfigQuery profileAttributesConfigQuery,) async {
-    final response = await postGetQueryProfileAttributesConfigWithHttpInfo(profileAttributesConfigQuery,);
+  Future<ProfileAttributesConfigQueryResult?> postGetQueryProfileAttributesConfig(ProfileAttributesConfigQuery profileAttributesConfigQuery, { Future<void>? abortTrigger, }) async {
+    final response = await postGetQueryProfileAttributesConfigWithHttpInfo(profileAttributesConfigQuery, abortTrigger: abortTrigger,);
     if (response.statusCode >= HttpStatus.badRequest) {
       throw ApiException(response.statusCode, await _decodeBodyBytes(response));
     }
@@ -923,7 +941,7 @@ class ProfileApi {
   /// Parameters:
   ///
   /// * [ProfileUpdate] profileUpdate (required):
-  Future<Response> postProfileWithHttpInfo(ProfileUpdate profileUpdate,) async {
+  Future<Response> postProfileWithHttpInfo(ProfileUpdate profileUpdate, { Future<void>? abortTrigger, }) async {
     // ignore: prefer_const_declarations
     final path = r'/profile_api/profile';
 
@@ -945,6 +963,7 @@ class ProfileApi {
       headerParams,
       formParams,
       contentTypes.isEmpty ? null : contentTypes.first,
+      abortTrigger: abortTrigger,
     );
   }
 
@@ -955,8 +974,8 @@ class ProfileApi {
   /// Parameters:
   ///
   /// * [ProfileUpdate] profileUpdate (required):
-  Future<void> postProfile(ProfileUpdate profileUpdate,) async {
-    final response = await postProfileWithHttpInfo(profileUpdate,);
+  Future<void> postProfile(ProfileUpdate profileUpdate, { Future<void>? abortTrigger, }) async {
+    final response = await postProfileWithHttpInfo(profileUpdate, abortTrigger: abortTrigger,);
     if (response.statusCode >= HttpStatus.badRequest) {
       throw ApiException(response.statusCode, await _decodeBodyBytes(response));
     }
@@ -966,7 +985,7 @@ class ProfileApi {
   /// Parameters:
   ///
   /// * [ProfileAppNotificationSettings] profileAppNotificationSettings (required):
-  Future<Response> postProfileAppNotificationSettingsWithHttpInfo(ProfileAppNotificationSettings profileAppNotificationSettings,) async {
+  Future<Response> postProfileAppNotificationSettingsWithHttpInfo(ProfileAppNotificationSettings profileAppNotificationSettings, { Future<void>? abortTrigger, }) async {
     // ignore: prefer_const_declarations
     final path = r'/profile_api/post_profile_app_notification_settings';
 
@@ -988,14 +1007,15 @@ class ProfileApi {
       headerParams,
       formParams,
       contentTypes.isEmpty ? null : contentTypes.first,
+      abortTrigger: abortTrigger,
     );
   }
 
   /// Parameters:
   ///
   /// * [ProfileAppNotificationSettings] profileAppNotificationSettings (required):
-  Future<void> postProfileAppNotificationSettings(ProfileAppNotificationSettings profileAppNotificationSettings,) async {
-    final response = await postProfileAppNotificationSettingsWithHttpInfo(profileAppNotificationSettings,);
+  Future<void> postProfileAppNotificationSettings(ProfileAppNotificationSettings profileAppNotificationSettings, { Future<void>? abortTrigger, }) async {
+    final response = await postProfileAppNotificationSettingsWithHttpInfo(profileAppNotificationSettings, abortTrigger: abortTrigger,);
     if (response.statusCode >= HttpStatus.badRequest) {
       throw ApiException(response.statusCode, await _decodeBodyBytes(response));
     }
@@ -1008,7 +1028,7 @@ class ProfileApi {
   /// Parameters:
   ///
   /// * [ProfileFiltersUpdate] profileFiltersUpdate (required):
-  Future<Response> postProfileFiltersWithHttpInfo(ProfileFiltersUpdate profileFiltersUpdate,) async {
+  Future<Response> postProfileFiltersWithHttpInfo(ProfileFiltersUpdate profileFiltersUpdate, { Future<void>? abortTrigger, }) async {
     // ignore: prefer_const_declarations
     final path = r'/profile_api/profile_filters';
 
@@ -1030,6 +1050,7 @@ class ProfileApi {
       headerParams,
       formParams,
       contentTypes.isEmpty ? null : contentTypes.first,
+      abortTrigger: abortTrigger,
     );
   }
 
@@ -1038,8 +1059,8 @@ class ProfileApi {
   /// Parameters:
   ///
   /// * [ProfileFiltersUpdate] profileFiltersUpdate (required):
-  Future<void> postProfileFilters(ProfileFiltersUpdate profileFiltersUpdate,) async {
-    final response = await postProfileFiltersWithHttpInfo(profileFiltersUpdate,);
+  Future<void> postProfileFilters(ProfileFiltersUpdate profileFiltersUpdate, { Future<void>? abortTrigger, }) async {
+    final response = await postProfileFiltersWithHttpInfo(profileFiltersUpdate, abortTrigger: abortTrigger,);
     if (response.statusCode >= HttpStatus.badRequest) {
       throw ApiException(response.statusCode, await _decodeBodyBytes(response));
     }
@@ -1049,7 +1070,7 @@ class ProfileApi {
   /// Parameters:
   ///
   /// * [ProfilePrivacySettings] profilePrivacySettings (required):
-  Future<Response> postProfilePrivacySettingsWithHttpInfo(ProfilePrivacySettings profilePrivacySettings,) async {
+  Future<Response> postProfilePrivacySettingsWithHttpInfo(ProfilePrivacySettings profilePrivacySettings, { Future<void>? abortTrigger, }) async {
     // ignore: prefer_const_declarations
     final path = r'/profile_api/post_profile_privacy_settings';
 
@@ -1071,14 +1092,15 @@ class ProfileApi {
       headerParams,
       formParams,
       contentTypes.isEmpty ? null : contentTypes.first,
+      abortTrigger: abortTrigger,
     );
   }
 
   /// Parameters:
   ///
   /// * [ProfilePrivacySettings] profilePrivacySettings (required):
-  Future<void> postProfilePrivacySettings(ProfilePrivacySettings profilePrivacySettings,) async {
-    final response = await postProfilePrivacySettingsWithHttpInfo(profilePrivacySettings,);
+  Future<void> postProfilePrivacySettings(ProfilePrivacySettings profilePrivacySettings, { Future<void>? abortTrigger, }) async {
+    final response = await postProfilePrivacySettingsWithHttpInfo(profilePrivacySettings, abortTrigger: abortTrigger,);
     if (response.statusCode >= HttpStatus.badRequest) {
       throw ApiException(response.statusCode, await _decodeBodyBytes(response));
     }
@@ -1091,7 +1113,7 @@ class ProfileApi {
   /// Parameters:
   ///
   /// * [ProfileUpdate] profileUpdate (required):
-  Future<Response> postProfileToDatabaseDebugModeBenchmarkWithHttpInfo(ProfileUpdate profileUpdate,) async {
+  Future<Response> postProfileToDatabaseDebugModeBenchmarkWithHttpInfo(ProfileUpdate profileUpdate, { Future<void>? abortTrigger, }) async {
     // ignore: prefer_const_declarations
     final path = r'/profile_api/benchmark/profile';
 
@@ -1113,6 +1135,7 @@ class ProfileApi {
       headerParams,
       formParams,
       contentTypes.isEmpty ? null : contentTypes.first,
+      abortTrigger: abortTrigger,
     );
   }
 
@@ -1121,8 +1144,8 @@ class ProfileApi {
   /// Parameters:
   ///
   /// * [ProfileUpdate] profileUpdate (required):
-  Future<void> postProfileToDatabaseDebugModeBenchmark(ProfileUpdate profileUpdate,) async {
-    final response = await postProfileToDatabaseDebugModeBenchmarkWithHttpInfo(profileUpdate,);
+  Future<void> postProfileToDatabaseDebugModeBenchmark(ProfileUpdate profileUpdate, { Future<void>? abortTrigger, }) async {
+    final response = await postProfileToDatabaseDebugModeBenchmarkWithHttpInfo(profileUpdate, abortTrigger: abortTrigger,);
     if (response.statusCode >= HttpStatus.badRequest) {
       throw ApiException(response.statusCode, await _decodeBodyBytes(response));
     }
@@ -1137,7 +1160,7 @@ class ProfileApi {
   /// Parameters:
   ///
   /// * [UpdateProfileNameReport] updateProfileNameReport (required):
-  Future<Response> postReportProfileNameWithHttpInfo(UpdateProfileNameReport updateProfileNameReport,) async {
+  Future<Response> postReportProfileNameWithHttpInfo(UpdateProfileNameReport updateProfileNameReport, { Future<void>? abortTrigger, }) async {
     // ignore: prefer_const_declarations
     final path = r'/profile_api/report_profile_name';
 
@@ -1159,6 +1182,7 @@ class ProfileApi {
       headerParams,
       formParams,
       contentTypes.isEmpty ? null : contentTypes.first,
+      abortTrigger: abortTrigger,
     );
   }
 
@@ -1169,8 +1193,8 @@ class ProfileApi {
   /// Parameters:
   ///
   /// * [UpdateProfileNameReport] updateProfileNameReport (required):
-  Future<UpdateReportResult?> postReportProfileName(UpdateProfileNameReport updateProfileNameReport,) async {
-    final response = await postReportProfileNameWithHttpInfo(updateProfileNameReport,);
+  Future<UpdateReportResult?> postReportProfileName(UpdateProfileNameReport updateProfileNameReport, { Future<void>? abortTrigger, }) async {
+    final response = await postReportProfileNameWithHttpInfo(updateProfileNameReport, abortTrigger: abortTrigger,);
     if (response.statusCode >= HttpStatus.badRequest) {
       throw ApiException(response.statusCode, await _decodeBodyBytes(response));
     }
@@ -1193,7 +1217,7 @@ class ProfileApi {
   /// Parameters:
   ///
   /// * [UpdateProfileTextReport] updateProfileTextReport (required):
-  Future<Response> postReportProfileTextWithHttpInfo(UpdateProfileTextReport updateProfileTextReport,) async {
+  Future<Response> postReportProfileTextWithHttpInfo(UpdateProfileTextReport updateProfileTextReport, { Future<void>? abortTrigger, }) async {
     // ignore: prefer_const_declarations
     final path = r'/profile_api/report_profile_text';
 
@@ -1215,6 +1239,7 @@ class ProfileApi {
       headerParams,
       formParams,
       contentTypes.isEmpty ? null : contentTypes.first,
+      abortTrigger: abortTrigger,
     );
   }
 
@@ -1225,8 +1250,8 @@ class ProfileApi {
   /// Parameters:
   ///
   /// * [UpdateProfileTextReport] updateProfileTextReport (required):
-  Future<UpdateReportResult?> postReportProfileText(UpdateProfileTextReport updateProfileTextReport,) async {
-    final response = await postReportProfileTextWithHttpInfo(updateProfileTextReport,);
+  Future<UpdateReportResult?> postReportProfileText(UpdateProfileTextReport updateProfileTextReport, { Future<void>? abortTrigger, }) async {
+    final response = await postReportProfileTextWithHttpInfo(updateProfileTextReport, abortTrigger: abortTrigger,);
     if (response.statusCode >= HttpStatus.badRequest) {
       throw ApiException(response.statusCode, await _decodeBodyBytes(response));
     }
@@ -1247,7 +1272,7 @@ class ProfileApi {
   /// Parameters:
   ///
   /// * [SearchAgeRange] searchAgeRange (required):
-  Future<Response> postSearchAgeRangeWithHttpInfo(SearchAgeRange searchAgeRange,) async {
+  Future<Response> postSearchAgeRangeWithHttpInfo(SearchAgeRange searchAgeRange, { Future<void>? abortTrigger, }) async {
     // ignore: prefer_const_declarations
     final path = r'/profile_api/search_age_range';
 
@@ -1269,6 +1294,7 @@ class ProfileApi {
       headerParams,
       formParams,
       contentTypes.isEmpty ? null : contentTypes.first,
+      abortTrigger: abortTrigger,
     );
   }
 
@@ -1277,8 +1303,8 @@ class ProfileApi {
   /// Parameters:
   ///
   /// * [SearchAgeRange] searchAgeRange (required):
-  Future<void> postSearchAgeRange(SearchAgeRange searchAgeRange,) async {
-    final response = await postSearchAgeRangeWithHttpInfo(searchAgeRange,);
+  Future<void> postSearchAgeRange(SearchAgeRange searchAgeRange, { Future<void>? abortTrigger, }) async {
+    final response = await postSearchAgeRangeWithHttpInfo(searchAgeRange, abortTrigger: abortTrigger,);
     if (response.statusCode >= HttpStatus.badRequest) {
       throw ApiException(response.statusCode, await _decodeBodyBytes(response));
     }
@@ -1291,7 +1317,7 @@ class ProfileApi {
   /// Parameters:
   ///
   /// * [SearchGroups] searchGroups (required):
-  Future<Response> postSearchGroupsWithHttpInfo(SearchGroups searchGroups,) async {
+  Future<Response> postSearchGroupsWithHttpInfo(SearchGroups searchGroups, { Future<void>? abortTrigger, }) async {
     // ignore: prefer_const_declarations
     final path = r'/profile_api/search_groups';
 
@@ -1313,6 +1339,7 @@ class ProfileApi {
       headerParams,
       formParams,
       contentTypes.isEmpty ? null : contentTypes.first,
+      abortTrigger: abortTrigger,
     );
   }
 
@@ -1321,8 +1348,8 @@ class ProfileApi {
   /// Parameters:
   ///
   /// * [SearchGroups] searchGroups (required):
-  Future<void> postSearchGroups(SearchGroups searchGroups,) async {
-    final response = await postSearchGroupsWithHttpInfo(searchGroups,);
+  Future<void> postSearchGroups(SearchGroups searchGroups, { Future<void>? abortTrigger, }) async {
+    final response = await postSearchGroupsWithHttpInfo(searchGroups, abortTrigger: abortTrigger,);
     if (response.statusCode >= HttpStatus.badRequest) {
       throw ApiException(response.statusCode, await _decodeBodyBytes(response));
     }
@@ -1335,7 +1362,7 @@ class ProfileApi {
   /// Parameters:
   ///
   /// * [Location] location (required):
-  Future<Response> putLocationWithHttpInfo(Location location,) async {
+  Future<Response> putLocationWithHttpInfo(Location location, { Future<void>? abortTrigger, }) async {
     // ignore: prefer_const_declarations
     final path = r'/profile_api/location';
 
@@ -1357,6 +1384,7 @@ class ProfileApi {
       headerParams,
       formParams,
       contentTypes.isEmpty ? null : contentTypes.first,
+      abortTrigger: abortTrigger,
     );
   }
 
@@ -1365,8 +1393,8 @@ class ProfileApi {
   /// Parameters:
   ///
   /// * [Location] location (required):
-  Future<void> putLocation(Location location,) async {
-    final response = await putLocationWithHttpInfo(location,);
+  Future<void> putLocation(Location location, { Future<void>? abortTrigger, }) async {
+    final response = await putLocationWithHttpInfo(location, abortTrigger: abortTrigger,);
     if (response.statusCode >= HttpStatus.badRequest) {
       throw ApiException(response.statusCode, await _decodeBodyBytes(response));
     }

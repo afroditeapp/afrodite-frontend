@@ -60,10 +60,12 @@ class AdminBotReportProcessingProfileContentLlmConfig {
       // Note 1: the values aren't checked for validity beyond being non-null.
       // Note 2: this code is stripped in release mode!
       assert(() {
-        requiredKeys.forEach((key) {
-          assert(json.containsKey(key), 'Required key "AdminBotReportProcessingProfileContentLlmConfig[$key]" is missing from JSON.');
-          assert(json[key] != null, 'Required key "AdminBotReportProcessingProfileContentLlmConfig[$key]" has a null value in JSON.');
-        });
+        assert(json.containsKey(r'expected_response'), 'Required key "AdminBotReportProcessingProfileContentLlmConfig[expected_response]" is missing from JSON.');
+        assert(json[r'expected_response'] != null, 'Required key "AdminBotReportProcessingProfileContentLlmConfig[expected_response]" has a null value in JSON.');
+        assert(json.containsKey(r'system_text'), 'Required key "AdminBotReportProcessingProfileContentLlmConfig[system_text]" is missing from JSON.');
+        assert(json[r'system_text'] != null, 'Required key "AdminBotReportProcessingProfileContentLlmConfig[system_text]" has a null value in JSON.');
+        assert(json.containsKey(r'automatic_banning_expected_responses'), 'Required key "AdminBotReportProcessingProfileContentLlmConfig[automatic_banning_expected_responses]" is missing from JSON.');
+        assert(json[r'automatic_banning_expected_responses'] != null, 'Required key "AdminBotReportProcessingProfileContentLlmConfig[automatic_banning_expected_responses]" has a null value in JSON.');
         return true;
       }());
 

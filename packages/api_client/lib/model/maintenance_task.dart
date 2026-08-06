@@ -53,10 +53,10 @@ class MaintenanceTask {
       // Note 1: the values aren't checked for validity beyond being non-null.
       // Note 2: this code is stripped in release mode!
       assert(() {
-        requiredKeys.forEach((key) {
-          assert(json.containsKey(key), 'Required key "MaintenanceTask[$key]" is missing from JSON.');
-          assert(json[key] != null, 'Required key "MaintenanceTask[$key]" has a null value in JSON.');
-        });
+        assert(json.containsKey(r'notify_server'), 'Required key "MaintenanceTask[notify_server]" is missing from JSON.');
+        assert(json[r'notify_server'] != null, 'Required key "MaintenanceTask[notify_server]" has a null value in JSON.');
+        assert(json.containsKey(r'time'), 'Required key "MaintenanceTask[time]" is missing from JSON.');
+        assert(json[r'time'] != null, 'Required key "MaintenanceTask[time]" has a null value in JSON.');
         return true;
       }());
 

@@ -11,29 +11,29 @@
 part of openapi.api;
 
 
-class AgeVerificationMethod {
-  /// Instantiate a new enum with the provided [value].
-  const AgeVerificationMethod._(this.value);
+enum AgeVerificationMethod {
+  debug._(r'Debug'),
+  eudi._(r'Eudi'),
+  ;
+
+  /// Instantiate a new enum with the provided value.
+  const AgeVerificationMethod._(this._value);
 
   /// The underlying value of this enum member.
-  final String value;
+  final String _value;
 
   @override
-  String toString() => value;
+  String toString() => _value;
 
-  String toJson() => value;
+  /// Encodes this enum as a value suitable for JSON.
+  String toJson() => _value;
 
-  static const debug = AgeVerificationMethod._(r'Debug');
-  static const eudi = AgeVerificationMethod._(r'Eudi');
-
-  /// List of all possible values in this [enum][AgeVerificationMethod].
-  static const values = <AgeVerificationMethod>[
-    debug,
-    eudi,
-  ];
-
+  /// Returns the instance of [AgeVerificationMethod] that was successfully decoded
+  /// from the passed [value] on success, null otherwise.
   static AgeVerificationMethod? fromJson(dynamic value) => AgeVerificationMethodTypeTransformer().decode(value);
 
+  /// Returns a [List] containing instances of [AgeVerificationMethod]
+  /// that were successfully decoded from the passed [JSON][json].
   static List<AgeVerificationMethod> listFromJson(dynamic json, {bool growable = false,}) {
     final result = <AgeVerificationMethod>[];
     if (json is List && json.isNotEmpty) {
@@ -55,9 +55,11 @@ class AgeVerificationMethodTypeTransformer {
 
   const AgeVerificationMethodTypeTransformer._();
 
-  String encode(AgeVerificationMethod data) => data.value;
+  /// Encodes this enum as a value suitable for JSON.
+  String encode(AgeVerificationMethod data) => data._value;
 
-  /// Decodes a [dynamic value][data] to a AgeVerificationMethod.
+  /// Returns the instance of [AgeVerificationMethod] that was successfully decoded
+  /// from the passed [data] value on success, null otherwise.
   ///
   /// If [allowNull] is true and the [dynamic value][data] cannot be decoded successfully,
   /// then null is returned. However, if [allowNull] is false and the [dynamic value][data]
@@ -66,6 +68,9 @@ class AgeVerificationMethodTypeTransformer {
   /// The [allowNull] is very handy when an API changes and a new enum value is added or removed,
   /// and users are still using an old app with the old code.
   AgeVerificationMethod? decode(dynamic data, {bool allowNull = true}) {
+    if (data is AgeVerificationMethod) {
+      return data;
+    }
     if (data != null) {
       switch (data) {
         case r'Debug': return AgeVerificationMethod.debug;
@@ -79,7 +84,7 @@ class AgeVerificationMethodTypeTransformer {
     return null;
   }
 
-  /// Singleton [AgeVerificationMethodTypeTransformer] instance.
+  /// The singleton instance of this transformer.
   static AgeVerificationMethodTypeTransformer? _instance;
 }
 

@@ -27,7 +27,7 @@ class MediaApi {
   /// * [String] aid (required):
   ///
   /// * [String] cid (required):
-  Future<Response> deleteContentWithHttpInfo(String aid, String cid,) async {
+  Future<Response> deleteContentWithHttpInfo(String aid, String cid, { Future<void>? abortTrigger, }) async {
     // ignore: prefer_const_declarations
     final path = r'/media_api/content/{aid}/{cid}'
       .replaceAll('{aid}', aid)
@@ -51,6 +51,7 @@ class MediaApi {
       headerParams,
       formParams,
       contentTypes.isEmpty ? null : contentTypes.first,
+      abortTrigger: abortTrigger,
     );
   }
 
@@ -63,8 +64,8 @@ class MediaApi {
   /// * [String] aid (required):
   ///
   /// * [String] cid (required):
-  Future<void> deleteContent(String aid, String cid,) async {
-    final response = await deleteContentWithHttpInfo(aid, cid,);
+  Future<void> deleteContent(String aid, String cid, { Future<void>? abortTrigger, }) async {
+    final response = await deleteContentWithHttpInfo(aid, cid, abortTrigger: abortTrigger,);
     if (response.statusCode >= HttpStatus.badRequest) {
       throw ApiException(response.statusCode, await _decodeBodyBytes(response));
     }
@@ -79,7 +80,7 @@ class MediaApi {
   /// Parameters:
   ///
   /// * [String] aid (required):
-  Future<Response> getAllAccountMediaContentWithHttpInfo(String aid,) async {
+  Future<Response> getAllAccountMediaContentWithHttpInfo(String aid, { Future<void>? abortTrigger, }) async {
     // ignore: prefer_const_declarations
     final path = r'/media_api/all_account_media_content/{aid}'
       .replaceAll('{aid}', aid);
@@ -102,6 +103,7 @@ class MediaApi {
       headerParams,
       formParams,
       contentTypes.isEmpty ? null : contentTypes.first,
+      abortTrigger: abortTrigger,
     );
   }
 
@@ -112,8 +114,8 @@ class MediaApi {
   /// Parameters:
   ///
   /// * [String] aid (required):
-  Future<AccountContent?> getAllAccountMediaContent(String aid,) async {
-    final response = await getAllAccountMediaContentWithHttpInfo(aid,);
+  Future<AccountContent?> getAllAccountMediaContent(String aid, { Future<void>? abortTrigger, }) async {
+    final response = await getAllAccountMediaContentWithHttpInfo(aid, abortTrigger: abortTrigger,);
     if (response.statusCode >= HttpStatus.badRequest) {
       throw ApiException(response.statusCode, await _decodeBodyBytes(response));
     }
@@ -144,7 +146,7 @@ class MediaApi {
   ///
   /// * [String] q:
   ///   Preferred content quality. Use value: h (high), m (medium), or l (low). Server may downgrade quality based on load. Response header \"q\" contains the actual quality returned.
-  Future<Response> getContentWithHttpInfo(String aid, String cid, { bool? isMatch, String? q, }) async {
+  Future<Response> getContentWithHttpInfo(String aid, String cid, { bool? isMatch, String? q, Future<void>? abortTrigger, }) async {
     // ignore: prefer_const_declarations
     final path = r'/media_api/content/{aid}/{cid}'
       .replaceAll('{aid}', aid)
@@ -175,6 +177,7 @@ class MediaApi {
       headerParams,
       formParams,
       contentTypes.isEmpty ? null : contentTypes.first,
+      abortTrigger: abortTrigger,
     );
   }
 
@@ -193,8 +196,8 @@ class MediaApi {
   ///
   /// * [String] q:
   ///   Preferred content quality. Use value: h (high), m (medium), or l (low). Server may downgrade quality based on load. Response header \"q\" contains the actual quality returned.
-  Future<MultipartFile?> getContent(String aid, String cid, { bool? isMatch, String? q, }) async {
-    final response = await getContentWithHttpInfo(aid, cid,  isMatch: isMatch, q: q, );
+  Future<MultipartFile?> getContent(String aid, String cid, { bool? isMatch, String? q, Future<void>? abortTrigger, }) async {
+    final response = await getContentWithHttpInfo(aid, cid, isMatch: isMatch, q: q, abortTrigger: abortTrigger,);
     if (response.statusCode >= HttpStatus.badRequest) {
       throw ApiException(response.statusCode, await _decodeBodyBytes(response));
     }
@@ -211,7 +214,7 @@ class MediaApi {
   /// Get current content processing state for account.
   ///
   /// Note: This method returns the HTTP [Response].
-  Future<Response> getContentProcessingStateWithHttpInfo() async {
+  Future<Response> getContentProcessingStateWithHttpInfo({ Future<void>? abortTrigger, }) async {
     // ignore: prefer_const_declarations
     final path = r'/media_api/content_processing_state';
 
@@ -233,12 +236,13 @@ class MediaApi {
       headerParams,
       formParams,
       contentTypes.isEmpty ? null : contentTypes.first,
+      abortTrigger: abortTrigger,
     );
   }
 
   /// Get current content processing state for account.
-  Future<ContentProcessingState?> getContentProcessingState() async {
-    final response = await getContentProcessingStateWithHttpInfo();
+  Future<ContentProcessingState?> getContentProcessingState({ Future<void>? abortTrigger, }) async {
+    final response = await getContentProcessingStateWithHttpInfo(abortTrigger: abortTrigger,);
     if (response.statusCode >= HttpStatus.badRequest) {
       throw ApiException(response.statusCode, await _decodeBodyBytes(response));
     }
@@ -267,7 +271,7 @@ class MediaApi {
   /// * [String] y (required):
   ///
   /// * [int] v (required):
-  Future<Response> getMapTileWithHttpInfo(int z, int x, String y, int v,) async {
+  Future<Response> getMapTileWithHttpInfo(int z, int x, String y, int v, { Future<void>? abortTrigger, }) async {
     // ignore: prefer_const_declarations
     final path = r'/media_api/map_tile/{z}/{x}/{y}'
       .replaceAll('{z}', z.toString())
@@ -294,6 +298,7 @@ class MediaApi {
       headerParams,
       formParams,
       contentTypes.isEmpty ? null : contentTypes.first,
+      abortTrigger: abortTrigger,
     );
   }
 
@@ -310,8 +315,8 @@ class MediaApi {
   /// * [String] y (required):
   ///
   /// * [int] v (required):
-  Future<MultipartFile?> getMapTile(int z, int x, String y, int v,) async {
-    final response = await getMapTileWithHttpInfo(z, x, y, v,);
+  Future<MultipartFile?> getMapTile(int z, int x, String y, int v, { Future<void>? abortTrigger, }) async {
+    final response = await getMapTileWithHttpInfo(z, x, y, v, abortTrigger: abortTrigger,);
     if (response.statusCode >= HttpStatus.badRequest) {
       throw ApiException(response.statusCode, await _decodeBodyBytes(response));
     }
@@ -326,7 +331,7 @@ class MediaApi {
   }
 
   /// Performs an HTTP 'GET /media_api/get_media_app_notification_settings' operation and returns the [Response].
-  Future<Response> getMediaAppNotificationSettingsWithHttpInfo() async {
+  Future<Response> getMediaAppNotificationSettingsWithHttpInfo({ Future<void>? abortTrigger, }) async {
     // ignore: prefer_const_declarations
     final path = r'/media_api/get_media_app_notification_settings';
 
@@ -348,11 +353,12 @@ class MediaApi {
       headerParams,
       formParams,
       contentTypes.isEmpty ? null : contentTypes.first,
+      abortTrigger: abortTrigger,
     );
   }
 
-  Future<MediaAppNotificationSettings?> getMediaAppNotificationSettings() async {
-    final response = await getMediaAppNotificationSettingsWithHttpInfo();
+  Future<MediaAppNotificationSettings?> getMediaAppNotificationSettings({ Future<void>? abortTrigger, }) async {
+    final response = await getMediaAppNotificationSettingsWithHttpInfo(abortTrigger: abortTrigger,);
     if (response.statusCode >= HttpStatus.badRequest) {
       throw ApiException(response.statusCode, await _decodeBodyBytes(response));
     }
@@ -369,7 +375,7 @@ class MediaApi {
   /// Get my profile and security content
   ///
   /// Note: This method returns the HTTP [Response].
-  Future<Response> getMediaContentInfoWithHttpInfo() async {
+  Future<Response> getMediaContentInfoWithHttpInfo({ Future<void>? abortTrigger, }) async {
     // ignore: prefer_const_declarations
     final path = r'/media_api/media_content_info';
 
@@ -391,12 +397,13 @@ class MediaApi {
       headerParams,
       formParams,
       contentTypes.isEmpty ? null : contentTypes.first,
+      abortTrigger: abortTrigger,
     );
   }
 
   /// Get my profile and security content
-  Future<GetMediaContentResult?> getMediaContentInfo() async {
-    final response = await getMediaContentInfoWithHttpInfo();
+  Future<GetMediaContentResult?> getMediaContentInfo({ Future<void>? abortTrigger, }) async {
+    final response = await getMediaContentInfoWithHttpInfo(abortTrigger: abortTrigger,);
     if (response.statusCode >= HttpStatus.badRequest) {
       throw ApiException(response.statusCode, await _decodeBodyBytes(response));
     }
@@ -424,7 +431,7 @@ class MediaApi {
   ///
   /// * [bool] isMatch:
   ///   If false profile content access is allowed when profile is set as public. If true profile content access is allowed when users are a match.
-  Future<Response> getProfileContentInfoWithHttpInfo(String aid, { String? version, bool? isMatch, }) async {
+  Future<Response> getProfileContentInfoWithHttpInfo(String aid, { String? version, bool? isMatch, Future<void>? abortTrigger, }) async {
     // ignore: prefer_const_declarations
     final path = r'/media_api/profile_content_info/{aid}'
       .replaceAll('{aid}', aid);
@@ -454,6 +461,7 @@ class MediaApi {
       headerParams,
       formParams,
       contentTypes.isEmpty ? null : contentTypes.first,
+      abortTrigger: abortTrigger,
     );
   }
 
@@ -469,8 +477,8 @@ class MediaApi {
   ///
   /// * [bool] isMatch:
   ///   If false profile content access is allowed when profile is set as public. If true profile content access is allowed when users are a match.
-  Future<GetProfileContentResult?> getProfileContentInfo(String aid, { String? version, bool? isMatch, }) async {
-    final response = await getProfileContentInfoWithHttpInfo(aid,  version: version, isMatch: isMatch, );
+  Future<GetProfileContentResult?> getProfileContentInfo(String aid, { String? version, bool? isMatch, Future<void>? abortTrigger, }) async {
+    final response = await getProfileContentInfoWithHttpInfo(aid, version: version, isMatch: isMatch, abortTrigger: abortTrigger,);
     if (response.statusCode >= HttpStatus.badRequest) {
       throw ApiException(response.statusCode, await _decodeBodyBytes(response));
     }
@@ -498,7 +506,7 @@ class MediaApi {
   ///
   /// * [bool] isMatch:
   ///   If false profile content access is allowed when profile is set as public. If true profile content access is allowed when users are a match.
-  Future<Response> getProfileContentInfoBinaryWithHttpInfo(String aid, { String? version, bool? isMatch, }) async {
+  Future<Response> getProfileContentInfoBinaryWithHttpInfo(String aid, { String? version, bool? isMatch, Future<void>? abortTrigger, }) async {
     // ignore: prefer_const_declarations
     final path = r'/media_api/profile_content_info_binary/{aid}'
       .replaceAll('{aid}', aid);
@@ -528,6 +536,7 @@ class MediaApi {
       headerParams,
       formParams,
       contentTypes.isEmpty ? null : contentTypes.first,
+      abortTrigger: abortTrigger,
     );
   }
 
@@ -543,8 +552,8 @@ class MediaApi {
   ///
   /// * [bool] isMatch:
   ///   If false profile content access is allowed when profile is set as public. If true profile content access is allowed when users are a match.
-  Future<MultipartFile?> getProfileContentInfoBinary(String aid, { String? version, bool? isMatch, }) async {
-    final response = await getProfileContentInfoBinaryWithHttpInfo(aid,  version: version, isMatch: isMatch, );
+  Future<MultipartFile?> getProfileContentInfoBinary(String aid, { String? version, bool? isMatch, Future<void>? abortTrigger, }) async {
+    final response = await getProfileContentInfoBinaryWithHttpInfo(aid, version: version, isMatch: isMatch, abortTrigger: abortTrigger,);
     if (response.statusCode >= HttpStatus.badRequest) {
       throw ApiException(response.statusCode, await _decodeBodyBytes(response));
     }
@@ -562,7 +571,7 @@ class MediaApi {
   /// Parameters:
   ///
   /// * [MediaAppNotificationSettings] mediaAppNotificationSettings (required):
-  Future<Response> postMediaAppNotificationSettingsWithHttpInfo(MediaAppNotificationSettings mediaAppNotificationSettings,) async {
+  Future<Response> postMediaAppNotificationSettingsWithHttpInfo(MediaAppNotificationSettings mediaAppNotificationSettings, { Future<void>? abortTrigger, }) async {
     // ignore: prefer_const_declarations
     final path = r'/media_api/post_media_app_notification_settings';
 
@@ -584,14 +593,15 @@ class MediaApi {
       headerParams,
       formParams,
       contentTypes.isEmpty ? null : contentTypes.first,
+      abortTrigger: abortTrigger,
     );
   }
 
   /// Parameters:
   ///
   /// * [MediaAppNotificationSettings] mediaAppNotificationSettings (required):
-  Future<void> postMediaAppNotificationSettings(MediaAppNotificationSettings mediaAppNotificationSettings,) async {
-    final response = await postMediaAppNotificationSettingsWithHttpInfo(mediaAppNotificationSettings,);
+  Future<void> postMediaAppNotificationSettings(MediaAppNotificationSettings mediaAppNotificationSettings, { Future<void>? abortTrigger, }) async {
+    final response = await postMediaAppNotificationSettingsWithHttpInfo(mediaAppNotificationSettings, abortTrigger: abortTrigger,);
     if (response.statusCode >= HttpStatus.badRequest) {
       throw ApiException(response.statusCode, await _decodeBodyBytes(response));
     }
@@ -606,7 +616,7 @@ class MediaApi {
   /// Parameters:
   ///
   /// * [UpdateProfileContentReport] updateProfileContentReport (required):
-  Future<Response> postProfileContentReportWithHttpInfo(UpdateProfileContentReport updateProfileContentReport,) async {
+  Future<Response> postProfileContentReportWithHttpInfo(UpdateProfileContentReport updateProfileContentReport, { Future<void>? abortTrigger, }) async {
     // ignore: prefer_const_declarations
     final path = r'/media_api/profile_content_report';
 
@@ -628,6 +638,7 @@ class MediaApi {
       headerParams,
       formParams,
       contentTypes.isEmpty ? null : contentTypes.first,
+      abortTrigger: abortTrigger,
     );
   }
 
@@ -638,8 +649,8 @@ class MediaApi {
   /// Parameters:
   ///
   /// * [UpdateProfileContentReport] updateProfileContentReport (required):
-  Future<UpdateReportResult?> postProfileContentReport(UpdateProfileContentReport updateProfileContentReport,) async {
-    final response = await postProfileContentReportWithHttpInfo(updateProfileContentReport,);
+  Future<UpdateReportResult?> postProfileContentReport(UpdateProfileContentReport updateProfileContentReport, { Future<void>? abortTrigger, }) async {
+    final response = await postProfileContentReportWithHttpInfo(updateProfileContentReport, abortTrigger: abortTrigger,);
     if (response.statusCode >= HttpStatus.badRequest) {
       throw ApiException(response.statusCode, await _decodeBodyBytes(response));
     }
@@ -662,7 +673,7 @@ class MediaApi {
   /// Parameters:
   ///
   /// * [SetProfileContent] setProfileContent (required):
-  Future<Response> putProfileContentWithHttpInfo(SetProfileContent setProfileContent,) async {
+  Future<Response> putProfileContentWithHttpInfo(SetProfileContent setProfileContent, { Future<void>? abortTrigger, }) async {
     // ignore: prefer_const_declarations
     final path = r'/media_api/profile_content';
 
@@ -684,6 +695,7 @@ class MediaApi {
       headerParams,
       formParams,
       contentTypes.isEmpty ? null : contentTypes.first,
+      abortTrigger: abortTrigger,
     );
   }
 
@@ -694,8 +706,8 @@ class MediaApi {
   /// Parameters:
   ///
   /// * [SetProfileContent] setProfileContent (required):
-  Future<UpdateProfileContentResult?> putProfileContent(SetProfileContent setProfileContent,) async {
-    final response = await putProfileContentWithHttpInfo(setProfileContent,);
+  Future<UpdateProfileContentResult?> putProfileContent(SetProfileContent setProfileContent, { Future<void>? abortTrigger, }) async {
+    final response = await putProfileContentWithHttpInfo(setProfileContent, abortTrigger: abortTrigger,);
     if (response.statusCode >= HttpStatus.badRequest) {
       throw ApiException(response.statusCode, await _decodeBodyBytes(response));
     }
@@ -718,7 +730,7 @@ class MediaApi {
   /// Parameters:
   ///
   /// * [ContentId] contentId (required):
-  Future<Response> putSecurityContentInfoWithHttpInfo(ContentId contentId,) async {
+  Future<Response> putSecurityContentInfoWithHttpInfo(ContentId contentId, { Future<void>? abortTrigger, }) async {
     // ignore: prefer_const_declarations
     final path = r'/media_api/security_content_info';
 
@@ -740,6 +752,7 @@ class MediaApi {
       headerParams,
       formParams,
       contentTypes.isEmpty ? null : contentTypes.first,
+      abortTrigger: abortTrigger,
     );
   }
 
@@ -750,8 +763,8 @@ class MediaApi {
   /// Parameters:
   ///
   /// * [ContentId] contentId (required):
-  Future<void> putSecurityContentInfo(ContentId contentId,) async {
-    final response = await putSecurityContentInfoWithHttpInfo(contentId,);
+  Future<void> putSecurityContentInfo(ContentId contentId, { Future<void>? abortTrigger, }) async {
+    final response = await putSecurityContentInfoWithHttpInfo(contentId, abortTrigger: abortTrigger,);
     if (response.statusCode >= HttpStatus.badRequest) {
       throw ApiException(response.statusCode, await _decodeBodyBytes(response));
     }
@@ -777,7 +790,7 @@ class MediaApi {
   /// * [MediaContentUploadType] contentType (required):
   ///
   /// * [MultipartFile] body (required):
-  Future<Response> putUploadContentWithHttpInfo(int slotId, int processingIdFromClient, bool secureCapture, MediaContentUploadType contentType, MultipartFile body,) async {
+  Future<Response> putUploadContentWithHttpInfo(int slotId, int processingIdFromClient, bool secureCapture, MediaContentUploadType contentType, MultipartFile body, { Future<void>? abortTrigger, }) async {
     // ignore: prefer_const_declarations
     final path = r'/media_api/upload_content';
 
@@ -804,6 +817,7 @@ class MediaApi {
       headerParams,
       formParams,
       contentTypes.isEmpty ? null : contentTypes.first,
+      abortTrigger: abortTrigger,
     );
   }
 
@@ -825,8 +839,8 @@ class MediaApi {
   /// * [MediaContentUploadType] contentType (required):
   ///
   /// * [MultipartFile] body (required):
-  Future<PutContentToContentSlotResult?> putUploadContent(int slotId, int processingIdFromClient, bool secureCapture, MediaContentUploadType contentType, MultipartFile body,) async {
-    final response = await putUploadContentWithHttpInfo(slotId, processingIdFromClient, secureCapture, contentType, body,);
+  Future<PutContentToContentSlotResult?> putUploadContent(int slotId, int processingIdFromClient, bool secureCapture, MediaContentUploadType contentType, MultipartFile body, { Future<void>? abortTrigger, }) async {
+    final response = await putUploadContentWithHttpInfo(slotId, processingIdFromClient, secureCapture, contentType, body, abortTrigger: abortTrigger,);
     if (response.statusCode >= HttpStatus.badRequest) {
       throw ApiException(response.statusCode, await _decodeBodyBytes(response));
     }

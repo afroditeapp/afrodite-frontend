@@ -53,10 +53,10 @@ class PostAgeVerification {
       // Note 1: the values aren't checked for validity beyond being non-null.
       // Note 2: this code is stripped in release mode!
       assert(() {
-        requiredKeys.forEach((key) {
-          assert(json.containsKey(key), 'Required key "PostAgeVerification[$key]" is missing from JSON.');
-          assert(json[key] != null, 'Required key "PostAgeVerification[$key]" has a null value in JSON.');
-        });
+        assert(json.containsKey(r'verification_data'), 'Required key "PostAgeVerification[verification_data]" is missing from JSON.');
+        assert(json[r'verification_data'] != null, 'Required key "PostAgeVerification[verification_data]" has a null value in JSON.');
+        assert(json.containsKey(r'verification_method'), 'Required key "PostAgeVerification[verification_method]" is missing from JSON.');
+        assert(json[r'verification_method'] != null, 'Required key "PostAgeVerification[verification_method]" has a null value in JSON.');
         return true;
       }());
 

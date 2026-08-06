@@ -22,6 +22,7 @@ class ProfileAttributeFilterValue {
 
   bool acceptMissingAttribute;
 
+  /// Attribute ID
   int id;
 
   /// Same as [Self::wanted] but for unwanted values.  The unwanted values are checked always with AND operator.
@@ -73,10 +74,16 @@ class ProfileAttributeFilterValue {
       // Note 1: the values aren't checked for validity beyond being non-null.
       // Note 2: this code is stripped in release mode!
       assert(() {
-        requiredKeys.forEach((key) {
-          assert(json.containsKey(key), 'Required key "ProfileAttributeFilterValue[$key]" is missing from JSON.');
-          assert(json[key] != null, 'Required key "ProfileAttributeFilterValue[$key]" has a null value in JSON.');
-        });
+        assert(json.containsKey(r'accept_missing_attribute'), 'Required key "ProfileAttributeFilterValue[accept_missing_attribute]" is missing from JSON.');
+        assert(json[r'accept_missing_attribute'] != null, 'Required key "ProfileAttributeFilterValue[accept_missing_attribute]" has a null value in JSON.');
+        assert(json.containsKey(r'id'), 'Required key "ProfileAttributeFilterValue[id]" is missing from JSON.');
+        assert(json[r'id'] != null, 'Required key "ProfileAttributeFilterValue[id]" has a null value in JSON.');
+        assert(json.containsKey(r'unwanted'), 'Required key "ProfileAttributeFilterValue[unwanted]" is missing from JSON.');
+        assert(json[r'unwanted'] != null, 'Required key "ProfileAttributeFilterValue[unwanted]" has a null value in JSON.');
+        assert(json.containsKey(r'use_logical_operator_and'), 'Required key "ProfileAttributeFilterValue[use_logical_operator_and]" is missing from JSON.');
+        assert(json[r'use_logical_operator_and'] != null, 'Required key "ProfileAttributeFilterValue[use_logical_operator_and]" has a null value in JSON.');
+        assert(json.containsKey(r'wanted'), 'Required key "ProfileAttributeFilterValue[wanted]" is missing from JSON.');
+        assert(json[r'wanted'] != null, 'Required key "ProfileAttributeFilterValue[wanted]" has a null value in JSON.');
         return true;
       }());
 

@@ -66,7 +66,7 @@ class _EditContentModerationConfigScreenState extends State<EditContentModeratio
                 trailing: DropdownButton<ModerationAction>(
                   value: _config.defaultAction,
                   items: ModerationAction.values.map((a) {
-                    return DropdownMenuItem(value: a, child: Text(a.value));
+                    return DropdownMenuItem(value: a, child: Text(a.toString()));
                   }).toList(),
                   onChanged: (v) {
                     if (v != null) setState(() => _config.defaultAction = v);

@@ -47,10 +47,8 @@ class AccountVerificationErrorFlagsValue {
       // Note 1: the values aren't checked for validity beyond being non-null.
       // Note 2: this code is stripped in release mode!
       assert(() {
-        requiredKeys.forEach((key) {
-          assert(json.containsKey(key), 'Required key "AccountVerificationErrorFlagsValue[$key]" is missing from JSON.');
-          assert(json[key] != null, 'Required key "AccountVerificationErrorFlagsValue[$key]" has a null value in JSON.');
-        });
+        assert(json.containsKey(r'v'), 'Required key "AccountVerificationErrorFlagsValue[v]" is missing from JSON.');
+        assert(json[r'v'] != null, 'Required key "AccountVerificationErrorFlagsValue[v]" has a null value in JSON.');
         return true;
       }());
 

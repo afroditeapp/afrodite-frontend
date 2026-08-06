@@ -54,10 +54,10 @@ class CustomReportLanguage {
       // Note 1: the values aren't checked for validity beyond being non-null.
       // Note 2: this code is stripped in release mode!
       assert(() {
-        requiredKeys.forEach((key) {
-          assert(json.containsKey(key), 'Required key "CustomReportLanguage[$key]" is missing from JSON.');
-          assert(json[key] != null, 'Required key "CustomReportLanguage[$key]" has a null value in JSON.');
-        });
+        assert(json.containsKey(r'lang'), 'Required key "CustomReportLanguage[lang]" is missing from JSON.');
+        assert(json[r'lang'] != null, 'Required key "CustomReportLanguage[lang]" has a null value in JSON.');
+        assert(json.containsKey(r'values'), 'Required key "CustomReportLanguage[values]" is missing from JSON.');
+        assert(json[r'values'] != null, 'Required key "CustomReportLanguage[values]" has a null value in JSON.');
         return true;
       }());
 

@@ -19,12 +19,6 @@ class GetProfileResult {
   });
 
   /// Account's most recent disconnect time.  If the last seen time is not None, then it is Unix timestamp or -1 if the profile is currently online.
-  ///
-  /// Please note: This property should have been non-nullable! Since the specification file
-  /// does not include a default value (using the "default:" property), however, the generated
-  /// source code must fall back to having a nullable type.
-  /// Consider adding a "default:" property in the specification file to hide this note.
-  ///
   int? lastSeenTime;
 
   /// Profile data if it is newer than the version in the query.
@@ -80,10 +74,6 @@ class GetProfileResult {
       // Note 1: the values aren't checked for validity beyond being non-null.
       // Note 2: this code is stripped in release mode!
       assert(() {
-        requiredKeys.forEach((key) {
-          assert(json.containsKey(key), 'Required key "GetProfileResult[$key]" is missing from JSON.');
-          assert(json[key] != null, 'Required key "GetProfileResult[$key]" has a null value in JSON.');
-        });
         return true;
       }());
 

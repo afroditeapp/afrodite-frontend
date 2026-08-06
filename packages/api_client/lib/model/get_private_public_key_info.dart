@@ -57,10 +57,8 @@ class GetPrivatePublicKeyInfo {
       // Note 1: the values aren't checked for validity beyond being non-null.
       // Note 2: this code is stripped in release mode!
       assert(() {
-        requiredKeys.forEach((key) {
-          assert(json.containsKey(key), 'Required key "GetPrivatePublicKeyInfo[$key]" is missing from JSON.');
-          assert(json[key] != null, 'Required key "GetPrivatePublicKeyInfo[$key]" has a null value in JSON.');
-        });
+        assert(json.containsKey(r'max_public_key_count'), 'Required key "GetPrivatePublicKeyInfo[max_public_key_count]" is missing from JSON.');
+        assert(json[r'max_public_key_count'] != null, 'Required key "GetPrivatePublicKeyInfo[max_public_key_count]" has a null value in JSON.');
         return true;
       }());
 

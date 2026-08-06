@@ -53,10 +53,10 @@ class SetEmailLoginEnabled {
       // Note 1: the values aren't checked for validity beyond being non-null.
       // Note 2: this code is stripped in release mode!
       assert(() {
-        requiredKeys.forEach((key) {
-          assert(json.containsKey(key), 'Required key "SetEmailLoginEnabled[$key]" is missing from JSON.');
-          assert(json[key] != null, 'Required key "SetEmailLoginEnabled[$key]" has a null value in JSON.');
-        });
+        assert(json.containsKey(r'aid'), 'Required key "SetEmailLoginEnabled[aid]" is missing from JSON.');
+        assert(json[r'aid'] != null, 'Required key "SetEmailLoginEnabled[aid]" has a null value in JSON.');
+        assert(json.containsKey(r'enabled'), 'Required key "SetEmailLoginEnabled[enabled]" is missing from JSON.');
+        assert(json[r'enabled'] != null, 'Required key "SetEmailLoginEnabled[enabled]" has a null value in JSON.');
         return true;
       }());
 

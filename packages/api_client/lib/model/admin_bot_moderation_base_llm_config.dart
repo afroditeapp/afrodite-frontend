@@ -66,10 +66,10 @@ class AdminBotModerationBaseLlmConfig {
       // Note 1: the values aren't checked for validity beyond being non-null.
       // Note 2: this code is stripped in release mode!
       assert(() {
-        requiredKeys.forEach((key) {
-          assert(json.containsKey(key), 'Required key "AdminBotModerationBaseLlmConfig[$key]" is missing from JSON.');
-          assert(json[key] != null, 'Required key "AdminBotModerationBaseLlmConfig[$key]" has a null value in JSON.');
-        });
+        assert(json.containsKey(r'expected_response'), 'Required key "AdminBotModerationBaseLlmConfig[expected_response]" is missing from JSON.');
+        assert(json[r'expected_response'] != null, 'Required key "AdminBotModerationBaseLlmConfig[expected_response]" has a null value in JSON.');
+        assert(json.containsKey(r'system_text'), 'Required key "AdminBotModerationBaseLlmConfig[system_text]" is missing from JSON.');
+        assert(json[r'system_text'] != null, 'Required key "AdminBotModerationBaseLlmConfig[system_text]" has a null value in JSON.');
         return true;
       }());
 

@@ -53,10 +53,10 @@ class PendingChatNotificationToDelete {
       // Note 1: the values aren't checked for validity beyond being non-null.
       // Note 2: this code is stripped in release mode!
       assert(() {
-        requiredKeys.forEach((key) {
-          assert(json.containsKey(key), 'Required key "PendingChatNotificationToDelete[$key]" is missing from JSON.');
-          assert(json[key] != null, 'Required key "PendingChatNotificationToDelete[$key]" has a null value in JSON.');
-        });
+        assert(json.containsKey(r'account_id_sender'), 'Required key "PendingChatNotificationToDelete[account_id_sender]" is missing from JSON.');
+        assert(json[r'account_id_sender'] != null, 'Required key "PendingChatNotificationToDelete[account_id_sender]" has a null value in JSON.');
+        assert(json.containsKey(r'message_count'), 'Required key "PendingChatNotificationToDelete[message_count]" is missing from JSON.');
+        assert(json[r'message_count'] != null, 'Required key "PendingChatNotificationToDelete[message_count]" has a null value in JSON.');
         return true;
       }());
 

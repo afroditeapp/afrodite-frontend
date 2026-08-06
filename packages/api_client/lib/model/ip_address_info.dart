@@ -86,10 +86,14 @@ class IpAddressInfo {
       // Note 1: the values aren't checked for validity beyond being non-null.
       // Note 2: this code is stripped in release mode!
       assert(() {
-        requiredKeys.forEach((key) {
-          assert(json.containsKey(key), 'Required key "IpAddressInfo[$key]" is missing from JSON.');
-          assert(json[key] != null, 'Required key "IpAddressInfo[$key]" has a null value in JSON.');
-        });
+        assert(json.containsKey(r'a'), 'Required key "IpAddressInfo[a]" is missing from JSON.');
+        assert(json[r'a'] != null, 'Required key "IpAddressInfo[a]" has a null value in JSON.');
+        assert(json.containsKey(r'c'), 'Required key "IpAddressInfo[c]" is missing from JSON.');
+        assert(json[r'c'] != null, 'Required key "IpAddressInfo[c]" has a null value in JSON.');
+        assert(json.containsKey(r'f'), 'Required key "IpAddressInfo[f]" is missing from JSON.');
+        assert(json[r'f'] != null, 'Required key "IpAddressInfo[f]" has a null value in JSON.');
+        assert(json.containsKey(r'l'), 'Required key "IpAddressInfo[l]" is missing from JSON.');
+        assert(json[r'l'] != null, 'Required key "IpAddressInfo[l]" has a null value in JSON.');
         return true;
       }());
 

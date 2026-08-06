@@ -53,10 +53,10 @@ class ReceivedLikesIteratorState {
       // Note 1: the values aren't checked for validity beyond being non-null.
       // Note 2: this code is stripped in release mode!
       assert(() {
-        requiredKeys.forEach((key) {
-          assert(json.containsKey(key), 'Required key "ReceivedLikesIteratorState[$key]" is missing from JSON.');
-          assert(json[key] != null, 'Required key "ReceivedLikesIteratorState[$key]" has a null value in JSON.');
-        });
+        assert(json.containsKey(r'id_at_reset'), 'Required key "ReceivedLikesIteratorState[id_at_reset]" is missing from JSON.');
+        assert(json[r'id_at_reset'] != null, 'Required key "ReceivedLikesIteratorState[id_at_reset]" has a null value in JSON.');
+        assert(json.containsKey(r'page'), 'Required key "ReceivedLikesIteratorState[page]" is missing from JSON.');
+        assert(json[r'page'] != null, 'Required key "ReceivedLikesIteratorState[page]" has a null value in JSON.');
         return true;
       }());
 

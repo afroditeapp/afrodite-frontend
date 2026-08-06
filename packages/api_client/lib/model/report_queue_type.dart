@@ -11,31 +11,30 @@
 part of openapi.api;
 
 
-class ReportQueueType {
-  /// Instantiate a new enum with the provided [value].
-  const ReportQueueType._(this.value);
+enum ReportQueueType {
+  waiting._(r'Waiting'),
+  acceptedByAdminBot._(r'AcceptedByAdminBot'),
+  rejectedByAdminBot._(r'RejectedByAdminBot'),
+  ;
+
+  /// Instantiate a new enum with the provided value.
+  const ReportQueueType._(this._value);
 
   /// The underlying value of this enum member.
-  final String value;
+  final String _value;
 
   @override
-  String toString() => value;
+  String toString() => _value;
 
-  String toJson() => value;
+  /// Encodes this enum as a value suitable for JSON.
+  String toJson() => _value;
 
-  static const waiting = ReportQueueType._(r'Waiting');
-  static const acceptedByAdminBot = ReportQueueType._(r'AcceptedByAdminBot');
-  static const rejectedByAdminBot = ReportQueueType._(r'RejectedByAdminBot');
-
-  /// List of all possible values in this [enum][ReportQueueType].
-  static const values = <ReportQueueType>[
-    waiting,
-    acceptedByAdminBot,
-    rejectedByAdminBot,
-  ];
-
+  /// Returns the instance of [ReportQueueType] that was successfully decoded
+  /// from the passed [value] on success, null otherwise.
   static ReportQueueType? fromJson(dynamic value) => ReportQueueTypeTypeTransformer().decode(value);
 
+  /// Returns a [List] containing instances of [ReportQueueType]
+  /// that were successfully decoded from the passed [JSON][json].
   static List<ReportQueueType> listFromJson(dynamic json, {bool growable = false,}) {
     final result = <ReportQueueType>[];
     if (json is List && json.isNotEmpty) {
@@ -57,9 +56,11 @@ class ReportQueueTypeTypeTransformer {
 
   const ReportQueueTypeTypeTransformer._();
 
-  String encode(ReportQueueType data) => data.value;
+  /// Encodes this enum as a value suitable for JSON.
+  String encode(ReportQueueType data) => data._value;
 
-  /// Decodes a [dynamic value][data] to a ReportQueueType.
+  /// Returns the instance of [ReportQueueType] that was successfully decoded
+  /// from the passed [data] value on success, null otherwise.
   ///
   /// If [allowNull] is true and the [dynamic value][data] cannot be decoded successfully,
   /// then null is returned. However, if [allowNull] is false and the [dynamic value][data]
@@ -68,6 +69,9 @@ class ReportQueueTypeTypeTransformer {
   /// The [allowNull] is very handy when an API changes and a new enum value is added or removed,
   /// and users are still using an old app with the old code.
   ReportQueueType? decode(dynamic data, {bool allowNull = true}) {
+    if (data is ReportQueueType) {
+      return data;
+    }
     if (data != null) {
       switch (data) {
         case r'Waiting': return ReportQueueType.waiting;
@@ -82,7 +86,7 @@ class ReportQueueTypeTypeTransformer {
     return null;
   }
 
-  /// Singleton [ReportQueueTypeTypeTransformer] instance.
+  /// The singleton instance of this transformer.
   static ReportQueueTypeTypeTransformer? _instance;
 }
 

@@ -53,10 +53,10 @@ class ChatMessageReportData {
       // Note 1: the values aren't checked for validity beyond being non-null.
       // Note 2: this code is stripped in release mode!
       assert(() {
-        requiredKeys.forEach((key) {
-          assert(json.containsKey(key), 'Required key "ChatMessageReportData[$key]" is missing from JSON.');
-          assert(json[key] != null, 'Required key "ChatMessageReportData[$key]" has a null value in JSON.');
-        });
+        assert(json.containsKey(r'decryption_key_base64'), 'Required key "ChatMessageReportData[decryption_key_base64]" is missing from JSON.');
+        assert(json[r'decryption_key_base64'] != null, 'Required key "ChatMessageReportData[decryption_key_base64]" has a null value in JSON.');
+        assert(json.containsKey(r'server_signed_message_base64'), 'Required key "ChatMessageReportData[server_signed_message_base64]" is missing from JSON.');
+        assert(json[r'server_signed_message_base64'] != null, 'Required key "ChatMessageReportData[server_signed_message_base64]" has a null value in JSON.');
         return true;
       }());
 

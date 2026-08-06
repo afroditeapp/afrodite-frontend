@@ -59,10 +59,12 @@ class EmailLogin {
       // Note 1: the values aren't checked for validity beyond being non-null.
       // Note 2: this code is stripped in release mode!
       assert(() {
-        requiredKeys.forEach((key) {
-          assert(json.containsKey(key), 'Required key "EmailLogin[$key]" is missing from JSON.');
-          assert(json[key] != null, 'Required key "EmailLogin[$key]" has a null value in JSON.');
-        });
+        assert(json.containsKey(r'client_info'), 'Required key "EmailLogin[client_info]" is missing from JSON.');
+        assert(json[r'client_info'] != null, 'Required key "EmailLogin[client_info]" has a null value in JSON.');
+        assert(json.containsKey(r'client_token'), 'Required key "EmailLogin[client_token]" is missing from JSON.');
+        assert(json[r'client_token'] != null, 'Required key "EmailLogin[client_token]" has a null value in JSON.');
+        assert(json.containsKey(r'email_token'), 'Required key "EmailLogin[email_token]" is missing from JSON.');
+        assert(json[r'email_token'] != null, 'Required key "EmailLogin[email_token]" has a null value in JSON.');
         return true;
       }());
 

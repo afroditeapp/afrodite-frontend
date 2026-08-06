@@ -53,10 +53,10 @@ class UnreadNewsCountResult {
       // Note 1: the values aren't checked for validity beyond being non-null.
       // Note 2: this code is stripped in release mode!
       assert(() {
-        requiredKeys.forEach((key) {
-          assert(json.containsKey(key), 'Required key "UnreadNewsCountResult[$key]" is missing from JSON.');
-          assert(json[key] != null, 'Required key "UnreadNewsCountResult[$key]" has a null value in JSON.');
-        });
+        assert(json.containsKey(r'c'), 'Required key "UnreadNewsCountResult[c]" is missing from JSON.');
+        assert(json[r'c'] != null, 'Required key "UnreadNewsCountResult[c]" has a null value in JSON.');
+        assert(json.containsKey(r'v'), 'Required key "UnreadNewsCountResult[v]" is missing from JSON.');
+        assert(json[r'v'] != null, 'Required key "UnreadNewsCountResult[v]" has a null value in JSON.');
         return true;
       }());
 

@@ -54,10 +54,10 @@ class UpdateCustomEmail {
       // Note 1: the values aren't checked for validity beyond being non-null.
       // Note 2: this code is stripped in release mode!
       assert(() {
-        requiredKeys.forEach((key) {
-          assert(json.containsKey(key), 'Required key "UpdateCustomEmail[$key]" is missing from JSON.');
-          assert(json[key] != null, 'Required key "UpdateCustomEmail[$key]" has a null value in JSON.');
-        });
+        assert(json.containsKey(r'id'), 'Required key "UpdateCustomEmail[id]" is missing from JSON.');
+        assert(json[r'id'] != null, 'Required key "UpdateCustomEmail[id]" has a null value in JSON.');
+        assert(json.containsKey(r'translations'), 'Required key "UpdateCustomEmail[translations]" is missing from JSON.');
+        assert(json[r'translations'] != null, 'Required key "UpdateCustomEmail[translations]" has a null value in JSON.');
         return true;
       }());
 

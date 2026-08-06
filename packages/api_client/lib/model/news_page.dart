@@ -47,10 +47,8 @@ class NewsPage {
       // Note 1: the values aren't checked for validity beyond being non-null.
       // Note 2: this code is stripped in release mode!
       assert(() {
-        requiredKeys.forEach((key) {
-          assert(json.containsKey(key), 'Required key "NewsPage[$key]" is missing from JSON.');
-          assert(json[key] != null, 'Required key "NewsPage[$key]" has a null value in JSON.');
-        });
+        assert(json.containsKey(r'news'), 'Required key "NewsPage[news]" is missing from JSON.');
+        assert(json[r'news'] != null, 'Required key "NewsPage[news]" has a null value in JSON.');
         return true;
       }());
 

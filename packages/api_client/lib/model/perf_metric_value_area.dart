@@ -61,10 +61,12 @@ class PerfMetricValueArea {
       // Note 1: the values aren't checked for validity beyond being non-null.
       // Note 2: this code is stripped in release mode!
       assert(() {
-        requiredKeys.forEach((key) {
-          assert(json.containsKey(key), 'Required key "PerfMetricValueArea[$key]" is missing from JSON.');
-          assert(json[key] != null, 'Required key "PerfMetricValueArea[$key]" has a null value in JSON.');
-        });
+        assert(json.containsKey(r'first_time_value'), 'Required key "PerfMetricValueArea[first_time_value]" is missing from JSON.');
+        assert(json[r'first_time_value'] != null, 'Required key "PerfMetricValueArea[first_time_value]" has a null value in JSON.');
+        assert(json.containsKey(r'time_granularity'), 'Required key "PerfMetricValueArea[time_granularity]" is missing from JSON.');
+        assert(json[r'time_granularity'] != null, 'Required key "PerfMetricValueArea[time_granularity]" has a null value in JSON.');
+        assert(json.containsKey(r'values'), 'Required key "PerfMetricValueArea[values]" is missing from JSON.');
+        assert(json[r'values'] != null, 'Required key "PerfMetricValueArea[values]" has a null value in JSON.');
         return true;
       }());
 

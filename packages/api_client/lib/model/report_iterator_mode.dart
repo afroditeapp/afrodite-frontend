@@ -11,29 +11,29 @@
 part of openapi.api;
 
 
-class ReportIteratorMode {
-  /// Instantiate a new enum with the provided [value].
-  const ReportIteratorMode._(this.value);
+enum ReportIteratorMode {
+  received._(r'Received'),
+  sent._(r'Sent'),
+  ;
+
+  /// Instantiate a new enum with the provided value.
+  const ReportIteratorMode._(this._value);
 
   /// The underlying value of this enum member.
-  final String value;
+  final String _value;
 
   @override
-  String toString() => value;
+  String toString() => _value;
 
-  String toJson() => value;
+  /// Encodes this enum as a value suitable for JSON.
+  String toJson() => _value;
 
-  static const received = ReportIteratorMode._(r'Received');
-  static const sent = ReportIteratorMode._(r'Sent');
-
-  /// List of all possible values in this [enum][ReportIteratorMode].
-  static const values = <ReportIteratorMode>[
-    received,
-    sent,
-  ];
-
+  /// Returns the instance of [ReportIteratorMode] that was successfully decoded
+  /// from the passed [value] on success, null otherwise.
   static ReportIteratorMode? fromJson(dynamic value) => ReportIteratorModeTypeTransformer().decode(value);
 
+  /// Returns a [List] containing instances of [ReportIteratorMode]
+  /// that were successfully decoded from the passed [JSON][json].
   static List<ReportIteratorMode> listFromJson(dynamic json, {bool growable = false,}) {
     final result = <ReportIteratorMode>[];
     if (json is List && json.isNotEmpty) {
@@ -55,9 +55,11 @@ class ReportIteratorModeTypeTransformer {
 
   const ReportIteratorModeTypeTransformer._();
 
-  String encode(ReportIteratorMode data) => data.value;
+  /// Encodes this enum as a value suitable for JSON.
+  String encode(ReportIteratorMode data) => data._value;
 
-  /// Decodes a [dynamic value][data] to a ReportIteratorMode.
+  /// Returns the instance of [ReportIteratorMode] that was successfully decoded
+  /// from the passed [data] value on success, null otherwise.
   ///
   /// If [allowNull] is true and the [dynamic value][data] cannot be decoded successfully,
   /// then null is returned. However, if [allowNull] is false and the [dynamic value][data]
@@ -66,6 +68,9 @@ class ReportIteratorModeTypeTransformer {
   /// The [allowNull] is very handy when an API changes and a new enum value is added or removed,
   /// and users are still using an old app with the old code.
   ReportIteratorMode? decode(dynamic data, {bool allowNull = true}) {
+    if (data is ReportIteratorMode) {
+      return data;
+    }
     if (data != null) {
       switch (data) {
         case r'Received': return ReportIteratorMode.received;
@@ -79,7 +84,7 @@ class ReportIteratorModeTypeTransformer {
     return null;
   }
 
-  /// Singleton [ReportIteratorModeTypeTransformer] instance.
+  /// The singleton instance of this transformer.
   static ReportIteratorModeTypeTransformer? _instance;
 }
 

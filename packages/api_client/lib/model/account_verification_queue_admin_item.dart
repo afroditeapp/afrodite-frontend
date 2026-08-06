@@ -65,10 +65,14 @@ class AccountVerificationQueueAdminItem {
       // Note 1: the values aren't checked for validity beyond being non-null.
       // Note 2: this code is stripped in release mode!
       assert(() {
-        requiredKeys.forEach((key) {
-          assert(json.containsKey(key), 'Required key "AccountVerificationQueueAdminItem[$key]" is missing from JSON.');
-          assert(json[key] != null, 'Required key "AccountVerificationQueueAdminItem[$key]" has a null value in JSON.');
-        });
+        assert(json.containsKey(r'account_id'), 'Required key "AccountVerificationQueueAdminItem[account_id]" is missing from JSON.');
+        assert(json[r'account_id'] != null, 'Required key "AccountVerificationQueueAdminItem[account_id]" has a null value in JSON.');
+        assert(json.containsKey(r'verification_data'), 'Required key "AccountVerificationQueueAdminItem[verification_data]" is missing from JSON.');
+        assert(json[r'verification_data'] != null, 'Required key "AccountVerificationQueueAdminItem[verification_data]" has a null value in JSON.');
+        assert(json.containsKey(r'verification_method'), 'Required key "AccountVerificationQueueAdminItem[verification_method]" is missing from JSON.');
+        assert(json[r'verification_method'] != null, 'Required key "AccountVerificationQueueAdminItem[verification_method]" has a null value in JSON.');
+        assert(json.containsKey(r'verification_scope'), 'Required key "AccountVerificationQueueAdminItem[verification_scope]" is missing from JSON.');
+        assert(json[r'verification_scope'] != null, 'Required key "AccountVerificationQueueAdminItem[verification_scope]" has a null value in JSON.');
         return true;
       }());
 

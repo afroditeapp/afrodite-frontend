@@ -118,7 +118,7 @@ class _AddAttributeScreenState extends State<AddAttributeScreen> {
             initialValue: _mode,
             decoration: const InputDecoration(labelText: "Mode", border: OutlineInputBorder()),
             items: AttributeMode.values
-                .map((e) => DropdownMenuItem(value: e, child: Text(e.value)))
+                .map((e) => DropdownMenuItem(value: e, child: Text(e.toString())))
                 .toList(),
             onChanged: (val) {
               if (val != null) setState(() => _mode = val);

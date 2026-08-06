@@ -317,8 +317,6 @@ class AccountRepository extends DataRepositoryWithLifecycle {
           return;
         }
         await NotificationLikeReceived.getInstance().handleNewReceivedLikesCount(currentCount, db);
-      default:
-        _log.warning("Notification type is not supported: ${notification.notificationType}");
     }
   }
 

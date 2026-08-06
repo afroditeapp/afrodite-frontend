@@ -75,10 +75,16 @@ class MessageDeliveryInfo {
       // Note 1: the values aren't checked for validity beyond being non-null.
       // Note 2: this code is stripped in release mode!
       assert(() {
-        requiredKeys.forEach((key) {
-          assert(json.containsKey(key), 'Required key "MessageDeliveryInfo[$key]" is missing from JSON.');
-          assert(json[key] != null, 'Required key "MessageDeliveryInfo[$key]" has a null value in JSON.');
-        });
+        assert(json.containsKey(r'delivery_type'), 'Required key "MessageDeliveryInfo[delivery_type]" is missing from JSON.');
+        assert(json[r'delivery_type'] != null, 'Required key "MessageDeliveryInfo[delivery_type]" has a null value in JSON.');
+        assert(json.containsKey(r'id'), 'Required key "MessageDeliveryInfo[id]" is missing from JSON.');
+        assert(json[r'id'] != null, 'Required key "MessageDeliveryInfo[id]" has a null value in JSON.');
+        assert(json.containsKey(r'message_id'), 'Required key "MessageDeliveryInfo[message_id]" is missing from JSON.');
+        assert(json[r'message_id'] != null, 'Required key "MessageDeliveryInfo[message_id]" has a null value in JSON.');
+        assert(json.containsKey(r'recipient'), 'Required key "MessageDeliveryInfo[recipient]" is missing from JSON.');
+        assert(json[r'recipient'] != null, 'Required key "MessageDeliveryInfo[recipient]" has a null value in JSON.');
+        assert(json.containsKey(r'unix_time'), 'Required key "MessageDeliveryInfo[unix_time]" is missing from JSON.');
+        assert(json[r'unix_time'] != null, 'Required key "MessageDeliveryInfo[unix_time]" has a null value in JSON.');
         return true;
       }());
 

@@ -113,10 +113,18 @@ class AdminBotConfig {
       // Note 1: the values aren't checked for validity beyond being non-null.
       // Note 2: this code is stripped in release mode!
       assert(() {
-        requiredKeys.forEach((key) {
-          assert(json.containsKey(key), 'Required key "AdminBotConfig[$key]" is missing from JSON.');
-          assert(json[key] != null, 'Required key "AdminBotConfig[$key]" has a null value in JSON.');
-        });
+        assert(json.containsKey(r'account_verification'), 'Required key "AdminBotConfig[account_verification]" is missing from JSON.');
+        assert(json[r'account_verification'] != null, 'Required key "AdminBotConfig[account_verification]" has a null value in JSON.');
+        assert(json.containsKey(r'content_moderation'), 'Required key "AdminBotConfig[content_moderation]" is missing from JSON.');
+        assert(json[r'content_moderation'] != null, 'Required key "AdminBotConfig[content_moderation]" has a null value in JSON.');
+        assert(json.containsKey(r'face_verification'), 'Required key "AdminBotConfig[face_verification]" is missing from JSON.');
+        assert(json[r'face_verification'] != null, 'Required key "AdminBotConfig[face_verification]" has a null value in JSON.');
+        assert(json.containsKey(r'profile_name_moderation'), 'Required key "AdminBotConfig[profile_name_moderation]" is missing from JSON.');
+        assert(json[r'profile_name_moderation'] != null, 'Required key "AdminBotConfig[profile_name_moderation]" has a null value in JSON.');
+        assert(json.containsKey(r'profile_text_moderation'), 'Required key "AdminBotConfig[profile_text_moderation]" is missing from JSON.');
+        assert(json[r'profile_text_moderation'] != null, 'Required key "AdminBotConfig[profile_text_moderation]" has a null value in JSON.');
+        assert(json.containsKey(r'report_processing'), 'Required key "AdminBotConfig[report_processing]" is missing from JSON.');
+        assert(json[r'report_processing'] != null, 'Required key "AdminBotConfig[report_processing]" has a null value in JSON.');
         return true;
       }());
 

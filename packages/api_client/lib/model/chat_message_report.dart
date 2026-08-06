@@ -72,10 +72,16 @@ class ChatMessageReport {
       // Note 1: the values aren't checked for validity beyond being non-null.
       // Note 2: this code is stripped in release mode!
       assert(() {
-        requiredKeys.forEach((key) {
-          assert(json.containsKey(key), 'Required key "ChatMessageReport[$key]" is missing from JSON.');
-          assert(json[key] != null, 'Required key "ChatMessageReport[$key]" has a null value in JSON.');
-        });
+        assert(json.containsKey(r'message_base64'), 'Required key "ChatMessageReport[message_base64]" is missing from JSON.');
+        assert(json[r'message_base64'] != null, 'Required key "ChatMessageReport[message_base64]" has a null value in JSON.');
+        assert(json.containsKey(r'message_number'), 'Required key "ChatMessageReport[message_number]" is missing from JSON.');
+        assert(json[r'message_number'] != null, 'Required key "ChatMessageReport[message_number]" has a null value in JSON.');
+        assert(json.containsKey(r'message_time'), 'Required key "ChatMessageReport[message_time]" is missing from JSON.');
+        assert(json[r'message_time'] != null, 'Required key "ChatMessageReport[message_time]" has a null value in JSON.');
+        assert(json.containsKey(r'recipient'), 'Required key "ChatMessageReport[recipient]" is missing from JSON.');
+        assert(json[r'recipient'] != null, 'Required key "ChatMessageReport[recipient]" has a null value in JSON.');
+        assert(json.containsKey(r'sender'), 'Required key "ChatMessageReport[sender]" is missing from JSON.');
+        assert(json[r'sender'] != null, 'Required key "ChatMessageReport[sender]" has a null value in JSON.');
         return true;
       }());
 

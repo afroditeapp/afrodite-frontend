@@ -59,10 +59,12 @@ class AutomaticBanningExpectedLlmResponsesConfig {
       // Note 1: the values aren't checked for validity beyond being non-null.
       // Note 2: this code is stripped in release mode!
       assert(() {
-        requiredKeys.forEach((key) {
-          assert(json.containsKey(key), 'Required key "AutomaticBanningExpectedLlmResponsesConfig[$key]" is missing from JSON.');
-          assert(json[key] != null, 'Required key "AutomaticBanningExpectedLlmResponsesConfig[$key]" has a null value in JSON.');
-        });
+        assert(json.containsKey(r'high'), 'Required key "AutomaticBanningExpectedLlmResponsesConfig[high]" is missing from JSON.');
+        assert(json[r'high'] != null, 'Required key "AutomaticBanningExpectedLlmResponsesConfig[high]" has a null value in JSON.');
+        assert(json.containsKey(r'low'), 'Required key "AutomaticBanningExpectedLlmResponsesConfig[low]" is missing from JSON.');
+        assert(json[r'low'] != null, 'Required key "AutomaticBanningExpectedLlmResponsesConfig[low]" has a null value in JSON.');
+        assert(json.containsKey(r'medium'), 'Required key "AutomaticBanningExpectedLlmResponsesConfig[medium]" is missing from JSON.');
+        assert(json[r'medium'] != null, 'Required key "AutomaticBanningExpectedLlmResponsesConfig[medium]" has a null value in JSON.');
         return true;
       }());
 

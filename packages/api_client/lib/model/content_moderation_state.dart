@@ -11,39 +11,34 @@
 part of openapi.api;
 
 /// Content moderation states  The states grouped like this:  - InSlot, If user uploads new content to slot the current will be removed. - InModeration, Content is in moderation. User can not remove the content. - ModeratedAsAccepted, Content is moderated as accepted.   User can not remove the content until specific time elapses. - ModeratedAsRejected, Content is moderated as rejected.   Content deleting is possible.
-class ContentModerationState {
-  /// Instantiate a new enum with the provided [value].
-  const ContentModerationState._(this.value);
+enum ContentModerationState {
+  inSlot._(r'InSlot'),
+  waitingAdminBot._(r'WaitingAdminBot'),
+  waitingAdmin._(r'WaitingAdmin'),
+  acceptedByAdminBot._(r'AcceptedByAdminBot'),
+  acceptedByAdmin._(r'AcceptedByAdmin'),
+  rejectedByAdminBot._(r'RejectedByAdminBot'),
+  rejectedByAdmin._(r'RejectedByAdmin'),
+  ;
+
+  /// Instantiate a new enum with the provided value.
+  const ContentModerationState._(this._value);
 
   /// The underlying value of this enum member.
-  final String value;
+  final String _value;
 
   @override
-  String toString() => value;
+  String toString() => _value;
 
-  String toJson() => value;
+  /// Encodes this enum as a value suitable for JSON.
+  String toJson() => _value;
 
-  static const inSlot = ContentModerationState._(r'InSlot');
-  static const waitingAdminBot = ContentModerationState._(r'WaitingAdminBot');
-  static const waitingAdmin = ContentModerationState._(r'WaitingAdmin');
-  static const acceptedByAdminBot = ContentModerationState._(r'AcceptedByAdminBot');
-  static const acceptedByAdmin = ContentModerationState._(r'AcceptedByAdmin');
-  static const rejectedByAdminBot = ContentModerationState._(r'RejectedByAdminBot');
-  static const rejectedByAdmin = ContentModerationState._(r'RejectedByAdmin');
-
-  /// List of all possible values in this [enum][ContentModerationState].
-  static const values = <ContentModerationState>[
-    inSlot,
-    waitingAdminBot,
-    waitingAdmin,
-    acceptedByAdminBot,
-    acceptedByAdmin,
-    rejectedByAdminBot,
-    rejectedByAdmin,
-  ];
-
+  /// Returns the instance of [ContentModerationState] that was successfully decoded
+  /// from the passed [value] on success, null otherwise.
   static ContentModerationState? fromJson(dynamic value) => ContentModerationStateTypeTransformer().decode(value);
 
+  /// Returns a [List] containing instances of [ContentModerationState]
+  /// that were successfully decoded from the passed [JSON][json].
   static List<ContentModerationState> listFromJson(dynamic json, {bool growable = false,}) {
     final result = <ContentModerationState>[];
     if (json is List && json.isNotEmpty) {
@@ -65,9 +60,11 @@ class ContentModerationStateTypeTransformer {
 
   const ContentModerationStateTypeTransformer._();
 
-  String encode(ContentModerationState data) => data.value;
+  /// Encodes this enum as a value suitable for JSON.
+  String encode(ContentModerationState data) => data._value;
 
-  /// Decodes a [dynamic value][data] to a ContentModerationState.
+  /// Returns the instance of [ContentModerationState] that was successfully decoded
+  /// from the passed [data] value on success, null otherwise.
   ///
   /// If [allowNull] is true and the [dynamic value][data] cannot be decoded successfully,
   /// then null is returned. However, if [allowNull] is false and the [dynamic value][data]
@@ -76,6 +73,9 @@ class ContentModerationStateTypeTransformer {
   /// The [allowNull] is very handy when an API changes and a new enum value is added or removed,
   /// and users are still using an old app with the old code.
   ContentModerationState? decode(dynamic data, {bool allowNull = true}) {
+    if (data is ContentModerationState) {
+      return data;
+    }
     if (data != null) {
       switch (data) {
         case r'InSlot': return ContentModerationState.inSlot;
@@ -94,7 +94,7 @@ class ContentModerationStateTypeTransformer {
     return null;
   }
 
-  /// Singleton [ContentModerationStateTypeTransformer] instance.
+  /// The singleton instance of this transformer.
   static ContentModerationStateTypeTransformer? _instance;
 }
 

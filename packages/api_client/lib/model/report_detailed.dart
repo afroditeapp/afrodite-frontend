@@ -76,10 +76,14 @@ class ReportDetailed {
       // Note 1: the values aren't checked for validity beyond being non-null.
       // Note 2: this code is stripped in release mode!
       assert(() {
-        requiredKeys.forEach((key) {
-          assert(json.containsKey(key), 'Required key "ReportDetailed[$key]" is missing from JSON.');
-          assert(json[key] != null, 'Required key "ReportDetailed[$key]" has a null value in JSON.');
-        });
+        assert(json.containsKey(r'content'), 'Required key "ReportDetailed[content]" is missing from JSON.');
+        assert(json[r'content'] != null, 'Required key "ReportDetailed[content]" has a null value in JSON.');
+        assert(json.containsKey(r'creator_info'), 'Required key "ReportDetailed[creator_info]" is missing from JSON.');
+        assert(json[r'creator_info'] != null, 'Required key "ReportDetailed[creator_info]" has a null value in JSON.');
+        assert(json.containsKey(r'info'), 'Required key "ReportDetailed[info]" is missing from JSON.');
+        assert(json[r'info'] != null, 'Required key "ReportDetailed[info]" has a null value in JSON.');
+        assert(json.containsKey(r'target_info'), 'Required key "ReportDetailed[target_info]" is missing from JSON.');
+        assert(json[r'target_info'] != null, 'Required key "ReportDetailed[target_info]" has a null value in JSON.');
         return true;
       }());
 

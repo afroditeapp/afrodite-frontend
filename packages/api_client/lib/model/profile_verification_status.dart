@@ -47,10 +47,8 @@ class ProfileVerificationStatus {
       // Note 1: the values aren't checked for validity beyond being non-null.
       // Note 2: this code is stripped in release mode!
       assert(() {
-        requiredKeys.forEach((key) {
-          assert(json.containsKey(key), 'Required key "ProfileVerificationStatus[$key]" is missing from JSON.');
-          assert(json[key] != null, 'Required key "ProfileVerificationStatus[$key]" has a null value in JSON.');
-        });
+        assert(json.containsKey(r'v'), 'Required key "ProfileVerificationStatus[v]" is missing from JSON.');
+        assert(json[r'v'] != null, 'Required key "ProfileVerificationStatus[v]" has a null value in JSON.');
         return true;
       }());
 

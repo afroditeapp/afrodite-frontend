@@ -155,10 +155,16 @@ class ContentInfoDetailed {
       // Note 1: the values aren't checked for validity beyond being non-null.
       // Note 2: this code is stripped in release mode!
       assert(() {
-        requiredKeys.forEach((key) {
-          assert(json.containsKey(key), 'Required key "ContentInfoDetailed[$key]" is missing from JSON.');
-          assert(json[key] != null, 'Required key "ContentInfoDetailed[$key]" has a null value in JSON.');
-        });
+        assert(json.containsKey(r'cid'), 'Required key "ContentInfoDetailed[cid]" is missing from JSON.');
+        assert(json[r'cid'] != null, 'Required key "ContentInfoDetailed[cid]" has a null value in JSON.');
+        assert(json.containsKey(r'ctype'), 'Required key "ContentInfoDetailed[ctype]" is missing from JSON.');
+        assert(json[r'ctype'] != null, 'Required key "ContentInfoDetailed[ctype]" has a null value in JSON.');
+        assert(json.containsKey(r'face_detected'), 'Required key "ContentInfoDetailed[face_detected]" is missing from JSON.');
+        assert(json[r'face_detected'] != null, 'Required key "ContentInfoDetailed[face_detected]" has a null value in JSON.');
+        assert(json.containsKey(r'secure_capture'), 'Required key "ContentInfoDetailed[secure_capture]" is missing from JSON.');
+        assert(json[r'secure_capture'] != null, 'Required key "ContentInfoDetailed[secure_capture]" has a null value in JSON.');
+        assert(json.containsKey(r'state'), 'Required key "ContentInfoDetailed[state]" is missing from JSON.');
+        assert(json[r'state'] != null, 'Required key "ContentInfoDetailed[state]" has a null value in JSON.');
         return true;
       }());
 

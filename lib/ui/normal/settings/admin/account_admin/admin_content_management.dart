@@ -324,7 +324,6 @@ Widget _statusInfo(
     ContentModerationState.rejectedByAdminBot =>
       context.strings.moderation_state_rejected_by_admin_bot,
     ContentModerationState.rejectedByAdmin => context.strings.moderation_state_rejected_by_admin,
-    _ => "null",
   };
 
   final Widget? moderationStateChangeButton;

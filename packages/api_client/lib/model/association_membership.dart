@@ -23,23 +23,11 @@ class AssociationMembership {
   UnixTime creationUnixTime;
 
   /// A string wrapper that ensures the string is not empty. This type is used for TEXT columns that should not allow empty strings. In the database, these columns are NULL when there is no value, and this type represents non-NULL values that must be non-empty.
-  ///
-  /// Please note: This property should have been non-nullable! Since the specification file
-  /// does not include a default value (using the "default:" property), however, the generated
-  /// source code must fall back to having a nullable type.
-  /// Consider adding a "default:" property in the specification file to hide this note.
-  ///
   String? domicile;
 
   UnixTime editUnixTime;
 
   /// A string wrapper that ensures the string is not empty. This type is used for TEXT columns that should not allow empty strings. In the database, these columns are NULL when there is no value, and this type represents non-NULL values that must be non-empty.
-  ///
-  /// Please note: This property should have been non-nullable! Since the specification file
-  /// does not include a default value (using the "default:" property), however, the generated
-  /// source code must fall back to having a nullable type.
-  /// Consider adding a "default:" property in the specification file to hide this note.
-  ///
   String? fullName;
 
   int membershipType;
@@ -93,10 +81,12 @@ class AssociationMembership {
       // Note 1: the values aren't checked for validity beyond being non-null.
       // Note 2: this code is stripped in release mode!
       assert(() {
-        requiredKeys.forEach((key) {
-          assert(json.containsKey(key), 'Required key "AssociationMembership[$key]" is missing from JSON.');
-          assert(json[key] != null, 'Required key "AssociationMembership[$key]" has a null value in JSON.');
-        });
+        assert(json.containsKey(r'creation_unix_time'), 'Required key "AssociationMembership[creation_unix_time]" is missing from JSON.');
+        assert(json[r'creation_unix_time'] != null, 'Required key "AssociationMembership[creation_unix_time]" has a null value in JSON.');
+        assert(json.containsKey(r'edit_unix_time'), 'Required key "AssociationMembership[edit_unix_time]" is missing from JSON.');
+        assert(json[r'edit_unix_time'] != null, 'Required key "AssociationMembership[edit_unix_time]" has a null value in JSON.');
+        assert(json.containsKey(r'membership_type'), 'Required key "AssociationMembership[membership_type]" is missing from JSON.');
+        assert(json[r'membership_type'] != null, 'Required key "AssociationMembership[membership_type]" has a null value in JSON.');
         return true;
       }());
 

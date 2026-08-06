@@ -143,10 +143,8 @@ class ProfileFiltersUpdate {
       // Note 1: the values aren't checked for validity beyond being non-null.
       // Note 2: this code is stripped in release mode!
       assert(() {
-        requiredKeys.forEach((key) {
-          assert(json.containsKey(key), 'Required key "ProfileFiltersUpdate[$key]" is missing from JSON.');
-          assert(json[key] != null, 'Required key "ProfileFiltersUpdate[$key]" has a null value in JSON.');
-        });
+        assert(json.containsKey(r'attribute_filters'), 'Required key "ProfileFiltersUpdate[attribute_filters]" is missing from JSON.');
+        assert(json[r'attribute_filters'] != null, 'Required key "ProfileFiltersUpdate[attribute_filters]" has a null value in JSON.');
         return true;
       }());
 

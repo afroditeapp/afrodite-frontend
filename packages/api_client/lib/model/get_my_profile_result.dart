@@ -119,10 +119,12 @@ class GetMyProfileResult {
       // Note 1: the values aren't checked for validity beyond being non-null.
       // Note 2: this code is stripped in release mode!
       assert(() {
-        requiredKeys.forEach((key) {
-          assert(json.containsKey(key), 'Required key "GetMyProfileResult[$key]" is missing from JSON.');
-          assert(json[key] != null, 'Required key "GetMyProfileResult[$key]" has a null value in JSON.');
-        });
+        assert(json.containsKey(r'profile'), 'Required key "GetMyProfileResult[profile]" is missing from JSON.');
+        assert(json[r'profile'] != null, 'Required key "GetMyProfileResult[profile]" has a null value in JSON.');
+        assert(json.containsKey(r'profile_sync_version'), 'Required key "GetMyProfileResult[profile_sync_version]" is missing from JSON.');
+        assert(json[r'profile_sync_version'] != null, 'Required key "GetMyProfileResult[profile_sync_version]" has a null value in JSON.');
+        assert(json.containsKey(r'profile_version'), 'Required key "GetMyProfileResult[profile_version]" is missing from JSON.');
+        assert(json[r'profile_version'] != null, 'Required key "GetMyProfileResult[profile_version]" has a null value in JSON.');
         return true;
       }());
 

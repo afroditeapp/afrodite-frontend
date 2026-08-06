@@ -88,10 +88,12 @@ class InfoBanner {
       // Note 1: the values aren't checked for validity beyond being non-null.
       // Note 2: this code is stripped in release mode!
       assert(() {
-        requiredKeys.forEach((key) {
-          assert(json.containsKey(key), 'Required key "InfoBanner[$key]" is missing from JSON.');
-          assert(json[key] != null, 'Required key "InfoBanner[$key]" has a null value in JSON.');
-        });
+        assert(json.containsKey(r'mode'), 'Required key "InfoBanner[mode]" is missing from JSON.');
+        assert(json[r'mode'] != null, 'Required key "InfoBanner[mode]" has a null value in JSON.');
+        assert(json.containsKey(r'platform'), 'Required key "InfoBanner[platform]" is missing from JSON.');
+        assert(json[r'platform'] != null, 'Required key "InfoBanner[platform]" has a null value in JSON.');
+        assert(json.containsKey(r'visibility'), 'Required key "InfoBanner[visibility]" is missing from JSON.');
+        assert(json[r'visibility'] != null, 'Required key "InfoBanner[visibility]" has a null value in JSON.');
         return true;
       }());
 

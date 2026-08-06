@@ -47,10 +47,8 @@ class ResetReceivedLikesIteratorResult {
       // Note 1: the values aren't checked for validity beyond being non-null.
       // Note 2: this code is stripped in release mode!
       assert(() {
-        requiredKeys.forEach((key) {
-          assert(json.containsKey(key), 'Required key "ResetReceivedLikesIteratorResult[$key]" is missing from JSON.');
-          assert(json[key] != null, 'Required key "ResetReceivedLikesIteratorResult[$key]" has a null value in JSON.');
-        });
+        assert(json.containsKey(r's'), 'Required key "ResetReceivedLikesIteratorResult[s]" is missing from JSON.');
+        assert(json[r's'] != null, 'Required key "ResetReceivedLikesIteratorResult[s]" has a null value in JSON.');
         return true;
       }());
 

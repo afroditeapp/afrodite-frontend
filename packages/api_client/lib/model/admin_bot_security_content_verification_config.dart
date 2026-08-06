@@ -60,10 +60,10 @@ class AdminBotSecurityContentVerificationConfig {
       // Note 1: the values aren't checked for validity beyond being non-null.
       // Note 2: this code is stripped in release mode!
       assert(() {
-        requiredKeys.forEach((key) {
-          assert(json.containsKey(key), 'Required key "AdminBotSecurityContentVerificationConfig[$key]" is missing from JSON.');
-          assert(json[key] != null, 'Required key "AdminBotSecurityContentVerificationConfig[$key]" has a null value in JSON.');
-        });
+        assert(json.containsKey(r'default_action'), 'Required key "AdminBotSecurityContentVerificationConfig[default_action]" is missing from JSON.');
+        assert(json[r'default_action'] != null, 'Required key "AdminBotSecurityContentVerificationConfig[default_action]" has a null value in JSON.');
+        assert(json.containsKey(r'llm'), 'Required key "AdminBotSecurityContentVerificationConfig[llm]" is missing from JSON.');
+        assert(json[r'llm'] != null, 'Required key "AdminBotSecurityContentVerificationConfig[llm]" has a null value in JSON.');
         return true;
       }());
 

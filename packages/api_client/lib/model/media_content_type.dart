@@ -11,27 +11,28 @@
 part of openapi.api;
 
 
-class MediaContentType {
-  /// Instantiate a new enum with the provided [value].
-  const MediaContentType._(this.value);
+enum MediaContentType {
+  jpegImage._(r'JpegImage'),
+  ;
+
+  /// Instantiate a new enum with the provided value.
+  const MediaContentType._(this._value);
 
   /// The underlying value of this enum member.
-  final String value;
+  final String _value;
 
   @override
-  String toString() => value;
+  String toString() => _value;
 
-  String toJson() => value;
+  /// Encodes this enum as a value suitable for JSON.
+  String toJson() => _value;
 
-  static const jpegImage = MediaContentType._(r'JpegImage');
-
-  /// List of all possible values in this [enum][MediaContentType].
-  static const values = <MediaContentType>[
-    jpegImage,
-  ];
-
+  /// Returns the instance of [MediaContentType] that was successfully decoded
+  /// from the passed [value] on success, null otherwise.
   static MediaContentType? fromJson(dynamic value) => MediaContentTypeTypeTransformer().decode(value);
 
+  /// Returns a [List] containing instances of [MediaContentType]
+  /// that were successfully decoded from the passed [JSON][json].
   static List<MediaContentType> listFromJson(dynamic json, {bool growable = false,}) {
     final result = <MediaContentType>[];
     if (json is List && json.isNotEmpty) {
@@ -53,9 +54,11 @@ class MediaContentTypeTypeTransformer {
 
   const MediaContentTypeTypeTransformer._();
 
-  String encode(MediaContentType data) => data.value;
+  /// Encodes this enum as a value suitable for JSON.
+  String encode(MediaContentType data) => data._value;
 
-  /// Decodes a [dynamic value][data] to a MediaContentType.
+  /// Returns the instance of [MediaContentType] that was successfully decoded
+  /// from the passed [data] value on success, null otherwise.
   ///
   /// If [allowNull] is true and the [dynamic value][data] cannot be decoded successfully,
   /// then null is returned. However, if [allowNull] is false and the [dynamic value][data]
@@ -64,6 +67,9 @@ class MediaContentTypeTypeTransformer {
   /// The [allowNull] is very handy when an API changes and a new enum value is added or removed,
   /// and users are still using an old app with the old code.
   MediaContentType? decode(dynamic data, {bool allowNull = true}) {
+    if (data is MediaContentType) {
+      return data;
+    }
     if (data != null) {
       switch (data) {
         case r'JpegImage': return MediaContentType.jpegImage;
@@ -76,7 +82,7 @@ class MediaContentTypeTypeTransformer {
     return null;
   }
 
-  /// Singleton [MediaContentTypeTypeTransformer] instance.
+  /// The singleton instance of this transformer.
   static MediaContentTypeTypeTransformer? _instance;
 }
 

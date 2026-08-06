@@ -19,7 +19,7 @@ class AccountApi {
   /// Remove association membership.
   ///
   /// Note: This method returns the HTTP [Response].
-  Future<Response> deleteAssociationMembershipWithHttpInfo() async {
+  Future<Response> deleteAssociationMembershipWithHttpInfo({ Future<void>? abortTrigger, }) async {
     // ignore: prefer_const_declarations
     final path = r'/account_api/association_membership';
 
@@ -41,19 +41,20 @@ class AccountApi {
       headerParams,
       formParams,
       contentTypes.isEmpty ? null : contentTypes.first,
+      abortTrigger: abortTrigger,
     );
   }
 
   /// Remove association membership.
-  Future<void> deleteAssociationMembership() async {
-    final response = await deleteAssociationMembershipWithHttpInfo();
+  Future<void> deleteAssociationMembership({ Future<void>? abortTrigger, }) async {
+    final response = await deleteAssociationMembershipWithHttpInfo(abortTrigger: abortTrigger,);
     if (response.statusCode >= HttpStatus.badRequest) {
       throw ApiException(response.statusCode, await _decodeBodyBytes(response));
     }
   }
 
   /// Performs an HTTP 'GET /account_api/get_account_app_notification_settings' operation and returns the [Response].
-  Future<Response> getAccountAppNotificationSettingsWithHttpInfo() async {
+  Future<Response> getAccountAppNotificationSettingsWithHttpInfo({ Future<void>? abortTrigger, }) async {
     // ignore: prefer_const_declarations
     final path = r'/account_api/get_account_app_notification_settings';
 
@@ -75,11 +76,12 @@ class AccountApi {
       headerParams,
       formParams,
       contentTypes.isEmpty ? null : contentTypes.first,
+      abortTrigger: abortTrigger,
     );
   }
 
-  Future<AccountAppNotificationSettings?> getAccountAppNotificationSettings() async {
-    final response = await getAccountAppNotificationSettingsWithHttpInfo();
+  Future<AccountAppNotificationSettings?> getAccountAppNotificationSettings({ Future<void>? abortTrigger, }) async {
+    final response = await getAccountAppNotificationSettingsWithHttpInfo(abortTrigger: abortTrigger,);
     if (response.statusCode >= HttpStatus.badRequest) {
       throw ApiException(response.statusCode, await _decodeBodyBytes(response));
     }
@@ -102,7 +104,7 @@ class AccountApi {
   /// Parameters:
   ///
   /// * [String] aid (required):
-  Future<Response> getAccountBanTimeWithHttpInfo(String aid,) async {
+  Future<Response> getAccountBanTimeWithHttpInfo(String aid, { Future<void>? abortTrigger, }) async {
     // ignore: prefer_const_declarations
     final path = r'/account_api/account_ban_time/{aid}'
       .replaceAll('{aid}', aid);
@@ -125,6 +127,7 @@ class AccountApi {
       headerParams,
       formParams,
       contentTypes.isEmpty ? null : contentTypes.first,
+      abortTrigger: abortTrigger,
     );
   }
 
@@ -135,8 +138,8 @@ class AccountApi {
   /// Parameters:
   ///
   /// * [String] aid (required):
-  Future<GetAccountBanTimeResult?> getAccountBanTime(String aid,) async {
-    final response = await getAccountBanTimeWithHttpInfo(aid,);
+  Future<GetAccountBanTimeResult?> getAccountBanTime(String aid, { Future<void>? abortTrigger, }) async {
+    final response = await getAccountBanTimeWithHttpInfo(aid, abortTrigger: abortTrigger,);
     if (response.statusCode >= HttpStatus.badRequest) {
       throw ApiException(response.statusCode, await _decodeBodyBytes(response));
     }
@@ -159,7 +162,7 @@ class AccountApi {
   /// Parameters:
   ///
   /// * [String] aid (required):
-  Future<Response> getAccountDeletionRequestStateWithHttpInfo(String aid,) async {
+  Future<Response> getAccountDeletionRequestStateWithHttpInfo(String aid, { Future<void>? abortTrigger, }) async {
     // ignore: prefer_const_declarations
     final path = r'/account_api/get_account_deletion_request_state/{aid}'
       .replaceAll('{aid}', aid);
@@ -182,6 +185,7 @@ class AccountApi {
       headerParams,
       formParams,
       contentTypes.isEmpty ? null : contentTypes.first,
+      abortTrigger: abortTrigger,
     );
   }
 
@@ -192,8 +196,8 @@ class AccountApi {
   /// Parameters:
   ///
   /// * [String] aid (required):
-  Future<GetAccountDeletionRequestResult?> getAccountDeletionRequestState(String aid,) async {
-    final response = await getAccountDeletionRequestStateWithHttpInfo(aid,);
+  Future<GetAccountDeletionRequestResult?> getAccountDeletionRequestState(String aid, { Future<void>? abortTrigger, }) async {
+    final response = await getAccountDeletionRequestStateWithHttpInfo(aid, abortTrigger: abortTrigger,);
     if (response.statusCode >= HttpStatus.badRequest) {
       throw ApiException(response.statusCode, await _decodeBodyBytes(response));
     }
@@ -210,7 +214,7 @@ class AccountApi {
   /// Get current account state.
   ///
   /// Note: This method returns the HTTP [Response].
-  Future<Response> getAccountStateWithHttpInfo() async {
+  Future<Response> getAccountStateWithHttpInfo({ Future<void>? abortTrigger, }) async {
     // ignore: prefer_const_declarations
     final path = r'/account_api/state';
 
@@ -232,12 +236,13 @@ class AccountApi {
       headerParams,
       formParams,
       contentTypes.isEmpty ? null : contentTypes.first,
+      abortTrigger: abortTrigger,
     );
   }
 
   /// Get current account state.
-  Future<Account?> getAccountState() async {
-    final response = await getAccountStateWithHttpInfo();
+  Future<Account?> getAccountState({ Future<void>? abortTrigger, }) async {
+    final response = await getAccountStateWithHttpInfo(abortTrigger: abortTrigger,);
     if (response.statusCode >= HttpStatus.badRequest) {
       throw ApiException(response.statusCode, await _decodeBodyBytes(response));
     }
@@ -254,7 +259,7 @@ class AccountApi {
   /// Get account verification queue status for current account.
   ///
   /// Note: This method returns the HTTP [Response].
-  Future<Response> getAccountVerificationQueueStatusWithHttpInfo() async {
+  Future<Response> getAccountVerificationQueueStatusWithHttpInfo({ Future<void>? abortTrigger, }) async {
     // ignore: prefer_const_declarations
     final path = r'/account_api/account_verification_queue';
 
@@ -276,12 +281,13 @@ class AccountApi {
       headerParams,
       formParams,
       contentTypes.isEmpty ? null : contentTypes.first,
+      abortTrigger: abortTrigger,
     );
   }
 
   /// Get account verification queue status for current account.
-  Future<AccountVerificationQueueStatus?> getAccountVerificationQueueStatus() async {
-    final response = await getAccountVerificationQueueStatusWithHttpInfo();
+  Future<AccountVerificationQueueStatus?> getAccountVerificationQueueStatus({ Future<void>? abortTrigger, }) async {
+    final response = await getAccountVerificationQueueStatusWithHttpInfo(abortTrigger: abortTrigger,);
     if (response.statusCode >= HttpStatus.badRequest) {
       throw ApiException(response.statusCode, await _decodeBodyBytes(response));
     }
@@ -298,7 +304,7 @@ class AccountApi {
   /// Get association members-only info markdown text.
   ///
   /// Note: This method returns the HTTP [Response].
-  Future<Response> getAssociationMembersOnlyInfoWithHttpInfo() async {
+  Future<Response> getAssociationMembersOnlyInfoWithHttpInfo({ Future<void>? abortTrigger, }) async {
     // ignore: prefer_const_declarations
     final path = r'/account_api/association_members_only_info';
 
@@ -320,12 +326,13 @@ class AccountApi {
       headerParams,
       formParams,
       contentTypes.isEmpty ? null : contentTypes.first,
+      abortTrigger: abortTrigger,
     );
   }
 
   /// Get association members-only info markdown text.
-  Future<GetAssociationMembersOnlyInfo?> getAssociationMembersOnlyInfo() async {
-    final response = await getAssociationMembersOnlyInfoWithHttpInfo();
+  Future<GetAssociationMembersOnlyInfo?> getAssociationMembersOnlyInfo({ Future<void>? abortTrigger, }) async {
+    final response = await getAssociationMembersOnlyInfoWithHttpInfo(abortTrigger: abortTrigger,);
     if (response.statusCode >= HttpStatus.badRequest) {
       throw ApiException(response.statusCode, await _decodeBodyBytes(response));
     }
@@ -342,7 +349,7 @@ class AccountApi {
   /// Get current association membership.
   ///
   /// Note: This method returns the HTTP [Response].
-  Future<Response> getAssociationMembershipWithHttpInfo() async {
+  Future<Response> getAssociationMembershipWithHttpInfo({ Future<void>? abortTrigger, }) async {
     // ignore: prefer_const_declarations
     final path = r'/account_api/association_membership';
 
@@ -364,12 +371,13 @@ class AccountApi {
       headerParams,
       formParams,
       contentTypes.isEmpty ? null : contentTypes.first,
+      abortTrigger: abortTrigger,
     );
   }
 
   /// Get current association membership.
-  Future<GetAssociationMembership?> getAssociationMembership() async {
-    final response = await getAssociationMembershipWithHttpInfo();
+  Future<GetAssociationMembership?> getAssociationMembership({ Future<void>? abortTrigger, }) async {
+    final response = await getAssociationMembershipWithHttpInfo(abortTrigger: abortTrigger,);
     if (response.statusCode >= HttpStatus.badRequest) {
       throw ApiException(response.statusCode, await _decodeBodyBytes(response));
     }
@@ -384,7 +392,7 @@ class AccountApi {
   }
 
   /// Performs an HTTP 'GET /account_api/email_address_state' operation and returns the [Response].
-  Future<Response> getEmailAddressStateWithHttpInfo() async {
+  Future<Response> getEmailAddressStateWithHttpInfo({ Future<void>? abortTrigger, }) async {
     // ignore: prefer_const_declarations
     final path = r'/account_api/email_address_state';
 
@@ -406,11 +414,12 @@ class AccountApi {
       headerParams,
       formParams,
       contentTypes.isEmpty ? null : contentTypes.first,
+      abortTrigger: abortTrigger,
     );
   }
 
-  Future<EmailAddressState?> getEmailAddressState() async {
-    final response = await getEmailAddressStateWithHttpInfo();
+  Future<EmailAddressState?> getEmailAddressState({ Future<void>? abortTrigger, }) async {
+    final response = await getEmailAddressStateWithHttpInfo(abortTrigger: abortTrigger,);
     if (response.statusCode >= HttpStatus.badRequest) {
       throw ApiException(response.statusCode, await _decodeBodyBytes(response));
     }
@@ -437,7 +446,7 @@ class AccountApi {
   /// * [String] locale (required):
   ///
   /// * [bool] requireLocale:
-  Future<Response> getNewsItemWithHttpInfo(int nid, String locale, { bool? requireLocale, }) async {
+  Future<Response> getNewsItemWithHttpInfo(int nid, String locale, { bool? requireLocale, Future<void>? abortTrigger, }) async {
     // ignore: prefer_const_declarations
     final path = r'/account_api/news_item/{nid}'
       .replaceAll('{nid}', nid.toString());
@@ -465,6 +474,7 @@ class AccountApi {
       headerParams,
       formParams,
       contentTypes.isEmpty ? null : contentTypes.first,
+      abortTrigger: abortTrigger,
     );
   }
 
@@ -479,8 +489,8 @@ class AccountApi {
   /// * [String] locale (required):
   ///
   /// * [bool] requireLocale:
-  Future<GetNewsItemResult?> getNewsItem(int nid, String locale, { bool? requireLocale, }) async {
-    final response = await getNewsItemWithHttpInfo(nid, locale,  requireLocale: requireLocale, );
+  Future<GetNewsItemResult?> getNewsItem(int nid, String locale, { bool? requireLocale, Future<void>? abortTrigger, }) async {
+    final response = await getNewsItemWithHttpInfo(nid, locale, requireLocale: requireLocale, abortTrigger: abortTrigger,);
     if (response.statusCode >= HttpStatus.badRequest) {
       throw ApiException(response.statusCode, await _decodeBodyBytes(response));
     }
@@ -497,7 +507,7 @@ class AccountApi {
   /// Get current sign in with Apple and Google state.
   ///
   /// Note: This method returns the HTTP [Response].
-  Future<Response> getSignInWithInfoWithHttpInfo() async {
+  Future<Response> getSignInWithInfoWithHttpInfo({ Future<void>? abortTrigger, }) async {
     // ignore: prefer_const_declarations
     final path = r'/account_api/sign_in_with_info';
 
@@ -519,12 +529,13 @@ class AccountApi {
       headerParams,
       formParams,
       contentTypes.isEmpty ? null : contentTypes.first,
+      abortTrigger: abortTrigger,
     );
   }
 
   /// Get current sign in with Apple and Google state.
-  Future<SignInWithState?> getSignInWithInfo() async {
-    final response = await getSignInWithInfoWithHttpInfo();
+  Future<SignInWithState?> getSignInWithInfo({ Future<void>? abortTrigger, }) async {
+    final response = await getSignInWithInfoWithHttpInfo(abortTrigger: abortTrigger,);
     if (response.statusCode >= HttpStatus.badRequest) {
       throw ApiException(response.statusCode, await _decodeBodyBytes(response));
     }
@@ -541,7 +552,7 @@ class AccountApi {
   /// Show email verification form page. Token is passed via query parameter to prevent email scanners from accidentally verifying the email.
   ///
   /// Note: This method returns the HTTP [Response].
-  Future<Response> getVerifyEmailWithHttpInfo() async {
+  Future<Response> getVerifyEmailWithHttpInfo({ Future<void>? abortTrigger, }) async {
     // ignore: prefer_const_declarations
     final path = r'/verify_email';
 
@@ -563,12 +574,13 @@ class AccountApi {
       headerParams,
       formParams,
       contentTypes.isEmpty ? null : contentTypes.first,
+      abortTrigger: abortTrigger,
     );
   }
 
   /// Show email verification form page. Token is passed via query parameter to prevent email scanners from accidentally verifying the email.
-  Future<void> getVerifyEmail() async {
-    final response = await getVerifyEmailWithHttpInfo();
+  Future<void> getVerifyEmail({ Future<void>? abortTrigger, }) async {
+    final response = await getVerifyEmailWithHttpInfo(abortTrigger: abortTrigger,);
     if (response.statusCode >= HttpStatus.badRequest) {
       throw ApiException(response.statusCode, await _decodeBodyBytes(response));
     }
@@ -577,7 +589,7 @@ class AccountApi {
   /// Show email change verification form page. Token is passed via query parameter to prevent email scanners from accidentally verifying the new email.
   ///
   /// Note: This method returns the HTTP [Response].
-  Future<Response> getVerifyNewEmailWithHttpInfo() async {
+  Future<Response> getVerifyNewEmailWithHttpInfo({ Future<void>? abortTrigger, }) async {
     // ignore: prefer_const_declarations
     final path = r'/verify_new_email';
 
@@ -599,12 +611,13 @@ class AccountApi {
       headerParams,
       formParams,
       contentTypes.isEmpty ? null : contentTypes.first,
+      abortTrigger: abortTrigger,
     );
   }
 
   /// Show email change verification form page. Token is passed via query parameter to prevent email scanners from accidentally verifying the new email.
-  Future<void> getVerifyNewEmail() async {
-    final response = await getVerifyNewEmailWithHttpInfo();
+  Future<void> getVerifyNewEmail({ Future<void>? abortTrigger, }) async {
+    final response = await getVerifyNewEmailWithHttpInfo(abortTrigger: abortTrigger,);
     if (response.statusCode >= HttpStatus.badRequest) {
       throw ApiException(response.statusCode, await _decodeBodyBytes(response));
     }
@@ -614,7 +627,7 @@ class AccountApi {
   /// Parameters:
   ///
   /// * [AccountAppNotificationSettings] accountAppNotificationSettings (required):
-  Future<Response> postAccountAppNotificationSettingsWithHttpInfo(AccountAppNotificationSettings accountAppNotificationSettings,) async {
+  Future<Response> postAccountAppNotificationSettingsWithHttpInfo(AccountAppNotificationSettings accountAppNotificationSettings, { Future<void>? abortTrigger, }) async {
     // ignore: prefer_const_declarations
     final path = r'/account_api/post_account_app_notification_settings';
 
@@ -636,14 +649,15 @@ class AccountApi {
       headerParams,
       formParams,
       contentTypes.isEmpty ? null : contentTypes.first,
+      abortTrigger: abortTrigger,
     );
   }
 
   /// Parameters:
   ///
   /// * [AccountAppNotificationSettings] accountAppNotificationSettings (required):
-  Future<void> postAccountAppNotificationSettings(AccountAppNotificationSettings accountAppNotificationSettings,) async {
-    final response = await postAccountAppNotificationSettingsWithHttpInfo(accountAppNotificationSettings,);
+  Future<void> postAccountAppNotificationSettings(AccountAppNotificationSettings accountAppNotificationSettings, { Future<void>? abortTrigger, }) async {
+    final response = await postAccountAppNotificationSettingsWithHttpInfo(accountAppNotificationSettings, abortTrigger: abortTrigger,);
     if (response.statusCode >= HttpStatus.badRequest) {
       throw ApiException(response.statusCode, await _decodeBodyBytes(response));
     }
@@ -658,7 +672,7 @@ class AccountApi {
   /// Parameters:
   ///
   /// * [AccountVerificationQueueItem] accountVerificationQueueItem (required):
-  Future<Response> postAccountVerificationQueueItemWithHttpInfo(AccountVerificationQueueItem accountVerificationQueueItem,) async {
+  Future<Response> postAccountVerificationQueueItemWithHttpInfo(AccountVerificationQueueItem accountVerificationQueueItem, { Future<void>? abortTrigger, }) async {
     // ignore: prefer_const_declarations
     final path = r'/account_api/account_verification_queue';
 
@@ -680,6 +694,7 @@ class AccountApi {
       headerParams,
       formParams,
       contentTypes.isEmpty ? null : contentTypes.first,
+      abortTrigger: abortTrigger,
     );
   }
 
@@ -690,8 +705,8 @@ class AccountApi {
   /// Parameters:
   ///
   /// * [AccountVerificationQueueItem] accountVerificationQueueItem (required):
-  Future<PostAccountVerificationQueueItemResult?> postAccountVerificationQueueItem(AccountVerificationQueueItem accountVerificationQueueItem,) async {
-    final response = await postAccountVerificationQueueItemWithHttpInfo(accountVerificationQueueItem,);
+  Future<PostAccountVerificationQueueItemResult?> postAccountVerificationQueueItem(AccountVerificationQueueItem accountVerificationQueueItem, { Future<void>? abortTrigger, }) async {
+    final response = await postAccountVerificationQueueItemWithHttpInfo(accountVerificationQueueItem, abortTrigger: abortTrigger,);
     if (response.statusCode >= HttpStatus.badRequest) {
       throw ApiException(response.statusCode, await _decodeBodyBytes(response));
     }
@@ -712,7 +727,7 @@ class AccountApi {
   /// Parameters:
   ///
   /// * [PostAgeVerification] postAgeVerification (required):
-  Future<Response> postAgeVerificationWithHttpInfo(PostAgeVerification postAgeVerification,) async {
+  Future<Response> postAgeVerificationWithHttpInfo(PostAgeVerification postAgeVerification, { Future<void>? abortTrigger, }) async {
     // ignore: prefer_const_declarations
     final path = r'/account_api/age_verification';
 
@@ -734,6 +749,7 @@ class AccountApi {
       headerParams,
       formParams,
       contentTypes.isEmpty ? null : contentTypes.first,
+      abortTrigger: abortTrigger,
     );
   }
 
@@ -742,8 +758,8 @@ class AccountApi {
   /// Parameters:
   ///
   /// * [PostAgeVerification] postAgeVerification (required):
-  Future<PostAgeVerificationResult?> postAgeVerification(PostAgeVerification postAgeVerification,) async {
-    final response = await postAgeVerificationWithHttpInfo(postAgeVerification,);
+  Future<PostAgeVerificationResult?> postAgeVerification(PostAgeVerification postAgeVerification, { Future<void>? abortTrigger, }) async {
+    final response = await postAgeVerificationWithHttpInfo(postAgeVerification, abortTrigger: abortTrigger,);
     if (response.statusCode >= HttpStatus.badRequest) {
       throw ApiException(response.statusCode, await _decodeBodyBytes(response));
     }
@@ -766,7 +782,7 @@ class AccountApi {
   /// Parameters:
   ///
   /// * [UpdateAssociationMembership] updateAssociationMembership (required):
-  Future<Response> postAssociationMembershipWithHttpInfo(UpdateAssociationMembership updateAssociationMembership,) async {
+  Future<Response> postAssociationMembershipWithHttpInfo(UpdateAssociationMembership updateAssociationMembership, { Future<void>? abortTrigger, }) async {
     // ignore: prefer_const_declarations
     final path = r'/account_api/association_membership';
 
@@ -788,6 +804,7 @@ class AccountApi {
       headerParams,
       formParams,
       contentTypes.isEmpty ? null : contentTypes.first,
+      abortTrigger: abortTrigger,
     );
   }
 
@@ -798,8 +815,8 @@ class AccountApi {
   /// Parameters:
   ///
   /// * [UpdateAssociationMembership] updateAssociationMembership (required):
-  Future<void> postAssociationMembership(UpdateAssociationMembership updateAssociationMembership,) async {
-    final response = await postAssociationMembershipWithHttpInfo(updateAssociationMembership,);
+  Future<void> postAssociationMembership(UpdateAssociationMembership updateAssociationMembership, { Future<void>? abortTrigger, }) async {
+    final response = await postAssociationMembershipWithHttpInfo(updateAssociationMembership, abortTrigger: abortTrigger,);
     if (response.statusCode >= HttpStatus.badRequest) {
       throw ApiException(response.statusCode, await _decodeBodyBytes(response));
     }
@@ -808,7 +825,7 @@ class AccountApi {
   /// Cancel email changing process
   ///
   /// Note: This method returns the HTTP [Response].
-  Future<Response> postCancelEmailChangeWithHttpInfo() async {
+  Future<Response> postCancelEmailChangeWithHttpInfo({ Future<void>? abortTrigger, }) async {
     // ignore: prefer_const_declarations
     final path = r'/account_api/cancel_email_change';
 
@@ -830,12 +847,13 @@ class AccountApi {
       headerParams,
       formParams,
       contentTypes.isEmpty ? null : contentTypes.first,
+      abortTrigger: abortTrigger,
     );
   }
 
   /// Cancel email changing process
-  Future<void> postCancelEmailChange() async {
-    final response = await postCancelEmailChangeWithHttpInfo();
+  Future<void> postCancelEmailChange({ Future<void>? abortTrigger, }) async {
+    final response = await postCancelEmailChangeWithHttpInfo(abortTrigger: abortTrigger,);
     if (response.statusCode >= HttpStatus.badRequest) {
       throw ApiException(response.statusCode, await _decodeBodyBytes(response));
     }
@@ -846,7 +864,7 @@ class AccountApi {
   /// Media content with InSlot state will be removed.  Requirements:  - Account must be in `InitialSetup` state.  
   ///
   /// Note: This method returns the HTTP [Response].
-  Future<Response> postCompleteSetupWithHttpInfo() async {
+  Future<Response> postCompleteSetupWithHttpInfo({ Future<void>? abortTrigger, }) async {
     // ignore: prefer_const_declarations
     final path = r'/account_api/complete_setup';
 
@@ -868,14 +886,15 @@ class AccountApi {
       headerParams,
       formParams,
       contentTypes.isEmpty ? null : contentTypes.first,
+      abortTrigger: abortTrigger,
     );
   }
 
   /// Complete initial setup.
   ///
   /// Media content with InSlot state will be removed.  Requirements:  - Account must be in `InitialSetup` state.  
-  Future<void> postCompleteSetup() async {
-    final response = await postCompleteSetupWithHttpInfo();
+  Future<void> postCompleteSetup({ Future<void>? abortTrigger, }) async {
+    final response = await postCompleteSetupWithHttpInfo(abortTrigger: abortTrigger,);
     if (response.statusCode >= HttpStatus.badRequest) {
       throw ApiException(response.statusCode, await _decodeBodyBytes(response));
     }
@@ -888,7 +907,7 @@ class AccountApi {
   /// Parameters:
   ///
   /// * [UpdateCustomReportEmpty] updateCustomReportEmpty (required):
-  Future<Response> postCustomReportEmptyWithHttpInfo(UpdateCustomReportEmpty updateCustomReportEmpty,) async {
+  Future<Response> postCustomReportEmptyWithHttpInfo(UpdateCustomReportEmpty updateCustomReportEmpty, { Future<void>? abortTrigger, }) async {
     // ignore: prefer_const_declarations
     final path = r'/account_api/custom_report_empty';
 
@@ -910,6 +929,7 @@ class AccountApi {
       headerParams,
       formParams,
       contentTypes.isEmpty ? null : contentTypes.first,
+      abortTrigger: abortTrigger,
     );
   }
 
@@ -918,8 +938,8 @@ class AccountApi {
   /// Parameters:
   ///
   /// * [UpdateCustomReportEmpty] updateCustomReportEmpty (required):
-  Future<UpdateReportResult?> postCustomReportEmpty(UpdateCustomReportEmpty updateCustomReportEmpty,) async {
-    final response = await postCustomReportEmptyWithHttpInfo(updateCustomReportEmpty,);
+  Future<UpdateReportResult?> postCustomReportEmpty(UpdateCustomReportEmpty updateCustomReportEmpty, { Future<void>? abortTrigger, }) async {
+    final response = await postCustomReportEmptyWithHttpInfo(updateCustomReportEmpty, abortTrigger: abortTrigger,);
     if (response.statusCode >= HttpStatus.badRequest) {
       throw ApiException(response.statusCode, await _decodeBodyBytes(response));
     }
@@ -942,7 +962,7 @@ class AccountApi {
   /// Parameters:
   ///
   /// * [DemoAccountToken] demoAccountToken (required):
-  Future<Response> postDemoAccountAccessibleAccountsWithHttpInfo(DemoAccountToken demoAccountToken,) async {
+  Future<Response> postDemoAccountAccessibleAccountsWithHttpInfo(DemoAccountToken demoAccountToken, { Future<void>? abortTrigger, }) async {
     // ignore: prefer_const_declarations
     final path = r'/account_api/demo_account_accessible_accounts';
 
@@ -964,6 +984,7 @@ class AccountApi {
       headerParams,
       formParams,
       contentTypes.isEmpty ? null : contentTypes.first,
+      abortTrigger: abortTrigger,
     );
   }
 
@@ -974,8 +995,8 @@ class AccountApi {
   /// Parameters:
   ///
   /// * [DemoAccountToken] demoAccountToken (required):
-  Future<List<AccessibleAccount>?> postDemoAccountAccessibleAccounts(DemoAccountToken demoAccountToken,) async {
-    final response = await postDemoAccountAccessibleAccountsWithHttpInfo(demoAccountToken,);
+  Future<List<AccessibleAccount>?> postDemoAccountAccessibleAccounts(DemoAccountToken demoAccountToken, { Future<void>? abortTrigger, }) async {
+    final response = await postDemoAccountAccessibleAccountsWithHttpInfo(demoAccountToken, abortTrigger: abortTrigger,);
     if (response.statusCode >= HttpStatus.badRequest) {
       throw ApiException(response.statusCode, await _decodeBodyBytes(response));
     }
@@ -1001,7 +1022,7 @@ class AccountApi {
   /// Parameters:
   ///
   /// * [DemoAccountLoginCredentials] demoAccountLoginCredentials (required):
-  Future<Response> postDemoAccountLoginWithHttpInfo(DemoAccountLoginCredentials demoAccountLoginCredentials,) async {
+  Future<Response> postDemoAccountLoginWithHttpInfo(DemoAccountLoginCredentials demoAccountLoginCredentials, { Future<void>? abortTrigger, }) async {
     // ignore: prefer_const_declarations
     final path = r'/account_api/demo_account_login';
 
@@ -1023,6 +1044,7 @@ class AccountApi {
       headerParams,
       formParams,
       contentTypes.isEmpty ? null : contentTypes.first,
+      abortTrigger: abortTrigger,
     );
   }
 
@@ -1033,8 +1055,8 @@ class AccountApi {
   /// Parameters:
   ///
   /// * [DemoAccountLoginCredentials] demoAccountLoginCredentials (required):
-  Future<DemoAccountLoginResult?> postDemoAccountLogin(DemoAccountLoginCredentials demoAccountLoginCredentials,) async {
-    final response = await postDemoAccountLoginWithHttpInfo(demoAccountLoginCredentials,);
+  Future<DemoAccountLoginResult?> postDemoAccountLogin(DemoAccountLoginCredentials demoAccountLoginCredentials, { Future<void>? abortTrigger, }) async {
+    final response = await postDemoAccountLoginWithHttpInfo(demoAccountLoginCredentials, abortTrigger: abortTrigger,);
     if (response.statusCode >= HttpStatus.badRequest) {
       throw ApiException(response.statusCode, await _decodeBodyBytes(response));
     }
@@ -1052,7 +1074,7 @@ class AccountApi {
   /// Parameters:
   ///
   /// * [DemoAccountLoginToAccount] demoAccountLoginToAccount (required):
-  Future<Response> postDemoAccountLoginToAccountWithHttpInfo(DemoAccountLoginToAccount demoAccountLoginToAccount,) async {
+  Future<Response> postDemoAccountLoginToAccountWithHttpInfo(DemoAccountLoginToAccount demoAccountLoginToAccount, { Future<void>? abortTrigger, }) async {
     // ignore: prefer_const_declarations
     final path = r'/account_api/demo_account_login_to_account';
 
@@ -1074,14 +1096,15 @@ class AccountApi {
       headerParams,
       formParams,
       contentTypes.isEmpty ? null : contentTypes.first,
+      abortTrigger: abortTrigger,
     );
   }
 
   /// Parameters:
   ///
   /// * [DemoAccountLoginToAccount] demoAccountLoginToAccount (required):
-  Future<LoginResult?> postDemoAccountLoginToAccount(DemoAccountLoginToAccount demoAccountLoginToAccount,) async {
-    final response = await postDemoAccountLoginToAccountWithHttpInfo(demoAccountLoginToAccount,);
+  Future<LoginResult?> postDemoAccountLoginToAccount(DemoAccountLoginToAccount demoAccountLoginToAccount, { Future<void>? abortTrigger, }) async {
+    final response = await postDemoAccountLoginToAccountWithHttpInfo(demoAccountLoginToAccount, abortTrigger: abortTrigger,);
     if (response.statusCode >= HttpStatus.badRequest) {
       throw ApiException(response.statusCode, await _decodeBodyBytes(response));
     }
@@ -1099,7 +1122,7 @@ class AccountApi {
   /// Parameters:
   ///
   /// * [DemoAccountToken] demoAccountToken (required):
-  Future<Response> postDemoAccountLogoutWithHttpInfo(DemoAccountToken demoAccountToken,) async {
+  Future<Response> postDemoAccountLogoutWithHttpInfo(DemoAccountToken demoAccountToken, { Future<void>? abortTrigger, }) async {
     // ignore: prefer_const_declarations
     final path = r'/account_api/demo_account_logout';
 
@@ -1121,14 +1144,15 @@ class AccountApi {
       headerParams,
       formParams,
       contentTypes.isEmpty ? null : contentTypes.first,
+      abortTrigger: abortTrigger,
     );
   }
 
   /// Parameters:
   ///
   /// * [DemoAccountToken] demoAccountToken (required):
-  Future<void> postDemoAccountLogout(DemoAccountToken demoAccountToken,) async {
-    final response = await postDemoAccountLogoutWithHttpInfo(demoAccountToken,);
+  Future<void> postDemoAccountLogout(DemoAccountToken demoAccountToken, { Future<void>? abortTrigger, }) async {
+    final response = await postDemoAccountLogoutWithHttpInfo(demoAccountToken, abortTrigger: abortTrigger,);
     if (response.statusCode >= HttpStatus.badRequest) {
       throw ApiException(response.statusCode, await _decodeBodyBytes(response));
     }
@@ -1138,7 +1162,7 @@ class AccountApi {
   /// Parameters:
   ///
   /// * [DemoAccountToken] demoAccountToken (required):
-  Future<Response> postDemoAccountRegisterAccountWithHttpInfo(DemoAccountToken demoAccountToken,) async {
+  Future<Response> postDemoAccountRegisterAccountWithHttpInfo(DemoAccountToken demoAccountToken, { Future<void>? abortTrigger, }) async {
     // ignore: prefer_const_declarations
     final path = r'/account_api/demo_account_register_account';
 
@@ -1160,14 +1184,15 @@ class AccountApi {
       headerParams,
       formParams,
       contentTypes.isEmpty ? null : contentTypes.first,
+      abortTrigger: abortTrigger,
     );
   }
 
   /// Parameters:
   ///
   /// * [DemoAccountToken] demoAccountToken (required):
-  Future<DemoAccountRegisterAccountResult?> postDemoAccountRegisterAccount(DemoAccountToken demoAccountToken,) async {
-    final response = await postDemoAccountRegisterAccountWithHttpInfo(demoAccountToken,);
+  Future<DemoAccountRegisterAccountResult?> postDemoAccountRegisterAccount(DemoAccountToken demoAccountToken, { Future<void>? abortTrigger, }) async {
+    final response = await postDemoAccountRegisterAccountWithHttpInfo(demoAccountToken, abortTrigger: abortTrigger,);
     if (response.statusCode >= HttpStatus.badRequest) {
       throw ApiException(response.statusCode, await _decodeBodyBytes(response));
     }
@@ -1190,7 +1215,7 @@ class AccountApi {
   /// Parameters:
   ///
   /// * [EmailLogin] emailLogin (required):
-  Future<Response> postEmailLoginWithTokenWithHttpInfo(EmailLogin emailLogin,) async {
+  Future<Response> postEmailLoginWithTokenWithHttpInfo(EmailLogin emailLogin, { Future<void>? abortTrigger, }) async {
     // ignore: prefer_const_declarations
     final path = r'/account_api/email_login_with_token';
 
@@ -1212,6 +1237,7 @@ class AccountApi {
       headerParams,
       formParams,
       contentTypes.isEmpty ? null : contentTypes.first,
+      abortTrigger: abortTrigger,
     );
   }
 
@@ -1222,8 +1248,8 @@ class AccountApi {
   /// Parameters:
   ///
   /// * [EmailLogin] emailLogin (required):
-  Future<LoginResult?> postEmailLoginWithToken(EmailLogin emailLogin,) async {
-    final response = await postEmailLoginWithTokenWithHttpInfo(emailLogin,);
+  Future<LoginResult?> postEmailLoginWithToken(EmailLogin emailLogin, { Future<void>? abortTrigger, }) async {
+    final response = await postEmailLoginWithTokenWithHttpInfo(emailLogin, abortTrigger: abortTrigger,);
     if (response.statusCode >= HttpStatus.badRequest) {
       throw ApiException(response.statusCode, await _decodeBodyBytes(response));
     }
@@ -1241,7 +1267,7 @@ class AccountApi {
   /// Parameters:
   ///
   /// * [ClientFeaturesConfigHash] clientFeaturesConfigHash (required):
-  Future<Response> postGetClientFeaturesConfigWithHttpInfo(ClientFeaturesConfigHash clientFeaturesConfigHash,) async {
+  Future<Response> postGetClientFeaturesConfigWithHttpInfo(ClientFeaturesConfigHash clientFeaturesConfigHash, { Future<void>? abortTrigger, }) async {
     // ignore: prefer_const_declarations
     final path = r'/account_api/client_features_config';
 
@@ -1263,14 +1289,15 @@ class AccountApi {
       headerParams,
       formParams,
       contentTypes.isEmpty ? null : contentTypes.first,
+      abortTrigger: abortTrigger,
     );
   }
 
   /// Parameters:
   ///
   /// * [ClientFeaturesConfigHash] clientFeaturesConfigHash (required):
-  Future<GetClientFeaturesConfigResult?> postGetClientFeaturesConfig(ClientFeaturesConfigHash clientFeaturesConfigHash,) async {
-    final response = await postGetClientFeaturesConfigWithHttpInfo(clientFeaturesConfigHash,);
+  Future<GetClientFeaturesConfigResult?> postGetClientFeaturesConfig(ClientFeaturesConfigHash clientFeaturesConfigHash, { Future<void>? abortTrigger, }) async {
+    final response = await postGetClientFeaturesConfigWithHttpInfo(clientFeaturesConfigHash, abortTrigger: abortTrigger,);
     if (response.statusCode >= HttpStatus.badRequest) {
       throw ApiException(response.statusCode, await _decodeBodyBytes(response));
     }
@@ -1288,7 +1315,7 @@ class AccountApi {
   /// Parameters:
   ///
   /// * [CustomReportsConfigHash] customReportsConfigHash (required):
-  Future<Response> postGetCustomReportsConfigWithHttpInfo(CustomReportsConfigHash customReportsConfigHash,) async {
+  Future<Response> postGetCustomReportsConfigWithHttpInfo(CustomReportsConfigHash customReportsConfigHash, { Future<void>? abortTrigger, }) async {
     // ignore: prefer_const_declarations
     final path = r'/account_api/custom_reports_config';
 
@@ -1310,14 +1337,15 @@ class AccountApi {
       headerParams,
       formParams,
       contentTypes.isEmpty ? null : contentTypes.first,
+      abortTrigger: abortTrigger,
     );
   }
 
   /// Parameters:
   ///
   /// * [CustomReportsConfigHash] customReportsConfigHash (required):
-  Future<GetCustomReportsConfigResult?> postGetCustomReportsConfig(CustomReportsConfigHash customReportsConfigHash,) async {
-    final response = await postGetCustomReportsConfigWithHttpInfo(customReportsConfigHash,);
+  Future<GetCustomReportsConfigResult?> postGetCustomReportsConfig(CustomReportsConfigHash customReportsConfigHash, { Future<void>? abortTrigger, }) async {
+    final response = await postGetCustomReportsConfigWithHttpInfo(customReportsConfigHash, abortTrigger: abortTrigger,);
     if (response.statusCode >= HttpStatus.badRequest) {
       throw ApiException(response.statusCode, await _decodeBodyBytes(response));
     }
@@ -1335,7 +1363,7 @@ class AccountApi {
   /// Parameters:
   ///
   /// * [DynamicClientFeaturesConfigHash] dynamicClientFeaturesConfigHash (required):
-  Future<Response> postGetDynamicClientFeaturesConfigWithHttpInfo(DynamicClientFeaturesConfigHash dynamicClientFeaturesConfigHash,) async {
+  Future<Response> postGetDynamicClientFeaturesConfigWithHttpInfo(DynamicClientFeaturesConfigHash dynamicClientFeaturesConfigHash, { Future<void>? abortTrigger, }) async {
     // ignore: prefer_const_declarations
     final path = r'/account_api/dynamic_client_features_config';
 
@@ -1357,14 +1385,15 @@ class AccountApi {
       headerParams,
       formParams,
       contentTypes.isEmpty ? null : contentTypes.first,
+      abortTrigger: abortTrigger,
     );
   }
 
   /// Parameters:
   ///
   /// * [DynamicClientFeaturesConfigHash] dynamicClientFeaturesConfigHash (required):
-  Future<GetDynamicClientFeaturesConfigResult?> postGetDynamicClientFeaturesConfig(DynamicClientFeaturesConfigHash dynamicClientFeaturesConfigHash,) async {
-    final response = await postGetDynamicClientFeaturesConfigWithHttpInfo(dynamicClientFeaturesConfigHash,);
+  Future<GetDynamicClientFeaturesConfigResult?> postGetDynamicClientFeaturesConfig(DynamicClientFeaturesConfigHash dynamicClientFeaturesConfigHash, { Future<void>? abortTrigger, }) async {
+    final response = await postGetDynamicClientFeaturesConfigWithHttpInfo(dynamicClientFeaturesConfigHash, abortTrigger: abortTrigger,);
     if (response.statusCode >= HttpStatus.badRequest) {
       throw ApiException(response.statusCode, await _decodeBodyBytes(response));
     }
@@ -1384,7 +1413,7 @@ class AccountApi {
   /// * [String] locale (required):
   ///
   /// * [NewsIteratorState] newsIteratorState (required):
-  Future<Response> postGetNewsPageWithHttpInfo(String locale, NewsIteratorState newsIteratorState,) async {
+  Future<Response> postGetNewsPageWithHttpInfo(String locale, NewsIteratorState newsIteratorState, { Future<void>? abortTrigger, }) async {
     // ignore: prefer_const_declarations
     final path = r'/account_api/news_page';
 
@@ -1408,6 +1437,7 @@ class AccountApi {
       headerParams,
       formParams,
       contentTypes.isEmpty ? null : contentTypes.first,
+      abortTrigger: abortTrigger,
     );
   }
 
@@ -1416,8 +1446,8 @@ class AccountApi {
   /// * [String] locale (required):
   ///
   /// * [NewsIteratorState] newsIteratorState (required):
-  Future<NewsPage?> postGetNewsPage(String locale, NewsIteratorState newsIteratorState,) async {
-    final response = await postGetNewsPageWithHttpInfo(locale, newsIteratorState,);
+  Future<NewsPage?> postGetNewsPage(String locale, NewsIteratorState newsIteratorState, { Future<void>? abortTrigger, }) async {
+    final response = await postGetNewsPageWithHttpInfo(locale, newsIteratorState, abortTrigger: abortTrigger,);
     if (response.statusCode >= HttpStatus.badRequest) {
       throw ApiException(response.statusCode, await _decodeBodyBytes(response));
     }
@@ -1434,7 +1464,7 @@ class AccountApi {
   /// The unread news count for public news.
   ///
   /// Note: This method returns the HTTP [Response].
-  Future<Response> postGetUnreadNewsCountWithHttpInfo() async {
+  Future<Response> postGetUnreadNewsCountWithHttpInfo({ Future<void>? abortTrigger, }) async {
     // ignore: prefer_const_declarations
     final path = r'/account_api/news_count';
 
@@ -1456,12 +1486,13 @@ class AccountApi {
       headerParams,
       formParams,
       contentTypes.isEmpty ? null : contentTypes.first,
+      abortTrigger: abortTrigger,
     );
   }
 
   /// The unread news count for public news.
-  Future<UnreadNewsCountResult?> postGetUnreadNewsCount() async {
-    final response = await postGetUnreadNewsCountWithHttpInfo();
+  Future<UnreadNewsCountResult?> postGetUnreadNewsCount({ Future<void>? abortTrigger, }) async {
+    final response = await postGetUnreadNewsCountWithHttpInfo(abortTrigger: abortTrigger,);
     if (response.statusCode >= HttpStatus.badRequest) {
       throw ApiException(response.statusCode, await _decodeBodyBytes(response));
     }
@@ -1484,7 +1515,7 @@ class AccountApi {
   /// Parameters:
   ///
   /// * [InitEmailChange] initEmailChange (required):
-  Future<Response> postInitEmailChangeWithHttpInfo(InitEmailChange initEmailChange,) async {
+  Future<Response> postInitEmailChangeWithHttpInfo(InitEmailChange initEmailChange, { Future<void>? abortTrigger, }) async {
     // ignore: prefer_const_declarations
     final path = r'/account_api/init_email_change';
 
@@ -1506,6 +1537,7 @@ class AccountApi {
       headerParams,
       formParams,
       contentTypes.isEmpty ? null : contentTypes.first,
+      abortTrigger: abortTrigger,
     );
   }
 
@@ -1516,8 +1548,8 @@ class AccountApi {
   /// Parameters:
   ///
   /// * [InitEmailChange] initEmailChange (required):
-  Future<InitEmailChangeResult?> postInitEmailChange(InitEmailChange initEmailChange,) async {
-    final response = await postInitEmailChangeWithHttpInfo(initEmailChange,);
+  Future<InitEmailChangeResult?> postInitEmailChange(InitEmailChange initEmailChange, { Future<void>? abortTrigger, }) async {
+    final response = await postInitEmailChangeWithHttpInfo(initEmailChange, abortTrigger: abortTrigger,);
     if (response.statusCode >= HttpStatus.badRequest) {
       throw ApiException(response.statusCode, await _decodeBodyBytes(response));
     }
@@ -1540,7 +1572,7 @@ class AccountApi {
   /// Parameters:
   ///
   /// * [SetInitialEmail] setInitialEmail (required):
-  Future<Response> postInitialEmailWithHttpInfo(SetInitialEmail setInitialEmail,) async {
+  Future<Response> postInitialEmailWithHttpInfo(SetInitialEmail setInitialEmail, { Future<void>? abortTrigger, }) async {
     // ignore: prefer_const_declarations
     final path = r'/account_api/initial_email';
 
@@ -1562,6 +1594,7 @@ class AccountApi {
       headerParams,
       formParams,
       contentTypes.isEmpty ? null : contentTypes.first,
+      abortTrigger: abortTrigger,
     );
   }
 
@@ -1572,15 +1605,15 @@ class AccountApi {
   /// Parameters:
   ///
   /// * [SetInitialEmail] setInitialEmail (required):
-  Future<void> postInitialEmail(SetInitialEmail setInitialEmail,) async {
-    final response = await postInitialEmailWithHttpInfo(setInitialEmail,);
+  Future<void> postInitialEmail(SetInitialEmail setInitialEmail, { Future<void>? abortTrigger, }) async {
+    final response = await postInitialEmailWithHttpInfo(setInitialEmail, abortTrigger: abortTrigger,);
     if (response.statusCode >= HttpStatus.badRequest) {
       throw ApiException(response.statusCode, await _decodeBodyBytes(response));
     }
   }
 
   /// Performs an HTTP 'POST /account_api/logout' operation and returns the [Response].
-  Future<Response> postLogoutWithHttpInfo() async {
+  Future<Response> postLogoutWithHttpInfo({ Future<void>? abortTrigger, }) async {
     // ignore: prefer_const_declarations
     final path = r'/account_api/logout';
 
@@ -1602,11 +1635,12 @@ class AccountApi {
       headerParams,
       formParams,
       contentTypes.isEmpty ? null : contentTypes.first,
+      abortTrigger: abortTrigger,
     );
   }
 
-  Future<void> postLogout() async {
-    final response = await postLogoutWithHttpInfo();
+  Future<void> postLogout({ Future<void>? abortTrigger, }) async {
+    final response = await postLogoutWithHttpInfo(abortTrigger: abortTrigger,);
     if (response.statusCode >= HttpStatus.badRequest) {
       throw ApiException(response.statusCode, await _decodeBodyBytes(response));
     }
@@ -1621,7 +1655,7 @@ class AccountApi {
   /// Parameters:
   ///
   /// * [RequestEmailLoginToken] requestEmailLoginToken (required):
-  Future<Response> postRequestEmailLoginTokenWithHttpInfo(RequestEmailLoginToken requestEmailLoginToken,) async {
+  Future<Response> postRequestEmailLoginTokenWithHttpInfo(RequestEmailLoginToken requestEmailLoginToken, { Future<void>? abortTrigger, }) async {
     // ignore: prefer_const_declarations
     final path = r'/account_api/request_email_login_token';
 
@@ -1643,6 +1677,7 @@ class AccountApi {
       headerParams,
       formParams,
       contentTypes.isEmpty ? null : contentTypes.first,
+      abortTrigger: abortTrigger,
     );
   }
 
@@ -1653,8 +1688,8 @@ class AccountApi {
   /// Parameters:
   ///
   /// * [RequestEmailLoginToken] requestEmailLoginToken (required):
-  Future<RequestEmailLoginTokenResult?> postRequestEmailLoginToken(RequestEmailLoginToken requestEmailLoginToken,) async {
-    final response = await postRequestEmailLoginTokenWithHttpInfo(requestEmailLoginToken,);
+  Future<RequestEmailLoginTokenResult?> postRequestEmailLoginToken(RequestEmailLoginToken requestEmailLoginToken, { Future<void>? abortTrigger, }) async {
+    final response = await postRequestEmailLoginTokenWithHttpInfo(requestEmailLoginToken, abortTrigger: abortTrigger,);
     if (response.statusCode >= HttpStatus.badRequest) {
       throw ApiException(response.statusCode, await _decodeBodyBytes(response));
     }
@@ -1669,7 +1704,7 @@ class AccountApi {
   }
 
   /// Performs an HTTP 'POST /account_api/reset_news_paging' operation and returns the [Response].
-  Future<Response> postResetNewsPagingWithHttpInfo() async {
+  Future<Response> postResetNewsPagingWithHttpInfo({ Future<void>? abortTrigger, }) async {
     // ignore: prefer_const_declarations
     final path = r'/account_api/reset_news_paging';
 
@@ -1691,11 +1726,12 @@ class AccountApi {
       headerParams,
       formParams,
       contentTypes.isEmpty ? null : contentTypes.first,
+      abortTrigger: abortTrigger,
     );
   }
 
-  Future<ResetNewsIteratorResult?> postResetNewsPaging() async {
-    final response = await postResetNewsPagingWithHttpInfo();
+  Future<ResetNewsIteratorResult?> postResetNewsPaging({ Future<void>? abortTrigger, }) async {
+    final response = await postResetNewsPagingWithHttpInfo(abortTrigger: abortTrigger,);
     if (response.statusCode >= HttpStatus.badRequest) {
       throw ApiException(response.statusCode, await _decodeBodyBytes(response));
     }
@@ -1710,7 +1746,7 @@ class AccountApi {
   }
 
   /// Performs an HTTP 'POST /account_api/send_verify_email_message' operation and returns the [Response].
-  Future<Response> postSendVerifyEmailMessageWithHttpInfo() async {
+  Future<Response> postSendVerifyEmailMessageWithHttpInfo({ Future<void>? abortTrigger, }) async {
     // ignore: prefer_const_declarations
     final path = r'/account_api/send_verify_email_message';
 
@@ -1732,11 +1768,12 @@ class AccountApi {
       headerParams,
       formParams,
       contentTypes.isEmpty ? null : contentTypes.first,
+      abortTrigger: abortTrigger,
     );
   }
 
-  Future<SendVerifyEmailMessageResult?> postSendVerifyEmailMessage() async {
-    final response = await postSendVerifyEmailMessageWithHttpInfo();
+  Future<SendVerifyEmailMessageResult?> postSendVerifyEmailMessage({ Future<void>? abortTrigger, }) async {
+    final response = await postSendVerifyEmailMessageWithHttpInfo(abortTrigger: abortTrigger,);
     if (response.statusCode >= HttpStatus.badRequest) {
       throw ApiException(response.statusCode, await _decodeBodyBytes(response));
     }
@@ -1761,7 +1798,7 @@ class AccountApi {
   /// * [String] aid (required):
   ///
   /// * [BooleanSetting] booleanSetting (required):
-  Future<Response> postSetAccountDeletionRequestStateWithHttpInfo(String aid, BooleanSetting booleanSetting,) async {
+  Future<Response> postSetAccountDeletionRequestStateWithHttpInfo(String aid, BooleanSetting booleanSetting, { Future<void>? abortTrigger, }) async {
     // ignore: prefer_const_declarations
     final path = r'/account_api/set_account_deletion_request_state/{aid}'
       .replaceAll('{aid}', aid);
@@ -1784,6 +1821,7 @@ class AccountApi {
       headerParams,
       formParams,
       contentTypes.isEmpty ? null : contentTypes.first,
+      abortTrigger: abortTrigger,
     );
   }
 
@@ -1796,8 +1834,8 @@ class AccountApi {
   /// * [String] aid (required):
   ///
   /// * [BooleanSetting] booleanSetting (required):
-  Future<void> postSetAccountDeletionRequestState(String aid, BooleanSetting booleanSetting,) async {
-    final response = await postSetAccountDeletionRequestStateWithHttpInfo(aid, booleanSetting,);
+  Future<void> postSetAccountDeletionRequestState(String aid, BooleanSetting booleanSetting, { Future<void>? abortTrigger, }) async {
+    final response = await postSetAccountDeletionRequestStateWithHttpInfo(aid, booleanSetting, abortTrigger: abortTrigger,);
     if (response.statusCode >= HttpStatus.badRequest) {
       throw ApiException(response.statusCode, await _decodeBodyBytes(response));
     }
@@ -1812,7 +1850,7 @@ class AccountApi {
   /// Parameters:
   ///
   /// * [SetEmailLoginEnabled] setEmailLoginEnabled (required):
-  Future<Response> postSetEmailLoginEnabledWithHttpInfo(SetEmailLoginEnabled setEmailLoginEnabled,) async {
+  Future<Response> postSetEmailLoginEnabledWithHttpInfo(SetEmailLoginEnabled setEmailLoginEnabled, { Future<void>? abortTrigger, }) async {
     // ignore: prefer_const_declarations
     final path = r'/account_api/set_email_login_enabled';
 
@@ -1834,6 +1872,7 @@ class AccountApi {
       headerParams,
       formParams,
       contentTypes.isEmpty ? null : contentTypes.first,
+      abortTrigger: abortTrigger,
     );
   }
 
@@ -1844,8 +1883,8 @@ class AccountApi {
   /// Parameters:
   ///
   /// * [SetEmailLoginEnabled] setEmailLoginEnabled (required):
-  Future<void> postSetEmailLoginEnabled(SetEmailLoginEnabled setEmailLoginEnabled,) async {
-    final response = await postSetEmailLoginEnabledWithHttpInfo(setEmailLoginEnabled,);
+  Future<void> postSetEmailLoginEnabled(SetEmailLoginEnabled setEmailLoginEnabled, { Future<void>? abortTrigger, }) async {
+    final response = await postSetEmailLoginEnabledWithHttpInfo(setEmailLoginEnabled, abortTrigger: abortTrigger,);
     if (response.statusCode >= HttpStatus.badRequest) {
       throw ApiException(response.statusCode, await _decodeBodyBytes(response));
     }
@@ -1860,7 +1899,7 @@ class AccountApi {
   /// Parameters:
   ///
   /// * [SignInWithLoginInfo] signInWithLoginInfo (required):
-  Future<Response> postSignInWithLoginWithHttpInfo(SignInWithLoginInfo signInWithLoginInfo,) async {
+  Future<Response> postSignInWithLoginWithHttpInfo(SignInWithLoginInfo signInWithLoginInfo, { Future<void>? abortTrigger, }) async {
     // ignore: prefer_const_declarations
     final path = r'/account_api/sign_in_with_login';
 
@@ -1882,6 +1921,7 @@ class AccountApi {
       headerParams,
       formParams,
       contentTypes.isEmpty ? null : contentTypes.first,
+      abortTrigger: abortTrigger,
     );
   }
 
@@ -1892,8 +1932,8 @@ class AccountApi {
   /// Parameters:
   ///
   /// * [SignInWithLoginInfo] signInWithLoginInfo (required):
-  Future<LoginResult?> postSignInWithLogin(SignInWithLoginInfo signInWithLoginInfo,) async {
-    final response = await postSignInWithLoginWithHttpInfo(signInWithLoginInfo,);
+  Future<LoginResult?> postSignInWithLogin(SignInWithLoginInfo signInWithLoginInfo, { Future<void>? abortTrigger, }) async {
+    final response = await postSignInWithLoginWithHttpInfo(signInWithLoginInfo, abortTrigger: abortTrigger,);
     if (response.statusCode >= HttpStatus.badRequest) {
       throw ApiException(response.statusCode, await _decodeBodyBytes(response));
     }
@@ -1910,7 +1950,7 @@ class AccountApi {
   /// Verify email address using the token from the form submission.
   ///
   /// Note: This method returns the HTTP [Response].
-  Future<Response> postVerifyEmailWithHttpInfo() async {
+  Future<Response> postVerifyEmailWithHttpInfo({ Future<void>? abortTrigger, }) async {
     // ignore: prefer_const_declarations
     final path = r'/verify_email';
 
@@ -1932,12 +1972,13 @@ class AccountApi {
       headerParams,
       formParams,
       contentTypes.isEmpty ? null : contentTypes.first,
+      abortTrigger: abortTrigger,
     );
   }
 
   /// Verify email address using the token from the form submission.
-  Future<void> postVerifyEmail() async {
-    final response = await postVerifyEmailWithHttpInfo();
+  Future<void> postVerifyEmail({ Future<void>? abortTrigger, }) async {
+    final response = await postVerifyEmailWithHttpInfo(abortTrigger: abortTrigger,);
     if (response.statusCode >= HttpStatus.badRequest) {
       throw ApiException(response.statusCode, await _decodeBodyBytes(response));
     }
@@ -1946,7 +1987,7 @@ class AccountApi {
   /// Verify new email address using the token from the form submission.
   ///
   /// Note: This method returns the HTTP [Response].
-  Future<Response> postVerifyNewEmailWithHttpInfo() async {
+  Future<Response> postVerifyNewEmailWithHttpInfo({ Future<void>? abortTrigger, }) async {
     // ignore: prefer_const_declarations
     final path = r'/verify_new_email';
 
@@ -1968,12 +2009,13 @@ class AccountApi {
       headerParams,
       formParams,
       contentTypes.isEmpty ? null : contentTypes.first,
+      abortTrigger: abortTrigger,
     );
   }
 
   /// Verify new email address using the token from the form submission.
-  Future<void> postVerifyNewEmail() async {
-    final response = await postVerifyNewEmailWithHttpInfo();
+  Future<void> postVerifyNewEmail({ Future<void>? abortTrigger, }) async {
+    final response = await postVerifyNewEmailWithHttpInfo(abortTrigger: abortTrigger,);
     if (response.statusCode >= HttpStatus.badRequest) {
       throw ApiException(response.statusCode, await _decodeBodyBytes(response));
     }
@@ -1988,7 +2030,7 @@ class AccountApi {
   /// Parameters:
   ///
   /// * [BooleanSetting] booleanSetting (required):
-  Future<Response> putSettingProfileVisiblityWithHttpInfo(BooleanSetting booleanSetting,) async {
+  Future<Response> putSettingProfileVisiblityWithHttpInfo(BooleanSetting booleanSetting, { Future<void>? abortTrigger, }) async {
     // ignore: prefer_const_declarations
     final path = r'/account_api/settings/profile_visibility';
 
@@ -2010,6 +2052,7 @@ class AccountApi {
       headerParams,
       formParams,
       contentTypes.isEmpty ? null : contentTypes.first,
+      abortTrigger: abortTrigger,
     );
   }
 
@@ -2020,8 +2063,8 @@ class AccountApi {
   /// Parameters:
   ///
   /// * [BooleanSetting] booleanSetting (required):
-  Future<void> putSettingProfileVisiblity(BooleanSetting booleanSetting,) async {
-    final response = await putSettingProfileVisiblityWithHttpInfo(booleanSetting,);
+  Future<void> putSettingProfileVisiblity(BooleanSetting booleanSetting, { Future<void>? abortTrigger, }) async {
+    final response = await putSettingProfileVisiblityWithHttpInfo(booleanSetting, abortTrigger: abortTrigger,);
     if (response.statusCode >= HttpStatus.badRequest) {
       throw ApiException(response.statusCode, await _decodeBodyBytes(response));
     }
@@ -2031,7 +2074,7 @@ class AccountApi {
   /// Parameters:
   ///
   /// * [BooleanSetting] booleanSetting (required):
-  Future<Response> putSettingUnlimitedLikesWithHttpInfo(BooleanSetting booleanSetting,) async {
+  Future<Response> putSettingUnlimitedLikesWithHttpInfo(BooleanSetting booleanSetting, { Future<void>? abortTrigger, }) async {
     // ignore: prefer_const_declarations
     final path = r'/account_api/settings/unlimited_likes';
 
@@ -2053,14 +2096,15 @@ class AccountApi {
       headerParams,
       formParams,
       contentTypes.isEmpty ? null : contentTypes.first,
+      abortTrigger: abortTrigger,
     );
   }
 
   /// Parameters:
   ///
   /// * [BooleanSetting] booleanSetting (required):
-  Future<void> putSettingUnlimitedLikes(BooleanSetting booleanSetting,) async {
-    final response = await putSettingUnlimitedLikesWithHttpInfo(booleanSetting,);
+  Future<void> putSettingUnlimitedLikes(BooleanSetting booleanSetting, { Future<void>? abortTrigger, }) async {
+    final response = await putSettingUnlimitedLikesWithHttpInfo(booleanSetting, abortTrigger: abortTrigger,);
     if (response.statusCode >= HttpStatus.badRequest) {
       throw ApiException(response.statusCode, await _decodeBodyBytes(response));
     }
@@ -2073,7 +2117,7 @@ class AccountApi {
   /// Parameters:
   ///
   /// * [PutSignInWithApple] putSignInWithApple (required):
-  Future<Response> putSignInWithAppleWithHttpInfo(PutSignInWithApple putSignInWithApple,) async {
+  Future<Response> putSignInWithAppleWithHttpInfo(PutSignInWithApple putSignInWithApple, { Future<void>? abortTrigger, }) async {
     // ignore: prefer_const_declarations
     final path = r'/account_api/sign_in_with_apple';
 
@@ -2095,6 +2139,7 @@ class AccountApi {
       headerParams,
       formParams,
       contentTypes.isEmpty ? null : contentTypes.first,
+      abortTrigger: abortTrigger,
     );
   }
 
@@ -2103,8 +2148,8 @@ class AccountApi {
   /// Parameters:
   ///
   /// * [PutSignInWithApple] putSignInWithApple (required):
-  Future<void> putSignInWithApple(PutSignInWithApple putSignInWithApple,) async {
-    final response = await putSignInWithAppleWithHttpInfo(putSignInWithApple,);
+  Future<void> putSignInWithApple(PutSignInWithApple putSignInWithApple, { Future<void>? abortTrigger, }) async {
+    final response = await putSignInWithAppleWithHttpInfo(putSignInWithApple, abortTrigger: abortTrigger,);
     if (response.statusCode >= HttpStatus.badRequest) {
       throw ApiException(response.statusCode, await _decodeBodyBytes(response));
     }
@@ -2117,7 +2162,7 @@ class AccountApi {
   /// Parameters:
   ///
   /// * [PutSignInWithGoogle] putSignInWithGoogle (required):
-  Future<Response> putSignInWithGoogleWithHttpInfo(PutSignInWithGoogle putSignInWithGoogle,) async {
+  Future<Response> putSignInWithGoogleWithHttpInfo(PutSignInWithGoogle putSignInWithGoogle, { Future<void>? abortTrigger, }) async {
     // ignore: prefer_const_declarations
     final path = r'/account_api/sign_in_with_google';
 
@@ -2139,6 +2184,7 @@ class AccountApi {
       headerParams,
       formParams,
       contentTypes.isEmpty ? null : contentTypes.first,
+      abortTrigger: abortTrigger,
     );
   }
 
@@ -2147,8 +2193,8 @@ class AccountApi {
   /// Parameters:
   ///
   /// * [PutSignInWithGoogle] putSignInWithGoogle (required):
-  Future<void> putSignInWithGoogle(PutSignInWithGoogle putSignInWithGoogle,) async {
-    final response = await putSignInWithGoogleWithHttpInfo(putSignInWithGoogle,);
+  Future<void> putSignInWithGoogle(PutSignInWithGoogle putSignInWithGoogle, { Future<void>? abortTrigger, }) async {
+    final response = await putSignInWithGoogleWithHttpInfo(putSignInWithGoogle, abortTrigger: abortTrigger,);
     if (response.statusCode >= HttpStatus.badRequest) {
       throw ApiException(response.statusCode, await _decodeBodyBytes(response));
     }

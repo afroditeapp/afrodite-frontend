@@ -53,10 +53,10 @@ class AdminInfo {
       // Note 1: the values aren't checked for validity beyond being non-null.
       // Note 2: this code is stripped in release mode!
       assert(() {
-        requiredKeys.forEach((key) {
-          assert(json.containsKey(key), 'Required key "AdminInfo[$key]" is missing from JSON.');
-          assert(json[key] != null, 'Required key "AdminInfo[$key]" has a null value in JSON.');
-        });
+        assert(json.containsKey(r'aid'), 'Required key "AdminInfo[aid]" is missing from JSON.');
+        assert(json[r'aid'] != null, 'Required key "AdminInfo[aid]" has a null value in JSON.');
+        assert(json.containsKey(r'permissions'), 'Required key "AdminInfo[permissions]" is missing from JSON.');
+        assert(json[r'permissions'] != null, 'Required key "AdminInfo[permissions]" has a null value in JSON.');
         return true;
       }());
 

@@ -53,10 +53,10 @@ class UpdateAssociationMembershipType {
       // Note 1: the values aren't checked for validity beyond being non-null.
       // Note 2: this code is stripped in release mode!
       assert(() {
-        requiredKeys.forEach((key) {
-          assert(json.containsKey(key), 'Required key "UpdateAssociationMembershipType[$key]" is missing from JSON.');
-          assert(json[key] != null, 'Required key "UpdateAssociationMembershipType[$key]" has a null value in JSON.');
-        });
+        assert(json.containsKey(r'member'), 'Required key "UpdateAssociationMembershipType[member]" is missing from JSON.');
+        assert(json[r'member'] != null, 'Required key "UpdateAssociationMembershipType[member]" has a null value in JSON.');
+        assert(json.containsKey(r'membership_type'), 'Required key "UpdateAssociationMembershipType[membership_type]" is missing from JSON.');
+        assert(json[r'membership_type'] != null, 'Required key "UpdateAssociationMembershipType[membership_type]" has a null value in JSON.');
         return true;
       }());
 

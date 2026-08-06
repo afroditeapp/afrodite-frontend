@@ -58,10 +58,8 @@ class IpCountryStatisticsValue {
       // Note 1: the values aren't checked for validity beyond being non-null.
       // Note 2: this code is stripped in release mode!
       assert(() {
-        requiredKeys.forEach((key) {
-          assert(json.containsKey(key), 'Required key "IpCountryStatisticsValue[$key]" is missing from JSON.');
-          assert(json[key] != null, 'Required key "IpCountryStatisticsValue[$key]" has a null value in JSON.');
-        });
+        assert(json.containsKey(r'c'), 'Required key "IpCountryStatisticsValue[c]" is missing from JSON.');
+        assert(json[r'c'] != null, 'Required key "IpCountryStatisticsValue[c]" has a null value in JSON.');
         return true;
       }());
 

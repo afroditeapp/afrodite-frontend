@@ -77,10 +77,14 @@ class Account {
       // Note 1: the values aren't checked for validity beyond being non-null.
       // Note 2: this code is stripped in release mode!
       assert(() {
-        requiredKeys.forEach((key) {
-          assert(json.containsKey(key), 'Required key "Account[$key]" is missing from JSON.');
-          assert(json[key] != null, 'Required key "Account[$key]" has a null value in JSON.');
-        });
+        assert(json.containsKey(r'permissions'), 'Required key "Account[permissions]" is missing from JSON.');
+        assert(json[r'permissions'] != null, 'Required key "Account[permissions]" has a null value in JSON.');
+        assert(json.containsKey(r'state'), 'Required key "Account[state]" is missing from JSON.');
+        assert(json[r'state'] != null, 'Required key "Account[state]" has a null value in JSON.');
+        assert(json.containsKey(r'sync_version'), 'Required key "Account[sync_version]" is missing from JSON.');
+        assert(json[r'sync_version'] != null, 'Required key "Account[sync_version]" has a null value in JSON.');
+        assert(json.containsKey(r'visibility'), 'Required key "Account[visibility]" is missing from JSON.');
+        assert(json[r'visibility'] != null, 'Required key "Account[visibility]" has a null value in JSON.');
         return true;
       }());
 

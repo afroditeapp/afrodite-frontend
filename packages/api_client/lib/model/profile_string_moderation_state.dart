@@ -11,39 +11,34 @@
 part of openapi.api;
 
 
-class ProfileStringModerationState {
-  /// Instantiate a new enum with the provided [value].
-  const ProfileStringModerationState._(this.value);
+enum ProfileStringModerationState {
+  waitingAdminBot._(r'WaitingAdminBot'),
+  waitingAdmin._(r'WaitingAdmin'),
+  acceptedByAdminBot._(r'AcceptedByAdminBot'),
+  acceptedByAdmin._(r'AcceptedByAdmin'),
+  acceptedByAllowlist._(r'AcceptedByAllowlist'),
+  rejectedByAdminBot._(r'RejectedByAdminBot'),
+  rejectedByAdmin._(r'RejectedByAdmin'),
+  ;
+
+  /// Instantiate a new enum with the provided value.
+  const ProfileStringModerationState._(this._value);
 
   /// The underlying value of this enum member.
-  final String value;
+  final String _value;
 
   @override
-  String toString() => value;
+  String toString() => _value;
 
-  String toJson() => value;
+  /// Encodes this enum as a value suitable for JSON.
+  String toJson() => _value;
 
-  static const waitingAdminBot = ProfileStringModerationState._(r'WaitingAdminBot');
-  static const waitingAdmin = ProfileStringModerationState._(r'WaitingAdmin');
-  static const acceptedByAdminBot = ProfileStringModerationState._(r'AcceptedByAdminBot');
-  static const acceptedByAdmin = ProfileStringModerationState._(r'AcceptedByAdmin');
-  static const acceptedByAllowlist = ProfileStringModerationState._(r'AcceptedByAllowlist');
-  static const rejectedByAdminBot = ProfileStringModerationState._(r'RejectedByAdminBot');
-  static const rejectedByAdmin = ProfileStringModerationState._(r'RejectedByAdmin');
-
-  /// List of all possible values in this [enum][ProfileStringModerationState].
-  static const values = <ProfileStringModerationState>[
-    waitingAdminBot,
-    waitingAdmin,
-    acceptedByAdminBot,
-    acceptedByAdmin,
-    acceptedByAllowlist,
-    rejectedByAdminBot,
-    rejectedByAdmin,
-  ];
-
+  /// Returns the instance of [ProfileStringModerationState] that was successfully decoded
+  /// from the passed [value] on success, null otherwise.
   static ProfileStringModerationState? fromJson(dynamic value) => ProfileStringModerationStateTypeTransformer().decode(value);
 
+  /// Returns a [List] containing instances of [ProfileStringModerationState]
+  /// that were successfully decoded from the passed [JSON][json].
   static List<ProfileStringModerationState> listFromJson(dynamic json, {bool growable = false,}) {
     final result = <ProfileStringModerationState>[];
     if (json is List && json.isNotEmpty) {
@@ -65,9 +60,11 @@ class ProfileStringModerationStateTypeTransformer {
 
   const ProfileStringModerationStateTypeTransformer._();
 
-  String encode(ProfileStringModerationState data) => data.value;
+  /// Encodes this enum as a value suitable for JSON.
+  String encode(ProfileStringModerationState data) => data._value;
 
-  /// Decodes a [dynamic value][data] to a ProfileStringModerationState.
+  /// Returns the instance of [ProfileStringModerationState] that was successfully decoded
+  /// from the passed [data] value on success, null otherwise.
   ///
   /// If [allowNull] is true and the [dynamic value][data] cannot be decoded successfully,
   /// then null is returned. However, if [allowNull] is false and the [dynamic value][data]
@@ -76,6 +73,9 @@ class ProfileStringModerationStateTypeTransformer {
   /// The [allowNull] is very handy when an API changes and a new enum value is added or removed,
   /// and users are still using an old app with the old code.
   ProfileStringModerationState? decode(dynamic data, {bool allowNull = true}) {
+    if (data is ProfileStringModerationState) {
+      return data;
+    }
     if (data != null) {
       switch (data) {
         case r'WaitingAdminBot': return ProfileStringModerationState.waitingAdminBot;
@@ -94,7 +94,7 @@ class ProfileStringModerationStateTypeTransformer {
     return null;
   }
 
-  /// Singleton [ProfileStringModerationStateTypeTransformer] instance.
+  /// The singleton instance of this transformer.
   static ProfileStringModerationStateTypeTransformer? _instance;
 }
 

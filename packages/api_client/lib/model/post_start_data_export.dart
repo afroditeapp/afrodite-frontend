@@ -54,10 +54,10 @@ class PostStartDataExport {
       // Note 1: the values aren't checked for validity beyond being non-null.
       // Note 2: this code is stripped in release mode!
       assert(() {
-        requiredKeys.forEach((key) {
-          assert(json.containsKey(key), 'Required key "PostStartDataExport[$key]" is missing from JSON.');
-          assert(json[key] != null, 'Required key "PostStartDataExport[$key]" has a null value in JSON.');
-        });
+        assert(json.containsKey(r'data_export_type'), 'Required key "PostStartDataExport[data_export_type]" is missing from JSON.');
+        assert(json[r'data_export_type'] != null, 'Required key "PostStartDataExport[data_export_type]" has a null value in JSON.');
+        assert(json.containsKey(r'source'), 'Required key "PostStartDataExport[source]" is missing from JSON.');
+        assert(json[r'source'] != null, 'Required key "PostStartDataExport[source]" has a null value in JSON.');
         return true;
       }());
 

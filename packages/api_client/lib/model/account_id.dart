@@ -47,10 +47,8 @@ class AccountId {
       // Note 1: the values aren't checked for validity beyond being non-null.
       // Note 2: this code is stripped in release mode!
       assert(() {
-        requiredKeys.forEach((key) {
-          assert(json.containsKey(key), 'Required key "AccountId[$key]" is missing from JSON.');
-          assert(json[key] != null, 'Required key "AccountId[$key]" has a null value in JSON.');
-        });
+        assert(json.containsKey(r'aid'), 'Required key "AccountId[aid]" is missing from JSON.');
+        assert(json[r'aid'] != null, 'Required key "AccountId[aid]" has a null value in JSON.');
         return true;
       }());
 

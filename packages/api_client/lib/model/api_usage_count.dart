@@ -53,10 +53,10 @@ class ApiUsageCount {
       // Note 1: the values aren't checked for validity beyond being non-null.
       // Note 2: this code is stripped in release mode!
       assert(() {
-        requiredKeys.forEach((key) {
-          assert(json.containsKey(key), 'Required key "ApiUsageCount[$key]" is missing from JSON.');
-          assert(json[key] != null, 'Required key "ApiUsageCount[$key]" has a null value in JSON.');
-        });
+        assert(json.containsKey(r'c'), 'Required key "ApiUsageCount[c]" is missing from JSON.');
+        assert(json[r'c'] != null, 'Required key "ApiUsageCount[c]" has a null value in JSON.');
+        assert(json.containsKey(r't'), 'Required key "ApiUsageCount[t]" is missing from JSON.');
+        assert(json[r't'] != null, 'Required key "ApiUsageCount[t]" has a null value in JSON.');
         return true;
       }());
 

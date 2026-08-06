@@ -11,31 +11,30 @@
 part of openapi.api;
 
 
-class AccountBannedAdminType {
-  /// Instantiate a new enum with the provided [value].
-  const AccountBannedAdminType._(this.value);
+enum AccountBannedAdminType {
+  human._(r'Human'),
+  bot._(r'Bot'),
+  server._(r'Server'),
+  ;
+
+  /// Instantiate a new enum with the provided value.
+  const AccountBannedAdminType._(this._value);
 
   /// The underlying value of this enum member.
-  final String value;
+  final String _value;
 
   @override
-  String toString() => value;
+  String toString() => _value;
 
-  String toJson() => value;
+  /// Encodes this enum as a value suitable for JSON.
+  String toJson() => _value;
 
-  static const human = AccountBannedAdminType._(r'Human');
-  static const bot = AccountBannedAdminType._(r'Bot');
-  static const server = AccountBannedAdminType._(r'Server');
-
-  /// List of all possible values in this [enum][AccountBannedAdminType].
-  static const values = <AccountBannedAdminType>[
-    human,
-    bot,
-    server,
-  ];
-
+  /// Returns the instance of [AccountBannedAdminType] that was successfully decoded
+  /// from the passed [value] on success, null otherwise.
   static AccountBannedAdminType? fromJson(dynamic value) => AccountBannedAdminTypeTypeTransformer().decode(value);
 
+  /// Returns a [List] containing instances of [AccountBannedAdminType]
+  /// that were successfully decoded from the passed [JSON][json].
   static List<AccountBannedAdminType> listFromJson(dynamic json, {bool growable = false,}) {
     final result = <AccountBannedAdminType>[];
     if (json is List && json.isNotEmpty) {
@@ -57,9 +56,11 @@ class AccountBannedAdminTypeTypeTransformer {
 
   const AccountBannedAdminTypeTypeTransformer._();
 
-  String encode(AccountBannedAdminType data) => data.value;
+  /// Encodes this enum as a value suitable for JSON.
+  String encode(AccountBannedAdminType data) => data._value;
 
-  /// Decodes a [dynamic value][data] to a AccountBannedAdminType.
+  /// Returns the instance of [AccountBannedAdminType] that was successfully decoded
+  /// from the passed [data] value on success, null otherwise.
   ///
   /// If [allowNull] is true and the [dynamic value][data] cannot be decoded successfully,
   /// then null is returned. However, if [allowNull] is false and the [dynamic value][data]
@@ -68,6 +69,9 @@ class AccountBannedAdminTypeTypeTransformer {
   /// The [allowNull] is very handy when an API changes and a new enum value is added or removed,
   /// and users are still using an old app with the old code.
   AccountBannedAdminType? decode(dynamic data, {bool allowNull = true}) {
+    if (data is AccountBannedAdminType) {
+      return data;
+    }
     if (data != null) {
       switch (data) {
         case r'Human': return AccountBannedAdminType.human;
@@ -82,7 +86,7 @@ class AccountBannedAdminTypeTypeTransformer {
     return null;
   }
 
-  /// Singleton [AccountBannedAdminTypeTypeTransformer] instance.
+  /// The singleton instance of this transformer.
   static AccountBannedAdminTypeTypeTransformer? _instance;
 }
 

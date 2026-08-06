@@ -47,10 +47,8 @@ class MediaVerificationStatus {
       // Note 1: the values aren't checked for validity beyond being non-null.
       // Note 2: this code is stripped in release mode!
       assert(() {
-        requiredKeys.forEach((key) {
-          assert(json.containsKey(key), 'Required key "MediaVerificationStatus[$key]" is missing from JSON.');
-          assert(json[key] != null, 'Required key "MediaVerificationStatus[$key]" has a null value in JSON.');
-        });
+        assert(json.containsKey(r'v'), 'Required key "MediaVerificationStatus[v]" is missing from JSON.');
+        assert(json[r'v'] != null, 'Required key "MediaVerificationStatus[v]" has a null value in JSON.');
         return true;
       }());
 

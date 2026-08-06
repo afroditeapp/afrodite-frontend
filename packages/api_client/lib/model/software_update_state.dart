@@ -11,31 +11,30 @@
 part of openapi.api;
 
 
-class SoftwareUpdateState {
-  /// Instantiate a new enum with the provided [value].
-  const SoftwareUpdateState._(this.value);
+enum SoftwareUpdateState {
+  idle._(r'Idle'),
+  downloading._(r'Downloading'),
+  installing._(r'Installing'),
+  ;
+
+  /// Instantiate a new enum with the provided value.
+  const SoftwareUpdateState._(this._value);
 
   /// The underlying value of this enum member.
-  final String value;
+  final String _value;
 
   @override
-  String toString() => value;
+  String toString() => _value;
 
-  String toJson() => value;
+  /// Encodes this enum as a value suitable for JSON.
+  String toJson() => _value;
 
-  static const idle = SoftwareUpdateState._(r'Idle');
-  static const downloading = SoftwareUpdateState._(r'Downloading');
-  static const installing = SoftwareUpdateState._(r'Installing');
-
-  /// List of all possible values in this [enum][SoftwareUpdateState].
-  static const values = <SoftwareUpdateState>[
-    idle,
-    downloading,
-    installing,
-  ];
-
+  /// Returns the instance of [SoftwareUpdateState] that was successfully decoded
+  /// from the passed [value] on success, null otherwise.
   static SoftwareUpdateState? fromJson(dynamic value) => SoftwareUpdateStateTypeTransformer().decode(value);
 
+  /// Returns a [List] containing instances of [SoftwareUpdateState]
+  /// that were successfully decoded from the passed [JSON][json].
   static List<SoftwareUpdateState> listFromJson(dynamic json, {bool growable = false,}) {
     final result = <SoftwareUpdateState>[];
     if (json is List && json.isNotEmpty) {
@@ -57,9 +56,11 @@ class SoftwareUpdateStateTypeTransformer {
 
   const SoftwareUpdateStateTypeTransformer._();
 
-  String encode(SoftwareUpdateState data) => data.value;
+  /// Encodes this enum as a value suitable for JSON.
+  String encode(SoftwareUpdateState data) => data._value;
 
-  /// Decodes a [dynamic value][data] to a SoftwareUpdateState.
+  /// Returns the instance of [SoftwareUpdateState] that was successfully decoded
+  /// from the passed [data] value on success, null otherwise.
   ///
   /// If [allowNull] is true and the [dynamic value][data] cannot be decoded successfully,
   /// then null is returned. However, if [allowNull] is false and the [dynamic value][data]
@@ -68,6 +69,9 @@ class SoftwareUpdateStateTypeTransformer {
   /// The [allowNull] is very handy when an API changes and a new enum value is added or removed,
   /// and users are still using an old app with the old code.
   SoftwareUpdateState? decode(dynamic data, {bool allowNull = true}) {
+    if (data is SoftwareUpdateState) {
+      return data;
+    }
     if (data != null) {
       switch (data) {
         case r'Idle': return SoftwareUpdateState.idle;
@@ -82,7 +86,7 @@ class SoftwareUpdateStateTypeTransformer {
     return null;
   }
 
-  /// Singleton [SoftwareUpdateStateTypeTransformer] instance.
+  /// The singleton instance of this transformer.
   static SoftwareUpdateStateTypeTransformer? _instance;
 }
 

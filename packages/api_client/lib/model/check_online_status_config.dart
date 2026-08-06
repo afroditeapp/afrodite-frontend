@@ -59,10 +59,10 @@ class CheckOnlineStatusConfig {
       // Note 1: the values aren't checked for validity beyond being non-null.
       // Note 2: this code is stripped in release mode!
       assert(() {
-        requiredKeys.forEach((key) {
-          assert(json.containsKey(key), 'Required key "CheckOnlineStatusConfig[$key]" is missing from JSON.');
-          assert(json[key] != null, 'Required key "CheckOnlineStatusConfig[$key]" has a null value in JSON.');
-        });
+        assert(json.containsKey(r'min_wait_seconds_between_requests_client'), 'Required key "CheckOnlineStatusConfig[min_wait_seconds_between_requests_client]" is missing from JSON.');
+        assert(json[r'min_wait_seconds_between_requests_client'] != null, 'Required key "CheckOnlineStatusConfig[min_wait_seconds_between_requests_client]" has a null value in JSON.');
+        assert(json.containsKey(r'min_wait_seconds_between_requests_server'), 'Required key "CheckOnlineStatusConfig[min_wait_seconds_between_requests_server]" is missing from JSON.');
+        assert(json[r'min_wait_seconds_between_requests_server'] != null, 'Required key "CheckOnlineStatusConfig[min_wait_seconds_between_requests_server]" has a null value in JSON.');
         return true;
       }());
 

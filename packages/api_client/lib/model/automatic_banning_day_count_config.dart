@@ -62,10 +62,12 @@ class AutomaticBanningDayCountConfig {
       // Note 1: the values aren't checked for validity beyond being non-null.
       // Note 2: this code is stripped in release mode!
       assert(() {
-        requiredKeys.forEach((key) {
-          assert(json.containsKey(key), 'Required key "AutomaticBanningDayCountConfig[$key]" is missing from JSON.');
-          assert(json[key] != null, 'Required key "AutomaticBanningDayCountConfig[$key]" has a null value in JSON.');
-        });
+        assert(json.containsKey(r'high'), 'Required key "AutomaticBanningDayCountConfig[high]" is missing from JSON.');
+        assert(json[r'high'] != null, 'Required key "AutomaticBanningDayCountConfig[high]" has a null value in JSON.');
+        assert(json.containsKey(r'low'), 'Required key "AutomaticBanningDayCountConfig[low]" is missing from JSON.');
+        assert(json[r'low'] != null, 'Required key "AutomaticBanningDayCountConfig[low]" has a null value in JSON.');
+        assert(json.containsKey(r'medium'), 'Required key "AutomaticBanningDayCountConfig[medium]" is missing from JSON.');
+        assert(json[r'medium'] != null, 'Required key "AutomaticBanningDayCountConfig[medium]" has a null value in JSON.');
         return true;
       }());
 

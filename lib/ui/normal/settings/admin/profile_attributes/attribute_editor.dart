@@ -124,7 +124,7 @@ class _AttributeEditorScreenState extends State<AttributeEditorScreen> {
   }
 
   Widget _body(BuildContext context, bool canEditContent) {
-    final hideAddValueButton = _attr.mode.value == 'bitflag' && _attr.values.length >= 16;
+    final hideAddValueButton = _attr.mode == AttributeMode.bitflag && _attr.values.length >= 16;
     final orderedValuesForDisplay = [..._attr.values];
     reorderAttributeValuesByOrderMode(orderedValuesForDisplay, _attr.valueOrder);
 
@@ -135,7 +135,7 @@ class _AttributeEditorScreenState extends State<AttributeEditorScreen> {
         children: [
           ReadOnlyTextField(label: "Key", value: _attr.key),
           const SizedBox(height: 16),
-          ReadOnlyTextField(label: "Mode", value: _attr.mode.value),
+          ReadOnlyTextField(label: "Mode", value: _attr.mode.toString()),
           const SizedBox(height: 16),
           Row(
             children: [
@@ -192,7 +192,7 @@ class _AttributeEditorScreenState extends State<AttributeEditorScreen> {
               border: OutlineInputBorder(),
             ),
             items: AttributeValueOrderMode.values
-                .map((e) => DropdownMenuItem(value: e, child: Text(e.value)))
+                .map((e) => DropdownMenuItem(value: e, child: Text(e.toString())))
                 .toList(),
             onChanged: (val) {
               if (val != null) {

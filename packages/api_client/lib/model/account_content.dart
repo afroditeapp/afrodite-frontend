@@ -63,10 +63,12 @@ class AccountContent {
       // Note 1: the values aren't checked for validity beyond being non-null.
       // Note 2: this code is stripped in release mode!
       assert(() {
-        requiredKeys.forEach((key) {
-          assert(json.containsKey(key), 'Required key "AccountContent[$key]" is missing from JSON.');
-          assert(json[key] != null, 'Required key "AccountContent[$key]" has a null value in JSON.');
-        });
+        assert(json.containsKey(r'data'), 'Required key "AccountContent[data]" is missing from JSON.');
+        assert(json[r'data'] != null, 'Required key "AccountContent[data]" has a null value in JSON.');
+        assert(json.containsKey(r'max_content_count'), 'Required key "AccountContent[max_content_count]" is missing from JSON.');
+        assert(json[r'max_content_count'] != null, 'Required key "AccountContent[max_content_count]" has a null value in JSON.');
+        assert(json.containsKey(r'unused_content_wait_seconds'), 'Required key "AccountContent[unused_content_wait_seconds]" is missing from JSON.');
+        assert(json[r'unused_content_wait_seconds'] != null, 'Required key "AccountContent[unused_content_wait_seconds]" has a null value in JSON.');
         return true;
       }());
 

@@ -234,9 +234,9 @@ class SendImageToSlotTask {
             return ProcessingCompleted(contentId, faceDetected);
           }
         }
+      case null:
+        return SendToSlotError();
     }
-
-    return SendToSlotError();
   }
 }
 

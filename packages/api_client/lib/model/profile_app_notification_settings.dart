@@ -53,10 +53,10 @@ class ProfileAppNotificationSettings {
       // Note 1: the values aren't checked for validity beyond being non-null.
       // Note 2: this code is stripped in release mode!
       assert(() {
-        requiredKeys.forEach((key) {
-          assert(json.containsKey(key), 'Required key "ProfileAppNotificationSettings[$key]" is missing from JSON.');
-          assert(json[key] != null, 'Required key "ProfileAppNotificationSettings[$key]" has a null value in JSON.');
-        });
+        assert(json.containsKey(r'automatic_profile_search'), 'Required key "ProfileAppNotificationSettings[automatic_profile_search]" is missing from JSON.');
+        assert(json[r'automatic_profile_search'] != null, 'Required key "ProfileAppNotificationSettings[automatic_profile_search]" has a null value in JSON.');
+        assert(json.containsKey(r'profile_string_moderation'), 'Required key "ProfileAppNotificationSettings[profile_string_moderation]" is missing from JSON.');
+        assert(json[r'profile_string_moderation'] != null, 'Required key "ProfileAppNotificationSettings[profile_string_moderation]" has a null value in JSON.');
         return true;
       }());
 

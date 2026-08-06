@@ -59,10 +59,12 @@ class MediaContentFaceVerifiedNullByAccount {
       // Note 1: the values aren't checked for validity beyond being non-null.
       // Note 2: this code is stripped in release mode!
       assert(() {
-        requiredKeys.forEach((key) {
-          assert(json.containsKey(key), 'Required key "MediaContentFaceVerifiedNullByAccount[$key]" is missing from JSON.');
-          assert(json[key] != null, 'Required key "MediaContentFaceVerifiedNullByAccount[$key]" has a null value in JSON.');
-        });
+        assert(json.containsKey(r'account_id'), 'Required key "MediaContentFaceVerifiedNullByAccount[account_id]" is missing from JSON.');
+        assert(json[r'account_id'] != null, 'Required key "MediaContentFaceVerifiedNullByAccount[account_id]" has a null value in JSON.');
+        assert(json.containsKey(r'security_content'), 'Required key "MediaContentFaceVerifiedNullByAccount[security_content]" is missing from JSON.');
+        assert(json[r'security_content'] != null, 'Required key "MediaContentFaceVerifiedNullByAccount[security_content]" has a null value in JSON.');
+        assert(json.containsKey(r'values'), 'Required key "MediaContentFaceVerifiedNullByAccount[values]" is missing from JSON.');
+        assert(json[r'values'] != null, 'Required key "MediaContentFaceVerifiedNullByAccount[values]" has a null value in JSON.');
         return true;
       }());
 

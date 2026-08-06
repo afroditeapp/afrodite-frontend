@@ -62,10 +62,12 @@ class ClientVersion {
       // Note 1: the values aren't checked for validity beyond being non-null.
       // Note 2: this code is stripped in release mode!
       assert(() {
-        requiredKeys.forEach((key) {
-          assert(json.containsKey(key), 'Required key "ClientVersion[$key]" is missing from JSON.');
-          assert(json[key] != null, 'Required key "ClientVersion[$key]" has a null value in JSON.');
-        });
+        assert(json.containsKey(r'major'), 'Required key "ClientVersion[major]" is missing from JSON.');
+        assert(json[r'major'] != null, 'Required key "ClientVersion[major]" has a null value in JSON.');
+        assert(json.containsKey(r'minor'), 'Required key "ClientVersion[minor]" is missing from JSON.');
+        assert(json[r'minor'] != null, 'Required key "ClientVersion[minor]" has a null value in JSON.');
+        assert(json.containsKey(r'patch'), 'Required key "ClientVersion[patch]" is missing from JSON.');
+        assert(json[r'patch'] != null, 'Required key "ClientVersion[patch]" has a null value in JSON.');
         return true;
       }());
 

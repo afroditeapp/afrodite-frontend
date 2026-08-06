@@ -67,10 +67,10 @@ class AdminBotProfileStringModerationConfig {
       // Note 1: the values aren't checked for validity beyond being non-null.
       // Note 2: this code is stripped in release mode!
       assert(() {
-        requiredKeys.forEach((key) {
-          assert(json.containsKey(key), 'Required key "AdminBotProfileStringModerationConfig[$key]" is missing from JSON.');
-          assert(json[key] != null, 'Required key "AdminBotProfileStringModerationConfig[$key]" has a null value in JSON.');
-        });
+        assert(json.containsKey(r'default_action'), 'Required key "AdminBotProfileStringModerationConfig[default_action]" is missing from JSON.');
+        assert(json[r'default_action'] != null, 'Required key "AdminBotProfileStringModerationConfig[default_action]" has a null value in JSON.');
+        assert(json.containsKey(r'llm'), 'Required key "AdminBotProfileStringModerationConfig[llm]" is missing from JSON.');
+        assert(json[r'llm'] != null, 'Required key "AdminBotProfileStringModerationConfig[llm]" has a null value in JSON.');
         return true;
       }());
 

@@ -53,10 +53,10 @@ class ProfilePrivacySettings {
       // Note 1: the values aren't checked for validity beyond being non-null.
       // Note 2: this code is stripped in release mode!
       assert(() {
-        requiredKeys.forEach((key) {
-          assert(json.containsKey(key), 'Required key "ProfilePrivacySettings[$key]" is missing from JSON.');
-          assert(json[key] != null, 'Required key "ProfilePrivacySettings[$key]" has a null value in JSON.');
-        });
+        assert(json.containsKey(r'last_seen_time'), 'Required key "ProfilePrivacySettings[last_seen_time]" is missing from JSON.');
+        assert(json[r'last_seen_time'] != null, 'Required key "ProfilePrivacySettings[last_seen_time]" has a null value in JSON.');
+        assert(json.containsKey(r'online_status'), 'Required key "ProfilePrivacySettings[online_status]" is missing from JSON.');
+        assert(json[r'online_status'] != null, 'Required key "ProfilePrivacySettings[online_status]" has a null value in JSON.');
         return true;
       }());
 

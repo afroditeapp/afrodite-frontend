@@ -35,6 +35,7 @@ class Attribute {
   /// Icon for the attribute.
   String? icon;
 
+  /// Numeric unique identifier for the attribute.
   int id;
 
   /// String unique identifier for the attribute.
@@ -144,10 +145,20 @@ class Attribute {
       // Note 1: the values aren't checked for validity beyond being non-null.
       // Note 2: this code is stripped in release mode!
       assert(() {
-        requiredKeys.forEach((key) {
-          assert(json.containsKey(key), 'Required key "Attribute[$key]" is missing from JSON.');
-          assert(json[key] != null, 'Required key "Attribute[$key]" has a null value in JSON.');
-        });
+        assert(json.containsKey(r'id'), 'Required key "Attribute[id]" is missing from JSON.');
+        assert(json[r'id'] != null, 'Required key "Attribute[id]" has a null value in JSON.');
+        assert(json.containsKey(r'key'), 'Required key "Attribute[key]" is missing from JSON.');
+        assert(json[r'key'] != null, 'Required key "Attribute[key]" has a null value in JSON.');
+        assert(json.containsKey(r'mode'), 'Required key "Attribute[mode]" is missing from JSON.');
+        assert(json[r'mode'] != null, 'Required key "Attribute[mode]" has a null value in JSON.');
+        assert(json.containsKey(r'name'), 'Required key "Attribute[name]" is missing from JSON.');
+        assert(json[r'name'] != null, 'Required key "Attribute[name]" has a null value in JSON.');
+        assert(json.containsKey(r'order_number'), 'Required key "Attribute[order_number]" is missing from JSON.');
+        assert(json[r'order_number'] != null, 'Required key "Attribute[order_number]" has a null value in JSON.');
+        assert(json.containsKey(r'value_order'), 'Required key "Attribute[value_order]" is missing from JSON.');
+        assert(json[r'value_order'] != null, 'Required key "Attribute[value_order]" has a null value in JSON.');
+        assert(json.containsKey(r'values'), 'Required key "Attribute[values]" is missing from JSON.');
+        assert(json[r'values'] != null, 'Required key "Attribute[values]" has a null value in JSON.');
         return true;
       }());
 

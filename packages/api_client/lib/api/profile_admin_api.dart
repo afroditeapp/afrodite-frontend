@@ -27,7 +27,7 @@ class ProfileAdminApi {
   /// * [int] startPosition (required):
   ///
   /// * [int] page (required):
-  Future<Response> getAdminProfileIteratorPageWithHttpInfo(int startPosition, int page,) async {
+  Future<Response> getAdminProfileIteratorPageWithHttpInfo(int startPosition, int page, { Future<void>? abortTrigger, }) async {
     // ignore: prefer_const_declarations
     final path = r'/profile_api/get_admin_profile_iterator_page';
 
@@ -52,6 +52,7 @@ class ProfileAdminApi {
       headerParams,
       formParams,
       contentTypes.isEmpty ? null : contentTypes.first,
+      abortTrigger: abortTrigger,
     );
   }
 
@@ -64,8 +65,8 @@ class ProfileAdminApi {
   /// * [int] startPosition (required):
   ///
   /// * [int] page (required):
-  Future<ProfileIteratorPage?> getAdminProfileIteratorPage(int startPosition, int page,) async {
-    final response = await getAdminProfileIteratorPageWithHttpInfo(startPosition, page,);
+  Future<ProfileIteratorPage?> getAdminProfileIteratorPage(int startPosition, int page, { Future<void>? abortTrigger, }) async {
+    final response = await getAdminProfileIteratorPageWithHttpInfo(startPosition, page, abortTrigger: abortTrigger,);
     if (response.statusCode >= HttpStatus.badRequest) {
       throw ApiException(response.statusCode, await _decodeBodyBytes(response));
     }
@@ -84,7 +85,7 @@ class ProfileAdminApi {
   /// # Access - Permission [model::Permissions::admin_view_all_profiles]
   ///
   /// Note: This method returns the HTTP [Response].
-  Future<Response> getLatestCreatedAccountIdDbWithHttpInfo() async {
+  Future<Response> getLatestCreatedAccountIdDbWithHttpInfo({ Future<void>? abortTrigger, }) async {
     // ignore: prefer_const_declarations
     final path = r'/profile_api/get_latest_created_account_id_db';
 
@@ -106,14 +107,15 @@ class ProfileAdminApi {
       headerParams,
       formParams,
       contentTypes.isEmpty ? null : contentTypes.first,
+      abortTrigger: abortTrigger,
     );
   }
 
   /// Get latest created account ID DB
   ///
   /// # Access - Permission [model::Permissions::admin_view_all_profiles]
-  Future<AccountIdDbValue?> getLatestCreatedAccountIdDb() async {
-    final response = await getLatestCreatedAccountIdDbWithHttpInfo();
+  Future<AccountIdDbValue?> getLatestCreatedAccountIdDb({ Future<void>? abortTrigger, }) async {
+    final response = await getLatestCreatedAccountIdDbWithHttpInfo(abortTrigger: abortTrigger,);
     if (response.statusCode >= HttpStatus.badRequest) {
       throw ApiException(response.statusCode, await _decodeBodyBytes(response));
     }
@@ -136,7 +138,7 @@ class ProfileAdminApi {
   /// Parameters:
   ///
   /// * [String] aid (required):
-  Future<Response> getProfileAgeAndNameWithHttpInfo(String aid,) async {
+  Future<Response> getProfileAgeAndNameWithHttpInfo(String aid, { Future<void>? abortTrigger, }) async {
     // ignore: prefer_const_declarations
     final path = r'/profile_api/get_profile_age_and_name/{aid}'
       .replaceAll('{aid}', aid);
@@ -159,6 +161,7 @@ class ProfileAdminApi {
       headerParams,
       formParams,
       contentTypes.isEmpty ? null : contentTypes.first,
+      abortTrigger: abortTrigger,
     );
   }
 
@@ -169,8 +172,8 @@ class ProfileAdminApi {
   /// Parameters:
   ///
   /// * [String] aid (required):
-  Future<GetProfileAgeAndName?> getProfileAgeAndName(String aid,) async {
-    final response = await getProfileAgeAndNameWithHttpInfo(aid,);
+  Future<GetProfileAgeAndName?> getProfileAgeAndName(String aid, { Future<void>? abortTrigger, }) async {
+    final response = await getProfileAgeAndNameWithHttpInfo(aid, abortTrigger: abortTrigger,);
     if (response.statusCode >= HttpStatus.badRequest) {
       throw ApiException(response.statusCode, await _decodeBodyBytes(response));
     }
@@ -193,7 +196,7 @@ class ProfileAdminApi {
   /// Parameters:
   ///
   /// * [String] aid (required):
-  Future<Response> getProfileAgeRangeVerificationAdminInfoWithHttpInfo(String aid,) async {
+  Future<Response> getProfileAgeRangeVerificationAdminInfoWithHttpInfo(String aid, { Future<void>? abortTrigger, }) async {
     // ignore: prefer_const_declarations
     final path = r'/profile_api/profile_age_range_verification_admin_info/{aid}'
       .replaceAll('{aid}', aid);
@@ -216,6 +219,7 @@ class ProfileAdminApi {
       headerParams,
       formParams,
       contentTypes.isEmpty ? null : contentTypes.first,
+      abortTrigger: abortTrigger,
     );
   }
 
@@ -226,8 +230,8 @@ class ProfileAdminApi {
   /// Parameters:
   ///
   /// * [String] aid (required):
-  Future<ProfileAgeRangeVerificationAdminInfo?> getProfileAgeRangeVerificationAdminInfo(String aid,) async {
-    final response = await getProfileAgeRangeVerificationAdminInfoWithHttpInfo(aid,);
+  Future<ProfileAgeRangeVerificationAdminInfo?> getProfileAgeRangeVerificationAdminInfo(String aid, { Future<void>? abortTrigger, }) async {
+    final response = await getProfileAgeRangeVerificationAdminInfoWithHttpInfo(aid, abortTrigger: abortTrigger,);
     if (response.statusCode >= HttpStatus.badRequest) {
       throw ApiException(response.statusCode, await _decodeBodyBytes(response));
     }
@@ -246,7 +250,7 @@ class ProfileAdminApi {
   /// # Access - Permission [Permissions::admin_edit_profile_attributes_schema].
   ///
   /// Note: This method returns the HTTP [Response].
-  Future<Response> getProfileAttributesSchemaWithHttpInfo() async {
+  Future<Response> getProfileAttributesSchemaWithHttpInfo({ Future<void>? abortTrigger, }) async {
     // ignore: prefer_const_declarations
     final path = r'/profile_api/profile_attributes_schema';
 
@@ -268,14 +272,15 @@ class ProfileAdminApi {
       headerParams,
       formParams,
       contentTypes.isEmpty ? null : contentTypes.first,
+      abortTrigger: abortTrigger,
     );
   }
 
   /// Get profile attributes schema from DB.
   ///
   /// # Access - Permission [Permissions::admin_edit_profile_attributes_schema].
-  Future<ProfileAttributesSchemaExport?> getProfileAttributesSchema() async {
-    final response = await getProfileAttributesSchemaWithHttpInfo();
+  Future<ProfileAttributesSchemaExport?> getProfileAttributesSchema({ Future<void>? abortTrigger, }) async {
+    final response = await getProfileAttributesSchemaWithHttpInfo(abortTrigger: abortTrigger,);
     if (response.statusCode >= HttpStatus.badRequest) {
       throw ApiException(response.statusCode, await _decodeBodyBytes(response));
     }
@@ -298,7 +303,7 @@ class ProfileAdminApi {
   /// Parameters:
   ///
   /// * [String] aid (required):
-  Future<Response> getProfileNameVerificationAdminInfoWithHttpInfo(String aid,) async {
+  Future<Response> getProfileNameVerificationAdminInfoWithHttpInfo(String aid, { Future<void>? abortTrigger, }) async {
     // ignore: prefer_const_declarations
     final path = r'/profile_api/profile_name_verification_admin_info/{aid}'
       .replaceAll('{aid}', aid);
@@ -321,6 +326,7 @@ class ProfileAdminApi {
       headerParams,
       formParams,
       contentTypes.isEmpty ? null : contentTypes.first,
+      abortTrigger: abortTrigger,
     );
   }
 
@@ -331,8 +337,8 @@ class ProfileAdminApi {
   /// Parameters:
   ///
   /// * [String] aid (required):
-  Future<ProfileNameVerificationAdminInfo?> getProfileNameVerificationAdminInfo(String aid,) async {
-    final response = await getProfileNameVerificationAdminInfoWithHttpInfo(aid,);
+  Future<ProfileNameVerificationAdminInfo?> getProfileNameVerificationAdminInfo(String aid, { Future<void>? abortTrigger, }) async {
+    final response = await getProfileNameVerificationAdminInfoWithHttpInfo(aid, abortTrigger: abortTrigger,);
     if (response.statusCode >= HttpStatus.badRequest) {
       throw ApiException(response.statusCode, await _decodeBodyBytes(response));
     }
@@ -353,7 +359,7 @@ class ProfileAdminApi {
   ///
   /// * [int] age:
   ///   Required only for AgeChange history
-  Future<Response> getProfileStatisticsHistoryWithHttpInfo(ProfileStatisticsHistoryValueType valueType, { int? age, }) async {
+  Future<Response> getProfileStatisticsHistoryWithHttpInfo(ProfileStatisticsHistoryValueType valueType, { int? age, Future<void>? abortTrigger, }) async {
     // ignore: prefer_const_declarations
     final path = r'/profile_api/profile_statistics_history';
 
@@ -380,6 +386,7 @@ class ProfileAdminApi {
       headerParams,
       formParams,
       contentTypes.isEmpty ? null : contentTypes.first,
+      abortTrigger: abortTrigger,
     );
   }
 
@@ -389,8 +396,8 @@ class ProfileAdminApi {
   ///
   /// * [int] age:
   ///   Required only for AgeChange history
-  Future<GetProfileStatisticsHistoryResult?> getProfileStatisticsHistory(ProfileStatisticsHistoryValueType valueType, { int? age, }) async {
-    final response = await getProfileStatisticsHistoryWithHttpInfo(valueType,  age: age, );
+  Future<GetProfileStatisticsHistoryResult?> getProfileStatisticsHistory(ProfileStatisticsHistoryValueType valueType, { int? age, Future<void>? abortTrigger, }) async {
+    final response = await getProfileStatisticsHistoryWithHttpInfo(valueType, age: age, abortTrigger: abortTrigger,);
     if (response.statusCode >= HttpStatus.badRequest) {
       throw ApiException(response.statusCode, await _decodeBodyBytes(response));
     }
@@ -415,7 +422,7 @@ class ProfileAdminApi {
   /// * [ProfileStringModerationContentType] contentType (required):
   ///
   /// * [ProfileStringModerationQueueType] queueType (required):
-  Future<Response> getProfileStringModerationQueuePageWithHttpInfo(ProfileStringModerationContentType contentType, ProfileStringModerationQueueType queueType,) async {
+  Future<Response> getProfileStringModerationQueuePageWithHttpInfo(ProfileStringModerationContentType contentType, ProfileStringModerationQueueType queueType, { Future<void>? abortTrigger, }) async {
     // ignore: prefer_const_declarations
     final path = r'/profile_api/profile_string_moderation_queue_page';
 
@@ -440,6 +447,7 @@ class ProfileAdminApi {
       headerParams,
       formParams,
       contentTypes.isEmpty ? null : contentTypes.first,
+      abortTrigger: abortTrigger,
     );
   }
 
@@ -452,8 +460,8 @@ class ProfileAdminApi {
   /// * [ProfileStringModerationContentType] contentType (required):
   ///
   /// * [ProfileStringModerationQueueType] queueType (required):
-  Future<ProfileStringModerationQueuePage?> getProfileStringModerationQueuePage(ProfileStringModerationContentType contentType, ProfileStringModerationQueueType queueType,) async {
-    final response = await getProfileStringModerationQueuePageWithHttpInfo(contentType, queueType,);
+  Future<ProfileStringModerationQueuePage?> getProfileStringModerationQueuePage(ProfileStringModerationContentType contentType, ProfileStringModerationQueueType queueType, { Future<void>? abortTrigger, }) async {
+    final response = await getProfileStringModerationQueuePageWithHttpInfo(contentType, queueType, abortTrigger: abortTrigger,);
     if (response.statusCode >= HttpStatus.badRequest) {
       throw ApiException(response.statusCode, await _decodeBodyBytes(response));
     }
@@ -478,7 +486,7 @@ class ProfileAdminApi {
   /// * [ProfileStringModerationContentType] contentType (required):
   ///
   /// * [String] aid (required):
-  Future<Response> getProfileStringStateWithHttpInfo(ProfileStringModerationContentType contentType, String aid,) async {
+  Future<Response> getProfileStringStateWithHttpInfo(ProfileStringModerationContentType contentType, String aid, { Future<void>? abortTrigger, }) async {
     // ignore: prefer_const_declarations
     final path = r'/profile_api/get_profile_string_state/{aid}'
       .replaceAll('{aid}', aid);
@@ -503,6 +511,7 @@ class ProfileAdminApi {
       headerParams,
       formParams,
       contentTypes.isEmpty ? null : contentTypes.first,
+      abortTrigger: abortTrigger,
     );
   }
 
@@ -515,8 +524,8 @@ class ProfileAdminApi {
   /// * [ProfileStringModerationContentType] contentType (required):
   ///
   /// * [String] aid (required):
-  Future<GetProfileStringState?> getProfileStringState(ProfileStringModerationContentType contentType, String aid,) async {
-    final response = await getProfileStringStateWithHttpInfo(contentType, aid,);
+  Future<GetProfileStringState?> getProfileStringState(ProfileStringModerationContentType contentType, String aid, { Future<void>? abortTrigger, }) async {
+    final response = await getProfileStringStateWithHttpInfo(contentType, aid, abortTrigger: abortTrigger,);
     if (response.statusCode >= HttpStatus.badRequest) {
       throw ApiException(response.statusCode, await _decodeBodyBytes(response));
     }
@@ -539,7 +548,7 @@ class ProfileAdminApi {
   /// Parameters:
   ///
   /// * [PostModerateProfileString] postModerateProfileString (required):
-  Future<Response> postModerateProfileStringWithHttpInfo(PostModerateProfileString postModerateProfileString,) async {
+  Future<Response> postModerateProfileStringWithHttpInfo(PostModerateProfileString postModerateProfileString, { Future<void>? abortTrigger, }) async {
     // ignore: prefer_const_declarations
     final path = r'/profile_api/moderate_profile_string';
 
@@ -561,6 +570,7 @@ class ProfileAdminApi {
       headerParams,
       formParams,
       contentTypes.isEmpty ? null : contentTypes.first,
+      abortTrigger: abortTrigger,
     );
   }
 
@@ -571,8 +581,8 @@ class ProfileAdminApi {
   /// Parameters:
   ///
   /// * [PostModerateProfileString] postModerateProfileString (required):
-  Future<void> postModerateProfileString(PostModerateProfileString postModerateProfileString,) async {
-    final response = await postModerateProfileStringWithHttpInfo(postModerateProfileString,);
+  Future<void> postModerateProfileString(PostModerateProfileString postModerateProfileString, { Future<void>? abortTrigger, }) async {
+    final response = await postModerateProfileStringWithHttpInfo(postModerateProfileString, abortTrigger: abortTrigger,);
     if (response.statusCode >= HttpStatus.badRequest) {
       throw ApiException(response.statusCode, await _decodeBodyBytes(response));
     }
@@ -587,7 +597,7 @@ class ProfileAdminApi {
   /// Parameters:
   ///
   /// * [PostProfileAgeRangeVerifiedValue] postProfileAgeRangeVerifiedValue (required):
-  Future<Response> postProfileAgeRangeVerifiedValueWithHttpInfo(PostProfileAgeRangeVerifiedValue postProfileAgeRangeVerifiedValue,) async {
+  Future<Response> postProfileAgeRangeVerifiedValueWithHttpInfo(PostProfileAgeRangeVerifiedValue postProfileAgeRangeVerifiedValue, { Future<void>? abortTrigger, }) async {
     // ignore: prefer_const_declarations
     final path = r'/profile_api/profile_age_range_verified_value';
 
@@ -609,6 +619,7 @@ class ProfileAdminApi {
       headerParams,
       formParams,
       contentTypes.isEmpty ? null : contentTypes.first,
+      abortTrigger: abortTrigger,
     );
   }
 
@@ -619,8 +630,8 @@ class ProfileAdminApi {
   /// Parameters:
   ///
   /// * [PostProfileAgeRangeVerifiedValue] postProfileAgeRangeVerifiedValue (required):
-  Future<void> postProfileAgeRangeVerifiedValue(PostProfileAgeRangeVerifiedValue postProfileAgeRangeVerifiedValue,) async {
-    final response = await postProfileAgeRangeVerifiedValueWithHttpInfo(postProfileAgeRangeVerifiedValue,);
+  Future<void> postProfileAgeRangeVerifiedValue(PostProfileAgeRangeVerifiedValue postProfileAgeRangeVerifiedValue, { Future<void>? abortTrigger, }) async {
+    final response = await postProfileAgeRangeVerifiedValueWithHttpInfo(postProfileAgeRangeVerifiedValue, abortTrigger: abortTrigger,);
     if (response.statusCode >= HttpStatus.badRequest) {
       throw ApiException(response.statusCode, await _decodeBodyBytes(response));
     }
@@ -635,7 +646,7 @@ class ProfileAdminApi {
   /// Parameters:
   ///
   /// * [PostProfileNameVerifiedValue] postProfileNameVerifiedValue (required):
-  Future<Response> postProfileNameVerifiedValueWithHttpInfo(PostProfileNameVerifiedValue postProfileNameVerifiedValue,) async {
+  Future<Response> postProfileNameVerifiedValueWithHttpInfo(PostProfileNameVerifiedValue postProfileNameVerifiedValue, { Future<void>? abortTrigger, }) async {
     // ignore: prefer_const_declarations
     final path = r'/profile_api/profile_name_verified_value';
 
@@ -657,6 +668,7 @@ class ProfileAdminApi {
       headerParams,
       formParams,
       contentTypes.isEmpty ? null : contentTypes.first,
+      abortTrigger: abortTrigger,
     );
   }
 
@@ -667,8 +679,8 @@ class ProfileAdminApi {
   /// Parameters:
   ///
   /// * [PostProfileNameVerifiedValue] postProfileNameVerifiedValue (required):
-  Future<void> postProfileNameVerifiedValue(PostProfileNameVerifiedValue postProfileNameVerifiedValue,) async {
-    final response = await postProfileNameVerifiedValueWithHttpInfo(postProfileNameVerifiedValue,);
+  Future<void> postProfileNameVerifiedValue(PostProfileNameVerifiedValue postProfileNameVerifiedValue, { Future<void>? abortTrigger, }) async {
+    final response = await postProfileNameVerifiedValueWithHttpInfo(postProfileNameVerifiedValue, abortTrigger: abortTrigger,);
     if (response.statusCode >= HttpStatus.badRequest) {
       throw ApiException(response.statusCode, await _decodeBodyBytes(response));
     }
@@ -683,7 +695,7 @@ class ProfileAdminApi {
   /// Parameters:
   ///
   /// * [SetProfileName] setProfileName (required):
-  Future<Response> postSetProfileNameWithHttpInfo(SetProfileName setProfileName,) async {
+  Future<Response> postSetProfileNameWithHttpInfo(SetProfileName setProfileName, { Future<void>? abortTrigger, }) async {
     // ignore: prefer_const_declarations
     final path = r'/profile_api/set_profile_name';
 
@@ -705,6 +717,7 @@ class ProfileAdminApi {
       headerParams,
       formParams,
       contentTypes.isEmpty ? null : contentTypes.first,
+      abortTrigger: abortTrigger,
     );
   }
 
@@ -715,8 +728,8 @@ class ProfileAdminApi {
   /// Parameters:
   ///
   /// * [SetProfileName] setProfileName (required):
-  Future<void> postSetProfileName(SetProfileName setProfileName,) async {
-    final response = await postSetProfileNameWithHttpInfo(setProfileName,);
+  Future<void> postSetProfileName(SetProfileName setProfileName, { Future<void>? abortTrigger, }) async {
+    final response = await postSetProfileNameWithHttpInfo(setProfileName, abortTrigger: abortTrigger,);
     if (response.statusCode >= HttpStatus.badRequest) {
       throw ApiException(response.statusCode, await _decodeBodyBytes(response));
     }
@@ -731,7 +744,7 @@ class ProfileAdminApi {
   /// Parameters:
   ///
   /// * [UpdateProfileAttributesSchema] updateProfileAttributesSchema (required):
-  Future<Response> putProfileAttributesSchemaWithHttpInfo(UpdateProfileAttributesSchema updateProfileAttributesSchema,) async {
+  Future<Response> putProfileAttributesSchemaWithHttpInfo(UpdateProfileAttributesSchema updateProfileAttributesSchema, { Future<void>? abortTrigger, }) async {
     // ignore: prefer_const_declarations
     final path = r'/profile_api/profile_attributes_schema';
 
@@ -753,6 +766,7 @@ class ProfileAdminApi {
       headerParams,
       formParams,
       contentTypes.isEmpty ? null : contentTypes.first,
+      abortTrigger: abortTrigger,
     );
   }
 
@@ -763,8 +777,8 @@ class ProfileAdminApi {
   /// Parameters:
   ///
   /// * [UpdateProfileAttributesSchema] updateProfileAttributesSchema (required):
-  Future<void> putProfileAttributesSchema(UpdateProfileAttributesSchema updateProfileAttributesSchema,) async {
-    final response = await putProfileAttributesSchemaWithHttpInfo(updateProfileAttributesSchema,);
+  Future<void> putProfileAttributesSchema(UpdateProfileAttributesSchema updateProfileAttributesSchema, { Future<void>? abortTrigger, }) async {
+    final response = await putProfileAttributesSchemaWithHttpInfo(updateProfileAttributesSchema, abortTrigger: abortTrigger,);
     if (response.statusCode >= HttpStatus.badRequest) {
       throw ApiException(response.statusCode, await _decodeBodyBytes(response));
     }

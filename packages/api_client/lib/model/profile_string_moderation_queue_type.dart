@@ -11,33 +11,31 @@
 part of openapi.api;
 
 
-class ProfileStringModerationQueueType {
-  /// Instantiate a new enum with the provided [value].
-  const ProfileStringModerationQueueType._(this.value);
+enum ProfileStringModerationQueueType {
+  waitingAdminBot._(r'WaitingAdminBot'),
+  waitingAdmin._(r'WaitingAdmin'),
+  acceptedByAdminBot._(r'AcceptedByAdminBot'),
+  rejectedByAdminBot._(r'RejectedByAdminBot'),
+  ;
+
+  /// Instantiate a new enum with the provided value.
+  const ProfileStringModerationQueueType._(this._value);
 
   /// The underlying value of this enum member.
-  final String value;
+  final String _value;
 
   @override
-  String toString() => value;
+  String toString() => _value;
 
-  String toJson() => value;
+  /// Encodes this enum as a value suitable for JSON.
+  String toJson() => _value;
 
-  static const waitingAdminBot = ProfileStringModerationQueueType._(r'WaitingAdminBot');
-  static const waitingAdmin = ProfileStringModerationQueueType._(r'WaitingAdmin');
-  static const acceptedByAdminBot = ProfileStringModerationQueueType._(r'AcceptedByAdminBot');
-  static const rejectedByAdminBot = ProfileStringModerationQueueType._(r'RejectedByAdminBot');
-
-  /// List of all possible values in this [enum][ProfileStringModerationQueueType].
-  static const values = <ProfileStringModerationQueueType>[
-    waitingAdminBot,
-    waitingAdmin,
-    acceptedByAdminBot,
-    rejectedByAdminBot,
-  ];
-
+  /// Returns the instance of [ProfileStringModerationQueueType] that was successfully decoded
+  /// from the passed [value] on success, null otherwise.
   static ProfileStringModerationQueueType? fromJson(dynamic value) => ProfileStringModerationQueueTypeTypeTransformer().decode(value);
 
+  /// Returns a [List] containing instances of [ProfileStringModerationQueueType]
+  /// that were successfully decoded from the passed [JSON][json].
   static List<ProfileStringModerationQueueType> listFromJson(dynamic json, {bool growable = false,}) {
     final result = <ProfileStringModerationQueueType>[];
     if (json is List && json.isNotEmpty) {
@@ -59,9 +57,11 @@ class ProfileStringModerationQueueTypeTypeTransformer {
 
   const ProfileStringModerationQueueTypeTypeTransformer._();
 
-  String encode(ProfileStringModerationQueueType data) => data.value;
+  /// Encodes this enum as a value suitable for JSON.
+  String encode(ProfileStringModerationQueueType data) => data._value;
 
-  /// Decodes a [dynamic value][data] to a ProfileStringModerationQueueType.
+  /// Returns the instance of [ProfileStringModerationQueueType] that was successfully decoded
+  /// from the passed [data] value on success, null otherwise.
   ///
   /// If [allowNull] is true and the [dynamic value][data] cannot be decoded successfully,
   /// then null is returned. However, if [allowNull] is false and the [dynamic value][data]
@@ -70,6 +70,9 @@ class ProfileStringModerationQueueTypeTypeTransformer {
   /// The [allowNull] is very handy when an API changes and a new enum value is added or removed,
   /// and users are still using an old app with the old code.
   ProfileStringModerationQueueType? decode(dynamic data, {bool allowNull = true}) {
+    if (data is ProfileStringModerationQueueType) {
+      return data;
+    }
     if (data != null) {
       switch (data) {
         case r'WaitingAdminBot': return ProfileStringModerationQueueType.waitingAdminBot;
@@ -85,7 +88,7 @@ class ProfileStringModerationQueueTypeTypeTransformer {
     return null;
   }
 
-  /// Singleton [ProfileStringModerationQueueTypeTypeTransformer] instance.
+  /// The singleton instance of this transformer.
   static ProfileStringModerationQueueTypeTypeTransformer? _instance;
 }
 

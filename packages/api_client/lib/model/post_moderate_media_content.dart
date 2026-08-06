@@ -90,10 +90,12 @@ class PostModerateMediaContent {
       // Note 1: the values aren't checked for validity beyond being non-null.
       // Note 2: this code is stripped in release mode!
       assert(() {
-        requiredKeys.forEach((key) {
-          assert(json.containsKey(key), 'Required key "PostModerateMediaContent[$key]" is missing from JSON.');
-          assert(json[key] != null, 'Required key "PostModerateMediaContent[$key]" has a null value in JSON.');
-        });
+        assert(json.containsKey(r'accept'), 'Required key "PostModerateMediaContent[accept]" is missing from JSON.');
+        assert(json[r'accept'] != null, 'Required key "PostModerateMediaContent[accept]" has a null value in JSON.');
+        assert(json.containsKey(r'account_id'), 'Required key "PostModerateMediaContent[account_id]" is missing from JSON.');
+        assert(json[r'account_id'] != null, 'Required key "PostModerateMediaContent[account_id]" has a null value in JSON.');
+        assert(json.containsKey(r'content_id'), 'Required key "PostModerateMediaContent[content_id]" is missing from JSON.');
+        assert(json[r'content_id'] != null, 'Required key "PostModerateMediaContent[content_id]" has a null value in JSON.');
         return true;
       }());
 
