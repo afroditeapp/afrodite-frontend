@@ -28,6 +28,12 @@ class AttributeValue {
   /// Change attribute value to be a group identifier. Max depth 2.  Vec values are sorted by [AttributeValue::id]. Indexing with the ID is not possible as ID values start from 1.
   List<AttributeValue> groupValues;
 
+  ///
+  /// Please note: This property should have been non-nullable! Since the specification file
+  /// does not include a default value (using the "default:" property), however, the generated
+  /// source code must fall back to having a nullable type.
+  /// Consider adding a "default:" property in the specification file to hide this note.
+  ///
   String? icon;
 
   /// Numeric unique identifier for the attribute value. Note that the value must only be unique within a group of values, so value in top level group A, sub level group C and sub level group B can have the same ID.

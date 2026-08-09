@@ -18,9 +18,21 @@ class AttributionConfig {
   });
 
   /// Generic attribution info text displayed in about screen of the app.
+  ///
+  /// Please note: This property should have been non-nullable! Since the specification file
+  /// does not include a default value (using the "default:" property), however, the generated
+  /// source code must fall back to having a nullable type.
+  /// Consider adding a "default:" property in the specification file to hide this note.
+  ///
   StringResource? generic;
 
   /// Attribution info text displayed when IP country data is shown.
+  ///
+  /// Please note: This property should have been non-nullable! Since the specification file
+  /// does not include a default value (using the "default:" property), however, the generated
+  /// source code must fall back to having a nullable type.
+  /// Consider adding a "default:" property in the specification file to hide this note.
+  ///
   StringResource? ipCountry;
 
   @override

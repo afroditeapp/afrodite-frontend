@@ -23,10 +23,22 @@ class InfoBanner {
 
   InfoBannerMode mode;
 
+  ///
+  /// Please note: This property should have been non-nullable! Since the specification file
+  /// does not include a default value (using the "default:" property), however, the generated
+  /// source code must fall back to having a nullable type.
+  /// Consider adding a "default:" property in the specification file to hide this note.
+  ///
   PredefinedBanner? overridePredefinedBanner;
 
   BannerPlatform platform;
 
+  ///
+  /// Please note: This property should have been non-nullable! Since the specification file
+  /// does not include a default value (using the "default:" property), however, the generated
+  /// source code must fall back to having a nullable type.
+  /// Consider adding a "default:" property in the specification file to hide this note.
+  ///
   TextInfoBanner? text;
 
   /// Server increments this field when banner is changed. It wraps, so use \"not equal\" comparison when checking version changes.

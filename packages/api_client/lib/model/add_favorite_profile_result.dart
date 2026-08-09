@@ -26,6 +26,12 @@ class AddFavoriteProfileResult {
   /// Remaining favorites count. The value will be returned only if there is 5 or less favorites left.
   ///
   /// Minimum value: 0
+  ///
+  /// Please note: This property should have been non-nullable! Since the specification file
+  /// does not include a default value (using the "default:" property), however, the generated
+  /// source code must fall back to having a nullable type.
+  /// Consider adding a "default:" property in the specification file to hide this note.
+  ///
   int? remainingFavoritesCount;
 
   @override

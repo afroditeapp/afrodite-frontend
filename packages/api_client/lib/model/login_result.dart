@@ -32,9 +32,21 @@ class LoginResult {
   });
 
   /// Account ID of current account. If `None`, the client is unsupported.
+  ///
+  /// Please note: This property should have been non-nullable! Since the specification file
+  /// does not include a default value (using the "default:" property), however, the generated
+  /// source code must fall back to having a nullable type.
+  /// Consider adding a "default:" property in the specification file to hide this note.
+  ///
   AccountId? aid;
 
   /// Current email of current account. If `None`, if email address is not set or the client version is unsupported.
+  ///
+  /// Please note: This property should have been non-nullable! Since the specification file
+  /// does not include a default value (using the "default:" property), however, the generated
+  /// source code must fall back to having a nullable type.
+  /// Consider adding a "default:" property in the specification file to hide this note.
+  ///
   String? email;
 
   bool error;
@@ -65,6 +77,12 @@ class LoginResult {
   bool errorUnsupportedClient;
 
   /// If `None`, the client is unsupported.
+  ///
+  /// Please note: This property should have been non-nullable! Since the specification file
+  /// does not include a default value (using the "default:" property), however, the generated
+  /// source code must fall back to having a nullable type.
+  /// Consider adding a "default:" property in the specification file to hide this note.
+  ///
   AuthPair? tokens;
 
   @override

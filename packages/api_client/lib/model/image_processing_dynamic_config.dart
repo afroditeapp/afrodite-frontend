@@ -21,6 +21,12 @@ class ImageProcessingDynamicConfig {
   NsfwDetectionThresholds nsfwThresholds;
 
   /// See [rustface::Detector::set_score_thresh] documentation. Value 1.0 seems to work well.
+  ///
+  /// Please note: This property should have been non-nullable! Since the specification file
+  /// does not include a default value (using the "default:" property), however, the generated
+  /// source code must fall back to having a nullable type.
+  /// Consider adding a "default:" property in the specification file to hide this note.
+  ///
   double? seetafaceThreshold;
 
   @override

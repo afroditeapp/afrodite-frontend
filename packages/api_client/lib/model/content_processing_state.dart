@@ -21,9 +21,21 @@ class ContentProcessingState {
   });
 
   /// Content ID of the processed content.
+  ///
+  /// Please note: This property should have been non-nullable! Since the specification file
+  /// does not include a default value (using the "default:" property), however, the generated
+  /// source code must fall back to having a nullable type.
+  /// Consider adding a "default:" property in the specification file to hide this note.
+  ///
   ContentId? cid;
 
   /// Face detected info of the processed content.
+  ///
+  /// Please note: This property should have been non-nullable! Since the specification file
+  /// does not include a default value (using the "default:" property), however, the generated
+  /// source code must fall back to having a nullable type.
+  /// Consider adding a "default:" property in the specification file to hide this note.
+  ///
   bool? faceDetected;
 
   /// Minimum value: 0
@@ -32,6 +44,12 @@ class ContentProcessingState {
   ContentProcessingStateType state;
 
   /// Current position in processing queue.  First value is 1.  i64 is used as Dart has only signed integers.
+  ///
+  /// Please note: This property should have been non-nullable! Since the specification file
+  /// does not include a default value (using the "default:" property), however, the generated
+  /// source code must fall back to having a nullable type.
+  /// Consider adding a "default:" property in the specification file to hide this note.
+  ///
   int? waitQueuePosition;
 
   @override

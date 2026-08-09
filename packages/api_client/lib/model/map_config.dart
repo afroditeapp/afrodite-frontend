@@ -20,8 +20,20 @@ class MapConfig {
   });
 
   /// Limit viewable map area
+  ///
+  /// Please note: This property should have been non-nullable! Since the specification file
+  /// does not include a default value (using the "default:" property), however, the generated
+  /// source code must fall back to having a nullable type.
+  /// Consider adding a "default:" property in the specification file to hide this note.
+  ///
   MapBounds? bounds;
 
+  ///
+  /// Please note: This property should have been non-nullable! Since the specification file
+  /// does not include a default value (using the "default:" property), however, the generated
+  /// source code must fall back to having a nullable type.
+  /// Consider adding a "default:" property in the specification file to hide this note.
+  ///
   MapCoordinate? initialLocation;
 
   /// Increase this version number to make client to redownload cached map tiles.
@@ -29,6 +41,12 @@ class MapConfig {
   /// Minimum value: 0
   int tileDataVersion;
 
+  ///
+  /// Please note: This property should have been non-nullable! Since the specification file
+  /// does not include a default value (using the "default:" property), however, the generated
+  /// source code must fall back to having a nullable type.
+  /// Consider adding a "default:" property in the specification file to hide this note.
+  ///
   MapZoom? zoom;
 
   @override

@@ -22,13 +22,31 @@ class AccountVerificationQueueStatus {
   /// The first queue position is 1
   ///
   /// Minimum value: 0
+  ///
+  /// Please note: This property should have been non-nullable! Since the specification file
+  /// does not include a default value (using the "default:" property), however, the generated
+  /// source code must fall back to having a nullable type.
+  /// Consider adding a "default:" property in the specification file to hide this note.
+  ///
   int? queuePosition;
 
   /// Empty flags value means there are no known verification errors.
   AccountVerificationErrorFlagsValue verificationErrorFlags;
 
+  ///
+  /// Please note: This property should have been non-nullable! Since the specification file
+  /// does not include a default value (using the "default:" property), however, the generated
+  /// source code must fall back to having a nullable type.
+  /// Consider adding a "default:" property in the specification file to hide this note.
+  ///
   VerificationMethod? verificationMethod;
 
+  ///
+  /// Please note: This property should have been non-nullable! Since the specification file
+  /// does not include a default value (using the "default:" property), however, the generated
+  /// source code must fall back to having a nullable type.
+  /// Consider adding a "default:" property in the specification file to hide this note.
+  ///
   UnixTime? verificationUnixTime;
 
   @override

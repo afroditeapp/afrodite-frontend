@@ -28,10 +28,28 @@ class PostModerateMediaContent {
   ContentId contentId;
 
   /// If true, ignore accept and move the content to waiting for human moderation state. rejected_category and rejected_details can be used to set the reason why the bot moved the content to human moderation.
+  ///
+  /// Please note: This property should have been non-nullable! Since the specification file
+  /// does not include a default value (using the "default:" property), however, the generated
+  /// source code must fall back to having a nullable type.
+  /// Consider adding a "default:" property in the specification file to hide this note.
+  ///
   bool? moveToHuman;
 
+  ///
+  /// Please note: This property should have been non-nullable! Since the specification file
+  /// does not include a default value (using the "default:" property), however, the generated
+  /// source code must fall back to having a nullable type.
+  /// Consider adding a "default:" property in the specification file to hide this note.
+  ///
   MediaContentModerationRejectedReasonCategory? rejectedCategory;
 
+  ///
+  /// Please note: This property should have been non-nullable! Since the specification file
+  /// does not include a default value (using the "default:" property), however, the generated
+  /// source code must fall back to having a nullable type.
+  /// Consider adding a "default:" property in the specification file to hide this note.
+  ///
   MediaContentModerationRejectedReasonDetails? rejectedDetails;
 
   @override

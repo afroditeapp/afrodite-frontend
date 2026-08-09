@@ -18,11 +18,23 @@ class GetPushNotificationInfo {
     this.vapidPublicKey,
   });
 
+  ///
+  /// Please note: This property should have been non-nullable! Since the specification file
+  /// does not include a default value (using the "default:" property), however, the generated
+  /// source code must fall back to having a nullable type.
+  /// Consider adding a "default:" property in the specification file to hide this note.
+  ///
   PushNotificationDeviceToken? deviceToken;
 
   PushNotificationInfoSyncVersion syncVersion;
 
   /// Base64 encoded VAPID public key if web push notifications are enabled and current login session if from web client.
+  ///
+  /// Please note: This property should have been non-nullable! Since the specification file
+  /// does not include a default value (using the "default:" property), however, the generated
+  /// source code must fall back to having a nullable type.
+  /// Consider adding a "default:" property in the specification file to hide this note.
+  ///
   VapidPublicKey? vapidPublicKey;
 
   @override

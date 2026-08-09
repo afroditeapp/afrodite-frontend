@@ -26,6 +26,12 @@ class SendMessageResult {
   });
 
   /// Base64 encoded PGP signed message containing [SignedMessageData].
+  ///
+  /// Please note: This property should have been non-nullable! Since the specification file
+  /// does not include a default value (using the "default:" property), however, the generated
+  /// source code must fall back to having a nullable type.
+  /// Consider adding a "default:" property in the specification file to hide this note.
+  ///
   String? d;
 
   bool error;
@@ -45,11 +51,23 @@ class SendMessageResult {
   /// Remaining messages which can be sent to conversation before delivery to recipient or message sending acknowledgement must happen. The value will be returned only if there is 5 or less messages left.
   ///
   /// Minimum value: 0
+  ///
+  /// Please note: This property should have been non-nullable! Since the specification file
+  /// does not include a default value (using the "default:" property), however, the generated
+  /// source code must fall back to having a nullable type.
+  /// Consider adding a "default:" property in the specification file to hide this note.
+  ///
   int? remainingConversationMessages;
 
   /// Remaining daily messages count. The value will be returned only if there is 50 or less messages left.
   ///
   /// Minimum value: 0
+  ///
+  /// Please note: This property should have been non-nullable! Since the specification file
+  /// does not include a default value (using the "default:" property), however, the generated
+  /// source code must fall back to having a nullable type.
+  /// Consider adding a "default:" property in the specification file to hide this note.
+  ///
   int? remainingMessages;
 
   @override
