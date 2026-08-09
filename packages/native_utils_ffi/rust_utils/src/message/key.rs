@@ -1,7 +1,6 @@
 
-use pgp::composed::{KeyType, SecretKeyParamsBuilder, SubkeyParamsBuilder};
+use pgp::composed::{EncryptionCaps, KeyType, SecretKeyParamsBuilder, SubkeyParamsBuilder};
 use pgp::ser::Serialize;
-use pgp::types::Password;
 use pgp::crypto::{sym::SymmetricKeyAlgorithm, hash::HashAlgorithm};
 use rand::rngs::OsRng;
 use smallvec::smallvec;
@@ -21,7 +20,7 @@ pub fn generate_message_keys_rust(
 ) -> Result<KeyPairBytes, MessageEncryptionError>  {
     let params = SecretKeyParamsBuilder::default()
         .key_type(KeyType::Ed25519)
-        .can_encrypt(false)
+        .can_encrypt(EncryptionCaps::None)
         .can_certify(false)
         .can_sign(true)
         .primary_user_id(account_id)
@@ -36,7 +35,7 @@ pub fn generate_message_keys_rust(
             SubkeyParamsBuilder::default()
                 .key_type(KeyType::X25519)
                 .can_authenticate(false)
-                .can_encrypt(true)
+                .can_encrypt(EncryptionCaps::Communication)
                 .can_sign(false)
                 .build()
                 .map_err(|_| MessageEncryptionError::GenerateKeysPrivateKeySubKeyParams)?
@@ -46,22 +45,19 @@ pub fn generate_message_keys_rust(
     let private_key = params
         .generate(OsRng)
         .map_err(|_| MessageEncryptionError::GenerateKeysPrivateKeyGenerate)?;
-    let signed_private_key = private_key
-        .sign(OsRng, &Password::empty())
-        .map_err(|_| MessageEncryptionError::GenerateKeysPrivateKeySign)?;
-    let private_key = signed_private_key
+    let private_key_bytes = private_key
         .to_bytes()
         .map_err(|_| MessageEncryptionError::GenerateKeysPrivateKeyToBytes)?;
 
-    let public_key = signed_private_key
-        .signed_public_key()
+    let public_key_bytes = private_key
+        .to_public_key()
         .to_bytes()
         .map_err(|_| MessageEncryptionError::GenerateKeysPublicKeyToBytes)?;
 
     Ok(
         KeyPairBytes {
-            public: public_key,
-            private: private_key,
+            public: public_key_bytes,
+            private: private_key_bytes,
         }
     )
 }

@@ -15,9 +15,8 @@ pub enum MessageEncryptionError {
     GenerateKeysPrivateKeyParams = 1,
     GenerateKeysPrivateKeySubKeyParams = 2,
     GenerateKeysPrivateKeyGenerate = 3,
-    GenerateKeysPrivateKeySign = 4,
-    GenerateKeysPrivateKeyToBytes = 5,
-    GenerateKeysPublicKeyToBytes = 6,
+    GenerateKeysPrivateKeyToBytes = 4,
+    GenerateKeysPublicKeyToBytes = 5,
     // Encrypt data
     EncryptDataPrivateKeyParse = 20,
     EncryptDataPublicKeyParse = 21,

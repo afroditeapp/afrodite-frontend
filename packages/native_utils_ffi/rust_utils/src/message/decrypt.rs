@@ -1,5 +1,5 @@
 
-use pgp::{composed::{Deserializable, Esk, Message, PlainSessionKey, SignedPublicKey, SignedSecretKey}, packet::PublicKeyEncryptedSessionKey, types::{EskType, Password}};
+use pgp::{composed::{Deserializable, Esk, Message, PlainSessionKey, SignedPublicKey, SignedSecretKey}, packet::PublicKeyEncryptedSessionKey, types::{DecryptionKey, EskType, Password}};
 use wasm_bindgen::prelude::wasm_bindgen;
 
 use super::MessageEncryptionError;
@@ -32,7 +32,7 @@ pub fn decrypt_data_rust(
         if let Some(Esk::PublicKeyEncryptedSessionKey(
                 PublicKeyEncryptedSessionKey::V6 { values, .. }
         )) = esk.first() {
-            recipient_private_subkey.decrypt_session_key(&Password::empty(), values, EskType::V6)
+            recipient_private_subkey.decrypt(&Password::empty(), values, EskType::V6)
                 .map_err(|_| MessageEncryptionError::DecryptDataSessionKeyDecryptionError1)?
                 .map_err(|_| MessageEncryptionError::DecryptDataSessionKeyDecryptionError2)?
         } else {

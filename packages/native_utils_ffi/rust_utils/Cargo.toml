@@ -16,10 +16,10 @@ opt-level = 3
 panic = "abort"
 
 [dependencies]
-pgp = { version = "0.18.0", default-features = false }
-smallvec = "1.13.2"
-rand = "0.8.5"
-wasm-bindgen = "0.2.101"
+pgp = { version = "0.20.0", default-features = false }
+smallvec = "1.15.2"
+rand = "0.8.7"
+wasm-bindgen = "0.2.127"
 
 [target.wasm32-unknown-unknown.dependencies]
-pgp = { version = "0.18.0", default-features = false, features = ["wasm"] }
+pgp = { version = "0.20.0", default-features = false, features = ["wasm"] }
