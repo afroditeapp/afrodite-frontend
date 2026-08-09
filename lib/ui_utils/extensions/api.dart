@@ -11,13 +11,14 @@ extension ProfileStringModerationStateUiExtensions on ProfileStringModerationSta
       ProfileStringModerationState.waitingAdminBot =>
         context.strings.moderation_state_waiting_admin_bot,
       ProfileStringModerationState.waitingAdmin => context.strings.moderation_state_waiting_admin,
+      ProfileStringModerationState.acceptedByAllowlist ||
       ProfileStringModerationState.acceptedByAdminBot ||
       ProfileStringModerationState.acceptedByAdmin => context.strings.moderation_state_accepted,
       ProfileStringModerationState.rejectedByAdminBot =>
         context.strings.moderation_state_rejected_by_admin_bot,
       ProfileStringModerationState.rejectedByAdmin =>
         context.strings.moderation_state_rejected_by_admin,
-      _ => null,
+      ProfileStringModerationState.unknownDefaultOpenApi => context.strings.generic_error,
     };
   }
 }
