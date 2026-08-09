@@ -13,9 +13,12 @@ part of openapi.api;
 class RequestEmailLoginToken {
   /// Returns a new [RequestEmailLoginToken] instance.
   RequestEmailLoginToken({
+    required this.clientType,
     required this.email,
     this.loginOnly = false,
   });
+
+  ClientType clientType;
 
   String email;
 
@@ -24,20 +27,23 @@ class RequestEmailLoginToken {
 
   @override
   bool operator ==(Object other) => identical(this, other) || other is RequestEmailLoginToken &&
+    other.clientType == clientType &&
     other.email == email &&
     other.loginOnly == loginOnly;
 
   @override
   int get hashCode =>
     // ignore: unnecessary_parenthesis
+    (clientType.hashCode) +
     (email.hashCode) +
     (loginOnly.hashCode);
 
   @override
-  String toString() => 'RequestEmailLoginToken[email=$email, loginOnly=$loginOnly]';
+  String toString() => 'RequestEmailLoginToken[clientType=$clientType, email=$email, loginOnly=$loginOnly]';
 
   Map<String, dynamic> toJson() {
     final json = <String, dynamic>{};
+      json[r'client_type'] = this.clientType;
       json[r'email'] = this.email;
       json[r'login_only'] = this.loginOnly;
     return json;
@@ -54,12 +60,15 @@ class RequestEmailLoginToken {
       // Note 1: the values aren't checked for validity beyond being non-null.
       // Note 2: this code is stripped in release mode!
       assert(() {
+        assert(json.containsKey(r'client_type'), 'Required key "RequestEmailLoginToken[client_type]" is missing from JSON.');
+        assert(json[r'client_type'] != null, 'Required key "RequestEmailLoginToken[client_type]" has a null value in JSON.');
         assert(json.containsKey(r'email'), 'Required key "RequestEmailLoginToken[email]" is missing from JSON.');
         assert(json[r'email'] != null, 'Required key "RequestEmailLoginToken[email]" has a null value in JSON.');
         return true;
       }());
 
       return RequestEmailLoginToken(
+        clientType: ClientType.fromJson(json[r'client_type'])!,
         email: mapValueOfType<String>(json, r'email')!,
         loginOnly: mapValueOfType<bool>(json, r'login_only') ?? false,
       );
@@ -109,6 +118,7 @@ class RequestEmailLoginToken {
 
   /// The list of required keys that must be present in a JSON.
   static const requiredKeys = <String>{
+    'client_type',
     'email',
   };
 }

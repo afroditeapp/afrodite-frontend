@@ -76,7 +76,7 @@ void main() {
       expect(parsed, isNotNull);
       final stateChanged = parsed!.contentProcessingStateChanged;
       expect(stateChanged, isNotNull);
-      expect(stateChanged!.id.id, 42);
+      expect(stateChanged!.newState.processingIdFromClient, 42);
       expect(stateChanged.newState.state, ContentProcessingStateType.completed);
       expect(stateChanged.newState.cid!.cid, expectedContentId);
       expect(stateChanged.newState.faceDetected, isTrue);
@@ -90,7 +90,7 @@ void main() {
       expect(parsed, isNotNull);
       final stateChanged = parsed!.contentProcessingStateChanged;
       expect(stateChanged, isNotNull);
-      expect(stateChanged!.id.id, 11);
+      expect(stateChanged!.newState.processingIdFromClient, 11);
       expect(stateChanged.newState.state, ContentProcessingStateType.inQueue);
       expect(stateChanged.newState.waitQueuePosition, 7);
       expect(stateChanged.newState.cid, isNull);

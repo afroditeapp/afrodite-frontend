@@ -241,7 +241,7 @@ class MediaApi {
   }
 
   /// Get current content processing state for account.
-  Future<ContentProcessingState?> getContentProcessingState({ Future<void>? abortTrigger, }) async {
+  Future<GetContentProcessingState?> getContentProcessingState({ Future<void>? abortTrigger, }) async {
     final response = await getContentProcessingStateWithHttpInfo(abortTrigger: abortTrigger,);
     if (response.statusCode >= HttpStatus.badRequest) {
       throw ApiException(response.statusCode, await _decodeBodyBytes(response));
@@ -250,7 +250,7 @@ class MediaApi {
     // At the time of writing this, `dart:convert` will throw an "Unexpected end of input"
     // FormatException when trying to decode an empty string.
     if (response.body.isNotEmpty && response.statusCode != HttpStatus.noContent) {
-      return await apiClient.deserializeAsync(await _decodeBodyBytes(response), 'ContentProcessingState',) as ContentProcessingState;
+      return await apiClient.deserializeAsync(await _decodeBodyBytes(response), 'GetContentProcessingState',) as GetContentProcessingState;
     
     }
     return null;

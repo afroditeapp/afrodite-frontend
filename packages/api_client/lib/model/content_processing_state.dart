@@ -15,8 +15,8 @@ class ContentProcessingState {
   ContentProcessingState({
     this.cid,
     this.faceDetected,
-    this.processingIdFromClient,
-    this.state,
+    required this.processingIdFromClient,
+    required this.state,
     this.waitQueuePosition,
   });
 
@@ -27,9 +27,9 @@ class ContentProcessingState {
   bool? faceDetected;
 
   /// Minimum value: 0
-  int? processingIdFromClient;
+  int processingIdFromClient;
 
-  ContentProcessingStateType? state;
+  ContentProcessingStateType state;
 
   /// Current position in processing queue.  First value is 1.  i64 is used as Dart has only signed integers.
   int? waitQueuePosition;
@@ -47,8 +47,8 @@ class ContentProcessingState {
     // ignore: unnecessary_parenthesis
     (cid == null ? 0 : cid!.hashCode) +
     (faceDetected == null ? 0 : faceDetected!.hashCode) +
-    (processingIdFromClient == null ? 0 : processingIdFromClient!.hashCode) +
-    (state == null ? 0 : state!.hashCode) +
+    (processingIdFromClient.hashCode) +
+    (state.hashCode) +
     (waitQueuePosition == null ? 0 : waitQueuePosition!.hashCode);
 
   @override
@@ -66,16 +66,8 @@ class ContentProcessingState {
     } else {
       json[r'face_detected'] = null;
     }
-    if (this.processingIdFromClient != null) {
       json[r'processing_id_from_client'] = this.processingIdFromClient;
-    } else {
-      json[r'processing_id_from_client'] = null;
-    }
-    if (this.state != null) {
       json[r'state'] = this.state;
-    } else {
-      json[r'state'] = null;
-    }
     if (this.waitQueuePosition != null) {
       json[r'wait_queue_position'] = this.waitQueuePosition;
     } else {
@@ -95,14 +87,18 @@ class ContentProcessingState {
       // Note 1: the values aren't checked for validity beyond being non-null.
       // Note 2: this code is stripped in release mode!
       assert(() {
+        assert(json.containsKey(r'processing_id_from_client'), 'Required key "ContentProcessingState[processing_id_from_client]" is missing from JSON.');
+        assert(json[r'processing_id_from_client'] != null, 'Required key "ContentProcessingState[processing_id_from_client]" has a null value in JSON.');
+        assert(json.containsKey(r'state'), 'Required key "ContentProcessingState[state]" is missing from JSON.');
+        assert(json[r'state'] != null, 'Required key "ContentProcessingState[state]" has a null value in JSON.');
         return true;
       }());
 
       return ContentProcessingState(
         cid: ContentId.fromJson(json[r'cid']),
         faceDetected: mapValueOfType<bool>(json, r'face_detected'),
-        processingIdFromClient: mapValueOfType<int>(json, r'processing_id_from_client'),
-        state: ContentProcessingStateType.fromJson(json[r'state']),
+        processingIdFromClient: mapValueOfType<int>(json, r'processing_id_from_client')!,
+        state: ContentProcessingStateType.fromJson(json[r'state'])!,
         waitQueuePosition: mapValueOfType<int>(json, r'wait_queue_position'),
       );
     }
@@ -151,6 +147,8 @@ class ContentProcessingState {
 
   /// The list of required keys that must be present in a JSON.
   static const requiredKeys = <String>{
+    'processing_id_from_client',
+    'state',
   };
 }
 

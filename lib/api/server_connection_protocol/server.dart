@@ -135,16 +135,10 @@ enum ServerMessageTypeCode {
   }
 }
 
-class ContentProcessingServerProcessId {
-  final int id;
-  const ContentProcessingServerProcessId({required this.id});
-}
-
 class ContentProcessingStateChanged {
-  final ContentProcessingServerProcessId id;
   final ContentProcessingState newState;
 
-  const ContentProcessingStateChanged({required this.id, required this.newState});
+  const ContentProcessingStateChanged({required this.newState});
 }
 
 class ScheduledMaintenanceStatus {
@@ -624,14 +618,12 @@ ContentProcessingStateChanged? _parseContentProcessingStateChanged(Uint8List pay
   final state = ContentProcessingState(
     cid: contentId,
     faceDetected: faceDetected,
+    processingIdFromClient: processId,
     state: stateType,
     waitQueuePosition: waitQueuePosition,
   );
 
-  return ContentProcessingStateChanged(
-    id: ContentProcessingServerProcessId(id: processId),
-    newState: state,
-  );
+  return ContentProcessingStateChanged(newState: state);
 }
 
 CheckOnlineStatusResponse? _parseCheckOnlineStatusResponse(Uint8List payload) {

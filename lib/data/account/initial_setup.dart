@@ -21,7 +21,8 @@ class InitialSetupUtils {
   /// Returns null on success. Returns String if error.
   Future<WaitProcessingResult> _waitContentProcessing(int processingId) async {
     while (true) {
-      final state = await _api.media((api) => api.getContentProcessingState()).ok();
+      final getState = await _api.media((api) => api.getContentProcessingState()).ok();
+      final state = getState?.state;
       final stateType = state?.state;
       if (state == null || stateType == null) {
         return ProcessingError("Server did not return content processing state");

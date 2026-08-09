@@ -479,6 +479,8 @@ class ApiClient {
           return EmailLogin.fromJson(value);
         case 'EmailLoginToken':
           return EmailLoginToken.fromJson(value);
+        case 'EmailRegistrationPlatforms':
+          return EmailRegistrationPlatforms.fromJson(value);
         case 'FavoriteProfilesPage':
           return FavoriteProfilesPage.fromJson(value);
         case 'FeaturesConfig':
@@ -519,6 +521,8 @@ class ApiClient {
           return GetClientVersionStatisticsResult.fromJson(value);
         case 'GetClientVersionStatisticsSettings':
           return GetClientVersionStatisticsSettings.fromJson(value);
+        case 'GetContentProcessingState':
+          return GetContentProcessingState.fromJson(value);
         case 'GetConversationId':
           return GetConversationId.fromJson(value);
         case 'GetCustomEmailConfig':

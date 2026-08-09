@@ -170,6 +170,7 @@ lib/model/email_address_state.dart
 lib/model/email_address_state_admin.dart
 lib/model/email_login.dart
 lib/model/email_login_token.dart
+lib/model/email_registration_platforms.dart
 lib/model/favorite_profiles_page.dart
 lib/model/features_config.dart
 lib/model/first_image_config.dart
@@ -190,6 +191,7 @@ lib/model/get_client_features_config_result.dart
 lib/model/get_client_language.dart
 lib/model/get_client_version_statistics_result.dart
 lib/model/get_client_version_statistics_settings.dart
+lib/model/get_content_processing_state.dart
 lib/model/get_conversation_id.dart
 lib/model/get_custom_email_config.dart
 lib/model/get_custom_reports_config_result.dart

@@ -90,7 +90,7 @@ class SendImageToSlotTask {
       switch (event) {
         case StateChangeEvent():
           final current = latestStates.value;
-          current[event.value.id.id] = event.value.newState;
+          current[event.value.newState.processingIdFromClient] = event.value.newState;
           latestStates.add(current);
         case StateChangeQuit():
           return;
@@ -185,21 +185,21 @@ class SendImageToSlotTask {
 
   Future<SendToSlotEvent> _getStateFromServerManually(int processingId) async {
     try {
-      final state = await api
+      final getState = await api
           .media((api) => api.getContentProcessingState())
-          .timeout(Duration(seconds: 10));
-      switch (state) {
-        case Ok(:final v):
-          if (v.processingIdFromClient != processingId) {
-            return SendToSlotError();
-          }
-          final current = latestStates.value;
-          current[processingId] = v;
-          latestStates.add(current);
-          return _convertState(v);
-        case Err():
-          return SendToSlotError();
+          .timeout(Duration(seconds: 10))
+          .ok();
+      final state = getState?.state;
+      final processingIdFromClient = getState?.state?.processingIdFromClient;
+      if (state == null ||
+          processingIdFromClient == null ||
+          state.processingIdFromClient != processingId) {
+        return SendToSlotError();
       }
+      final current = latestStates.value;
+      current[processingId] = state;
+      latestStates.add(current);
+      return _convertState(state);
     } on TimeoutException {
       return SendToSlotError();
     }
@@ -234,8 +234,6 @@ class SendImageToSlotTask {
             return ProcessingCompleted(contentId, faceDetected);
           }
         }
-      case null:
-        return SendToSlotError();
     }
   }
 }
