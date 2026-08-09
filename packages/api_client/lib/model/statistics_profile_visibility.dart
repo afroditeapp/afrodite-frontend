@@ -15,6 +15,7 @@ enum StatisticsProfileVisibility {
   public._(r'Public'),
   private._(r'Private'),
   all._(r'All'),
+  unknownDefaultOpenApi._(r'unknown_default_open_api'),
   ;
 
   /// Instantiate a new enum with the provided value.
@@ -77,6 +78,7 @@ class StatisticsProfileVisibilityTypeTransformer {
         case r'Public': return StatisticsProfileVisibility.public;
         case r'Private': return StatisticsProfileVisibility.private;
         case r'All': return StatisticsProfileVisibility.all;
+        case r'unknown_default_open_api': return StatisticsProfileVisibility.unknownDefaultOpenApi;
         default:
           if (!allowNull) {
             throw ArgumentError('Unknown enum value to decode: $data');

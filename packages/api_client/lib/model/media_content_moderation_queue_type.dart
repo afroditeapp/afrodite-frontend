@@ -16,6 +16,7 @@ enum MediaContentModerationQueueType {
   waitingAdmin._(r'WaitingAdmin'),
   acceptedByAdminBot._(r'AcceptedByAdminBot'),
   rejectedByAdminBot._(r'RejectedByAdminBot'),
+  unknownDefaultOpenApi._(r'unknown_default_open_api'),
   ;
 
   /// Instantiate a new enum with the provided value.
@@ -79,6 +80,7 @@ class MediaContentModerationQueueTypeTypeTransformer {
         case r'WaitingAdmin': return MediaContentModerationQueueType.waitingAdmin;
         case r'AcceptedByAdminBot': return MediaContentModerationQueueType.acceptedByAdminBot;
         case r'RejectedByAdminBot': return MediaContentModerationQueueType.rejectedByAdminBot;
+        case r'unknown_default_open_api': return MediaContentModerationQueueType.unknownDefaultOpenApi;
         default:
           if (!allowNull) {
             throw ArgumentError('Unknown enum value to decode: $data');

@@ -19,6 +19,7 @@ enum ContentSlot {
   content4._(r'Content4'),
   content5._(r'Content5'),
   content6._(r'Content6'),
+  unknownDefaultOpenApi._(r'unknown_default_open_api'),
   ;
 
   /// Instantiate a new enum with the provided value.
@@ -85,6 +86,7 @@ class ContentSlotTypeTransformer {
         case r'Content4': return ContentSlot.content4;
         case r'Content5': return ContentSlot.content5;
         case r'Content6': return ContentSlot.content6;
+        case r'unknown_default_open_api': return ContentSlot.unknownDefaultOpenApi;
         default:
           if (!allowNull) {
             throw ArgumentError('Unknown enum value to decode: $data');

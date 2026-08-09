@@ -21,6 +21,7 @@ enum ProfileStatisticsHistoryValueType {
   ageChangeMan._(r'AgeChangeMan'),
   ageChangeWoman._(r'AgeChangeWoman'),
   ageChangeNonBinary._(r'AgeChangeNonBinary'),
+  unknownDefaultOpenApi._(r'unknown_default_open_api'),
   ;
 
   /// Instantiate a new enum with the provided value.
@@ -89,6 +90,7 @@ class ProfileStatisticsHistoryValueTypeTypeTransformer {
         case r'AgeChangeMan': return ProfileStatisticsHistoryValueType.ageChangeMan;
         case r'AgeChangeWoman': return ProfileStatisticsHistoryValueType.ageChangeWoman;
         case r'AgeChangeNonBinary': return ProfileStatisticsHistoryValueType.ageChangeNonBinary;
+        case r'unknown_default_open_api': return ProfileStatisticsHistoryValueType.unknownDefaultOpenApi;
         default:
           if (!allowNull) {
             throw ArgumentError('Unknown enum value to decode: $data');

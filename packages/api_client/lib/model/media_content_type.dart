@@ -13,6 +13,7 @@ part of openapi.api;
 
 enum MediaContentType {
   jpegImage._(r'JpegImage'),
+  unknownDefaultOpenApi._(r'unknown_default_open_api'),
   ;
 
   /// Instantiate a new enum with the provided value.
@@ -73,6 +74,7 @@ class MediaContentTypeTypeTransformer {
     if (data != null) {
       switch (data) {
         case r'JpegImage': return MediaContentType.jpegImage;
+        case r'unknown_default_open_api': return MediaContentType.unknownDefaultOpenApi;
         default:
           if (!allowNull) {
             throw ArgumentError('Unknown enum value to decode: $data');

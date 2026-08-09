@@ -14,6 +14,7 @@ part of openapi.api;
 enum PredefinedBanner {
   serverMaintenance._(r'ServerMaintenance'),
   adminBotOffline._(r'AdminBotOffline'),
+  unknownDefaultOpenApi._(r'unknown_default_open_api'),
   ;
 
   /// Instantiate a new enum with the provided value.
@@ -75,6 +76,7 @@ class PredefinedBannerTypeTransformer {
       switch (data) {
         case r'ServerMaintenance': return PredefinedBanner.serverMaintenance;
         case r'AdminBotOffline': return PredefinedBanner.adminBotOffline;
+        case r'unknown_default_open_api': return PredefinedBanner.unknownDefaultOpenApi;
         default:
           if (!allowNull) {
             throw ArgumentError('Unknown enum value to decode: $data');

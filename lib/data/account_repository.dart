@@ -317,6 +317,8 @@ class AccountRepository extends DataRepositoryWithLifecycle {
           return;
         }
         await NotificationLikeReceived.getInstance().handleNewReceivedLikesCount(currentCount, db);
+      case PendingAppNotificationType.unknownDefaultOpenApi:
+        _log.warning("Unknown pending notification type");
     }
   }
 

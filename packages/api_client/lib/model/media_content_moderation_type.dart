@@ -14,6 +14,7 @@ part of openapi.api;
 enum MediaContentModerationType {
   normal._(r'Normal'),
   initial._(r'Initial'),
+  unknownDefaultOpenApi._(r'unknown_default_open_api'),
   ;
 
   /// Instantiate a new enum with the provided value.
@@ -75,6 +76,7 @@ class MediaContentModerationTypeTypeTransformer {
       switch (data) {
         case r'Normal': return MediaContentModerationType.normal;
         case r'Initial': return MediaContentModerationType.initial;
+        case r'unknown_default_open_api': return MediaContentModerationType.unknownDefaultOpenApi;
         default:
           if (!allowNull) {
             throw ArgumentError('Unknown enum value to decode: $data');

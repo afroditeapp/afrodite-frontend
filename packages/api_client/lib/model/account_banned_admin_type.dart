@@ -15,6 +15,7 @@ enum AccountBannedAdminType {
   human._(r'Human'),
   bot._(r'Bot'),
   server._(r'Server'),
+  unknownDefaultOpenApi._(r'unknown_default_open_api'),
   ;
 
   /// Instantiate a new enum with the provided value.
@@ -77,6 +78,7 @@ class AccountBannedAdminTypeTypeTransformer {
         case r'Human': return AccountBannedAdminType.human;
         case r'Bot': return AccountBannedAdminType.bot;
         case r'Server': return AccountBannedAdminType.server;
+        case r'unknown_default_open_api': return AccountBannedAdminType.unknownDefaultOpenApi;
         default:
           if (!allowNull) {
             throw ArgumentError('Unknown enum value to decode: $data');

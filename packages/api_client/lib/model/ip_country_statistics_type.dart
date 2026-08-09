@@ -14,6 +14,7 @@ part of openapi.api;
 enum IpCountryStatisticsType {
   newTcpConnections._(r'NewTcpConnections'),
   newHttpRequests._(r'NewHttpRequests'),
+  unknownDefaultOpenApi._(r'unknown_default_open_api'),
   ;
 
   /// Instantiate a new enum with the provided value.
@@ -75,6 +76,7 @@ class IpCountryStatisticsTypeTypeTransformer {
       switch (data) {
         case r'NewTcpConnections': return IpCountryStatisticsType.newTcpConnections;
         case r'NewHttpRequests': return IpCountryStatisticsType.newHttpRequests;
+        case r'unknown_default_open_api': return IpCountryStatisticsType.unknownDefaultOpenApi;
         default:
           if (!allowNull) {
             throw ArgumentError('Unknown enum value to decode: $data');

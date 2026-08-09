@@ -15,6 +15,7 @@ enum AttributeValueOrderMode {
   alphabethicalKey._(r'AlphabethicalKey'),
   alphabethicalValue._(r'AlphabethicalValue'),
   orderNumber._(r'OrderNumber'),
+  unknownDefaultOpenApi._(r'unknown_default_open_api'),
   ;
 
   /// Instantiate a new enum with the provided value.
@@ -77,6 +78,7 @@ class AttributeValueOrderModeTypeTransformer {
         case r'AlphabethicalKey': return AttributeValueOrderMode.alphabethicalKey;
         case r'AlphabethicalValue': return AttributeValueOrderMode.alphabethicalValue;
         case r'OrderNumber': return AttributeValueOrderMode.orderNumber;
+        case r'unknown_default_open_api': return AttributeValueOrderMode.unknownDefaultOpenApi;
         default:
           if (!allowNull) {
             throw ArgumentError('Unknown enum value to decode: $data');

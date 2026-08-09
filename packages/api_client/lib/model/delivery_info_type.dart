@@ -14,6 +14,7 @@ part of openapi.api;
 enum DeliveryInfoType {
   delivered._(r'Delivered'),
   deliveryFailed._(r'DeliveryFailed'),
+  unknownDefaultOpenApi._(r'unknown_default_open_api'),
   ;
 
   /// Instantiate a new enum with the provided value.
@@ -75,6 +76,7 @@ class DeliveryInfoTypeTypeTransformer {
       switch (data) {
         case r'Delivered': return DeliveryInfoType.delivered;
         case r'DeliveryFailed': return DeliveryInfoType.deliveryFailed;
+        case r'unknown_default_open_api': return DeliveryInfoType.unknownDefaultOpenApi;
         default:
           if (!allowNull) {
             throw ArgumentError('Unknown enum value to decode: $data');

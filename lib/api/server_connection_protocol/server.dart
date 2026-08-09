@@ -611,6 +611,7 @@ ContentProcessingStateChanged? _parseContentProcessingStateChanged(Uint8List pay
     case ContentProcessingStateType.processing:
     case ContentProcessingStateType.failed:
     case ContentProcessingStateType.nsfwDetected:
+    case ContentProcessingStateType.unknownDefaultOpenApi:
       // No extra payload for these states.
       break;
   }

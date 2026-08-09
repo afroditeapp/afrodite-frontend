@@ -39,6 +39,7 @@ enum ServerMessageType {
   onlineStatusUpdated._(r'OnlineStatusUpdated'),
   messageDeliveryInfoChanged._(r'MessageDeliveryInfoChanged'),
   latestSeenMessageChanged._(r'LatestSeenMessageChanged'),
+  unknownDefaultOpenApi._(r'unknown_default_open_api'),
   ;
 
   /// Instantiate a new enum with the provided value.
@@ -125,6 +126,7 @@ class ServerMessageTypeTypeTransformer {
         case r'OnlineStatusUpdated': return ServerMessageType.onlineStatusUpdated;
         case r'MessageDeliveryInfoChanged': return ServerMessageType.messageDeliveryInfoChanged;
         case r'LatestSeenMessageChanged': return ServerMessageType.latestSeenMessageChanged;
+        case r'unknown_default_open_api': return ServerMessageType.unknownDefaultOpenApi;
         default:
           if (!allowNull) {
             throw ArgumentError('Unknown enum value to decode: $data');

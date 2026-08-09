@@ -13,6 +13,7 @@ part of openapi.api;
 
 enum CustomReportType {
   empty._(r'Empty'),
+  unknownDefaultOpenApi._(r'unknown_default_open_api'),
   ;
 
   /// Instantiate a new enum with the provided value.
@@ -73,6 +74,7 @@ class CustomReportTypeTypeTransformer {
     if (data != null) {
       switch (data) {
         case r'Empty': return CustomReportType.empty;
+        case r'unknown_default_open_api': return CustomReportType.unknownDefaultOpenApi;
         default:
           if (!allowNull) {
             throw ArgumentError('Unknown enum value to decode: $data');

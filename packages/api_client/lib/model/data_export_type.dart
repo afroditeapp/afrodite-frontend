@@ -14,6 +14,7 @@ part of openapi.api;
 enum DataExportType {
   user._(r'User'),
   admin._(r'Admin'),
+  unknownDefaultOpenApi._(r'unknown_default_open_api'),
   ;
 
   /// Instantiate a new enum with the provided value.
@@ -75,6 +76,7 @@ class DataExportTypeTypeTransformer {
       switch (data) {
         case r'User': return DataExportType.user;
         case r'Admin': return DataExportType.admin;
+        case r'unknown_default_open_api': return DataExportType.unknownDefaultOpenApi;
         default:
           if (!allowNull) {
             throw ArgumentError('Unknown enum value to decode: $data');

@@ -14,6 +14,7 @@ part of openapi.api;
 enum AcceptOrReject {
   accept._(r'Accept'),
   reject._(r'Reject'),
+  unknownDefaultOpenApi._(r'unknown_default_open_api'),
   ;
 
   /// Instantiate a new enum with the provided value.
@@ -75,6 +76,7 @@ class AcceptOrRejectTypeTransformer {
       switch (data) {
         case r'Accept': return AcceptOrReject.accept;
         case r'Reject': return AcceptOrReject.reject;
+        case r'unknown_default_open_api': return AcceptOrReject.unknownDefaultOpenApi;
         default:
           if (!allowNull) {
             throw ArgumentError('Unknown enum value to decode: $data');

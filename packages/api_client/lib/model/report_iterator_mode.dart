@@ -14,6 +14,7 @@ part of openapi.api;
 enum ReportIteratorMode {
   received._(r'Received'),
   sent._(r'Sent'),
+  unknownDefaultOpenApi._(r'unknown_default_open_api'),
   ;
 
   /// Instantiate a new enum with the provided value.
@@ -75,6 +76,7 @@ class ReportIteratorModeTypeTransformer {
       switch (data) {
         case r'Received': return ReportIteratorMode.received;
         case r'Sent': return ReportIteratorMode.sent;
+        case r'unknown_default_open_api': return ReportIteratorMode.unknownDefaultOpenApi;
         default:
           if (!allowNull) {
             throw ArgumentError('Unknown enum value to decode: $data');

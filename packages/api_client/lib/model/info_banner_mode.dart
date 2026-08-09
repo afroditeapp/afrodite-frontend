@@ -13,6 +13,7 @@ part of openapi.api;
 
 enum InfoBannerMode {
   text._(r'Text'),
+  unknownDefaultOpenApi._(r'unknown_default_open_api'),
   ;
 
   /// Instantiate a new enum with the provided value.
@@ -73,6 +74,7 @@ class InfoBannerModeTypeTransformer {
     if (data != null) {
       switch (data) {
         case r'Text': return InfoBannerMode.text;
+        case r'unknown_default_open_api': return InfoBannerMode.unknownDefaultOpenApi;
         default:
           if (!allowNull) {
             throw ArgumentError('Unknown enum value to decode: $data');

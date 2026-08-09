@@ -21,6 +21,7 @@ enum ClientMessageType {
   typingStart._(r'TypingStart'),
   typingStop._(r'TypingStop'),
   checkOnlineStatus._(r'CheckOnlineStatus'),
+  unknownDefaultOpenApi._(r'unknown_default_open_api'),
   ;
 
   /// Instantiate a new enum with the provided value.
@@ -89,6 +90,7 @@ class ClientMessageTypeTypeTransformer {
         case r'TypingStart': return ClientMessageType.typingStart;
         case r'TypingStop': return ClientMessageType.typingStop;
         case r'CheckOnlineStatus': return ClientMessageType.checkOnlineStatus;
+        case r'unknown_default_open_api': return ClientMessageType.unknownDefaultOpenApi;
         default:
           if (!allowNull) {
             throw ArgumentError('Unknown enum value to decode: $data');

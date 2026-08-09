@@ -14,6 +14,7 @@ part of openapi.api;
 enum ScheduledTaskType {
   serverRestart._(r'ServerRestart'),
   systemReboot._(r'SystemReboot'),
+  unknownDefaultOpenApi._(r'unknown_default_open_api'),
   ;
 
   /// Instantiate a new enum with the provided value.
@@ -75,6 +76,7 @@ class ScheduledTaskTypeTypeTransformer {
       switch (data) {
         case r'ServerRestart': return ScheduledTaskType.serverRestart;
         case r'SystemReboot': return ScheduledTaskType.systemReboot;
+        case r'unknown_default_open_api': return ScheduledTaskType.unknownDefaultOpenApi;
         default:
           if (!allowNull) {
             throw ArgumentError('Unknown enum value to decode: $data');

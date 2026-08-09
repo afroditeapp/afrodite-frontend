@@ -15,6 +15,7 @@ enum ReportQueueType {
   waiting._(r'Waiting'),
   acceptedByAdminBot._(r'AcceptedByAdminBot'),
   rejectedByAdminBot._(r'RejectedByAdminBot'),
+  unknownDefaultOpenApi._(r'unknown_default_open_api'),
   ;
 
   /// Instantiate a new enum with the provided value.
@@ -77,6 +78,7 @@ class ReportQueueTypeTypeTransformer {
         case r'Waiting': return ReportQueueType.waiting;
         case r'AcceptedByAdminBot': return ReportQueueType.acceptedByAdminBot;
         case r'RejectedByAdminBot': return ReportQueueType.rejectedByAdminBot;
+        case r'unknown_default_open_api': return ReportQueueType.unknownDefaultOpenApi;
         default:
           if (!allowNull) {
             throw ArgumentError('Unknown enum value to decode: $data');

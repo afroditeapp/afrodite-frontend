@@ -16,6 +16,7 @@ enum ReportChatInfoInteractionState {
   creatorLiked._(r'CreatorLiked'),
   targetLiked._(r'TargetLiked'),
   match._(r'Match'),
+  unknownDefaultOpenApi._(r'unknown_default_open_api'),
   ;
 
   /// Instantiate a new enum with the provided value.
@@ -79,6 +80,7 @@ class ReportChatInfoInteractionStateTypeTransformer {
         case r'CreatorLiked': return ReportChatInfoInteractionState.creatorLiked;
         case r'TargetLiked': return ReportChatInfoInteractionState.targetLiked;
         case r'Match': return ReportChatInfoInteractionState.match;
+        case r'unknown_default_open_api': return ReportChatInfoInteractionState.unknownDefaultOpenApi;
         default:
           if (!allowNull) {
             throw ArgumentError('Unknown enum value to decode: $data');

@@ -33,6 +33,7 @@ extension ContentModerationStateUiExtensions on ContentModerationState {
       ContentModerationState.rejectedByAdminBot =>
         context.strings.moderation_state_rejected_by_admin_bot,
       ContentModerationState.rejectedByAdmin => context.strings.moderation_state_rejected_by_admin,
+      ContentModerationState.unknownDefaultOpenApi => context.strings.generic_error,
     };
   }
 }
@@ -82,6 +83,8 @@ extension ProfileStringModerationContentTypeExtensions on ProfileStringModeratio
         return "profile name";
       case ProfileStringModerationContentType.profileText:
         return "profile text";
+      case ProfileStringModerationContentType.unknownDefaultOpenApi:
+        return "Unsupported value";
     }
   }
 
@@ -91,6 +94,8 @@ extension ProfileStringModerationContentTypeExtensions on ProfileStringModeratio
         return "profile names";
       case ProfileStringModerationContentType.profileText:
         return "profile texts";
+      case ProfileStringModerationContentType.unknownDefaultOpenApi:
+        return "Unsupported value";
     }
   }
 

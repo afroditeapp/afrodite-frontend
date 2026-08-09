@@ -19,6 +19,7 @@ enum ContentModerationState {
   acceptedByAdmin._(r'AcceptedByAdmin'),
   rejectedByAdminBot._(r'RejectedByAdminBot'),
   rejectedByAdmin._(r'RejectedByAdmin'),
+  unknownDefaultOpenApi._(r'unknown_default_open_api'),
   ;
 
   /// Instantiate a new enum with the provided value.
@@ -85,6 +86,7 @@ class ContentModerationStateTypeTransformer {
         case r'AcceptedByAdmin': return ContentModerationState.acceptedByAdmin;
         case r'RejectedByAdminBot': return ContentModerationState.rejectedByAdminBot;
         case r'RejectedByAdmin': return ContentModerationState.rejectedByAdmin;
+        case r'unknown_default_open_api': return ContentModerationState.unknownDefaultOpenApi;
         default:
           if (!allowNull) {
             throw ArgumentError('Unknown enum value to decode: $data');

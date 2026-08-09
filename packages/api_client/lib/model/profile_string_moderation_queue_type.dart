@@ -16,6 +16,7 @@ enum ProfileStringModerationQueueType {
   waitingAdmin._(r'WaitingAdmin'),
   acceptedByAdminBot._(r'AcceptedByAdminBot'),
   rejectedByAdminBot._(r'RejectedByAdminBot'),
+  unknownDefaultOpenApi._(r'unknown_default_open_api'),
   ;
 
   /// Instantiate a new enum with the provided value.
@@ -79,6 +80,7 @@ class ProfileStringModerationQueueTypeTypeTransformer {
         case r'WaitingAdmin': return ProfileStringModerationQueueType.waitingAdmin;
         case r'AcceptedByAdminBot': return ProfileStringModerationQueueType.acceptedByAdminBot;
         case r'RejectedByAdminBot': return ProfileStringModerationQueueType.rejectedByAdminBot;
+        case r'unknown_default_open_api': return ProfileStringModerationQueueType.unknownDefaultOpenApi;
         default:
           if (!allowNull) {
             throw ArgumentError('Unknown enum value to decode: $data');

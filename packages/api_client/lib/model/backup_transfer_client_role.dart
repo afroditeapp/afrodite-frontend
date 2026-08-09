@@ -14,6 +14,7 @@ part of openapi.api;
 enum BackupTransferClientRole {
   target._(r'Target'),
   source_._(r'Source'),
+  unknownDefaultOpenApi._(r'unknown_default_open_api'),
   ;
 
   /// Instantiate a new enum with the provided value.
@@ -75,6 +76,7 @@ class BackupTransferClientRoleTypeTransformer {
       switch (data) {
         case r'Target': return BackupTransferClientRole.target;
         case r'Source': return BackupTransferClientRole.source_;
+        case r'unknown_default_open_api': return BackupTransferClientRole.unknownDefaultOpenApi;
         default:
           if (!allowNull) {
             throw ArgumentError('Unknown enum value to decode: $data');

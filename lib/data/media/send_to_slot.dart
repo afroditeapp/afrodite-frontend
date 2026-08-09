@@ -222,7 +222,7 @@ class SendImageToSlotTask {
         }
       case ContentProcessingStateType.nsfwDetected:
         return SendToSlotError(nsfwDetected: true);
-      case ContentProcessingStateType.failed:
+      case ContentProcessingStateType.failed || ContentProcessingStateType.unknownDefaultOpenApi:
         return SendToSlotError();
       case ContentProcessingStateType.completed:
         {

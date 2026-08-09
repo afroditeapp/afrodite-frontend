@@ -16,6 +16,7 @@ enum ClientType {
   ios._(r'Ios'),
   web._(r'Web'),
   bot._(r'Bot'),
+  unknownDefaultOpenApi._(r'unknown_default_open_api'),
   ;
 
   /// Instantiate a new enum with the provided value.
@@ -79,6 +80,7 @@ class ClientTypeTypeTransformer {
         case r'Ios': return ClientType.ios;
         case r'Web': return ClientType.web;
         case r'Bot': return ClientType.bot;
+        case r'unknown_default_open_api': return ClientType.unknownDefaultOpenApi;
         default:
           if (!allowNull) {
             throw ArgumentError('Unknown enum value to decode: $data');

@@ -15,6 +15,7 @@ enum AttributeMode {
   bitflag._(r'Bitflag'),
   oneLevel._(r'OneLevel'),
   twoLevel._(r'TwoLevel'),
+  unknownDefaultOpenApi._(r'unknown_default_open_api'),
   ;
 
   /// Instantiate a new enum with the provided value.
@@ -77,6 +78,7 @@ class AttributeModeTypeTransformer {
         case r'Bitflag': return AttributeMode.bitflag;
         case r'OneLevel': return AttributeMode.oneLevel;
         case r'TwoLevel': return AttributeMode.twoLevel;
+        case r'unknown_default_open_api': return AttributeMode.unknownDefaultOpenApi;
         default:
           if (!allowNull) {
             throw ArgumentError('Unknown enum value to decode: $data');

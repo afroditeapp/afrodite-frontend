@@ -14,6 +14,7 @@ part of openapi.api;
 enum CustomEmailTargetGroup {
   allAccounts._(r'AllAccounts'),
   associationMembers._(r'AssociationMembers'),
+  unknownDefaultOpenApi._(r'unknown_default_open_api'),
   ;
 
   /// Instantiate a new enum with the provided value.
@@ -75,6 +76,7 @@ class CustomEmailTargetGroupTypeTransformer {
       switch (data) {
         case r'AllAccounts': return CustomEmailTargetGroup.allAccounts;
         case r'AssociationMembers': return CustomEmailTargetGroup.associationMembers;
+        case r'unknown_default_open_api': return CustomEmailTargetGroup.unknownDefaultOpenApi;
         default:
           if (!allowNull) {
             throw ArgumentError('Unknown enum value to decode: $data');

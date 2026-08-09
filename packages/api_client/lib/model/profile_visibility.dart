@@ -14,6 +14,7 @@ part of openapi.api;
 enum ProfileVisibility {
   private._(r'Private'),
   public._(r'Public'),
+  unknownDefaultOpenApi._(r'unknown_default_open_api'),
   ;
 
   /// Instantiate a new enum with the provided value.
@@ -75,6 +76,7 @@ class ProfileVisibilityTypeTransformer {
       switch (data) {
         case r'Private': return ProfileVisibility.private;
         case r'Public': return ProfileVisibility.public;
+        case r'unknown_default_open_api': return ProfileVisibility.unknownDefaultOpenApi;
         default:
           if (!allowNull) {
             throw ArgumentError('Unknown enum value to decode: $data');

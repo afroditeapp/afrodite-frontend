@@ -15,6 +15,7 @@ enum LimitedActionStatus {
   success._(r'Success'),
   successAndLimitReached._(r'SuccessAndLimitReached'),
   failureLimitAlreadyReached._(r'FailureLimitAlreadyReached'),
+  unknownDefaultOpenApi._(r'unknown_default_open_api'),
   ;
 
   /// Instantiate a new enum with the provided value.
@@ -77,6 +78,7 @@ class LimitedActionStatusTypeTransformer {
         case r'Success': return LimitedActionStatus.success;
         case r'SuccessAndLimitReached': return LimitedActionStatus.successAndLimitReached;
         case r'FailureLimitAlreadyReached': return LimitedActionStatus.failureLimitAlreadyReached;
+        case r'unknown_default_open_api': return LimitedActionStatus.unknownDefaultOpenApi;
         default:
           if (!allowNull) {
             throw ArgumentError('Unknown enum value to decode: $data');

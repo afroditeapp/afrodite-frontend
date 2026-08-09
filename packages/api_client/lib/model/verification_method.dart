@@ -14,6 +14,7 @@ part of openapi.api;
 enum VerificationMethod {
   debug._(r'Debug'),
   eudi._(r'Eudi'),
+  unknownDefaultOpenApi._(r'unknown_default_open_api'),
   ;
 
   /// Instantiate a new enum with the provided value.
@@ -75,6 +76,7 @@ class VerificationMethodTypeTransformer {
       switch (data) {
         case r'Debug': return VerificationMethod.debug;
         case r'Eudi': return VerificationMethod.eudi;
+        case r'unknown_default_open_api': return VerificationMethod.unknownDefaultOpenApi;
         default:
           if (!allowNull) {
             throw ArgumentError('Unknown enum value to decode: $data');

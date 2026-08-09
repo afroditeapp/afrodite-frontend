@@ -45,7 +45,8 @@ update-api-bindings:
 	-i http://localhost:3001/api-doc/app_api.json \
 	-g dart \
 	-o packages/api_client \
-	--global-property apiTests=false,modelTests=false,apiDocs=false,modelDocs=false
+	--global-property apiTests=false,modelTests=false,apiDocs=false,modelDocs=false \
+	--additional-properties=enumUnknownDefaultCase=true
 
 update-freezed-code:
 	icegen --code-dir lib/model/freezed

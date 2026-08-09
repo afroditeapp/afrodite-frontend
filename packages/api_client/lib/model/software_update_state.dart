@@ -15,6 +15,7 @@ enum SoftwareUpdateState {
   idle._(r'Idle'),
   downloading._(r'Downloading'),
   installing._(r'Installing'),
+  unknownDefaultOpenApi._(r'unknown_default_open_api'),
   ;
 
   /// Instantiate a new enum with the provided value.
@@ -77,6 +78,7 @@ class SoftwareUpdateStateTypeTransformer {
         case r'Idle': return SoftwareUpdateState.idle;
         case r'Downloading': return SoftwareUpdateState.downloading;
         case r'Installing': return SoftwareUpdateState.installing;
+        case r'unknown_default_open_api': return SoftwareUpdateState.unknownDefaultOpenApi;
         default:
           if (!allowNull) {
             throw ArgumentError('Unknown enum value to decode: $data');

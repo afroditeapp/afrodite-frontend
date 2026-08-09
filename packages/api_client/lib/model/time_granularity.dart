@@ -14,6 +14,7 @@ part of openapi.api;
 enum TimeGranularity {
   minutes._(r'Minutes'),
   hours._(r'Hours'),
+  unknownDefaultOpenApi._(r'unknown_default_open_api'),
   ;
 
   /// Instantiate a new enum with the provided value.
@@ -75,6 +76,7 @@ class TimeGranularityTypeTransformer {
       switch (data) {
         case r'Minutes': return TimeGranularity.minutes;
         case r'Hours': return TimeGranularity.hours;
+        case r'unknown_default_open_api': return TimeGranularity.unknownDefaultOpenApi;
         default:
           if (!allowNull) {
             throw ArgumentError('Unknown enum value to decode: $data');

@@ -21,6 +21,7 @@ enum PendingAppNotificationType {
   mediaContentModerationRejected._(r'MediaContentModerationRejected'),
   mediaContentModerationDeleted._(r'MediaContentModerationDeleted'),
   receivedLikesChanged._(r'ReceivedLikesChanged'),
+  unknownDefaultOpenApi._(r'unknown_default_open_api'),
   ;
 
   /// Instantiate a new enum with the provided value.
@@ -89,6 +90,7 @@ class PendingAppNotificationTypeTypeTransformer {
         case r'MediaContentModerationRejected': return PendingAppNotificationType.mediaContentModerationRejected;
         case r'MediaContentModerationDeleted': return PendingAppNotificationType.mediaContentModerationDeleted;
         case r'ReceivedLikesChanged': return PendingAppNotificationType.receivedLikesChanged;
+        case r'unknown_default_open_api': return PendingAppNotificationType.unknownDefaultOpenApi;
         default:
           if (!allowNull) {
             throw ArgumentError('Unknown enum value to decode: $data');

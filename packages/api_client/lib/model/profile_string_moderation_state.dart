@@ -19,6 +19,7 @@ enum ProfileStringModerationState {
   acceptedByAllowlist._(r'AcceptedByAllowlist'),
   rejectedByAdminBot._(r'RejectedByAdminBot'),
   rejectedByAdmin._(r'RejectedByAdmin'),
+  unknownDefaultOpenApi._(r'unknown_default_open_api'),
   ;
 
   /// Instantiate a new enum with the provided value.
@@ -85,6 +86,7 @@ class ProfileStringModerationStateTypeTransformer {
         case r'AcceptedByAllowlist': return ProfileStringModerationState.acceptedByAllowlist;
         case r'RejectedByAdminBot': return ProfileStringModerationState.rejectedByAdminBot;
         case r'RejectedByAdmin': return ProfileStringModerationState.rejectedByAdmin;
+        case r'unknown_default_open_api': return ProfileStringModerationState.unknownDefaultOpenApi;
         default:
           if (!allowNull) {
             throw ArgumentError('Unknown enum value to decode: $data');

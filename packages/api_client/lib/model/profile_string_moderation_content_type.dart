@@ -14,6 +14,7 @@ part of openapi.api;
 enum ProfileStringModerationContentType {
   profileName._(r'ProfileName'),
   profileText._(r'ProfileText'),
+  unknownDefaultOpenApi._(r'unknown_default_open_api'),
   ;
 
   /// Instantiate a new enum with the provided value.
@@ -75,6 +76,7 @@ class ProfileStringModerationContentTypeTypeTransformer {
       switch (data) {
         case r'ProfileName': return ProfileStringModerationContentType.profileName;
         case r'ProfileText': return ProfileStringModerationContentType.profileText;
+        case r'unknown_default_open_api': return ProfileStringModerationContentType.unknownDefaultOpenApi;
         default:
           if (!allowNull) {
             throw ArgumentError('Unknown enum value to decode: $data');

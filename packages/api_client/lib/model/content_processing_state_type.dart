@@ -17,6 +17,7 @@ enum ContentProcessingStateType {
   completed._(r'Completed'),
   failed._(r'Failed'),
   nsfwDetected._(r'NsfwDetected'),
+  unknownDefaultOpenApi._(r'unknown_default_open_api'),
   ;
 
   /// Instantiate a new enum with the provided value.
@@ -81,6 +82,7 @@ class ContentProcessingStateTypeTypeTransformer {
         case r'Completed': return ContentProcessingStateType.completed;
         case r'Failed': return ContentProcessingStateType.failed;
         case r'NsfwDetected': return ContentProcessingStateType.nsfwDetected;
+        case r'unknown_default_open_api': return ContentProcessingStateType.unknownDefaultOpenApi;
         default:
           if (!allowNull) {
             throw ArgumentError('Unknown enum value to decode: $data');

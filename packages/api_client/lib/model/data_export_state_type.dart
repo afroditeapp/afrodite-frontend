@@ -16,6 +16,7 @@ enum DataExportStateType {
   inProgress._(r'InProgress'),
   done._(r'Done'),
   error._(r'Error'),
+  unknownDefaultOpenApi._(r'unknown_default_open_api'),
   ;
 
   /// Instantiate a new enum with the provided value.
@@ -79,6 +80,7 @@ class DataExportStateTypeTypeTransformer {
         case r'InProgress': return DataExportStateType.inProgress;
         case r'Done': return DataExportStateType.done;
         case r'Error': return DataExportStateType.error;
+        case r'unknown_default_open_api': return DataExportStateType.unknownDefaultOpenApi;
         default:
           if (!allowNull) {
             throw ArgumentError('Unknown enum value to decode: $data');

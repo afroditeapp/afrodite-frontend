@@ -13,6 +13,7 @@ part of openapi.api;
 
 enum CustomReportsOrderMode {
   orderNumber._(r'OrderNumber'),
+  unknownDefaultOpenApi._(r'unknown_default_open_api'),
   ;
 
   /// Instantiate a new enum with the provided value.
@@ -73,6 +74,7 @@ class CustomReportsOrderModeTypeTransformer {
     if (data != null) {
       switch (data) {
         case r'OrderNumber': return CustomReportsOrderMode.orderNumber;
+        case r'unknown_default_open_api': return CustomReportsOrderMode.unknownDefaultOpenApi;
         default:
           if (!allowNull) {
             throw ArgumentError('Unknown enum value to decode: $data');

@@ -51,6 +51,8 @@ class InitialSetupUtils {
               return ProcessingSuccess(contentId);
             }
           }
+        case ContentProcessingStateType.unknownDefaultOpenApi:
+          return ProcessingError("Image processing failed: unknown processing state");
       }
     }
   }

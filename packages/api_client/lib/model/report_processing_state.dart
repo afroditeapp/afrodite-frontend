@@ -17,6 +17,7 @@ enum ReportProcessingState {
   acceptedByAdmin._(r'AcceptedByAdmin'),
   rejectedByAdminBot._(r'RejectedByAdminBot'),
   rejectedByAdmin._(r'RejectedByAdmin'),
+  unknownDefaultOpenApi._(r'unknown_default_open_api'),
   ;
 
   /// Instantiate a new enum with the provided value.
@@ -81,6 +82,7 @@ class ReportProcessingStateTypeTransformer {
         case r'AcceptedByAdmin': return ReportProcessingState.acceptedByAdmin;
         case r'RejectedByAdminBot': return ReportProcessingState.rejectedByAdminBot;
         case r'RejectedByAdmin': return ReportProcessingState.rejectedByAdmin;
+        case r'unknown_default_open_api': return ReportProcessingState.unknownDefaultOpenApi;
         default:
           if (!allowNull) {
             throw ArgumentError('Unknown enum value to decode: $data');

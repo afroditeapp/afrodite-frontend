@@ -17,6 +17,7 @@ enum CurrentAccountInteractionState {
   likeReceived._(r'LikeReceived'),
   match._(r'Match'),
   blockSent._(r'BlockSent'),
+  unknownDefaultOpenApi._(r'unknown_default_open_api'),
   ;
 
   /// Instantiate a new enum with the provided value.
@@ -81,6 +82,7 @@ class CurrentAccountInteractionStateTypeTransformer {
         case r'LikeReceived': return CurrentAccountInteractionState.likeReceived;
         case r'Match': return CurrentAccountInteractionState.match;
         case r'BlockSent': return CurrentAccountInteractionState.blockSent;
+        case r'unknown_default_open_api': return CurrentAccountInteractionState.unknownDefaultOpenApi;
         default:
           if (!allowNull) {
             throw ArgumentError('Unknown enum value to decode: $data');
