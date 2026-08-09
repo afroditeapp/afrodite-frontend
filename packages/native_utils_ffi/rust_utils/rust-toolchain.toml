@@ -7,4 +7,6 @@ targets = [
 	"aarch64-apple-ios",
 	"aarch64-apple-ios-sim",
 	"x86_64-apple-ios",
+	# For building tests on macOS
+	"aarch64-apple-darwin",
 ]
