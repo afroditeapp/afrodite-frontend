@@ -130,72 +130,75 @@ class _DynamicServerConfigScreenState extends State<DynamicServerConfigScreen> {
   Widget _displayConfig(BuildContext context, Permissions permissions) {
     final loginPlatforms = _config?.accountLoginPlatforms;
     final registrationPlatforms = _config?.accountRegistrationPlatforms;
+    final emailRegistrationPlatforms = _config?.emailRegistrationPlatforms;
     return Column(
       crossAxisAlignment: CrossAxisAlignment.start,
       children: [
-        ListTile(
-          title: Text("Account Login Platforms", style: Theme.of(context).textTheme.titleSmall),
-          subtitle: const Text("Enable or disable account login by platform."),
-        ),
-        SwitchListTile(
-          title: const Text("Android"),
-          value: loginPlatforms?.android ?? false,
-          onChanged: (value) => setState(() {
+        _PlatformSwitches(
+          title: "Account Login Platforms",
+          subtitle: "Enable or disable account login by platform.",
+          android: loginPlatforms?.android ?? false,
+          ios: loginPlatforms?.ios ?? false,
+          web: loginPlatforms?.web ?? false,
+          onAndroidChanged: (value) => setState(() {
             if (loginPlatforms != null) {
               loginPlatforms.android = value;
             }
           }),
-        ),
-        SwitchListTile(
-          title: const Text("iOS"),
-          value: loginPlatforms?.ios ?? false,
-          onChanged: (value) => setState(() {
+          onIosChanged: (value) => setState(() {
             if (loginPlatforms != null) {
               loginPlatforms.ios = value;
             }
           }),
-        ),
-        SwitchListTile(
-          title: const Text("Web"),
-          value: loginPlatforms?.web ?? false,
-          onChanged: (value) => setState(() {
+          onWebChanged: (value) => setState(() {
             if (loginPlatforms != null) {
               loginPlatforms.web = value;
             }
           }),
         ),
         const Divider(),
-        ListTile(
-          title: Text(
-            "Account Registration Platforms",
-            style: Theme.of(context).textTheme.titleSmall,
-          ),
-          subtitle: const Text("Enable or disable account registration by platform."),
-        ),
-        SwitchListTile(
-          title: const Text("Android"),
-          value: registrationPlatforms?.android ?? false,
-          onChanged: (value) => setState(() {
+        _PlatformSwitches(
+          title: "Account Registration Platforms",
+          subtitle: "Enable or disable account registration by platform.",
+          android: registrationPlatforms?.android ?? false,
+          ios: registrationPlatforms?.ios ?? false,
+          web: registrationPlatforms?.web ?? false,
+          onAndroidChanged: (value) => setState(() {
             if (registrationPlatforms != null) {
               registrationPlatforms.android = value;
             }
           }),
-        ),
-        SwitchListTile(
-          title: const Text("iOS"),
-          value: registrationPlatforms?.ios ?? false,
-          onChanged: (value) => setState(() {
+          onIosChanged: (value) => setState(() {
             if (registrationPlatforms != null) {
               registrationPlatforms.ios = value;
             }
           }),
-        ),
-        SwitchListTile(
-          title: const Text("Web"),
-          value: registrationPlatforms?.web ?? false,
-          onChanged: (value) => setState(() {
+          onWebChanged: (value) => setState(() {
             if (registrationPlatforms != null) {
               registrationPlatforms.web = value;
+            }
+          }),
+        ),
+        const Divider(),
+        _PlatformSwitches(
+          title: "Email Registration Platforms",
+          subtitle: "Enable or disable email registration by platform.",
+          android: emailRegistrationPlatforms?.android ?? false,
+          ios: emailRegistrationPlatforms?.ios ?? false,
+          web: emailRegistrationPlatforms?.web ?? false,
+          onAndroidChanged: (value) => setState(() {
+            if (emailRegistrationPlatforms != null) {
+              emailRegistrationPlatforms.android = value;
+            }
+          }),
+          onIosChanged: (value) => setState(() {
+            if (emailRegistrationPlatforms != null) {
+              emailRegistrationPlatforms.ios = value;
+            }
+          }),
+          onWebChanged: (value) => setState(() {
+            if (emailRegistrationPlatforms != null) {
+              emailRegistrationPlatforms.web = value;
             }
           }),
         ),
@@ -228,5 +231,43 @@ class _DynamicServerConfigScreenState extends State<DynamicServerConfigScreen> {
     }
 
     return true;
+  }
+}
+
+class _PlatformSwitches extends StatelessWidget {
+  final String title;
+  final String subtitle;
+  final bool android;
+  final bool ios;
+  final bool web;
+  final ValueChanged<bool> onAndroidChanged;
+  final ValueChanged<bool> onIosChanged;
+  final ValueChanged<bool> onWebChanged;
+
+  const _PlatformSwitches({
+    required this.title,
+    required this.subtitle,
+    required this.android,
+    required this.ios,
+    required this.web,
+    required this.onAndroidChanged,
+    required this.onIosChanged,
+    required this.onWebChanged,
+  });
+
+  @override
+  Widget build(BuildContext context) {
+    return Column(
+      crossAxisAlignment: CrossAxisAlignment.start,
+      children: [
+        ListTile(
+          title: Text(title, style: Theme.of(context).textTheme.titleSmall),
+          subtitle: Text(subtitle),
+        ),
+        SwitchListTile(title: const Text("Android"), value: android, onChanged: onAndroidChanged),
+        SwitchListTile(title: const Text("iOS"), value: ios, onChanged: onIosChanged),
+        SwitchListTile(title: const Text("Web"), value: web, onChanged: onWebChanged),
+      ],
+    );
   }
 }
