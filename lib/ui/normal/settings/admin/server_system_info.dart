@@ -7,7 +7,6 @@ import 'package:flutter/material.dart';
 import 'package:flutter/services.dart';
 import 'package:openapi/api.dart';
 
-import 'package:google_fonts/google_fonts.dart';
 import 'package:app/utils/result.dart';
 
 class ServerSystemInfoPage extends MyScreenPageLimited<()> {
@@ -136,7 +135,10 @@ class _ServerSystemInfoScreenState extends State<ServerSystemInfoScreen> {
         scrollDirection: Axis.horizontal,
         child: Padding(
           padding: const EdgeInsets.all(8.0),
-          child: Text(command.output, style: GoogleFonts.robotoMono()),
+          child: Text(
+            command.output,
+            style: TextStyle(fontFamily: "monospace", fontFamilyFallback: ["Courier"]),
+          ),
         ),
       );
       list.add(output);
