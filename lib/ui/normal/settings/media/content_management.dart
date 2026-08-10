@@ -313,7 +313,7 @@ Widget _statusInfo(
       if (totalText.isNotEmpty) Text(totalText, textAlign: TextAlign.center),
       if (totalText.isNotEmpty && deleteButton != null)
         const Padding(padding: EdgeInsets.symmetric(vertical: 8)),
-      if (deleteButton != null) deleteButton,
+      ?deleteButton,
     ],
   );
 }

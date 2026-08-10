@@ -482,11 +482,14 @@ Widget _statusInfo(
       Text(faceDetectedText, textAlign: TextAlign.center),
       if (faceVerifiedText != null) const Padding(padding: EdgeInsets.symmetric(vertical: 4)),
       if (faceVerifiedText != null) Text(faceVerifiedText, textAlign: TextAlign.center),
-      if (moderationStateChangeButton != null)
+      if (moderationStateChangeButton != null) ...[
         const Padding(padding: EdgeInsets.symmetric(vertical: 4)),
-      if (moderationStateChangeButton != null) moderationStateChangeButton,
-      if (deleteButton != null) const Padding(padding: EdgeInsets.symmetric(vertical: 4)),
-      if (deleteButton != null) deleteButton,
+        moderationStateChangeButton,
+      ],
+      if (deleteButton != null) ...[
+        const Padding(padding: EdgeInsets.symmetric(vertical: 4)),
+        deleteButton,
+      ],
       for (final button in faceDetectedButtons) ...[
         const Padding(padding: EdgeInsets.symmetric(vertical: 4)),
         button,
