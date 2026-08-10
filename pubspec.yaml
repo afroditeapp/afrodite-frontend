@@ -117,7 +117,7 @@ dependencies:
   android_intent_plus: ^6.1.0
 
   fl_chart: ^1.2.0
-  flutter_markdown: ^0.7.7+1
+  flutter_markdown_plus: ^1.0.12
 
   flutter_chat_core: ^2.2.0
   flutter_chat_ui: ^2.11.1

@@ -6,7 +6,7 @@ import 'package:app/ui_utils/navigation/url.dart';
 import 'package:app/utils/result.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
-import 'package:flutter_markdown/flutter_markdown.dart';
+import 'package:flutter_markdown_plus/flutter_markdown_plus.dart';
 import 'package:openapi/api.dart';
 import 'package:app/logic/account/account.dart';
 import 'package:app/logic/account/news/view_news.dart';
