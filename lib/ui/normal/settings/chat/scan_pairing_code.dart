@@ -30,6 +30,7 @@ class _ScanPairingCodeScreenState extends State<ScanPairingCodeScreen> {
   void initState() {
     super.initState();
     MobileScannerPlatform.instance.setBarcodeLibraryScriptUrl("zxing.js");
+    MobileScannerPlatform.instance.setWebBarcodeReader(WebBarcodeReader.zxingJs);
   }
 
   @override

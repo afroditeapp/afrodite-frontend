@@ -98,8 +98,8 @@ remove-and-download-native-push-web-dependencies:
 
 remove-and-download-mobile-scanner-web-dependencies:
 	rm -f web/zxing.js
-	cd web && curl "https://unpkg.com/@zxing/library@0.21.3" -L -o zxing.js
-	echo "d7cc8f69dd70bdcf3ac00c9ae572bf2acb9f4132ba379c72df842e4db918652d  web/zxing.js" | shasum -a 256 -c || (rm -f web/zxing.js && exit 1)
+	cd web && curl "https://unpkg.com/@zxing/library@0.23.0" -L -o zxing.js
+	echo "3ede94153fb0c5b67a12d7adff6decd827c2b22714fdc6faecf27a8f20937ea6  web/zxing.js" | shasum -a 256 -c || (rm -f web/zxing.js && exit 1)
 
 build-rust-utils-for-web:
 	rm -f web/rust_utils_bg.wasm
