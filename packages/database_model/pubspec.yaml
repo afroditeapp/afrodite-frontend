@@ -9,7 +9,7 @@ environment:
 resolution: workspace
 
 dependencies:
-  archive: ^4.0.7
+  archive: ^4.0.9
   openapi:
     path: "../api_client"
 
@@ -17,4 +17,4 @@ dependencies:
     path: "../utils"
 
 dev_dependencies:
-  test: ^1.26.0
+  test: ^1.31.0

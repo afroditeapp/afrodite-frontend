@@ -9,9 +9,9 @@ environment:
 resolution: workspace
 
 dependencies:
-  ffi: ^2.1.2
-  hooks: ^1.0.3
-  native_toolchain_rust: ^1.0.4
+  ffi: ^2.2.0
+  hooks: ^2.0.0
+  native_toolchain_rust: ^1.0.4+0
 
   native_utils_common:
     path: "../native_utils_common"

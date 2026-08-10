@@ -52,7 +52,7 @@ class NotificationManager extends AppSingleton {
     );
     const settings = InitializationSettings(android: android, iOS: darwin);
     final result = await _pluginHandle.initialize(
-      settings,
+      settings: settings,
       onDidReceiveNotificationResponse: (response) {
         final payload = response.payload;
         if (payload == null) {
@@ -175,17 +175,17 @@ class NotificationManager extends AppSingleton {
       await displayWebNotification(title: title, body: body, tag: id.value.toString());
     } else {
       await _pluginHandle.show(
-        id.value,
-        title,
-        body,
-        NotificationDetails(android: androidDetails),
+        id: id.value,
+        title: title,
+        body: body,
+        notificationDetails: NotificationDetails(android: androidDetails),
         payload: NotificationPayload(notificationId: id).toJson(),
       );
     }
   }
 
   Future<void> hideNotification(LocalNotificationId id) async {
-    await _pluginHandle.cancel(id.value);
+    await _pluginHandle.cancel(id: id.value);
   }
 
   Future<void> _createAndroidNotificationChannelsIfNeeded() async {

@@ -25,5 +25,5 @@ dependencies:
     path: "../utils"
 
 dev_dependencies:
-  build_runner: ^2.4.8
+  build_runner: ^2.15.1
   drift_dev: ^2.30.1
