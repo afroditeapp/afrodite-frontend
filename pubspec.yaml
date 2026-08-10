@@ -128,7 +128,7 @@ dependencies:
   shared_preferences: ^2.5.5
 
   path: ^1.9.1
-  drift: ^2.30.1
+  drift: ^2.34.3
 
   meta: ^1.18.0
 

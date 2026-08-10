@@ -12,7 +12,7 @@ dependencies:
   async: ^2.13.1
   rxdart: ^0.28.0
   collection: ^1.19.1
-  drift: ^2.30.1
+  drift: ^2.34.3
   uuid: ^4.6.0
 
   openapi:
@@ -30,5 +30,5 @@ dependencies:
 
 dev_dependencies:
   build_runner: ^2.15.1
-  drift_dev: ^2.30.1
+  drift_dev: ^2.34.0
   test: ^1.31.0

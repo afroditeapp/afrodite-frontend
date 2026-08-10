@@ -9,4 +9,4 @@ environment:
 resolution: workspace
 
 dependencies:
-  drift: ^2.30.1
+  drift: ^2.34.3
