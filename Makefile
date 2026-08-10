@@ -84,13 +84,17 @@ remove-and-download-drift-web-dependencies:
 	rm -f web/drift_worker.js
 	rm -f web/sqlite3.wasm
 	cd web && curl "https://github.com/simolus3/drift/releases/download/drift-2.34.3/drift_worker.js" -L -o drift_worker.js
+	echo "4db0469de8ceabad8d5cd3d920614486ba587e100e39523f36f704a3aec5f26c  web/drift_worker.js" | shasum -a 256 -c || (rm -f web/drift_worker.js && exit 1)
 	cd web && curl "https://github.com/simolus3/sqlite3.dart/releases/download/sqlite3-3.5.1/sqlite3.wasm" -L -o sqlite3.wasm
+	echo "13d3f11d05b39ba0618a7115fb41640a5d48b6300f5d3f325f554b42bd6688a4  web/sqlite3.wasm" | shasum -a 256 -c || (rm -f web/sqlite3.wasm && exit 1)
 
 remove-and-download-native-push-web-dependencies:
 	rm -f web/native_push.js
 	rm -f web/native_push_sw.js
 	cd web && curl "https://github.com/jutuon/native_push/raw/5be450ee63d4f9b60e7b3157b8296bf13fb75bef/example/web/native_push.js" -L -o native_push.js
+	echo "e08271405ce742745ef21839f93f80124d4aca2b52aa1ededb4633f59882e046  web/native_push.js" | shasum -a 256 -c || (rm -f web/native_push.js && exit 1)
 	cd web && curl "https://github.com/jutuon/native_push/raw/5be450ee63d4f9b60e7b3157b8296bf13fb75bef/example/web/native_push_sw.js" -L -o native_push_sw.js
+	echo "ab219aa12c9551b7d30c2118f372439ee2e69bab5de484170a4a18a5cda47e56  web/native_push_sw.js" | shasum -a 256 -c || (rm -f web/native_push_sw.js && exit 1)
 
 remove-and-download-mobile-scanner-web-dependencies:
 	rm -f web/zxing.js
