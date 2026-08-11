@@ -273,4 +273,10 @@ class NotificationManager extends AppSingleton {
       return [];
     }
   }
+
+  void openSystemNotificationSettings() {
+    if (!kIsWeb) {
+      _pluginHandle.openAppNotificationSettings();
+    }
+  }
 }

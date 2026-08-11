@@ -1,6 +1,4 @@
 PODS:
-  - app_settings (5.1.1):
-    - Flutter
   - Flutter (1.0.0)
   - flutter_file_manager_ios (0.0.1):
     - Flutter
@@ -8,14 +6,11 @@ PODS:
     - Flutter
 
 DEPENDENCIES:
-  - app_settings (from `.symlinks/plugins/app_settings/ios`)
   - Flutter (from `Flutter`)
   - flutter_file_manager_ios (from `.symlinks/plugins/flutter_file_manager_ios/ios`)
   - native_push (from `.symlinks/plugins/native_push/darwin`)
 
 EXTERNAL SOURCES:
-  app_settings:
-    :path: ".symlinks/plugins/app_settings/ios"
   Flutter:
     :path: Flutter
   flutter_file_manager_ios:
@@ -24,7 +19,6 @@ EXTERNAL SOURCES:
     :path: ".symlinks/plugins/native_push/darwin"
 
 SPEC CHECKSUMS:
-  app_settings: 2ef6fd7feddb190c36589bd471a02136e4f99641
   Flutter: cabc95a1d2626b1b06e7179b784ebcf0c0cde467
   flutter_file_manager_ios: 8b85edb34c737cbf4546e3c91f82823195b7f562
   native_push: 7b36e7cd1c0f2b39bdebaf66c98544f04ce74c4e

@@ -142,12 +142,6 @@ dependencies:
   mobile_scanner: ^7.4.0
   local_auth: ^3.0.2
 
-  # Code reviewed 2024-05-04
-  app_settings:
-    git:
-      url: https://github.com/jutuon/app_settings.git
-      ref: e1d39e4ea052e9dd9a47fbab49737846d9b43264
-
   # If version is changed, update also Makefile JS file versions
   native_push:
     git:

@@ -1,6 +1,7 @@
 import 'dart:io';
 
 import 'package:app/data/general/notification/utils/notification_category.dart';
+import 'package:app/data/notification_manager.dart';
 import 'package:app/logic/account/client_features_config.dart';
 import 'package:app/model/freezed/logic/account/client_features_config.dart';
 import 'package:app/model/freezed/logic/main/navigator_state.dart';
@@ -11,7 +12,6 @@ import 'package:app/ui_utils/common_update_logic.dart';
 import 'package:app/ui_utils/dialog.dart';
 import 'package:app/ui_utils/padding.dart';
 import 'package:app/ui_utils/snack_bar.dart';
-import 'package:app_settings/app_settings.dart';
 import 'package:collection/collection.dart';
 import 'package:flutter/foundation.dart';
 import 'package:flutter/material.dart';
@@ -288,7 +288,7 @@ class _NotificationSettingsScreenState extends State<NotificationSettingsScreen>
     return ListTile(
       title: Text(context.strings.notification_settings_screen_open_system_notification_settings),
       onTap: () {
-        AppSettings.openAppSettings(type: AppSettingsType.notification);
+        NotificationManager.getInstance().openSystemNotificationSettings();
       },
       leading: const Icon(Icons.settings),
     );
