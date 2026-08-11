@@ -150,22 +150,38 @@ dependencies:
 
   google_api_availability: ^5.0.1
 
-  # Code reviewed 2025-08-14
-  flutter_file_saver: 0.9.0
-
-dependency_overrides:
-  # Code reviewed 2025-08-14
-  flutter_file_manager_android: 2.1.0
-  flutter_file_manager_macos: 2.1.0
-  flutter_file_manager_platform_interface: 2.1.0
-  flutter_file_manager_web: 2.2.0
-
-  # Version 2.1.0 with iOS min version 13 and temporary
+  # flutter_file_saver version 0.10 with iOS min version 13 and temporary
   # file moving.
+  flutter_file_saver:
+    git:
+      url: https://github.com/jutuon/flutter_file_saver.git
+      ref: 46431730e1d983f1f8f66bfce7207780237e7955
+      path: packages/flutter_file_saver
+dependency_overrides:
+  flutter_file_manager_android:
+    git:
+      url: https://github.com/jutuon/flutter_file_saver.git
+      ref: 46431730e1d983f1f8f66bfce7207780237e7955
+      path: packages/flutter_file_manager_android
+  flutter_file_manager_macos:
+    git:
+      url: https://github.com/jutuon/flutter_file_saver.git
+      ref: 46431730e1d983f1f8f66bfce7207780237e7955
+      path: packages/flutter_file_manager_macos
+  flutter_file_manager_platform_interface:
+    git:
+      url: https://github.com/jutuon/flutter_file_saver.git
+      ref: 46431730e1d983f1f8f66bfce7207780237e7955
+      path: packages/flutter_file_manager_platform_interface
+  flutter_file_manager_web:
+    git:
+      url: https://github.com/jutuon/flutter_file_saver.git
+      ref: 46431730e1d983f1f8f66bfce7207780237e7955
+      path: packages/flutter_file_manager_web
   flutter_file_manager_ios:
     git:
       url: https://github.com/jutuon/flutter_file_saver.git
-      ref: c62c5069c4debd4b36688133a248c662af03870c
+      ref: 46431730e1d983f1f8f66bfce7207780237e7955
       path: packages/flutter_file_manager_ios
 
 dev_dependencies:

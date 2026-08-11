@@ -1,26 +1,20 @@
 PODS:
   - Flutter (1.0.0)
-  - flutter_file_manager_ios (0.0.1):
-    - Flutter
   - native_push (0.0.1):
     - Flutter
 
 DEPENDENCIES:
   - Flutter (from `Flutter`)
-  - flutter_file_manager_ios (from `.symlinks/plugins/flutter_file_manager_ios/ios`)
   - native_push (from `.symlinks/plugins/native_push/darwin`)
 
 EXTERNAL SOURCES:
   Flutter:
     :path: Flutter
-  flutter_file_manager_ios:
-    :path: ".symlinks/plugins/flutter_file_manager_ios/ios"
   native_push:
     :path: ".symlinks/plugins/native_push/darwin"
 
 SPEC CHECKSUMS:
   Flutter: cabc95a1d2626b1b06e7179b784ebcf0c0cde467
-  flutter_file_manager_ios: 8b85edb34c737cbf4546e3c91f82823195b7f562
   native_push: 7b36e7cd1c0f2b39bdebaf66c98544f04ce74c4e
 
 PODFILE CHECKSUM: db9e6482ce12a98225089be677def73daa0bded4
