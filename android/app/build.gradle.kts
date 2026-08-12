@@ -8,7 +8,7 @@ android {
     namespace = "com.example.afrodite"
     compileSdk = flutter.compileSdkVersion
     buildToolsVersion = "36.0.0"
-    ndkVersion = "28.2.13676358"
+    ndkVersion = flutter.ndkVersion
 
     compileOptions {
         // Flag to enable support for the new language APIs
