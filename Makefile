@@ -91,9 +91,9 @@ remove-and-download-drift-web-dependencies:
 remove-and-download-native-push-web-dependencies:
 	rm -f web/native_push.js
 	rm -f web/native_push_sw.js
-	cd web && curl "https://github.com/jutuon/native_push/raw/5be450ee63d4f9b60e7b3157b8296bf13fb75bef/example/web/native_push.js" -L -o native_push.js
+	cd web && curl "https://github.com/jutuon/native_push/raw/958a82f715d0be3066292a306db684699832f6e3/example/web/native_push.js" -L -o native_push.js
 	echo "e08271405ce742745ef21839f93f80124d4aca2b52aa1ededb4633f59882e046  web/native_push.js" | shasum -a 256 -c || (rm -f web/native_push.js && exit 1)
-	cd web && curl "https://github.com/jutuon/native_push/raw/5be450ee63d4f9b60e7b3157b8296bf13fb75bef/example/web/native_push_sw.js" -L -o native_push_sw.js
+	cd web && curl "https://github.com/jutuon/native_push/raw/958a82f715d0be3066292a306db684699832f6e3/example/web/native_push_sw.js" -L -o native_push_sw.js
 	echo "ab219aa12c9551b7d30c2118f372439ee2e69bab5de484170a4a18a5cda47e56  web/native_push_sw.js" | shasum -a 256 -c || (rm -f web/native_push_sw.js && exit 1)
 
 remove-and-download-mobile-scanner-web-dependencies:

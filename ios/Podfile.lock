@@ -1,21 +1,15 @@
 PODS:
   - Flutter (1.0.0)
-  - native_push (0.0.1):
-    - Flutter
 
 DEPENDENCIES:
   - Flutter (from `Flutter`)
-  - native_push (from `.symlinks/plugins/native_push/darwin`)
 
 EXTERNAL SOURCES:
   Flutter:
     :path: Flutter
-  native_push:
-    :path: ".symlinks/plugins/native_push/darwin"
 
 SPEC CHECKSUMS:
   Flutter: cabc95a1d2626b1b06e7179b784ebcf0c0cde467
-  native_push: 7b36e7cd1c0f2b39bdebaf66c98544f04ce74c4e
 
 PODFILE CHECKSUM: db9e6482ce12a98225089be677def73daa0bded4
 
