@@ -2,6 +2,7 @@ import 'dart:convert';
 import 'dart:typed_data';
 
 import 'package:openapi/api.dart';
+import 'package:utils/utils.dart';
 
 /// Packet type length is 1 byte.
 enum _MessagePacketType {
@@ -16,7 +17,7 @@ enum _MessagePacketType {
   messageWithReference(2),
 
   /// Message that was resent.
-  /// Next data is 8 bytes for message number (i64), then 8 bytes for sent unix time (i64),
+  /// Next data is minimal i64 for message number, then minimal i64 for sent unix time,
   /// then 1 byte for message ID length, then message ID bytes, and finally the original message bytes.
   resentMessage(3);
 
@@ -85,26 +86,43 @@ sealed class Message {
         return UnsupportedMessage(bytes);
       }
     } else if (messageTypeNumber == _MessagePacketType.resentMessage.number) {
-      if (numberList.length < 18) {
+      if (numberList.length < 3) {
         return UnsupportedMessage(bytes);
       }
-      final data = ByteData.sublistView(bytes, 1, 17);
-      final messageNumber = MessageNumber(mn: data.getInt64(0, Endian.little));
-      final sentUnixTime = UnixTime(ut: data.getInt64(8, Endian.little));
-      final messageIdLength = numberList[17];
-      if (numberList.length < 18 + messageIdLength) {
+      final iterator = numberList.iterator;
+      // Skip the packet type byte.
+      iterator.next();
+
+      final messageNumber = decodeMinimalI64FromIterator(iterator);
+      if (messageNumber == null) {
+        return UnsupportedMessage(bytes);
+      }
+      final sentUnixTime = decodeMinimalI64FromIterator(iterator);
+      if (sentUnixTime == null) {
+        return UnsupportedMessage(bytes);
+      }
+      final messageIdLength = iterator.next();
+      if (messageIdLength == null) {
+        return UnsupportedMessage(bytes);
+      }
+      final messageIdBytes = iterator.takeAndAdvance(messageIdLength);
+      if (messageIdBytes == null) {
         return UnsupportedMessage(bytes);
       }
       final MessageId messageId;
       try {
-        final messageIdBytes = numberList.skip(18).take(messageIdLength).toList();
         messageId = MessageId(id: utf8.decode(messageIdBytes));
       } on FormatException catch (_) {
         return UnsupportedMessage(bytes);
       }
-      final originalMessageBytes = numberList.skip(18 + messageIdLength).toList();
-      final originalMessage = Message.parseFromBytes(Uint8List.fromList(originalMessageBytes));
-      return ResentMessage(originalMessage, messageNumber, messageId, sentUnixTime);
+      final originalMessageBytes = iterator.takeAllAsBytes();
+      final originalMessage = Message.parseFromBytes(originalMessageBytes);
+      return ResentMessage(
+        originalMessage,
+        MessageNumber(mn: messageNumber),
+        messageId,
+        UnixTime(ut: sentUnixTime),
+      );
     } else {
       return UnsupportedMessage(bytes);
     }
@@ -202,10 +220,8 @@ class ResentMessage extends Message {
     final builder = BytesBuilder();
     builder.addByte(_MessagePacketType.resentMessage.number);
 
-    final data = ByteData(16);
-    data.setInt64(0, messageNumber.mn, Endian.little);
-    data.setInt64(8, sentUnixTime.ut, Endian.little);
-    builder.add(data.buffer.asUint8List());
+    builder.add(encodeMinimalI64(messageNumber.mn));
+    builder.add(encodeMinimalI64(sentUnixTime.ut));
 
     builder.addByte(messageIdBytes.length);
     builder.add(messageIdBytes);
