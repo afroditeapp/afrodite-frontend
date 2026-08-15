@@ -3,6 +3,27 @@ import 'dart:typed_data';
 import 'package:app/utils/minimal_i64.dart';
 import 'package:flutter_test/flutter_test.dart';
 
+// Zero, plus min and max of each byte count boundary (1-8 bytes).
+const _roundtripValues = <int>[
+  -0x8000000000000000,
+  -0x8000000000000,
+  -0x80000000000,
+  -0x800000000,
+  -0x80000000,
+  -0x800000,
+  -0x8000,
+  -0x80,
+  0,
+  0x7F,
+  0x7FFF,
+  0x7FFFFF,
+  0x7FFFFFFF,
+  0x7FFFFFFFF,
+  0x7FFFFFFFFFF,
+  0x7FFFFFFFFFFFF,
+  0x7FFFFFFFFFFFFFFF,
+];
+
 void main() {
   group('encodeMinimalI64', () {
     test('encodes known byte patterns', () {
@@ -53,6 +74,10 @@ void main() {
     test('returns zero for empty bytes', () {
       expect(decodeMinimalI64FromBytes(Uint8List.fromList([])), 0);
     });
+
+    test('returns null for more than 8 bytes', () {
+      expect(decodeMinimalI64FromBytes(Uint8List.fromList([0, 0, 0, 0, 0, 0, 0, 0, 0])), isNull);
+    });
   });
 
   group('decodeMinimalI64FromIterator', () {
@@ -87,31 +112,19 @@ void main() {
 
   group('roundtrip', () {
     test('encode and decode returns original values', () {
-      const values = <int>[
-        -0x8000000000000000,
-        -2147483649,
-        -8388609,
-        -32769,
-        -129,
-        -128,
-        -1,
-        0,
-        1,
-        127,
-        128,
-        32767,
-        32768,
-        8388607,
-        8388608,
-        2147483648,
-        0x7FFFFFFFFFFFFFFF,
-      ];
-
-      for (final v in values) {
+      for (final v in _roundtripValues) {
         final encoded = encodeMinimalI64(v);
         final payloadByteCount = encoded[0];
         final payload = Uint8List.sublistView(encoded, 1, 1 + payloadByteCount);
         expect(decodeMinimalI64FromBytes(payload), v);
+      }
+    });
+
+    test('encode and iterator decode returns original values', () {
+      for (final v in _roundtripValues) {
+        final encoded = encodeMinimalI64(v);
+        final iter = encoded.iterator;
+        expect(decodeMinimalI64FromIterator(iter), v);
       }
     });
   });

@@ -2,8 +2,19 @@ import 'dart:typed_data';
 
 import 'package:app/utils/iterator.dart';
 
+const _powTwo32 = 0x100000000;
+
 Uint8List encodeMinimalI64(int value) {
-  final bytes = ByteData(8)..setInt64(0, value, Endian.little);
+  final bytes = ByteData(8);
+
+  // Write the value as two 32-bit values as dart2js doesn't support setInt64.
+  // Note that arithmetic is required here as JS bitwise and shift operators
+  // truncate operands to 32-bit values.
+  final low = value % _powTwo32;
+  final valueWithoutLowBits = value - low;
+  final high = valueWithoutLowBits ~/ _powTwo32;
+  bytes.setUint32(0, low, Endian.little);
+  bytes.setInt32(4, high, Endian.little);
 
   var marker = 8;
   while (marker > 1) {
@@ -42,7 +53,13 @@ int? decodeMinimalI64FromBytes(Uint8List bytes) {
     padded.fillRange(byteCount, 8, 0xFF);
   }
 
-  return ByteData.sublistView(padded).getInt64(0, Endian.little);
+  // Reconstruct the i64 from its 32-bit halves as dart2js doesn't support
+  // getInt64. Note that arithmetic is required here as JS bitwise and
+  // shift operators truncate operands to 32-bit values.
+  final data = ByteData.sublistView(padded);
+  final low = data.getUint32(0, Endian.little);
+  final high = data.getInt32(4, Endian.little);
+  return high * _powTwo32 + low;
 }
 
 /// The next iterator output must be minimal i64 byte count and bytes (0-8 bytes)
