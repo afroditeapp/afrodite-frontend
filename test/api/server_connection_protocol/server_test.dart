@@ -2,7 +2,7 @@ import 'dart:convert';
 import 'dart:typed_data';
 
 import 'package:app/api/server_connection_protocol/server.dart';
-import 'package:app/utils/minimal_i64.dart';
+import 'package:utils/src/minimal_i64.dart';
 import 'package:flutter_test/flutter_test.dart';
 import 'package:openapi/api.dart';
 

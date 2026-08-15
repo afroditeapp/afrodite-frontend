@@ -1,7 +1,7 @@
 import 'dart:convert';
 import 'dart:typed_data';
 
-import 'package:app/utils/minimal_i64.dart';
+import 'package:utils/utils.dart';
 import 'package:openapi/api.dart';
 
 /// First byte of websocket binary protocol messages sent from client to server.

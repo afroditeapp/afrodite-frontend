@@ -1,7 +1,7 @@
 import 'dart:convert';
 import 'dart:typed_data';
 
-import 'package:app/utils/minimal_i64.dart';
+import 'package:utils/utils.dart';
 
 class ByteReader {
   final Uint8List _bytes;

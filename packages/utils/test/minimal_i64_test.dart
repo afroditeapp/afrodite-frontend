@@ -1,7 +1,7 @@
 import 'dart:typed_data';
 
-import 'package:app/utils/minimal_i64.dart';
-import 'package:flutter_test/flutter_test.dart';
+import 'package:test/test.dart';
+import 'package:utils/src/minimal_i64.dart';
 
 // Zero, plus min and max of each byte count boundary (1-8 bytes).
 const _roundtripValues = <int>[

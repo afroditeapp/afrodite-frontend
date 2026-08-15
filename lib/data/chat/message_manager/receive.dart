@@ -14,8 +14,6 @@ import 'package:app/data/profile_repository.dart';
 import 'package:app/database/account_database_manager.dart';
 import 'package:app/utils/api.dart';
 import 'package:utils/utils.dart';
-import 'package:app/utils/iterator.dart';
-import 'package:app/utils/minimal_i64.dart';
 import 'package:app/utils/result.dart';
 
 final _log = Logger("ReceiveMessgeUtils");

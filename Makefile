@@ -39,6 +39,7 @@ test:
 	flutter test
 	cd packages/database_model && flutter test
 	cd packages/database_account && flutter test
+	cd packages/utils && flutter test
 
 update-api-bindings:
 	openapi-generator-cli generate \

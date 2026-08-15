@@ -1,6 +1,6 @@
 import 'dart:typed_data';
 
-import 'package:app/utils/iterator.dart';
+import 'package:utils/src/iterator.dart';
 
 const _powTwo32 = 0x100000000;
 
