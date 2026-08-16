@@ -20,6 +20,7 @@ import 'package:app/ui_utils/local_auth.dart';
 import 'package:app/ui_utils/padding.dart';
 import 'package:app/ui_utils/extensions/locale.dart';
 import 'package:app/ui_utils/time.dart';
+import 'package:app/utils/consts/limit.dart';
 import 'package:utils/utils.dart';
 
 void openAccountSettings(BuildContext context) {
@@ -353,6 +354,7 @@ class _ChangeEmailDialogState extends State<_ChangeEmailDialog> {
         ),
         keyboardType: TextInputType.emailAddress,
         autofocus: true,
+        maxLength: EMAIL_MAX_LENGTH,
         onChanged: (text) {
           setState(() {
             currentText = text;

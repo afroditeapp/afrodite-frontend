@@ -6,6 +6,7 @@ import 'package:app/ui_utils/dialog.dart';
 import 'package:app/utils/result.dart';
 import 'package:flutter/material.dart';
 import 'package:app/ui_utils/snack_bar.dart';
+import 'package:app/utils/consts/limit.dart';
 import 'package:openapi/api.dart';
 
 class EmailAddressManagementPage extends MyScreenPageLimited<()> {
@@ -147,6 +148,7 @@ class _EmailAddressManagementScreenState extends State<EmailAddressManagementScr
               border: OutlineInputBorder(),
             ),
             keyboardType: TextInputType.emailAddress,
+            maxLength: EMAIL_MAX_LENGTH,
             onTapOutside: (_) {
               FocusScope.of(context).unfocus();
             },

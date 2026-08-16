@@ -7,6 +7,7 @@ import "package:app/logic/account/initial_setup.dart";
 import "package:app/model/freezed/logic/account/account.dart";
 import "package:app/ui/initial_setup/navigation.dart";
 import "package:app/ui_utils/initial_setup_common.dart";
+import "package:app/utils/consts/limit.dart";
 
 class AskEmailPage extends InitialSetupPageBase with SimpleUrlParser<AskEmailPage> {
   AskEmailPage() : super(builder: (_) => AskEmailScreen());
@@ -113,6 +114,7 @@ class _AskEmailState extends State<AskEmail> {
             context.read<InitialSetupBloc>().add(SetEmail(value.trim()));
           },
           keyboardType: TextInputType.emailAddress,
+          maxLength: EMAIL_MAX_LENGTH,
         ),
       );
     }

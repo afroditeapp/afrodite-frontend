@@ -7,6 +7,7 @@ import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:app/localizations.dart';
 import 'package:app/ui_utils/common_update_logic.dart';
 import 'package:app/ui_utils/extensions/api.dart';
+import 'package:app/utils/consts/limit.dart';
 
 void openEmailLoginScreen(BuildContext context) {
   MyNavigator.push(context, EmailLoginPage());
@@ -92,6 +93,7 @@ class _EmailLoginScreenState extends State<EmailLoginScreen> {
               border: const OutlineInputBorder(),
             ),
             keyboardType: TextInputType.emailAddress,
+            maxLength: EMAIL_MAX_LENGTH,
             onTapOutside: (_) {
               FocusScope.of(context).unfocus();
             },

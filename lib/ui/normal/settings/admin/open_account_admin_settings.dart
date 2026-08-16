@@ -4,6 +4,7 @@ import 'package:app/ui/normal/settings/admin/account_admin_settings.dart';
 import 'package:app/ui_utils/padding.dart';
 import 'package:flutter/material.dart';
 import 'package:app/ui_utils/snack_bar.dart';
+import 'package:app/utils/consts/limit.dart';
 import 'package:app/utils/result.dart';
 import 'package:provider/provider.dart';
 
@@ -42,6 +43,7 @@ class _OpenAccountAdminSettingsScreenState extends State<OpenAccountAdminSetting
       ),
       controller: _emailController,
       keyboardType: TextInputType.emailAddress,
+      maxLength: EMAIL_MAX_LENGTH,
     );
 
     final r = context.read<RepositoryInstances>();
