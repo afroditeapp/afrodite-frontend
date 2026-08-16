@@ -41,6 +41,7 @@ class _OpenAccountAdminSettingsScreenState extends State<OpenAccountAdminSetting
         labelText: 'Account email address',
       ),
       controller: _emailController,
+      keyboardType: TextInputType.emailAddress,
     );
 
     final r = context.read<RepositoryInstances>();
