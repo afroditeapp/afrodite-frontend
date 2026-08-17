@@ -55,7 +55,11 @@ class EmailLoginRequestToken
     extends LoginRepositoryCmd<Result<RequestEmailLoginTokenResult, EmailLoginRequestTokenError>> {
   final String email;
   final String serverAddress;
-  EmailLoginRequestToken(this.email, this.serverAddress);
+
+  /// If true, the token is requested for logging in to an existing account.
+  /// If false, the token can be used for either login or registration.
+  final bool loginOnly;
+  EmailLoginRequestToken(this.email, this.serverAddress, {this.loginOnly = false});
 }
 
 class EmailLoginWithToken extends LoginRepositoryCmd<Result<(), CommonSignInError>> {
@@ -340,13 +344,25 @@ class LoginRepository extends AppSingleton {
             RequestEmailLoginToken(
               clientType: AppVersionManager.getInstance().clientInfo().clientType,
               email: cmd.email,
-              loginOnly: true,
+              loginOnly: cmd.loginOnly,
             ),
           ),
         )
         .ok();
 
     if (result == null || result.error) {
+      if (result?.errorEmailRegistrationAllPlatformsDisabled ?? false) {
+        return Err(ElrteRegistrationAllPlatformsDisabled());
+      }
+      if (result?.errorEmailRegistrationPlatformDisabled ?? false) {
+        return Err(ElrteRegistrationPlatformDisabled());
+      }
+      if (result?.errorEmailRegistrationIpAddressLimitReached ?? false) {
+        return Err(ElrteRegistrationIpAddressLimitReached());
+      }
+      if (result?.errorEmailRegistrationLimitReached ?? false) {
+        return Err(ElrteRegistrationLimitReached());
+      }
       return Err(await _checkServerMaintenanceInfoForEmailTokenRequest());
     }
 
@@ -494,7 +510,11 @@ class LoginRepository extends AppSingleton {
     switch (await _checkServerMaintenanceInfoForEmailTokenRequest()) {
       case ElrteMaintenanceOngoing(:final maintenanceInfo):
         return CseMaintenanceOngoing(maintenanceInfo);
-      case ElrteErrorOccurred():
+      case ElrteErrorOccurred() ||
+          ElrteRegistrationAllPlatformsDisabled() ||
+          ElrteRegistrationPlatformDisabled() ||
+          ElrteRegistrationIpAddressLimitReached() ||
+          ElrteRegistrationLimitReached():
         return CseLoginApiRequestFailed();
     }
   }
@@ -569,12 +589,16 @@ class LoginRepository extends AppSingleton {
     }
   }
 
-  /// Request email login token to be sent via email
+  /// Request email login token to be sent via email.
+  ///
+  /// Set [loginOnly] to true when the user wants to login to an existing
+  /// account and account registration related limits should be bypassed.
   Future<Result<RequestEmailLoginTokenResult, EmailLoginRequestTokenError>> emailLoginRequestToken(
     String email,
-    String serverAddress,
-  ) async {
-    final event = EmailLoginRequestToken(email, serverAddress);
+    String serverAddress, {
+    required bool loginOnly,
+  }) async {
+    final event = EmailLoginRequestToken(email, serverAddress, loginOnly: loginOnly);
     _cmds.add(event);
     return await event.waitCompletionAndDispose();
   }

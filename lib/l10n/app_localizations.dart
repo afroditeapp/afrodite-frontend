@@ -1414,6 +1414,36 @@ abstract class AppLocalizations {
   /// **'Profile text byte count is more than 2000 bytes'**
   String get edit_profile_text_screen_text_length_too_long;
 
+  /// Button text for logging in to an existing account with email
+  ///
+  /// In en, this message translates to:
+  /// **'Existing account'**
+  String get email_login_method_screen_existing_account;
+
+  /// Description under the existing account button
+  ///
+  /// In en, this message translates to:
+  /// **'Sign in to an account you already have'**
+  String get email_login_method_screen_existing_account_description;
+
+  /// Button text for registering a new account with email
+  ///
+  /// In en, this message translates to:
+  /// **'New account'**
+  String get email_login_method_screen_new_account;
+
+  /// Description under the new account button
+  ///
+  /// In en, this message translates to:
+  /// **'Create a new account'**
+  String get email_login_method_screen_new_account_description;
+
+  /// Title for email login method chooser screen
+  ///
+  /// In en, this message translates to:
+  /// **'Email sign in'**
+  String get email_login_method_screen_title;
+
   /// Hint text for login code input field
   ///
   /// In en, this message translates to:
@@ -1432,17 +1462,41 @@ abstract class AppLocalizations {
   /// **'Email address'**
   String get email_login_screen_email_hint;
 
-  /// Notice that email login only works for existing accounts
-  ///
-  /// In en, this message translates to:
-  /// **'Registering new accounts is unsupported using this login method'**
-  String get email_login_screen_info_text;
-
   /// Description for inputting login code
   ///
   /// In en, this message translates to:
   /// **'Enter the login code sent to {p0}'**
   String email_login_screen_input_code_description(String p0);
+
+  /// Notice that the selected login method only works for existing accounts
+  ///
+  /// In en, this message translates to:
+  /// **'Registering new accounts is unsupported using this login method'**
+  String get email_login_screen_login_only_info;
+
+  /// Error message when email registration is disabled on all platforms
+  ///
+  /// In en, this message translates to:
+  /// **'App admin has disabled registering new accounts with email address. Please use another login method.'**
+  String get email_login_screen_registration_all_platforms_disabled_error;
+
+  /// Error message when email registration per IP address limit is reached
+  ///
+  /// In en, this message translates to:
+  /// **'The daily registration limit for your IP address has been reached. Please try again after 24 hours or use another login method.'**
+  String get email_login_screen_registration_ip_address_limit_reached_error;
+
+  /// Error message when daily email registration limit is reached
+  ///
+  /// In en, this message translates to:
+  /// **'The daily registration limit has been reached. Please try again in 24 hours or use another login method.'**
+  String get email_login_screen_registration_limit_reached_error;
+
+  /// Error message when email registration is disabled on current platform
+  ///
+  /// In en, this message translates to:
+  /// **'App admin has disabled registering new accounts with email address on current platform ({p0}). Please use another login method.'**
+  String email_login_screen_registration_platform_disabled_error(String p0);
 
   /// Button text for sending login code
   ///
@@ -1455,6 +1509,12 @@ abstract class AppLocalizations {
   /// In en, this message translates to:
   /// **'Email login'**
   String get email_login_screen_title;
+
+  /// Title for email login screen in registration mode
+  ///
+  /// In en, this message translates to:
+  /// **'Email registration'**
+  String get email_login_screen_title_register;
 
   /// Text showing token validity time
   ///
@@ -2356,6 +2416,12 @@ abstract class AppLocalizations {
   /// **'Email address is already in use by another account'**
   String get login_screen_email_already_used;
 
+  /// Info dialog text shown before email sign in explaining the feature is intentionally limited to reduce bots and spam
+  ///
+  /// In en, this message translates to:
+  /// **'Signing in with an email address is intentionally limited to help keep the service free from bots and spam. Please prefer signing in with your usual method (such as Google or Apple) whenever possible.\n\nIf you do use your email address, connecting from your home\'s broadband internet rather than mobile data can help you avoid reaching per-IP limits.'**
+  String get login_screen_email_login_info_dialog_text;
+
   /// Snackbar text for invalid email login token error
   ///
   /// In en, this message translates to:
@@ -2445,6 +2511,12 @@ abstract class AppLocalizations {
   /// In en, this message translates to:
   /// **'App admin has disabled registering new accounts on current platform ({p0})'**
   String login_screen_registration_platform_disabled(String p0);
+
+  /// Button text for email sign in action on the login screen
+  ///
+  /// In en, this message translates to:
+  /// **'Sign in with email address'**
+  String get login_screen_sign_in_with_email_action;
 
   /// Snackbar error message when sign in with account email is not verified
   ///

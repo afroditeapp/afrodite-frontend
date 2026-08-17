@@ -2,7 +2,6 @@ import "package:app/data/utils/demo_account_manager.dart";
 import "package:app/logic/account/demo_account_login.dart";
 import "package:app/model/freezed/logic/account/demo_account_login.dart";
 import "package:app/ui/login/widgets.dart";
-import "package:app/ui/login/email_login.dart";
 import "package:app/ui/normal/settings/chat/send_chat_backup.dart";
 import "package:app/ui/utils/web_pwa/web_pwa.dart";
 import "package:app/utils/result.dart";
@@ -57,12 +56,6 @@ class LoginScreen extends StatelessWidget {
               child: Text(context.strings.send_chat_backup_screen_title),
               onPressed: () {
                 openSendChatBackupScreen(context);
-              },
-            ),
-            MenuItemButton(
-              child: Text(context.strings.email_login_screen_title),
-              onPressed: () {
-                openEmailLoginScreen(context);
               },
             ),
             MenuItemButton(

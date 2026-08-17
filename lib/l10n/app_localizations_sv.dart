@@ -782,6 +782,22 @@ class AppLocalizationsSv extends AppLocalizations {
       'Profile text byte count is more than 2000 bytes';
 
   @override
+  String get email_login_method_screen_existing_account => 'Existing account';
+
+  @override
+  String get email_login_method_screen_existing_account_description =>
+      'Sign in to an account you already have';
+
+  @override
+  String get email_login_method_screen_new_account => 'New account';
+
+  @override
+  String get email_login_method_screen_new_account_description => 'Create a new account';
+
+  @override
+  String get email_login_method_screen_title => 'Email sign in';
+
+  @override
   String get email_login_screen_code_hint => 'Login code';
 
   @override
@@ -793,12 +809,29 @@ class AppLocalizationsSv extends AppLocalizations {
   String get email_login_screen_email_hint => 'Email address';
 
   @override
-  String get email_login_screen_info_text =>
+  String email_login_screen_input_code_description(String p0) {
+    return 'Enter the login code sent to $p0';
+  }
+
+  @override
+  String get email_login_screen_login_only_info =>
       'Registering new accounts is unsupported using this login method';
 
   @override
-  String email_login_screen_input_code_description(String p0) {
-    return 'Enter the login code sent to $p0';
+  String get email_login_screen_registration_all_platforms_disabled_error =>
+      'App admin has disabled registering new accounts with email address. Please use another login method.';
+
+  @override
+  String get email_login_screen_registration_ip_address_limit_reached_error =>
+      'The daily registration limit for your IP address has been reached. Please try again after 24 hours or use another login method.';
+
+  @override
+  String get email_login_screen_registration_limit_reached_error =>
+      'The daily registration limit has been reached. Please try again in 24 hours or use another login method.';
+
+  @override
+  String email_login_screen_registration_platform_disabled_error(String p0) {
+    return 'App admin has disabled registering new accounts with email address on current platform ($p0). Please use another login method.';
   }
 
   @override
@@ -806,6 +839,9 @@ class AppLocalizationsSv extends AppLocalizations {
 
   @override
   String get email_login_screen_title => 'Email login';
+
+  @override
+  String get email_login_screen_title_register => 'Email registration';
 
   @override
   String email_login_screen_token_validity(String p0) {
@@ -1289,6 +1325,10 @@ class AppLocalizationsSv extends AppLocalizations {
       'Email address is already in use by another account';
 
   @override
+  String get login_screen_email_login_info_dialog_text =>
+      'Signing in with an email address is intentionally limited to help keep the service free from bots and spam. Please prefer signing in with your usual method (such as Google or Apple) whenever possible.\n\nIf you do use your email address, connecting from your home\'s broadband internet rather than mobile data can help you avoid reaching per-IP limits.';
+
+  @override
   String get login_screen_invalid_email_login_token => 'Invalid email login code';
 
   @override
@@ -1338,6 +1378,9 @@ class AppLocalizationsSv extends AppLocalizations {
   String login_screen_registration_platform_disabled(String p0) {
     return 'App admin has disabled registering new accounts on current platform ($p0)';
   }
+
+  @override
+  String get login_screen_sign_in_with_email_action => 'Sign in with email address';
 
   @override
   String get login_screen_sign_in_with_email_unverified =>

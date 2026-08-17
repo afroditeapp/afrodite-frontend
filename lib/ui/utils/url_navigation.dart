@@ -123,6 +123,7 @@ List<UrlParser<MyScreenPage<Object>>> loggedOutPages() => [
   DemoAccountPage(),
 
   // Other
+  EmailLoginMethodPage(),
   EmailLoginPage(),
   EmailLoginCodePage(),
   SendChatBackupPage(),

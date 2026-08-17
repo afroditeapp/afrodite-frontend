@@ -1,5 +1,6 @@
 import 'package:app/logic/app/navigator_state.dart';
 import 'package:app/logic/account/email_login.dart';
+import 'package:app/logic/sign_in_with.dart';
 import 'package:app/model/freezed/logic/main/navigator_state.dart';
 import 'package:app/model/freezed/logic/account/email_login.dart';
 import 'package:flutter/material.dart';
@@ -9,19 +10,122 @@ import 'package:app/ui_utils/common_update_logic.dart';
 import 'package:app/ui_utils/extensions/api.dart';
 import 'package:app/utils/consts/limit.dart';
 
-void openEmailLoginScreen(BuildContext context) {
-  MyNavigator.push(context, EmailLoginPage());
+/// Email sign in method chooser screen. Lets the user choose between logging
+/// in to an existing account or registering a new account.
+void openEmailLoginMethodScreen(BuildContext context) {
+  MyNavigator.push(context, EmailLoginMethodPage());
+}
+
+class EmailLoginMethodPage extends MyScreenPage<()> with SimpleUrlParser<EmailLoginMethodPage> {
+  EmailLoginMethodPage() : super(builder: (_) => const EmailLoginMethodScreen());
+
+  @override
+  EmailLoginMethodPage create() => EmailLoginMethodPage();
+}
+
+class EmailLoginMethodScreen extends StatelessWidget {
+  const EmailLoginMethodScreen({super.key});
+
+  @override
+  Widget build(BuildContext context) {
+    return Scaffold(
+      appBar: AppBar(title: Text(context.strings.email_login_method_screen_title)),
+      body: Padding(
+        padding: const EdgeInsets.all(16),
+        child: Column(
+          crossAxisAlignment: CrossAxisAlignment.stretch,
+          mainAxisAlignment: MainAxisAlignment.center,
+          children: [
+            _MethodButton(
+              icon: Icons.login,
+              title: context.strings.email_login_method_screen_existing_account,
+              description: context.strings.email_login_method_screen_existing_account_description,
+              onPressed: () => MyNavigator.push(context, EmailLoginPage(loginOnly: true)),
+            ),
+            const SizedBox(height: 16),
+            _MethodButton(
+              icon: Icons.person_add,
+              title: context.strings.email_login_method_screen_new_account,
+              description: context.strings.email_login_method_screen_new_account_description,
+              onPressed: () => MyNavigator.push(context, EmailLoginPage(loginOnly: false)),
+            ),
+          ],
+        ),
+      ),
+    );
+  }
+}
+
+class _MethodButton extends StatelessWidget {
+  final IconData icon;
+  final String title;
+  final String description;
+  final VoidCallback onPressed;
+
+  const _MethodButton({
+    required this.icon,
+    required this.title,
+    required this.description,
+    required this.onPressed,
+  });
+
+  @override
+  Widget build(BuildContext context) {
+    final colorScheme = Theme.of(context).colorScheme;
+    return Card(
+      elevation: 2,
+      shape: RoundedRectangleBorder(borderRadius: BorderRadius.circular(16)),
+      child: InkWell(
+        borderRadius: BorderRadius.circular(16),
+        onTap: onPressed,
+        child: Padding(
+          padding: const EdgeInsets.all(20),
+          child: Row(
+            children: [
+              Container(
+                padding: const EdgeInsets.all(12),
+                decoration: BoxDecoration(
+                  color: colorScheme.primaryContainer,
+                  shape: BoxShape.circle,
+                ),
+                child: Icon(icon, size: 32, color: colorScheme.onPrimaryContainer),
+              ),
+              const SizedBox(width: 16),
+              Expanded(
+                child: Column(
+                  crossAxisAlignment: CrossAxisAlignment.start,
+                  children: [
+                    Text(title, style: Theme.of(context).textTheme.titleMedium),
+                    const SizedBox(height: 4),
+                    Text(description, style: Theme.of(context).textTheme.bodyMedium),
+                  ],
+                ),
+              ),
+              const Icon(Icons.chevron_right),
+            ],
+          ),
+        ),
+      ),
+    );
+  }
 }
 
 class EmailLoginPage extends MyScreenPage<()> with SimpleUrlParser<EmailLoginPage> {
-  EmailLoginPage() : super(builder: (_) => const EmailLoginScreen());
+  /// If true, the email login token is requested for logging in to an
+  /// existing account. If false, it can be used for either login or
+  /// registration.
+  final bool loginOnly;
+
+  EmailLoginPage({this.loginOnly = false})
+    : super(builder: (_) => EmailLoginScreen(loginOnly: loginOnly));
 
   @override
-  EmailLoginPage create() => EmailLoginPage();
+  EmailLoginPage create() => EmailLoginPage(loginOnly: loginOnly);
 }
 
 class EmailLoginScreen extends StatefulWidget {
-  const EmailLoginScreen({super.key});
+  final bool loginOnly;
+  const EmailLoginScreen({super.key, this.loginOnly = false});
 
   @override
   State<EmailLoginScreen> createState() => _EmailLoginScreenState();
@@ -57,7 +161,13 @@ class _EmailLoginScreenState extends State<EmailLoginScreen> {
   @override
   Widget build(BuildContext context) {
     return Scaffold(
-      appBar: AppBar(title: Text(context.strings.email_login_screen_title)),
+      appBar: AppBar(
+        title: Text(
+          widget.loginOnly
+              ? context.strings.email_login_screen_title
+              : context.strings.email_login_screen_title_register,
+        ),
+      ),
       body: content(),
     );
   }
@@ -72,20 +182,22 @@ class _EmailLoginScreenState extends State<EmailLoginScreen> {
       child: Column(
         crossAxisAlignment: CrossAxisAlignment.stretch,
         children: [
-          const Padding(padding: EdgeInsets.all(8)),
-          Row(
-            children: [
-              Icon(Icons.info, color: Theme.of(context).colorScheme.primary, size: 20),
-              const SizedBox(width: 8),
-              Expanded(
-                child: Text(
-                  context.strings.email_login_screen_info_text,
-                  style: Theme.of(context).textTheme.bodyLarge,
+          if (widget.loginOnly) ...[
+            const Padding(padding: EdgeInsets.all(8)),
+            Row(
+              children: [
+                Icon(Icons.info, color: Theme.of(context).colorScheme.primary, size: 20),
+                const SizedBox(width: 8),
+                Expanded(
+                  child: Text(
+                    context.strings.email_login_screen_login_only_info,
+                    style: Theme.of(context).textTheme.bodyLarge,
+                  ),
                 ),
-              ),
-            ],
-          ),
-          const Padding(padding: EdgeInsets.all(16)),
+              ],
+            ),
+            const Padding(padding: EdgeInsets.all(16)),
+          ],
           TextField(
             controller: _emailController,
             decoration: InputDecoration(
@@ -104,8 +216,10 @@ class _EmailLoginScreenState extends State<EmailLoginScreen> {
                 ? () {
                     FocusScope.of(context).unfocus();
                     final email = _emailController.text.trim();
-                    context.read<EmailLoginBloc>().add(RequestEmailToken(email));
-                    MyNavigator.push(context, EmailLoginCodePage());
+                    context.read<EmailLoginBloc>().add(
+                      RequestEmailToken(email, loginOnly: widget.loginOnly),
+                    );
+                    MyNavigator.push(context, EmailLoginCodePage(loginOnly: widget.loginOnly));
                   }
                 : null,
             child: Text(context.strings.email_login_screen_send_code_button),
@@ -117,14 +231,17 @@ class _EmailLoginScreenState extends State<EmailLoginScreen> {
 }
 
 class EmailLoginCodePage extends MyScreenPage<()> with SimpleUrlParser<EmailLoginCodePage> {
-  EmailLoginCodePage() : super(builder: (_) => const EmailLoginCodeScreen());
+  final bool loginOnly;
+  EmailLoginCodePage({this.loginOnly = false})
+    : super(builder: (_) => EmailLoginCodeScreen(loginOnly: loginOnly));
 
   @override
-  EmailLoginCodePage create() => EmailLoginCodePage();
+  EmailLoginCodePage create() => EmailLoginCodePage(loginOnly: loginOnly);
 }
 
 class EmailLoginCodeScreen extends StatefulWidget {
-  const EmailLoginCodeScreen({super.key});
+  final bool loginOnly;
+  const EmailLoginCodeScreen({super.key, this.loginOnly = false});
 
   @override
   State<EmailLoginCodeScreen> createState() => _EmailLoginCodeScreenState();
@@ -163,7 +280,13 @@ class _EmailLoginCodeScreenState extends State<EmailLoginCodeScreen> {
       context: context,
       pageKey: null,
       child: Scaffold(
-        appBar: AppBar(title: Text(context.strings.email_login_screen_title)),
+        appBar: AppBar(
+          title: Text(
+            widget.loginOnly
+                ? context.strings.email_login_screen_title
+                : context.strings.email_login_screen_title_register,
+          ),
+        ),
         body: content(),
       ),
     );
@@ -183,6 +306,53 @@ class _EmailLoginCodeScreenState extends State<EmailLoginCodeScreen> {
         } else {
           final error = state.error;
           final clientToken = state.clientToken;
+
+          if (error is RegistrationAllPlatformsDisabledError) {
+            return Center(
+              child: Padding(
+                padding: const EdgeInsets.all(16),
+                child: Text(
+                  context.strings.email_login_screen_registration_all_platforms_disabled_error,
+                  style: Theme.of(context).textTheme.bodyLarge,
+                ),
+              ),
+            );
+          }
+          if (error is RegistrationPlatformDisabledError) {
+            return Center(
+              child: Padding(
+                padding: const EdgeInsets.all(16),
+                child: Text(
+                  context.strings.email_login_screen_registration_platform_disabled_error(
+                    platformNameFromClientType(),
+                  ),
+                  style: Theme.of(context).textTheme.bodyLarge,
+                ),
+              ),
+            );
+          }
+          if (error is RegistrationIpAddressLimitReachedError) {
+            return Center(
+              child: Padding(
+                padding: const EdgeInsets.all(16),
+                child: Text(
+                  context.strings.email_login_screen_registration_ip_address_limit_reached_error,
+                  style: Theme.of(context).textTheme.bodyLarge,
+                ),
+              ),
+            );
+          }
+          if (error is RegistrationLimitReachedError) {
+            return Center(
+              child: Padding(
+                padding: const EdgeInsets.all(16),
+                child: Text(
+                  context.strings.email_login_screen_registration_limit_reached_error,
+                  style: Theme.of(context).textTheme.bodyLarge,
+                ),
+              ),
+            );
+          }
 
           if (error is RequestTokenFailed || clientToken == null) {
             final errorMessage = error is RequestTokenFailed && error.maintenanceInfo != null

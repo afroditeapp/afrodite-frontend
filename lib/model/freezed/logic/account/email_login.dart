@@ -14,6 +14,14 @@ class RequestTokenFailed extends EmailLoginError {
   const RequestTokenFailed({this.maintenanceInfo});
 }
 
+class RegistrationAllPlatformsDisabledError extends EmailLoginError {}
+
+class RegistrationPlatformDisabledError extends EmailLoginError {}
+
+class RegistrationIpAddressLimitReachedError extends EmailLoginError {}
+
+class RegistrationLimitReachedError extends EmailLoginError {}
+
 class LoginFailed extends EmailLoginError {
   final String error;
   const LoginFailed(this.error);

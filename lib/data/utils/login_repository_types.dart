@@ -128,3 +128,11 @@ class ElrteMaintenanceOngoing extends EmailLoginRequestTokenError {
   final StringResource maintenanceInfo;
   ElrteMaintenanceOngoing(this.maintenanceInfo);
 }
+
+class ElrteRegistrationAllPlatformsDisabled extends EmailLoginRequestTokenError {}
+
+class ElrteRegistrationPlatformDisabled extends EmailLoginRequestTokenError {}
+
+class ElrteRegistrationIpAddressLimitReached extends EmailLoginRequestTokenError {}
+
+class ElrteRegistrationLimitReached extends EmailLoginRequestTokenError {}

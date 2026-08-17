@@ -14,7 +14,10 @@ abstract class EmailLoginEvent {}
 
 class RequestEmailToken extends EmailLoginEvent {
   final String email;
-  RequestEmailToken(this.email);
+
+  /// If true, the token is requested for logging in to an existing account.
+  final bool loginOnly;
+  RequestEmailToken(this.email, {this.loginOnly = false});
 }
 
 class SubmitLoginCode extends EmailLoginEvent {
@@ -38,7 +41,11 @@ class EmailLoginBloc extends Bloc<EmailLoginEvent, EmailLoginBlocData> with Acti
 
         final currentServerAddress = await login.accountServerAddress.first;
         final serverAddress = serverAddressForSignIn(currentServerAddress);
-        final result = await login.emailLoginRequestToken(event.email, serverAddress);
+        final result = await login.emailLoginRequestToken(
+          event.email,
+          serverAddress,
+          loginOnly: event.loginOnly,
+        );
 
         await waitTime.waitIfNeeded();
 
@@ -55,14 +62,7 @@ class EmailLoginBloc extends Bloc<EmailLoginEvent, EmailLoginBlocData> with Acti
               ),
             );
           case Err(:final e):
-            emit(
-              state.copyWith(
-                isLoading: false,
-                error: RequestTokenFailed(
-                  maintenanceInfo: e is ElrteMaintenanceOngoing ? e.maintenanceInfo : null,
-                ),
-              ),
-            );
+            emit(state.copyWith(isLoading: false, error: _requestTokenErrorToEmailLoginError(e)));
         }
       });
     });
@@ -113,5 +113,22 @@ class EmailLoginBloc extends Bloc<EmailLoginEvent, EmailLoginBlocData> with Acti
   Future<void> close() {
     _tokenValidityTimer?.cancel();
     return super.close();
+  }
+}
+
+EmailLoginError _requestTokenErrorToEmailLoginError(EmailLoginRequestTokenError error) {
+  switch (error) {
+    case ElrteMaintenanceOngoing(:final maintenanceInfo):
+      return RequestTokenFailed(maintenanceInfo: maintenanceInfo);
+    case ElrteRegistrationAllPlatformsDisabled():
+      return RegistrationAllPlatformsDisabledError();
+    case ElrteRegistrationPlatformDisabled():
+      return RegistrationPlatformDisabledError();
+    case ElrteRegistrationIpAddressLimitReached():
+      return RegistrationIpAddressLimitReachedError();
+    case ElrteRegistrationLimitReached():
+      return RegistrationLimitReachedError();
+    case ElrteErrorOccurred():
+      return RequestTokenFailed();
   }
 }
