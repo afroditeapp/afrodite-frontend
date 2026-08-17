@@ -1,3 +1,4 @@
+import 'package:app/config_services.dart';
 import 'package:app/data/utils/repository_instances.dart';
 import 'package:app/localizations.dart';
 import 'package:app/logic/account/sign_in_with_management.dart';
@@ -74,8 +75,10 @@ class SignInWithManagementScreen extends StatelessWidget {
                 crossAxisAlignment: CrossAxisAlignment.start,
                 children: [
                   const Padding(padding: EdgeInsets.all(4)),
-                  _AppleSection(apple: state.apple),
-                  const Divider(),
+                  if (signInWithAppleServiceIdForAndroidAndWebLogin().isNotEmpty) ...[
+                    _AppleSection(apple: state.apple),
+                    const Divider(),
+                  ],
                   _GoogleSection(google: state.google),
                   const Divider(),
                 ],
