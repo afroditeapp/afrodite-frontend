@@ -17,6 +17,7 @@ class RequestEmailLoginTokenResult {
     this.emailLoginEmailsPerMonth,
     this.error = false,
     this.errorEmailRegistrationAllPlatformsDisabled = false,
+    this.errorEmailRegistrationDomainNotAccepted = false,
     this.errorEmailRegistrationIpAddressLimitReached = false,
     this.errorEmailRegistrationLimitReached = false,
     this.errorEmailRegistrationPlatformDisabled = false,
@@ -34,6 +35,9 @@ class RequestEmailLoginTokenResult {
 
   /// This is true when email registration has been disabled for all client platforms.
   bool errorEmailRegistrationAllPlatformsDisabled;
+
+  /// This is true when the email domain is not accepted for email registration. This can happen when the domain is in the blocklist or not in the allowlist configured by the server admin.
+  bool errorEmailRegistrationDomainNotAccepted;
 
   bool errorEmailRegistrationIpAddressLimitReached;
 
@@ -55,6 +59,7 @@ class RequestEmailLoginTokenResult {
     other.emailLoginEmailsPerMonth == emailLoginEmailsPerMonth &&
     other.error == error &&
     other.errorEmailRegistrationAllPlatformsDisabled == errorEmailRegistrationAllPlatformsDisabled &&
+    other.errorEmailRegistrationDomainNotAccepted == errorEmailRegistrationDomainNotAccepted &&
     other.errorEmailRegistrationIpAddressLimitReached == errorEmailRegistrationIpAddressLimitReached &&
     other.errorEmailRegistrationLimitReached == errorEmailRegistrationLimitReached &&
     other.errorEmailRegistrationPlatformDisabled == errorEmailRegistrationPlatformDisabled &&
@@ -68,6 +73,7 @@ class RequestEmailLoginTokenResult {
     (emailLoginEmailsPerMonth == null ? 0 : emailLoginEmailsPerMonth!.hashCode) +
     (error.hashCode) +
     (errorEmailRegistrationAllPlatformsDisabled.hashCode) +
+    (errorEmailRegistrationDomainNotAccepted.hashCode) +
     (errorEmailRegistrationIpAddressLimitReached.hashCode) +
     (errorEmailRegistrationLimitReached.hashCode) +
     (errorEmailRegistrationPlatformDisabled.hashCode) +
@@ -75,7 +81,7 @@ class RequestEmailLoginTokenResult {
     (tokenValiditySeconds == null ? 0 : tokenValiditySeconds!.hashCode);
 
   @override
-  String toString() => 'RequestEmailLoginTokenResult[clientToken=$clientToken, emailLoginEmailsPerMonth=$emailLoginEmailsPerMonth, error=$error, errorEmailRegistrationAllPlatformsDisabled=$errorEmailRegistrationAllPlatformsDisabled, errorEmailRegistrationIpAddressLimitReached=$errorEmailRegistrationIpAddressLimitReached, errorEmailRegistrationLimitReached=$errorEmailRegistrationLimitReached, errorEmailRegistrationPlatformDisabled=$errorEmailRegistrationPlatformDisabled, resendWaitSeconds=$resendWaitSeconds, tokenValiditySeconds=$tokenValiditySeconds]';
+  String toString() => 'RequestEmailLoginTokenResult[clientToken=$clientToken, emailLoginEmailsPerMonth=$emailLoginEmailsPerMonth, error=$error, errorEmailRegistrationAllPlatformsDisabled=$errorEmailRegistrationAllPlatformsDisabled, errorEmailRegistrationDomainNotAccepted=$errorEmailRegistrationDomainNotAccepted, errorEmailRegistrationIpAddressLimitReached=$errorEmailRegistrationIpAddressLimitReached, errorEmailRegistrationLimitReached=$errorEmailRegistrationLimitReached, errorEmailRegistrationPlatformDisabled=$errorEmailRegistrationPlatformDisabled, resendWaitSeconds=$resendWaitSeconds, tokenValiditySeconds=$tokenValiditySeconds]';
 
   Map<String, dynamic> toJson() {
     final json = <String, dynamic>{};
@@ -91,6 +97,7 @@ class RequestEmailLoginTokenResult {
     }
       json[r'error'] = this.error;
       json[r'error_email_registration_all_platforms_disabled'] = this.errorEmailRegistrationAllPlatformsDisabled;
+      json[r'error_email_registration_domain_not_accepted'] = this.errorEmailRegistrationDomainNotAccepted;
       json[r'error_email_registration_ip_address_limit_reached'] = this.errorEmailRegistrationIpAddressLimitReached;
       json[r'error_email_registration_limit_reached'] = this.errorEmailRegistrationLimitReached;
       json[r'error_email_registration_platform_disabled'] = this.errorEmailRegistrationPlatformDisabled;
@@ -126,6 +133,7 @@ class RequestEmailLoginTokenResult {
         emailLoginEmailsPerMonth: mapValueOfType<int>(json, r'email_login_emails_per_month'),
         error: mapValueOfType<bool>(json, r'error') ?? false,
         errorEmailRegistrationAllPlatformsDisabled: mapValueOfType<bool>(json, r'error_email_registration_all_platforms_disabled') ?? false,
+        errorEmailRegistrationDomainNotAccepted: mapValueOfType<bool>(json, r'error_email_registration_domain_not_accepted') ?? false,
         errorEmailRegistrationIpAddressLimitReached: mapValueOfType<bool>(json, r'error_email_registration_ip_address_limit_reached') ?? false,
         errorEmailRegistrationLimitReached: mapValueOfType<bool>(json, r'error_email_registration_limit_reached') ?? false,
         errorEmailRegistrationPlatformDisabled: mapValueOfType<bool>(json, r'error_email_registration_platform_disabled') ?? false,

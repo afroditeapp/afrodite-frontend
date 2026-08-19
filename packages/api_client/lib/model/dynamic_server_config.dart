@@ -15,6 +15,7 @@ class DynamicServerConfig {
   DynamicServerConfig({
     this.accountLoginPlatforms,
     this.accountRegistrationPlatforms,
+    this.emailRegistrationDomainLists,
     this.emailRegistrationPlatforms,
   });
 
@@ -40,12 +41,21 @@ class DynamicServerConfig {
   /// source code must fall back to having a nullable type.
   /// Consider adding a "default:" property in the specification file to hide this note.
   ///
+  EmailRegistrationDomainLists? emailRegistrationDomainLists;
+
+  ///
+  /// Please note: This property should have been non-nullable! Since the specification file
+  /// does not include a default value (using the "default:" property), however, the generated
+  /// source code must fall back to having a nullable type.
+  /// Consider adding a "default:" property in the specification file to hide this note.
+  ///
   EmailRegistrationPlatforms? emailRegistrationPlatforms;
 
   @override
   bool operator ==(Object other) => identical(this, other) || other is DynamicServerConfig &&
     other.accountLoginPlatforms == accountLoginPlatforms &&
     other.accountRegistrationPlatforms == accountRegistrationPlatforms &&
+    other.emailRegistrationDomainLists == emailRegistrationDomainLists &&
     other.emailRegistrationPlatforms == emailRegistrationPlatforms;
 
   @override
@@ -53,10 +63,11 @@ class DynamicServerConfig {
     // ignore: unnecessary_parenthesis
     (accountLoginPlatforms == null ? 0 : accountLoginPlatforms!.hashCode) +
     (accountRegistrationPlatforms == null ? 0 : accountRegistrationPlatforms!.hashCode) +
+    (emailRegistrationDomainLists == null ? 0 : emailRegistrationDomainLists!.hashCode) +
     (emailRegistrationPlatforms == null ? 0 : emailRegistrationPlatforms!.hashCode);
 
   @override
-  String toString() => 'DynamicServerConfig[accountLoginPlatforms=$accountLoginPlatforms, accountRegistrationPlatforms=$accountRegistrationPlatforms, emailRegistrationPlatforms=$emailRegistrationPlatforms]';
+  String toString() => 'DynamicServerConfig[accountLoginPlatforms=$accountLoginPlatforms, accountRegistrationPlatforms=$accountRegistrationPlatforms, emailRegistrationDomainLists=$emailRegistrationDomainLists, emailRegistrationPlatforms=$emailRegistrationPlatforms]';
 
   Map<String, dynamic> toJson() {
     final json = <String, dynamic>{};
@@ -69,6 +80,11 @@ class DynamicServerConfig {
       json[r'account_registration_platforms'] = this.accountRegistrationPlatforms;
     } else {
       json[r'account_registration_platforms'] = null;
+    }
+    if (this.emailRegistrationDomainLists != null) {
+      json[r'email_registration_domain_lists'] = this.emailRegistrationDomainLists;
+    } else {
+      json[r'email_registration_domain_lists'] = null;
     }
     if (this.emailRegistrationPlatforms != null) {
       json[r'email_registration_platforms'] = this.emailRegistrationPlatforms;
@@ -95,6 +111,7 @@ class DynamicServerConfig {
       return DynamicServerConfig(
         accountLoginPlatforms: AccountLoginPlatforms.fromJson(json[r'account_login_platforms']),
         accountRegistrationPlatforms: AccountRegistrationPlatforms.fromJson(json[r'account_registration_platforms']),
+        emailRegistrationDomainLists: EmailRegistrationDomainLists.fromJson(json[r'email_registration_domain_lists']),
         emailRegistrationPlatforms: EmailRegistrationPlatforms.fromJson(json[r'email_registration_platforms']),
       );
     }

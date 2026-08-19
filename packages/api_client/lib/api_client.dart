@@ -479,6 +479,8 @@ class ApiClient {
           return EmailLogin.fromJson(value);
         case 'EmailLoginToken':
           return EmailLoginToken.fromJson(value);
+        case 'EmailRegistrationDomainLists':
+          return EmailRegistrationDomainLists.fromJson(value);
         case 'EmailRegistrationPlatforms':
           return EmailRegistrationPlatforms.fromJson(value);
         case 'FavoriteProfilesPage':
@@ -879,6 +881,8 @@ class ApiClient {
           return PutSignInWithApple.fromJson(value);
         case 'PutSignInWithGoogle':
           return PutSignInWithGoogle.fromJson(value);
+        case 'PutSignInWithResult':
+          return PutSignInWithResult.fromJson(value);
         case 'ReceivedLikeId':
           return ReceivedLikeId.fromJson(value);
         case 'ReceivedLikesIteratorState':

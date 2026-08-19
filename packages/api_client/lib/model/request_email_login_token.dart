@@ -15,12 +15,22 @@ class RequestEmailLoginToken {
   RequestEmailLoginToken({
     required this.clientType,
     required this.email,
+    this.language,
     this.loginOnly = false,
   });
 
   ClientType clientType;
 
   String email;
+
+  /// Preferred language for token emails. If `None`, the default language is used.
+  ///
+  /// Please note: This property should have been non-nullable! Since the specification file
+  /// does not include a default value (using the "default:" property), however, the generated
+  /// source code must fall back to having a nullable type.
+  /// Consider adding a "default:" property in the specification file to hide this note.
+  ///
+  ClientLanguage? language;
 
   /// Use this to bypass [LoginResult::error_email_registration_ip_address_limit_reached] when user wants to login to existing account.
   bool loginOnly;
@@ -29,6 +39,7 @@ class RequestEmailLoginToken {
   bool operator ==(Object other) => identical(this, other) || other is RequestEmailLoginToken &&
     other.clientType == clientType &&
     other.email == email &&
+    other.language == language &&
     other.loginOnly == loginOnly;
 
   @override
@@ -36,15 +47,21 @@ class RequestEmailLoginToken {
     // ignore: unnecessary_parenthesis
     (clientType.hashCode) +
     (email.hashCode) +
+    (language == null ? 0 : language!.hashCode) +
     (loginOnly.hashCode);
 
   @override
-  String toString() => 'RequestEmailLoginToken[clientType=$clientType, email=$email, loginOnly=$loginOnly]';
+  String toString() => 'RequestEmailLoginToken[clientType=$clientType, email=$email, language=$language, loginOnly=$loginOnly]';
 
   Map<String, dynamic> toJson() {
     final json = <String, dynamic>{};
       json[r'client_type'] = this.clientType;
       json[r'email'] = this.email;
+    if (this.language != null) {
+      json[r'language'] = this.language;
+    } else {
+      json[r'language'] = null;
+    }
       json[r'login_only'] = this.loginOnly;
     return json;
   }
@@ -70,6 +87,7 @@ class RequestEmailLoginToken {
       return RequestEmailLoginToken(
         clientType: ClientType.fromJson(json[r'client_type'])!,
         email: mapValueOfType<String>(json, r'email')!,
+        language: ClientLanguage.fromJson(json[r'language']),
         loginOnly: mapValueOfType<bool>(json, r'login_only') ?? false,
       );
     }

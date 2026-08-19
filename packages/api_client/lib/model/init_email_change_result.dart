@@ -16,6 +16,7 @@ class InitEmailChangeResult {
     this.error = false,
     this.errorEmailSendingFailed = false,
     this.errorEmailSendingTimeout = false,
+    this.errorHistoryLimitReached = false,
     this.errorTryAgainLaterAfterSeconds,
   });
 
@@ -24,6 +25,8 @@ class InitEmailChangeResult {
   bool errorEmailSendingFailed;
 
   bool errorEmailSendingTimeout;
+
+  bool errorHistoryLimitReached;
 
   /// Minimum value: 0
   ///
@@ -39,6 +42,7 @@ class InitEmailChangeResult {
     other.error == error &&
     other.errorEmailSendingFailed == errorEmailSendingFailed &&
     other.errorEmailSendingTimeout == errorEmailSendingTimeout &&
+    other.errorHistoryLimitReached == errorHistoryLimitReached &&
     other.errorTryAgainLaterAfterSeconds == errorTryAgainLaterAfterSeconds;
 
   @override
@@ -47,16 +51,18 @@ class InitEmailChangeResult {
     (error.hashCode) +
     (errorEmailSendingFailed.hashCode) +
     (errorEmailSendingTimeout.hashCode) +
+    (errorHistoryLimitReached.hashCode) +
     (errorTryAgainLaterAfterSeconds == null ? 0 : errorTryAgainLaterAfterSeconds!.hashCode);
 
   @override
-  String toString() => 'InitEmailChangeResult[error=$error, errorEmailSendingFailed=$errorEmailSendingFailed, errorEmailSendingTimeout=$errorEmailSendingTimeout, errorTryAgainLaterAfterSeconds=$errorTryAgainLaterAfterSeconds]';
+  String toString() => 'InitEmailChangeResult[error=$error, errorEmailSendingFailed=$errorEmailSendingFailed, errorEmailSendingTimeout=$errorEmailSendingTimeout, errorHistoryLimitReached=$errorHistoryLimitReached, errorTryAgainLaterAfterSeconds=$errorTryAgainLaterAfterSeconds]';
 
   Map<String, dynamic> toJson() {
     final json = <String, dynamic>{};
       json[r'error'] = this.error;
       json[r'error_email_sending_failed'] = this.errorEmailSendingFailed;
       json[r'error_email_sending_timeout'] = this.errorEmailSendingTimeout;
+      json[r'error_history_limit_reached'] = this.errorHistoryLimitReached;
     if (this.errorTryAgainLaterAfterSeconds != null) {
       json[r'error_try_again_later_after_seconds'] = this.errorTryAgainLaterAfterSeconds;
     } else {
@@ -83,6 +89,7 @@ class InitEmailChangeResult {
         error: mapValueOfType<bool>(json, r'error') ?? false,
         errorEmailSendingFailed: mapValueOfType<bool>(json, r'error_email_sending_failed') ?? false,
         errorEmailSendingTimeout: mapValueOfType<bool>(json, r'error_email_sending_timeout') ?? false,
+        errorHistoryLimitReached: mapValueOfType<bool>(json, r'error_history_limit_reached') ?? false,
         errorTryAgainLaterAfterSeconds: mapValueOfType<int>(json, r'error_try_again_later_after_seconds'),
       );
     }

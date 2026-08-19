@@ -170,6 +170,7 @@ lib/model/email_address_state.dart
 lib/model/email_address_state_admin.dart
 lib/model/email_login.dart
 lib/model/email_login_token.dart
+lib/model/email_registration_domain_lists.dart
 lib/model/email_registration_platforms.dart
 lib/model/favorite_profiles_page.dart
 lib/model/features_config.dart
@@ -370,6 +371,7 @@ lib/model/push_notification_info_sync_version.dart
 lib/model/put_content_to_content_slot_result.dart
 lib/model/put_sign_in_with_apple.dart
 lib/model/put_sign_in_with_google.dart
+lib/model/put_sign_in_with_result.dart
 lib/model/received_like_id.dart
 lib/model/received_likes_iterator_state.dart
 lib/model/received_likes_page.dart
