@@ -1480,6 +1480,12 @@ abstract class AppLocalizations {
   /// **'App admin has disabled registering new accounts with email address. Please use another login method.'**
   String get email_login_screen_registration_all_platforms_disabled_error;
 
+  /// Error message when the email domain is not accepted for email registration. %s is the email domain.
+  ///
+  /// In en, this message translates to:
+  /// **'This email domain ({p0}) is not accepted for registration. Please use another email address or login method.'**
+  String email_login_screen_registration_domain_not_accepted_error(String p0);
+
   /// Error message when email registration per IP address limit is reached
   ///
   /// In en, this message translates to:

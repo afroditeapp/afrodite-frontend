@@ -128,6 +128,8 @@ EmailLoginError _requestTokenErrorToEmailLoginError(EmailLoginRequestTokenError 
       return RegistrationIpAddressLimitReachedError();
     case ElrteRegistrationLimitReached():
       return RegistrationLimitReachedError();
+    case ElrteRegistrationDomainNotAccepted(:final domain):
+      return RegistrationDomainNotAcceptedError(domain);
     case ElrteErrorOccurred():
       return RequestTokenFailed();
   }

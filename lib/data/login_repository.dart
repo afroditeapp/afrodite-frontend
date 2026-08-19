@@ -370,11 +370,16 @@ class LoginRepository extends AppSingleton {
       if (result?.errorEmailRegistrationLimitReached ?? false) {
         return Err(ElrteRegistrationLimitReached());
       }
+      if (result?.errorEmailRegistrationDomainNotAccepted ?? false) {
+        return Err(ElrteRegistrationDomainNotAccepted(_emailDomain(cmd.email)));
+      }
       return Err(await _checkServerMaintenanceInfoForEmailTokenRequest());
     }
 
     return Ok(result);
   }
+
+  String _emailDomain(String email) => email.split('@').last;
 
   Future<Result<(), CommonSignInError>> _handleEmailLoginWithToken(EmailLoginWithToken cmd) async {
     final result = await _apiNoConnection
@@ -521,7 +526,8 @@ class LoginRepository extends AppSingleton {
           ElrteRegistrationAllPlatformsDisabled() ||
           ElrteRegistrationPlatformDisabled() ||
           ElrteRegistrationIpAddressLimitReached() ||
-          ElrteRegistrationLimitReached():
+          ElrteRegistrationLimitReached() ||
+          ElrteRegistrationDomainNotAccepted():
         return CseLoginApiRequestFailed();
     }
   }

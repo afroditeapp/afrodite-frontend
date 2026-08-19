@@ -22,6 +22,11 @@ class RegistrationIpAddressLimitReachedError extends EmailLoginError {}
 
 class RegistrationLimitReachedError extends EmailLoginError {}
 
+class RegistrationDomainNotAcceptedError extends EmailLoginError {
+  final String domain;
+  const RegistrationDomainNotAcceptedError(this.domain);
+}
+
 class LoginFailed extends EmailLoginError {
   final String error;
   const LoginFailed(this.error);

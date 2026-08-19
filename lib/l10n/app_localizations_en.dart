@@ -822,6 +822,11 @@ class AppLocalizationsEn extends AppLocalizations {
       'App admin has disabled registering new accounts with email address. Please use another login method.';
 
   @override
+  String email_login_screen_registration_domain_not_accepted_error(String p0) {
+    return 'This email domain ($p0) is not accepted for registration. Please use another email address or login method.';
+  }
+
+  @override
   String get email_login_screen_registration_ip_address_limit_reached_error =>
       'The daily registration limit for your IP address has been reached. Please try again after 24 hours or use another login method.';
 

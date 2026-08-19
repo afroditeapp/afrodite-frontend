@@ -353,6 +353,19 @@ class _EmailLoginCodeScreenState extends State<EmailLoginCodeScreen> {
               ),
             );
           }
+          if (error is RegistrationDomainNotAcceptedError) {
+            return Center(
+              child: Padding(
+                padding: const EdgeInsets.all(16),
+                child: Text(
+                  context.strings.email_login_screen_registration_domain_not_accepted_error(
+                    error.domain,
+                  ),
+                  style: Theme.of(context).textTheme.bodyLarge,
+                ),
+              ),
+            );
+          }
 
           if (error is RequestTokenFailed || clientToken == null) {
             final errorMessage = error is RequestTokenFailed && error.maintenanceInfo != null

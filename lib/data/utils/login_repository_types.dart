@@ -136,3 +136,8 @@ class ElrteRegistrationPlatformDisabled extends EmailLoginRequestTokenError {}
 class ElrteRegistrationIpAddressLimitReached extends EmailLoginRequestTokenError {}
 
 class ElrteRegistrationLimitReached extends EmailLoginRequestTokenError {}
+
+class ElrteRegistrationDomainNotAccepted extends EmailLoginRequestTokenError {
+  final String domain;
+  ElrteRegistrationDomainNotAccepted(this.domain);
+}
