@@ -403,9 +403,10 @@ class AccountRepository extends DataRepositoryWithLifecycle {
       return;
     }
 
-    if (clientLanguageOnServer.l != clientLocale) {
+    final languageCode = clientLocale.split('_').first;
+    if (clientLanguageOnServer.l != languageCode) {
       final r = await api.commonAction(
-        (db) => db.postClientLanguage(ClientLanguage(l: clientLocale)),
+        (db) => db.postClientLanguage(ClientLanguage(l: languageCode)),
       );
       if (r.isOk()) {
         await _reloadClientLanguageOnServer();
