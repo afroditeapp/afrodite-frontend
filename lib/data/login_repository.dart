@@ -338,6 +338,10 @@ class LoginRepository extends AppSingleton {
       return Err(ElrteErrorOccurred());
     }
 
+    final clientLocale = await CommonDatabaseManager.getInstance().commonStreamSingle(
+      (db) => db.app.watchCurrentLocale(),
+    );
+
     final result = await _apiNoConnection
         .account(
           (api) => api.postRequestEmailLoginToken(
@@ -345,6 +349,9 @@ class LoginRepository extends AppSingleton {
               clientType: AppVersionManager.getInstance().clientInfo().clientType,
               email: cmd.email,
               loginOnly: cmd.loginOnly,
+              language: clientLocale != null
+                  ? ClientLanguage(l: clientLocale.split('_').first)
+                  : null,
             ),
           ),
         )
