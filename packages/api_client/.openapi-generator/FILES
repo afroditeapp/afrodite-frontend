@@ -302,6 +302,7 @@ lib/model/perf_metric_query_result.dart
 lib/model/perf_metric_value_area.dart
 lib/model/perf_metric_values.dart
 lib/model/permissions.dart
+lib/model/play_integrity_app_attestation.dart
 lib/model/post_account_verification_queue_item_result.dart
 lib/model/post_account_verification_queue_remove_next_item.dart
 lib/model/post_age_verification.dart

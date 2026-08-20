@@ -16,7 +16,7 @@ class InitEmailChangeResult {
     this.error = false,
     this.errorEmailSendingFailed = false,
     this.errorEmailSendingTimeout = false,
-    this.errorHistoryLimitReached = false,
+    this.errorHistoryLimitReached,
     this.errorTryAgainLaterAfterSeconds,
   });
 
@@ -26,7 +26,16 @@ class InitEmailChangeResult {
 
   bool errorEmailSendingTimeout;
 
-  bool errorHistoryLimitReached;
+  /// Set when the email address history limit is reached. Contains the amount of seconds the client must wait before the oldest history entry expires and a new email change can be made.
+  ///
+  /// Minimum value: 0
+  ///
+  /// Please note: This property should have been non-nullable! Since the specification file
+  /// does not include a default value (using the "default:" property), however, the generated
+  /// source code must fall back to having a nullable type.
+  /// Consider adding a "default:" property in the specification file to hide this note.
+  ///
+  int? errorHistoryLimitReached;
 
   /// Minimum value: 0
   ///
@@ -51,7 +60,7 @@ class InitEmailChangeResult {
     (error.hashCode) +
     (errorEmailSendingFailed.hashCode) +
     (errorEmailSendingTimeout.hashCode) +
-    (errorHistoryLimitReached.hashCode) +
+    (errorHistoryLimitReached == null ? 0 : errorHistoryLimitReached!.hashCode) +
     (errorTryAgainLaterAfterSeconds == null ? 0 : errorTryAgainLaterAfterSeconds!.hashCode);
 
   @override
@@ -62,7 +71,11 @@ class InitEmailChangeResult {
       json[r'error'] = this.error;
       json[r'error_email_sending_failed'] = this.errorEmailSendingFailed;
       json[r'error_email_sending_timeout'] = this.errorEmailSendingTimeout;
+    if (this.errorHistoryLimitReached != null) {
       json[r'error_history_limit_reached'] = this.errorHistoryLimitReached;
+    } else {
+      json[r'error_history_limit_reached'] = null;
+    }
     if (this.errorTryAgainLaterAfterSeconds != null) {
       json[r'error_try_again_later_after_seconds'] = this.errorTryAgainLaterAfterSeconds;
     } else {
@@ -89,7 +102,7 @@ class InitEmailChangeResult {
         error: mapValueOfType<bool>(json, r'error') ?? false,
         errorEmailSendingFailed: mapValueOfType<bool>(json, r'error_email_sending_failed') ?? false,
         errorEmailSendingTimeout: mapValueOfType<bool>(json, r'error_email_sending_timeout') ?? false,
-        errorHistoryLimitReached: mapValueOfType<bool>(json, r'error_history_limit_reached') ?? false,
+        errorHistoryLimitReached: mapValueOfType<int>(json, r'error_history_limit_reached'),
         errorTryAgainLaterAfterSeconds: mapValueOfType<int>(json, r'error_try_again_later_after_seconds'),
       );
     }

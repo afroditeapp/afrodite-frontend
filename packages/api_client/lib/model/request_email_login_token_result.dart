@@ -21,6 +21,7 @@ class RequestEmailLoginTokenResult {
     this.errorEmailRegistrationIpAddressLimitReached = false,
     this.errorEmailRegistrationLimitReached = false,
     this.errorEmailRegistrationPlatformDisabled = false,
+    this.errorEmailRegistrationUnsupportedEmail = false,
     this.resendWaitSeconds,
     this.tokenValiditySeconds,
   });
@@ -47,6 +48,9 @@ class RequestEmailLoginTokenResult {
   /// This is true when email registration has been disabled for the client platform the user is using.
   bool errorEmailRegistrationPlatformDisabled;
 
+  /// This is true when the email address is not supported for email registration. This can happen for example when the email address contains characters that are not accepted for registration.
+  bool errorEmailRegistrationUnsupportedEmail;
+
   /// Minimum wait duration between token requests in seconds
   int? resendWaitSeconds;
 
@@ -63,6 +67,7 @@ class RequestEmailLoginTokenResult {
     other.errorEmailRegistrationIpAddressLimitReached == errorEmailRegistrationIpAddressLimitReached &&
     other.errorEmailRegistrationLimitReached == errorEmailRegistrationLimitReached &&
     other.errorEmailRegistrationPlatformDisabled == errorEmailRegistrationPlatformDisabled &&
+    other.errorEmailRegistrationUnsupportedEmail == errorEmailRegistrationUnsupportedEmail &&
     other.resendWaitSeconds == resendWaitSeconds &&
     other.tokenValiditySeconds == tokenValiditySeconds;
 
@@ -77,11 +82,12 @@ class RequestEmailLoginTokenResult {
     (errorEmailRegistrationIpAddressLimitReached.hashCode) +
     (errorEmailRegistrationLimitReached.hashCode) +
     (errorEmailRegistrationPlatformDisabled.hashCode) +
+    (errorEmailRegistrationUnsupportedEmail.hashCode) +
     (resendWaitSeconds == null ? 0 : resendWaitSeconds!.hashCode) +
     (tokenValiditySeconds == null ? 0 : tokenValiditySeconds!.hashCode);
 
   @override
-  String toString() => 'RequestEmailLoginTokenResult[clientToken=$clientToken, emailLoginEmailsPerMonth=$emailLoginEmailsPerMonth, error=$error, errorEmailRegistrationAllPlatformsDisabled=$errorEmailRegistrationAllPlatformsDisabled, errorEmailRegistrationDomainNotAccepted=$errorEmailRegistrationDomainNotAccepted, errorEmailRegistrationIpAddressLimitReached=$errorEmailRegistrationIpAddressLimitReached, errorEmailRegistrationLimitReached=$errorEmailRegistrationLimitReached, errorEmailRegistrationPlatformDisabled=$errorEmailRegistrationPlatformDisabled, resendWaitSeconds=$resendWaitSeconds, tokenValiditySeconds=$tokenValiditySeconds]';
+  String toString() => 'RequestEmailLoginTokenResult[clientToken=$clientToken, emailLoginEmailsPerMonth=$emailLoginEmailsPerMonth, error=$error, errorEmailRegistrationAllPlatformsDisabled=$errorEmailRegistrationAllPlatformsDisabled, errorEmailRegistrationDomainNotAccepted=$errorEmailRegistrationDomainNotAccepted, errorEmailRegistrationIpAddressLimitReached=$errorEmailRegistrationIpAddressLimitReached, errorEmailRegistrationLimitReached=$errorEmailRegistrationLimitReached, errorEmailRegistrationPlatformDisabled=$errorEmailRegistrationPlatformDisabled, errorEmailRegistrationUnsupportedEmail=$errorEmailRegistrationUnsupportedEmail, resendWaitSeconds=$resendWaitSeconds, tokenValiditySeconds=$tokenValiditySeconds]';
 
   Map<String, dynamic> toJson() {
     final json = <String, dynamic>{};
@@ -101,6 +107,7 @@ class RequestEmailLoginTokenResult {
       json[r'error_email_registration_ip_address_limit_reached'] = this.errorEmailRegistrationIpAddressLimitReached;
       json[r'error_email_registration_limit_reached'] = this.errorEmailRegistrationLimitReached;
       json[r'error_email_registration_platform_disabled'] = this.errorEmailRegistrationPlatformDisabled;
+      json[r'error_email_registration_unsupported_email'] = this.errorEmailRegistrationUnsupportedEmail;
     if (this.resendWaitSeconds != null) {
       json[r'resend_wait_seconds'] = this.resendWaitSeconds;
     } else {
@@ -137,6 +144,7 @@ class RequestEmailLoginTokenResult {
         errorEmailRegistrationIpAddressLimitReached: mapValueOfType<bool>(json, r'error_email_registration_ip_address_limit_reached') ?? false,
         errorEmailRegistrationLimitReached: mapValueOfType<bool>(json, r'error_email_registration_limit_reached') ?? false,
         errorEmailRegistrationPlatformDisabled: mapValueOfType<bool>(json, r'error_email_registration_platform_disabled') ?? false,
+        errorEmailRegistrationUnsupportedEmail: mapValueOfType<bool>(json, r'error_email_registration_unsupported_email') ?? false,
         resendWaitSeconds: mapValueOfType<int>(json, r'resend_wait_seconds'),
         tokenValiditySeconds: mapValueOfType<int>(json, r'token_validity_seconds'),
       );

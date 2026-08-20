@@ -320,6 +320,7 @@ part 'model/perf_metric_query_result.dart';
 part 'model/perf_metric_value_area.dart';
 part 'model/perf_metric_values.dart';
 part 'model/permissions.dart';
+part 'model/play_integrity_app_attestation.dart';
 part 'model/post_account_verification_queue_item_result.dart';
 part 'model/post_account_verification_queue_remove_next_item.dart';
 part 'model/post_age_verification.dart';

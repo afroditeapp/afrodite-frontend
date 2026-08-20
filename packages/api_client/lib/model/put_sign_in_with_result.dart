@@ -14,12 +14,21 @@ class PutSignInWithResult {
   /// Returns a new [PutSignInWithResult] instance.
   PutSignInWithResult({
     this.error = false,
-    this.errorHistoryLimitReached = false,
+    this.errorHistoryLimitReached,
   });
 
   bool error;
 
-  bool errorHistoryLimitReached;
+  /// Set when the sign in with history limit is reached. Contains the amount of seconds the client must wait before the oldest history entry expires and a new association change can be made.
+  ///
+  /// Minimum value: 0
+  ///
+  /// Please note: This property should have been non-nullable! Since the specification file
+  /// does not include a default value (using the "default:" property), however, the generated
+  /// source code must fall back to having a nullable type.
+  /// Consider adding a "default:" property in the specification file to hide this note.
+  ///
+  int? errorHistoryLimitReached;
 
   @override
   bool operator ==(Object other) => identical(this, other) || other is PutSignInWithResult &&
@@ -30,7 +39,7 @@ class PutSignInWithResult {
   int get hashCode =>
     // ignore: unnecessary_parenthesis
     (error.hashCode) +
-    (errorHistoryLimitReached.hashCode);
+    (errorHistoryLimitReached == null ? 0 : errorHistoryLimitReached!.hashCode);
 
   @override
   String toString() => 'PutSignInWithResult[error=$error, errorHistoryLimitReached=$errorHistoryLimitReached]';
@@ -38,7 +47,11 @@ class PutSignInWithResult {
   Map<String, dynamic> toJson() {
     final json = <String, dynamic>{};
       json[r'error'] = this.error;
+    if (this.errorHistoryLimitReached != null) {
       json[r'error_history_limit_reached'] = this.errorHistoryLimitReached;
+    } else {
+      json[r'error_history_limit_reached'] = null;
+    }
     return json;
   }
 
@@ -58,7 +71,7 @@ class PutSignInWithResult {
 
       return PutSignInWithResult(
         error: mapValueOfType<bool>(json, r'error') ?? false,
-        errorHistoryLimitReached: mapValueOfType<bool>(json, r'error_history_limit_reached') ?? false,
+        errorHistoryLimitReached: mapValueOfType<int>(json, r'error_history_limit_reached'),
       );
     }
     return null;

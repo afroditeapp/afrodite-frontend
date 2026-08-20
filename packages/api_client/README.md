@@ -587,6 +587,7 @@ Class | Method | HTTP request | Description
  - [PerfMetricValueArea](doc//PerfMetricValueArea.md)
  - [PerfMetricValues](doc//PerfMetricValues.md)
  - [Permissions](doc//Permissions.md)
+ - [PlayIntegrityAppAttestation](doc//PlayIntegrityAppAttestation.md)
  - [PostAccountVerificationQueueItemResult](doc//PostAccountVerificationQueueItemResult.md)
  - [PostAccountVerificationQueueRemoveNextItem](doc//PostAccountVerificationQueueRemoveNextItem.md)
  - [PostAgeVerification](doc//PostAgeVerification.md)

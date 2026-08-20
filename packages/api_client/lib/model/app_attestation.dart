@@ -14,6 +14,7 @@ class AppAttestation {
   /// Returns a new [AppAttestation] instance.
   AppAttestation({
     this.debug,
+    this.playIntegrity,
   });
 
   ///
@@ -24,17 +25,27 @@ class AppAttestation {
   ///
   DebugAppAttestation? debug;
 
+  ///
+  /// Please note: This property should have been non-nullable! Since the specification file
+  /// does not include a default value (using the "default:" property), however, the generated
+  /// source code must fall back to having a nullable type.
+  /// Consider adding a "default:" property in the specification file to hide this note.
+  ///
+  PlayIntegrityAppAttestation? playIntegrity;
+
   @override
   bool operator ==(Object other) => identical(this, other) || other is AppAttestation &&
-    other.debug == debug;
+    other.debug == debug &&
+    other.playIntegrity == playIntegrity;
 
   @override
   int get hashCode =>
     // ignore: unnecessary_parenthesis
-    (debug == null ? 0 : debug!.hashCode);
+    (debug == null ? 0 : debug!.hashCode) +
+    (playIntegrity == null ? 0 : playIntegrity!.hashCode);
 
   @override
-  String toString() => 'AppAttestation[debug=$debug]';
+  String toString() => 'AppAttestation[debug=$debug, playIntegrity=$playIntegrity]';
 
   Map<String, dynamic> toJson() {
     final json = <String, dynamic>{};
@@ -42,6 +53,11 @@ class AppAttestation {
       json[r'debug'] = this.debug;
     } else {
       json[r'debug'] = null;
+    }
+    if (this.playIntegrity != null) {
+      json[r'play_integrity'] = this.playIntegrity;
+    } else {
+      json[r'play_integrity'] = null;
     }
     return json;
   }
@@ -62,6 +78,7 @@ class AppAttestation {
 
       return AppAttestation(
         debug: DebugAppAttestation.fromJson(json[r'debug']),
+        playIntegrity: PlayIntegrityAppAttestation.fromJson(json[r'play_integrity']),
       );
     }
     return null;

@@ -743,6 +743,8 @@ class ApiClient {
           return PerfMetricValues.fromJson(value);
         case 'Permissions':
           return Permissions.fromJson(value);
+        case 'PlayIntegrityAppAttestation':
+          return PlayIntegrityAppAttestation.fromJson(value);
         case 'PostAccountVerificationQueueItemResult':
           return PostAccountVerificationQueueItemResult.fromJson(value);
         case 'PostAccountVerificationQueueRemoveNextItem':

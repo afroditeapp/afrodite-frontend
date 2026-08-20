@@ -1648,7 +1648,7 @@ class AccountApi {
 
   /// Request email login token to be sent via email.
   ///
-  /// The route always takes at least 5 seconds to complete to prevent timing attacks that could be used to enumerate existing email addresses.
+  /// The route always takes at least 5 seconds to complete to prevent timing attacks that could be used to enumerate existing email addresses.  When `login_only` is `false` (email registration can happen), the email address is validated with an email address validator. If the email address is not supported for registration, the request is rejected with `error_email_registration_unsupported_email`.
   ///
   /// Note: This method returns the HTTP [Response].
   ///
@@ -1683,7 +1683,7 @@ class AccountApi {
 
   /// Request email login token to be sent via email.
   ///
-  /// The route always takes at least 5 seconds to complete to prevent timing attacks that could be used to enumerate existing email addresses.
+  /// The route always takes at least 5 seconds to complete to prevent timing attacks that could be used to enumerate existing email addresses.  When `login_only` is `false` (email registration can happen), the email address is validated with an email address validator. If the email address is not supported for registration, the request is rejected with `error_email_registration_unsupported_email`.
   ///
   /// Parameters:
   ///
