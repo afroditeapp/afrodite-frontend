@@ -1084,6 +1084,10 @@
       }
     }
   },
+  "email_login_screen_registration_unsupported_email": "Unsupported email address. Please use another login method.",
+  "@email_login_screen_registration_unsupported_email": {
+    "description": "Error message shown when the entered email address is unsupported"
+  },
   "email_login_screen_send_code_button": "Send login code",
   "@email_login_screen_send_code_button": {
     "description": "Button text for sending login code"

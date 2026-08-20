@@ -9,6 +9,7 @@ import 'package:app/localizations.dart';
 import 'package:app/ui_utils/common_update_logic.dart';
 import 'package:app/ui_utils/extensions/api.dart';
 import 'package:app/utils/consts/limit.dart';
+import 'package:app/utils/email_address_validator.dart';
 
 /// Email sign in method chooser screen. Lets the user choose between logging
 /// in to an existing account or registering a new account.
@@ -134,6 +135,7 @@ class EmailLoginScreen extends StatefulWidget {
 class _EmailLoginScreenState extends State<EmailLoginScreen> {
   final TextEditingController _emailController = TextEditingController();
   bool _isEmailValid = false;
+  bool _unsupportedEmailAddress = false;
 
   @override
   void initState() {
@@ -150,12 +152,29 @@ class _EmailLoginScreenState extends State<EmailLoginScreen> {
 
   void _validateEmail() {
     final email = _emailController.text.trim();
-    final isValid = email.isNotEmpty && email.contains('@');
-    if (_isEmailValid != isValid) {
-      setState(() {
-        _isEmailValid = isValid;
-      });
+    if (widget.loginOnly) {
+      final isValid = email.isNotEmpty && email.contains('@');
+      if (_isEmailValid != isValid) {
+        setState(() {
+          _isEmailValid = isValid;
+          _unsupportedEmailAddress = false;
+        });
+      }
+    } else {
+      final isValid = EmailAddressValidator().validate(email) == null;
+      final unsupportedEmailAddress = _isEmailTypingComplete(email) && !isValid;
+      if (_isEmailValid != isValid || _unsupportedEmailAddress != unsupportedEmailAddress) {
+        setState(() {
+          _isEmailValid = isValid;
+          _unsupportedEmailAddress = unsupportedEmailAddress;
+        });
+      }
     }
+  }
+
+  bool _isEmailTypingComplete(String email) {
+    final domain = email.split('@').last;
+    return email.contains('@') && domain.contains('.') && !domain.endsWith('.');
   }
 
   @override
@@ -210,6 +229,11 @@ class _EmailLoginScreenState extends State<EmailLoginScreen> {
               FocusScope.of(context).unfocus();
             },
           ),
+          if (_unsupportedEmailAddress)
+            Padding(
+              padding: const EdgeInsets.only(top: 8),
+              child: Text(context.strings.email_login_screen_registration_unsupported_email),
+            ),
           const Padding(padding: EdgeInsets.all(16)),
           ElevatedButton(
             onPressed: _isEmailValid

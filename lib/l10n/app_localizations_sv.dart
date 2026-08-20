@@ -844,6 +844,10 @@ class AppLocalizationsSv extends AppLocalizations {
   }
 
   @override
+  String get email_login_screen_registration_unsupported_email =>
+      'Unsupported email address. Please use another login method.';
+
+  @override
   String get email_login_screen_send_code_button => 'Send login code';
 
   @override

@@ -1510,6 +1510,12 @@ abstract class AppLocalizations {
   /// **'App admin has disabled registering new accounts with email address on current platform ({p0}). Please use another login method.'**
   String email_login_screen_registration_platform_disabled_error(String p0);
 
+  /// Error message shown when the entered email address is unsupported
+  ///
+  /// In en, this message translates to:
+  /// **'Unsupported email address. Please use another login method.'**
+  String get email_login_screen_registration_unsupported_email;
+
   /// Button text for sending login code
   ///
   /// In en, this message translates to:
