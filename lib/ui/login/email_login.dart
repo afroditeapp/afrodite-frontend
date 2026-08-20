@@ -182,22 +182,22 @@ class _EmailLoginScreenState extends State<EmailLoginScreen> {
       child: Column(
         crossAxisAlignment: CrossAxisAlignment.stretch,
         children: [
-          if (widget.loginOnly) ...[
-            const Padding(padding: EdgeInsets.all(8)),
-            Row(
-              children: [
-                Icon(Icons.info, color: Theme.of(context).colorScheme.primary, size: 20),
-                const SizedBox(width: 8),
-                Expanded(
-                  child: Text(
-                    context.strings.email_login_screen_login_only_info,
-                    style: Theme.of(context).textTheme.bodyLarge,
-                  ),
+          const Padding(padding: EdgeInsets.all(8)),
+          Row(
+            children: [
+              Icon(Icons.info, color: Theme.of(context).colorScheme.primary, size: 20),
+              const SizedBox(width: 8),
+              Expanded(
+                child: Text(
+                  widget.loginOnly
+                      ? context.strings.email_login_screen_login_only_info
+                      : context.strings.email_login_screen_registration_only_info,
+                  style: Theme.of(context).textTheme.bodyLarge,
                 ),
-              ],
-            ),
-            const Padding(padding: EdgeInsets.all(16)),
-          ],
+              ),
+            ],
+          ),
+          const Padding(padding: EdgeInsets.all(16)),
           TextField(
             controller: _emailController,
             decoration: InputDecoration(

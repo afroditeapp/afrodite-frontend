@@ -1498,6 +1498,12 @@ abstract class AppLocalizations {
   /// **'The daily registration limit has been reached. Please try again in 24 hours or use another login method.'**
   String get email_login_screen_registration_limit_reached_error;
 
+  /// Notice that using throwaway email services is forbidden
+  ///
+  /// In en, this message translates to:
+  /// **'Please note that using throwaway email services is forbidden'**
+  String get email_login_screen_registration_only_info;
+
   /// Error message when email registration is disabled on current platform
   ///
   /// In en, this message translates to:

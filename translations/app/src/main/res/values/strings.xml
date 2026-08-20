@@ -270,6 +270,7 @@
     <string name="email_login_screen_title" description="Title for email login screen">Email login</string>
     <string name="email_login_screen_title_register" description="Title for email login screen in registration mode">Email registration</string>
     <string name="email_login_screen_login_only_info" description="Notice that the selected login method only works for existing accounts">Registering new accounts is unsupported using this login method</string>
+    <string name="email_login_screen_registration_only_info" description="Notice that using throwaway email services is forbidden">Please note that using throwaway email services is forbidden</string>
     <string name="email_login_screen_email_hint" description="Hint text for email input field">Email address</string>
     <string name="email_login_screen_send_code_button" description="Button text for sending login code">Send login code</string>
     <string name="email_login_screen_input_code_description" description="Description for inputting login code">Enter the login code sent to %s</string>

@@ -1071,6 +1071,10 @@
   "@email_login_screen_registration_limit_reached_error": {
     "description": "Error message when daily email registration limit is reached"
   },
+  "email_login_screen_registration_only_info": "Please note that using throwaway email services is forbidden",
+  "@email_login_screen_registration_only_info": {
+    "description": "Notice that using throwaway email services is forbidden"
+  },
   "email_login_screen_registration_platform_disabled_error": "App admin has disabled registering new accounts with email address on current platform ({p0}). Please use another login method.",
   "@email_login_screen_registration_platform_disabled_error": {
     "description": "Error message when email registration is disabled on current platform",

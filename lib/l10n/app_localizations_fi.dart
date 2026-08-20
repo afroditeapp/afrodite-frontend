@@ -835,6 +835,10 @@ class AppLocalizationsFi extends AppLocalizations {
       'The daily registration limit has been reached. Please try again in 24 hours or use another login method.';
 
   @override
+  String get email_login_screen_registration_only_info =>
+      'Please note that using throwaway email services is forbidden';
+
+  @override
   String email_login_screen_registration_platform_disabled_error(String p0) {
     return 'App admin has disabled registering new accounts with email address on current platform ($p0). Please use another login method.';
   }
