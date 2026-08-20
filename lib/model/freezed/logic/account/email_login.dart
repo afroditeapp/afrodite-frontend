@@ -27,6 +27,8 @@ class RegistrationDomainNotAcceptedError extends EmailLoginError {
   const RegistrationDomainNotAcceptedError(this.domain);
 }
 
+class RegistrationUnsupportedEmailError extends EmailLoginError {}
+
 class LoginFailed extends EmailLoginError {
   final String error;
   const LoginFailed(this.error);

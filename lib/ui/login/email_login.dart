@@ -390,6 +390,17 @@ class _EmailLoginCodeScreenState extends State<EmailLoginCodeScreen> {
               ),
             );
           }
+          if (error is RegistrationUnsupportedEmailError) {
+            return Center(
+              child: Padding(
+                padding: const EdgeInsets.all(16),
+                child: Text(
+                  context.strings.email_login_screen_registration_unsupported_email,
+                  style: Theme.of(context).textTheme.bodyLarge,
+                ),
+              ),
+            );
+          }
 
           if (error is RequestTokenFailed || clientToken == null) {
             final errorMessage = error is RequestTokenFailed && error.maintenanceInfo != null

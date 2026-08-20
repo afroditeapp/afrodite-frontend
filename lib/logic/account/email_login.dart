@@ -130,6 +130,8 @@ EmailLoginError _requestTokenErrorToEmailLoginError(EmailLoginRequestTokenError 
       return RegistrationLimitReachedError();
     case ElrteRegistrationDomainNotAccepted(:final domain):
       return RegistrationDomainNotAcceptedError(domain);
+    case ElrteRegistrationUnsupportedEmail():
+      return RegistrationUnsupportedEmailError();
     case ElrteErrorOccurred():
       return RequestTokenFailed();
   }

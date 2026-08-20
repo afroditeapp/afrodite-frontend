@@ -373,6 +373,9 @@ class LoginRepository extends AppSingleton {
       if (result?.errorEmailRegistrationDomainNotAccepted ?? false) {
         return Err(ElrteRegistrationDomainNotAccepted(_emailDomain(cmd.email)));
       }
+      if (result?.errorEmailRegistrationUnsupportedEmail ?? false) {
+        return Err(ElrteRegistrationUnsupportedEmail());
+      }
       return Err(await _checkServerMaintenanceInfoForEmailTokenRequest());
     }
 
@@ -527,7 +530,8 @@ class LoginRepository extends AppSingleton {
           ElrteRegistrationPlatformDisabled() ||
           ElrteRegistrationIpAddressLimitReached() ||
           ElrteRegistrationLimitReached() ||
-          ElrteRegistrationDomainNotAccepted():
+          ElrteRegistrationDomainNotAccepted() ||
+          ElrteRegistrationUnsupportedEmail():
         return CseLoginApiRequestFailed();
     }
   }

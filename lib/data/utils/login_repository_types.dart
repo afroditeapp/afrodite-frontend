@@ -141,3 +141,5 @@ class ElrteRegistrationDomainNotAccepted extends EmailLoginRequestTokenError {
   final String domain;
   ElrteRegistrationDomainNotAccepted(this.domain);
 }
+
+class ElrteRegistrationUnsupportedEmail extends EmailLoginRequestTokenError {}
