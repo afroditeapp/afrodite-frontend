@@ -44,15 +44,19 @@ Widget signInButtonArea(BuildContext context) {
         ),
       ),
       const Padding(padding: EdgeInsets.symmetric(vertical: COMMON_PADDING)),
-      TextButton(
-        onPressed: () async {
-          await showInfoDialog(context, context.strings.login_screen_email_login_info_dialog_text);
-          if (context.mounted) {
-            openEmailLoginMethodScreen(context);
-          }
-        },
-        child: Text(context.strings.login_screen_sign_in_with_email_action),
-      ),
+      if (kIsWeb || !Platform.isAndroid)
+        TextButton(
+          onPressed: () async {
+            await showInfoDialog(
+              context,
+              context.strings.login_screen_email_login_info_dialog_text,
+            );
+            if (context.mounted) {
+              openEmailLoginMethodScreen(context);
+            }
+          },
+          child: Text(context.strings.login_screen_sign_in_with_email_action),
+        ),
     ],
   );
 }

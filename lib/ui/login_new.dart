@@ -1,3 +1,5 @@
+import "dart:io";
+
 import "package:app/data/utils/demo_account_manager.dart";
 import "package:app/logic/account/demo_account_login.dart";
 import "package:app/model/freezed/logic/account/demo_account_login.dart";
@@ -13,6 +15,7 @@ import "package:app/logic/sign_in_with.dart";
 import "package:app/model/freezed/logic/main/navigator_state.dart";
 import "package:app/model/freezed/logic/sign_in_with.dart";
 import "package:app/ui/login.dart";
+import "package:app/ui/login/email_login.dart";
 import "package:app/ui_utils/loading_dialog.dart";
 import "package:app/ui_utils/app_bar/common_actions.dart";
 import "package:app/ui_utils/app_bar/menu_actions.dart";
@@ -58,6 +61,12 @@ class LoginScreen extends StatelessWidget {
                 openSendChatBackupScreen(context);
               },
             ),
+            if (!kIsWeb && Platform.isAndroid)
+              MenuItemButton(
+                leadingIcon: const Icon(Icons.mail),
+                child: Text(context.strings.email_login_screen_title),
+                onPressed: () => MyNavigator.push(context, EmailLoginPage(loginOnly: true)),
+              ),
             MenuItemButton(
               child: Text(context.strings.login_screen_demo_account_dialog_title),
               onPressed: () {
