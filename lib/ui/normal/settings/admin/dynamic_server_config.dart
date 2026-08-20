@@ -4,8 +4,11 @@ import 'package:app/api/server_connection_manager.dart';
 import 'package:app/data/utils/repository_instances.dart';
 import 'package:app/localizations.dart';
 import 'package:app/logic/account/account.dart';
+import 'package:app/logic/app/navigator_state.dart';
 import 'package:app/model/freezed/logic/account/account.dart';
 import 'package:app/model/freezed/logic/main/navigator_state.dart';
+import 'package:app/ui/normal/settings/admin/dynamic_server_config/domain_list_editor.dart';
+import 'package:app/ui_utils/consts/padding.dart';
 import 'package:app/ui_utils/dialog.dart';
 import 'package:app/ui_utils/snack_bar.dart';
 import 'package:app/utils/result.dart';
@@ -202,10 +205,72 @@ class _DynamicServerConfigScreenState extends State<DynamicServerConfigScreen> {
             }
           }),
         ),
+        const Divider(),
+        ListTile(
+          title: const Text("Email Registration Allowlist"),
+          subtitle: const Text(
+            "Only these email domains are accepted for registration. Empty means all are allowed.",
+          ),
+          isThreeLine: true,
+          trailing: const Icon(Icons.chevron_right),
+          onTap: permissions.adminServerEditServerConfig
+              ? () => _editDomainList(
+                  "Email Registration Allowlist",
+                  "Only these email domains are accepted for registration. Empty means all are allowed.",
+                  _config?.emailRegistrationDomainLists?.allowlist ?? const [],
+                  (value) {
+                    _config?.emailRegistrationDomainLists ??= EmailRegistrationDomainLists();
+                    _config?.emailRegistrationDomainLists?.allowlist = value;
+                  },
+                )
+              : null,
+        ),
+        _DomainListPreview(
+          domains: _config?.emailRegistrationDomainLists?.allowlist ?? const [],
+          emptyText: "No allowlisted domains. All email domains are accepted.",
+        ),
+        const Divider(),
+        ListTile(
+          title: const Text("Email Registration Blocklist"),
+          subtitle: const Text("These email domains are rejected for registration."),
+          isThreeLine: true,
+          trailing: const Icon(Icons.chevron_right),
+          onTap: permissions.adminServerEditServerConfig
+              ? () => _editDomainList(
+                  "Email Registration Blocklist",
+                  "These email domains are rejected for registration.",
+                  _config?.emailRegistrationDomainLists?.blocklist ?? const [],
+                  (value) {
+                    _config?.emailRegistrationDomainLists ??= EmailRegistrationDomainLists();
+                    _config?.emailRegistrationDomainLists?.blocklist = value;
+                  },
+                )
+              : null,
+        ),
+        _DomainListPreview(
+          domains: _config?.emailRegistrationDomainLists?.blocklist ?? const [],
+          emptyText: "No blocklisted email domains.",
+        ),
         if (!permissions.adminServerEditServerConfig)
           const ListTile(title: Text("No permission for editing server config")),
+        Padding(padding: EdgeInsets.only(top: FLOATING_ACTION_BUTTON_EMPTY_AREA)),
       ],
     );
+  }
+
+  Future<void> _editDomainList(
+    String title,
+    String subtitle,
+    List<String> initialDomains,
+    ValueChanged<List<String>> onResult,
+  ) async {
+    final result = await MyNavigator.pushLimited(
+      context,
+      DomainListEditorPage(title: title, subtitle: subtitle, initialDomains: initialDomains),
+    );
+    if (result != null && mounted) {
+      setState(() => onResult(result.domains));
+    }
   }
 
   Future<bool> _saveConfigAndCloseScreen() async {
@@ -268,6 +333,29 @@ class _PlatformSwitches extends StatelessWidget {
         SwitchListTile(title: const Text("iOS"), value: ios, onChanged: onIosChanged),
         SwitchListTile(title: const Text("Web"), value: web, onChanged: onWebChanged),
       ],
+    );
+  }
+}
+
+class _DomainListPreview extends StatelessWidget {
+  final List<String> domains;
+  final String emptyText;
+
+  const _DomainListPreview({required this.domains, required this.emptyText});
+
+  @override
+  Widget build(BuildContext context) {
+    return Padding(
+      padding: const EdgeInsets.symmetric(horizontal: 16, vertical: 8),
+      child: Column(
+        crossAxisAlignment: CrossAxisAlignment.start,
+        children: [
+          if (domains.isEmpty)
+            Text(emptyText, style: Theme.of(context).textTheme.bodySmall)
+          else
+            ...domains.map((domain) => Text(domain, style: Theme.of(context).textTheme.bodySmall)),
+        ],
+      ),
     );
   }
 }
