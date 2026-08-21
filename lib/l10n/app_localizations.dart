@@ -4018,6 +4018,12 @@ abstract class AppLocalizations {
   /// **'Many users are viewing profiles - image quality may be degraded'**
   String get snackbar_image_quality_degraded;
 
+  /// Snackbar error text for Play Integrity API errors
+  ///
+  /// In en, this message translates to:
+  /// **'Play Integrity API error: {p0}'**
+  String snackbar_play_integrity_api_error(String p0);
+
   /// Splash screen error text that app is already running
   ///
   /// In en, this message translates to:

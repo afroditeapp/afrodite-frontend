@@ -2247,6 +2247,11 @@ class AppLocalizationsEn extends AppLocalizations {
       'Many users are viewing profiles - image quality may be degraded';
 
   @override
+  String snackbar_play_integrity_api_error(String p0) {
+    return 'Play Integrity API error: $p0';
+  }
+
+  @override
   String get splash_screen_app_is_already_running => 'App is already running';
 
   @override

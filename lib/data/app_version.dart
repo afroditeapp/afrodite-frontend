@@ -1,6 +1,8 @@
 import 'dart:io';
 
 import 'package:app/data/utils/app_attestation.dart';
+import 'package:app/localizations.dart';
+import 'package:app/ui_utils/snack_bar.dart';
 import 'package:app/utils/result.dart';
 import 'package:flutter/foundation.dart';
 import 'package:openapi/api.dart';
@@ -101,10 +103,18 @@ class AppVersionManager extends AppSingleton {
     AppAttestation? appAttestation;
     if (!kIsWeb && Platform.isAndroid) {
       final playIntegrity = await AppAttestationManager.getInstance()
-          .getPlayIntegrityAppAttestation()
-          .ok();
-      if (playIntegrity != null) {
-        appAttestation = AppAttestation(playIntegrity: playIntegrity);
+          .getPlayIntegrityAppAttestation();
+      switch (playIntegrity) {
+        case Ok(:final v):
+          appAttestation = AppAttestation(playIntegrity: v);
+        case Err(:final e):
+          switch (e) {
+            case PlayIntegrityNotConfigured() || PlayIntegrityNotSupported():
+              break;
+            case PlayIntegrityErrorString(:final message):
+              showSnackBar(R.strings.snackbar_play_integrity_api_error(message));
+              await Future.delayed(Duration(seconds: 4), () => ());
+          }
       }
     }
     return ClientInfo(

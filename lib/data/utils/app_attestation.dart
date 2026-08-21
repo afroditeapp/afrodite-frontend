@@ -9,6 +9,17 @@ import 'package:utils/utils.dart';
 
 final _log = Logger("AppAttestationManager");
 
+sealed class PlayIntegrityError {}
+
+class PlayIntegrityNotConfigured extends PlayIntegrityError {}
+
+class PlayIntegrityNotSupported extends PlayIntegrityError {}
+
+class PlayIntegrityErrorString extends PlayIntegrityError {
+  final String message;
+  PlayIntegrityErrorString(this.message);
+}
+
 abstract class AppAttestationManagerCmd<T> {
   final BehaviorSubject<T?> completed = BehaviorSubject.seeded(null);
 
@@ -21,7 +32,7 @@ abstract class AppAttestationManagerCmd<T> {
 }
 
 class GetPlayIntegrityAppAttestation
-    extends AppAttestationManagerCmd<Result<PlayIntegrityAppAttestation, ()>> {}
+    extends AppAttestationManagerCmd<Result<PlayIntegrityAppAttestation, PlayIntegrityError>> {}
 
 class AppAttestationManager extends AppSingleton {
   AppAttestationManager._private();
@@ -52,7 +63,7 @@ class AppAttestationManager extends AppSingleton {
         .listen(null);
   }
 
-  Future<Result<PlayIntegrityAppAttestation, ()>> _getPlayIntegrityAppAttestation({
+  Future<Result<PlayIntegrityAppAttestation, PlayIntegrityError>> _getPlayIntegrityAppAttestation({
     bool retry = false,
   }) async {
     if (retry) {
@@ -62,10 +73,10 @@ class AppAttestationManager extends AppSingleton {
     try {
       final cloudProjectNumber = playIntegrityApiCloudProjectNumber();
       if (cloudProjectNumber == null) {
-        return Err(());
+        return Err(PlayIntegrityNotConfigured());
       }
       if (!await AppAttest.isSupported()) {
-        return Err(());
+        return Err(PlayIntegrityNotSupported());
       }
       if (!_playIntegrityTokenProviderPrepared) {
         await AppAttest.preparePlayIntegrityTokenProvider(cloudProjectNumber: cloudProjectNumber);
@@ -78,15 +89,16 @@ class AppAttestationManager extends AppSingleton {
         _playIntegrityTokenProviderPrepared = false;
         return await _getPlayIntegrityAppAttestation(retry: true);
       } else {
-        return Err(());
+        return Err(PlayIntegrityErrorString(e.code));
       }
     } catch (e) {
       _log.error("Unknown Play Integrity error: $e");
-      return Err(());
+      return Err(PlayIntegrityErrorString("Unknown error"));
     }
   }
 
-  Future<Result<PlayIntegrityAppAttestation, ()>> getPlayIntegrityAppAttestation() async {
+  Future<Result<PlayIntegrityAppAttestation, PlayIntegrityError>>
+  getPlayIntegrityAppAttestation() async {
     final cmd = GetPlayIntegrityAppAttestation();
     _cmds.add(cmd);
     return await cmd.waitCompletionAndDispose();
