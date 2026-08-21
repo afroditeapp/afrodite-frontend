@@ -108,7 +108,7 @@ class SignInWithGoogleManager {
     _linkingEnabled = false;
   }
 
-  Future<Result<SignInWithLoginInfo, ()>> login() async {
+  Future<Result<SignInWithGoogleInfo, ()>> login() async {
     if (!_initDone) {
       _log.error("Init is not done");
       return const Err(());
@@ -129,12 +129,7 @@ class SignInWithGoogleManager {
       return const Err(());
     }
 
-    return Ok(
-      SignInWithLoginInfo(
-        google: SignInWithGoogleInfo(nonce: _nonceBase64Url, token: token),
-        clientInfo: await AppVersionManager.getInstance().clientInfoWithAppAttestation(),
-      ),
-    );
+    return Ok(SignInWithGoogleInfo(nonce: _nonceBase64Url, token: token));
   }
 
   Future<void> logout() async {

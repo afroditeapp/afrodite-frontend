@@ -63,8 +63,8 @@ class SignInWithManagementBloc extends Bloc<SignInWithManagementEvent, SignInWit
       await _linkSignInWith(
         emit,
         () => _login.googleManager.login(),
-        (loginInfo) => r.account.api.account(
-          (api) => api.putSignInWithGoogle(PutSignInWithGoogle(google: loginInfo.google)),
+        (google) => r.account.api.account(
+          (api) => api.putSignInWithGoogle(PutSignInWithGoogle(google: google)),
         ),
       );
     });

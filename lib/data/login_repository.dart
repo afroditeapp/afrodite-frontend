@@ -578,14 +578,18 @@ class LoginRepository extends AppSingleton {
   }
 
   Stream<SignInWithEvent> signInWithGoogle(String serverAddress) async* {
-    final info = await _google.login().ok();
-    if (info == null) {
+    final tokenInfo = await _google.login().ok();
+    if (tokenInfo == null) {
       yield SignInWithGetTokenFailed();
       return;
     }
 
     yield SignInWithGetTokenCompleted();
 
+    final info = SignInWithLoginInfo(
+      google: tokenInfo,
+      clientInfo: await AppVersionManager.getInstance().clientInfoWithAppAttestation(),
+    );
     switch (await sendSignInWithLoginCmd(info, serverAddress)) {
       case Ok():
         ();
