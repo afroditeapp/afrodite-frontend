@@ -94,6 +94,11 @@ class AppLocalizationsEn extends AppLocalizations {
   String get account_settings_screen_email_change_cancelled => 'Email change cancelled';
 
   @override
+  String account_settings_screen_email_change_history_limit_reached(String p0) {
+    return 'Email change history limit reached. Try again after $p0.';
+  }
+
+  @override
   String get account_settings_screen_email_change_initiated =>
       'Email change initiated. Please check your email.';
 
@@ -2179,6 +2184,11 @@ class AppLocalizationsEn extends AppLocalizations {
 
   @override
   String get sign_in_with_management_screen_link_failed => 'Linking sign in method failed';
+
+  @override
+  String sign_in_with_management_screen_link_history_limit_reached(String p0) {
+    return 'Sign in method history limit reached. Try again after $p0.';
+  }
 
   @override
   String get sign_in_with_management_screen_local_auth_reason =>

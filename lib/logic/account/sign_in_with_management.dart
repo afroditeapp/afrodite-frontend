@@ -54,7 +54,7 @@ class SignInWithManagementBloc extends Bloc<SignInWithManagementEvent, SignInWit
       await _linkSignInWith(
         emit,
         () => SignInWithAppleManager.signInWithApple(currentServerAddress: r.api.serverAddress),
-        (apple) => r.account.api.accountAction(
+        (apple) => r.account.api.account(
           (api) => api.putSignInWithApple(PutSignInWithApple(apple: apple)),
         ),
       );
@@ -63,7 +63,7 @@ class SignInWithManagementBloc extends Bloc<SignInWithManagementEvent, SignInWit
       await _linkSignInWith(
         emit,
         () => _login.googleManager.login(),
-        (loginInfo) => r.account.api.accountAction(
+        (loginInfo) => r.account.api.account(
           (api) => api.putSignInWithGoogle(PutSignInWithGoogle(google: loginInfo.google)),
         ),
       );
@@ -72,7 +72,7 @@ class SignInWithManagementBloc extends Bloc<SignInWithManagementEvent, SignInWit
       await _linkSignInWith(
         emit,
         () async => Ok<SignInWithGoogleInfo, ()>(event.info),
-        (google) => r.account.api.accountAction(
+        (google) => r.account.api.account(
           (api) => api.putSignInWithGoogle(PutSignInWithGoogle(google: google)),
         ),
       );
@@ -116,7 +116,7 @@ class SignInWithManagementBloc extends Bloc<SignInWithManagementEvent, SignInWit
   Future<void> _linkSignInWith<Info, Failure>(
     Emitter<SignInWithManagementBlocData> emit,
     Future<Result<Info, Failure>> Function() getInfo,
-    Future<Result<(), ActionApiError>> Function(Info) link,
+    Future<Result<PutSignInWithResult, ValueApiError>> Function(Info) link,
   ) async {
     await runOnce(() async {
       emit(state.copyWith(updateState: const UpdateStarted()));
@@ -125,7 +125,7 @@ class SignInWithManagementBloc extends Bloc<SignInWithManagementEvent, SignInWit
       emit(state.copyWith(updateState: const UpdateInProgress()));
 
       final info = await getInfo();
-      final Result<(), ActionApiError>? result;
+      final Result<PutSignInWithResult, ValueApiError>? result;
       switch (info) {
         case Ok(:final v):
           result = await link(v);
@@ -136,7 +136,22 @@ class SignInWithManagementBloc extends Bloc<SignInWithManagementEvent, SignInWit
       await waitTime.waitIfNeeded();
 
       if (result != null) {
-        await _reload(emit);
+        switch (result) {
+          case Ok(:final v):
+            if (v.errorHistoryLimitReached != null) {
+              showSnackBar(
+                R.strings.sign_in_with_management_screen_link_history_limit_reached(
+                  formatSeconds(v.errorHistoryLimitReached!),
+                ),
+              );
+            } else if (v.error) {
+              showSnackBar(R.strings.sign_in_with_management_screen_link_failed);
+            } else {
+              await _reload(emit);
+            }
+          case Err():
+            showSnackBar(R.strings.sign_in_with_management_screen_link_failed);
+        }
       } else {
         showSnackBar(R.strings.sign_in_with_management_screen_link_failed);
       }

@@ -7,6 +7,7 @@ import 'package:app/utils/result.dart';
 import 'package:flutter/material.dart';
 import 'package:app/ui_utils/snack_bar.dart';
 import 'package:app/utils/consts/limit.dart';
+import 'package:app/utils/time.dart';
 import 'package:openapi/api.dart';
 
 class EmailAddressManagementPage extends MyScreenPageLimited<()> {
@@ -229,6 +230,12 @@ class _EmailAddressManagementScreenState extends State<EmailAddressManagementScr
       showSnackBar("Email sending timeout");
     } else if (result.errorTryAgainLaterAfterSeconds != null) {
       showSnackBar("Try again later after ${result.errorTryAgainLaterAfterSeconds} seconds");
+    } else if (result.errorHistoryLimitReached != null) {
+      showSnackBar(
+        "Email change history limit reached. Try again after ${formatSeconds(result.errorHistoryLimitReached!)}",
+      );
+    } else if (result.error) {
+      showSnackBar(R.strings.generic_error);
     } else {
       showSnackBar("Email change initiated successfully");
       _newEmailController.clear();

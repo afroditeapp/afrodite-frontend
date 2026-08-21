@@ -121,6 +121,15 @@
   "@account_settings_screen_email_change_cancelled": {
     "description": "Snackbar text for successful email change cancellation"
   },
+  "account_settings_screen_email_change_history_limit_reached": "Email change history limit reached. Try again after {p0}.",
+  "@account_settings_screen_email_change_history_limit_reached": {
+    "description": "Snackbar text when email change history limit is reached, with formatted wait time",
+    "placeholders": {
+      "p0": {
+        "type": "String"
+      }
+    }
+  },
   "account_settings_screen_email_change_initiated": "Email change initiated. Please check your email.",
   "@account_settings_screen_email_change_initiated": {
     "description": "Snackbar text for successful email change initiation"
@@ -2836,6 +2845,15 @@
   "sign_in_with_management_screen_link_failed": "Linking sign in method failed",
   "@sign_in_with_management_screen_link_failed": {
     "description": "Snackbar text when linking sign in method fails"
+  },
+  "sign_in_with_management_screen_link_history_limit_reached": "Sign in method history limit reached. Try again after {p0}.",
+  "@sign_in_with_management_screen_link_history_limit_reached": {
+    "description": "Snackbar text when sign in with history limit is reached, with formatted wait time",
+    "placeholders": {
+      "p0": {
+        "type": "String"
+      }
+    }
   },
   "sign_in_with_management_screen_local_auth_reason": "Please authenticate to manage sign in methods",
   "@sign_in_with_management_screen_local_auth_reason": {

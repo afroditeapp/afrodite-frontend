@@ -184,6 +184,12 @@ void showSnackBarTextsForInitEmailChangeResult(InitEmailChangeResult result) {
     showSnackBar(
       R.strings.generic_try_again_later_seconds(result.errorTryAgainLaterAfterSeconds.toString()),
     );
+  } else if (result.errorHistoryLimitReached != null) {
+    showSnackBar(
+      R.strings.account_settings_screen_email_change_history_limit_reached(
+        formatSeconds(result.errorHistoryLimitReached!),
+      ),
+    );
   } else if (result.error) {
     showSnackBar(R.strings.generic_error_occurred);
   } else {

@@ -232,6 +232,12 @@ abstract class AppLocalizations {
   /// **'Email change cancelled'**
   String get account_settings_screen_email_change_cancelled;
 
+  /// Snackbar text when email change history limit is reached, with formatted wait time
+  ///
+  /// In en, this message translates to:
+  /// **'Email change history limit reached. Try again after {p0}.'**
+  String account_settings_screen_email_change_history_limit_reached(String p0);
+
   /// Snackbar text for successful email change initiation
   ///
   /// In en, this message translates to:
@@ -3903,6 +3909,12 @@ abstract class AppLocalizations {
   /// In en, this message translates to:
   /// **'Linking sign in method failed'**
   String get sign_in_with_management_screen_link_failed;
+
+  /// Snackbar text when sign in with history limit is reached, with formatted wait time
+  ///
+  /// In en, this message translates to:
+  /// **'Sign in method history limit reached. Try again after {p0}.'**
+  String sign_in_with_management_screen_link_history_limit_reached(String p0);
 
   /// Reason for local authentication when managing sign in methods
   ///

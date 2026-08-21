@@ -10,6 +10,7 @@ import 'package:app/ui_utils/common_update_logic.dart';
 import 'package:app/ui_utils/extensions/api.dart';
 import 'package:app/utils/consts/limit.dart';
 import 'package:app/utils/email_address_validator.dart';
+import 'package:app/utils/time.dart';
 
 /// Email sign in method chooser screen. Lets the user choose between logging
 /// in to an existing account or registering a new account.
@@ -436,7 +437,7 @@ class _EmailLoginCodeScreenState extends State<EmailLoginCodeScreen> {
                 if (state.tokenValiditySeconds != null)
                   Text(
                     context.strings.email_login_screen_token_validity(
-                      _formatSeconds(state.tokenValiditySeconds!),
+                      formatSeconds(state.tokenValiditySeconds!),
                     ),
                     style: Theme.of(context).textTheme.bodyLarge,
                   ),
@@ -468,7 +469,7 @@ class _EmailLoginCodeScreenState extends State<EmailLoginCodeScreen> {
                 Text(
                   context.strings.email_login_screen_didnt_receive_code(
                     state.resendWaitSeconds != null
-                        ? _formatSeconds(state.resendWaitSeconds!)
+                        ? formatSeconds(state.resendWaitSeconds!)
                         : '...',
                   ),
                   style: Theme.of(context).textTheme.bodyMedium,
@@ -479,16 +480,5 @@ class _EmailLoginCodeScreenState extends State<EmailLoginCodeScreen> {
         }
       },
     );
-  }
-
-  String _formatSeconds(int seconds) {
-    final duration = Duration(seconds: seconds);
-    if (duration.inHours > 0) {
-      return '${duration.inHours}h ${duration.inMinutes.remainder(60)}m';
-    } else if (duration.inMinutes > 0) {
-      return '${duration.inMinutes}m ${duration.inSeconds.remainder(60)}s';
-    } else {
-      return '${duration.inSeconds}s';
-    }
   }
 }
