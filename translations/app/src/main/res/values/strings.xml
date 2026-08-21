@@ -262,6 +262,9 @@
     <string name="login_screen_sign_in_with_error" description="Snackbar text for sign in with error">Sign in with failed</string>
     <string name="login_screen_login_api_request_failed" description="Snackbar text for login API request failed">Login API request failed. Try again later.</string>
     <string name="login_screen_invalid_email_login_token" description="Snackbar text for invalid email login token error">Invalid email login code</string>
+    <string name="login_screen_app_attestation_app_integrity_error" description="Snackbar text for app integrity check failed">App integrity verification failed</string>
+    <string name="login_screen_app_attestation_device_integrity_error" description="Snackbar text for device integrity check failed">Device integrity verification failed</string>
+    <string name="login_screen_app_attestation_failed" description="Snackbar text for app attestation failed">App verification failed. Please try again later.</string>
     <string name="login_screen_connecting_websocket_failed" description="Snackbar text for connecting WebSocket failed">Connecting WebSocket failed. Try again later.</string>
     <string name="login_screen_ios_pwa_install_description" description="Description text for iOS PWA installation guide">To use this app on iOS, please add it to your home screen:</string>
     <string name="login_screen_ios_pwa_install_step1" description="First step for iOS PWA installation">1. Tap the Share button</string>

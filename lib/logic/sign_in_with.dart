@@ -80,6 +80,12 @@ String signInErrorToString(CommonSignInError error) {
       return R.strings.login_screen_email_already_used;
     case CseAccountLocked():
       return R.strings.generic_account_locked_error;
+    case CseAppAttestationAppIntegrity():
+      return R.strings.login_screen_app_attestation_app_integrity_error;
+    case CseAppAttestationDeviceIntegrity():
+      return R.strings.login_screen_app_attestation_device_integrity_error;
+    case CseAppAttestationFailed():
+      return R.strings.login_screen_app_attestation_failed;
     case CseInvalidEmailLoginToken():
       return R.strings.login_screen_invalid_email_login_token;
     case CseCreatingConnectingWebSocketFailed():
@@ -94,7 +100,7 @@ String signInErrorToString(CommonSignInError error) {
 }
 
 String platformNameFromClientType() {
-  final clientType = AppVersionManager.getInstance().clientInfo().clientType;
+  final clientType = AppVersionManager.getInstance().clientType;
   if (clientType == ClientType.android) {
     return "Android";
   } else if (clientType == ClientType.ios) {

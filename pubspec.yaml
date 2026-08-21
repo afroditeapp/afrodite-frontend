@@ -150,6 +150,11 @@ dependencies:
 
   google_api_availability: ^5.0.1
 
+  app_attest:
+    git:
+      url: https://github.com/jutuon/app_attest.git
+      ref: a2968d2d49d6ad6a888b679720835f6a0ea6aa16
+
   # flutter_file_saver version 0.10 with iOS min version 13 and temporary
   # file moving.
   flutter_file_saver:

@@ -25,6 +25,15 @@ packages:
       url: "https://pub.dev"
     source: hosted
     version: "6.1.0"
+  app_attest:
+    dependency: "direct main"
+    description:
+      path: "."
+      ref: a2968d2d49d6ad6a888b679720835f6a0ea6aa16
+      resolved-ref: a2968d2d49d6ad6a888b679720835f6a0ea6aa16
+      url: "https://github.com/jutuon/app_attest.git"
+    source: git
+    version: "0.2.1"
   archive:
     dependency: transitive
     description:

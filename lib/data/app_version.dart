@@ -1,5 +1,7 @@
 import 'dart:io';
 
+import 'package:app/data/utils/app_attestation.dart';
+import 'package:app/utils/result.dart';
 import 'package:flutter/foundation.dart';
 import 'package:openapi/api.dart';
 import 'package:package_info_plus/package_info_plus.dart';
@@ -95,17 +97,32 @@ class AppVersionManager extends AppSingleton {
     return (major, minor, patch);
   }
 
-  ClientInfo clientInfo() {
-    final ClientType clientType;
+  Future<ClientInfo> clientInfoWithAppAttestation() async {
+    AppAttestation? appAttestation;
+    if (!kIsWeb && Platform.isAndroid) {
+      final playIntegrity = await AppAttestationManager.getInstance()
+          .getPlayIntegrityAppAttestation()
+          .ok();
+      if (playIntegrity != null) {
+        appAttestation = AppAttestation(playIntegrity: playIntegrity);
+      }
+    }
+    return ClientInfo(
+      clientType: clientType,
+      clientVersion: clientVersion,
+      appAttestation: appAttestation,
+    );
+  }
+
+  ClientType get clientType {
     if (kIsWeb) {
-      clientType = ClientType.web;
+      return ClientType.web;
     } else if (Platform.isAndroid) {
-      clientType = ClientType.android;
+      return ClientType.android;
     } else if (Platform.isIOS) {
-      clientType = ClientType.ios;
+      return ClientType.ios;
     } else {
       throw UnsupportedError("Unsupported platform");
     }
-    return ClientInfo(clientType: clientType, clientVersion: clientVersion);
   }
 }

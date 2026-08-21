@@ -346,7 +346,7 @@ class LoginRepository extends AppSingleton {
         .account(
           (api) => api.postRequestEmailLoginToken(
             RequestEmailLoginToken(
-              clientType: AppVersionManager.getInstance().clientInfo().clientType,
+              clientType: AppVersionManager.getInstance().clientType,
               email: cmd.email,
               loginOnly: cmd.loginOnly,
               language: clientLocale != null
@@ -385,13 +385,14 @@ class LoginRepository extends AppSingleton {
   String _emailDomain(String email) => email.split('@').last;
 
   Future<Result<(), CommonSignInError>> _handleEmailLoginWithToken(EmailLoginWithToken cmd) async {
+    final clientInfo = await AppVersionManager.getInstance().clientInfoWithAppAttestation();
     final result = await _apiNoConnection
         .account(
           (api) => api.postEmailLoginWithToken(
             EmailLogin(
               clientToken: EmailLoginToken(token: cmd.clientToken),
               emailToken: EmailLoginToken(token: cmd.emailToken),
-              clientInfo: AppVersionManager.getInstance().clientInfo(),
+              clientInfo: clientInfo,
             ),
           ),
         )
@@ -428,6 +429,15 @@ class LoginRepository extends AppSingleton {
     }
     if (loginResult.errorAccountLocked) {
       return Err(CseAccountLocked());
+    }
+    if (loginResult.errorAppAttestationAppIntegrity) {
+      return Err(CseAppAttestationAppIntegrity());
+    }
+    if (loginResult.errorAppAttestationDeviceIntegrity) {
+      return Err(CseAppAttestationDeviceIntegrity());
+    }
+    if (loginResult.errorAppAttestationFailed) {
+      return Err(CseAppAttestationFailed());
     }
     if (loginResult.errorInvalidEmailLoginToken) {
       return Err(CseInvalidEmailLoginToken());
@@ -593,7 +603,7 @@ class LoginRepository extends AppSingleton {
         yield SignInWithGetTokenCompleted();
         final info = SignInWithLoginInfo(
           apple: r.v,
-          clientInfo: AppVersionManager.getInstance().clientInfo(),
+          clientInfo: await AppVersionManager.getInstance().clientInfoWithAppAttestation(),
         );
         switch (await sendSignInWithLoginCmd(info, serverAddress)) {
           case Ok():

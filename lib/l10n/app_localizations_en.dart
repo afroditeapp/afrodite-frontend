@@ -1325,6 +1325,18 @@ class AppLocalizationsEn extends AppLocalizations {
   String get likes_screen_title => 'Requests';
 
   @override
+  String get login_screen_app_attestation_app_integrity_error =>
+      'App integrity verification failed';
+
+  @override
+  String get login_screen_app_attestation_device_integrity_error =>
+      'Device integrity verification failed';
+
+  @override
+  String get login_screen_app_attestation_failed =>
+      'App verification failed. Please try again later.';
+
+  @override
   String get login_screen_connecting_websocket_failed =>
       'Connecting WebSocket failed. Try again later.';
 

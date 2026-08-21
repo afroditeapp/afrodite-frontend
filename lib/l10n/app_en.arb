@@ -1706,6 +1706,18 @@
   "@likes_screen_title": {
     "description": "Title for likes screen"
   },
+  "login_screen_app_attestation_app_integrity_error": "App integrity verification failed",
+  "@login_screen_app_attestation_app_integrity_error": {
+    "description": "Snackbar text for app integrity check failed"
+  },
+  "login_screen_app_attestation_device_integrity_error": "Device integrity verification failed",
+  "@login_screen_app_attestation_device_integrity_error": {
+    "description": "Snackbar text for device integrity check failed"
+  },
+  "login_screen_app_attestation_failed": "App verification failed. Please try again later.",
+  "@login_screen_app_attestation_failed": {
+    "description": "Snackbar text for app attestation failed"
+  },
   "login_screen_connecting_websocket_failed": "Connecting WebSocket failed. Try again later.",
   "@login_screen_connecting_websocket_failed": {
     "description": "Snackbar text for connecting WebSocket failed"

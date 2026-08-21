@@ -161,16 +161,13 @@ class DemoAccountManager {
     AccountId id, {
     required ApiManager apiNoConnection,
   }) async {
+    final clientInfo = await AppVersionManager.getInstance().clientInfoWithAppAttestation();
     return await _getCurrentToken().andThen(
       (t) => apiNoConnection
           .accountWrapper()
           .requestValue(
             (api) => api.postDemoAccountLoginToAccount(
-              DemoAccountLoginToAccount(
-                aid: id,
-                token: t,
-                clientInfo: AppVersionManager.getInstance().clientInfo(),
-              ),
+              DemoAccountLoginToAccount(aid: id, token: t, clientInfo: clientInfo),
             ),
           )
           .mapErr((e) => handleError(e, apiNoConnection: apiNoConnection)),

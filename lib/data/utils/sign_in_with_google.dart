@@ -82,7 +82,7 @@ class SignInWithGoogleManager {
 
             final info = SignInWithLoginInfo(
               google: SignInWithGoogleInfo(nonce: _nonceBase64Url, token: token),
-              clientInfo: AppVersionManager.getInstance().clientInfo(),
+              clientInfo: await AppVersionManager.getInstance().clientInfoWithAppAttestation(),
             );
             final login = LoginRepository.getInstance();
             final currentServerAddress = await login.accountServerAddress.first;
@@ -132,7 +132,7 @@ class SignInWithGoogleManager {
     return Ok(
       SignInWithLoginInfo(
         google: SignInWithGoogleInfo(nonce: _nonceBase64Url, token: token),
-        clientInfo: AppVersionManager.getInstance().clientInfo(),
+        clientInfo: await AppVersionManager.getInstance().clientInfoWithAppAttestation(),
       ),
     );
   }

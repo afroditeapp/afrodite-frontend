@@ -93,6 +93,12 @@ class CseLoginApiRequestFailed extends CommonSignInError {}
 
 class CseUnsupportedClient extends CommonSignInError {}
 
+class CseAppAttestationAppIntegrity extends CommonSignInError {}
+
+class CseAppAttestationDeviceIntegrity extends CommonSignInError {}
+
+class CseAppAttestationFailed extends CommonSignInError {}
+
 class CseRegistrationAllPlatformsDisabled extends CommonSignInError {}
 
 class CseRegistrationPlatformDisabled extends CommonSignInError {}

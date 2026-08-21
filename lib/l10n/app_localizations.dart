@@ -2410,6 +2410,24 @@ abstract class AppLocalizations {
   /// **'Requests'**
   String get likes_screen_title;
 
+  /// Snackbar text for app integrity check failed
+  ///
+  /// In en, this message translates to:
+  /// **'App integrity verification failed'**
+  String get login_screen_app_attestation_app_integrity_error;
+
+  /// Snackbar text for device integrity check failed
+  ///
+  /// In en, this message translates to:
+  /// **'Device integrity verification failed'**
+  String get login_screen_app_attestation_device_integrity_error;
+
+  /// Snackbar text for app attestation failed
+  ///
+  /// In en, this message translates to:
+  /// **'App verification failed. Please try again later.'**
+  String get login_screen_app_attestation_failed;
+
   /// Snackbar text for connecting WebSocket failed
   ///
   /// In en, this message translates to:

@@ -125,6 +125,7 @@ class DefaultFirebaseOptions {
   );
 }
 
+int? playIntegrityApiCloudProjectNumber() => null;
 ```
 
 ### Add missing iOS project files

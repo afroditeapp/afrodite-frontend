@@ -2,6 +2,7 @@ import 'dart:async';
 
 import 'package:app/config.dart';
 import 'package:app/data/app_version.dart';
+import 'package:app/data/utils/app_attestation.dart';
 import 'package:app/utils/app_running_detector/app_running_detector.dart';
 import 'package:flutter/cupertino.dart';
 import 'package:flutter/foundation.dart';
@@ -224,6 +225,7 @@ class GlobalInitManager extends AppSingletonNoInit {
     await CameraManager.getInstance().init();
     await NotificationManager.getInstance().init();
     await PushNotificationManager.getInstance().init();
+    await AppAttestationManager.getInstance().init();
 
     await LoginRepository.getInstance().init();
 
