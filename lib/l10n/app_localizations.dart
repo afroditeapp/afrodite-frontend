@@ -2002,6 +2002,24 @@ abstract class AppLocalizations {
   /// **'Time'**
   String get generic_time;
 
+  /// Generic hour time unit abbreviation
+  ///
+  /// In en, this message translates to:
+  /// **'h'**
+  String get generic_time_unit_hour;
+
+  /// Generic minute time unit abbreviation
+  ///
+  /// In en, this message translates to:
+  /// **'m'**
+  String get generic_time_unit_minute;
+
+  /// Generic second time unit abbreviation
+  ///
+  /// In en, this message translates to:
+  /// **'s'**
+  String get generic_time_unit_second;
+
   /// Generic today text
   ///
   /// In en, this message translates to:

@@ -1,3 +1,5 @@
+import 'package:app/localizations.dart';
+
 class WantedWaitingTimeManager {
   final int wantedDurationMillis;
   final DateTime startTime = DateTime.now();
@@ -18,10 +20,12 @@ class WantedWaitingTimeManager {
 String formatSeconds(int seconds) {
   final duration = Duration(seconds: seconds);
   if (duration.inHours > 0) {
-    return '${duration.inHours}h ${duration.inMinutes.remainder(60)}m';
+    return '${duration.inHours}${R.strings.generic_time_unit_hour} '
+        '${duration.inMinutes.remainder(60)}${R.strings.generic_time_unit_minute}';
   } else if (duration.inMinutes > 0) {
-    return '${duration.inMinutes}m ${duration.inSeconds.remainder(60)}s';
+    return '${duration.inMinutes}${R.strings.generic_time_unit_minute} '
+        '${duration.inSeconds.remainder(60)}${R.strings.generic_time_unit_second}';
   } else {
-    return '${duration.inSeconds}s';
+    return '${duration.inSeconds}${R.strings.generic_time_unit_second}';
   }
 }

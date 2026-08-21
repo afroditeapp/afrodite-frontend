@@ -1097,6 +1097,15 @@ class AppLocalizationsFi extends AppLocalizations {
   String get generic_time => 'Time';
 
   @override
+  String get generic_time_unit_hour => 'h';
+
+  @override
+  String get generic_time_unit_minute => 'm';
+
+  @override
+  String get generic_time_unit_second => 's';
+
+  @override
   String get generic_today => 'Today';
 
   @override

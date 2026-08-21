@@ -1424,6 +1424,18 @@
   "@generic_time": {
     "description": "Generic time text"
   },
+  "generic_time_unit_hour": "h",
+  "@generic_time_unit_hour": {
+    "description": "Generic hour time unit abbreviation"
+  },
+  "generic_time_unit_minute": "m",
+  "@generic_time_unit_minute": {
+    "description": "Generic minute time unit abbreviation"
+  },
+  "generic_time_unit_second": "s",
+  "@generic_time_unit_second": {
+    "description": "Generic second time unit abbreviation"
+  },
   "generic_today": "Today",
   "@generic_today": {
     "description": "Generic today text"
