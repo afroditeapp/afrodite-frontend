@@ -30,3 +30,23 @@ bool isRunningInPwaMode() {
 bool isIosWeb() {
   return kIsWeb && defaultTargetPlatform == TargetPlatform.iOS;
 }
+
+/// Returns whether the app is running on iOS 26 or newer
+bool isIos26OrNewer() {
+  if (!isIosWeb()) {
+    return false;
+  }
+
+  try {
+    final userAgent = window.navigator.userAgent;
+    // Assume that major version of iOS and Safari matches
+    final versionMatch = RegExp(r'Version/(\d+)').firstMatch(userAgent);
+    if (versionMatch == null) {
+      return false;
+    }
+    final majorVersion = int.parse(versionMatch.group(1)!);
+    return majorVersion >= 26;
+  } catch (e) {
+    return false;
+  }
+}

@@ -141,6 +141,7 @@ dependencies:
   qr_flutter: ^4.1.0
   mobile_scanner: ^7.4.0
   local_auth: ^3.0.2
+  video_player: ^2.14.0
 
   # If version is changed, update also Makefile JS file versions
   native_push:

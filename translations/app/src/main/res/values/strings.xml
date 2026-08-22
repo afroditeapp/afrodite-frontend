@@ -268,8 +268,12 @@
     <string name="login_screen_app_attestation_failed" description="Snackbar text for app attestation failed">App verification failed. Please try again later.</string>
     <string name="login_screen_connecting_websocket_failed" description="Snackbar text for connecting WebSocket failed">Connecting WebSocket failed. Try again later.</string>
     <string name="login_screen_ios_pwa_install_description" description="Description text for iOS PWA installation guide">To use this app on iOS, please add it to your home screen:</string>
-    <string name="login_screen_ios_pwa_install_step1" description="First step for iOS PWA installation">1. Tap the Share button</string>
+    <string name="login_screen_ios_pwa_install_video_instructions_button" description="Button to show video instructions for iOS PWA installation">Video instructions</string>
+    <string name="login_screen_ios_pwa_install_text_instructions_button" description="Button to show text instructions for iOS PWA installation">Text instructions</string>
+    <string name="login_screen_ios_pwa_install_step1" description="First step for iOS PWA installation">1. Tap \"Share\" button</string>
+    <string name="login_screen_ios_pwa_install_step1_ios26" description="First step for iOS PWA installation on iOS 26 or newer">1. Tap \"Share\", or open three dots menu to find it</string>
     <string name="login_screen_ios_pwa_install_step2" description="Second step for iOS PWA installation">2. Scroll down and tap \"Add to Home Screen\"</string>
+    <string name="login_screen_ios_pwa_install_step2_ios26" description="Second step for iOS PWA installation on iOS 26 or newer">2. Tap \"View More\" and \"Add to Home Screen\"</string>
     <string name="login_screen_ios_pwa_install_step3" description="Third step for iOS PWA installation">3. Tap \"Add\" in the top right corner</string>
     <string name="login_screen_ios_pwa_install_step4" description="Fourth step for iOS PWA installation">4. Open the app from your home screen</string>
 

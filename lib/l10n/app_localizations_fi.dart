@@ -1375,16 +1375,30 @@ class AppLocalizationsFi extends AppLocalizations {
       'To use this app on iOS, please add it to your home screen:';
 
   @override
-  String get login_screen_ios_pwa_install_step1 => '1. Tap the Share button';
+  String get login_screen_ios_pwa_install_step1 => '1. Tap \"Share\" button';
+
+  @override
+  String get login_screen_ios_pwa_install_step1_ios26 =>
+      '1. Tap \"Share\", or open three dots menu to find it';
 
   @override
   String get login_screen_ios_pwa_install_step2 => '2. Scroll down and tap \"Add to Home Screen\"';
+
+  @override
+  String get login_screen_ios_pwa_install_step2_ios26 =>
+      '2. Tap \"View More\" and \"Add to Home Screen\"';
 
   @override
   String get login_screen_ios_pwa_install_step3 => '3. Tap \"Add\" in the top right corner';
 
   @override
   String get login_screen_ios_pwa_install_step4 => '4. Open the app from your home screen';
+
+  @override
+  String get login_screen_ios_pwa_install_text_instructions_button => 'Text instructions';
+
+  @override
+  String get login_screen_ios_pwa_install_video_instructions_button => 'Video instructions';
 
   @override
   String get login_screen_login_all_platforms_disabled => 'App admin has disabled login';

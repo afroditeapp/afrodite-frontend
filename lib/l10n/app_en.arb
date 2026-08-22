@@ -1762,13 +1762,21 @@
   "@login_screen_ios_pwa_install_description": {
     "description": "Description text for iOS PWA installation guide"
   },
-  "login_screen_ios_pwa_install_step1": "1. Tap the Share button",
+  "login_screen_ios_pwa_install_step1": "1. Tap \"Share\" button",
   "@login_screen_ios_pwa_install_step1": {
     "description": "First step for iOS PWA installation"
+  },
+  "login_screen_ios_pwa_install_step1_ios26": "1. Tap \"Share\", or open three dots menu to find it",
+  "@login_screen_ios_pwa_install_step1_ios26": {
+    "description": "First step for iOS PWA installation on iOS 26 or newer"
   },
   "login_screen_ios_pwa_install_step2": "2. Scroll down and tap \"Add to Home Screen\"",
   "@login_screen_ios_pwa_install_step2": {
     "description": "Second step for iOS PWA installation"
+  },
+  "login_screen_ios_pwa_install_step2_ios26": "2. Tap \"View More\" and \"Add to Home Screen\"",
+  "@login_screen_ios_pwa_install_step2_ios26": {
+    "description": "Second step for iOS PWA installation on iOS 26 or newer"
   },
   "login_screen_ios_pwa_install_step3": "3. Tap \"Add\" in the top right corner",
   "@login_screen_ios_pwa_install_step3": {
@@ -1777,6 +1785,14 @@
   "login_screen_ios_pwa_install_step4": "4. Open the app from your home screen",
   "@login_screen_ios_pwa_install_step4": {
     "description": "Fourth step for iOS PWA installation"
+  },
+  "login_screen_ios_pwa_install_text_instructions_button": "Text instructions",
+  "@login_screen_ios_pwa_install_text_instructions_button": {
+    "description": "Button to show text instructions for iOS PWA installation"
+  },
+  "login_screen_ios_pwa_install_video_instructions_button": "Video instructions",
+  "@login_screen_ios_pwa_install_video_instructions_button": {
+    "description": "Button to show video instructions for iOS PWA installation"
   },
   "login_screen_login_all_platforms_disabled": "App admin has disabled login",
   "@login_screen_login_all_platforms_disabled": {

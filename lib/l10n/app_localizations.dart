@@ -2497,14 +2497,26 @@ abstract class AppLocalizations {
   /// First step for iOS PWA installation
   ///
   /// In en, this message translates to:
-  /// **'1. Tap the Share button'**
+  /// **'1. Tap \"Share\" button'**
   String get login_screen_ios_pwa_install_step1;
+
+  /// First step for iOS PWA installation on iOS 26 or newer
+  ///
+  /// In en, this message translates to:
+  /// **'1. Tap \"Share\", or open three dots menu to find it'**
+  String get login_screen_ios_pwa_install_step1_ios26;
 
   /// Second step for iOS PWA installation
   ///
   /// In en, this message translates to:
   /// **'2. Scroll down and tap \"Add to Home Screen\"'**
   String get login_screen_ios_pwa_install_step2;
+
+  /// Second step for iOS PWA installation on iOS 26 or newer
+  ///
+  /// In en, this message translates to:
+  /// **'2. Tap \"View More\" and \"Add to Home Screen\"'**
+  String get login_screen_ios_pwa_install_step2_ios26;
 
   /// Third step for iOS PWA installation
   ///
@@ -2517,6 +2529,18 @@ abstract class AppLocalizations {
   /// In en, this message translates to:
   /// **'4. Open the app from your home screen'**
   String get login_screen_ios_pwa_install_step4;
+
+  /// Button to show text instructions for iOS PWA installation
+  ///
+  /// In en, this message translates to:
+  /// **'Text instructions'**
+  String get login_screen_ios_pwa_install_text_instructions_button;
+
+  /// Button to show video instructions for iOS PWA installation
+  ///
+  /// In en, this message translates to:
+  /// **'Video instructions'**
+  String get login_screen_ios_pwa_install_video_instructions_button;
 
   /// Snackbar error message when login is disabled on all platforms
   ///

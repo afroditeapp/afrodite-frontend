@@ -2,6 +2,7 @@
 
 import 'dart:io';
 
+import 'package:app/ui/login/widgets.dart';
 import 'package:flutter/foundation.dart';
 import 'package:flutter/services.dart';
 import 'package:app/ui/utils/web_navigation/web_navigation.dart';
@@ -16,6 +17,7 @@ const String? _alternativeDemoAccountServerUrl = null;
 const String? HELP_CENTER_URL = null;
 const bool APP_AVAILABLE_FROM_GOOGLE_PLAY_STORE = false;
 const int? APPLE_APP_STORE_APP_ID = null;
+const IosPwaInstallVideoInstructionUrls? IOS_PWA_INSTALL_VIDEO_INSTRUCTION_URLS = null;
 
 String? getAlternativeDemoAccountServerUrl() {
   if (kReleaseMode) {

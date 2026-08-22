@@ -105,7 +105,7 @@ class LoginScreen extends StatelessWidget {
 
   Widget loginScreen(BuildContext context) {
     if (isIosWeb() && !isRunningInPwaMode()) {
-      return iosPwaInstallationGuide(context);
+      return const IosPwaInstallationGuide();
     }
 
     return Column(

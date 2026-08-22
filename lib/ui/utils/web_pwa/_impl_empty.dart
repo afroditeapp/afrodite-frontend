@@ -7,3 +7,8 @@ bool isRunningInPwaMode() {
 bool isIosWeb() {
   return false;
 }
+
+/// Returns whether the app is running on iOS 26 or newer
+bool isIos26OrNewer() {
+  return false;
+}
