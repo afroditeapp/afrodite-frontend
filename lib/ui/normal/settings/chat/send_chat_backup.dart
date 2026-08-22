@@ -11,15 +11,29 @@ void openSendChatBackupScreen(BuildContext context) {
   MyNavigator.push(context, SendChatBackupPage());
 }
 
+void openSendChatBackupScreenForDemoAccount(BuildContext context) {
+  MyNavigator.push(context, SendChatBackupDemoAccountPage());
+}
+
 class SendChatBackupPage extends MyScreenPage<()> with SimpleUrlParser<SendChatBackupPage> {
-  SendChatBackupPage() : super(builder: (_) => SendChatBackupScreen());
+  SendChatBackupPage() : super(builder: (_) => const SendChatBackupScreen());
 
   @override
   SendChatBackupPage create() => SendChatBackupPage();
 }
 
+class SendChatBackupDemoAccountPage extends MyScreenPage<()>
+    with SimpleUrlParser<SendChatBackupDemoAccountPage> {
+  SendChatBackupDemoAccountPage()
+    : super(builder: (_) => const SendChatBackupScreen(demoAccountServer: true));
+
+  @override
+  SendChatBackupDemoAccountPage create() => SendChatBackupDemoAccountPage();
+}
+
 class SendChatBackupScreen extends StatefulWidget {
-  const SendChatBackupScreen({super.key});
+  final bool demoAccountServer;
+  const SendChatBackupScreen({this.demoAccountServer = false, super.key});
 
   @override
   State<SendChatBackupScreen> createState() => _SendChatBackupScreenState();
@@ -132,7 +146,9 @@ class _SendChatBackupScreenState extends State<SendChatBackupScreen> {
           onPressed: () async {
             final pairingCode = await openScanPairingCodeScreen(context);
             if (pairingCode != null && context.mounted) {
-              context.read<SendChatBackupBloc>().add(StartSendBackup(pairingCode));
+              context.read<SendChatBackupBloc>().add(
+                StartSendBackup(pairingCode, demoAccountServer: widget.demoAccountServer),
+              );
             }
           },
           icon: const Icon(Icons.qr_code_scanner),
@@ -172,7 +188,10 @@ class _SendChatBackupScreenState extends State<SendChatBackupScreen> {
                 ? () {
                     FocusScope.of(context).unfocus();
                     context.read<SendChatBackupBloc>().add(
-                      StartSendBackup(_pairingCodeController.text),
+                      StartSendBackup(
+                        _pairingCodeController.text,
+                        demoAccountServer: widget.demoAccountServer,
+                      ),
                     );
                   }
                 : null,

@@ -1,4 +1,5 @@
 import "package:app/model/freezed/logic/main/navigator_state.dart";
+import "package:app/ui/normal/settings/chat/send_chat_backup.dart";
 import "package:app/ui_utils/snack_bar.dart";
 import "package:flutter/material.dart";
 import "package:flutter_bloc/flutter_bloc.dart";
@@ -67,6 +68,10 @@ class _DemoAccountScreenContentState extends State<DemoAccountScreenContent> {
             MenuItemButton(
               child: Text(context.strings.demo_account_screen_new_account_action),
               onPressed: () => createDemoAccountAction(context),
+            ),
+            MenuItemButton(
+              child: Text(context.strings.send_chat_backup_screen_title),
+              onPressed: () => openSendChatBackupScreenForDemoAccount(context),
             ),
             ...commonActionsWhenLoggedOut(context),
           ]),

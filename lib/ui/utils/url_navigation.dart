@@ -127,6 +127,7 @@ List<UrlParser<MyScreenPage<Object>>> loggedOutPages() => [
   EmailLoginPage(),
   EmailLoginCodePage(),
   SendChatBackupPage(),
+  SendChatBackupDemoAccountPage(),
 ];
 
 List<UrlParser<MyScreenPage<Object>>> loggedInPages(RepositoryInstances r) => [

@@ -1,6 +1,8 @@
 import "dart:async";
 import "dart:convert";
 
+import "package:app/config.dart";
+import "package:app/data/login_repository.dart";
 import "package:app/database/common_database_manager.dart";
 import "package:app/localizations.dart";
 import "package:app/logic/chat/send_chat_backup/websocket.dart";
@@ -22,7 +24,8 @@ abstract class SendChatBackupEvent {}
 
 class StartSendBackup extends SendChatBackupEvent {
   final String pairingCode;
-  StartSendBackup(this.pairingCode);
+  final bool demoAccountServer;
+  StartSendBackup(this.pairingCode, {this.demoAccountServer = false});
 }
 
 class ResetToInitialState extends SendChatBackupEvent {}
@@ -39,7 +42,7 @@ class SendChatBackupBloc extends Bloc<SendChatBackupEvent, SendBackupData> with 
   SendChatBackupBloc() : super(SendBackupData()) {
     on<StartSendBackup>((event, emit) async {
       await runOnce(() async {
-        await _connectToServer(emit, event.pairingCode);
+        await _connectToServer(emit, event.pairingCode, event.demoAccountServer);
       });
     });
 
@@ -70,11 +73,20 @@ class SendChatBackupBloc extends Bloc<SendChatBackupEvent, SendBackupData> with 
     });
   }
 
-  Future<void> _connectToServer(Emitter<SendBackupData> emit, String pairingCode) async {
+  Future<void> _connectToServer(
+    Emitter<SendBackupData> emit,
+    String pairingCode,
+    bool demoAccountServer,
+  ) async {
     await _cleanup();
 
     // Connect to transfer API
     emit(state.copyWith(state: const Connecting()));
+
+    final currentServerAddress = await LoginRepository.getInstance().accountServerAddress.first;
+    final serverAddress = demoAccountServer
+        ? serverAddressForDemoAccountLogin(currentServerAddress)
+        : serverAddressForSignIn(currentServerAddress);
 
     if (!pairingCode.startsWith('1')) {
       _log.warning("Invalid pairing code version");
@@ -95,7 +107,7 @@ class SendChatBackupBloc extends Bloc<SendChatBackupEvent, SendBackupData> with 
     }
 
     _webSocket = SendChatBackupWebSocket();
-    final connected = await _webSocket!.connect(pairingCodeHex);
+    final connected = await _webSocket!.connect(pairingCodeHex, serverAddress: serverAddress);
 
     if (!connected) {
       emit(state.copyWith(state: ErrorState(R.strings.generic_error)));

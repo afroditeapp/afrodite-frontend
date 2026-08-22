@@ -3,7 +3,6 @@ import "dart:convert";
 import "dart:typed_data";
 
 import "package:app/api/websocket_builder.dart";
-import "package:app/data/login_repository.dart";
 import "package:crypto/crypto.dart";
 import "package:logging/logging.dart";
 import "package:openapi/api.dart";
@@ -39,8 +38,7 @@ class SendChatBackupWebSocket {
 
   Stream<SendChatBackupWebSocketEvent> get events => _eventController.stream;
 
-  Future<bool> connect(String targetDataSha256) async {
-    final serverAddress = await LoginRepository.getInstance().accountServerAddress.first;
+  Future<bool> connect(String targetDataSha256, {required String serverAddress}) async {
     try {
       final webSocket = await WebSocketBuilder.connect(serverAddress, [
         "v1",
