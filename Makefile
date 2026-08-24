@@ -41,6 +41,9 @@ test:
 	cd packages/database_account && flutter test
 	cd packages/utils && flutter test
 
+spell-check:
+	cspell --config cspell.jsonc --gitignore .
+
 update-api-bindings:
 	openapi-generator-cli generate \
 	-i http://localhost:3001/api-doc/app_api.json \
