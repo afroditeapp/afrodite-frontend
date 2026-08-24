@@ -433,17 +433,17 @@ _ResponseNextProfilePagePayload? _parseResponseNextProfilePage(Uint8List payload
 
   switch (status) {
     case 0:
-      final profiles = <ProfileLink>[];
+      final items = <ProfileIteratorPageItem>[];
       while (true) {
         final profile = _parseProfileLinkForPaging(reader);
         if (profile == null) {
           break;
         }
-        profiles.add(profile);
+        items.add(ProfileIteratorPageItem(profileLink: profile));
       }
       return _ResponseNextProfilePagePayload(
         requestId: requestId,
-        page: ProfilePage(profiles: profiles),
+        page: ProfilePage(items: items),
       );
     case 1:
       return _ResponseNextProfilePagePayload(

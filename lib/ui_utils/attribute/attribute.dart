@@ -207,11 +207,11 @@ void reorderAttributeValues(List<UiAttributeValue> attributeValues, AttributeVal
     attributeValues.sort((a, b) {
       return a.apiValue().orderNumber.compareTo(b.apiValue().orderNumber);
     });
-  } else if (order == AttributeValueOrderMode.alphabethicalKey) {
+  } else if (order == AttributeValueOrderMode.alphabeticalKey) {
     attributeValues.sort((a, b) {
       return a.apiValue().key.compareTo(b.apiValue().key);
     });
-  } else if (order == AttributeValueOrderMode.alphabethicalValue) {
+  } else if (order == AttributeValueOrderMode.alphabeticalValue) {
     attributeValues.sort((a, b) {
       return a.uiName().compareTo(b.uiName());
     });

@@ -12,8 +12,8 @@ part of openapi.api;
 
 
 enum AttributeValueOrderMode {
-  alphabethicalKey._(r'AlphabethicalKey'),
-  alphabethicalValue._(r'AlphabethicalValue'),
+  alphabeticalKey._(r'AlphabeticalKey'),
+  alphabeticalValue._(r'AlphabeticalValue'),
   orderNumber._(r'OrderNumber'),
   unknownDefaultOpenApi._(r'unknown_default_open_api'),
   ;
@@ -75,8 +75,8 @@ class AttributeValueOrderModeTypeTransformer {
     }
     if (data != null) {
       switch (data) {
-        case r'AlphabethicalKey': return AttributeValueOrderMode.alphabethicalKey;
-        case r'AlphabethicalValue': return AttributeValueOrderMode.alphabethicalValue;
+        case r'AlphabeticalKey': return AttributeValueOrderMode.alphabeticalKey;
+        case r'AlphabeticalValue': return AttributeValueOrderMode.alphabeticalValue;
         case r'OrderNumber': return AttributeValueOrderMode.orderNumber;
         case r'unknown_default_open_api': return AttributeValueOrderMode.unknownDefaultOpenApi;
         default:

@@ -135,7 +135,7 @@ class InitialSetupUtils {
     final groups = SearchGroups(manForMan: true, manForWoman: true, manForNonBinary: true);
     await _api.profileAction((api) => api.postSearchGroups(groups));
 
-    await _api.accountAction((api) => api.putSettingProfileVisiblity(BooleanSetting(value: true)));
+    await _api.accountAction((api) => api.putSettingProfileVisibility(BooleanSetting(value: true)));
 
     await _api.accountAction((api) => api.postCompleteSetup());
 
@@ -203,7 +203,7 @@ class InitialSetupUtils {
     {
       final r = await _api.accountAction(
         (api) =>
-            api.putSettingProfileVisiblity(BooleanSetting(value: data.profileVisibilityEnabled)),
+            api.putSettingProfileVisibility(BooleanSetting(value: data.profileVisibilityEnabled)),
       );
       if (r.isErr()) return errAndLog("Setting profile visibility failed");
     }

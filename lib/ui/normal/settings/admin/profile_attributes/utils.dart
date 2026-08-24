@@ -45,9 +45,9 @@ int nextAttributeValueOrderNumber(List<AttributeValue> values) {
 void reorderAttributeValuesByOrderMode(List<AttributeValue> values, AttributeValueOrderMode order) {
   if (order == AttributeValueOrderMode.orderNumber) {
     values.sort((a, b) => a.orderNumber.compareTo(b.orderNumber));
-  } else if (order == AttributeValueOrderMode.alphabethicalKey) {
+  } else if (order == AttributeValueOrderMode.alphabeticalKey) {
     values.sort((a, b) => a.key.compareTo(b.key));
-  } else if (order == AttributeValueOrderMode.alphabethicalValue) {
+  } else if (order == AttributeValueOrderMode.alphabeticalValue) {
     values.sort((a, b) => a.name.compareTo(b.name));
   }
 }

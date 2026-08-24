@@ -443,8 +443,6 @@ class ApiClient {
           return DataExportStateTypeTypeTransformer().decode(value);
         case 'DataExportType':
           return DataExportTypeTypeTransformer().decode(value);
-        case 'DebugAppAttestation':
-          return DebugAppAttestation.fromJson(value);
         case 'DeliveryInfoType':
           return DeliveryInfoTypeTypeTransformer().decode(value);
         case 'DemoAccountLoginCredentials':
@@ -819,6 +817,8 @@ class ApiClient {
           return ProfileFiltersUpdate.fromJson(value);
         case 'ProfileIteratorPage':
           return ProfileIteratorPage.fromJson(value);
+        case 'ProfileIteratorPageItem':
+          return ProfileIteratorPageItem.fromJson(value);
         case 'ProfileIteratorPageValue':
           return ProfileIteratorPageValue.fromJson(value);
         case 'ProfileIteratorSessionId':
@@ -1015,6 +1015,8 @@ class ApiClient {
           return UnreadNewsCount.fromJson(value);
         case 'UnreadNewsCountResult':
           return UnreadNewsCountResult.fromJson(value);
+        case 'UnsignedIntegerAttributeConfig':
+          return UnsignedIntegerAttributeConfig.fromJson(value);
         case 'UpdateAssociationMembership':
           return UpdateAssociationMembership.fromJson(value);
         case 'UpdateAssociationMembershipType':

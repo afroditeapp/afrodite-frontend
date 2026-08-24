@@ -219,7 +219,10 @@ class ProfileListOnlineIteratorIo extends OnlineIteratorIo {
 
     return pageResult.mapOk(
       (value) => IteratorPage(
-        value.profiles.map((v) => ProfileLink(a: v.a, p: v.p, c: v.c, l: v.l)),
+        value.items
+            .map((v) => v.profileLink)
+            .nonNulls
+            .map((v) => ProfileLink(a: v.a, p: v.p, c: v.c, l: v.l)),
         otherError: value.error,
         errorInvalidIteratorSessionId: value.errorInvalidIteratorSessionId,
       ),
@@ -452,7 +455,10 @@ class AutomaticProfileSearchOnlineIteratorIo extends OnlineIteratorIo {
 
     return pageResult.mapOk(
       (value) => IteratorPage(
-        value.profiles.map((v) => ProfileLink(a: v.a, p: v.p, c: v.c, l: v.l)),
+        value.items
+            .map((v) => v.profileLink)
+            .nonNulls
+            .map((v) => ProfileLink(a: v.a, p: v.p, c: v.c, l: v.l)),
         otherError: value.error,
         errorInvalidIteratorSessionId: value.errorInvalidIteratorSessionId,
       ),

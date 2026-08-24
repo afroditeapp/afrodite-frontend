@@ -15,36 +15,36 @@ class ProfilePage {
   ProfilePage({
     this.error = false,
     this.errorInvalidIteratorSessionId = false,
-    this.profiles = const [],
+    this.items = const [],
   });
 
   bool error;
 
   bool errorInvalidIteratorSessionId;
 
-  List<ProfileLink> profiles;
+  List<ProfileIteratorPageItem> items;
 
   @override
   bool operator ==(Object other) => identical(this, other) || other is ProfilePage &&
     other.error == error &&
     other.errorInvalidIteratorSessionId == errorInvalidIteratorSessionId &&
-    _deepEquality.equals(other.profiles, profiles);
+    _deepEquality.equals(other.items, items);
 
   @override
   int get hashCode =>
     // ignore: unnecessary_parenthesis
     (error.hashCode) +
     (errorInvalidIteratorSessionId.hashCode) +
-    (profiles.hashCode);
+    (items.hashCode);
 
   @override
-  String toString() => 'ProfilePage[error=$error, errorInvalidIteratorSessionId=$errorInvalidIteratorSessionId, profiles=$profiles]';
+  String toString() => 'ProfilePage[error=$error, errorInvalidIteratorSessionId=$errorInvalidIteratorSessionId, items=$items]';
 
   Map<String, dynamic> toJson() {
     final json = <String, dynamic>{};
       json[r'error'] = this.error;
       json[r'error_invalid_iterator_session_id'] = this.errorInvalidIteratorSessionId;
-      json[r'profiles'] = this.profiles;
+      json[r'items'] = this.items;
     return json;
   }
 
@@ -59,15 +59,15 @@ class ProfilePage {
       // Note 1: the values aren't checked for validity beyond being non-null.
       // Note 2: this code is stripped in release mode!
       assert(() {
-        assert(json.containsKey(r'profiles'), 'Required key "ProfilePage[profiles]" is missing from JSON.');
-        assert(json[r'profiles'] != null, 'Required key "ProfilePage[profiles]" has a null value in JSON.');
+        assert(json.containsKey(r'items'), 'Required key "ProfilePage[items]" is missing from JSON.');
+        assert(json[r'items'] != null, 'Required key "ProfilePage[items]" has a null value in JSON.');
         return true;
       }());
 
       return ProfilePage(
         error: mapValueOfType<bool>(json, r'error') ?? false,
         errorInvalidIteratorSessionId: mapValueOfType<bool>(json, r'error_invalid_iterator_session_id') ?? false,
-        profiles: ProfileLink.listFromJson(json[r'profiles']),
+        items: ProfileIteratorPageItem.listFromJson(json[r'items']),
       );
     }
     return null;
@@ -115,7 +115,7 @@ class ProfilePage {
 
   /// The list of required keys that must be present in a JSON.
   static const requiredKeys = <String>{
-    'profiles',
+    'items',
   };
 }
 

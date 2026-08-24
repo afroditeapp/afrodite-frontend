@@ -15,6 +15,7 @@ enum AttributeMode {
   bitflag._(r'Bitflag'),
   oneLevel._(r'OneLevel'),
   twoLevel._(r'TwoLevel'),
+  unsignedInteger._(r'UnsignedInteger'),
   unknownDefaultOpenApi._(r'unknown_default_open_api'),
   ;
 
@@ -78,6 +79,7 @@ class AttributeModeTypeTransformer {
         case r'Bitflag': return AttributeMode.bitflag;
         case r'OneLevel': return AttributeMode.oneLevel;
         case r'TwoLevel': return AttributeMode.twoLevel;
+        case r'UnsignedInteger': return AttributeMode.unsignedInteger;
         case r'unknown_default_open_api': return AttributeMode.unknownDefaultOpenApi;
         default:
           if (!allowNull) {

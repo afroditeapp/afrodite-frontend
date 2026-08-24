@@ -16,7 +16,7 @@ class AccountIdDbValue {
     required this.accountDbId,
   });
 
-  /// This is quaranteed to not be reused for another account
+  /// This is guaranteed to not be reused for another account
   int accountDbId;
 
   @override

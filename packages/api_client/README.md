@@ -105,7 +105,7 @@ Class | Method | HTTP request | Description
 *AccountApi* | [**postSignInWithLogin**](doc//AccountApi.md#postsigninwithlogin) | **POST** /account_api/sign_in_with_login | Start new session with sign in with Apple or Google.
 *AccountApi* | [**postVerifyEmail**](doc//AccountApi.md#postverifyemail) | **POST** /verify_email | Verify email address using the token from the form submission.
 *AccountApi* | [**postVerifyNewEmail**](doc//AccountApi.md#postverifynewemail) | **POST** /verify_new_email | Verify new email address using the token from the form submission.
-*AccountApi* | [**putSettingProfileVisiblity**](doc//AccountApi.md#putsettingprofilevisiblity) | **PUT** /account_api/settings/profile_visibility | Update current profile visiblity value.
+*AccountApi* | [**putSettingProfileVisibility**](doc//AccountApi.md#putsettingprofilevisibility) | **PUT** /account_api/settings/profile_visibility | Update current profile visibility value.
 *AccountApi* | [**putSettingUnlimitedLikes**](doc//AccountApi.md#putsettingunlimitedlikes) | **PUT** /account_api/settings/unlimited_likes | 
 *AccountApi* | [**putSignInWithApple**](doc//AccountApi.md#putsigninwithapple) | **PUT** /account_api/sign_in_with_apple | Associate or disassociate Apple sign in with account.
 *AccountApi* | [**putSignInWithGoogle**](doc//AccountApi.md#putsigninwithgoogle) | **PUT** /account_api/sign_in_with_google | Associate or disassociate Google sign in with account.
@@ -437,7 +437,6 @@ Class | Method | HTTP request | Description
  - [DataExportState](doc//DataExportState.md)
  - [DataExportStateType](doc//DataExportStateType.md)
  - [DataExportType](doc//DataExportType.md)
- - [DebugAppAttestation](doc//DebugAppAttestation.md)
  - [DeliveryInfoType](doc//DeliveryInfoType.md)
  - [DemoAccountLoginCredentials](doc//DemoAccountLoginCredentials.md)
  - [DemoAccountLoginResult](doc//DemoAccountLoginResult.md)
@@ -625,6 +624,7 @@ Class | Method | HTTP request | Description
  - [ProfileEditedTimeFilter](doc//ProfileEditedTimeFilter.md)
  - [ProfileFiltersUpdate](doc//ProfileFiltersUpdate.md)
  - [ProfileIteratorPage](doc//ProfileIteratorPage.md)
+ - [ProfileIteratorPageItem](doc//ProfileIteratorPageItem.md)
  - [ProfileIteratorPageValue](doc//ProfileIteratorPageValue.md)
  - [ProfileIteratorSessionId](doc//ProfileIteratorSessionId.md)
  - [ProfileLink](doc//ProfileLink.md)
@@ -723,6 +723,7 @@ Class | Method | HTTP request | Description
  - [UnixTime](doc//UnixTime.md)
  - [UnreadNewsCount](doc//UnreadNewsCount.md)
  - [UnreadNewsCountResult](doc//UnreadNewsCountResult.md)
+ - [UnsignedIntegerAttributeConfig](doc//UnsignedIntegerAttributeConfig.md)
  - [UpdateAssociationMembership](doc//UpdateAssociationMembership.md)
  - [UpdateAssociationMembershipType](doc//UpdateAssociationMembershipType.md)
  - [UpdateChatMessageReports](doc//UpdateChatMessageReports.md)

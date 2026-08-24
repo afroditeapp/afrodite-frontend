@@ -2021,16 +2021,16 @@ class AccountApi {
     }
   }
 
-  /// Update current profile visiblity value.
+  /// Update current profile visibility value.
   ///
-  /// NOTE: Client uses this in initial setup.  # Limits - When [AccountState::Banned], the visiblity can only be set to private.
+  /// NOTE: Client uses this in initial setup.  # Limits - When [AccountState::Banned], the visibility can only be set to private.
   ///
   /// Note: This method returns the HTTP [Response].
   ///
   /// Parameters:
   ///
   /// * [BooleanSetting] booleanSetting (required):
-  Future<Response> putSettingProfileVisiblityWithHttpInfo(BooleanSetting booleanSetting, { Future<void>? abortTrigger, }) async {
+  Future<Response> putSettingProfileVisibilityWithHttpInfo(BooleanSetting booleanSetting, { Future<void>? abortTrigger, }) async {
     // ignore: prefer_const_declarations
     final path = r'/account_api/settings/profile_visibility';
 
@@ -2056,15 +2056,15 @@ class AccountApi {
     );
   }
 
-  /// Update current profile visiblity value.
+  /// Update current profile visibility value.
   ///
-  /// NOTE: Client uses this in initial setup.  # Limits - When [AccountState::Banned], the visiblity can only be set to private.
+  /// NOTE: Client uses this in initial setup.  # Limits - When [AccountState::Banned], the visibility can only be set to private.
   ///
   /// Parameters:
   ///
   /// * [BooleanSetting] booleanSetting (required):
-  Future<void> putSettingProfileVisiblity(BooleanSetting booleanSetting, { Future<void>? abortTrigger, }) async {
-    final response = await putSettingProfileVisiblityWithHttpInfo(booleanSetting, abortTrigger: abortTrigger,);
+  Future<void> putSettingProfileVisibility(BooleanSetting booleanSetting, { Future<void>? abortTrigger, }) async {
+    final response = await putSettingProfileVisibilityWithHttpInfo(booleanSetting, abortTrigger: abortTrigger,);
     if (response.statusCode >= HttpStatus.badRequest) {
       throw ApiException(response.statusCode, await _decodeBodyBytes(response));
     }

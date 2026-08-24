@@ -24,6 +24,7 @@ class Attribute {
     required this.orderNumber,
     this.required_ = false,
     this.translations = const [],
+    this.unsignedIntegerConfig,
     required this.valueOrder,
     this.values = const [],
     this.visible = true,
@@ -47,9 +48,13 @@ class Attribute {
   /// String unique identifier for the attribute.
   String key;
 
+  /// Must be 2 when current mode is [AttributeMode::UnsignedInteger].
+  ///
   /// Minimum value: 0
   int maxFilters;
 
+  /// Must be 1 when current mode is [AttributeMode::UnsignedInteger].
+  ///
   /// Minimum value: 0
   int maxSelected;
 
@@ -70,10 +75,19 @@ class Attribute {
   /// Translations for attribute name and attribute values.
   List<Language> translations;
 
+  /// Config for unsigned integer mode attributes. The config must exist when attribute's mode is [AttributeMode::UnsignedInteger].
+  ///
+  /// Please note: This property should have been non-nullable! Since the specification file
+  /// does not include a default value (using the "default:" property), however, the generated
+  /// source code must fall back to having a nullable type.
+  /// Consider adding a "default:" property in the specification file to hide this note.
+  ///
+  UnsignedIntegerAttributeConfig? unsignedIntegerConfig;
+
   /// Attribute value ordering mode for client to determine in what order the values should be displayed.
   AttributeValueOrderMode valueOrder;
 
-  /// Top level values for the attribute.  Values are sorted by AttributeValue ID. Indexing with it is not possible as ID might be a bitflag value.
+  /// Top level values for the attribute.  Values are sorted by AttributeValue ID. Indexing with it is not possible as ID might be a bitflag value.  Must be empty when current mode is [AttributeMode::UnsignedInteger].
   List<AttributeValue> values;
 
   /// Client should show this attribute when viewing a profile.
@@ -92,6 +106,7 @@ class Attribute {
     other.orderNumber == orderNumber &&
     other.required_ == required_ &&
     _deepEquality.equals(other.translations, translations) &&
+    other.unsignedIntegerConfig == unsignedIntegerConfig &&
     other.valueOrder == valueOrder &&
     _deepEquality.equals(other.values, values) &&
     other.visible == visible;
@@ -110,12 +125,13 @@ class Attribute {
     (orderNumber.hashCode) +
     (required_.hashCode) +
     (translations.hashCode) +
+    (unsignedIntegerConfig == null ? 0 : unsignedIntegerConfig!.hashCode) +
     (valueOrder.hashCode) +
     (values.hashCode) +
     (visible.hashCode);
 
   @override
-  String toString() => 'Attribute[editable=$editable, icon=$icon, id=$id, key=$key, maxFilters=$maxFilters, maxSelected=$maxSelected, mode=$mode, name=$name, orderNumber=$orderNumber, required_=$required_, translations=$translations, valueOrder=$valueOrder, values=$values, visible=$visible]';
+  String toString() => 'Attribute[editable=$editable, icon=$icon, id=$id, key=$key, maxFilters=$maxFilters, maxSelected=$maxSelected, mode=$mode, name=$name, orderNumber=$orderNumber, required_=$required_, translations=$translations, unsignedIntegerConfig=$unsignedIntegerConfig, valueOrder=$valueOrder, values=$values, visible=$visible]';
 
   Map<String, dynamic> toJson() {
     final json = <String, dynamic>{};
@@ -134,6 +150,11 @@ class Attribute {
       json[r'order_number'] = this.orderNumber;
       json[r'required'] = this.required_;
       json[r'translations'] = this.translations;
+    if (this.unsignedIntegerConfig != null) {
+      json[r'unsigned_integer_config'] = this.unsignedIntegerConfig;
+    } else {
+      json[r'unsigned_integer_config'] = null;
+    }
       json[r'value_order'] = this.valueOrder;
       json[r'values'] = this.values;
       json[r'visible'] = this.visible;
@@ -180,6 +201,7 @@ class Attribute {
         orderNumber: mapValueOfType<int>(json, r'order_number')!,
         required_: mapValueOfType<bool>(json, r'required') ?? false,
         translations: Language.listFromJson(json[r'translations']),
+        unsignedIntegerConfig: UnsignedIntegerAttributeConfig.fromJson(json[r'unsigned_integer_config']),
         valueOrder: AttributeValueOrderMode.fromJson(json[r'value_order'])!,
         values: AttributeValue.listFromJson(json[r'values']),
         visible: mapValueOfType<bool>(json, r'visible') ?? true,

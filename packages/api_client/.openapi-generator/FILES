@@ -152,7 +152,6 @@ lib/model/data_export_name.dart
 lib/model/data_export_state.dart
 lib/model/data_export_state_type.dart
 lib/model/data_export_type.dart
-lib/model/debug_app_attestation.dart
 lib/model/delivery_info_type.dart
 lib/model/demo_account_login_credentials.dart
 lib/model/demo_account_login_result.dart
@@ -340,6 +339,7 @@ lib/model/profile_created_time_filter.dart
 lib/model/profile_edited_time_filter.dart
 lib/model/profile_filters_update.dart
 lib/model/profile_iterator_page.dart
+lib/model/profile_iterator_page_item.dart
 lib/model/profile_iterator_page_value.dart
 lib/model/profile_iterator_session_id.dart
 lib/model/profile_link.dart
@@ -438,6 +438,7 @@ lib/model/typing_indicator_config.dart
 lib/model/unix_time.dart
 lib/model/unread_news_count.dart
 lib/model/unread_news_count_result.dart
+lib/model/unsigned_integer_attribute_config.dart
 lib/model/update_association_membership.dart
 lib/model/update_association_membership_type.dart
 lib/model/update_chat_message_reports.dart

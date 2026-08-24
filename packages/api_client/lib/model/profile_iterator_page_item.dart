@@ -10,10 +10,10 @@
 
 part of openapi.api;
 
-class AppAttestation {
-  /// Returns a new [AppAttestation] instance.
-  AppAttestation({
-    this.playIntegrity,
+class ProfileIteratorPageItem {
+  /// Returns a new [ProfileIteratorPageItem] instance.
+  ProfileIteratorPageItem({
+    this.profileLink,
   });
 
   ///
@@ -22,34 +22,34 @@ class AppAttestation {
   /// source code must fall back to having a nullable type.
   /// Consider adding a "default:" property in the specification file to hide this note.
   ///
-  PlayIntegrityAppAttestation? playIntegrity;
+  ProfileLink? profileLink;
 
   @override
-  bool operator ==(Object other) => identical(this, other) || other is AppAttestation &&
-    other.playIntegrity == playIntegrity;
+  bool operator ==(Object other) => identical(this, other) || other is ProfileIteratorPageItem &&
+    other.profileLink == profileLink;
 
   @override
   int get hashCode =>
     // ignore: unnecessary_parenthesis
-    (playIntegrity == null ? 0 : playIntegrity!.hashCode);
+    (profileLink == null ? 0 : profileLink!.hashCode);
 
   @override
-  String toString() => 'AppAttestation[playIntegrity=$playIntegrity]';
+  String toString() => 'ProfileIteratorPageItem[profileLink=$profileLink]';
 
   Map<String, dynamic> toJson() {
     final json = <String, dynamic>{};
-    if (this.playIntegrity != null) {
-      json[r'play_integrity'] = this.playIntegrity;
+    if (this.profileLink != null) {
+      json[r'profile_link'] = this.profileLink;
     } else {
-      json[r'play_integrity'] = null;
+      json[r'profile_link'] = null;
     }
     return json;
   }
 
-  /// Returns a new [AppAttestation] instance and imports its values from
+  /// Returns a new [ProfileIteratorPageItem] instance and imports its values from
   /// [value] if it's a [Map], null otherwise.
   // ignore: prefer_constructors_over_static_methods
-  static AppAttestation? fromJson(dynamic value) {
+  static ProfileIteratorPageItem? fromJson(dynamic value) {
     if (value is Map) {
       final json = value.cast<String, dynamic>();
 
@@ -60,18 +60,18 @@ class AppAttestation {
         return true;
       }());
 
-      return AppAttestation(
-        playIntegrity: PlayIntegrityAppAttestation.fromJson(json[r'play_integrity']),
+      return ProfileIteratorPageItem(
+        profileLink: ProfileLink.fromJson(json[r'profile_link']),
       );
     }
     return null;
   }
 
-  static List<AppAttestation> listFromJson(dynamic json, {bool growable = false,}) {
-    final result = <AppAttestation>[];
+  static List<ProfileIteratorPageItem> listFromJson(dynamic json, {bool growable = false,}) {
+    final result = <ProfileIteratorPageItem>[];
     if (json is List && json.isNotEmpty) {
       for (final row in json) {
-        final value = AppAttestation.fromJson(row);
+        final value = ProfileIteratorPageItem.fromJson(row);
         if (value != null) {
           result.add(value);
         }
@@ -80,12 +80,12 @@ class AppAttestation {
     return result.toList(growable: growable);
   }
 
-  static Map<String, AppAttestation> mapFromJson(dynamic json) {
-    final map = <String, AppAttestation>{};
+  static Map<String, ProfileIteratorPageItem> mapFromJson(dynamic json) {
+    final map = <String, ProfileIteratorPageItem>{};
     if (json is Map && json.isNotEmpty) {
       json = json.cast<String, dynamic>(); // ignore: parameter_assignments
       for (final entry in json.entries) {
-        final value = AppAttestation.fromJson(entry.value);
+        final value = ProfileIteratorPageItem.fromJson(entry.value);
         if (value != null) {
           map[entry.key] = value;
         }
@@ -94,14 +94,14 @@ class AppAttestation {
     return map;
   }
 
-  // maps a json object with a list of AppAttestation-objects as value to a dart map
-  static Map<String, List<AppAttestation>> mapListFromJson(dynamic json, {bool growable = false,}) {
-    final map = <String, List<AppAttestation>>{};
+  // maps a json object with a list of ProfileIteratorPageItem-objects as value to a dart map
+  static Map<String, List<ProfileIteratorPageItem>> mapListFromJson(dynamic json, {bool growable = false,}) {
+    final map = <String, List<ProfileIteratorPageItem>>{};
     if (json is Map && json.isNotEmpty) {
       // ignore: parameter_assignments
       json = json.cast<String, dynamic>();
       for (final entry in json.entries) {
-        map[entry.key] = AppAttestation.listFromJson(entry.value, growable: growable,);
+        map[entry.key] = ProfileIteratorPageItem.listFromJson(entry.value, growable: growable,);
       }
     }
     return map;
