@@ -1,8 +1,8 @@
 import 'package:app/api/server_connection_manager.dart';
 import 'package:app/data/utils/repository_instances.dart';
-import 'package:app/logic/admin/content_decicion_stream.dart';
+import 'package:app/logic/admin/content_decision_stream.dart';
 import 'package:app/model/freezed/logic/main/navigator_state.dart';
-import 'package:app/ui/normal/settings/admin/content_decicion_stream.dart';
+import 'package:app/ui/normal/settings/admin/content_decision_stream.dart';
 import 'package:app/ui/normal/settings/admin/report/process_reports.dart';
 import 'package:app/utils/result.dart';
 import 'package:openapi/api.dart';
@@ -20,7 +20,7 @@ class ViewReportsPage extends MyScreenPageLimited<()> {
        );
 }
 
-class ViewReportsScreen extends ContentDecicionScreen<WrappedReportDetailed> {
+class ViewReportsScreen extends ContentDecisionScreen<WrappedReportDetailed> {
   ViewReportsScreen(
     RepositoryInstances r,
     AccountId account, {

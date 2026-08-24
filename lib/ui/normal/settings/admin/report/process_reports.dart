@@ -5,10 +5,10 @@ import 'package:app/data/image_cache.dart';
 import 'package:app/data/utils/repository_instances.dart';
 import 'package:app/localizations.dart';
 import 'package:app/logic/account/custom_reports_config.dart';
-import 'package:app/logic/admin/content_decicion_stream.dart';
+import 'package:app/logic/admin/content_decision_stream.dart';
 import 'package:app/model/freezed/logic/main/navigator_state.dart';
 import 'package:app/ui/normal/chat/utils.dart';
-import 'package:app/ui/normal/settings/admin/content_decicion_stream.dart';
+import 'package:app/ui/normal/settings/admin/content_decision_stream.dart';
 import 'package:app/ui/normal/settings/admin/moderate_images.dart';
 import 'package:app/ui_utils/extensions/api.dart';
 import 'package:app/ui_utils/image.dart';
@@ -31,7 +31,7 @@ class ProcessReportsPage extends MyScreenPageLimited<()> {
     : super(builder: (_) => ProcessReportsScreen(r, queueType: queueType));
 }
 
-class ProcessReportsScreen extends ContentDecicionScreen<WrappedReportDetailed> {
+class ProcessReportsScreen extends ContentDecisionScreen<WrappedReportDetailed> {
   ProcessReportsScreen(RepositoryInstances r, {required ReportQueueType queueType, super.key})
     : super(
         api: r.api,

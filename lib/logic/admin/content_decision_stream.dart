@@ -6,14 +6,14 @@ import 'package:async/async.dart' show StreamExtensions;
 import "package:app/utils/result.dart";
 import "package:rxdart/rxdart.dart";
 
-enum ContentDecicionStreamStatus { loading, handling, allHandled }
+enum ContentDecisionStreamStatus { loading, handling, allHandled }
 
 enum RowStatus {
-  decicionNeeded,
+  decisionNeeded,
   accepted,
   rejected;
 
-  bool isAcceptingPossible() => this == decicionNeeded || this == rejected;
+  bool isAcceptingPossible() => this == decisionNeeded || this == rejected;
 
   // Allow all to allow changing rejection details
   bool isRejectingPossible() => true;
@@ -47,7 +47,7 @@ class ContentRow<C> implements RowState<C> {
   }
 
   Future<ContentRow<C>?> sendToServer(ContentIo<C> io) async {
-    if (status == RowStatus.decicionNeeded) {
+    if (status == RowStatus.decisionNeeded) {
       return null;
     }
 
@@ -57,11 +57,11 @@ class ContentRow<C> implements RowState<C> {
   }
 }
 
-class ContentDecicionStreamLogic<C> {
+class ContentDecisionStreamLogic<C> {
   final ApiManager api;
 
-  final BehaviorSubject<ContentDecicionStreamStatus> _moderationStatus = BehaviorSubject.seeded(
-    ContentDecicionStreamStatus.loading,
+  final BehaviorSubject<ContentDecisionStreamStatus> _moderationStatus = BehaviorSubject.seeded(
+    ContentDecisionStreamStatus.loading,
   );
 
   final ContentIo<C> io;
@@ -70,9 +70,9 @@ class ContentDecicionStreamLogic<C> {
   var showTextsWhichBotsCanModerate = false;
   var loadManager = LoadMoreManager<C>();
 
-  Stream<ContentDecicionStreamStatus> get moderationStatus => _moderationStatus.stream;
+  Stream<ContentDecisionStreamStatus> get moderationStatus => _moderationStatus.stream;
 
-  ContentDecicionStreamLogic(this.api, this.io) : cacher = ModerationCacher<C>(api);
+  ContentDecisionStreamLogic(this.api, this.io) : cacher = ModerationCacher<C>(api);
 
   Future<void> dispose() async {
     await _moderationStatus.close();
@@ -80,7 +80,7 @@ class ContentDecicionStreamLogic<C> {
   }
 
   void reset() {
-    _moderationStatus.add(ContentDecicionStreamStatus.loading);
+    _moderationStatus.add(ContentDecisionStreamStatus.loading);
     final currentLoadManager = loadManager;
     loadManager = LoadMoreManager();
     currentLoadManager.dispose();
@@ -88,16 +88,16 @@ class ContentDecicionStreamLogic<C> {
     cacher.getMoreModerationRequests(io).then((value) {
       final firstState = value.firstOrNull;
       if (firstState == null || firstState is AllModerated) {
-        _moderationStatus.add(ContentDecicionStreamStatus.allHandled);
+        _moderationStatus.add(ContentDecisionStreamStatus.allHandled);
       } else {
-        _moderationStatus.add(ContentDecicionStreamStatus.handling);
+        _moderationStatus.add(ContentDecisionStreamStatus.handling);
         loadManager.handleNewStates(value);
       }
     });
   }
 
   Stream<RowState<C>> getRow(int index) async* {
-    if (_moderationStatus.value == ContentDecicionStreamStatus.loading) {
+    if (_moderationStatus.value == ContentDecisionStreamStatus.loading) {
       return;
     }
 
@@ -245,7 +245,7 @@ class ModerationCacher<C> {
       newStates.add(
         ContentRow(
           m,
-          status: RowStatus.decicionNeeded,
+          status: RowStatus.decisionNeeded,
           rejectedDetails: io.initialRejectedDetails(m),
         ),
       );

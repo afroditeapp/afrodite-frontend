@@ -1,8 +1,8 @@
 import 'package:app/api/server_connection_manager.dart';
 import 'package:app/data/utils/repository_instances.dart';
-import 'package:app/logic/admin/content_decicion_stream.dart';
+import 'package:app/logic/admin/content_decision_stream.dart';
 import 'package:app/model/freezed/logic/main/navigator_state.dart';
-import 'package:app/ui/normal/settings/admin/content_decicion_stream.dart';
+import 'package:app/ui/normal/settings/admin/content_decision_stream.dart';
 import 'package:app/ui_utils/extensions/api.dart';
 import 'package:app/ui_utils/moderation.dart';
 import 'package:app/utils/result.dart';
@@ -22,7 +22,7 @@ class ModerateProfileStringsPage extends MyScreenPageLimited<()> {
        );
 }
 
-class ModerateProfileStringsScreen extends ContentDecicionScreen<WrappedProfileStringModeration> {
+class ModerateProfileStringsScreen extends ContentDecisionScreen<WrappedProfileStringModeration> {
   ModerateProfileStringsScreen(
     RepositoryInstances r, {
     required ProfileStringModerationContentType contentType,

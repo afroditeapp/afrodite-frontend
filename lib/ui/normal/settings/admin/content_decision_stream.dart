@@ -1,5 +1,5 @@
 import 'package:app/api/server_connection_manager.dart';
-import 'package:app/logic/admin/content_decicion_stream.dart';
+import 'package:app/logic/admin/content_decision_stream.dart';
 import 'package:app/ui/normal/settings/admin/account_admin_settings.dart';
 import 'package:flutter/material.dart';
 import 'package:openapi/api.dart';
@@ -10,14 +10,14 @@ import 'package:app/model/freezed/logic/main/navigator_state.dart';
 import 'package:app/ui_utils/dialog.dart';
 import 'package:scrollable_positioned_list/scrollable_positioned_list.dart';
 
-class ContentDecicionScreen<C extends ContentInfoGetter> extends StatefulWidget {
+class ContentDecisionScreen<C extends ContentInfoGetter> extends StatefulWidget {
   final String title;
   final String? screenInstructions;
   final double infoMessageRowHeight;
   final ContentIo<C> io;
   final ContentUiBuilder<C> builder;
   final ApiManager api;
-  const ContentDecicionScreen({
+  const ContentDecisionScreen({
     required this.title,
     this.screenInstructions,
     required this.infoMessageRowHeight,
@@ -28,15 +28,15 @@ class ContentDecicionScreen<C extends ContentInfoGetter> extends StatefulWidget 
   });
 
   @override
-  State<ContentDecicionScreen<C>> createState() => _ContentDecicionScreenState<C>();
+  State<ContentDecisionScreen<C>> createState() => _ContentDecisionScreenState<C>();
 }
 
-class _ContentDecicionScreenState<C extends ContentInfoGetter>
-    extends State<ContentDecicionScreen<C>> {
+class _ContentDecisionScreenState<C extends ContentInfoGetter>
+    extends State<ContentDecisionScreen<C>> {
   final ItemPositionsListener _listener = ItemPositionsListener.create();
-  late final ContentDecicionStreamLogic<C> _logic;
+  late final ContentDecisionStreamLogic<C> _logic;
 
-  late final Stream<ContentDecicionStreamStatus> _stream;
+  late final Stream<ContentDecisionStreamStatus> _stream;
   bool _scrollUpActionIsAccept = true;
 
   /// List item size changes cause issues when scrolling upwards, so
@@ -46,7 +46,7 @@ class _ContentDecicionScreenState<C extends ContentInfoGetter>
   @override
   void initState() {
     super.initState();
-    _logic = ContentDecicionStreamLogic<C>(widget.api, widget.io);
+    _logic = ContentDecisionStreamLogic<C>(widget.api, widget.io);
     _logic.reset();
     _listener.itemPositions.addListener(positionListener);
     _stream = _logic.moderationStatus;
@@ -102,9 +102,9 @@ class _ContentDecicionScreenState<C extends ContentInfoGetter>
       builder: (context, state) {
         final d = state.data;
         switch (d) {
-          case ContentDecicionStreamStatus.allHandled:
+          case ContentDecisionStreamStatus.allHandled:
             return buildEmptyText(context, widget.infoMessageRowHeight);
-          case ContentDecicionStreamStatus.handling:
+          case ContentDecisionStreamStatus.handling:
             return ScrollablePositionedList.separated(
               itemCount: 1000000,
               separatorBuilder: (context, i) {
@@ -112,7 +112,7 @@ class _ContentDecicionScreenState<C extends ContentInfoGetter>
               },
               itemPositionsListener: _listener,
               itemBuilder: (context, index) {
-                return UpdatingContentDecicionListItem(
+                return UpdatingContentDecisionListItem(
                   logic: _logic,
                   rowStateCache: rowStateCache,
                   index: index,
@@ -122,7 +122,7 @@ class _ContentDecicionScreenState<C extends ContentInfoGetter>
                 );
               },
             );
-          case ContentDecicionStreamStatus.loading || null:
+          case ContentDecisionStreamStatus.loading || null:
             return Center(child: buildProgressIndicator(widget.infoMessageRowHeight));
         }
       },
@@ -136,14 +136,14 @@ class _ContentDecicionScreenState<C extends ContentInfoGetter>
   }
 }
 
-class UpdatingContentDecicionListItem<C extends ContentInfoGetter> extends StatefulWidget {
-  final ContentDecicionStreamLogic<C> logic;
+class UpdatingContentDecisionListItem<C extends ContentInfoGetter> extends StatefulWidget {
+  final ContentDecisionStreamLogic<C> logic;
   final Map<int, RowState<C>> rowStateCache;
   final int index;
   final double infoMessageRowHeight;
   final ContentUiBuilder<C> builder;
   final ApiManager api;
-  const UpdatingContentDecicionListItem({
+  const UpdatingContentDecisionListItem({
     required this.logic,
     required this.rowStateCache,
     required this.index,
@@ -154,12 +154,12 @@ class UpdatingContentDecicionListItem<C extends ContentInfoGetter> extends State
   });
 
   @override
-  State<UpdatingContentDecicionListItem<C>> createState() =>
-      _UpdatingContentDecicionListItemState();
+  State<UpdatingContentDecisionListItem<C>> createState() =>
+      _UpdatingContentDecisionListItemState();
 }
 
-class _UpdatingContentDecicionListItemState<C extends ContentInfoGetter>
-    extends State<UpdatingContentDecicionListItem<C>> {
+class _UpdatingContentDecisionListItemState<C extends ContentInfoGetter>
+    extends State<UpdatingContentDecisionListItem<C>> {
   late final Stream<RowState<C>> stream;
 
   @override
@@ -202,7 +202,7 @@ class _UpdatingContentDecicionListItemState<C extends ContentInfoGetter>
         color = Theme.of(context).colorScheme.primaryContainer;
       case RowStatus.rejected:
         color = Theme.of(context).colorScheme.errorContainer;
-      case RowStatus.decicionNeeded:
+      case RowStatus.decisionNeeded:
         color = null;
     }
 
@@ -337,7 +337,7 @@ class _UpdatingContentDecicionListItemState<C extends ContentInfoGetter>
 
     return MyNavigator.showDialog(
       context: context,
-      page: ContentDecicionDialog(builder: builder),
+      page: ContentDecisionDialog(builder: builder),
     );
   }
 
@@ -375,8 +375,8 @@ class _UpdatingContentDecicionListItemState<C extends ContentInfoGetter>
   }
 }
 
-class ContentDecicionDialog extends MyDialogPage<()> {
-  ContentDecicionDialog({required super.builder});
+class ContentDecisionDialog extends MyDialogPage<()> {
+  ContentDecisionDialog({required super.builder});
 }
 
 class RejectWithDetailsDialog extends MyDialogPage<RejectWithDetailsDialogResult> {

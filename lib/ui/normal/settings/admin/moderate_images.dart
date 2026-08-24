@@ -2,9 +2,9 @@ import 'package:app/api/server_connection_manager.dart';
 import 'package:app/data/image_cache.dart';
 import 'package:app/data/media_repository.dart';
 import 'package:app/data/utils/repository_instances.dart';
-import 'package:app/logic/admin/content_decicion_stream.dart';
+import 'package:app/logic/admin/content_decision_stream.dart';
 import 'package:app/model/freezed/logic/main/navigator_state.dart';
-import 'package:app/ui/normal/settings/admin/content_decicion_stream.dart';
+import 'package:app/ui/normal/settings/admin/content_decision_stream.dart';
 import 'package:app/ui_utils/moderation.dart';
 import 'package:app/utils/option.dart';
 import 'package:app/utils/result.dart';
@@ -27,7 +27,7 @@ class ModerateImagesPage extends MyScreenPageLimited<()> {
        );
 }
 
-class ModerateImagesScreen extends ContentDecicionScreen<WrappedMediaContentPendingModeration> {
+class ModerateImagesScreen extends ContentDecisionScreen<WrappedMediaContentPendingModeration> {
   final MediaContentModerationType moderationType;
   final MediaContentModerationQueueType queueType;
   ModerateImagesScreen(
