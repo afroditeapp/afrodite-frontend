@@ -65,7 +65,7 @@ Future<bool?> _confirmDialogForImage(BuildContext context, Uint8List imageBytes)
   const IMG_HEIGHT = 200.0;
   Widget img = InkWell(
     onTap: () => openViewImageScreenWithImageData(context, imageBytes),
-    // Width seems to prevent the dialog from expanding horizontaly
+    // Width seems to prevent the dialog from expanding horizontally
     child: bytesImgWidget(
       imageBytes,
       width: IMG_WIDTH,

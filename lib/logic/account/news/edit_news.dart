@@ -132,8 +132,8 @@ class EditNewsBloc extends Bloc<EditNewsEvent, EditNewsData> with ActionRunner {
 
   Future<Result<(), _SaveError>> _saveTranslation(Emitter<EditNewsData> emit, String locale) async {
     final currentVersion =
-        state.currentlNewsContent(locale).version ?? NewsTranslationVersion(version: 0);
-    final edited = state.editedOrCurrentlNewsContent(locale);
+        state.currentNewsContent(locale).version ?? NewsTranslationVersion(version: 0);
+    final edited = state.editedOrCurrentNewsContent(locale);
     final r = await api.accountAdmin(
       (api) => api.postUpdateNewsTranslation(
         id.nid,

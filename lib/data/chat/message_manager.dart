@@ -392,7 +392,7 @@ class MessageManager extends LifecycleMethods {
         switch (e) {
           case ReceivedMessageError.decryptingFailed:
             messageState = ReceivedMessageState.decryptingFailed;
-          case ReceivedMessageError.publicKeyDonwloadingFailed:
+          case ReceivedMessageError.publicKeyDownloadingFailed:
             return const Err(RetryPublicKeyDownloadError.unspecifiedError);
         }
       case Ok(v: (final message, final symmetricKey)):

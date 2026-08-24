@@ -136,11 +136,11 @@ class ProfileRepository extends DataRepositoryWithLifecycle {
     AccountId id,
     ProfileRefreshPriority priority,
   ) async* {
-    final dbProfileIteator = StreamIterator(
+    final dbProfileIterator = StreamIterator(
       db.accountStream((db) => db.profile.watchProfileEntry(id)),
     );
 
-    final profile = await dbProfileIteator.next();
+    final profile = await dbProfileIterator.next();
     yield profile;
 
     bool download = true;
@@ -178,7 +178,7 @@ class ProfileRepository extends DataRepositoryWithLifecycle {
     }
 
     while (true) {
-      final profile = await dbProfileIteator.next();
+      final profile = await dbProfileIterator.next();
       if (profile != null) {
         yield profile;
       } else {

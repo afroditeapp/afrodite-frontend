@@ -1,6 +1,6 @@
 import 'package:meta/meta.dart';
 
-/// List with immutable order and elemtents.
+/// List with immutable order and elements.
 class ImmutableList<T extends Immutable> extends Iterable<T> {
   final List<T> _list;
 

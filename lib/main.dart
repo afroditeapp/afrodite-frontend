@@ -248,7 +248,7 @@ class GlobalInitManager extends AppSingletonNoInit {
     await _continueInit();
   }
 
-  /// Global init should be triggerred after splash screen
+  /// Global init should be triggered after splash screen
   /// is visible.
   Future<void> triggerGlobalInit() async {
     unawaited(_init());

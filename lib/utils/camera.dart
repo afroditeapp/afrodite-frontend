@@ -44,7 +44,7 @@ enum ScheduledAction {
   openCameraAgain,
 
   /// Clear CameraManagerState
-  closeComplately,
+  closeCompletely,
 }
 
 sealed class CameraManagerState {}
@@ -236,13 +236,13 @@ class CameraManager extends AppSingleton {
             _action = null;
             _state.add(Closed(null));
           } else {
-            _action = ScheduledAction.closeComplately;
+            _action = ScheduledAction.closeCompletely;
             controller.dispose();
           }
         }
       case DisposeOngoing():
         {
-          _action = ScheduledAction.closeComplately;
+          _action = ScheduledAction.closeCompletely;
         }
       case Closed():
         {
@@ -271,7 +271,7 @@ class CameraManager extends AppSingleton {
           }
           await _openCameraCmd();
         }
-      case ScheduledAction.closeComplately:
+      case ScheduledAction.closeCompletely:
         {
           _state.add(Closed(null));
         }

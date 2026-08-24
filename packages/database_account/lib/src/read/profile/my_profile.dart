@@ -14,7 +14,7 @@ part 'my_profile.g.dart';
 class DaoReadMyProfile extends DatabaseAccessor<AccountDatabase> with _$DaoReadMyProfileMixin {
   DaoReadMyProfile(super.db);
 
-  /// Get ProileEntry for my profile
+  /// Get ProfileEntry for my profile
   Stream<MyProfileEntry?> getProfileEntryForMyProfile() => Rx.combineLatest3(
     watchColumnMyProfile((r) => r),
     db.read.myMedia.watchMyAllProfileContent(),

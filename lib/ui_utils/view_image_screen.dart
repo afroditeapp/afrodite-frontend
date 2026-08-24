@@ -71,8 +71,13 @@ class _ViewImageScreenState extends State<ViewImageScreen> {
     );
   }
 
-  Widget buildImage(BuildContext contex, AccountId imageOwner, ContentId image) {
-    return accountImgWidget(context, imageOwner, image, cacheSize: ImageCacheSize.maxDisplaySize());
+  Widget buildImage(BuildContext buildContext, AccountId imageOwner, ContentId image) {
+    return accountImgWidget(
+      buildContext,
+      imageOwner,
+      image,
+      cacheSize: ImageCacheSize.maxDisplaySize(),
+    );
   }
 
   Widget viewerForWidget(Widget child) {

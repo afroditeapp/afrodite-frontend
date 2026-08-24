@@ -63,7 +63,7 @@ class Message extends Table {
   IntColumn get messageState => integer()();
   BlobColumn get symmetricMessageEncryptionKey => blob().nullable()();
 
-  // Server sends valid values for the next colums.
+  // Server sends valid values for the next columns.
   IntColumn get messageNumber =>
       integer().map(const NullAwareTypeConverter.wrap(MessageNumberConverter())).nullable()();
   IntColumn get sentUnixTime =>

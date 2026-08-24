@@ -127,7 +127,7 @@ class RepositoryInstances {
 
     await connectionManager.close();
 
-    _log.info("Reseting tokens");
+    _log.info("Resetting tokens");
 
     await accountDb.accountAction((db) => db.loginSession.updateRefreshToken(null));
     await accountDb.accountAction((db) => db.loginSession.updateAccessToken(null));

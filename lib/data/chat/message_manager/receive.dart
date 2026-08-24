@@ -16,7 +16,7 @@ import 'package:app/utils/api.dart';
 import 'package:utils/utils.dart';
 import 'package:app/utils/result.dart';
 
-final _log = Logger("ReceiveMessgeUtils");
+final _log = Logger("ReceiveMessageUtils");
 
 class ReceiveMessageUtils {
   final MessageKeyManager messageKeyManager;
@@ -78,7 +78,7 @@ class ReceiveMessageUtils {
           switch (e) {
             case ReceivedMessageError.decryptingFailed:
               messageState = ReceivedMessageState.decryptingFailed;
-            case ReceivedMessageError.publicKeyDonwloadingFailed:
+            case ReceivedMessageError.publicKeyDownloadingFailed:
               messageState = ReceivedMessageState.publicKeyDownloadFailed;
           }
         case Ok(v: (final message, final symmetricKey)):
@@ -175,7 +175,7 @@ class ReceiveMessageUtils {
         .getSpecificPublicKeyForForeignAccount(message.sender, message.senderPublicKeyId)
         .ok();
     if (publicKey == null) {
-      return const Err(ReceivedMessageError.publicKeyDonwloadingFailed);
+      return const Err(ReceivedMessageError.publicKeyDownloadingFailed);
     }
 
     final (decryptResult, decryptingResult) = await decryptMessage(
@@ -197,7 +197,7 @@ class ReceiveMessageUtils {
   }
 }
 
-enum ReceivedMessageError { decryptingFailed, publicKeyDonwloadingFailed }
+enum ReceivedMessageError { decryptingFailed, publicKeyDownloadingFailed }
 
 class PendingMessageData {
   final ServerSignedMessage parsed;

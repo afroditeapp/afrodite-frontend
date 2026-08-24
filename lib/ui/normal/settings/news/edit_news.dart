@@ -138,7 +138,7 @@ class EditNewsScreenState extends State<EditNewsScreen> {
     }
     final List<Widget> widgets = [Text(visibilityText)];
     for (final l in widget.supportedLocales) {
-      final c = state.editedOrCurrentlNewsContent(l);
+      final c = state.editedOrCurrentNewsContent(l);
       widgets.add(const Divider());
       widgets.addAll(newsContentToWidgets(context, l, c));
     }

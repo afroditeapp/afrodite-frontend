@@ -17,13 +17,13 @@ class EditNewsData with _$EditNewsData {
     @Default(false) bool isVisibleToUsers,
   }) = _EditNewsData;
 
-  NewsContent editedOrCurrentlNewsContent(String locale) {
+  NewsContent editedOrCurrentNewsContent(String locale) {
     return editableTranslations[locale] ??
         currentTranslations[locale] ??
         (title: "", body: "", version: null);
   }
 
-  NewsContent currentlNewsContent(String locale) {
+  NewsContent currentNewsContent(String locale) {
     return currentTranslations[locale] ?? (title: "", body: "", version: null);
   }
 

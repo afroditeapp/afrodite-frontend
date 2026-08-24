@@ -30,7 +30,7 @@ class ModerateProfileStringsScreen extends ContentDecisionScreen<WrappedProfileS
     super.key,
   }) : super(
          api: r.api,
-         title: "Moderate ${contentType.adminUiTextPlular()}",
+         title: "Moderate ${contentType.adminUiTextPlural()}",
          infoMessageRowHeight: ROW_HEIGHT,
          io: ProfileStringIo(r.api, contentType, queueType),
          builder: ProfileTextUiBuilder(),

@@ -46,7 +46,7 @@ class DaoWriteApp extends DatabaseAccessor<AccountDatabase> with _$DaoWriteAppMi
         return 0;
       }
 
-      final staleBefore = now.substract(_unusedProfileThreshold);
+      final staleBefore = now.subtract(_unusedProfileThreshold);
       final staleBeforeUnixEpochMilliseconds = staleBefore.toUnixEpochMilliseconds();
       final staleProfileAccountIds =
           await (select(profileExtra)..where(

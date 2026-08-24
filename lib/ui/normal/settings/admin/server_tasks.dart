@@ -160,14 +160,14 @@ class _ServerTasksScreenState extends State<ServerTasksScreen> {
         if ((widget.permissions.adminServerScheduledRestart ||
                 widget.permissions.adminServerScheduledReboot) &&
             status != null)
-          displayScheduledtasks(context, data, status)
+          displayScheduledTasks(context, data, status)
         else
           hPad(Text(context.strings.generic_error)),
       ],
     );
   }
 
-  Widget displayScheduledtasks(
+  Widget displayScheduledTasks(
     BuildContext context,
     ManagerInstanceRelatedState state,
     ScheduledTaskStatus status,

@@ -255,8 +255,8 @@ Future<void> _openJitsiMeetOnAndroidOrIos(BuildContext context, JitsiMeetUrl jit
   }
 
   try {
-    final jitsMeetAppLaunchSuccessful = await launchUrl(url.replace(scheme: "org.jitsi.meet"));
-    if (jitsMeetAppLaunchSuccessful) {
+    final jitsiMeetAppLaunchSuccessful = await launchUrl(url.replace(scheme: "org.jitsi.meet"));
+    if (jitsiMeetAppLaunchSuccessful) {
       return;
     }
   } catch (_) {}

@@ -21,7 +21,7 @@ class ServerAddressBloc extends Bloc<ServerAddressEvent, String> {
         return;
       }
 
-      const error = "Error: server address change failed bacause API request failed";
+      const error = "Error: server address change failed because API request failed";
       try {
         final api = ApiProvider(data.value);
         await api.common.getServerOnline();

@@ -852,7 +852,7 @@ class InitialSetupSkippedExists extends InitialSetupSkippedStreamValue {
 
   @override
   String toString() {
-    return "InitalSetupSkipped($value)";
+    return "InitialSetupSkippedExists($value)";
   }
 }
 

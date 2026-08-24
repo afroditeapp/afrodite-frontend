@@ -71,6 +71,7 @@
     "aapt",
     "pubspec",
     "unallowed",
-    "Elrte"
+    "Elrte",
+    "abackup"
   ]
 }

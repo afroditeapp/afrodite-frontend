@@ -33,7 +33,7 @@ class GetClientVersions extends GetMetrics {
 
   @override
   Future<Result<List<Metric>, ()>> getMetrics() async {
-    final oldestDate = UtcDateTime.now().substract(const Duration(days: 30));
+    final oldestDate = UtcDateTime.now().subtract(const Duration(days: 30));
     final queryResults = await api
         .accountAdmin(
           (api) => api.postGetClientVersionStatistics(

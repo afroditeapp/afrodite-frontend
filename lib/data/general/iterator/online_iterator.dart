@@ -58,7 +58,7 @@ class OnlineIterator extends IteratorType {
       }
     }
 
-    // Handle case where iterator has been reseted in the middle
+    // Handle case where iterator has been reset in the middle
     // of online iteration. Get the beginning from the database.
     final iterator = io.databaseIterator;
     if (iterator != null) {

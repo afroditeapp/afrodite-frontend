@@ -32,7 +32,7 @@ class UtcDateTime {
     return UtcDateTime._(dateTime.add(duration));
   }
 
-  UtcDateTime substract(Duration duration) {
+  UtcDateTime subtract(Duration duration) {
     return UtcDateTime._(dateTime.subtract(duration));
   }
 

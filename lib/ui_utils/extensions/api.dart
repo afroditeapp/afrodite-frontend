@@ -89,7 +89,7 @@ extension ProfileStringModerationContentTypeExtensions on ProfileStringModeratio
     }
   }
 
-  String adminUiTextPlular() {
+  String adminUiTextPlural() {
     switch (this) {
       case ProfileStringModerationContentType.profileName:
         return "profile names";

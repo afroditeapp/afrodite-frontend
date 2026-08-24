@@ -240,7 +240,7 @@ Future<bool?> confirmDialogForImage(
     const double IMG_HEIGHT = 200;
     Widget img = InkWell(
       onTap: () => openViewImageScreenForAccountImage(context, account, content),
-      // Width seems to prevent the dialog from expanding horizontaly
+      // Width seems to prevent the dialog from expanding horizontally
       child: accountImgWidget(
         context,
         account,

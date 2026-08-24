@@ -301,14 +301,14 @@ class AppNavigatorAndUpdateNavigationBlocs extends StatelessWidget {
 
     final navigator = AppNavigator(navigatorStateBloc: navigatorStateBloc, r: r);
 
-    final repositorires = r;
-    if (repositorires == null) {
+    final repositories = r;
+    if (repositories == null) {
       return navigator;
     } else {
       return Stack(
         children: [
           navigator,
-          ServerConnectionErrorDialogOpener(manager: repositorires.connectionManager),
+          ServerConnectionErrorDialogOpener(manager: repositories.connectionManager),
         ],
       );
     }

@@ -428,7 +428,7 @@ class _ViewProfileImgViewerState extends State<ViewProfileImgViewer> {
       if (!widget.showNonAcceptedImages && !contentList[i].accepted) {
         continue;
       }
-      imgs.add(viewProifleImage(context, widget.profile.accountId, contentList[i].id));
+      imgs.add(viewProfileImage(context, widget.profile.accountId, contentList[i].id));
     }
 
     if (imgs.isEmpty) {
@@ -494,7 +494,7 @@ class _ViewProfileImgViewerState extends State<ViewProfileImgViewer> {
     );
   }
 
-  Widget viewProifleImage(BuildContext context, AccountId accountId, ContentId contentId) {
+  Widget viewProfileImage(BuildContext context, AccountId accountId, ContentId contentId) {
     return accountImgWidget(
       context,
       accountId,

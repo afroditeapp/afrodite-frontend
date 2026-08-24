@@ -431,7 +431,7 @@ class ServerConnectionManager extends ApiManager
 
   /// Returns true if connected, false if not connected within the timeout.
   ///
-  /// It's a good practise to wait WebSocket connection at those locations
+  /// It's a good practice to wait WebSocket connection at those locations
   /// which are directly opened from notification for example and use API
   /// as WebSocket connection will replace invalid API access token with
   /// new token.

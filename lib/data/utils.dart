@@ -52,7 +52,7 @@ abstract class DataRepositoryMethods {
   /// Called when the user logs in. Note that this is not called
   /// every time the app is opened, but only when the user logs in.
   ///
-  /// It is not quaranteed that this is called as first failure in one
+  /// It is not guaranteed that this is called as first failure in one
   /// repository will stop calling this method.
   ///
   /// Server API is available.
