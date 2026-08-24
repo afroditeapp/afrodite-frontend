@@ -151,7 +151,7 @@ File `ios/NotificationService/NotificationService.entitlements`
 should now exist.
 
 If notification service extension does not work check these:
-- Check that Runner and NotficationService targets have same minimum
+- Check that Runner and NotificationService targets have same minimum
   iOS version
 - Check logs for "Error was encountered trying to find service extension"
 - <https://docs.flutter.dev/platform-integration/ios/app-extensions>
