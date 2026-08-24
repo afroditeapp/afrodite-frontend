@@ -605,9 +605,9 @@
     <string name="settings_screen_title" description="Title for settings screen">Settings</string>
     <string name="settings_screen_profile_category" description="Title for profile settings category">Profile</string>
     <string name="settings_screen_privacy_and_security_category" description="Title for privacy and security settings category">Privacy and security</string>
-    <string name="settings_screen_profile_visiblity_setting" description="Title for profile visibility setting">Profile visibility</string>
-    <string name="settings_screen_profile_visiblity_private_description" description="Description for private profile visibility">Hide your profile from Profiles view</string>
-    <string name="settings_screen_profile_visiblity_public_description" description="Description for public profile visibility">Show your profile in Profiles view</string>
+    <string name="settings_screen_profile_visibility_setting" description="Title for profile visibility setting">Profile visibility</string>
+    <string name="settings_screen_profile_visibility_private_description" description="Description for private profile visibility">Hide your profile from Profiles view</string>
+    <string name="settings_screen_profile_visibility_public_description" description="Description for public profile visibility">Show your profile in Profiles view</string>
     <string name="settings_screen_data_category" description="Title for data settings category">Data</string>
     <string name="settings_screen_general_category" description="Title for general settings category">General</string>
 

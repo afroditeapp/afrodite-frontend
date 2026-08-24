@@ -22,12 +22,12 @@ final _privateConstructorErrorProfileVisibilityData = UnsupportedError(
 /// @nodoc
 mixin _$ProfileVisibilityData {
   UpdateState get updateState => throw _privateConstructorErrorProfileVisibilityData;
-  ProfileVisibility get visiblity => throw _privateConstructorErrorProfileVisibilityData;
+  ProfileVisibility get visibility => throw _privateConstructorErrorProfileVisibilityData;
   ProfileVisibility? get editedVisibility => throw _privateConstructorErrorProfileVisibilityData;
 
   ProfileVisibilityData copyWith({
     UpdateState? updateState,
-    ProfileVisibility? visiblity,
+    ProfileVisibility? visibility,
     ProfileVisibility? editedVisibility,
   }) => throw _privateConstructorErrorProfileVisibilityData;
 }
@@ -36,7 +36,7 @@ mixin _$ProfileVisibilityData {
 abstract class _ProfileVisibilityData extends ProfileVisibilityData {
   factory _ProfileVisibilityData({
     UpdateState updateState,
-    ProfileVisibility visiblity,
+    ProfileVisibility visibility,
     ProfileVisibility? editedVisibility,
   }) = _$ProfileVisibilityDataImpl;
   _ProfileVisibilityData._() : super._();
@@ -45,24 +45,24 @@ abstract class _ProfileVisibilityData extends ProfileVisibilityData {
 /// @nodoc
 class _$ProfileVisibilityDataImpl extends _ProfileVisibilityData with DiagnosticableTreeMixin {
   static const UpdateState _updateStateDefaultValue = UpdateIdle();
-  static const ProfileVisibility _visiblityDefaultValue = ProfileVisibility.private;
+  static const ProfileVisibility _visibilityDefaultValue = ProfileVisibility.private;
 
   _$ProfileVisibilityDataImpl({
     this.updateState = _updateStateDefaultValue,
-    this.visiblity = _visiblityDefaultValue,
+    this.visibility = _visibilityDefaultValue,
     this.editedVisibility,
   }) : super._();
 
   @override
   final UpdateState updateState;
   @override
-  final ProfileVisibility visiblity;
+  final ProfileVisibility visibility;
   @override
   final ProfileVisibility? editedVisibility;
 
   @override
   String toString({DiagnosticLevel minLevel = DiagnosticLevel.info}) {
-    return 'ProfileVisibilityData(updateState: $updateState, visiblity: $visiblity, editedVisibility: $editedVisibility)';
+    return 'ProfileVisibilityData(updateState: $updateState, visibility: $visibility, editedVisibility: $editedVisibility)';
   }
 
   @override
@@ -71,7 +71,7 @@ class _$ProfileVisibilityDataImpl extends _ProfileVisibilityData with Diagnostic
     properties
       ..add(DiagnosticsProperty('type', 'ProfileVisibilityData'))
       ..add(DiagnosticsProperty('updateState', updateState))
-      ..add(DiagnosticsProperty('visiblity', visiblity))
+      ..add(DiagnosticsProperty('visibility', visibility))
       ..add(DiagnosticsProperty('editedVisibility', editedVisibility));
   }
 
@@ -82,8 +82,8 @@ class _$ProfileVisibilityDataImpl extends _ProfileVisibilityData with Diagnostic
         other is _$ProfileVisibilityDataImpl &&
         (identical(other.updateState, updateState) ||
           other.updateState == updateState) &&
-        (identical(other.visiblity, visiblity) ||
-          other.visiblity == visiblity) &&
+        (identical(other.visibility, visibility) ||
+          other.visibility == visibility) &&
         (identical(other.editedVisibility, editedVisibility) ||
           other.editedVisibility == editedVisibility)
     );
@@ -93,18 +93,18 @@ class _$ProfileVisibilityDataImpl extends _ProfileVisibilityData with Diagnostic
   int get hashCode => Object.hash(
     runtimeType,
     updateState,
-    visiblity,
+    visibility,
     editedVisibility,
   );
 
   @override
   ProfileVisibilityData copyWith({
     Object? updateState,
-    Object? visiblity,
+    Object? visibility,
     Object? editedVisibility = _detectDefaultValueInCopyWith,
   }) => _$ProfileVisibilityDataImpl(
     updateState: (updateState ?? this.updateState) as UpdateState,
-    visiblity: (visiblity ?? this.visiblity) as ProfileVisibility,
+    visibility: (visibility ?? this.visibility) as ProfileVisibility,
     editedVisibility: (editedVisibility == _detectDefaultValueInCopyWith ? this.editedVisibility : editedVisibility) as ProfileVisibility?,
   );
 }

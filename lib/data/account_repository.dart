@@ -172,9 +172,9 @@ class AccountRepository extends DataRepositoryWithLifecycle {
   }
 
   /// Returns true if successful.
-  Future<bool> doProfileVisibilityChange(bool profileVisiblity) async {
+  Future<bool> doProfileVisibilityChange(bool profileVisibility) async {
     final result = await api.accountAction(
-      (api) => api.putSettingProfileVisibility(BooleanSetting(value: profileVisiblity)),
+      (api) => api.putSettingProfileVisibility(BooleanSetting(value: profileVisibility)),
     );
 
     return result.isOk();

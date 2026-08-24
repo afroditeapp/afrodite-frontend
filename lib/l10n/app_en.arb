@@ -2842,16 +2842,16 @@
   "@settings_screen_profile_category": {
     "description": "Title for profile settings category"
   },
-  "settings_screen_profile_visiblity_private_description": "Hide your profile from Profiles view",
-  "@settings_screen_profile_visiblity_private_description": {
+  "settings_screen_profile_visibility_private_description": "Hide your profile from Profiles view",
+  "@settings_screen_profile_visibility_private_description": {
     "description": "Description for private profile visibility"
   },
-  "settings_screen_profile_visiblity_public_description": "Show your profile in Profiles view",
-  "@settings_screen_profile_visiblity_public_description": {
+  "settings_screen_profile_visibility_public_description": "Show your profile in Profiles view",
+  "@settings_screen_profile_visibility_public_description": {
     "description": "Description for public profile visibility"
   },
-  "settings_screen_profile_visiblity_setting": "Profile visibility",
-  "@settings_screen_profile_visiblity_setting": {
+  "settings_screen_profile_visibility_setting": "Profile visibility",
+  "@settings_screen_profile_visibility_setting": {
     "description": "Title for profile visibility setting"
   },
   "settings_screen_title": "Settings",

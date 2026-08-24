@@ -56,7 +56,7 @@ class AccountBloc extends Bloc<AccountEvent, AccountBlocData> with ActionRunner 
           // button when initial setup is skipped.
           accountState: r.account.accountStateValue,
           permissions: Permissions(),
-          // Use cached profile visiblity to avoid profile grid UI changing quickly
+          // Use cached profile visibility to avoid profile grid UI changing quickly
           // from private profile info to profile grid after login.
           visibility: r.account.profileVisibilityValue,
           // Use cached email to avoid showing input field UI for email

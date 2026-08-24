@@ -32,7 +32,7 @@ class ProfileVisibilityBloc extends Bloc<ProfileVisibilityEvent, ProfileVisibili
     : account = r.account,
       super(ProfileVisibilityData()) {
     on<NewVisibility>((data, emit) {
-      emit(state.copyWith(visiblity: data.value, editedVisibility: null));
+      emit(state.copyWith(visibility: data.value, editedVisibility: null));
     });
     on<ResetEdited>((data, emit) {
       emit(state.copyWith(editedVisibility: null));
@@ -43,7 +43,7 @@ class ProfileVisibilityBloc extends Bloc<ProfileVisibilityEvent, ProfileVisibili
       emit(
         state.copyWith(
           updateState: const UpdateStarted(),
-          editedVisibility: state.visiblity == newValue ? null : newValue,
+          editedVisibility: state.visibility == newValue ? null : newValue,
         ),
       );
 

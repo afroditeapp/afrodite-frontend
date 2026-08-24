@@ -10,9 +10,9 @@ class ProfileVisibilityData with _$ProfileVisibilityData, UpdateStateProvider {
   ProfileVisibilityData._();
   factory ProfileVisibilityData({
     @Default(UpdateIdle()) UpdateState updateState,
-    @Default(ProfileVisibility.private) ProfileVisibility visiblity,
+    @Default(ProfileVisibility.private) ProfileVisibility visibility,
     ProfileVisibility? editedVisibility,
   }) = _ProfileVisibilityData;
 
-  ProfileVisibility valueVisibility() => editedVisibility ?? visiblity;
+  ProfileVisibility valueVisibility() => editedVisibility ?? visibility;
 }

@@ -174,7 +174,7 @@ class PublicProfileViewingBlocker extends StatelessWidget {
     );
   }
 
-  Widget checkMyContent(ProfileVisibility visiblity) {
+  Widget checkMyContent(ProfileVisibility visibility) {
     return BlocBuilder<ContentBloc, ContentData>(
       builder: (context, contentState) {
         if (contentState.isLoadingSecurityContent || contentState.isLoadingPrimaryContent) {

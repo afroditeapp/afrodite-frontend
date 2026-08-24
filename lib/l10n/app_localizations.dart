@@ -3908,19 +3908,19 @@ abstract class AppLocalizations {
   ///
   /// In en, this message translates to:
   /// **'Hide your profile from Profiles view'**
-  String get settings_screen_profile_visiblity_private_description;
+  String get settings_screen_profile_visibility_private_description;
 
   /// Description for public profile visibility
   ///
   /// In en, this message translates to:
   /// **'Show your profile in Profiles view'**
-  String get settings_screen_profile_visiblity_public_description;
+  String get settings_screen_profile_visibility_public_description;
 
   /// Title for profile visibility setting
   ///
   /// In en, this message translates to:
   /// **'Profile visibility'**
-  String get settings_screen_profile_visiblity_setting;
+  String get settings_screen_profile_visibility_setting;
 
   /// Title for settings screen
   ///

@@ -2184,15 +2184,15 @@ class AppLocalizationsSv extends AppLocalizations {
   String get settings_screen_profile_category => 'Profile';
 
   @override
-  String get settings_screen_profile_visiblity_private_description =>
+  String get settings_screen_profile_visibility_private_description =>
       'Hide your profile from Profiles view';
 
   @override
-  String get settings_screen_profile_visiblity_public_description =>
+  String get settings_screen_profile_visibility_public_description =>
       'Show your profile in Profiles view';
 
   @override
-  String get settings_screen_profile_visiblity_setting => 'Profile visibility';
+  String get settings_screen_profile_visibility_setting => 'Profile visibility';
 
   @override
   String get settings_screen_title => 'Settings';
