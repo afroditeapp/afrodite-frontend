@@ -105,12 +105,12 @@
     <string name="generic_yesterday" description="Generic yesterday text">Yesterday</string>
 
     <string name="generic_text_field_age_hint_text" description="Text field hint text for age">Insert an age between 18–99</string>
-    <string name="generic_error_app_version_is_unsupported" desctiption="Snackbar text that client version is unsupported">Current app version is unsupported</string>
+    <string name="generic_error_app_version_is_unsupported" description="Snackbar text that client version is unsupported">Current app version is unsupported</string>
 
     <string name="generic_reset_to_defaults" description="Title for reset values to defaults action">Reset to default values</string>
-    <string name="generic_reset_to_defaults_dialog_title" description="Dialog title for confirming reseting values to defaults">Reset to default values?</string>
+    <string name="generic_reset_to_defaults_dialog_title" description="Dialog title for confirming reset values to defaults">Reset to default values?</string>
 
-    <!-- Global stackbar texts -->
+    <!-- Global snackbar texts -->
     <string name="snackbar_error_api" description="Snackbar error text for API errors">API error</string>
     <string name="snackbar_error_api_timeout" description="Snackbar error text for API timeouts">API timeout</string>
     <string name="snackbar_error_database" description="Snackbar error text for database errors">Database error</string>
@@ -285,7 +285,7 @@
     <string name="email_login_screen_email_hint" description="Hint text for email input field">Email address</string>
     <string name="email_login_screen_send_code_button" description="Button text for sending login code">Send login code</string>
     <string name="email_login_screen_input_code_description" description="Description for inputting login code">Enter the login code sent to %s</string>
-    <string name="email_login_screen_didnt_receive_code" description="Help text for not receiving code">If you didn\'t receive the code:\n• Check your spam folder\n• Verify the email address is correct\n• Wait %s before requesting a new code\n• Make sure you have an existing account with this email</string>
+    <string name="email_login_screen_did_not_receive_code" description="Help text for not receiving code">If you didn\'t receive the code:\n• Check your spam folder\n• Verify the email address is correct\n• Wait %s before requesting a new code\n• Make sure you have an existing account with this email</string>
     <string name="email_login_screen_code_hint" description="Hint text for login code input field">Login code</string>
     <string name="email_login_screen_token_validity" description="Text showing token validity time">Code expires in: %s</string>
     <string name="email_login_screen_registration_unsupported_email" description="Error message shown when the entered email address is unsupported">Unsupported email address. Please use another login method.</string>
@@ -611,7 +611,7 @@
     <string name="settings_screen_data_category" description="Title for data settings category">Data</string>
     <string name="settings_screen_general_category" description="Title for general settings category">General</string>
 
-    <!-- Bocked profiles screen -->
+    <!-- Blocked profiles screen -->
     <string name="blocked_profiles_screen_title" description="Title for blocked profiles screen">Blocked profiles</string>
     <string name="blocked_profiles_screen_placeholder_for_private_profile" description="Placeholder text for private profile">Private profile</string>
     <string name="blocked_profiles_screen_unblock_profile_dialog_title" description="Title for unblock profile dialog">Unblock profile?</string>

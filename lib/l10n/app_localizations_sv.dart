@@ -806,7 +806,7 @@ class AppLocalizationsSv extends AppLocalizations {
   String get email_login_screen_code_hint => 'Login code';
 
   @override
-  String email_login_screen_didnt_receive_code(String p0) {
+  String email_login_screen_did_not_receive_code(String p0) {
     return 'If you didn\'t receive the code:\n• Check your spam folder\n• Verify the email address is correct\n• Wait $p0 before requesting a new code\n• Make sure you have an existing account with this email';
   }
 

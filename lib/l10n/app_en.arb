@@ -1033,8 +1033,8 @@
   "@email_login_screen_code_hint": {
     "description": "Hint text for login code input field"
   },
-  "email_login_screen_didnt_receive_code": "If you didn't receive the code:\n• Check your spam folder\n• Verify the email address is correct\n• Wait {p0} before requesting a new code\n• Make sure you have an existing account with this email",
-  "@email_login_screen_didnt_receive_code": {
+  "email_login_screen_did_not_receive_code": "If you didn't receive the code:\n• Check your spam folder\n• Verify the email address is correct\n• Wait {p0} before requesting a new code\n• Make sure you have an existing account with this email",
+  "@email_login_screen_did_not_receive_code": {
     "description": "Help text for not receiving code",
     "placeholders": {
       "p0": {
@@ -1224,6 +1224,9 @@
     "description": "Generic error message"
   },
   "generic_error_app_version_is_unsupported": "Current app version is unsupported",
+  "@generic_error_app_version_is_unsupported": {
+    "description": "Snackbar text that client version is unsupported"
+  },
   "generic_error_occurred": "Error occurred",
   "@generic_error_occurred": {
     "description": "Generic error occurred text"
@@ -1366,7 +1369,7 @@
   },
   "generic_reset_to_defaults_dialog_title": "Reset to default values?",
   "@generic_reset_to_defaults_dialog_title": {
-    "description": "Dialog title for confirming reseting values to defaults"
+    "description": "Dialog title for confirming reset values to defaults"
   },
   "generic_restore": "Restore",
   "@generic_restore": {

@@ -467,7 +467,7 @@ class _EmailLoginCodeScreenState extends State<EmailLoginCodeScreen> {
                 ),
                 const Padding(padding: EdgeInsets.only(top: 24)),
                 Text(
-                  context.strings.email_login_screen_didnt_receive_code(
+                  context.strings.email_login_screen_did_not_receive_code(
                     state.resendWaitSeconds != null
                         ? formatSeconds(state.resendWaitSeconds!)
                         : '...',

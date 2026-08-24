@@ -1460,7 +1460,7 @@ abstract class AppLocalizations {
   ///
   /// In en, this message translates to:
   /// **'If you didn\'t receive the code:\n• Check your spam folder\n• Verify the email address is correct\n• Wait {p0} before requesting a new code\n• Make sure you have an existing account with this email'**
-  String email_login_screen_didnt_receive_code(String p0);
+  String email_login_screen_did_not_receive_code(String p0);
 
   /// Hint text for email input field
   ///
@@ -1696,7 +1696,7 @@ abstract class AppLocalizations {
   /// **'Error'**
   String get generic_error;
 
-  /// No description provided for @generic_error_app_version_is_unsupported.
+  /// Snackbar text that client version is unsupported
   ///
   /// In en, this message translates to:
   /// **'Current app version is unsupported'**
@@ -1912,7 +1912,7 @@ abstract class AppLocalizations {
   /// **'Reset to default values'**
   String get generic_reset_to_defaults;
 
-  /// Dialog title for confirming reseting values to defaults
+  /// Dialog title for confirming reset values to defaults
   ///
   /// In en, this message translates to:
   /// **'Reset to default values?'**
