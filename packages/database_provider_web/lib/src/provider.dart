@@ -6,14 +6,14 @@ import 'package:utils/utils.dart';
 
 final _log = Logger("DbProviderWeb");
 
-class DbProvider implements QueryExcecutorProvider {
+class DbProvider implements QueryExecutorProvider {
   final DbFile db;
   DbProvider(this.db);
 
   DatabaseConnection? connection;
 
   @override
-  QueryExecutor getQueryExcecutor() {
+  QueryExecutor getQueryExecutor() {
     connection ??= DatabaseConnection.delayed(
       Future(() async {
         final result = await WasmDatabase.open(

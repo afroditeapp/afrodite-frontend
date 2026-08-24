@@ -9,8 +9,8 @@ extension ListExtensions<T> on List<T> {
   }
 }
 
-abstract class QueryExcecutorProvider {
-  QueryExecutor getQueryExcecutor();
+abstract class QueryExecutorProvider {
+  QueryExecutor getQueryExecutor();
 }
 
 sealed class DbFile {}

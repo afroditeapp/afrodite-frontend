@@ -320,9 +320,9 @@ void main() {
 }
 
 // Helper class for in-memory database testing
-class _InMemoryQueryExecutorProvider implements QueryExcecutorProvider {
+class _InMemoryQueryExecutorProvider implements QueryExecutorProvider {
   @override
-  QueryExecutor getQueryExcecutor() {
+  QueryExecutor getQueryExecutor() {
     return NativeDatabase.memory();
   }
 }

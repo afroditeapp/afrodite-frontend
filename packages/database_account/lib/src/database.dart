@@ -179,7 +179,7 @@ part 'database.g.dart';
   ],
 )
 class AccountDatabase extends _$AccountDatabase {
-  AccountDatabase(QueryExcecutorProvider dbProvider) : super(dbProvider.getQueryExcecutor());
+  AccountDatabase(QueryExecutorProvider dbProvider) : super(dbProvider.getQueryExecutor());
 
   AccountDatabaseRead get read => AccountDatabaseRead(this);
   AccountDatabaseWrite get write => AccountDatabaseWrite(this);

@@ -9,7 +9,7 @@ part 'database.g.dart';
 /// Cache database for storing image cache metadata in system cache directory.
 @DriftDatabase(tables: [schema.CacheEntry], daos: [DaoReadCacheEntry, DaoWriteCacheEntry])
 class CacheDatabase extends _$CacheDatabase {
-  CacheDatabase(QueryExcecutorProvider dbProvider) : super(dbProvider.getQueryExcecutor());
+  CacheDatabase(QueryExecutorProvider dbProvider) : super(dbProvider.getQueryExecutor());
 
   CacheDatabaseRead get read => CacheDatabaseRead(this);
   CacheDatabaseWrite get write => CacheDatabaseWrite(this);

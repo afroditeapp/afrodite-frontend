@@ -28,7 +28,7 @@ class CacheDatabaseManager {
       return;
     }
     _db = CacheDatabase(_dbProvider);
-    final result = await _dbProvider.getQueryExcecutor().ensureOpen(_db);
+    final result = await _dbProvider.getQueryExecutor().ensureOpen(_db);
     _log.info("CacheDatabase ensureOpen result: $result");
   }
 

@@ -8,14 +8,14 @@ import 'package:flutter/services.dart';
 import 'package:database_utils/database_utils.dart';
 import 'package:sqlite3/sqlite3.dart';
 
-class DbProvider implements QueryExcecutorProvider {
+class DbProvider implements QueryExecutorProvider {
   final DbFile _db;
   DbProvider(this._db);
 
   LazyDatabase? _dbConnection;
 
   @override
-  QueryExecutor getQueryExcecutor() {
+  QueryExecutor getQueryExecutor() {
     _dbConnection ??= openDbConnection(_db);
     return _dbConnection!;
   }

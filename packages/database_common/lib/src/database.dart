@@ -35,7 +35,7 @@ part 'database.g.dart';
   ],
 )
 class CommonDatabase extends _$CommonDatabase {
-  CommonDatabase(QueryExcecutorProvider dbProvider) : super(dbProvider.getQueryExcecutor());
+  CommonDatabase(QueryExecutorProvider dbProvider) : super(dbProvider.getQueryExecutor());
 
   CommonDatabaseRead get read => CommonDatabaseRead(this);
   CommonDatabaseWrite get write => CommonDatabaseWrite(this);

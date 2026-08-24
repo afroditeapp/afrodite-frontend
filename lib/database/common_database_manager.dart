@@ -43,7 +43,7 @@ class CommonDatabaseManager extends AppSingleton {
 
     _commonDatabaseProvider = DbProvider(CommonDbFile());
     _commonDatabase = CommonDatabase(_commonDatabaseProvider);
-    final ensureOpenResult = await _commonDatabaseProvider.getQueryExcecutor().ensureOpen(
+    final ensureOpenResult = await _commonDatabaseProvider.getQueryExecutor().ensureOpen(
       _commonDatabase,
     );
     _log.info("CommonDatabase ensureOpen result: $ensureOpenResult");
@@ -150,7 +150,7 @@ class CommonDatabaseManager extends AppSingleton {
     _log.info("AccountDatabase init");
     final dbProvider = DbProvider(AccountDbFile(accountId.aid));
     final db = AccountDatabase(dbProvider);
-    final ensureOpenResult = await dbProvider.getQueryExcecutor().ensureOpen(db);
+    final ensureOpenResult = await dbProvider.getQueryExecutor().ensureOpen(db);
     _log.info("AccountDatabase ensureOpen result: $ensureOpenResult");
     final manager = AccountDatabaseManager(db);
     await manager.accountAction((db) => db.loginSession.setAccountIdIfNull(accountId));
