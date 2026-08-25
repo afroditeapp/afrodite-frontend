@@ -1797,6 +1797,40 @@ class AppLocalizationsSv extends AppLocalizations {
   String get profile_filters_screen_unlimited_likes_filter => 'Up for a date today';
 
   @override
+  String profile_filters_screen_unsigned_integer_filter_max_value(String p0) {
+    return 'Max $p0';
+  }
+
+  @override
+  String profile_filters_screen_unsigned_integer_filter_max_value_with_unit(String p0, String p1) {
+    return 'Max $p0 $p1';
+  }
+
+  @override
+  String profile_filters_screen_unsigned_integer_filter_min_and_max_value(String p0, String p1) {
+    return '$p0-$p1';
+  }
+
+  @override
+  String profile_filters_screen_unsigned_integer_filter_min_and_max_value_with_unit(
+    String p0,
+    String p1,
+    String p2,
+  ) {
+    return '$p0-$p1 $p2';
+  }
+
+  @override
+  String profile_filters_screen_unsigned_integer_filter_min_value(String p0) {
+    return 'Min $p0';
+  }
+
+  @override
+  String profile_filters_screen_unsigned_integer_filter_min_value_with_unit(String p0, String p1) {
+    return 'Min $p0 $p1';
+  }
+
+  @override
   String get profile_filters_screen_updating_filters_failed => 'Updating profile filters failed';
 
   @override

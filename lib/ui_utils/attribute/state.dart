@@ -3,7 +3,7 @@ import 'package:openapi/api.dart';
 
 class AttributeStateStorage {
   final Map<String, UiAttributeValue> selected = {};
-  int? unsignedIntegerValue;
+  List<int> unsignedIntegerValues = [];
   AttributeStateStorage();
 
   bool isSelected(UiAttributeValue attribute) => selected.containsKey(attribute.apiValue().key);
@@ -59,13 +59,7 @@ class AttributeStateStorage {
         intList = [apiValue];
       }
     } else if (attribute.apiAttribute().mode == AttributeMode.unsignedInteger) {
-      final value = unsignedIntegerValue;
-      if (value == null) {
-        // Empty list removes the attribute
-        intList = [];
-      } else {
-        intList = [value];
-      }
+      intList = unsignedIntegerValues;
     } else {
       intList = values.map((v) => v.selectedValueForApi()).toList();
     }
@@ -77,7 +71,7 @@ class AttributeStateStorage {
     for (final v in selected.values) {
       storage.select(v);
     }
-    storage.unsignedIntegerValue = unsignedIntegerValue;
+    storage.unsignedIntegerValues = [...unsignedIntegerValues];
     return storage;
   }
 
@@ -103,7 +97,7 @@ class AttributeStateStorage {
       return storage;
     }
     if (attribute.apiAttribute().mode == AttributeMode.unsignedInteger) {
-      storage.unsignedIntegerValue = u.v.firstOrNull;
+      storage.unsignedIntegerValues = [...u.v];
       return storage;
     }
     for (final update in u.v) {
@@ -125,20 +119,6 @@ class AttributeStateStorage {
     }
     return storage;
   }
-
-  factory AttributeStateStorage.parseFromFilterUpdate(
-    UiAttribute attribute,
-    ProfileAttributeFilterValueUpdate u, {
-    bool parseUnwanted = false,
-  }) {
-    return AttributeStateStorage.parseFromUpdate(
-      attribute,
-      ProfileAttributeValueUpdate(
-        id: attribute.apiAttribute().id,
-        v: parseUnwanted ? u.unwanted : u.wanted,
-      ),
-    );
-  }
 }
 
 class AttributeAndState extends AttributeValueAreaInfoProvider {
@@ -149,7 +129,7 @@ class AttributeAndState extends AttributeValueAreaInfoProvider {
   @override
   List<String> valueAreaExtraValues() {
     if (_attribute.apiAttribute().mode == AttributeMode.unsignedInteger) {
-      final value = state.unsignedIntegerValue;
+      final value = state.unsignedIntegerValues.firstOrNull;
       if (value == null) {
         return [];
       }

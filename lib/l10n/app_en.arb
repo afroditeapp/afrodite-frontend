@@ -2335,6 +2335,75 @@
   "@profile_filters_screen_unlimited_likes_filter": {
     "description": "Title for unlimited likes filter"
   },
+  "profile_filters_screen_unsigned_integer_filter_max_value": "Max {p0}",
+  "@profile_filters_screen_unsigned_integer_filter_max_value": {
+    "description": "Value text for unsigned integer attribute filter when only max value is selected",
+    "placeholders": {
+      "p0": {
+        "type": "String"
+      }
+    }
+  },
+  "profile_filters_screen_unsigned_integer_filter_max_value_with_unit": "Max {p0} {p1}",
+  "@profile_filters_screen_unsigned_integer_filter_max_value_with_unit": {
+    "description": "Value text for unsigned integer attribute filter when only max value is selected and the attribute has a unit",
+    "placeholders": {
+      "p0": {
+        "type": "String"
+      },
+      "p1": {
+        "type": "String"
+      }
+    }
+  },
+  "profile_filters_screen_unsigned_integer_filter_min_and_max_value": "{p0}-{p1}",
+  "@profile_filters_screen_unsigned_integer_filter_min_and_max_value": {
+    "description": "Value text for unsigned integer attribute filter when both min and max values are selected",
+    "placeholders": {
+      "p0": {
+        "type": "String"
+      },
+      "p1": {
+        "type": "String"
+      }
+    }
+  },
+  "profile_filters_screen_unsigned_integer_filter_min_and_max_value_with_unit": "{p0}-{p1} {p2}",
+  "@profile_filters_screen_unsigned_integer_filter_min_and_max_value_with_unit": {
+    "description": "Value text for unsigned integer attribute filter when both min and max values are selected and the attribute has a unit",
+    "placeholders": {
+      "p0": {
+        "type": "String"
+      },
+      "p1": {
+        "type": "String"
+      },
+      "p2": {
+        "type": "String"
+      }
+    }
+  },
+  "profile_filters_screen_unsigned_integer_filter_min_value": "Min {p0}",
+  "@profile_filters_screen_unsigned_integer_filter_min_value": {
+    "description": "Value text for unsigned integer attribute filter when only min value is selected",
+    "placeholders": {
+      "p0": {
+        "type": "String"
+      }
+    }
+  },
+  "profile_filters_screen_unsigned_integer_filter_min_value_with_unit": "Min {p0} {p1}",
+  "@profile_filters_screen_unsigned_integer_filter_min_value_with_unit": {
+    "description": "Value text for unsigned integer attribute filter when only min value is selected and the attribute has a unit",
+    "placeholders": {
+      "p0": {
+        "type": "String"
+      },
+      "p1": {
+        "type": "String"
+      }
+    }
+  },
   "profile_filters_screen_updating_filters_failed": "Updating profile filters failed",
   "@profile_filters_screen_updating_filters_failed": {
     "description": "Snackbar text for notifying about failed profile filters update"

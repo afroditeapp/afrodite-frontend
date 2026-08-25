@@ -480,7 +480,7 @@ class EditUnsignedIntegerAttributeRow extends StatelessWidget {
     final config = a.attribute().apiAttribute().unsignedIntegerConfig;
     final unit = a.attribute().uiUnit();
 
-    final currentValue = a.state.unsignedIntegerValue;
+    final currentValue = a.state.unsignedIntegerValues.firstOrNull;
     final double min = config?.min.toDouble() ?? 0;
     final double max = config?.max.toDouble() ?? 0;
     // Leftmost slider position is reserved for the empty state.

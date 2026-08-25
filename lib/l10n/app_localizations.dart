@@ -3220,6 +3220,46 @@ abstract class AppLocalizations {
   /// **'Up for a date today'**
   String get profile_filters_screen_unlimited_likes_filter;
 
+  /// Value text for unsigned integer attribute filter when only max value is selected
+  ///
+  /// In en, this message translates to:
+  /// **'Max {p0}'**
+  String profile_filters_screen_unsigned_integer_filter_max_value(String p0);
+
+  /// Value text for unsigned integer attribute filter when only max value is selected and the attribute has a unit
+  ///
+  /// In en, this message translates to:
+  /// **'Max {p0} {p1}'**
+  String profile_filters_screen_unsigned_integer_filter_max_value_with_unit(String p0, String p1);
+
+  /// Value text for unsigned integer attribute filter when both min and max values are selected
+  ///
+  /// In en, this message translates to:
+  /// **'{p0}-{p1}'**
+  String profile_filters_screen_unsigned_integer_filter_min_and_max_value(String p0, String p1);
+
+  /// Value text for unsigned integer attribute filter when both min and max values are selected and the attribute has a unit
+  ///
+  /// In en, this message translates to:
+  /// **'{p0}-{p1} {p2}'**
+  String profile_filters_screen_unsigned_integer_filter_min_and_max_value_with_unit(
+    String p0,
+    String p1,
+    String p2,
+  );
+
+  /// Value text for unsigned integer attribute filter when only min value is selected
+  ///
+  /// In en, this message translates to:
+  /// **'Min {p0}'**
+  String profile_filters_screen_unsigned_integer_filter_min_value(String p0);
+
+  /// Value text for unsigned integer attribute filter when only min value is selected and the attribute has a unit
+  ///
+  /// In en, this message translates to:
+  /// **'Min {p0} {p1}'**
+  String profile_filters_screen_unsigned_integer_filter_min_value_with_unit(String p0, String p1);
+
   /// Snackbar text for notifying about failed profile filters update
   ///
   /// In en, this message translates to:

@@ -502,6 +502,12 @@
     <string name="profile_filters_screen_profile_text_filter_min_value" description="Value text for profile text filter when only min value is selected">Min %s characters</string>
     <string name="profile_filters_screen_profile_text_filter_max_value" description="Value text for profile text filter when only max value is selected">Max %s characters</string>
     <string name="profile_filters_screen_profile_text_filter_min_and_max_value" description="Value text for profile text filter when both min and max values are selected">%s-%s characters</string>
+    <string name="profile_filters_screen_unsigned_integer_filter_min_value" description="Value text for unsigned integer attribute filter when only min value is selected">Min %s</string>
+    <string name="profile_filters_screen_unsigned_integer_filter_max_value" description="Value text for unsigned integer attribute filter when only max value is selected">Max %s</string>
+    <string name="profile_filters_screen_unsigned_integer_filter_min_and_max_value" description="Value text for unsigned integer attribute filter when both min and max values are selected">%s-%s</string>
+    <string name="profile_filters_screen_unsigned_integer_filter_min_value_with_unit" description="Value text for unsigned integer attribute filter when only min value is selected and the attribute has a unit">Min %s %s</string>
+    <string name="profile_filters_screen_unsigned_integer_filter_max_value_with_unit" description="Value text for unsigned integer attribute filter when only max value is selected and the attribute has a unit">Max %s %s</string>
+    <string name="profile_filters_screen_unsigned_integer_filter_min_and_max_value_with_unit" description="Value text for unsigned integer attribute filter when both min and max values are selected and the attribute has a unit">%s-%s %s</string>
     <string name="profile_filters_screen_profile_verification_status_filter" description="Title for profile verification status filter">Profile verification</string>
     <string name="profile_filters_screen_profile_verification_status_filter_face_verified" description="Option text for profile verification status filter face verified">Face picture</string>
     <string name="profile_filters_screen_profile_verification_status_filter_security_content_verified" description="Option text for profile verification status filter security content verified">Security selfie</string>

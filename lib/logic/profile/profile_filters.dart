@@ -119,6 +119,13 @@ class SetAttributeFilterSettings extends ProfileFiltersEvent {
   SetAttributeFilterSettings(this.attribute, this.value);
 }
 
+class SetUnsignedIntegerAttributeFilter extends ProfileFiltersEvent {
+  final UiAttribute attribute;
+  final int min;
+  final int max;
+  SetUnsignedIntegerAttributeFilter(this.attribute, this.min, this.max);
+}
+
 class UpdateAgeRange extends ProfileFiltersEvent {
   final int min;
   final int max;
@@ -367,6 +374,34 @@ class ProfileFiltersBloc extends Bloc<ProfileFiltersEvent, ProfileFiltersData> w
         data.attribute.apiAttribute().id,
         (current) =>
             AttributeFilterUpdateBuilder.copyWithSettings(data.attribute, current, data.value),
+      );
+    });
+    on<SetUnsignedIntegerAttributeFilter>((data, emit) {
+      final config = data.attribute.apiAttribute().unsignedIntegerConfig;
+      final configMin = config?.min ?? 0;
+      final configMax = config?.max ?? 0;
+      final min = data.min;
+      final max = data.max;
+      final List<int> wanted;
+      if (min <= configMin && max >= configMax) {
+        // Empty list removes the filter.
+        wanted = [];
+      } else {
+        wanted = [min, max];
+      }
+      final wantedStorage = AttributeStateStorage()..unsignedIntegerValues = wanted;
+      updateFilters(
+        emit,
+        data.attribute.apiAttribute().id,
+        (current) => AttributeFilterUpdateBuilder.copyWithValues(
+          data.attribute,
+          current,
+          wantedStorage,
+          AttributeStateStorage.parseFromUpdate(
+            data.attribute,
+            ProfileAttributeValueUpdate(id: data.attribute.apiAttribute().id, v: current.unwanted),
+          ),
+        ),
       );
     });
     on<UpdateAgeRange>((data, emit) {

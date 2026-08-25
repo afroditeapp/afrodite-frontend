@@ -1,6 +1,7 @@
-import 'dart:math';
+import 'dart:math' as math;
 
 import 'package:app/ui_utils/attribute/attribute.dart';
+import 'package:app/ui_utils/attribute/filter.dart';
 import 'package:app/ui_utils/consts/colors.dart';
 import 'package:app/ui_utils/consts/corners.dart';
 import 'package:app/ui_utils/consts/icons.dart';
@@ -11,6 +12,7 @@ import 'package:app/ui_utils/snack_bar.dart';
 import 'package:app/utils/age.dart';
 import 'package:app/utils/list.dart';
 import 'package:app/utils/option.dart';
+import 'package:collection/collection.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:openapi/api.dart';
@@ -356,7 +358,7 @@ class _ProfileFiltersScreenState extends State<ProfileFiltersScreen> {
 
         double intDaysToDouble(int days) {
           if (days <= 7) {
-            return max(VALUE_MIN, days.toDouble());
+            return math.max(VALUE_MIN, days.toDouble());
           } else if (days == 14) {
             return 8.0;
           } else {
@@ -668,15 +670,19 @@ class EditAttributeFilters extends StatelessWidget {
     final l = manager.parseFilterStates(myFilters);
 
     for (final a in l) {
-      attributeWidgets.add(
-        EditAttributeRow(
-          a: a,
-          isEnabled: isEnabled,
-          onStartEditor: () {
-            MyNavigator.pushLimited(context, EditProfileAttributeFilterPage(a));
-          },
-        ),
-      );
+      if (a.attribute().apiAttribute().mode == AttributeMode.unsignedInteger) {
+        attributeWidgets.add(UnsignedIntegerAttributeFilterSlider(a: a));
+      } else {
+        attributeWidgets.add(
+          EditAttributeRow(
+            a: a,
+            isEnabled: isEnabled,
+            onStartEditor: () {
+              MyNavigator.pushLimited(context, EditProfileAttributeFilterPage(a));
+            },
+          ),
+        );
+      }
       attributeWidgets.add(const Divider());
     }
 
@@ -685,6 +691,93 @@ class EditAttributeFilters extends StatelessWidget {
     }
 
     return attributeWidgets;
+  }
+}
+
+class UnsignedIntegerAttributeFilterSlider extends StatelessWidget {
+  final AttributeAndFilterState a;
+  const UnsignedIntegerAttributeFilterSlider({required this.a, super.key});
+
+  @override
+  Widget build(BuildContext context) {
+    final attributeText = a.attribute().uiName();
+    final icon = a.attribute().uiIcon();
+    final config = a.attribute().apiAttribute().unsignedIntegerConfig;
+    final unit = a.attribute().uiUnit();
+
+    final values = a.wanted.unsignedIntegerValues;
+    final int configMin = config?.min ?? 0;
+    final int configMax = config?.max ?? 0;
+    final min = values.minOrNull ?? configMin;
+    final max = values.maxOrNull ?? configMax;
+    final isMinDisabled = min <= configMin;
+    final isMaxDisabled = max >= configMax;
+
+    final String valueText;
+    if (isMinDisabled && isMaxDisabled) {
+      valueText = context.strings.generic_unlimited;
+    } else if (!isMinDisabled && !isMaxDisabled) {
+      valueText = unit != null
+          ? context.strings
+                .profile_filters_screen_unsigned_integer_filter_min_and_max_value_with_unit(
+                  min.toString(),
+                  max.toString(),
+                  unit,
+                )
+          : context.strings.profile_filters_screen_unsigned_integer_filter_min_and_max_value(
+              min.toString(),
+              max.toString(),
+            );
+    } else if (!isMinDisabled) {
+      valueText = unit != null
+          ? context.strings.profile_filters_screen_unsigned_integer_filter_min_value_with_unit(
+              min.toString(),
+              unit,
+            )
+          : context.strings.profile_filters_screen_unsigned_integer_filter_min_value(
+              min.toString(),
+            );
+    } else {
+      valueText = unit != null
+          ? context.strings.profile_filters_screen_unsigned_integer_filter_max_value_with_unit(
+              max.toString(),
+              unit,
+            )
+          : context.strings.profile_filters_screen_unsigned_integer_filter_max_value(
+              max.toString(),
+            );
+    }
+
+    final column = Column(
+      children: [
+        const Padding(padding: EdgeInsets.all(4)),
+        ViewAttributeTitle(attributeText, icon: icon, valueText: valueText),
+        const Padding(padding: EdgeInsets.all(4)),
+        RangeSliderWithPadding(
+          values: RangeValues(min.toDouble(), max.toDouble()),
+          min: configMin.toDouble(),
+          max: configMax.toDouble(),
+          divisions: configMax > configMin ? configMax - configMin : 1,
+          onChanged: (values) {
+            final int newMin = values.start.round();
+            final int newMax = values.end.round();
+            context.read<ProfileFiltersBloc>().add(
+              SetUnsignedIntegerAttributeFilter(a.attribute(), newMin, newMax),
+            );
+          },
+        ),
+      ],
+    );
+
+    return SliderTheme(
+      data: SliderThemeData(
+        thumbColor: Theme.of(context).colorScheme.primary,
+        activeTrackColor: isMinDisabled && isMaxDisabled
+            ? Theme.of(context).colorScheme.primary.withAlpha(_SLIDER_DEFAULT_VALUE_ALPHA)
+            : null,
+      ),
+      child: column,
+    );
   }
 }
 

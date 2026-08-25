@@ -53,8 +53,14 @@ class AttributeManager {
         list.add(
           AttributeAndFilterState(
             a,
-            AttributeStateStorage.parseFromFilterUpdate(a, state),
-            AttributeStateStorage.parseFromFilterUpdate(a, state, parseUnwanted: true),
+            AttributeStateStorage.parseFromUpdate(
+              a,
+              ProfileAttributeValueUpdate(id: a.apiAttribute().id, v: state.wanted),
+            ),
+            AttributeStateStorage.parseFromUpdate(
+              a,
+              ProfileAttributeValueUpdate(id: a.apiAttribute().id, v: state.unwanted),
+            ),
             FilterSettingsState.parseFromFilterUpdate(state),
           ),
         );
