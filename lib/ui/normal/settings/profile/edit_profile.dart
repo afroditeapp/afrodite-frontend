@@ -6,6 +6,7 @@ import 'package:app/logic/account/client_features_config.dart';
 import 'package:app/model/freezed/logic/account/client_features_config.dart';
 import 'package:app/ui/normal/settings/profile/edit_profile_text.dart';
 import 'package:app/ui_utils/attribute/attribute.dart';
+import 'package:app/ui_utils/attribute/state.dart';
 import 'package:app/ui_utils/consts/icons.dart';
 import 'package:app/ui_utils/consts/padding.dart';
 import 'package:app/ui_utils/edit_profile.dart';
@@ -383,12 +384,16 @@ class EditAttributes extends StatelessWidget {
 
     final l = manager.parseStates(myAttributes, includeNullAttributes: true);
     for (final a in l) {
-      attributeWidgets.add(
-        EditAttributeRow(
-          a: a,
-          onStartEditor: () => MyNavigator.pushLimited(context, EditProfileAttributePage(a)),
-        ),
-      );
+      if (a.attribute().apiAttribute().mode == AttributeMode.unsignedInteger) {
+        attributeWidgets.add(EditUnsignedIntegerAttributeRow(a: a));
+      } else {
+        attributeWidgets.add(
+          EditAttributeRow(
+            a: a,
+            onStartEditor: () => MyNavigator.pushLimited(context, EditProfileAttributePage(a)),
+          ),
+        );
+      }
       attributeWidgets.add(const Divider());
     }
 
@@ -460,6 +465,69 @@ class EditAttributeRow extends StatelessWidget {
     );
 
     return InkWell(onTap: startEditorCallback, child: attributeWidget);
+  }
+}
+
+class EditUnsignedIntegerAttributeRow extends StatelessWidget {
+  final AttributeAndState a;
+  final bool isEnabled;
+  const EditUnsignedIntegerAttributeRow({required this.a, this.isEnabled = true, super.key});
+
+  @override
+  Widget build(BuildContext context) {
+    final attributeText = a.attribute().uiName();
+    final icon = a.attribute().uiIcon();
+    final config = a.attribute().apiAttribute().unsignedIntegerConfig;
+    final unit = a.attribute().uiUnit();
+
+    final currentValue = a.state.unsignedIntegerValue;
+    final double min = config?.min.toDouble() ?? 0;
+    final double max = config?.max.toDouble() ?? 0;
+    // Leftmost slider position is reserved for the empty state.
+    final double emptyValue = min - 1;
+    final double sliderValue;
+    if (currentValue != null) {
+      sliderValue = currentValue.toDouble().clamp(min, max);
+    } else {
+      sliderValue = emptyValue;
+    }
+
+    final String valueText;
+    if (currentValue == null) {
+      valueText = context.strings.generic_empty;
+    } else if (unit != null) {
+      valueText = "$currentValue $unit";
+    } else {
+      valueText = currentValue.toString();
+    }
+
+    return Column(
+      children: [
+        const Padding(padding: EdgeInsets.all(4)),
+        ViewAttributeTitle(attributeText, isEnabled: isEnabled, icon: icon, valueText: valueText),
+        const Padding(padding: EdgeInsets.all(4)),
+        Padding(
+          padding: const EdgeInsets.symmetric(horizontal: COMMON_SCREEN_EDGE_PADDING),
+          child: Slider(
+            value: sliderValue,
+            min: emptyValue,
+            max: max,
+            onChanged: isEnabled
+                ? (value) {
+                    final intValue = value.round();
+                    // Empty list removes the attribute.
+                    final v = intValue <= emptyValue ? const <int>[] : [intValue];
+                    context.read<my_profile_logic.MyProfileBloc>().add(
+                      my_profile_logic.NewAttributeValue(
+                        ProfileAttributeValueUpdate(id: a.attribute().apiAttribute().id, v: v),
+                      ),
+                    );
+                  }
+                : null,
+          ),
+        ),
+      ],
+    );
   }
 }
 

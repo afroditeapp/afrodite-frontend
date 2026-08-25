@@ -3,6 +3,7 @@ import 'package:openapi/api.dart';
 
 class AttributeStateStorage {
   final Map<String, UiAttributeValue> selected = {};
+  int? unsignedIntegerValue;
   AttributeStateStorage();
 
   bool isSelected(UiAttributeValue attribute) => selected.containsKey(attribute.apiValue().key);
@@ -57,6 +58,14 @@ class AttributeStateStorage {
       } else {
         intList = [apiValue];
       }
+    } else if (attribute.apiAttribute().mode == AttributeMode.unsignedInteger) {
+      final value = unsignedIntegerValue;
+      if (value == null) {
+        // Empty list removes the attribute
+        intList = [];
+      } else {
+        intList = [value];
+      }
     } else {
       intList = values.map((v) => v.selectedValueForApi()).toList();
     }
@@ -68,6 +77,7 @@ class AttributeStateStorage {
     for (final v in selected.values) {
       storage.select(v);
     }
+    storage.unsignedIntegerValue = unsignedIntegerValue;
     return storage;
   }
 
@@ -90,6 +100,10 @@ class AttributeStateStorage {
   ) {
     final storage = AttributeStateStorage();
     if (u.id != attribute.apiAttribute().id) {
+      return storage;
+    }
+    if (attribute.apiAttribute().mode == AttributeMode.unsignedInteger) {
+      storage.unsignedIntegerValue = u.v.firstOrNull;
       return storage;
     }
     for (final update in u.v) {
@@ -134,6 +148,17 @@ class AttributeAndState extends AttributeValueAreaInfoProvider {
 
   @override
   List<String> valueAreaExtraValues() {
+    if (_attribute.apiAttribute().mode == AttributeMode.unsignedInteger) {
+      final value = state.unsignedIntegerValue;
+      if (value == null) {
+        return [];
+      }
+      final unit = _attribute.uiUnit();
+      if (unit != null) {
+        return ["$value $unit"];
+      }
+      return [value.toString()];
+    }
     return [];
   }
 

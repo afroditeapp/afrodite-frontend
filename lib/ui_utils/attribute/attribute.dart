@@ -78,7 +78,14 @@ class UiAttribute {
   final List<UiAttributeValue> _valuesAndGroupValues;
   final AttributeIcon? _icon;
   final String _uiName;
-  UiAttribute._(this._attribute, this._valuesAndGroupValues, this._icon, this._uiName);
+  final String? _uiUnit;
+  UiAttribute._(
+    this._attribute,
+    this._valuesAndGroupValues,
+    this._icon,
+    this._uiName,
+    this._uiUnit,
+  );
 
   factory UiAttribute.createFrom(Attribute attribute, String? locale) {
     final attributeValues = attribute.values
@@ -103,6 +110,24 @@ class UiAttribute {
       valueKeysAndValueObjects[v.apiValue().key] = v;
     }
 
+    final unsignedIntegerConfig = attribute.unsignedIntegerConfig;
+    final String? uiUnit;
+    if (unsignedIntegerConfig != null) {
+      final unit = unsignedIntegerConfig.unit;
+      if (unit != null) {
+        uiUnit = AttributeTranslation.getTranslatedString(
+          locale,
+          "${attribute.key}_unit",
+          unit,
+          attribute.translations,
+        );
+      } else {
+        uiUnit = null;
+      }
+    } else {
+      uiUnit = null;
+    }
+
     return UiAttribute._(
       attribute,
       valuesAndGroupValues,
@@ -113,6 +138,7 @@ class UiAttribute {
         attribute.name,
         attribute.translations,
       ),
+      uiUnit,
     );
   }
 
@@ -121,6 +147,8 @@ class UiAttribute {
   List<UiAttributeValue> values() => _valuesAndGroupValues;
 
   String uiName() => _uiName;
+
+  String? uiUnit() => _uiUnit;
 
   AttributeIcon? uiIcon() => _icon;
 }
