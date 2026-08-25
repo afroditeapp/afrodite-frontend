@@ -242,6 +242,12 @@ class _ProfileAttributesSchemaScreenState extends State<ProfileAttributesSchemaS
                 crossAxisAlignment: CrossAxisAlignment.start,
                 children: [
                   Text("Mode: ${attr.mode.toString()}"),
+                  if (attr.mode == AttributeMode.unsignedInteger &&
+                      attr.unsignedIntegerConfig != null)
+                    Text(
+                      "Range: ${attr.unsignedIntegerConfig!.min} - ${attr.unsignedIntegerConfig!.max}"
+                      "${attr.unsignedIntegerConfig!.unit != null ? ' ${attr.unsignedIntegerConfig!.unit}' : ''}",
+                    ),
                   TranslationSummary(
                     translationKey: attr.key,
                     translations: attr.translations,

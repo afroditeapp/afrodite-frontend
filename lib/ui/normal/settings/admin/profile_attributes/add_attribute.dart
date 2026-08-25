@@ -35,9 +35,14 @@ class _AddAttributeScreenState extends State<AddAttributeScreen> {
   final _formKey = GlobalKey<FormState>();
   final _nameController = TextEditingController();
   final _keyController = TextEditingController();
+  final _minController = TextEditingController();
+  final _maxController = TextEditingController();
+  final _unitController = TextEditingController();
 
   AttributeMode _mode = AttributeMode.bitflag;
   String? _icon;
+
+  bool get _isUnsignedInteger => _mode == AttributeMode.unsignedInteger;
 
   Future<void> _completeAdding() async {
     if (_formKey.currentState?.validate() == true) {
@@ -52,8 +57,15 @@ class _AddAttributeScreenState extends State<AddAttributeScreen> {
         valueOrder: AttributeValueOrderMode.orderNumber,
         values: [],
         orderNumber: widget.nextOrderNumber,
-        maxFilters: 1,
+        maxFilters: _isUnsignedInteger ? 2 : 1,
         maxSelected: 1,
+        unsignedIntegerConfig: _isUnsignedInteger
+            ? UnsignedIntegerAttributeConfig(
+                min: int.tryParse(_minController.text) ?? 0,
+                max: int.tryParse(_maxController.text) ?? 0,
+                unit: _unitController.text.trim().isEmpty ? null : _unitController.text.trim(),
+              )
+            : null,
         editable: true,
         visible: true,
         required_: false,
@@ -118,12 +130,55 @@ class _AddAttributeScreenState extends State<AddAttributeScreen> {
             initialValue: _mode,
             decoration: const InputDecoration(labelText: "Mode", border: OutlineInputBorder()),
             items: AttributeMode.values
+                .where((e) => e != AttributeMode.unknownDefaultOpenApi)
                 .map((e) => DropdownMenuItem(value: e, child: Text(e.toString())))
                 .toList(),
             onChanged: (val) {
               if (val != null) setState(() => _mode = val);
             },
           ),
+          if (_isUnsignedInteger) ...[
+            const SizedBox(height: 16),
+            TextFormField(
+              controller: _minController,
+              decoration: const InputDecoration(
+                labelText: "Min value",
+                border: OutlineInputBorder(),
+              ),
+              keyboardType: TextInputType.number,
+              validator: (val) {
+                final parsed = int.tryParse(val ?? '');
+                if (parsed == null || parsed < 0) {
+                  return "Must be a non-negative integer";
+                }
+                return null;
+              },
+            ),
+            const SizedBox(height: 16),
+            TextFormField(
+              controller: _maxController,
+              decoration: const InputDecoration(
+                labelText: "Max value",
+                border: OutlineInputBorder(),
+              ),
+              keyboardType: TextInputType.number,
+              validator: (val) {
+                final parsed = int.tryParse(val ?? '');
+                if (parsed == null || parsed < 0) {
+                  return "Must be a non-negative integer";
+                }
+                return null;
+              },
+            ),
+            const SizedBox(height: 16),
+            TextFormField(
+              controller: _unitController,
+              decoration: const InputDecoration(
+                labelText: "Unit (optional)",
+                border: OutlineInputBorder(),
+              ),
+            ),
+          ],
           const SizedBox(height: 16),
           const Text("Icon"),
           const SizedBox(height: 8),

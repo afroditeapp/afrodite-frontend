@@ -30,12 +30,20 @@ class _AttributeEditorScreenState extends State<AttributeEditorScreen> {
   late Attribute _attr;
   final _formKey = GlobalKey<FormState>();
   late TextEditingController _nameController;
+  late TextEditingController _minController;
+  late TextEditingController _maxController;
+  late TextEditingController _unitController;
+
+  bool get _isUnsignedInteger => _attr.mode == AttributeMode.unsignedInteger;
 
   @override
   void initState() {
     super.initState();
     _attr = widget.attribute;
     _nameController = TextEditingController(text: _attr.name);
+    _minController = TextEditingController(text: _attr.unsignedIntegerConfig?.min.toString() ?? '');
+    _maxController = TextEditingController(text: _attr.unsignedIntegerConfig?.max.toString() ?? '');
+    _unitController = TextEditingController(text: _attr.unsignedIntegerConfig?.unit ?? '');
   }
 
   @override
@@ -184,24 +192,26 @@ class _AttributeEditorScreenState extends State<AttributeEditorScreen> {
             enabled: canEditContent,
             onChanged: (val) => setState(() => _attr.icon = val),
           ),
-          const SizedBox(height: 16),
-          DropdownButtonFormField<AttributeValueOrderMode>(
-            initialValue: _attr.valueOrder,
-            decoration: const InputDecoration(
-              labelText: "Value Order",
-              border: OutlineInputBorder(),
+          if (!_isUnsignedInteger) ...[
+            const SizedBox(height: 16),
+            DropdownButtonFormField<AttributeValueOrderMode>(
+              initialValue: _attr.valueOrder,
+              decoration: const InputDecoration(
+                labelText: "Value Order",
+                border: OutlineInputBorder(),
+              ),
+              items: AttributeValueOrderMode.values
+                  .map((e) => DropdownMenuItem(value: e, child: Text(e.toString())))
+                  .toList(),
+              onChanged: (val) {
+                if (val != null) {
+                  setState(() {
+                    _attr.valueOrder = val;
+                  });
+                }
+              },
             ),
-            items: AttributeValueOrderMode.values
-                .map((e) => DropdownMenuItem(value: e, child: Text(e.toString())))
-                .toList(),
-            onChanged: (val) {
-              if (val != null) {
-                setState(() {
-                  _attr.valueOrder = val;
-                });
-              }
-            },
-          ),
+          ],
           const SizedBox(height: 16),
           SwitchListTile(
             title: const Text("Required"),
@@ -218,67 +228,156 @@ class _AttributeEditorScreenState extends State<AttributeEditorScreen> {
             value: _attr.editable,
             onChanged: (val) => setState(() => _attr.editable = val),
           ),
-          const SizedBox(height: 16),
-          TextFormField(
-            initialValue: _attr.maxFilters.toString(),
-            decoration: const InputDecoration(
-              labelText: "Max Filters",
-              border: OutlineInputBorder(),
+          if (!_isUnsignedInteger) ...[
+            const SizedBox(height: 16),
+            TextFormField(
+              initialValue: _attr.maxFilters.toString(),
+              decoration: const InputDecoration(
+                labelText: "Max Filters",
+                border: OutlineInputBorder(),
+              ),
+              keyboardType: TextInputType.number,
+              onChanged: (val) => setState(() => _attr.maxFilters = int.tryParse(val) ?? 1),
             ),
-            keyboardType: TextInputType.number,
-            onChanged: (val) => setState(() => _attr.maxFilters = int.tryParse(val) ?? 1),
-          ),
-          const SizedBox(height: 16),
-          TextFormField(
-            initialValue: _attr.maxSelected.toString(),
-            decoration: const InputDecoration(
-              labelText: "Max Selected",
-              border: OutlineInputBorder(),
+            const SizedBox(height: 16),
+            TextFormField(
+              initialValue: _attr.maxSelected.toString(),
+              decoration: const InputDecoration(
+                labelText: "Max Selected",
+                border: OutlineInputBorder(),
+              ),
+              keyboardType: TextInputType.number,
+              onChanged: (val) => setState(() => _attr.maxSelected = int.tryParse(val) ?? 1),
             ),
-            keyboardType: TextInputType.number,
-            onChanged: (val) => setState(() => _attr.maxSelected = int.tryParse(val) ?? 1),
-          ),
-          const Divider(height: 32),
-          Row(
-            mainAxisAlignment: MainAxisAlignment.spaceBetween,
-            children: [
-              Text("Values", style: Theme.of(context).textTheme.titleLarge),
-              if (!hideAddValueButton)
+          ],
+          if (_isUnsignedInteger) ...[
+            const SizedBox(height: 16),
+            TextFormField(
+              controller: _minController,
+              decoration: const InputDecoration(
+                labelText: "Min value",
+                border: OutlineInputBorder(),
+              ),
+              keyboardType: TextInputType.number,
+              validator: (val) {
+                final parsed = int.tryParse(val ?? '');
+                if (parsed == null || parsed < 0) {
+                  return "Must be a non-negative integer";
+                }
+                return null;
+              },
+              onChanged: (val) => setState(() {
+                _attr.unsignedIntegerConfig ??= UnsignedIntegerAttributeConfig(min: 0, max: 0);
+                _attr.unsignedIntegerConfig!.min = int.tryParse(val) ?? 0;
+              }),
+            ),
+            const SizedBox(height: 16),
+            TextFormField(
+              controller: _maxController,
+              decoration: const InputDecoration(
+                labelText: "Max value",
+                border: OutlineInputBorder(),
+              ),
+              keyboardType: TextInputType.number,
+              validator: (val) {
+                final parsed = int.tryParse(val ?? '');
+                if (parsed == null || parsed < 0) {
+                  return "Must be a non-negative integer";
+                }
+                return null;
+              },
+              onChanged: (val) => setState(() {
+                _attr.unsignedIntegerConfig ??= UnsignedIntegerAttributeConfig(min: 0, max: 0);
+                _attr.unsignedIntegerConfig!.max = int.tryParse(val) ?? 0;
+              }),
+            ),
+            const SizedBox(height: 16),
+            Row(
+              children: [
+                Expanded(
+                  child: TextFormField(
+                    controller: _unitController,
+                    decoration: const InputDecoration(
+                      labelText: "Unit (optional)",
+                      border: OutlineInputBorder(),
+                    ),
+                    onChanged: (val) => setState(() {
+                      _attr.unsignedIntegerConfig ??= UnsignedIntegerAttributeConfig(
+                        min: 0,
+                        max: 0,
+                      );
+                      _attr.unsignedIntegerConfig!.unit = val.trim().isEmpty ? null : val.trim();
+                    }),
+                  ),
+                ),
                 IconButton(
-                  icon: const Icon(Icons.add),
+                  icon: const Icon(Icons.translate),
                   onPressed: () async {
-                    final nextId = nextAttributeValueId(_attr.mode, _attr.values);
-                    final nextOrderNumber = nextAttributeValueOrderNumber(_attr.values);
-                    final newValue = await MyNavigator.pushLimited(
+                    final unitKey = "${_attr.key}_unit";
+                    final newTranslations = await MyNavigator.pushLimited(
                       context,
-                      AddValuePage(nextId, nextOrderNumber: nextOrderNumber),
+                      KeyTranslationsEditorPage(unitKey, _attr.translations, widget.permissions),
                     );
-                    if (newValue != null) {
-                      setState(() {
-                        _attr.values = [..._attr.values, newValue];
-                      });
+                    if (newTranslations != null) {
+                      setState(() => _attr.translations = newTranslations);
                     }
                   },
                 ),
-            ],
-          ),
-          if (_attr.valueOrder == AttributeValueOrderMode.orderNumber && canEditContent)
-            ReorderableListView.builder(
-              shrinkWrap: true,
-              physics: const NeverScrollableScrollPhysics(),
-              buildDefaultDragHandles: false,
-              itemCount: orderedValuesForDisplay.length,
-              onReorderItem: (oldIndex, newIndex) =>
-                  _onReorderValues(orderedValuesForDisplay, oldIndex, newIndex),
-              itemBuilder: (context, index) {
-                final val = orderedValuesForDisplay[index];
-                return _buildValueListItem(val, dragIndex: index);
-              },
-            )
-          else
-            ...orderedValuesForDisplay.map((val) {
-              return _buildValueListItem(val);
-            }),
+              ],
+            ),
+            if (_attr.translations.any((l) => l.values.any((t) => t.key == "${_attr.key}_unit")))
+              Padding(
+                padding: const EdgeInsets.only(top: 4.0),
+                child: TranslationSummary(
+                  translationKey: "${_attr.key}_unit",
+                  translations: _attr.translations,
+                  multilineValues: true,
+                ),
+              ),
+          ],
+          if (!_isUnsignedInteger) ...[
+            const Divider(height: 32),
+            Row(
+              mainAxisAlignment: MainAxisAlignment.spaceBetween,
+              children: [
+                Text("Values", style: Theme.of(context).textTheme.titleLarge),
+                if (!hideAddValueButton)
+                  IconButton(
+                    icon: const Icon(Icons.add),
+                    onPressed: () async {
+                      final nextId = nextAttributeValueId(_attr.mode, _attr.values);
+                      final nextOrderNumber = nextAttributeValueOrderNumber(_attr.values);
+                      final newValue = await MyNavigator.pushLimited(
+                        context,
+                        AddValuePage(nextId, nextOrderNumber: nextOrderNumber),
+                      );
+                      if (newValue != null) {
+                        setState(() {
+                          _attr.values = [..._attr.values, newValue];
+                        });
+                      }
+                    },
+                  ),
+              ],
+            ),
+            if (_attr.valueOrder == AttributeValueOrderMode.orderNumber && canEditContent)
+              ReorderableListView.builder(
+                shrinkWrap: true,
+                physics: const NeverScrollableScrollPhysics(),
+                buildDefaultDragHandles: false,
+                itemCount: orderedValuesForDisplay.length,
+                onReorderItem: (oldIndex, newIndex) =>
+                    _onReorderValues(orderedValuesForDisplay, oldIndex, newIndex),
+                itemBuilder: (context, index) {
+                  final val = orderedValuesForDisplay[index];
+                  return _buildValueListItem(val, dragIndex: index);
+                },
+              )
+            else
+              ...orderedValuesForDisplay.map((val) {
+                return _buildValueListItem(val);
+              }),
+          ],
         ],
       ),
     );
@@ -287,6 +386,9 @@ class _AttributeEditorScreenState extends State<AttributeEditorScreen> {
   @override
   void dispose() {
     _nameController.dispose();
+    _minController.dispose();
+    _maxController.dispose();
+    _unitController.dispose();
     super.dispose();
   }
 }
