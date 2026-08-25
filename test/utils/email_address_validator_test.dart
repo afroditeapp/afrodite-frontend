@@ -44,7 +44,7 @@ void main() {
         equals(EmailAddressValidationError.containsWhitespace),
       );
       expect(
-        validator.validate('user@exa mple.com'),
+        validator.validate('user@example example.com'),
         equals(EmailAddressValidationError.containsWhitespace),
       );
     });
