@@ -1,6 +1,7 @@
 import 'dart:typed_data';
 
 import 'package:app/api/binary/utils.dart';
+import 'package:app/utils/result.dart';
 import 'package:openapi/api.dart';
 
 /// First byte of websocket binary protocol messages sent from server to client.
@@ -44,7 +45,18 @@ import 'package:openapi/api.dart';
 ///     - 2: rate limited
 ///     - 3: internal server error
 ///   - if status is 0:
-///     - repeated profile entries until payload ends
+///     - repeated profile iterator page items until payload ends:
+///       - item type and size byte (u8):
+///         - 0: profile link
+///         - 1..=127: unknown item type with payload size equal to the
+///           byte value (client must skip the payload)
+///         - 128..=255: error
+///       - item type specific data:
+///         - profile link:
+///           - account id as 16-byte big-endian UUID
+///           - profile version as 16-byte big-endian UUID
+///           - profile content version as 16-byte big-endian UUID
+///           - null last seen time (0 byte) or last seen time as minimal i64
 /// - [ServerMessageTypeCode.responseAutomaticProfileSearchResetProfilePaging]
 ///   (63): payload format:
 ///   - request id byte (u8)
@@ -63,7 +75,18 @@ import 'package:openapi/api.dart';
 ///     - 2: rate limited
 ///     - 3: internal server error
 ///   - if status is 0:
-///     - repeated profile entries until payload ends
+///     - repeated profile iterator page items until payload ends:
+///       - item type and size byte (u8):
+///         - 0: profile link
+///         - 1..=127: unknown item type with payload size equal to the
+///           byte value (client must skip the payload)
+///         - 128..=255: error
+///       - item type specific data:
+///         - profile link:
+///           - account id as 16-byte big-endian UUID
+///           - profile version as 16-byte big-endian UUID
+///           - profile content version as 16-byte big-endian UUID
+///           - null last seen time (0 byte) or last seen time as minimal i64
 /// - [ServerMessageTypeCode.contentProcessingStateChanged] (90): payload format:
 ///   - client-provided processing id byte (u8)
 ///   - content processing state byte:
@@ -435,11 +458,15 @@ _ResponseNextProfilePagePayload? _parseResponseNextProfilePage(Uint8List payload
     case 0:
       final items = <ProfileIteratorPageItem>[];
       while (true) {
-        final profile = _parseProfileLinkForPaging(reader);
-        if (profile == null) {
+        final itemTypeAndSize = reader.readU8();
+        if (itemTypeAndSize == null) {
           break;
         }
-        items.add(ProfileIteratorPageItem(profileLink: profile));
+        final item = _parseProfileIteratorPageItem(reader, itemTypeAndSize).ok();
+        if (item == null) {
+          return null;
+        }
+        items.add(item);
       }
       return _ResponseNextProfilePagePayload(
         requestId: requestId,
@@ -503,6 +530,35 @@ _parseResponseAutomaticProfileSearchResetProfilePaging(Uint8List payload) {
     default:
       return null;
   }
+}
+
+/// Parses a single profile iterator page item of the given type.
+///
+/// Returns an error for malformed payloads and for error items (128..=255)
+/// whose size is unknown.
+Result<ProfileIteratorPageItem, ()> _parseProfileIteratorPageItem(
+  ByteReader reader,
+  int itemTypeAndSize,
+) {
+  if (itemTypeAndSize == 0) {
+    final profile = _parseProfileLinkForPaging(reader);
+    if (profile == null) {
+      return const Err(());
+    }
+    return Ok(ProfileIteratorPageItem(profileLink: profile));
+  }
+
+  if (itemTypeAndSize >= 128) {
+    // Error item: the size is unknown, so fail the parsing.
+    return const Err(());
+  }
+
+  // Unknown item type: skip the payload of the given size.
+  final skipped = reader.readBytes(itemTypeAndSize);
+  if (skipped == null) {
+    return const Err(());
+  }
+  return Ok(ProfileIteratorPageItem());
 }
 
 ProfileLink? _parseProfileLinkForPaging(ByteReader reader) {

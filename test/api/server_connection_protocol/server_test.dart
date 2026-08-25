@@ -6,6 +6,15 @@ import 'package:utils/src/minimal_i64.dart';
 import 'package:flutter_test/flutter_test.dart';
 import 'package:openapi/api.dart';
 
+/// Builds the three UUIDs used in a profile link item.
+({Uint8List accountId, Uint8List profileVersion, Uint8List contentVersion}) _profileLinkUuids() {
+  return (
+    accountId: Uint8List.fromList(List<int>.generate(16, (index) => index)),
+    profileVersion: Uint8List.fromList(List<int>.generate(16, (index) => 100 + index)),
+    contentVersion: Uint8List.fromList(List<int>.generate(16, (index) => 200 + index)),
+  );
+}
+
 void main() {
   group('ServerMessage parser', () {
     test('parses no-payload event type', () {
@@ -184,6 +193,131 @@ void main() {
       expect(parsed.responseNextProfilePage, isNotNull);
       expect(parsed.responseNextProfilePage!.error, isTrue);
       expect(parsed.rateLimited, isTrue);
+    });
+
+    test('parses next profile page response with profile link items', () {
+      final uuids = _profileLinkUuids();
+
+      final bytes = Uint8List.fromList([
+        62,
+        11,
+        0,
+        // item type and size byte: 0 = profile link
+        0,
+        ...uuids.accountId,
+        ...uuids.profileVersion,
+        ...uuids.contentVersion,
+        // null last seen time
+        0,
+      ]);
+
+      final parsed = ServerMessage.fromBytes(bytes);
+
+      expect(parsed, isNotNull);
+      expect(parsed!.type, ServerMessageTypeCode.responseNextProfilePage);
+      expect(parsed.responseId, 11);
+      final page = parsed.responseNextProfilePage;
+      expect(page, isNotNull);
+      expect(page!.error, isFalse);
+      expect(page.items, hasLength(1));
+      final item = page.items.single;
+      expect(item.profileLink, isNotNull);
+      expect(item.profileLink!.a.aid, base64UrlEncode(uuids.accountId).replaceAll('=', ''));
+      expect(item.profileLink!.p.v, base64UrlEncode(uuids.profileVersion).replaceAll('=', ''));
+      expect(item.profileLink!.c.v, base64UrlEncode(uuids.contentVersion).replaceAll('=', ''));
+      expect(item.profileLink!.l, isNull);
+    });
+
+    test('parses next profile page response with last seen time', () {
+      final uuids = _profileLinkUuids();
+
+      final bytes = Uint8List.fromList([
+        62,
+        12,
+        0,
+        0,
+        ...uuids.accountId,
+        ...uuids.profileVersion,
+        ...uuids.contentVersion,
+        ...encodeMinimalI64(1700000000),
+      ]);
+
+      final parsed = ServerMessage.fromBytes(bytes);
+
+      expect(parsed, isNotNull);
+      final page = parsed!.responseNextProfilePage;
+      expect(page, isNotNull);
+      expect(page!.items, hasLength(1));
+      expect(page.items.single.profileLink!.l, 1700000000);
+    });
+
+    test('parses next profile page response skipping unknown item types', () {
+      final uuids = _profileLinkUuids();
+
+      final bytes = Uint8List.fromList([
+        62,
+        13,
+        0,
+        // unknown item type 3 with 3 bytes of payload
+        3,
+        0xAA,
+        0xBB,
+        0xCC,
+        // profile link item
+        0,
+        ...uuids.accountId,
+        ...uuids.profileVersion,
+        ...uuids.contentVersion,
+        0,
+      ]);
+
+      final parsed = ServerMessage.fromBytes(bytes);
+
+      expect(parsed, isNotNull);
+      final page = parsed!.responseNextProfilePage;
+      expect(page, isNotNull);
+      expect(page!.items, hasLength(2));
+      expect(page.items[0].profileLink, isNull);
+      expect(page.items[1].profileLink, isNotNull);
+    });
+
+    test('fails parsing next profile page response with error item', () {
+      final bytes = Uint8List.fromList([
+        62,
+        14,
+        0,
+        // error item type 200
+        200,
+      ]);
+
+      final parsed = ServerMessage.fromBytes(bytes);
+
+      expect(parsed, isNull);
+    });
+
+    test('parses automatic profile search next profile page response', () {
+      final uuids = _profileLinkUuids();
+
+      final bytes = Uint8List.fromList([
+        64,
+        15,
+        0,
+        0,
+        ...uuids.accountId,
+        ...uuids.profileVersion,
+        ...uuids.contentVersion,
+        0,
+      ]);
+
+      final parsed = ServerMessage.fromBytes(bytes);
+
+      expect(parsed, isNotNull);
+      expect(parsed!.type, ServerMessageTypeCode.responseAutomaticProfileSearchNextProfilePage);
+      expect(parsed.responseId, 15);
+      final page = parsed.responseAutomaticProfileSearchNextProfilePage;
+      expect(page, isNotNull);
+      expect(page!.items, hasLength(1));
+      expect(page.items.single.profileLink, isNotNull);
     });
 
     test('parses reset profile paging error status with extra bytes', () {
