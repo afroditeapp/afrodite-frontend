@@ -75,9 +75,10 @@ class _EditProfileStringModerationConfigScreenState
                 title: const Text("Default action"),
                 trailing: DropdownButton<ModerationAction>(
                   value: _defaultAction,
-                  items: ModerationAction.values.map((a) {
-                    return DropdownMenuItem(value: a, child: Text(a.toString()));
-                  }).toList(),
+                  items: ModerationAction.values
+                      .where((a) => a != ModerationAction.unknownDefaultOpenApi)
+                      .map((a) => DropdownMenuItem(value: a, child: Text(a.toString())))
+                      .toList(),
                   onChanged: (v) {
                     if (v != null) setState(() => _defaultAction = v);
                   },

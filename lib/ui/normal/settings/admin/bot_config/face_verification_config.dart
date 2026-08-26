@@ -64,9 +64,10 @@ class _EditFaceVerificationConfigScreenState extends State<EditFaceVerificationC
                 title: const Text("Default action"),
                 trailing: DropdownButton<AcceptOrReject>(
                   value: _defaultAction,
-                  items: AcceptOrReject.values.map((a) {
-                    return DropdownMenuItem(value: a, child: Text(a.toString()));
-                  }).toList(),
+                  items: AcceptOrReject.values
+                      .where((a) => a != AcceptOrReject.unknownDefaultOpenApi)
+                      .map((a) => DropdownMenuItem(value: a, child: Text(a.toString())))
+                      .toList(),
                   onChanged: (v) {
                     if (v != null) setState(() => _defaultAction = v);
                   },

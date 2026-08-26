@@ -317,6 +317,7 @@ class _ProfileAttributesSchemaScreenState extends State<ProfileAttributesSchemaS
               border: OutlineInputBorder(),
             ),
             items: AttributeOrderMode.values
+                .where((e) => e != AttributeOrderMode.unknownDefaultOpenApi)
                 .map((e) => DropdownMenuItem(value: e, child: Text(e.toString())))
                 .toList(),
             onChanged: (val) {

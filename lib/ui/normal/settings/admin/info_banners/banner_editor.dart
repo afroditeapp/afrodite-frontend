@@ -96,9 +96,9 @@ class _InfoBannerEditorScreenState extends State<InfoBannerEditorScreen> {
             initialValue: _banner.overridePredefinedBanner,
             items: [
               const DropdownMenuItem(value: null, child: Text("None")),
-              ...PredefinedBanner.values.map(
-                (e) => DropdownMenuItem(value: e, child: Text(e.toString())),
-              ),
+              ...PredefinedBanner.values
+                  .where((e) => e != PredefinedBanner.unknownDefaultOpenApi)
+                  .map((e) => DropdownMenuItem(value: e, child: Text(e.toString()))),
             ],
             onChanged: (value) => setState(() => _banner.overridePredefinedBanner = value),
           ),

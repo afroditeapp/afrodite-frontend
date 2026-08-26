@@ -201,6 +201,7 @@ class _AttributeEditorScreenState extends State<AttributeEditorScreen> {
                 border: OutlineInputBorder(),
               ),
               items: AttributeValueOrderMode.values
+                  .where((e) => e != AttributeValueOrderMode.unknownDefaultOpenApi)
                   .map((e) => DropdownMenuItem(value: e, child: Text(e.toString())))
                   .toList(),
               onChanged: (val) {
