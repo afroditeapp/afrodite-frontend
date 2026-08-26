@@ -385,7 +385,19 @@ class EditAttributes extends StatelessWidget {
     final l = manager.parseStates(myAttributes, includeNullAttributes: true);
     for (final a in l) {
       if (a.attribute().apiAttribute().mode == AttributeMode.unsignedInteger) {
-        attributeWidgets.add(EditUnsignedIntegerAttributeRow(a: a));
+        attributeWidgets.add(
+          EditUnsignedIntegerAttributeRow(
+            a: a,
+            onChanged: (value) {
+              final v = value == null ? const <int>[] : [value];
+              context.read<my_profile_logic.MyProfileBloc>().add(
+                my_profile_logic.NewAttributeValue(
+                  ProfileAttributeValueUpdate(id: a.attribute().apiAttribute().id, v: v),
+                ),
+              );
+            },
+          ),
+        );
       } else {
         attributeWidgets.add(
           EditAttributeRow(
@@ -471,7 +483,13 @@ class EditAttributeRow extends StatelessWidget {
 class EditUnsignedIntegerAttributeRow extends StatelessWidget {
   final AttributeAndState a;
   final bool isEnabled;
-  const EditUnsignedIntegerAttributeRow({required this.a, this.isEnabled = true, super.key});
+  final void Function(int? value) onChanged;
+  const EditUnsignedIntegerAttributeRow({
+    required this.a,
+    this.isEnabled = true,
+    required this.onChanged,
+    super.key,
+  });
 
   @override
   Widget build(BuildContext context) {
@@ -516,12 +534,7 @@ class EditUnsignedIntegerAttributeRow extends StatelessWidget {
                 ? (value) {
                     final intValue = value.round();
                     // Empty list removes the attribute.
-                    final v = intValue <= emptyValue ? const <int>[] : [intValue];
-                    context.read<my_profile_logic.MyProfileBloc>().add(
-                      my_profile_logic.NewAttributeValue(
-                        ProfileAttributeValueUpdate(id: a.attribute().apiAttribute().id, v: v),
-                      ),
-                    );
+                    onChanged(intValue <= emptyValue ? null : intValue);
                   }
                 : null,
           ),

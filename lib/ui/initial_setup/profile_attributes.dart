@@ -11,8 +11,11 @@ import "package:flutter/material.dart";
 import "package:flutter_bloc/flutter_bloc.dart";
 import "package:app/localizations.dart";
 import "package:app/logic/account/initial_setup.dart";
+import "package:app/model/freezed/logic/account/initial_setup.dart";
 import "package:app/ui/initial_setup/navigation.dart";
+import "package:app/ui/normal/settings/profile/edit_profile.dart";
 import "package:app/ui_utils/initial_setup_common.dart";
+import "package:openapi/api.dart";
 
 class AskProfileAttributesPageUrlParser extends UrlParser<AskProfileAttributesPage> {
   @override
@@ -104,6 +107,16 @@ class _AskProfileAttributesState extends State<AskProfileAttributes> {
   }
 
   Widget askInfo(BuildContext context) {
+    return switch (widget.currentAttribute.apiAttribute().mode) {
+      AttributeMode.bitflag ||
+      AttributeMode.oneLevel ||
+      AttributeMode.twoLevel => askNormalAttributeInfo(context),
+      AttributeMode.unsignedInteger => askUnsignedIntegerInfo(context),
+      AttributeMode.unknownDefaultOpenApi => Center(child: Text(context.strings.generic_error)),
+    };
+  }
+
+  Widget askNormalAttributeInfo(BuildContext context) {
     return SelectAttributeValue(
       attribute: widget.currentAttribute,
       firstListItem: Column(
@@ -123,6 +136,41 @@ class _AskProfileAttributesState extends State<AskProfileAttributes> {
       onChanged: (storage) {
         context.read<InitialSetupBloc>().add(
           UpdateAttributeValue(storage.selected.toAttributeValueUpdate(widget.currentAttribute)),
+        );
+      },
+    );
+  }
+
+  Widget askUnsignedIntegerInfo(BuildContext context) {
+    return BlocBuilder<InitialSetupBloc, InitialSetupData>(
+      builder: (context, state) {
+        final answers = state.profileAttributes.answers;
+        final storage = AttributeStateStorage.parseFromUpdateList(widget.currentAttribute, answers);
+        final a = AttributeAndState(widget.currentAttribute, storage);
+        return Column(
+          mainAxisSize: MainAxisSize.min,
+          crossAxisAlignment: CrossAxisAlignment.start,
+          children: [
+            questionTitleText(
+              context,
+              context.strings.initial_setup_screen_profile_basic_info_title,
+            ),
+            attributeTitle(context),
+            EditUnsignedIntegerAttributeRow(
+              a: a,
+              onChanged: (value) {
+                final v = value == null ? const <int>[] : [value];
+                context.read<InitialSetupBloc>().add(
+                  UpdateAttributeValue(
+                    ProfileAttributeValueUpdate(
+                      id: widget.currentAttribute.apiAttribute().id,
+                      v: v,
+                    ),
+                  ),
+                );
+              },
+            ),
+          ],
         );
       },
     );

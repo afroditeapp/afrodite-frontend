@@ -141,7 +141,7 @@ class ProfileAttributesState {
     for (final a in answers) {
       if (a.id == attributeId) {
         final answer = a.v.firstOrNull;
-        return answer != null && answer != 0;
+        return answer != null;
       }
     }
     return false;
