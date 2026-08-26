@@ -3070,23 +3070,11 @@ abstract class AppLocalizations {
   /// **'Distance'**
   String get profile_filters_screen_distance_filter;
 
-  /// Value text for distance filter max value
+  /// Unit text for distance filter
   ///
   /// In en, this message translates to:
-  /// **'Max {p0} km'**
-  String profile_filters_screen_distance_filter_max_value(String p0);
-
-  /// Value text for distance filter min and max value
-  ///
-  /// In en, this message translates to:
-  /// **'{p0}-{p1} km'**
-  String profile_filters_screen_distance_filter_min_and_max_value(String p0, String p1);
-
-  /// Value text for distance filter min value
-  ///
-  /// In en, this message translates to:
-  /// **'Min {p0} km'**
-  String profile_filters_screen_distance_filter_min_value(String p0);
+  /// **'km'**
+  String get profile_filters_screen_distance_filter_unit;
 
   /// Title for max profile age filter
   ///
@@ -3154,23 +3142,11 @@ abstract class AppLocalizations {
   /// **'Profile text length'**
   String get profile_filters_screen_profile_text_filter;
 
-  /// Value text for profile text filter when only max value is selected
+  /// Unit text for profile text filter
   ///
   /// In en, this message translates to:
-  /// **'Max {p0} characters'**
-  String profile_filters_screen_profile_text_filter_max_value(String p0);
-
-  /// Value text for profile text filter when both min and max values are selected
-  ///
-  /// In en, this message translates to:
-  /// **'{p0}-{p1} characters'**
-  String profile_filters_screen_profile_text_filter_min_and_max_value(String p0, String p1);
-
-  /// Value text for profile text filter when only min value is selected
-  ///
-  /// In en, this message translates to:
-  /// **'Min {p0} characters'**
-  String profile_filters_screen_profile_text_filter_min_value(String p0);
+  /// **'characters'**
+  String get profile_filters_screen_profile_text_filter_unit;
 
   /// Text shown when using profile verification filter requires verified account
   ///

@@ -1700,19 +1700,7 @@ class AppLocalizationsEn extends AppLocalizations {
   String get profile_filters_screen_distance_filter => 'Distance';
 
   @override
-  String profile_filters_screen_distance_filter_max_value(String p0) {
-    return 'Max $p0 km';
-  }
-
-  @override
-  String profile_filters_screen_distance_filter_min_and_max_value(String p0, String p1) {
-    return '$p0-$p1 km';
-  }
-
-  @override
-  String profile_filters_screen_distance_filter_min_value(String p0) {
-    return 'Min $p0 km';
-  }
+  String get profile_filters_screen_distance_filter_unit => 'km';
 
   @override
   String get profile_filters_screen_max_age_filter => 'Max age';
@@ -1753,19 +1741,7 @@ class AppLocalizationsEn extends AppLocalizations {
   String get profile_filters_screen_profile_text_filter => 'Profile text length';
 
   @override
-  String profile_filters_screen_profile_text_filter_max_value(String p0) {
-    return 'Max $p0 characters';
-  }
-
-  @override
-  String profile_filters_screen_profile_text_filter_min_and_max_value(String p0, String p1) {
-    return '$p0-$p1 characters';
-  }
-
-  @override
-  String profile_filters_screen_profile_text_filter_min_value(String p0) {
-    return 'Min $p0 characters';
-  }
+  String get profile_filters_screen_profile_text_filter_unit => 'characters';
 
   @override
   String get profile_filters_screen_profile_verification_requires_verified_account =>

@@ -446,26 +446,33 @@ class _ProfileFiltersScreenState extends State<ProfileFiltersScreen> {
 
         final min = state.valueMinDistanceKmFilter()?.value;
         final max = state.valueMaxDistanceKmFilter()?.value;
+        final unit = context.strings.profile_filters_screen_distance_filter_unit;
         final String stateText;
         final double minValue;
         final double maxValue;
         if (min != null && max != null) {
-          stateText = context.strings.profile_filters_screen_distance_filter_min_and_max_value(
-            min.toString(),
-            max.toString(),
-          );
+          stateText = context.strings
+              .profile_filters_screen_unsigned_integer_filter_min_and_max_value_with_unit(
+                min.toString(),
+                max.toString(),
+                unit,
+              );
           minValue = (DistanceValues.valueToIndex[min] ?? VALUE_MIN).toDouble();
           maxValue = (DistanceValues.valueToIndex[max] ?? valueMax).toDouble();
         } else if (min != null) {
-          stateText = context.strings.profile_filters_screen_distance_filter_min_value(
-            min.toString(),
-          );
+          stateText = context.strings
+              .profile_filters_screen_unsigned_integer_filter_min_value_with_unit(
+                min.toString(),
+                unit,
+              );
           maxValue = valueMax.toDouble();
           minValue = (DistanceValues.valueToIndex[min] ?? VALUE_MIN).toDouble();
         } else if (max != null) {
-          stateText = context.strings.profile_filters_screen_distance_filter_max_value(
-            max.toString(),
-          );
+          stateText = context.strings
+              .profile_filters_screen_unsigned_integer_filter_max_value_with_unit(
+                max.toString(),
+                unit,
+              );
           minValue = VALUE_MIN.toDouble();
           maxValue = (DistanceValues.valueToIndex[max] ?? valueMax).toDouble();
         } else {
@@ -539,6 +546,7 @@ class _ProfileFiltersScreenState extends State<ProfileFiltersScreen> {
 
         final valueMin = state.valueProfileTextMinCharacters()?.value;
         final valueMax = state.valueProfileTextMaxCharacters()?.value;
+        final unit = context.strings.profile_filters_screen_profile_text_filter_unit;
         final String stateText;
         final double min;
         final double max;
@@ -547,24 +555,30 @@ class _ProfileFiltersScreenState extends State<ProfileFiltersScreen> {
           min = findNearestIndex(currentMin).toDouble();
           final currentMax = valueMax.clamp(AVAILABLE_VALUES.first, AVAILABLE_VALUES.last);
           max = findNearestIndex(currentMax).toDouble();
-          stateText = context.strings.profile_filters_screen_profile_text_filter_min_and_max_value(
-            valueMin.toString(),
-            valueMax.toString(),
-          );
+          stateText = context.strings
+              .profile_filters_screen_unsigned_integer_filter_min_and_max_value_with_unit(
+                valueMin.toString(),
+                valueMax.toString(),
+                unit,
+              );
         } else if (valueMax != null) {
           min = LIMIT_MIN;
           final currentMax = valueMax.clamp(AVAILABLE_VALUES.first, AVAILABLE_VALUES.last);
           max = findNearestIndex(currentMax).toDouble();
-          stateText = context.strings.profile_filters_screen_profile_text_filter_max_value(
-            valueMax.toString(),
-          );
+          stateText = context.strings
+              .profile_filters_screen_unsigned_integer_filter_max_value_with_unit(
+                valueMax.toString(),
+                unit,
+              );
         } else if (valueMin != null) {
           max = limitMax;
           final currentMin = valueMin.clamp(AVAILABLE_VALUES.first, AVAILABLE_VALUES.last);
           min = findNearestIndex(currentMin).toDouble();
-          stateText = context.strings.profile_filters_screen_profile_text_filter_min_value(
-            valueMin.toString(),
-          );
+          stateText = context.strings
+              .profile_filters_screen_unsigned_integer_filter_min_value_with_unit(
+                valueMin.toString(),
+                unit,
+              );
         } else {
           stateText = context.strings.generic_unlimited;
           min = LIMIT_MIN;

@@ -2189,35 +2189,9 @@
   "@profile_filters_screen_distance_filter": {
     "description": "Title text for distance filter"
   },
-  "profile_filters_screen_distance_filter_max_value": "Max {p0} km",
-  "@profile_filters_screen_distance_filter_max_value": {
-    "description": "Value text for distance filter max value",
-    "placeholders": {
-      "p0": {
-        "type": "String"
-      }
-    }
-  },
-  "profile_filters_screen_distance_filter_min_and_max_value": "{p0}-{p1} km",
-  "@profile_filters_screen_distance_filter_min_and_max_value": {
-    "description": "Value text for distance filter min and max value",
-    "placeholders": {
-      "p0": {
-        "type": "String"
-      },
-      "p1": {
-        "type": "String"
-      }
-    }
-  },
-  "profile_filters_screen_distance_filter_min_value": "Min {p0} km",
-  "@profile_filters_screen_distance_filter_min_value": {
-    "description": "Value text for distance filter min value",
-    "placeholders": {
-      "p0": {
-        "type": "String"
-      }
-    }
+  "profile_filters_screen_distance_filter_unit": "km",
+  "@profile_filters_screen_distance_filter_unit": {
+    "description": "Unit text for distance filter"
   },
   "profile_filters_screen_max_age_filter": "Max age",
   "@profile_filters_screen_max_age_filter": {
@@ -2273,35 +2247,9 @@
   "@profile_filters_screen_profile_text_filter": {
     "description": "Value text for profile text filter"
   },
-  "profile_filters_screen_profile_text_filter_max_value": "Max {p0} characters",
-  "@profile_filters_screen_profile_text_filter_max_value": {
-    "description": "Value text for profile text filter when only max value is selected",
-    "placeholders": {
-      "p0": {
-        "type": "String"
-      }
-    }
-  },
-  "profile_filters_screen_profile_text_filter_min_and_max_value": "{p0}-{p1} characters",
-  "@profile_filters_screen_profile_text_filter_min_and_max_value": {
-    "description": "Value text for profile text filter when both min and max values are selected",
-    "placeholders": {
-      "p0": {
-        "type": "String"
-      },
-      "p1": {
-        "type": "String"
-      }
-    }
-  },
-  "profile_filters_screen_profile_text_filter_min_value": "Min {p0} characters",
-  "@profile_filters_screen_profile_text_filter_min_value": {
-    "description": "Value text for profile text filter when only min value is selected",
-    "placeholders": {
-      "p0": {
-        "type": "String"
-      }
-    }
+  "profile_filters_screen_profile_text_filter_unit": "characters",
+  "@profile_filters_screen_profile_text_filter_unit": {
+    "description": "Unit text for profile text filter"
   },
   "profile_filters_screen_profile_verification_requires_verified_account": "Using this filter requires verified account",
   "@profile_filters_screen_profile_verification_requires_verified_account": {
