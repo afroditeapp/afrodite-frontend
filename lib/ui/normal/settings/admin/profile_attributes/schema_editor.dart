@@ -219,7 +219,81 @@ class _ProfileAttributesSchemaScreenState extends State<ProfileAttributesSchemaS
     }
   }
 
+  void _onReorderAttributes(List<Attribute> currentOrder, int oldIndex, int newIndex) {
+    setState(() {
+      final reordered = [...currentOrder];
+      final item = reordered.removeAt(oldIndex);
+      reordered.insert(newIndex, item);
+      final orderByKey = {for (var i = 0; i < reordered.length; i++) reordered[i].key: i + 1};
+      _currentSchema!.attributes = [
+        for (final attr in _currentSchema!.attributes)
+          attr..orderNumber = orderByKey[attr.key] ?? attr.orderNumber,
+      ];
+    });
+  }
+
+  Widget _buildAttributeListItem(Attribute attr, Permissions permissions, {int? dragIndex}) {
+    final trailing = dragIndex == null
+        ? const Icon(Icons.chevron_right)
+        : Row(
+            mainAxisSize: MainAxisSize.min,
+            children: [
+              const Icon(Icons.chevron_right),
+              const SizedBox(width: 8),
+              ReorderableDragStartListener(index: dragIndex, child: const Icon(Icons.drag_handle)),
+            ],
+          );
+
+    return ListTile(
+      key: dragIndex == null ? null : ValueKey("${attr.id}-${attr.key}"),
+      title: Text("${attr.name} (${attr.key})"),
+      subtitle: Column(
+        crossAxisAlignment: CrossAxisAlignment.start,
+        children: [
+          Text("Mode: ${attr.mode.toString()}"),
+          if (attr.mode == AttributeMode.unsignedInteger && attr.unsignedIntegerConfig != null)
+            Text(
+              "Range: ${attr.unsignedIntegerConfig!.min} - ${attr.unsignedIntegerConfig!.max}"
+              "${attr.unsignedIntegerConfig!.unit != null ? ' ${attr.unsignedIntegerConfig!.unit}' : ''}",
+            ),
+          TranslationSummary(
+            translationKey: attr.key,
+            translations: attr.translations,
+            multilineValues: true,
+          ),
+        ],
+      ),
+      trailing: trailing,
+      onTap: () async {
+        final updatedAttr = await MyNavigator.pushLimited(
+          context,
+          AttributeEditorPage(attr, permissions),
+        );
+        if (updatedAttr != null) {
+          setState(() {
+            final index = _currentSchema!.attributes.indexWhere(
+              (a) => a.id == attr.id && a.key == attr.key,
+            );
+            if (index != -1) {
+              _currentSchema!.attributes[index] = updatedAttr;
+            }
+          });
+        }
+      },
+    );
+  }
+
   Widget showContent(BuildContext context, Permissions permissions) {
+    final schema = _currentSchema;
+    if (schema == null) {
+      return const SizedBox.shrink();
+    }
+
+    final orderedAttributesForDisplay = [...schema.attributes];
+    if (schema.attributeOrder == AttributeOrderMode.orderNumber) {
+      orderedAttributesForDisplay.sort((a, b) => a.orderNumber.compareTo(b.orderNumber));
+    }
+
     return ListView(
       children: [
         const Padding(
@@ -234,45 +308,43 @@ class _ProfileAttributesSchemaScreenState extends State<ProfileAttributesSchemaS
             ],
           ),
         ),
-        if (_currentSchema != null)
-          ..._currentSchema!.attributes.map((attr) {
-            return ListTile(
-              title: Text("${attr.name} (${attr.key})"),
-              subtitle: Column(
-                crossAxisAlignment: CrossAxisAlignment.start,
-                children: [
-                  Text("Mode: ${attr.mode.toString()}"),
-                  if (attr.mode == AttributeMode.unsignedInteger &&
-                      attr.unsignedIntegerConfig != null)
-                    Text(
-                      "Range: ${attr.unsignedIntegerConfig!.min} - ${attr.unsignedIntegerConfig!.max}"
-                      "${attr.unsignedIntegerConfig!.unit != null ? ' ${attr.unsignedIntegerConfig!.unit}' : ''}",
-                    ),
-                  TranslationSummary(
-                    translationKey: attr.key,
-                    translations: attr.translations,
-                    multilineValues: true,
-                  ),
-                ],
-              ),
-              trailing: const Icon(Icons.chevron_right),
-              onTap: () async {
-                final updatedAttr = await MyNavigator.pushLimited(
-                  context,
-                  AttributeEditorPage(attr, permissions),
-                );
-                if (updatedAttr != null) {
-                  setState(() {
-                    final index = _currentSchema!.attributes.indexWhere(
-                      (a) => a.id == attr.id && a.key == attr.key,
-                    );
-                    if (index != -1) {
-                      _currentSchema!.attributes[index] = updatedAttr;
-                    }
-                  });
-                }
-              },
-            );
+        Padding(
+          padding: const EdgeInsets.symmetric(horizontal: 16.0),
+          child: DropdownButtonFormField<AttributeOrderMode>(
+            initialValue: schema.attributeOrder,
+            decoration: const InputDecoration(
+              labelText: "Attribute Order",
+              border: OutlineInputBorder(),
+            ),
+            items: AttributeOrderMode.values
+                .map((e) => DropdownMenuItem(value: e, child: Text(e.toString())))
+                .toList(),
+            onChanged: (val) {
+              if (val != null) {
+                setState(() {
+                  schema.attributeOrder = val;
+                });
+              }
+            },
+          ),
+        ),
+        const SizedBox(height: 8),
+        if (schema.attributeOrder == AttributeOrderMode.orderNumber)
+          ReorderableListView.builder(
+            shrinkWrap: true,
+            physics: const NeverScrollableScrollPhysics(),
+            buildDefaultDragHandles: false,
+            itemCount: orderedAttributesForDisplay.length,
+            onReorderItem: (oldIndex, newIndex) =>
+                _onReorderAttributes(orderedAttributesForDisplay, oldIndex, newIndex),
+            itemBuilder: (context, index) {
+              final attr = orderedAttributesForDisplay[index];
+              return _buildAttributeListItem(attr, permissions, dragIndex: index);
+            },
+          )
+        else
+          ...orderedAttributesForDisplay.map((attr) {
+            return _buildAttributeListItem(attr, permissions);
           }),
       ],
     );
