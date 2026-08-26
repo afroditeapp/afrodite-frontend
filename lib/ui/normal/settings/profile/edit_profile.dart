@@ -6,6 +6,7 @@ import 'package:app/logic/account/client_features_config.dart';
 import 'package:app/model/freezed/logic/account/client_features_config.dart';
 import 'package:app/ui/normal/settings/profile/edit_profile_text.dart';
 import 'package:app/ui_utils/attribute/attribute.dart';
+import 'package:app/ui_utils/attribute/widgets/attribute_info_box.dart';
 import 'package:app/ui_utils/attribute/state.dart';
 import 'package:app/ui_utils/consts/icons.dart';
 import 'package:app/ui_utils/consts/padding.dart';
@@ -403,6 +404,14 @@ class EditAttributes extends StatelessWidget {
           EditAttributeRow(
             a: a,
             onStartEditor: () => MyNavigator.pushLimited(context, EditProfileAttributePage(a)),
+          ),
+        );
+      }
+      if (!a.attribute().apiAttribute().visible) {
+        attributeWidgets.add(
+          Padding(
+            padding: const EdgeInsets.only(top: 8),
+            child: AttributeInfoBox(attributeName: a.attribute().uiName()),
           ),
         );
       }

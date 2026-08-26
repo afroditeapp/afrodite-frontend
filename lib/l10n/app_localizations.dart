@@ -628,6 +628,12 @@ abstract class AppLocalizations {
   /// **'Association membership'**
   String get association_membership_screen_title;
 
+  /// Info box text shown below an attribute which is partially hidden from other users. %s is the attribute name
+  ///
+  /// In en, this message translates to:
+  /// **'\"{p0}\" is partially hidden'**
+  String attribute_partially_hidden_info(String p0);
+
   /// Description text displayed when no profiles are found
   ///
   /// In en, this message translates to:

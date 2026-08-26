@@ -463,6 +463,7 @@
     <string name="edit_attribute_value_screen_one_value_must_be_selected" description="Snackbar text for notifying that one at least one option must be selected">At least one selection is required</string>
     <string name="edit_attribute_value_screen_search_placeholder_text" description="Attribute value search box placeholder text">Search…</string>
     <string name="edit_attribute_value_screen_max_selected_values_error" description="Snackbar text for max selected values error">Too many selected values</string>
+    <string name="attribute_partially_hidden_info" description="Info box text shown below an attribute which is partially hidden from other users. %s is the attribute name">"%s" is partially hidden</string>
 
     <!-- Select content screen -->
     <string name="select_content_screen_title" description="Title for select content screen">Select image</string>

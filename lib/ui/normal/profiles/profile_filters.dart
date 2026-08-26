@@ -1,6 +1,7 @@
 import 'dart:math' as math;
 
 import 'package:app/ui_utils/attribute/attribute.dart';
+import 'package:app/ui_utils/attribute/widgets/attribute_info_box.dart';
 import 'package:app/ui_utils/attribute/filter.dart';
 import 'package:app/ui_utils/consts/colors.dart';
 import 'package:app/ui_utils/consts/corners.dart';
@@ -694,6 +695,14 @@ class EditAttributeFilters extends StatelessWidget {
             onStartEditor: () {
               MyNavigator.pushLimited(context, EditProfileAttributeFilterPage(a));
             },
+          ),
+        );
+      }
+      if (!a.attribute().apiAttribute().visible) {
+        attributeWidgets.add(
+          Padding(
+            padding: const EdgeInsets.only(top: 8),
+            child: AttributeInfoBox(attributeName: a.attribute().uiName()),
           ),
         );
       }

@@ -328,6 +328,11 @@ class AppLocalizationsSv extends AppLocalizations {
   String get association_membership_screen_title => 'Association membership';
 
   @override
+  String attribute_partially_hidden_info(String p0) {
+    return '\"$p0\" is partially hidden';
+  }
+
+  @override
   String get automatic_profile_search_results_screen_no_profiles_found_description =>
       'You will be notified when this changes';
 

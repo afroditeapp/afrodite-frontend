@@ -547,6 +547,9 @@ class AttributeList extends StatelessWidget {
 
     final l = manager.parseStates(attributes);
     for (final a in l) {
+      if (!a.attribute().apiAttribute().visible) {
+        continue;
+      }
       attributeWidgets.add(attributeWidget(context, a));
       attributeWidgets.add(const Padding(padding: EdgeInsets.only(top: 8)));
     }
