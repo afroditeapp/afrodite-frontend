@@ -42,9 +42,7 @@ List<(int, String)> profileVerificationStatusOptions(
     (
       (
         ProfileVerificationStatusFlags.securityContentVerified,
-        context
-            .strings
-            .profile_filters_screen_profile_verification_status_filter_security_content_verified,
+        context.strings.generic_security_selfie,
       ),
       (verification) => verification.securityContent,
     ),

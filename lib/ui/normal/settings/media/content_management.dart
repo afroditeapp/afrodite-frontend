@@ -274,7 +274,7 @@ Widget _statusInfo(
   final usageEnd = content.usageEndTime;
   if (usageStart != null) {
     if (content.cid == securityContent) {
-      stateTexts.add(context.strings.content_management_screen_content_security_content);
+      stateTexts.add(context.strings.generic_security_selfie);
     }
     for (final (i, c) in myProfile.content.indexed) {
       if (content.cid == c.id) {

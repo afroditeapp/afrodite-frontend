@@ -122,7 +122,7 @@ class _CurrentSecuritySelfieScreenState extends State<CurrentSecuritySelfieScree
       },
       child: Scaffold(
         appBar: AppBar(
-          title: Text(context.strings.current_security_selfie_screen_title),
+          title: Text(context.strings.generic_security_selfie),
           actions: [editSecuritySelfieButton(context)],
         ),
         body: content(context, contentId, infoText),

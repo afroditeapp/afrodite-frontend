@@ -501,9 +501,6 @@ class AppLocalizationsFi extends AppLocalizations {
   }
 
   @override
-  String get content_management_screen_content_security_content => 'Security selfie';
-
-  @override
   String get content_management_screen_title => 'My images';
 
   @override
@@ -654,9 +651,6 @@ class AppLocalizationsFi extends AppLocalizations {
 
   @override
   String get current_security_selfie_screen_security_selfie_changed => 'Security selfie updated';
-
-  @override
-  String get current_security_selfie_screen_title => 'Security selfie';
 
   @override
   String get data_export_screen_api_limit_error => 'Daily limit reached. Try again after 24 hours.';
@@ -1044,6 +1038,9 @@ class AppLocalizationsFi extends AppLocalizations {
 
   @override
   String get generic_save_confirmation_title => 'Save?';
+
+  @override
+  String get generic_security_selfie => 'Security selfie';
 
   @override
   String get generic_setting_saved => 'Setting saved';
@@ -1738,10 +1735,6 @@ class AppLocalizationsFi extends AppLocalizations {
   @override
   String get profile_filters_screen_profile_verification_status_filter_profile_name_verified =>
       'Name';
-
-  @override
-  String get profile_filters_screen_profile_verification_status_filter_security_content_verified =>
-      'Security selfie';
 
   @override
   String get profile_filters_screen_title => 'Profile filters';

@@ -106,6 +106,7 @@
 
     <string name="generic_text_field_age_hint_text" description="Text field hint text for age">Enter an age between 18-99</string>
     <string name="generic_error_app_version_is_unsupported" description="Snackbar text that client version is unsupported">Current app version is no longer supported</string>
+    <string name="generic_security_selfie" description="Generic security selfie text">Security selfie</string>
 
     <string name="generic_reset_to_defaults" description="Title for reset values to defaults action">Reset to defaults</string>
     <string name="generic_reset_to_defaults_dialog_title" description="Dialog title for confirming reset values to defaults">Reset to defaults?</string>
@@ -473,7 +474,6 @@
 
     <!-- Content management screen -->
     <string name="content_management_screen_title" description="Title for content management screen">My images</string>
-    <string name="content_management_screen_content_security_content" description="Text for security content">Security selfie</string>
     <string name="content_management_screen_content_profile_content" description="Text for profile content">Profile image %s</string>
     <string name="content_management_screen_content_deletion_allowed_wait_time" description="Text for content deletion allowed wait time">Can be deleted starting at %s</string>
     <string name="content_management_screen_content_face_verified" description="Text for face verified status">Face verified</string>
@@ -508,7 +508,6 @@
     <string name="profile_filters_screen_unsigned_integer_filter_min_and_max_value_with_unit" description="Value text for unsigned integer attribute filter when both min and max values are selected and the attribute has a unit">%s-%s %s</string>
     <string name="profile_filters_screen_profile_verification_status_filter" description="Title for profile verification status filter">Profile verification</string>
     <string name="profile_filters_screen_profile_verification_status_filter_face_verified" description="Option text for profile verification status filter face verified">Face picture</string>
-    <string name="profile_filters_screen_profile_verification_status_filter_security_content_verified" description="Option text for profile verification status filter security content verified">Security selfie</string>
     <string name="profile_filters_screen_profile_verification_status_filter_profile_age_range_verified" description="Option text for profile verification status filter profile age range verified">Age (verified once)</string>
     <string name="profile_filters_screen_profile_verification_status_filter_profile_name_verified" description="Option text for profile verification status filter profile name verified">Name</string>
     <string name="profile_filters_screen_updating_filters_failed" description="Snackbar text for notifying about failed profile filters update">Failed to update filters</string>
@@ -626,7 +625,6 @@
     <string name="blocked_profiles_screen_no_blocked_profiles" description="Info text displayed when there is no blocked profiles">No blocked profiles</string>
 
     <!-- Current security selfie -->
-    <string name="current_security_selfie_screen_title" description="Current security selfie screen title">Security selfie</string>
     <string name="current_security_selfie_screen_security_selfie_changed" description="Snackbar text displayed when security selfie is changed">Security selfie updated</string>
 
     <!-- Profile location screen -->

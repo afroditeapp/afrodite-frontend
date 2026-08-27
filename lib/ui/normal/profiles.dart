@@ -348,7 +348,7 @@ class PublicProfileViewingBlocker extends StatelessWidget {
           ElevatedButton.icon(
             onPressed: () => MyNavigator.push(context, CurrentSecuritySelfiePage()),
             icon: const Icon(SECURITY_SELFIE_ICON),
-            label: Text(context.strings.current_security_selfie_screen_title),
+            label: Text(context.strings.generic_security_selfie),
           ),
         ],
       ),

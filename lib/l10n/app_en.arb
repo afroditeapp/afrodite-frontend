@@ -651,10 +651,6 @@
       }
     }
   },
-  "content_management_screen_content_security_content": "Security selfie",
-  "@content_management_screen_content_security_content": {
-    "description": "Text for security content"
-  },
   "content_management_screen_title": "My images",
   "@content_management_screen_title": {
     "description": "Title for content management screen"
@@ -853,10 +849,6 @@
   "current_security_selfie_screen_security_selfie_changed": "Security selfie updated",
   "@current_security_selfie_screen_security_selfie_changed": {
     "description": "Snackbar text displayed when security selfie is changed"
-  },
-  "current_security_selfie_screen_title": "Security selfie",
-  "@current_security_selfie_screen_title": {
-    "description": "Current security selfie screen title"
   },
   "data_export_screen_api_limit_error": "Daily limit reached. Try again after 24 hours.",
   "@data_export_screen_api_limit_error": {
@@ -1372,6 +1364,10 @@
   "generic_save_confirmation_title": "Save?",
   "@generic_save_confirmation_title": {
     "description": "Generic save confirmation title text"
+  },
+  "generic_security_selfie": "Security selfie",
+  "@generic_security_selfie": {
+    "description": "Generic security selfie text"
   },
   "generic_setting_saved": "Setting saved",
   "@generic_setting_saved": {
@@ -2256,10 +2252,6 @@
   "profile_filters_screen_profile_verification_status_filter_profile_name_verified": "Name",
   "@profile_filters_screen_profile_verification_status_filter_profile_name_verified": {
     "description": "Option text for profile verification status filter profile name verified"
-  },
-  "profile_filters_screen_profile_verification_status_filter_security_content_verified": "Security selfie",
-  "@profile_filters_screen_profile_verification_status_filter_security_content_verified": {
-    "description": "Option text for profile verification status filter security content verified"
   },
   "profile_filters_screen_title": "Profile filters",
   "@profile_filters_screen_title": {

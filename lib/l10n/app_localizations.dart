@@ -922,12 +922,6 @@ abstract class AppLocalizations {
   /// **'Profile image {p0}'**
   String content_management_screen_content_profile_content(String p0);
 
-  /// Text for security content
-  ///
-  /// In en, this message translates to:
-  /// **'Security selfie'**
-  String get content_management_screen_content_security_content;
-
   /// Title for content management screen
   ///
   /// In en, this message translates to:
@@ -1191,12 +1185,6 @@ abstract class AppLocalizations {
   /// In en, this message translates to:
   /// **'Security selfie updated'**
   String get current_security_selfie_screen_security_selfie_changed;
-
-  /// Current security selfie screen title
-  ///
-  /// In en, this message translates to:
-  /// **'Security selfie'**
-  String get current_security_selfie_screen_title;
 
   /// Snackbar text for API limit error
   ///
@@ -1905,6 +1893,12 @@ abstract class AppLocalizations {
   /// In en, this message translates to:
   /// **'Save?'**
   String get generic_save_confirmation_title;
+
+  /// Generic security selfie text
+  ///
+  /// In en, this message translates to:
+  /// **'Security selfie'**
+  String get generic_security_selfie;
 
   /// Generic setting saved text
   ///
@@ -3141,12 +3135,6 @@ abstract class AppLocalizations {
   /// In en, this message translates to:
   /// **'Name'**
   String get profile_filters_screen_profile_verification_status_filter_profile_name_verified;
-
-  /// Option text for profile verification status filter security content verified
-  ///
-  /// In en, this message translates to:
-  /// **'Security selfie'**
-  String get profile_filters_screen_profile_verification_status_filter_security_content_verified;
 
   /// Title for profile filters screen
   ///

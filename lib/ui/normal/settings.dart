@@ -113,13 +113,9 @@ class _SettingsScreenState extends State<SettingsScreen> {
   }
 
   Widget securitySelfie(BuildContext context) {
-    return Setting.createSetting(
-      SECURITY_SELFIE_ICON,
-      context.strings.current_security_selfie_screen_title,
-      () {
-        MyNavigator.push(context, CurrentSecuritySelfiePage());
-      },
-    ).toListTile();
+    return Setting.createSetting(SECURITY_SELFIE_ICON, context.strings.generic_security_selfie, () {
+      MyNavigator.push(context, CurrentSecuritySelfiePage());
+    }).toListTile();
   }
 
   List<Widget> profileSettings(BuildContext context) {

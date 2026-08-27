@@ -318,9 +318,7 @@ class _AccountVerificationSettingsScreenState extends State<AccountVerificationS
             _verificationStatusTile(
               context,
               verified: statuses.securitySelfieVerified,
-              title: context
-                  .strings
-                  .profile_filters_screen_profile_verification_status_filter_security_content_verified,
+              title: context.strings.generic_security_selfie,
             ),
           const Divider(),
         ],
@@ -514,11 +512,7 @@ class _AccountVerificationSettingsScreenState extends State<AccountVerificationS
         ),
       if (verificationConfig.securityContent)
         CheckboxListTile(
-          title: Text(
-            context
-                .strings
-                .profile_filters_screen_profile_verification_status_filter_security_content_verified,
-          ),
+          title: Text(context.strings.generic_security_selfie),
           value: _scopeSecurityContent,
           onChanged: _actionInProgress
               ? null
