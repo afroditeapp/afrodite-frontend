@@ -32,7 +32,25 @@ Widget signInButtonArea(BuildContext context) {
       // this case.
       Row(
         mainAxisAlignment: MainAxisAlignment.center,
-        children: [SizedBox(width: 300, child: termsOfServiceAndPrivacyPolicyInfo(context))],
+        children: [
+          SizedBox(
+            width: 300,
+            child: Column(
+              children: [
+                termsOfServiceAndPrivacyPolicyInfo(context),
+                if (kIsWeb &&
+                    !(defaultTargetPlatform == TargetPlatform.iOS ||
+                        defaultTargetPlatform == TargetPlatform.android)) ...[
+                  const Padding(padding: EdgeInsets.symmetric(vertical: COMMON_PADDING)),
+                  Text(
+                    context.strings.login_screen_shared_computer_warning,
+                    style: Theme.of(context).textTheme.bodySmall,
+                  ),
+                ],
+              ],
+            ),
+          ),
+        ],
       ),
       const Padding(padding: EdgeInsets.symmetric(vertical: COMMON_PADDING)),
       SizedBox(

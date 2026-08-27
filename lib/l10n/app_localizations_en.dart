@@ -1408,6 +1408,10 @@ class AppLocalizationsEn extends AppLocalizations {
   }
 
   @override
+  String get login_screen_shared_computer_warning =>
+      'Only sign in on personal devices. Using a shared or public computer compromises your privacy.';
+
+  @override
   String get login_screen_sign_in_with_email_action => 'Sign in with email';
 
   @override

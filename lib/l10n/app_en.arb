@@ -1825,6 +1825,10 @@
       }
     }
   },
+  "login_screen_shared_computer_warning": "Only sign in on personal devices. Using a shared or public computer compromises your privacy.",
+  "@login_screen_shared_computer_warning": {
+    "description": "Warning text shown on web login screen advising against using shared computers"
+  },
   "login_screen_sign_in_with_email_action": "Sign in with email",
   "@login_screen_sign_in_with_email_action": {
     "description": "Button text for email sign in action on the login screen"

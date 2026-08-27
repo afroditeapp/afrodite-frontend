@@ -253,6 +253,7 @@
     <string name="login_screen_login_note_text_tos" description="Text for terms of service link">Terms of Service</string>
     <string name="login_screen_login_note_text_and" description="Word 'and' between terms of service and privacy policy links">and</string>
     <string name="login_screen_login_note_text_privacy_policy" description="Text for privacy policy link">Privacy Policy</string>
+    <string name="login_screen_shared_computer_warning" description="Warning text shown on web login screen advising against using shared computers">Only sign in on personal devices. Using a shared or public computer compromises your privacy.</string>
     <string name="login_screen_demo_account_dialog_title" description="Title for demo account login dialog">Demo account login</string>
     <string name="login_screen_demo_account_dialog_description" description="Description for demo account login dialog">Login to demo account on the demo account server.</string>
     <string name="login_screen_demo_account_username" description="Placeholder text for demo account username">Username</string>

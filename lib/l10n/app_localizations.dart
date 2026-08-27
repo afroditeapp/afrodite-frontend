@@ -2554,6 +2554,12 @@ abstract class AppLocalizations {
   /// **'New registrations are currently disabled on this platform ({p0})'**
   String login_screen_registration_platform_disabled(String p0);
 
+  /// Warning text shown on web login screen advising against using shared computers
+  ///
+  /// In en, this message translates to:
+  /// **'Only sign in on personal devices. Using a shared or public computer compromises your privacy.'**
+  String get login_screen_shared_computer_warning;
+
   /// Button text for email sign in action on the login screen
   ///
   /// In en, this message translates to:
