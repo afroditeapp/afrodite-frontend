@@ -10,242 +10,243 @@ class AppLocalizationsFi extends AppLocalizations {
 
   @override
   String about_dialog_app_publisher(String p0) {
-    return 'Publisher: $p0';
+    return 'Julkaisija: $p0';
   }
 
   @override
   String about_dialog_git_commit_id(String p0) {
-    return 'Version ID: $p0';
+    return 'Versiotunniste: $p0';
   }
 
   @override
-  String get account_ban_reason_category_chat_message => 'Chat message';
+  String get account_ban_reason_category_chat_message => 'Chat-viesti';
 
   @override
-  String get account_ban_reason_category_image => 'Image';
+  String get account_ban_reason_category_image => 'Kuva';
 
   @override
-  String get account_ban_reason_category_profile_name => 'Profile name';
+  String get account_ban_reason_category_profile_name => 'Profiilinimi';
 
   @override
-  String get account_ban_reason_category_profile_text => 'Profile text';
+  String get account_ban_reason_category_profile_text => 'Profiiliteksti';
 
   @override
-  String get account_ban_reason_category_report_spam => 'Report spam';
+  String get account_ban_reason_category_report_spam => 'Ilmoitusten roskapostitus';
 
   @override
   String account_banned_screen_ban_reason(String p0) {
-    return 'Reason: $p0';
+    return 'Syy: $p0';
   }
 
   @override
   String account_banned_screen_ban_reason_category(String p0) {
-    return 'Category: $p0';
+    return 'Kategoria: $p0';
   }
 
   @override
   String account_banned_screen_time_text(String p0) {
-    return 'Suspension ending will begin at $p0';
+    return 'Porttikiellon poistoprosessi alkaa $p0';
   }
 
   @override
-  String get account_banned_screen_title => 'Account suspended';
+  String get account_banned_screen_title => 'Tilillä porttikielto';
 
   @override
   String account_deletion_pending_screen_time_text(String p0) {
-    return 'Account deletion will begin at $p0';
+    return 'Tilin poistoprosessi alkaa $p0';
   }
 
   @override
-  String get account_deletion_pending_screen_title => 'Account deletion pending';
+  String get account_deletion_pending_screen_title => 'Tilin poisto vireillä';
 
   @override
-  String get account_settings_screen_cancel_email_change_button => 'Cancel email change';
+  String get account_settings_screen_cancel_email_change_button =>
+      'Peruuta sähköpostiosoitteen vaihto';
 
   @override
   String get account_settings_screen_cancel_email_change_confirm_dialog_title =>
-      'Cancel email change?';
+      'Peruuta sähköpostiosoitteen vaihto?';
 
   @override
-  String get account_settings_screen_change_email_button => 'Change email';
+  String get account_settings_screen_change_email_button => 'Vaihda sähköpostiosoite';
 
   @override
-  String get account_settings_screen_change_email_dialog_hint => 'Enter new email address';
+  String get account_settings_screen_change_email_dialog_hint => 'Syötä uusi sähköpostiosoite';
 
   @override
-  String get account_settings_screen_change_email_dialog_title => 'Change email address';
+  String get account_settings_screen_change_email_dialog_title => 'Vaihda sähköpostiosoite';
 
   @override
   String get account_settings_screen_change_email_local_auth_reason =>
-      'Please authenticate to change email address';
+      'Vahvista henkilöllisyytesi vaihtaaksesi sähköpostiosoitteen';
 
   @override
-  String get account_settings_screen_delete_account_action => 'Request account deletion';
+  String get account_settings_screen_delete_account_action => 'Pyydä tilin poistamista';
 
   @override
   String get account_settings_screen_delete_account_action_error =>
-      'Failed to request account deletion';
+      'Tilin poistopyyntö epäonnistui';
 
   @override
   String get account_settings_screen_delete_account_confirm_dialog_title =>
-      'Request account deletion?';
+      'Pyydä tilin poistamista?';
 
   @override
-  String get account_settings_screen_email_change_cancelled => 'Email change cancelled';
+  String get account_settings_screen_email_change_cancelled =>
+      'Sähköpostiosoitteen vaihto peruutettu';
 
   @override
   String account_settings_screen_email_change_history_limit_reached(String p0) {
-    return 'Email change limit reached. Try again after $p0.';
+    return 'Sähköpostiosoitteen vaihtoraja saavutettu. Yritä uudelleen $p0 kuluttua.';
   }
 
   @override
   String get account_settings_screen_email_change_initiated =>
-      'Email change initiated. Please check your inbox.';
+      'Sähköpostiosoitteen vaihto aloitettu. Tarkista sähköpostisi.';
 
   @override
-  String get account_settings_screen_email_not_verified => 'Email not verified';
+  String get account_settings_screen_email_not_verified => 'Sähköpostia ei ole vahvistettu';
 
   @override
-  String get account_settings_screen_email_title => 'Email address';
+  String get account_settings_screen_email_title => 'Sähköpostiosoite';
 
   @override
-  String get account_settings_screen_email_verified => 'Email verified';
+  String get account_settings_screen_email_verified => 'Sähköposti vahvistettu';
 
   @override
   String account_settings_screen_pending_email_completion_time(String p0) {
-    return 'Email change completes at: $p0';
+    return 'Sähköpostiosoitteen vaihto valmistuu: $p0';
   }
 
   @override
-  String get account_settings_screen_pending_email_not_verified => 'Pending email not verified';
+  String get account_settings_screen_pending_email_not_verified =>
+      'Uusi sähköpostiosoite ei ole vahvistettu';
 
   @override
-  String get account_settings_screen_pending_email_title => 'Pending new email address';
+  String get account_settings_screen_pending_email_title => 'Uusi sähköpostiosoite';
 
   @override
-  String get account_settings_screen_pending_email_verified => 'Pending email verified';
+  String get account_settings_screen_pending_email_verified => 'Uusi sähköpostiosoite vahvistettu';
 
   @override
   String get account_settings_screen_send_verification_email_already_verified =>
-      'Email is already verified';
+      'Sähköposti on jo vahvistettu';
 
   @override
-  String get account_settings_screen_send_verification_email_button => 'Send verification email';
+  String get account_settings_screen_send_verification_email_button => 'Lähetä vahvistussähköposti';
 
   @override
   String get account_settings_screen_send_verification_email_sent_successfully =>
-      'Verification email sent';
+      'Vahvistussähköposti lähetetty';
 
   @override
-  String get account_settings_screen_title => 'Account';
+  String get account_settings_screen_title => 'Tili';
 
   @override
   String get account_verification_screen_error_profile_age_range_mismatch =>
-      'Profile age changed during verification';
+      'Ikäsi (profiilissasi) muuttui vahvistuksen aikana';
 
   @override
   String get account_verification_screen_error_profile_age_range_verification_failed =>
-      'Age verification failed';
+      'Iän vahvistus epäonnistui';
 
   @override
   String get account_verification_screen_error_profile_age_range_verification_mismatch =>
-      'Verified age does not match your profile age';
+      'Vahvistettu ikä ei vastaa ikääsi profiilissasi';
 
   @override
   String get account_verification_screen_error_profile_name_mismatch =>
-      'Profile name changed during verification';
+      'Profiilinimi muuttui vahvistuksen aikana';
 
   @override
   String get account_verification_screen_error_profile_name_verification_failed =>
-      'Name verification failed';
+      'Nimen vahvistus epäonnistui';
 
   @override
   String get account_verification_screen_error_profile_name_verification_mismatch =>
-      'Verified name does not match your profile name';
+      'Vahvistettu nimi ei vastaa profiilinimeä';
 
   @override
   String get account_verification_screen_error_security_content_mismatch =>
-      'Security selfie changed during verification';
+      'Moderointiselfie muuttui vahvistuksen aikana';
 
   @override
   String get account_verification_screen_error_security_content_verification_failed =>
-      'Security selfie verification failed';
+      'Moderointiselfien vahvistus epäonnistui';
 
   @override
   String get account_verification_screen_error_security_content_verification_mismatch =>
-      'Verified photo does not match your security selfie';
+      'Vahvistettu kuva ei vastaa moderointiselfietäsi';
 
   @override
-  String get account_verification_screen_previous_verification_errors_title => 'Errors';
+  String get account_verification_screen_previous_verification_errors_title => 'Virheet';
 
   @override
   String account_verification_screen_previous_verification_time(String p0) {
-    return 'Time: $p0';
+    return 'Aika: $p0';
   }
 
   @override
-  String get account_verification_screen_previous_verification_title => 'Previous verification';
+  String get account_verification_screen_previous_verification_title => 'Edellinen vahvistus';
 
   @override
   String account_verification_screen_queue_position(String p0) {
-    return 'Queue position: $p0';
+    return 'Jonosija: $p0';
   }
 
   @override
   String get account_verification_screen_request_initial_setup_not_completed =>
-      'Profile is not set up yet';
+      'Profiilia ei ole vielä määritetty';
 
   @override
   String get account_verification_screen_request_queue_full =>
-      'Verification queue is full. Please try again later.';
+      'Vahvistusjono on täynnä. Yritä myöhemmin uudelleen.';
 
   @override
-  String get account_verification_screen_scope_profile_age => 'Profile age';
+  String get account_verification_screen_scope_profile_age => 'Ikä';
 
   @override
-  String get account_verification_screen_scope_profile_name => 'Profile name';
+  String get account_verification_screen_scope_profile_name => 'Etunimi';
 
   @override
   String get account_verification_screen_start_verification_title =>
-      'Select verification scopes and method';
+      'Valitse vahvistuskohteet ja -tapa';
 
   @override
-  String get account_verification_screen_title => 'Account verification';
+  String get account_verification_screen_title => 'Tilin vahvistus';
 
   @override
-  String get account_verification_screen_verification_in_progress_title =>
-      'Verification in progress';
+  String get account_verification_screen_verification_in_progress_title => 'Vahvistus käynnissä';
 
   @override
-  String get admin_settings_title => 'Admin';
+  String get admin_settings_title => 'Ylläpito';
 
   @override
-  String get age_verification_required_screen_title => 'Age verification required';
+  String get age_verification_required_screen_title => 'Iän vahvistus vaaditaan';
 
   @override
-  String get age_verification_required_screen_verify_age_action => 'Verify age';
+  String get age_verification_required_screen_verify_age_action => 'Vahvista ikä';
 
   @override
-  String get age_verification_screen_age_is_18_or_older => 'Age is 18 or older';
+  String get age_verification_screen_age_is_18_or_older => 'Ikä on vähintään 18 vuotta';
 
   @override
-  String get age_verification_screen_current_verification_status_title =>
-      'Current verification status';
+  String get age_verification_screen_current_verification_status_title => 'Nykyinen vahvistustila';
 
   @override
-  String get age_verification_screen_error_age_already_verified => 'Age is already verified';
+  String get age_verification_screen_error_age_already_verified => 'Ikä on jo vahvistettu';
 
   @override
-  String get age_verification_screen_error_age_under_18 => 'Must be 18 or older';
+  String get age_verification_screen_error_age_under_18 => 'Täytyy olla vähintään 18-vuotias';
 
   @override
-  String get age_verification_screen_start_verification_title => 'Start verification';
+  String get age_verification_screen_start_verification_title => 'Aloita vahvistus';
 
   @override
-  String get age_verification_screen_title => 'Age verification';
+  String get age_verification_screen_title => 'Iän vahvistus';
 
   @override
-  String get app_bar_action_about => 'About';
+  String get app_bar_action_about => 'Tietoja';
 
   @override
   String get app_legalese => '';
@@ -261,653 +262,660 @@ class AppLocalizationsFi extends AppLocalizations {
 
   @override
   String get app_update_available_dialog_description_manual_update =>
-      'A new version is available. Please update the app.';
+      'Uusi versio on saatavilla. Päivitä sovellus.';
 
   @override
   String get app_update_available_dialog_description_update_now =>
-      'A new version is available. Update now?';
+      'Uusi versio on saatavilla. Päivitetäänkö nyt?';
 
   @override
   String get app_update_available_dialog_description_web_restart =>
-      'A new version is available. Restart the app to update.';
+      'Uusi versio on saatavilla. Käynnistä sovellus uudelleen päivittääksesi.';
 
   @override
-  String get association_membership_screen_current_membership_title => 'Current membership';
+  String get association_membership_screen_current_membership_title => 'Nykyinen jäsenyys';
 
   @override
-  String get association_membership_screen_domicile_label => 'Domicile';
+  String get association_membership_screen_domicile_label => 'Kotipaikka';
 
   @override
-  String get association_membership_screen_end_membership_button => 'End membership';
+  String get association_membership_screen_end_membership_button => 'Lopeta jäsenyys';
 
   @override
-  String get association_membership_screen_end_membership_confirm_title => 'End membership?';
+  String get association_membership_screen_end_membership_confirm_title => 'Lopeta jäsenyys?';
 
   @override
-  String get association_membership_screen_full_name_label => 'Full name';
+  String get association_membership_screen_full_name_label => 'Täydellinen nimi';
 
   @override
-  String get association_membership_screen_join_button => 'Join';
+  String get association_membership_screen_join_button => 'Liity';
 
   @override
-  String get association_membership_screen_membership_type_label => 'Membership type';
+  String get association_membership_screen_membership_type_label => 'Jäsenyystyyppi';
 
   @override
-  String get association_membership_screen_title => 'Association membership';
+  String get association_membership_screen_title => 'Yhdistyksen jäsenyys';
 
   @override
   String attribute_deprecated_info(String p0) {
-    return '\"$p0\" is deprecated and will disappear once unselected';
+    return '\"$p0\" on vanhentunut ja poistuu, kun sen valinta poistetaan';
   }
 
   @override
   String attribute_partially_hidden_info(String p0) {
-    return '\"$p0\" is partially hidden';
+    return '\"$p0\" on osittain piilotettu';
   }
 
   @override
   String get automatic_profile_search_results_screen_no_profiles_found_description =>
-      'You will be notified when this changes';
+      'Saat ilmoituksen, kun tilanne muuttuu';
 
   @override
   String get automatic_profile_search_results_screen_no_profiles_found_title =>
-      'No new or updated profiles found';
+      'Uusia tai päivitettyjä profiileja ei löytynyt';
 
   @override
-  String get automatic_profile_search_results_screen_title => 'New and updated profiles';
+  String get automatic_profile_search_results_screen_title => 'Uudet ja päivitetyt profiilit';
 
   @override
-  String get blocked_profiles_screen_no_blocked_profiles => 'No blocked profiles';
+  String get blocked_profiles_screen_no_blocked_profiles => 'Ei estettyjä profiileja';
 
   @override
-  String get blocked_profiles_screen_placeholder_for_private_profile => 'Private profile';
+  String get blocked_profiles_screen_placeholder_for_private_profile => 'Yksityinen profiili';
 
   @override
-  String get blocked_profiles_screen_title => 'Blocked profiles';
+  String get blocked_profiles_screen_title => 'Estetyt profiilit';
 
   @override
   String blocked_profiles_screen_unblock_profile_dialog_description(String p0) {
-    return 'Unblock $p0';
+    return 'Poista profiilin $p0 esto';
   }
 
   @override
-  String get blocked_profiles_screen_unblock_profile_dialog_title => 'Unblock profile?';
+  String get blocked_profiles_screen_unblock_profile_dialog_title => 'Poista profiilin esto?';
 
   @override
-  String get blocked_profiles_screen_unblock_profile_failed => 'Failed to unblock profile';
+  String get blocked_profiles_screen_unblock_profile_failed =>
+      'Profiilin eston poistaminen epäonnistui';
 
   @override
   String get blocked_profiles_screen_unblock_profile_in_progress =>
-      'Previous unblock is in progress';
+      'Edellinen eston poisto on kesken';
 
   @override
-  String get blocked_profiles_screen_unblock_profile_successful => 'Profile unblocked';
+  String get blocked_profiles_screen_unblock_profile_successful => 'Profiilin esto poistettu';
 
   @override
   String get camera_screen_camera_access_restricted_error =>
-      'Camera access is restricted on this device.';
+      'Kameran käyttö on estetty tällä laitteella.';
 
   @override
-  String get camera_screen_camera_initialization_error => 'Failed to open camera';
+  String get camera_screen_camera_initialization_error => 'Kameran avaaminen epäonnistui';
 
   @override
   String camera_screen_camera_initialization_error_with_error_code(String p0) {
-    return 'Failed to open camera (error $p0)';
+    return 'Kameran avaaminen epäonnistui (virhe $p0)';
   }
 
   @override
-  String get camera_screen_camera_opening_already_in_progress_error => 'Camera is already starting';
+  String get camera_screen_camera_opening_already_in_progress_error =>
+      'Kamera on jo käynnistymässä';
 
   @override
   String get camera_screen_camera_permission_error_check_settings =>
-      'Camera permission required. Please grant camera permission in system settings.';
+      'Kameran käyttöoikeus vaaditaan. Myönnä kameran käyttöoikeus järjestelmäasetuksista.';
 
   @override
   String get camera_screen_camera_permission_error_try_again_or_check_settings =>
-      'Camera permission required. Please try again. You might need to grant camera permission in system settings.';
+      'Kameran käyttöoikeus vaaditaan. Yritä uudelleen. Saatat joutua myöntämään luvan järjestelmäasetuksista.';
 
   @override
-  String get camera_screen_no_front_camera_error => 'No front camera found';
+  String get camera_screen_no_front_camera_error => 'Etukameraa ei löytynyt';
 
   @override
-  String get camera_screen_take_photo_error => 'Failed to take photo';
+  String get camera_screen_take_photo_error => 'Kuvan ottaminen epäonnistui';
 
   @override
-  String get chat_backup_connecting => 'Connecting…';
+  String get chat_backup_connecting => 'Yhdistetään…';
 
   @override
-  String get chat_backup_data_stream_unsupported => 'Unsupported data stream';
+  String get chat_backup_data_stream_unsupported => 'Ei tuettu tietovirta';
 
   @override
-  String get chat_backup_database_not_found => 'No chat data found for this account';
+  String get chat_backup_database_not_found => 'Keskustelutietoja ei löytynyt tälle tilille';
 
   @override
-  String get chat_backup_pairing_code_invalid => 'Invalid pairing code';
+  String get chat_backup_pairing_code_invalid => 'Virheellinen parituskoodi';
 
   @override
-  String get chat_backup_pairing_code_label => 'Device pairing code';
+  String get chat_backup_pairing_code_label => 'Laitteen parituskoodi';
 
   @override
-  String get chat_backup_pairing_code_unsupported => 'Unsupported pairing code version';
+  String get chat_backup_pairing_code_unsupported => 'Ei tuettu parituskoodiversio';
 
   @override
   String get chat_backup_reminder_dialog_message_no_backup =>
-      'No chat backup created yet. Back up now?';
+      'Keskusteluvarmuuskopiota ei ole vielä luotu. Varmuuskopioidaanko nyt?';
 
   @override
   String chat_backup_reminder_dialog_message_old_backup(String p0) {
-    return 'Chat backup has not been created in $p0 days. Back up now?';
+    return 'Keskusteluvarmuuskopiota ei ole luotu $p0 päivään. Varmuuskopioidaanko nyt?';
   }
 
   @override
-  String get chat_backup_reminder_dialog_title => 'Chat backup';
+  String get chat_backup_reminder_dialog_title => 'Keskusteluvarmuuskopio';
 
   @override
-  String get chat_backup_screen_backup_reminder_interval_day => 'Every day';
+  String get chat_backup_screen_backup_reminder_interval_day => 'Joka päivä';
 
   @override
   String chat_backup_screen_backup_reminder_interval_days(String p0) {
-    return 'Every $p0 days';
+    return 'Joka $p0. päivä';
   }
 
   @override
-  String get chat_backup_screen_import_backup_question => 'Import chat backup?';
+  String get chat_backup_screen_import_backup_question => 'Tuo keskusteluvarmuuskopio?';
 
   @override
   String chat_backup_screen_import_backup_question_details(String p0) {
-    return 'File: $p0\n\nCurrent and backup messages will be merged. Current encryption key will be replaced if the one included in the backup is newer.';
+    return 'Tiedosto: $p0\n\nNykyiset ja varmuuskopion viestit yhdistetään. Nykyinen salausavain korvataan, jos varmuuskopion avain on uudempi.';
   }
 
   @override
-  String get chat_backup_screen_import_error_invalid_backup_file => 'Invalid backup file';
+  String get chat_backup_screen_import_error_invalid_backup_file =>
+      'Virheellinen varmuuskopiotiedosto';
 
   @override
-  String get chat_backup_screen_import_error_unsupported_version => 'Unsupported backup version';
+  String get chat_backup_screen_import_error_unsupported_version => 'Ei tuettu varmuuskopioversio';
 
   @override
-  String get chat_backup_screen_import_error_wrong_account =>
-      'Backup was created by a different account';
+  String get chat_backup_screen_import_error_wrong_account => 'Varmuuskopio on luotu eri tilillä';
 
   @override
-  String get chat_backup_screen_title => 'Chat backup';
+  String get chat_backup_screen_title => 'Keskusteluvarmuuskopio';
 
   @override
   String get chat_backup_transfer_budget_exceeded =>
-      'Yearly transfer limit reached. Please save a backup and transfer it manually.';
+      'Vuosittainen siirtoraja saavutettu. Tallenna varmuuskopio ja siirrä se manuaalisesti.';
 
   @override
   String get chat_data_outdated_description =>
-      'Device changed or app reinstalled. Transfer chats from your old device?';
+      'Laite vaihtunut tai sovellus asennettu uudelleen. Siirretäänkö keskustelut vanhalta laitteeltasi?';
 
   @override
   String get chat_data_outdated_error_too_many_keys =>
-      'Maximum number of encryption keys reached. Receive a backup from your old device or contact support.';
+      'Salausavainten enimmäismäärä saavutettu. Vastaanota varmuuskopio vanhalta laitteeltasi tai ota yhteyttä tukeen.';
 
   @override
   String get chat_data_outdated_pending_messages_warning =>
-      'You have unread messages encrypted with your old encryption key. To read them, transfer chat data from your previous device or restore a backup containing the encryption key.\n\nIf you continue, you will not be able to read those messages. Continue anyway?';
+      'Sinulla on lukemattomia viestejä salattuna vanhalla salausavaimellasi. Lukeaksesi ne siirrä keskustelutiedot edelliseltä laitteeltasi tai palauta salausavaimen sisältävä varmuuskopio.\n\nJos jatkat, et voi lukea kyseisiä viestejä. Jatketaanko silti?';
 
   @override
-  String get chat_data_outdated_receive_backup => 'Receive backup';
+  String get chat_data_outdated_receive_backup => 'Vastaanota varmuuskopio';
 
   @override
-  String get chat_data_outdated_title => 'Chat data outdated';
+  String get chat_data_outdated_title => 'Keskustelutiedot vanhentuneet';
 
   @override
-  String get chat_list_screen_no_chats_found => 'No chats yet';
+  String get chat_list_screen_no_chats_found => 'Ei vielä keskusteluja';
 
   @override
   String get chat_list_screen_no_chats_found_description =>
-      'Spread the word about the app on social media';
+      'Kerro sovelluksesta sosiaalisessa mediassa';
 
   @override
-  String get chat_list_screen_no_matches_found => 'No accepted chat requests yet';
+  String get chat_list_screen_no_matches_found => 'Ei vielä hyväksyttyjä keskustelupyyntöjä';
 
   @override
-  String get chat_list_screen_open_matches_screen_action => 'Accepted chat requests';
+  String get chat_list_screen_open_matches_screen_action => 'Hyväksytyt keskustelupyynnöt';
 
   @override
-  String get chat_list_screen_profile_not_available => 'Profile not available';
+  String get chat_list_screen_profile_not_available => 'Profiili ei saatavilla';
 
   @override
   String chat_list_screen_sent_message_indicator(String p0) {
-    return 'You: $p0';
+    return 'Sinä: $p0';
   }
 
   @override
-  String get chat_list_screen_title => 'Chatit';
+  String get chat_list_screen_title => 'Keskustelut';
 
   @override
-  String get chat_list_screen_unread_message => 'New message';
+  String get chat_list_screen_unread_message => 'Uusi viesti';
 
   @override
   String content_management_screen_content_deletion_allowed_wait_time(String p0) {
-    return 'Can be deleted starting at $p0';
+    return 'Voidaan poistaa alkaen $p0';
   }
 
   @override
-  String get content_management_screen_content_face_not_verified => 'Face not verified';
+  String get content_management_screen_content_face_not_verified => 'Kasvoja ei ole vahvistettu';
 
   @override
   String get content_management_screen_content_face_verification_pending =>
-      'Face verification pending';
+      'Kasvojen vahvistus odottaa';
 
   @override
-  String get content_management_screen_content_face_verified => 'Face verified';
+  String get content_management_screen_content_face_verified => 'Kasvot vahvistettu';
 
   @override
   String content_management_screen_content_profile_content(String p0) {
-    return 'Profile image $p0';
+    return 'Profiilikuva $p0';
   }
 
   @override
-  String get content_management_screen_title => 'My images';
+  String get content_management_screen_title => 'Omat kuvat';
 
   @override
-  String get conversation_screen_chat_box_placeholder_text => 'Type a message…';
+  String get conversation_screen_chat_box_placeholder_text => 'Kirjoita viesti…';
 
   @override
   String get conversation_screen_install_jitsi_meet_dialog_description_android =>
-      'Video calling requires the Jitsi Meet app. Would you like to install it from Google Play Store?';
+      'Videopuhelut vaativat Jitsi Meet -sovelluksen. Haluatko asentaa sen Google Play Kaupasta?';
 
   @override
   String get conversation_screen_install_jitsi_meet_dialog_description_ios =>
-      'Video calling requires the Jitsi Meet app. Would you like to install it from the App Store?';
+      'Videopuhelut vaativat Jitsi Meet -sovelluksen. Haluatko asentaa sen App Storesta?';
 
   @override
-  String get conversation_screen_install_jitsi_meet_dialog_title => 'Install Jitsi Meet?';
+  String get conversation_screen_install_jitsi_meet_dialog_title => 'Asenna Jitsi Meet?';
 
   @override
-  String get conversation_screen_join_video_call_button => 'Join video call';
+  String get conversation_screen_join_video_call_button => 'Liity videopuheluun';
 
   @override
-  String get conversation_screen_join_video_call_dialog_title => 'Join video call?';
+  String get conversation_screen_join_video_call_dialog_title => 'Liity videopuheluun?';
 
   @override
   String get conversation_screen_make_match_instruction =>
-      'Send a message to accept the chat request!';
+      'Lähetä viesti hyväksyäksesi keskustelupyynnön!';
 
   @override
-  String get conversation_screen_message_details_message_id => 'Message ID';
+  String get conversation_screen_message_details_message_id => 'Viestitunniste';
 
   @override
-  String get conversation_screen_message_details_message_number => 'Message number';
+  String get conversation_screen_message_details_message_number => 'Viestin numero';
 
   @override
   String get conversation_screen_message_error_is_actually_sent_successfully =>
-      'This message was already sent successfully';
+      'Tämä viesti lähetettiin jo onnistuneesti';
 
   @override
   String get conversation_screen_message_error_recipient_blocked_sender_or_recipient_not_found =>
-      'Unable to deliver message to recipient';
+      'Viestiä ei voitu toimittaa vastaanottajalle';
 
   @override
   String conversation_screen_message_info_encryption_key_changed(String p0) {
-    return '$p0\'s encryption key changed';
+    return 'Käyttäjän $p0 salausavain muuttui';
   }
 
   @override
   String get conversation_screen_message_info_encryption_started =>
-      'Messages are end-to-end encrypted';
+      'Viestit ovat päästä päähän -salattuja';
 
   @override
-  String get conversation_screen_message_list_empty => 'No messages yet';
+  String get conversation_screen_message_list_empty => 'Ei vielä viestejä';
 
   @override
-  String get conversation_screen_message_not_found => 'Message not found';
+  String get conversation_screen_message_not_found => 'Viestiä ei löytynyt';
 
   @override
-  String get conversation_screen_message_resend_complete => 'Resent successfully';
+  String get conversation_screen_message_resend_complete => 'Uudelleenlähetetty onnistuneesti';
 
   @override
-  String get conversation_screen_message_resend_confirm_title => 'Resend?';
+  String get conversation_screen_message_resend_confirm_title => 'Lähetä uudelleen?';
 
   @override
   String conversation_screen_message_resent_info(String p0, String p1) {
-    return 'Resent (originally sent $p0, message $p1)';
+    return 'Uudelleenlähetetty (alun perin lähetetty $p0, viesti $p1)';
   }
 
   @override
   String get conversation_screen_message_send_requires_connection =>
-      'Please try again after app connects to server';
+      'Yritä uudelleen, kun sovellus yhdistää palvelimeen';
 
   @override
-  String get conversation_screen_message_state_decrypting_failed => 'Decrypting failed';
+  String get conversation_screen_message_state_decrypting_failed => 'Salauksen purku epäonnistui';
 
   @override
   String get conversation_screen_message_state_decrypting_failed_detailed =>
-      'Could not decrypt. Please ask the sender to resend.';
+      'Salausta ei voitu purkaa. Pyydä lähettäjää lähettämään viesti uudelleen.';
 
   @override
-  String get conversation_screen_message_state_delivered => 'Delivered';
+  String get conversation_screen_message_state_delivered => 'Toimitettu';
 
   @override
-  String get conversation_screen_message_state_delivery_failed => 'Delivery failed';
+  String get conversation_screen_message_state_delivery_failed => 'Toimitus epäonnistui';
 
   @override
   String get conversation_screen_message_state_delivery_failed_and_resent =>
-      'Delivery failed, resent';
+      'Toimitus epäonnistui, lähetetty uudelleen';
 
   @override
   String get conversation_screen_message_state_public_key_download_failed =>
-      'Encryption key download failed';
+      'Salausavaimen lataus epäonnistui';
 
   @override
-  String get conversation_screen_message_state_received_and_seen => 'Seen';
+  String get conversation_screen_message_state_received_and_seen => 'Nähty';
 
   @override
-  String get conversation_screen_message_state_received_and_seen_locally => 'Seen locally';
+  String get conversation_screen_message_state_received_and_seen_locally => 'Nähty paikallisesti';
 
   @override
-  String get conversation_screen_message_state_received_successfully => 'Received';
+  String get conversation_screen_message_state_received_successfully => 'Vastaanotettu';
 
   @override
-  String get conversation_screen_message_state_seen => 'Seen';
+  String get conversation_screen_message_state_seen => 'Nähty';
 
   @override
-  String get conversation_screen_message_state_sending_failed => 'Failed to send';
+  String get conversation_screen_message_state_sending_failed => 'Lähetys epäonnistui';
 
   @override
-  String get conversation_screen_message_state_sending_in_progress => 'Sending…';
+  String get conversation_screen_message_state_sending_in_progress => 'Lähetetään…';
 
   @override
-  String get conversation_screen_message_state_sent_successfully => 'Sent';
+  String get conversation_screen_message_state_sent_successfully => 'Lähetetty';
 
   @override
-  String get conversation_screen_message_too_long => 'Message is too long';
+  String get conversation_screen_message_too_long => 'Viesti on liian pitkä';
 
   @override
   String get conversation_screen_message_too_many_pending_messages =>
-      'Too many undelivered messages';
+      'Liian monta toimittamatonta viestiä';
 
   @override
-  String get conversation_screen_message_unsupported => 'Unsupported message format';
+  String get conversation_screen_message_unsupported => 'Ei tuettu viestimuoto';
 
   @override
-  String get conversation_screen_open_details_action_subtitle => 'Contains selectable text';
+  String get conversation_screen_open_details_action_subtitle => 'Sisältää valittavaa tekstiä';
 
   @override
-  String get conversation_screen_profile_blocked => 'Profile was blocked';
+  String get conversation_screen_profile_blocked => 'Profiili estettiin';
 
   @override
   String conversation_screen_remaining_conversation_messages(String p0) {
-    return 'Messages remaining for this chat: $p0 (resets once delivered)';
+    return 'Viestejä jäljellä tähän keskusteluun: $p0 (nollautuu toimituksen jälkeen)';
   }
 
   @override
   String conversation_screen_remaining_daily_messages(String p0) {
-    return 'Daily messages remaining: $p0';
+    return 'Päivittäisiä viestejä jäljellä: $p0';
   }
 
   @override
-  String get conversation_screen_send_video_call_invitation_action => 'Send video call invitation';
+  String get conversation_screen_send_video_call_invitation_action => 'Lähetä videopuhelukutsu';
 
   @override
   String get conversation_screen_send_video_call_invitation_dialog_title =>
-      'Send video call invitation?';
+      'Lähetä videopuhelukutsu?';
 
   @override
-  String get crop_image_screen_title => 'Crop image';
+  String get crop_image_screen_title => 'Rajaa kuva';
 
   @override
-  String get current_security_selfie_screen_security_selfie_changed => 'Security selfie updated';
+  String get current_security_selfie_screen_security_selfie_changed =>
+      'Moderointiselfie päivitetty';
 
   @override
-  String get data_export_screen_api_limit_error => 'Daily limit reached. Try again after 24 hours.';
+  String get data_export_screen_api_limit_error =>
+      'Päivittäinen raja saavutettu. Yritä uudelleen 24 tunnin kuluttua.';
 
   @override
-  String get data_export_screen_title_export_type_admin => 'Data export';
+  String get data_export_screen_title_export_type_admin => 'Tietojen vienti';
 
   @override
-  String get data_export_screen_title_export_type_user => 'Download my data';
+  String get data_export_screen_title_export_type_user => 'Lataa omat tiedot';
 
   @override
-  String get demo_account_screen_confirm_logout_dialog_title => 'Logout?';
+  String get demo_account_screen_confirm_logout_dialog_title => 'Kirjaudu ulos?';
 
   @override
-  String get demo_account_screen_login_to_account_dialog_title => 'Login to account?';
+  String get demo_account_screen_login_to_account_dialog_title => 'Kirjaudu tilille?';
 
   @override
-  String get demo_account_screen_max_account_count_error => 'Error: max account count';
+  String get demo_account_screen_max_account_count_error =>
+      'Virhe: tilien enimmäismäärä saavutettu';
 
   @override
-  String get demo_account_screen_new_account_action => 'New account';
+  String get demo_account_screen_new_account_action => 'Uusi tili';
 
   @override
   String get demo_account_screen_new_account_dialog_description =>
-      'Create new account and login to it?';
+      'Luo uusi tili ja kirjaudu siihen?';
 
   @override
-  String get demo_account_screen_no_accounts_available => 'No accounts available';
+  String get demo_account_screen_no_accounts_available => 'Tilejä ei saatavilla';
 
   @override
   String get edit_attribute_filter_value_screen_require_all_wanted_values =>
-      'Require all wanted values';
+      'Vaadi kaikki halutut arvot';
 
   @override
-  String get edit_attribute_filter_value_screen_search_placeholder_text => 'Search…';
+  String get edit_attribute_filter_value_screen_search_placeholder_text => 'Hae…';
 
   @override
-  String get edit_attribute_filter_value_screen_show_advanced_filters_action => 'Advanced filters';
+  String get edit_attribute_filter_value_screen_show_advanced_filters_action => 'Lisäsuodattimet';
 
   @override
-  String get edit_attribute_filter_value_screen_show_basic_filters_action => 'Basic filters';
+  String get edit_attribute_filter_value_screen_show_basic_filters_action => 'Perussuodattimet';
 
   @override
-  String get edit_attribute_filter_value_screen_title => 'Edit filter';
+  String get edit_attribute_filter_value_screen_title => 'Muokkaa suodatinta';
 
   @override
-  String get edit_attribute_value_screen_max_selected_values_error => 'Too many options selected';
+  String get edit_attribute_value_screen_max_selected_values_error =>
+      'Liian monta vaihtoehtoa valittu';
 
   @override
   String get edit_attribute_value_screen_one_value_must_be_selected =>
-      'At least one option must be selected';
+      'Vähintään yksi vaihtoehto on valittava';
 
   @override
-  String get edit_attribute_value_screen_search_placeholder_text => 'Search…';
+  String get edit_attribute_value_screen_search_placeholder_text => 'Hae…';
 
   @override
-  String get edit_my_gender_screen_gender_setting_title => 'My profile\'s gender';
+  String get edit_my_gender_screen_gender_setting_title => 'Profiilini sukupuoli';
 
   @override
   String edit_profile_screen_automatic_min_age_incrementing_info_dialog_text(String p0, String p1) {
-    return 'Min age will be increased to $p0 in $p1';
+    return 'Minimi-ikä nostetaan arvoon $p0 ajassa $p1';
   }
 
   @override
-  String get edit_profile_screen_invalid_age => 'Invalid age';
+  String get edit_profile_screen_invalid_age => 'Virheellinen ikä';
 
   @override
-  String get edit_profile_screen_invalid_profile_name => 'Invalid first name';
+  String get edit_profile_screen_invalid_profile_name => 'Virheellinen etunimi';
 
   @override
-  String get edit_profile_screen_one_profile_image_required => 'One profile image is required';
+  String get edit_profile_screen_one_profile_image_required =>
+      'Vähintään yksi profiilikuva vaaditaan';
 
   @override
   String get edit_profile_screen_primary_profile_content_pending_moderation =>
-      'Picture is not currently accepted by moderators. Your profile will not be shown in profile grid until the picture is accepted.';
+      'Kuva ei ole tällä hetkellä moderaattorin hyväksymä. Profiilisi ei näy profiiliruudukossa ennen kuin kuva on hyväksytty.';
 
   @override
   String get edit_profile_screen_primary_profile_content_rejected =>
-      'Picture was rejected by moderators. Replace the picture to make your profile visible in the profile grid.';
+      'Moderaattori hylkäsi kuvan. Vaihda kuva, jotta profiilisi näkyy profiiliruudukossa.';
 
   @override
-  String get edit_profile_screen_profile_name => 'First name';
+  String get edit_profile_screen_profile_name => 'Etunimi';
 
   @override
   String get edit_profile_screen_profile_name_description =>
-      'Changing first name is possible only before it is accepted by moderators.';
+      'Etunimen muuttaminen on mahdollista vain ennen kuin moderaattorit ovat hyväksyneet sen.';
 
   @override
-  String get edit_profile_screen_profile_text => 'Profile text';
+  String get edit_profile_screen_profile_text => 'Profiilin teksti';
 
   @override
-  String get edit_profile_screen_title => 'Edit profile';
+  String get edit_profile_screen_title => 'Muokkaa profiilia';
 
   @override
-  String get edit_profile_screen_unlimited_likes => 'Up for a date today';
+  String get edit_profile_screen_unlimited_likes => 'Treffiseuraa tälle päivälle';
 
   @override
   String edit_profile_screen_unlimited_likes_description_enabled_and_automatic_disabling(
     String p0,
   ) {
-    return 'Turns off at $p0';
+    return 'Kytkeytyy pois päältä klo $p0';
   }
 
   @override
   String get edit_profile_text_screen_text_length_too_long =>
-      'Profile text is too long (maximum 2000 bytes)';
+      'Profiiliteksti on liian pitkä (enintään 2000 tavua)';
 
   @override
-  String get email_login_method_screen_existing_account => 'Existing account';
+  String get email_login_method_screen_existing_account => 'Olemassa oleva tili';
 
   @override
   String get email_login_method_screen_existing_account_description =>
-      'Sign in to an account you already have';
+      'Kirjaudu tilille, joka sinulla jo on';
 
   @override
-  String get email_login_method_screen_new_account => 'New account';
+  String get email_login_method_screen_new_account => 'Uusi tili';
 
   @override
-  String get email_login_method_screen_new_account_description => 'Create a new account';
+  String get email_login_method_screen_new_account_description => 'Luo uusi tili';
 
   @override
-  String get email_login_method_screen_title => 'Email sign in';
+  String get email_login_method_screen_title => 'Kirjaudu sähköpostilla';
 
   @override
-  String get email_login_screen_code_hint => 'Login code';
+  String get email_login_screen_code_hint => 'Kirjautumiskoodi';
 
   @override
   String email_login_screen_did_not_receive_code(String p0) {
-    return 'If you didn\'t receive the code:\n• Check your spam folder\n• Verify the email address is correct\n• Wait $p0 before requesting a new code\n• Make sure you have an existing account with this email';
+    return 'Jos et saanut koodia:\n• Tarkista roskapostikansio\n• Varmista, että sähköpostiosoite on oikein\n• Odota $p0 ennen uuden koodin pyytämistä\n• Varmista, että sinulla on olemassa oleva tili tällä sähköpostiosoitteella';
   }
 
   @override
-  String get email_login_screen_email_hint => 'Email address';
+  String get email_login_screen_email_hint => 'Sähköpostiosoite';
 
   @override
   String email_login_screen_input_code_description(String p0) {
-    return 'Enter the login code sent to $p0';
+    return 'Syötä osoitteeseen $p0 lähetetty kirjautumiskoodi';
   }
 
   @override
   String get email_login_screen_login_only_info =>
-      'Creating a new account is not supported with this login method';
+      'Uuden tilin luominen ei ole tuettu tällä kirjautumistavalla';
 
   @override
   String get email_login_screen_registration_all_platforms_disabled_error =>
-      'New registrations via email are currently disabled. Please use another sign in method.';
+      'Uudet sähköpostirekisteröitymiset ovat tällä hetkellä poissa käytöstä. Käytä toista kirjautumistapaa.';
 
   @override
   String email_login_screen_registration_domain_not_accepted_error(String p0) {
-    return 'Email addresses with domain $p0 cannot be used for registration. Please use another email or sign in method.';
+    return 'Sähköpostiosoitteita verkkotunnuksella $p0 ei voi käyttää rekisteröitymiseen. Käytä toista sähköpostia tai kirjautumistapaa.';
   }
 
   @override
   String get email_login_screen_registration_ip_address_limit_reached_error =>
-      'Daily registration limit for your IP address has been reached. Please try again after 24 hours or use another sign in method.';
+      'IP-osoitteesi päivittäinen rekisteröitymisraja on saavutettu. Yritä uudelleen 24 tunnin kuluttua tai käytä toista kirjautumistapaa.';
 
   @override
   String get email_login_screen_registration_limit_reached_error =>
-      'Daily registration limit has been reached. Please try again in 24 hours or use another sign in method.';
+      'Päivittäinen rekisteröitymisraja on saavutettu. Yritä uudelleen 24 tunnin kuluttua tai käytä toista kirjautumistapaa.';
 
   @override
   String get email_login_screen_registration_only_info =>
-      'Please note that using throwaway email services is forbidden';
+      'Huomaathan, että kertakäyttösähköpostipalveluiden käyttö on kielletty';
 
   @override
   String email_login_screen_registration_platform_disabled_error(String p0) {
-    return 'New registrations via email are currently disabled on this platform ($p0). Please use another sign in method.';
+    return 'Uudet sähköpostirekisteröitymiset ovat tällä hetkellä poissa käytöstä tällä alustalla ($p0). Käytä toista kirjautumistapaa.';
   }
 
   @override
   String get email_login_screen_registration_unsupported_email =>
-      'Unsupported email address. Please use another sign in method.';
+      'Sähköpostiosoitetta ei tueta. Käytä toista kirjautumistapaa.';
 
   @override
-  String get email_login_screen_send_code_button => 'Send login code';
+  String get email_login_screen_send_code_button => 'Lähetä kirjautumiskoodi';
 
   @override
-  String get email_login_screen_title => 'Email login';
+  String get email_login_screen_title => 'Sähköpostikirjautuminen';
 
   @override
-  String get email_login_screen_title_register => 'Email registration';
+  String get email_login_screen_title_register => 'Sähköpostirekisteröityminen';
 
   @override
   String email_login_screen_token_validity(String p0) {
-    return 'Code expires in: $p0';
+    return 'Koodi vanhenee: $p0';
   }
 
   @override
-  String get email_notification_settings_screen_title => 'Email notifications';
+  String get email_notification_settings_screen_title => 'Sähköposti-ilmoitukset';
 
   @override
   String generic_account_id_text_with_value(String p0) {
-    return 'Account ID: $p0';
+    return 'Tili ID: $p0';
   }
 
   @override
-  String get generic_account_locked_error => 'Account locked';
+  String get generic_account_locked_error => 'Tili lukittu';
 
   @override
-  String get generic_action_completed => 'Action completed';
+  String get generic_action_completed => 'Toiminto suoritettu';
 
   @override
-  String get generic_age => 'Age';
+  String get generic_age => 'Ikä';
 
   @override
-  String get generic_average => 'Average';
+  String get generic_average => 'Keskiarvo';
 
   @override
   String get generic_cancel => 'Peruuta';
 
   @override
-  String get generic_cancel_question => 'Cancel?';
+  String get generic_cancel_question => 'Peruuta?';
 
   @override
   String get generic_close => 'Sulje';
 
   @override
-  String get generic_continue => 'Continue';
+  String get generic_continue => 'Jatka';
 
   @override
-  String get generic_copied_to_clipboard => 'Copied to clipboard';
+  String get generic_copied_to_clipboard => 'Kopioitu leikepöydälle';
 
   @override
-  String get generic_copy => 'Copy';
+  String get generic_copy => 'Kopioi';
 
   @override
-  String get generic_create => 'Create';
+  String get generic_create => 'Luo';
 
   @override
-  String get generic_data_sync_failed => 'Data sync failed';
+  String get generic_data_sync_failed => 'Tietojen synkronointi epäonnistui';
 
   @override
-  String get generic_delete => 'Delete';
+  String get generic_delete => 'Poista';
 
   @override
-  String get generic_delete_question => 'Delete?';
+  String get generic_delete_question => 'Poista?';
 
   @override
-  String get generic_details => 'Details';
+  String get generic_details => 'Tiedot';
 
   @override
-  String get generic_disabled => 'Disabled';
+  String get generic_disabled => 'Pois käytöstä';
 
   @override
-  String get generic_download => 'Download';
+  String get generic_download => 'Lataa';
 
   @override
-  String get generic_download_question => 'Download?';
+  String get generic_download_question => 'Lataa?';
 
   @override
-  String get generic_edit => 'Edit';
+  String get generic_edit => 'Muokkaa';
 
   @override
-  String get generic_email_sending_failed => 'Failed to send email';
+  String get generic_email_sending_failed => 'Sähköpostin lähetys epäonnistui';
 
   @override
-  String get generic_email_sending_timeout => 'Email sending timed out';
+  String get generic_email_sending_timeout => 'Sähköpostin lähetys aikakatkaistiin';
 
   @override
   String get generic_empty => 'Tyhjä';
@@ -916,844 +924,847 @@ class AppLocalizationsFi extends AppLocalizations {
   String get generic_error => 'Virhe';
 
   @override
-  String get generic_error_app_version_is_unsupported =>
-      'Current app version is no longer supported';
+  String get generic_error_app_version_is_unsupported => 'Nykyistä sovellusversiota ei enää tueta';
 
   @override
-  String get generic_error_occurred => 'Something went wrong';
+  String get generic_error_occurred => 'Jokin meni pieleen';
 
   @override
-  String get generic_filters => 'Filters';
+  String get generic_filters => 'Suodattimet';
 
   @override
-  String get generic_gender_man => 'Man';
+  String get generic_gender_man => 'Mies';
 
   @override
-  String get generic_gender_man_plural => 'Men';
+  String get generic_gender_man_plural => 'Miehet';
 
   @override
-  String get generic_gender_nonbinary => 'Non-binary';
+  String get generic_gender_nonbinary => 'Muunsukupuolinen';
 
   @override
-  String get generic_gender_nonbinary_plural => 'Non-binaries';
+  String get generic_gender_nonbinary_plural => 'Muunsukupuoliset';
 
   @override
-  String get generic_gender_woman => 'Woman';
+  String get generic_gender_woman => 'Nainen';
 
   @override
-  String get generic_gender_woman_plural => 'Women';
+  String get generic_gender_woman_plural => 'Naiset';
 
   @override
-  String get generic_import => 'Import';
+  String get generic_import => 'Tuo';
 
   @override
-  String get generic_large => 'Large';
+  String get generic_large => 'Suuri';
 
   @override
-  String get generic_later => 'Later';
+  String get generic_later => 'Myöhemmin';
 
   @override
-  String get generic_login => 'Login';
+  String get generic_login => 'Kirjaudu';
 
   @override
-  String get generic_login_progress_dialog_text => 'Login…';
+  String get generic_login_progress_dialog_text => 'Kirjaudutaan…';
 
   @override
-  String get generic_logout => 'Logout';
+  String get generic_logout => 'Kirjaudu ulos';
 
   @override
-  String get generic_logout_confirmation_title => 'Logout?';
+  String get generic_logout_confirmation_title => 'Kirjaudu ulos?';
 
   @override
-  String get generic_logout_failed => 'Failed to log out';
+  String get generic_logout_failed => 'Uloskirjautuminen epäonnistui';
 
   @override
-  String get generic_margin => 'Margin';
+  String get generic_margin => 'Marginaali';
 
   @override
-  String get generic_max => 'Max';
+  String get generic_max => 'Maks';
 
   @override
-  String get generic_medium => 'Medium';
+  String get generic_medium => 'Keskikokoinen';
 
   @override
-  String get generic_message => 'Message';
+  String get generic_message => 'Viesti';
 
   @override
   String get generic_min => 'Min';
 
   @override
-  String get generic_no => 'No';
+  String get generic_no => 'Ei';
 
   @override
-  String get generic_not_found => 'Not found';
+  String get generic_not_found => 'Ei löytynyt';
 
   @override
   String get generic_ok => 'OK';
 
   @override
-  String get generic_preview_noun => 'Preview';
+  String get generic_preview_noun => 'Esikatselu';
 
   @override
-  String get generic_previous_action_in_progress => 'Previous action is still in progress';
+  String get generic_previous_action_in_progress => 'Edellinen toiminto on vielä kesken';
 
   @override
-  String get generic_profile_loading_failed => 'Failed to load profile';
+  String get generic_profile_loading_failed => 'Profiilin lataus epäonnistui';
 
   @override
-  String get generic_receive => 'Receive';
+  String get generic_receive => 'Vastaanota';
 
   @override
-  String get generic_refresh => 'Refresh';
+  String get generic_refresh => 'Päivitä';
 
   @override
-  String get generic_remind => 'Remind';
+  String get generic_remind => 'Muistuta';
 
   @override
-  String get generic_reply => 'Reply';
+  String get generic_reply => 'Vastaa';
 
   @override
-  String get generic_report_verb => 'Report';
+  String get generic_report_verb => 'Ilmoita';
 
   @override
-  String get generic_report_verb_question => 'Report?';
+  String get generic_report_verb_question => 'Ilmoita?';
 
   @override
-  String get generic_resend => 'Resend';
+  String get generic_resend => 'Lähetä uudelleen';
 
   @override
-  String get generic_reset_to_defaults => 'Reset to defaults';
+  String get generic_reset_to_defaults => 'Palauta oletukset';
 
   @override
-  String get generic_reset_to_defaults_dialog_title => 'Reset to defaults?';
+  String get generic_reset_to_defaults_dialog_title => 'Palauta oletukset?';
 
   @override
-  String get generic_restore => 'Restore';
+  String get generic_restore => 'Palauta';
 
   @override
-  String get generic_retry => 'Retry';
+  String get generic_retry => 'Yritä uudelleen';
 
   @override
-  String get generic_save => 'Save';
+  String get generic_save => 'Tallenna';
 
   @override
-  String get generic_save_confirmation_title => 'Save?';
+  String get generic_save_confirmation_title => 'Tallenna?';
 
   @override
-  String get generic_security_selfie => 'Security selfie';
+  String get generic_security_selfie => 'Moderointiselfie';
 
   @override
-  String get generic_setting_saved => 'Setting saved';
+  String get generic_setting_saved => 'Asetus tallennettu';
 
   @override
-  String get generic_show_only_selected => 'Show only selected';
+  String get generic_show_only_selected => 'Näytä vain valitut';
 
   @override
-  String get generic_size => 'Size';
+  String get generic_size => 'Koko';
 
   @override
-  String get generic_skip => 'Skip';
+  String get generic_skip => 'Ohita';
 
   @override
-  String get generic_small => 'Small';
+  String get generic_small => 'Pieni';
 
   @override
-  String get generic_state => 'State';
+  String get generic_state => 'Tila';
 
   @override
-  String get generic_take_photo => 'Take photo';
+  String get generic_take_photo => 'Ota kuva';
 
   @override
-  String get generic_text_field_age_hint_text => 'Enter an age between 18-99';
+  String get generic_text_field_age_hint_text => 'Syötä ikä väliltä 18-99';
 
   @override
-  String get generic_this_feature_is_disabled => 'This feature is disabled';
+  String get generic_this_feature_is_disabled => 'Tämä ominaisuus on pois käytöstä';
 
   @override
-  String get generic_time => 'Time';
+  String get generic_time => 'Aika';
 
   @override
-  String get generic_time_unit_hour => 'h';
+  String get generic_time_unit_hour => 't';
 
   @override
-  String get generic_time_unit_minute => 'm';
+  String get generic_time_unit_minute => 'min';
 
   @override
   String get generic_time_unit_second => 's';
 
   @override
-  String get generic_today => 'Today';
+  String get generic_today => 'Tänään';
 
   @override
-  String get generic_try_again => 'Try again';
+  String get generic_try_again => 'Yritä uudelleen';
 
   @override
   String generic_try_again_later_seconds(String p0) {
-    return 'Try again in $p0 seconds';
+    return 'Yritä uudelleen $p0 sekunnin kuluttua';
   }
 
   @override
-  String get generic_unlimited => 'Unlimited';
+  String get generic_unlimited => 'Rajoittamaton';
 
   @override
-  String get generic_unlink => 'Unlink';
+  String get generic_unlink => 'Poista linkitys';
 
   @override
-  String get generic_update => 'Update';
+  String get generic_update => 'Päivitä';
 
   @override
-  String get generic_warning => 'Warning';
+  String get generic_warning => 'Varoitus';
 
   @override
-  String get generic_weekday_fri => 'Fri';
+  String get generic_weekday_fri => 'pe';
 
   @override
-  String get generic_weekday_mon => 'Mon';
+  String get generic_weekday_mon => 'ma';
 
   @override
-  String get generic_weekday_sat => 'Sat';
+  String get generic_weekday_sat => 'la';
 
   @override
-  String get generic_weekday_sun => 'Sun';
+  String get generic_weekday_sun => 'su';
 
   @override
-  String get generic_weekday_thu => 'Thu';
+  String get generic_weekday_thu => 'to';
 
   @override
-  String get generic_weekday_tue => 'Tue';
+  String get generic_weekday_tue => 'ti';
 
   @override
-  String get generic_weekday_wed => 'Wed';
+  String get generic_weekday_wed => 'ke';
 
   @override
-  String get generic_yes => 'Yes';
+  String get generic_yes => 'Kyllä';
 
   @override
-  String get generic_yesterday => 'Yesterday';
+  String get generic_yesterday => 'Eilen';
 
   @override
-  String get generic_you => 'You';
+  String get generic_you => 'Sinä';
 
   @override
-  String get image_processing_ui_confirm_photo_dialog_title => 'Continue with this photo?';
+  String get image_processing_ui_confirm_photo_dialog_title => 'Jatketaanko tällä kuvalla?';
 
   @override
   String get image_processing_ui_nsfw_detected_dialog_title =>
-      'Content not permitted was detected in the uploaded photo. This might be a false positive.';
+      'Ladatussa kuvassa havaittiin kiellettyä sisältöä. Tämä saattaa olla väärä hälytys.';
 
   @override
   String get image_processing_ui_upload_content_processing_ongoing_dialog_title =>
-      'Server is still processing your previous upload';
+      'Palvelin käsittelee vielä edellistä lähetystäsi';
 
   @override
-  String get image_processing_ui_upload_failed_dialog_title => 'Upload failed';
+  String get image_processing_ui_upload_failed_dialog_title => 'Lähetys epäonnistui';
 
   @override
   String image_processing_ui_upload_in_processing_queue_dialog_description(String p0) {
-    return 'Waiting in queue. Position: $p0';
+    return 'Jonossa. Sija: $p0';
   }
 
   @override
-  String get image_processing_ui_upload_in_progress_dialog_description => 'Uploading photo…';
+  String get image_processing_ui_upload_in_progress_dialog_description => 'Lähetetään kuvaa…';
 
   @override
-  String get image_processing_ui_upload_processing_ongoing_description => 'Processing photo…';
+  String get image_processing_ui_upload_processing_ongoing_description => 'Käsitellään kuvaa…';
 
   @override
-  String get image_processing_ui_upload_timeout_dialog_title => 'Upload timed out';
+  String get image_processing_ui_upload_timeout_dialog_title => 'Lähetys aikakatkaistiin';
 
   @override
-  String get initial_setup_screen_age_confirmation_checkbox => 'I am at least 18 years old';
+  String get initial_setup_screen_age_confirmation_checkbox => 'Olen vähintään 18-vuotias';
 
   @override
-  String get initial_setup_screen_age_confirmation_title => 'Age confirmation';
+  String get initial_setup_screen_age_confirmation_title => 'Iän vahvistus';
 
   @override
-  String get initial_setup_screen_email_hint_text => 'Enter email address';
+  String get initial_setup_screen_email_hint_text => 'Syötä sähköpostiosoite';
 
   @override
-  String get initial_setup_screen_email_title => 'My email address is…';
+  String get initial_setup_screen_email_title => 'Sähköpostiosoitteeni on…';
 
   @override
   String get initial_setup_screen_first_chat_backup_backup_saved_successfully =>
-      'Backup saved successfully';
+      'Varmuuskopio tallennettu onnistuneesti';
 
   @override
   String get initial_setup_screen_first_chat_backup_description =>
-      'Chats are stored on this device only, so regular backups are recommended. Let\'s save your first backup.\n\nIf you use cloud storage, saving the backup there is recommended.';
+      'Keskustelut tallennetaan vain tälle laitteelle, joten säännölliset varmuuskopiot ovat suositeltavia. Tallennetaan ensimmäinen varmuuskopiosi.\n\nJos käytät pilvitallennustilaa, varmuuskopion tallentaminen sinne on suositeltavaa.';
 
   @override
-  String get initial_setup_screen_first_chat_backup_save_backup_button => 'Save chat backup';
+  String get initial_setup_screen_first_chat_backup_save_backup_button =>
+      'Tallenna keskusteluvarmuuskopio';
 
   @override
   String get initial_setup_screen_first_chat_backup_security_info =>
-      'The backup contains your encryption key. Keep it safe in case you lose your device, so you can read all message sent to you.';
+      'Varmuuskopio sisältää salausavaimesi. Pidä se tallessa laitteen katoamisen varalta, jotta voit lukea kaikki sinulle lähetetyt viestit.';
 
   @override
   String get initial_setup_screen_first_chat_backup_skip_warning =>
-      'Uninstalling the app will delete your chats and encryption key. Without the key, you will not be able to read messages sent to you.\n\nAre you sure you want to skip creating a backup?';
+      'Sovelluksen poistaminen poistaa keskustelusi ja salausavaimesi. Ilman avainta et voi lukea sinulle lähetettyjä viestejä.\n\nHaluatko varmasti ohittaa varmuuskopion luomisen?';
 
   @override
-  String get initial_setup_screen_first_chat_backup_title => 'First chat backup';
+  String get initial_setup_screen_first_chat_backup_title => 'Ensimmäinen keskusteluvarmuuskopio';
 
   @override
-  String get initial_setup_screen_gender_title => 'I am…';
+  String get initial_setup_screen_gender_title => 'Olen…';
 
   @override
   String get initial_setup_screen_location_help_dialog_text =>
-      'Tap or hold on the map to set your location.';
+      'Napauta tai paina kohtaa kartalla asettaaksesi sijaintisi.';
 
   @override
-  String get initial_setup_screen_location_title => 'My location is…';
+  String get initial_setup_screen_location_title => 'Sijaintini on…';
 
   @override
-  String get initial_setup_screen_profile_basic_info_profile_name_hint_text =>
-      'Enter your first name';
+  String get initial_setup_screen_profile_basic_info_profile_name_hint_text => 'Syötä etunimesi';
 
   @override
-  String get initial_setup_screen_profile_basic_info_profile_name_title => 'First name';
+  String get initial_setup_screen_profile_basic_info_profile_name_title => 'Etunimi';
 
   @override
-  String get initial_setup_screen_profile_basic_info_title => 'About me…';
+  String get initial_setup_screen_profile_basic_info_title => 'Tietoja minusta…';
 
   @override
   String get initial_setup_screen_profile_pictures_file_size_too_large_error =>
-      'Image is too large (maximum size is 10 MiB)';
+      'Kuva on liian suuri (enimmäiskoko on 10 MiB)';
 
   @override
   String get initial_setup_screen_profile_pictures_primary_image_face_not_detected =>
-      'No face detected. Please select a photo that clearly shows your face.';
+      'Kasvoja ei havaittu. Valitse kuva, jossa kasvosi näkyvät selkeästi.';
 
   @override
   String get initial_setup_screen_profile_pictures_primary_image_info_dialog_description =>
-      'At least one profile picture is required. Your first picture must show your face clearly, and its square crop will be shown in profile grids.';
+      'Vähintään yksi profiilikuva vaaditaan. Ensimmäisessä kuvassa täytyy näkyä kasvosi selkeästi, ja sen neliömäinen rajaus näytetään profiiliruudukoissa.';
 
   @override
-  String get initial_setup_screen_profile_pictures_select_picture_dialog_title => 'Choose photo…';
+  String get initial_setup_screen_profile_pictures_select_picture_dialog_title => 'Valitse kuva…';
 
   @override
   String get initial_setup_screen_profile_pictures_select_picture_from_gallery_title =>
-      'Choose from gallery';
+      'Valitse galleriasta';
 
   @override
   String get initial_setup_screen_profile_pictures_select_picture_security_selfie_title =>
-      'Use security selfie';
+      'Käytä moderointiselfietä';
 
   @override
   String get initial_setup_screen_profile_pictures_select_picture_take_new_picture_title =>
-      'Take photo';
+      'Ota kuva';
 
   @override
-  String get initial_setup_screen_profile_pictures_title => 'My profile pictures are…';
+  String get initial_setup_screen_profile_pictures_title => 'Profiilikuvani ovat…';
 
   @override
   String get initial_setup_screen_profile_pictures_unsupported_image_error =>
-      'Unsupported image format. Please select a JPEG or PNG image.';
+      'Ei-tuettu kuvamuoto. Valitse JPEG- tai PNG-kuva.';
 
   @override
-  String get initial_setup_screen_profile_privacy_settings_title => 'Profile privacy';
+  String get initial_setup_screen_profile_privacy_settings_title => 'Profiilin yksityisyys';
 
   @override
   String get initial_setup_screen_refresh_face_detected_values_action =>
-      'Refresh face detection status';
+      'Päivitä kasvojen tunnistuksen tila';
 
   @override
-  String get initial_setup_screen_search_settings_max_age_subtitle => '…maximum age…';
+  String get initial_setup_screen_search_settings_max_age_subtitle => '…enimmäisikä…';
 
   @override
-  String get initial_setup_screen_search_settings_min_age_subtitle => '…minimum age…';
+  String get initial_setup_screen_search_settings_min_age_subtitle => '…vähimmäisikä…';
 
   @override
-  String get initial_setup_screen_search_settings_title => 'I am looking for…';
+  String get initial_setup_screen_search_settings_title => 'Etsin…';
 
   @override
   String get initial_setup_screen_security_selfie_description =>
-      'Take a selfie with your front camera. This selfie is used to verify your profile pictures and is only visible to moderators unless you add it to your profile later.';
+      'Ota selfie etukamerallasi. Tätä selfietä käytetään profiilikuviesi vahvistamiseen ja se näkyy vain moderaattoreille, ellet lisää sitä profiiliisi myöhemmin.';
 
   @override
   String get initial_setup_screen_security_selfie_face_not_detected =>
-      'Face not detected. Please try again with clear lighting, or contact support for help.';
+      'Kasvoja ei havaittu. Yritä uudelleen selkeässä valaistuksessa tai ota yhteyttä tukeen.';
 
   @override
-  String get initial_setup_screen_security_selfie_title => 'My security selfie is…';
+  String get initial_setup_screen_security_selfie_title => 'Moderointiselfieni on…';
 
   @override
   String get initial_setup_screen_skip_dialog_description =>
-      'Skip profile setup only if you will have administrator rights on the service.';
+      'Ohita profiilin määritys vain, jos sinulla on ylläpitäjän oikeudet palveluun.';
 
   @override
-  String get initial_setup_screen_skip_dialog_title => 'Skip profile setup?';
+  String get initial_setup_screen_skip_dialog_title => 'Ohitetaanko profiilin määritys?';
 
   @override
-  String get likes_screen_like_loading_failed => 'Failed to load chat requests';
+  String get likes_screen_like_loading_failed => 'Keskustelupyyntöjen lataus epäonnistui';
 
   @override
-  String get likes_screen_no_received_likes_found => 'No received chat requests';
+  String get likes_screen_no_received_likes_found => 'Ei vastaanotettuja keskustelupyyntöjä';
 
   @override
   String get likes_screen_no_received_likes_found_description =>
-      'Spread the word about the app on social media';
+      'Kerro sovelluksesta sosiaalisessa mediassa';
 
   @override
-  String get likes_screen_refresh_action => 'Refresh';
+  String get likes_screen_refresh_action => 'Päivitä';
 
   @override
   String get likes_screen_title => 'Pyynnöt';
 
   @override
-  String get login_screen_app_attestation_app_integrity_error => 'App integrity check failed';
+  String get login_screen_app_attestation_app_integrity_error =>
+      'Sovelluksen eheystarkistus epäonnistui';
 
   @override
-  String get login_screen_app_attestation_device_integrity_error => 'Device integrity check failed';
+  String get login_screen_app_attestation_device_integrity_error =>
+      'Laitteen eheystarkistus epäonnistui';
 
   @override
   String get login_screen_app_attestation_failed =>
-      'App verification failed. Please try again later.';
+      'Sovelluksen vahvistus epäonnistui. Yritä myöhemmin uudelleen.';
 
   @override
   String get login_screen_connecting_websocket_failed =>
-      'Failed to connect to server. Please try again later.';
+      'Palvelimeen yhdistäminen epäonnistui. Yritä myöhemmin uudelleen.';
 
   @override
   String get login_screen_demo_account_dialog_description =>
-      'Login to demo account on the demo account server.';
+      'Kirjaudu demotilille, joka sijaitsee demotilipalvelimella.';
 
   @override
-  String get login_screen_demo_account_dialog_title => 'Demo account login';
+  String get login_screen_demo_account_dialog_title => 'Demotilille kirjautuminen';
 
   @override
-  String get login_screen_demo_account_login_failed => 'Login failed';
+  String get login_screen_demo_account_login_failed => 'Kirjautuminen epäonnistui';
 
   @override
-  String get login_screen_demo_account_login_session_expired => 'Demo account session expired';
+  String get login_screen_demo_account_login_session_expired => 'Demotilin istunto vanhentui';
 
   @override
-  String get login_screen_demo_account_password => 'Password';
+  String get login_screen_demo_account_password => 'Salasana';
 
   @override
-  String get login_screen_demo_account_username => 'Username';
+  String get login_screen_demo_account_username => 'Käyttäjätunnus';
 
   @override
-  String get login_screen_email_already_used =>
-      'Email address is already in use by another account';
+  String get login_screen_email_already_used => 'Sähköpostiosoite on jo toisen tilin käytössä';
 
   @override
   String get login_screen_email_login_info_dialog_text =>
-      'Signing in with an email address is intentionally limited to help keep the service free from bots and spam. Please prefer signing in with your usual method (such as Google or Apple) whenever possible.\n\nIf you do use your email address, connecting from your home\'s broadband internet rather than mobile data can help you avoid reaching per-IP limits.';
+      'Sähköpostiosoitteella kirjautumista on rajoitettu tarkoituksellisesti bottien ja roskapostin vähentämiseksi. Käytä mieluiten tavanomaista kirjautumistapaasi (kuten Google tai Apple) aina kun mahdollista.\n\nJos käytät sähköpostiosoitettasi, yhdistäminen kodin kiinteästä laajakaistasta mobiilidatan sijaan voi auttaa välttämään IP-osoitekohtaisten rajojen saavuttamista.';
 
   @override
-  String get login_screen_invalid_email_login_token => 'Invalid email login code';
+  String get login_screen_invalid_email_login_token => 'Virheellinen sähköpostikirjautumiskoodi';
 
   @override
   String get login_screen_ios_pwa_install_description =>
-      'To use this app on iOS, please add it to your home screen:';
+      'Käyttääksesi tätä sovellusta iOS:llä, lisää se Koti-valikkoon:';
 
   @override
-  String get login_screen_ios_pwa_install_step1 => '1. Tap \"Share\" button';
+  String get login_screen_ios_pwa_install_step1 => '1. Napauta \"Jaa\"-painiketta';
 
   @override
   String get login_screen_ios_pwa_install_step1_ios26 =>
-      '1. Tap \"Share\", or open three dots menu to find it';
+      '1. Napauta \"Jaa\" tai avaa kolmen pisteen valikko löytääksesi sen';
 
   @override
-  String get login_screen_ios_pwa_install_step2 => '2. Scroll down and tap \"Add to Home Screen\"';
+  String get login_screen_ios_pwa_install_step2 =>
+      '2. Vieritä alas ja napauta \"Lisää Koti-valikkoon\"';
 
   @override
   String get login_screen_ios_pwa_install_step2_ios26 =>
-      '2. Tap \"View More\" and \"Add to Home Screen\"';
+      '2. Napauta \"Katso lisää\" ja \"Lisää Koti-valikkoon\"';
 
   @override
-  String get login_screen_ios_pwa_install_step3 => '3. Tap \"Add\" in the top right corner';
+  String get login_screen_ios_pwa_install_step3 => '3. Napauta \"Lisää\" oikeassa yläkulmassa';
 
   @override
-  String get login_screen_ios_pwa_install_step4 => '4. Open the app from your home screen';
+  String get login_screen_ios_pwa_install_step4 => '4. Avaa sovellus Koti-valikosta';
 
   @override
-  String get login_screen_ios_pwa_install_text_instructions_button => 'Text instructions';
+  String get login_screen_ios_pwa_install_text_instructions_button => 'Tekstiohjeet';
 
   @override
-  String get login_screen_ios_pwa_install_video_instructions_button => 'Video instructions';
+  String get login_screen_ios_pwa_install_video_instructions_button => 'Video-ohjeet';
 
   @override
-  String get login_screen_login_all_platforms_disabled => 'Login is currently disabled';
+  String get login_screen_login_all_platforms_disabled =>
+      'Kirjautuminen on tällä hetkellä pois käytöstä';
 
   @override
   String get login_screen_login_api_request_failed =>
-      'Login request failed. Please try again later.';
+      'Kirjautumispyyntö epäonnistui. Yritä myöhemmin uudelleen.';
 
   @override
-  String get login_screen_login_note_text_and => 'and';
+  String get login_screen_login_note_text_and => 'ja';
 
   @override
-  String get login_screen_login_note_text_beginning => 'By signing in, you agree to our';
+  String get login_screen_login_note_text_beginning => 'Kirjautumalla sisään hyväksyt palvelumme';
 
   @override
-  String get login_screen_login_note_text_privacy_policy => 'Privacy Policy';
+  String get login_screen_login_note_text_privacy_policy => 'tietosuojaselosteen';
 
   @override
-  String get login_screen_login_note_text_tos => 'Terms of Service';
+  String get login_screen_login_note_text_tos => 'käyttöehdot';
 
   @override
   String login_screen_login_platform_disabled(String p0) {
-    return 'Login is currently disabled on this platform ($p0)';
+    return 'Kirjautuminen on tällä hetkellä pois käytöstä tällä alustalla ($p0)';
   }
 
   @override
   String get login_screen_registration_all_platforms_disabled =>
-      'New registrations are currently disabled';
+      'Uudet rekisteröitymiset ovat tällä hetkellä pois käytöstä';
 
   @override
   String login_screen_registration_platform_disabled(String p0) {
-    return 'New registrations are currently disabled on this platform ($p0)';
+    return 'Uudet rekisteröitymiset ovat tällä hetkellä pois käytöstä tällä alustalla ($p0)';
   }
 
   @override
   String get login_screen_shared_computer_warning =>
-      'Only sign in on personal devices. Using a shared or public computer compromises your privacy.';
+      'Kirjaudu vain henkilökohtaisilla laitteilla. Jaetun tai julkisen tietokoneen käyttäminen vaarantaa yksityisyytesi.';
 
   @override
-  String get login_screen_sign_in_with_email_action => 'Sign in with email';
+  String get login_screen_sign_in_with_email_action => 'Kirjaudu sähköpostilla';
 
   @override
-  String get login_screen_sign_in_with_email_unverified => 'Email address is not verified';
+  String get login_screen_sign_in_with_email_unverified => 'Sähköpostiosoitetta ei ole vahvistettu';
 
   @override
-  String get login_screen_sign_in_with_error => 'Sign in failed';
+  String get login_screen_sign_in_with_error => 'Kirjautuminen epäonnistui';
 
   @override
-  String get map_location_update_failed => 'Failed to update location';
+  String get map_location_update_failed => 'Sijainnin päivitys epäonnistui';
 
   @override
-  String get map_location_update_successful => 'Location updated';
+  String get map_location_update_successful => 'Sijainti päivitetty';
 
   @override
-  String get map_openstreetmap_data_attribution_link_text => 'OpenStreetMap contributors';
+  String get map_openstreetmap_data_attribution_link_text => 'OpenStreetMapin tekijät';
 
   @override
-  String get map_select_location_help_text => 'Tap or hold on the map to choose a location.';
+  String get map_select_location_help_text =>
+      'Napauta tai paina kohtaa kartalla asettaaksesi sijaintisi.';
 
   @override
-  String get map_tile_error => 'Failed to load map';
+  String get map_tile_error => 'Kartan lataaminen epäonnistui';
 
   @override
-  String get menu_screen_admin_offline_title => 'Automatic moderation is temporarily unavailable';
+  String get menu_screen_admin_offline_title =>
+      'Automaattinen moderointi on tilapäisesti poissa käytöstä';
 
   @override
-  String get menu_screen_help_center_title => 'Help center';
+  String get menu_screen_help_center_title => 'Ohjekeskus';
 
   @override
-  String get menu_screen_server_maintenance_title => 'Maintenance break';
+  String get menu_screen_server_maintenance_title => 'Huoltokatko';
 
   @override
-  String get menu_screen_title => 'Menu';
+  String get menu_screen_title => 'Valikko';
 
   @override
   String moderation_rejected_category(String p0) {
-    return 'Rejection category: $p0';
+    return 'Hylkäyskategoria: $p0';
   }
 
   @override
   String moderation_rejected_details(String p0) {
-    return 'Rejection details: $p0';
+    return 'Hylkäyksen tiedot: $p0';
   }
 
   @override
   String moderation_state(String p0) {
-    return 'Moderation state: $p0';
+    return 'Moderoinnin tila: $p0';
   }
 
   @override
-  String get moderation_state_accepted => 'Accepted';
+  String get moderation_state_accepted => 'Hyväksytty';
 
   @override
-  String get moderation_state_rejected_by_admin => 'Rejected by admin';
+  String get moderation_state_rejected_by_admin => 'Ylläpitäjä hylännyt';
 
   @override
-  String get moderation_state_rejected_by_admin_bot => 'Rejected by admin bot';
+  String get moderation_state_rejected_by_admin_bot => 'Ylläpitobotti hylännyt';
 
   @override
-  String get moderation_state_waiting_admin => 'Waiting admin';
+  String get moderation_state_waiting_admin => 'Odottaa ylläpitäjää';
 
   @override
-  String get moderation_state_waiting_admin_bot => 'Waiting admin bot';
+  String get moderation_state_waiting_admin_bot => 'Odottaa ylläpitobottia';
 
   @override
-  String get news_list_screen_create_new => 'Create new?';
+  String get news_list_screen_create_new => 'Luo uusi?';
 
   @override
-  String get news_list_screen_news_loading_failed => 'Failed to load news';
+  String get news_list_screen_news_loading_failed => 'Uutisten lataus epäonnistui';
 
   @override
-  String get news_list_screen_no_news_found => 'No news available';
+  String get news_list_screen_no_news_found => 'Ei uutisia saatavilla';
 
   @override
-  String get news_list_screen_not_published => 'Draft';
+  String get news_list_screen_not_published => 'Luonnos';
 
   @override
-  String get news_list_screen_title => 'News';
+  String get news_list_screen_title => 'Uutiset';
 
   @override
   String notification_automatic_profile_search_found_profiles_multiple(String p0) {
-    return '$p0 new or updated profiles found';
+    return '$p0 uutta tai päivitettyä profiilia löytyi';
   }
 
   @override
   String get notification_automatic_profile_search_found_profiles_single =>
-      'New or updated profile found';
+      'Uusi tai päivitetty profiili löytyi';
 
   @override
-  String get notification_category_automatic_profile_search => 'New and updated profiles';
+  String get notification_category_automatic_profile_search => 'Uudet ja päivitetyt profiilit';
 
   @override
-  String get notification_category_group_chat => 'Chat';
+  String get notification_category_group_chat => 'Keskustelu';
 
   @override
-  String get notification_category_group_content_moderation => 'Content moderation';
+  String get notification_category_group_content_moderation => 'Sisällön moderointi';
 
   @override
-  String get notification_category_group_general => 'General';
+  String get notification_category_group_general => 'Yleinen';
 
   @override
-  String get notification_category_likes => 'Requests';
+  String get notification_category_likes => 'Pyynnöt';
 
   @override
-  String get notification_category_media_content_moderation_completed => 'Images';
+  String get notification_category_media_content_moderation_completed => 'Kuvat';
 
   @override
-  String get notification_category_messages => 'Messages';
+  String get notification_category_messages => 'Viestit';
 
   @override
-  String get notification_category_news_item_available => 'News';
+  String get notification_category_news_item_available => 'Uutiset';
 
   @override
-  String get notification_category_profile_string_moderation_completed => 'Profile name and text';
+  String get notification_category_profile_string_moderation_completed =>
+      'Profiilin nimi ja teksti';
 
   @override
-  String get notification_like_received_multiple => 'Chat requests received';
+  String get notification_like_received_multiple => 'Keskustelupyyntöjä vastaanotettu';
 
   @override
-  String get notification_like_received_single => 'Chat request received';
+  String get notification_like_received_single => 'Keskustelupyyntö vastaanotettu';
 
   @override
-  String get notification_media_content_accepted => 'Image accepted';
+  String get notification_media_content_accepted => 'Kuva hyväksytty';
 
   @override
-  String get notification_media_content_deleted => 'Image deleted';
+  String get notification_media_content_deleted => 'Kuva poistettu';
 
   @override
   String get notification_media_content_deleted_description =>
-      'Content not permitted was detected in your image. This might be a false positive.';
+      'Kuvassasi havaittiin kiellettyä sisältöä. Tämä saattaa olla väärä hälytys.';
 
   @override
-  String get notification_media_content_rejected => 'Image rejected';
+  String get notification_media_content_rejected => 'Kuva hylätty';
 
   @override
   String notification_message_received_multiple(String p0) {
-    return '$p0 sent messages';
+    return '$p0 lähetti viestejä';
   }
 
   @override
-  String get notification_message_received_multiple_generic => 'New messages received';
+  String get notification_message_received_multiple_generic => 'Uusia viestejä vastaanotettu';
 
   @override
   String notification_message_received_single(String p0) {
-    return '$p0 sent a message';
+    return '$p0 lähetti viestin';
   }
 
   @override
-  String get notification_message_received_single_generic => 'New message received';
+  String get notification_message_received_single_generic => 'Uusi viesti vastaanotettu';
 
   @override
-  String get notification_news_item_available => 'News available';
+  String get notification_news_item_available => 'Uutinen saatavilla';
 
   @override
   String get notification_permission_dialog_description =>
-      'Allow notifications to get alerts for new chat requests and messages for example.';
+      'Salli ilmoitukset saadaksesi hälytyksiä esimerkiksi uusista keskustelupyynnöistä ja viesteistä.';
 
   @override
-  String get notification_permission_dialog_title => 'Allow notifications?';
+  String get notification_permission_dialog_title => 'Salli ilmoitukset?';
 
   @override
-  String get notification_profile_name_accepted => 'Profile name accepted';
+  String get notification_profile_name_accepted => 'Profiilinimi hyväksytty';
 
   @override
-  String get notification_profile_name_rejected => 'Profile name rejected';
+  String get notification_profile_name_rejected => 'Profiilinimi hylätty';
 
   @override
-  String get notification_profile_text_accepted => 'Profile text accepted';
+  String get notification_profile_text_accepted => 'Profiiliteksti hyväksytty';
 
   @override
-  String get notification_profile_text_rejected => 'Profile text rejected';
+  String get notification_profile_text_rejected => 'Profiiliteksti hylätty';
 
   @override
   String get notification_settings_screen_ios_pwa_permission_denied =>
-      'Permission denied. Try again or enable notifications in iOS settings.';
+      'Lupa evätty. Yritä uudelleen tai salli ilmoitukset iOS-asetuksista.';
 
   @override
   String
   get notification_settings_screen_notification_category_disabled_from_system_settings_text =>
-      'Disabled in system settings';
+      'Pois käytöstä järjestelmäasetuksista';
 
   @override
   String get notification_settings_screen_notifications_disabled_from_system_settings_text =>
-      'Notifications are disabled in system settings';
+      'Ilmoitukset on poistettu käytöstä järjestelmäasetuksista';
 
   @override
   String get notification_settings_screen_open_system_notification_settings =>
-      'System notification settings';
+      'Järjestelmän ilmoitusasetukset';
 
   @override
-  String get notification_settings_screen_title => 'Notifications';
+  String get notification_settings_screen_title => 'Ilmoitukset';
 
   @override
   String get notification_settings_screen_web_permission_denied =>
-      'Permission denied. Try again or enable notifications in browser settings.';
+      'Lupa evätty. Yritä uudelleen tai salli ilmoitukset selaimen asetuksista.';
 
   @override
   String get notification_settings_screen_web_permission_not_enabled =>
-      'Notifications are not enabled';
+      'Ilmoitukset eivät ole käytössä';
 
   @override
-  String get notification_settings_screen_web_request_permission => 'Enable notifications';
+  String get notification_settings_screen_web_request_permission => 'Ota ilmoitukset käyttöön';
 
   @override
-  String get privacy_settings_last_seen_time => 'Last seen time';
+  String get privacy_settings_last_seen_time => 'Nähty viimeksi -aika';
 
   @override
   String get privacy_settings_last_seen_time_disabled_description =>
-      'You won\'t see when others were last online';
+      'Et näe, milloin toiset olivat viimeksi paikalla';
 
   @override
   String get privacy_settings_last_seen_time_enabled_description =>
-      'Show when you were last online';
+      'Näytä, milloin olit viimeksi paikalla';
 
   @override
-  String get privacy_settings_message_state_seen => 'Message read receipts';
+  String get privacy_settings_message_state_seen => 'Viestien lukukuittaukset';
 
   @override
-  String get privacy_settings_message_state_seen_disabled_description =>
-      'You won\'t see read receipts';
+  String get privacy_settings_message_state_seen_disabled_description => 'Et näe lukukuittauksia';
 
   @override
   String get privacy_settings_message_state_seen_enabled_description =>
-      'Let others see when you\'ve read their messages';
+      'Anna muiden nähdä, kun olet lukenut heidän viestinsä';
 
   @override
-  String get privacy_settings_online_status => 'Online status';
+  String get privacy_settings_online_status => 'Paikallaolotila';
 
   @override
   String get privacy_settings_online_status_disabled_description =>
-      'You won\'t see others\' online status';
+      'Et näe muiden paikallaolotilaa';
 
   @override
-  String get privacy_settings_online_status_enabled_description => 'Show when you are online';
+  String get privacy_settings_online_status_enabled_description => 'Näytä, milloin olet paikalla';
 
   @override
-  String get privacy_settings_screen_chat_category => 'Chat';
+  String get privacy_settings_screen_chat_category => 'Keskustelu';
 
   @override
-  String get privacy_settings_screen_profile_category => 'Profile';
+  String get privacy_settings_screen_profile_category => 'Profiili';
 
   @override
-  String get privacy_settings_screen_title => 'Privacy';
+  String get privacy_settings_screen_title => 'Yksityisyys';
 
   @override
-  String get privacy_settings_typing_indicator => 'Typing indicator';
+  String get privacy_settings_typing_indicator => 'Kirjoitusilmaisin';
 
   @override
   String get privacy_settings_typing_indicator_disabled_description =>
-      'You won\'t see when others are typing';
+      'Et näe, kun toiset kirjoittavat';
 
   @override
   String get privacy_settings_typing_indicator_enabled_description =>
-      'Let others see when you\'re typing';
+      'Anna muiden nähdä, kun kirjoitat';
 
   @override
-  String get profile_filters_screen_disable_filters_action => 'Reset filters';
+  String get profile_filters_screen_disable_filters_action => 'Nollaa suodattimet';
 
   @override
-  String get profile_filters_screen_disable_filters_action_dialog_title => 'Reset filters?';
+  String get profile_filters_screen_disable_filters_action_dialog_title => 'Nollaa suodattimet?';
 
   @override
-  String get profile_filters_screen_distance_filter => 'Distance';
+  String get profile_filters_screen_distance_filter => 'Etäisyys';
 
   @override
   String get profile_filters_screen_distance_filter_unit => 'km';
 
   @override
-  String get profile_filters_screen_max_age_filter => 'Max age';
+  String get profile_filters_screen_max_age_filter => 'Maksimi-ikä';
 
   @override
-  String get profile_filters_screen_min_age_filter => 'Min age';
+  String get profile_filters_screen_min_age_filter => 'Minimi-ikä';
 
   @override
-  String get profile_filters_screen_profile_created_filter => 'Profile created';
+  String get profile_filters_screen_profile_created_filter => 'Profiili luotu';
 
   @override
-  String get profile_filters_screen_profile_edited_filter => 'Profile edited';
+  String get profile_filters_screen_profile_edited_filter => 'Profiili muokattu';
 
   @override
-  String get profile_filters_screen_profile_last_seen_time_filter => 'Last seen';
+  String get profile_filters_screen_profile_last_seen_time_filter => 'Viimeksi nähty';
 
   @override
-  String get profile_filters_screen_profile_last_seen_time_filter_all => 'Anytime';
+  String get profile_filters_screen_profile_last_seen_time_filter_all => 'Milloin vain';
 
   @override
   String profile_filters_screen_profile_last_seen_time_filter_day(String p0) {
-    return '$p0 day';
+    return '$p0 päivä';
   }
 
   @override
   String profile_filters_screen_profile_last_seen_time_filter_days(String p0) {
-    return '$p0 days';
+    return '$p0 päivää';
   }
 
   @override
   String get profile_filters_screen_profile_last_seen_time_filter_disabled_from_privacy =>
-      'Disabled from privacy settings';
+      'Pois käytöstä yksityisyysasetuksista';
 
   @override
-  String get profile_filters_screen_profile_last_seen_time_filter_online => 'Online';
+  String get profile_filters_screen_profile_last_seen_time_filter_online => 'Paikalla';
 
   @override
-  String get profile_filters_screen_profile_text_filter => 'Profile text length';
+  String get profile_filters_screen_profile_text_filter => 'Profiilitekstin pituus';
 
   @override
-  String get profile_filters_screen_profile_text_filter_unit => 'characters';
+  String get profile_filters_screen_profile_text_filter_unit => 'merkkiä';
 
   @override
   String get profile_filters_screen_profile_verification_requires_verified_account =>
-      'Using this filter requires a verified account';
+      'Tämän suodattimen käyttö vaatii vahvistetun tilin';
 
   @override
-  String get profile_filters_screen_profile_verification_status_filter => 'Profile verification';
+  String get profile_filters_screen_profile_verification_status_filter => 'Profiilin vahvistus';
 
   @override
-  String get profile_filters_screen_profile_verification_status_filter_face_verified =>
-      'Face picture';
+  String get profile_filters_screen_profile_verification_status_filter_face_verified => 'Kasvokuva';
 
   @override
   String get profile_filters_screen_profile_verification_status_filter_profile_age_range_verified =>
-      'Age (verified once)';
+      'Ikä (vahvistettu kerran)';
 
   @override
   String get profile_filters_screen_profile_verification_status_filter_profile_name_verified =>
-      'Name';
+      'Nimi';
 
   @override
-  String get profile_filters_screen_title => 'Profile filters';
+  String get profile_filters_screen_title => 'Profiilisuodattimet';
 
   @override
-  String get profile_filters_screen_unlimited_likes_filter => 'Up for a date today';
+  String get profile_filters_screen_unlimited_likes_filter => 'Treffiseuraa tälle päivälle';
 
   @override
   String profile_filters_screen_unsigned_integer_filter_max_value(String p0) {
-    return 'Max $p0';
+    return 'Enintään $p0';
   }
 
   @override
   String profile_filters_screen_unsigned_integer_filter_max_value_with_unit(String p0, String p1) {
-    return 'Max $p0 $p1';
+    return 'Enintään $p0 $p1';
   }
 
   @override
@@ -1772,560 +1783,570 @@ class AppLocalizationsFi extends AppLocalizations {
 
   @override
   String profile_filters_screen_unsigned_integer_filter_min_value(String p0) {
-    return 'Min $p0';
+    return 'Vähintään $p0';
   }
 
   @override
   String profile_filters_screen_unsigned_integer_filter_min_value_with_unit(String p0, String p1) {
-    return 'Min $p0 $p1';
+    return 'Vähintään $p0 $p1';
   }
 
   @override
-  String get profile_filters_screen_updating_filters_failed => 'Failed to update filters';
+  String get profile_filters_screen_updating_filters_failed => 'Suodattimien päivitys epäonnistui';
 
   @override
-  String get profile_grid_screen_account_verification_banner_button => 'Verify now';
+  String get profile_grid_screen_account_verification_banner_button => 'Vahvista nyt';
 
   @override
-  String get profile_grid_screen_account_verification_banner_text => 'Your account is unverified';
+  String get profile_grid_screen_account_verification_banner_text => 'Tiliäsi ei ole vahvistettu';
 
   @override
   String get profile_grid_screen_account_verification_banner_text_incomplete =>
-      'Account verification incomplete';
+      'Tilin vahvistus on keskeneräinen';
 
   @override
   String profile_grid_screen_daily_likes_dialog_text(String p0, String p1) {
-    return 'Daily chat requests left: $p0\nReset time: $p1';
+    return 'Päivittäisiä keskustelupyyntöjä jäljellä: $p0\nNollaantumisaika: $p1';
   }
 
   @override
   String get profile_grid_screen_daily_likes_dialog_unlimited_likes_text =>
-      'Sending chat requests to those who are up for a date today does not decrease daily chat requests.';
+      'Keskustelupyyntöjen lähettäminen treffiseuraa tälle päivälle etsiville ei vähennä päivittäisiä keskustelupyyntöjä.';
 
   @override
   String get profile_grid_screen_email_not_verified =>
-      'Please verify your email address. A verification link has been sent to your email. If you don\'t see it, check your spam folder.';
+      'Vahvista sähköpostiosoitteesi. Vahvistuslinkki on lähetetty sähköpostiisi. Jos et löydä sitä, tarkista roskapostikansio.';
 
   @override
-  String get profile_grid_screen_email_not_verified_button => 'Account settings';
+  String get profile_grid_screen_email_not_verified_button => 'Tilin asetukset';
 
   @override
   String get profile_grid_screen_filtering_favorite_profiles_is_not_supported =>
-      'Filtering favorites is not supported';
+      'Suosikkien suodattamista ei tueta';
 
   @override
   String get profile_grid_screen_no_favorite_profiles_found_description =>
-      'Star a profile to save it here.';
+      'Merkitse profiili tähdellä tallentaaksesi sen tänne.';
 
   @override
-  String get profile_grid_screen_no_favorite_profiles_found_title => 'No favorites yet';
+  String get profile_grid_screen_no_favorite_profiles_found_title => 'Ei vielä suosikkeja';
 
   @override
   String get profile_grid_screen_no_profiles_found_description_filters_disabled =>
-      'Spread the word about the app on social media';
+      'Kerro sovelluksesta sosiaalisessa mediassa';
 
   @override
   String get profile_grid_screen_no_profiles_found_description_filters_enabled =>
-      'Try adjusting or clearing your filters';
+      'Kokeile muokata tai nollata suodattimia';
 
   @override
-  String get profile_grid_screen_no_profiles_found_title => 'No profiles found';
+  String get profile_grid_screen_no_profiles_found_title => 'Profiileja ei löytynyt';
 
   @override
   String get profile_grid_screen_primary_profile_content_does_not_exist =>
-      'First profile picture missing';
+      'Ensimmäinen profiilikuva puuttuu';
 
   @override
   String get profile_grid_screen_primary_profile_content_face_not_detected =>
-      'Face not detected in first profile picture';
+      'Kasvoja ei havaittu ensimmäisessä profiilikuvassa';
 
   @override
   String get profile_grid_screen_primary_profile_content_is_in_moderation =>
-      'You will be able to browse and be seen once your first profile picture is approved';
+      'Voit selata ja näkyä muille, kun ensimmäinen profiilikuvasi on hyväksytty';
 
   @override
   String get profile_grid_screen_primary_profile_content_is_not_accepted =>
-      'First profile picture not approved';
+      'Ensimmäistä profiilikuvaa ei ole hyväksytty';
 
   @override
-  String get profile_grid_screen_profile_filter_settings_update_ongoing => 'Updating filters…';
+  String get profile_grid_screen_profile_filter_settings_update_ongoing =>
+      'Päivitetään suodattimia…';
 
   @override
   String get profile_grid_screen_profile_is_private_info =>
-      'To browse profiles, make your profile public in Settings.';
+      'Selataksesi profiileja, aseta profiilisi julkiseksi Asetuksista.';
 
   @override
-  String get profile_grid_screen_security_content_does_not_exist => 'Security selfie missing';
+  String get profile_grid_screen_security_content_does_not_exist => 'Moderointiselfie puuttuu';
 
   @override
   String get profile_grid_screen_security_content_face_not_detected =>
-      'Face not detected in security selfie';
+      'Kasvoja ei havaittu moderointiselfiessä';
 
   @override
-  String get profile_grid_screen_security_content_is_not_accepted => 'Security selfie not approved';
+  String get profile_grid_screen_security_content_is_not_accepted =>
+      'Moderointiselfietä ei ole hyväksytty';
 
   @override
   String profile_grid_screen_selected_age_range(String p0) {
-    return 'Selected age range: $p0';
+    return 'Valittu ikähaarukka: $p0';
   }
 
   @override
-  String get profile_grid_screen_show_all_profiles_action => 'Show all profiles';
+  String get profile_grid_screen_show_all_profiles_action => 'Näytä kaikki profiilit';
 
   @override
-  String get profile_grid_screen_show_favorite_profiles_action => 'Show favorites';
+  String get profile_grid_screen_show_favorite_profiles_action => 'Näytä suosikit';
 
   @override
-  String get profile_grid_screen_start_initial_setup_button => 'Set up profile';
+  String get profile_grid_screen_start_initial_setup_button => 'Määritä profiili';
 
   @override
-  String get profile_grid_screen_title => 'Profiles';
+  String get profile_grid_screen_title => 'Profiilit';
 
   @override
-  String get profile_grid_settings_screen_all_grids_title => 'All profile grids';
+  String get profile_grid_settings_screen_all_grids_title => 'Kaikki profiiliruudukot';
 
   @override
-  String get profile_grid_settings_screen_image_quality_high => 'High';
+  String get profile_grid_settings_screen_image_quality_high => 'Korkea';
 
   @override
-  String get profile_grid_settings_screen_image_quality_low => 'Low';
+  String get profile_grid_settings_screen_image_quality_low => 'Matala';
 
   @override
-  String get profile_grid_settings_screen_image_quality_lower => 'Lower';
+  String get profile_grid_settings_screen_image_quality_lower => 'Matalampi';
 
   @override
-  String get profile_grid_settings_screen_image_quality_medium => 'Medium';
+  String get profile_grid_settings_screen_image_quality_medium => 'Keskitaso';
 
   @override
-  String get profile_grid_settings_screen_image_quality_very_low => 'Very low';
+  String get profile_grid_settings_screen_image_quality_very_low => 'Erittäin matala';
 
   @override
-  String get profile_grid_settings_screen_images_title => 'Images';
+  String get profile_grid_settings_screen_images_title => 'Kuvat';
 
   @override
-  String get profile_grid_settings_screen_preferred_image_quality => 'Preferred image quality';
+  String get profile_grid_settings_screen_preferred_image_quality => 'Ensisijainen kuvanlaatu';
 
   @override
-  String get profile_grid_settings_screen_profiles_screen => 'Profiles screen';
+  String get profile_grid_settings_screen_profiles_screen => 'Profiilit-näkymä';
 
   @override
-  String get profile_grid_settings_screen_random_profile_order => 'Random profile order';
+  String get profile_grid_settings_screen_random_profile_order => 'Satunnainen profiilijärjestys';
 
   @override
   String get profile_grid_settings_screen_random_profile_order_description_disabled =>
-      'Start from your location';
+      'Aloita sijainnistasi';
 
   @override
   String get profile_grid_settings_screen_random_profile_order_description_enabled =>
-      'Start from random location';
+      'Aloita satunnaisesta sijainnista';
 
   @override
-  String get profile_grid_settings_screen_title => 'Profile grid';
+  String get profile_grid_settings_screen_title => 'Profiiliruudukko';
 
   @override
-  String get profile_image_error_image_not_accepted => 'Profile picture has not been approved';
+  String get profile_image_error_image_not_accepted => 'Profiilikuvaa ei ole hyväksytty';
 
   @override
-  String get profile_image_error_no_image => 'No profile image';
+  String get profile_image_error_no_image => 'Ei profiilikuvaa';
 
   @override
-  String get profile_image_error_no_primary_image => 'Primary profile picture missing';
+  String get profile_image_error_no_primary_image => 'Ensisijainen profiilikuva puuttuu';
 
   @override
-  String get profile_location_screen_title => 'Location';
+  String get profile_location_screen_title => 'Sijainti';
 
   @override
-  String get profile_statistics_history_screen_title => 'Profile statistics history';
+  String get profile_statistics_history_screen_title => 'Profiilitilastojen historia';
 
   @override
-  String get receive_chat_backup_import_success => 'Backup imported successfully';
+  String get receive_chat_backup_import_success => 'Varmuuskopio tuotu onnistuneesti';
 
   @override
-  String get receive_chat_backup_importing => 'Importing backup…';
+  String get receive_chat_backup_importing => 'Tuodaan varmuuskopiota…';
 
   @override
-  String get receive_chat_backup_pairing_code_instruction => 'On the other device:';
+  String get receive_chat_backup_pairing_code_instruction => 'Toisella laitteella:';
 
   @override
   String receive_chat_backup_pairing_code_step1(String p0) {
-    return '1. Open $p0';
+    return '1. Avaa $p0';
   }
 
   @override
   String get receive_chat_backup_pairing_code_step2 =>
-      '2. Log out from Settings if the login screen is not visible';
+      '2. Kirjaudu ulos Asetuksista, jos kirjautumisnäkymä ei ole näkyvissä';
 
   @override
-  String get receive_chat_backup_pairing_code_step3 => '3. Tap the menu in the top right corner';
+  String get receive_chat_backup_pairing_code_step3 => '3. Napauta valikkoa oikeassa yläkulmassa';
 
   @override
-  String get receive_chat_backup_pairing_code_step4 => '4. Select \"Send chat backup\"';
+  String get receive_chat_backup_pairing_code_step4 => '4. Valitse Lähetä keskusteluvarmuuskopio';
 
   @override
-  String get receive_chat_backup_pairing_code_step5 => '5. Scan this QR code to start transfer';
+  String get receive_chat_backup_pairing_code_step5 =>
+      '5. Skannaa tämä QR-koodi aloittaaksesi siirron';
 
   @override
-  String get receive_chat_backup_screen_title => 'Receive chat backup';
+  String get receive_chat_backup_screen_title => 'Vastaanota keskusteluvarmuuskopio';
 
   @override
-  String get receive_chat_backup_show_qr_code => 'Show QR code';
+  String get receive_chat_backup_show_qr_code => 'Näytä QR-koodi';
 
   @override
-  String get receive_chat_backup_show_text_code => 'Show text code';
+  String get receive_chat_backup_show_text_code => 'Näytä tekstikoodi';
 
   @override
-  String get receive_chat_backup_transferring => 'Receiving backup…';
+  String get receive_chat_backup_transferring => 'Vastaanotetaan varmuuskopiota…';
 
   @override
-  String get receive_chat_backup_waiting_for_source => 'Waiting for other device…';
+  String get receive_chat_backup_waiting_for_source => 'Odotetaan toista laitetta…';
 
   @override
   String report_chat_message_screen_selection_status_count(String p0, String p1) {
-    return '$p0/$p1 messages selected';
+    return '$p0/$p1 viestiä valittu';
   }
 
   @override
-  String get report_chat_message_screen_selection_status_none => 'Select up to 10 messages';
+  String get report_chat_message_screen_selection_status_none => 'Valitse enintään 10 viestiä';
 
   @override
   String get report_chat_message_screen_server_signed_message_not_found =>
-      'Server-signed message not found';
+      'Palvelimen allekirjoittamaa viestiä ei löytynyt';
 
   @override
   String get report_chat_message_screen_symmetric_message_encryption_key_not_found =>
-      'Symmetric message encryption key not found';
+      'Symmetristä viestinsalausavainta ei löytynyt';
 
   @override
-  String get report_profile_image_screen_confirm_dialog_title => 'Report profile image?';
+  String get report_profile_image_screen_confirm_dialog_title => 'Ilmoita profiilikuva?';
 
   @override
   String report_profile_image_screen_image_title(String p0) {
-    return 'Profile image $p0';
+    return 'Profiilikuva $p0';
   }
 
   @override
   String get report_profile_image_screen_profile_image_changed_error =>
-      'Report failed: profile image has changed';
+      'Ilmoitus epäonnistui: profiilikuva on muuttunut';
 
   @override
-  String get report_screen_chat_message_action => 'Chat message';
+  String get report_screen_chat_message_action => 'Chat-viesti';
 
   @override
   String report_screen_custom_report_boolean_dialog_description(String p0) {
-    return 'Report user for \"$p0\"?';
+    return 'Ilmoita käyttäjästä syyllä $p0?';
   }
 
   @override
   String get report_screen_false_reports_warning =>
-      'Submitting false reports may result in account suspension';
+      'Väärien ilmoitusten tekeminen voi johtaa tilin porttikieltoon';
 
   @override
-  String get report_screen_profile_image_action => 'Profile image';
+  String get report_screen_profile_image_action => 'Profiilikuva';
 
   @override
-  String get report_screen_profile_name_action => 'Profile name';
+  String get report_screen_profile_name_action => 'Profiilinimi';
 
   @override
-  String get report_screen_profile_name_changed_error => 'Report failed: profile name has changed';
+  String get report_screen_profile_name_changed_error =>
+      'Ilmoitus epäonnistui: profiilinimi on muuttunut';
 
   @override
-  String get report_screen_profile_name_dialog_title => 'Report profile name?';
+  String get report_screen_profile_name_dialog_title => 'Ilmoita profiilinimi?';
 
   @override
-  String get report_screen_profile_text_action => 'Profile text';
+  String get report_screen_profile_text_action => 'Profiiliteksti';
 
   @override
-  String get report_screen_profile_text_changed_error => 'Report failed: profile text has changed';
+  String get report_screen_profile_text_changed_error =>
+      'Ilmoitus epäonnistui: profiiliteksti on muuttunut';
 
   @override
-  String get report_screen_profile_text_dialog_title => 'Report profile text?';
+  String get report_screen_profile_text_dialog_title => 'Ilmoita profiiliteksti?';
 
   @override
-  String get report_screen_snackbar_report_successful => 'Report submitted';
+  String get report_screen_snackbar_report_successful => 'Ilmoitus lähetetty';
 
   @override
   String get report_screen_snackbar_too_many_reports_error =>
-      'Too many reports submitted. Please try again later.';
+      'Liian monta ilmoitusta lähetetty. Yritä myöhemmin uudelleen.';
 
   @override
-  String get scan_pairing_code_instruction => 'Point camera at QR code';
+  String get scan_pairing_code_instruction => 'Osoita kamera QR-koodiin';
 
   @override
-  String get scan_pairing_code_screen_title => 'Scan QR code';
+  String get scan_pairing_code_screen_title => 'Skannaa QR-koodi';
 
   @override
-  String get search_settings_screen_automatic_search => 'New and updated profiles';
+  String get search_settings_screen_automatic_search => 'Uudet ja päivitetyt profiilit';
 
   @override
-  String get search_settings_screen_change_gender_filter_action_tile => 'Gender filter';
+  String get search_settings_screen_change_gender_filter_action_tile => 'Sukupuolisuodatin';
 
   @override
-  String get search_settings_screen_change_my_gender_action_title => 'Change my profile\'s gender';
+  String get search_settings_screen_change_my_gender_action_title => 'Muuta profiilini sukupuoli';
 
   @override
-  String get search_settings_screen_distance => 'Use max distance filter';
+  String get search_settings_screen_distance => 'Käytä maksimietäisyyssuodatinta';
 
   @override
-  String get search_settings_screen_filters => 'Use multiple-choice question filters';
+  String get search_settings_screen_filters => 'Käytä monivalintakysymyssuodattimia';
 
   @override
   String get search_settings_screen_gender_filter_is_not_selected =>
-      'Gender filter is not selected';
+      'Sukupuolisuodatinta ei ole valittu';
 
   @override
-  String get search_settings_screen_gender_is_not_selected => 'Your gender is not set';
+  String get search_settings_screen_gender_is_not_selected => 'Sukupuoltasi ei ole asetettu';
 
   @override
-  String get search_settings_screen_new_profiles => 'Hide updated profiles';
+  String get search_settings_screen_new_profiles => 'Piilota päivitetyt profiilit';
 
   @override
   String get search_settings_screen_search_settings_update_failed =>
-      'Failed to update search settings';
+      'Hakuasetusten päivitys epäonnistui';
 
   @override
-  String get search_settings_screen_title => 'Profile search';
+  String get search_settings_screen_title => 'Profiilihaku';
 
   @override
-  String get search_settings_screen_weekdays => 'Search weekdays';
+  String get search_settings_screen_weekdays => 'Hakupäivät';
 
   @override
   String select_content_screen_count(String p0, String p1) {
-    return 'Images $p0/$p1';
+    return 'Kuvia $p0/$p1';
   }
 
   @override
-  String get select_content_screen_face_detected => 'Face detected';
+  String get select_content_screen_face_detected => 'Kasvot havaittu';
 
   @override
-  String get select_content_screen_title => 'Select image';
+  String get select_content_screen_title => 'Valitse kuva';
 
   @override
-  String get select_match_screen_title => 'Accepted chat requests';
+  String get select_match_screen_title => 'Hyväksytyt keskustelupyynnöt';
 
   @override
-  String get send_chat_backup_creating_backup => 'Creating backup…';
+  String get send_chat_backup_creating_backup => 'Luodaan varmuuskopiota…';
 
   @override
-  String get send_chat_backup_idle => 'Ready to send backup';
+  String get send_chat_backup_idle => 'Valmis lähettämään varmuuskopio';
 
   @override
-  String get send_chat_backup_pairing_code_hint => 'Enter pairing code from receiving device';
+  String get send_chat_backup_pairing_code_hint => 'Syötä parituskoodi vastaanottavasta laitteesta';
 
   @override
-  String get send_chat_backup_scan_qr_button => 'Scan QR code';
+  String get send_chat_backup_scan_qr_button => 'Skannaa QR-koodi';
 
   @override
-  String get send_chat_backup_screen_title => 'Send chat backup';
+  String get send_chat_backup_screen_title => 'Lähetä keskusteluvarmuuskopio';
 
   @override
-  String get send_chat_backup_send_another_button => 'Send another backup';
+  String get send_chat_backup_send_another_button => 'Lähetä toinen varmuuskopio';
 
   @override
-  String get send_chat_backup_start_button => 'Start transfer';
+  String get send_chat_backup_start_button => 'Aloita siirto';
 
   @override
-  String get send_chat_backup_success => 'Backup sent successfully';
+  String get send_chat_backup_success => 'Varmuuskopio lähetetty onnistuneesti';
 
   @override
-  String get send_chat_backup_transferring => 'Sending backup…';
+  String get send_chat_backup_transferring => 'Lähetetään varmuuskopiota…';
 
   @override
-  String get send_chat_backup_use_text_code_button => 'Use text code';
+  String get send_chat_backup_use_text_code_button => 'Käytä tekstikoodia';
 
   @override
-  String get server_connection_indicator_connection_failed => 'Connection failed';
+  String get server_connection_indicator_connection_failed => 'Yhteys epäonnistui';
 
   @override
   String get server_connection_indicator_connection_failed_dialog_text =>
-      'Unable to connect to the server. Please check your internet connection and try again later. If the problem persists, the server may be temporarily unavailable.';
+      'Yhteyttä palvelimeen ei saatu. Tarkista internetyhteytesi ja yritä myöhemmin uudelleen. Jos ongelma jatkuu, palvelin saattaa olla tilapäisesti poissa käytöstä.';
 
   @override
   String server_connection_indicator_reconnecting_in_seconds(String p0) {
-    return 'Reconnecting in ${p0}s';
+    return 'Yhdistetään uudelleen $p0 sekunnin kuluttua';
   }
 
   @override
   String server_connection_indicator_websocket_attempts_remaining_today(String p0) {
-    return 'You have $p0 connection attempts left today.';
+    return 'Sinulla on $p0 yhdistämisyritystä jäljellä (nollautuu päivittäin)';
   }
 
   @override
   String get server_connection_indicator_websocket_daily_limit_reached =>
-      'Too many connection attempts today. Please try again tomorrow.';
+      'Liian monta yhdistämisyritystä tänään. Yritä huomenna uudelleen.';
 
   @override
-  String get settings_screen_data_category => 'Data';
+  String get settings_screen_data_category => 'Tiedot';
 
   @override
-  String get settings_screen_general_category => 'General';
+  String get settings_screen_general_category => 'Yleiset';
 
   @override
-  String get settings_screen_privacy_and_security_category => 'Privacy and security';
+  String get settings_screen_privacy_and_security_category => 'Yksityisyys ja turvallisuus';
 
   @override
-  String get settings_screen_profile_category => 'Profile';
+  String get settings_screen_profile_category => 'Profiili';
 
   @override
   String get settings_screen_profile_visibility_private_description =>
-      'Hide your profile from Profiles view';
+      'Piilota profiilisi Profiilit-näkymästä';
 
   @override
   String get settings_screen_profile_visibility_public_description =>
-      'Show your profile in Profiles view';
+      'Näytä profiilisi Profiilit-näkymässä';
 
   @override
-  String get settings_screen_profile_visibility_setting => 'Profile visibility';
+  String get settings_screen_profile_visibility_setting => 'Profiilin näkyvyys';
 
   @override
   String get settings_screen_title => 'Asetukset';
 
   @override
   String get sign_in_with_management_screen_apple_not_linked =>
-      'Link your Apple account to sign in with it';
+      'Linkitä Apple-tilisi kirjautuaksesi sillä';
 
   @override
-  String get sign_in_with_management_screen_apple_title => 'Sign in with Apple';
+  String get sign_in_with_management_screen_apple_title => 'Kirjaudu Applella';
 
   @override
-  String get sign_in_with_management_screen_apple_unlink_confirm_title => 'Unlink Apple account?';
+  String get sign_in_with_management_screen_apple_unlink_confirm_title =>
+      'Poistetaanko Apple-tilin linkitys?';
 
   @override
   String get sign_in_with_management_screen_google_not_linked =>
-      'Link your Google account to sign in with it';
+      'Linkitä Google-tilisi kirjautuaksesi sillä';
 
   @override
-  String get sign_in_with_management_screen_google_title => 'Sign in with Google';
+  String get sign_in_with_management_screen_google_title => 'Kirjaudu Googlella';
 
   @override
-  String get sign_in_with_management_screen_google_unlink_confirm_title => 'Unlink Google account?';
+  String get sign_in_with_management_screen_google_unlink_confirm_title =>
+      'Poistetaanko Google-tilin linkitys?';
 
   @override
-  String get sign_in_with_management_screen_link_failed => 'Failed to link sign in method';
+  String get sign_in_with_management_screen_link_failed => 'Kirjautumistavan linkitys epäonnistui';
 
   @override
   String sign_in_with_management_screen_link_history_limit_reached(String p0) {
-    return 'Sign in method change limit reached. Try again after $p0.';
+    return 'Kirjautumistavan vaihtoraja saavutettu. Yritä uudelleen $p0 kuluttua.';
   }
 
   @override
   String get sign_in_with_management_screen_local_auth_reason =>
-      'Please authenticate to manage sign in methods';
+      'Vahvista henkilöllisyytesi hallitaksesi kirjautumistapoja';
 
   @override
-  String get sign_in_with_management_screen_title => 'Sign in methods';
+  String get sign_in_with_management_screen_title => 'Kirjautumistavat';
 
   @override
-  String get sign_in_with_management_screen_unlink_failed => 'Failed to unlink sign in method';
+  String get sign_in_with_management_screen_unlink_failed =>
+      'Kirjautumistavan linkityksen poisto epäonnistui';
 
   @override
-  String get snackbar_api_forbidden_request => 'Action not allowed';
+  String get snackbar_api_forbidden_request => 'Toiminto ei ole sallittu';
 
   @override
-  String get snackbar_api_usage_limit_reached => 'Daily limit reached. Please try again tomorrow.';
+  String get snackbar_api_usage_limit_reached =>
+      'Päivittäinen raja saavutettu. Yritä huomenna uudelleen.';
 
   @override
-  String get snackbar_error_api => 'API request failed';
+  String get snackbar_error_api => 'API-pyyntö epäonnistui';
 
   @override
-  String get snackbar_error_api_timeout => 'API request timed out';
+  String get snackbar_error_api_timeout => 'API-pyyntö aikakatkaistiin';
 
   @override
-  String get snackbar_error_database => 'Database error';
+  String get snackbar_error_database => 'Tietokantavirhe';
 
   @override
-  String get snackbar_error_file => 'File error';
+  String get snackbar_error_file => 'Tiedostovirhe';
 
   @override
-  String get snackbar_error_logic => 'Unexpected error';
+  String get snackbar_error_logic => 'Odottamaton virhe';
 
   @override
   String get snackbar_image_quality_degraded =>
-      'Many users are viewing profiles - image quality may be temporarily reduced';
+      'Monet käyttäjät selaavat profiileja - kuvanlaatu voi olla tilapäisesti heikentynyt';
 
   @override
   String snackbar_play_integrity_api_error(String p0) {
-    return 'App verification error: $p0';
+    return 'Sovelluksen vahvistusvirhe: $p0';
   }
 
   @override
-  String get splash_screen_app_is_already_running => 'App is already running';
+  String get splash_screen_app_is_already_running => 'Sovellus on jo käynnissä';
 
   @override
   String get splash_screen_app_version_downgrade_detected =>
-      'Warning: App version downgrade detected. Please use the latest app version.';
+      'Varoitus: Sovellusversion vanhentuminen havaittu. Käytä uusinta versiota.';
 
   @override
   String statistics_screen_age_range(String p0) {
-    return 'Ages: $p0';
+    return 'Iät: $p0';
   }
 
   @override
   String statistics_screen_count_all_profiles(String p0) {
-    return 'All profiles: $p0';
+    return 'Kaikki profiilit: $p0';
   }
 
   @override
   String statistics_screen_count_men(String p0) {
-    return 'Men: $p0';
+    return 'Miehet: $p0';
   }
 
   @override
   String statistics_screen_count_nonbinaries(String p0) {
-    return 'Non-binaries: $p0';
+    return 'Muunsukupuoliset: $p0';
   }
 
   @override
   String statistics_screen_count_online_users(String p0) {
-    return 'Online users: $p0';
+    return 'Paikalla olevat käyttäjät: $p0';
   }
 
   @override
   String statistics_screen_count_online_users_bar_chart_tooltip(String p0) {
-    return 'Online: $p0';
+    return 'Paikalla: $p0';
   }
 
   @override
   String statistics_screen_count_private_profiles(String p0) {
-    return 'Private profiles: $p0';
+    return 'Yksityiset profiilit: $p0';
   }
 
   @override
   String statistics_screen_count_public_profiles(String p0) {
-    return 'Public profiles: $p0';
+    return 'Julkiset profiilit: $p0';
   }
 
   @override
   String statistics_screen_count_registered_users(String p0) {
-    return 'Registered users: $p0';
+    return 'Rekisteröityneet käyttäjät: $p0';
   }
 
   @override
   String statistics_screen_count_women(String p0) {
-    return 'Women: $p0';
+    return 'Naiset: $p0';
   }
 
   @override
   String statistics_screen_hour_value(String p0) {
-    return 'Hour: $p0';
+    return 'Tunti: $p0';
   }
 
   @override
-  String get statistics_screen_online_users_per_hour_statistics_title => 'Online users per hour';
+  String get statistics_screen_online_users_per_hour_statistics_title =>
+      'Paikalla olevat käyttäjät tunneittain';
 
   @override
   String statistics_screen_time(String p0) {
-    return 'Time: $p0';
+    return 'Aika: $p0';
   }
 
   @override
-  String get statistics_screen_title => 'Statistics';
+  String get statistics_screen_title => 'Tilastot';
 
   @override
   String get unsupported_client_screen_info =>
-      'This app version is no longer supported. Please update to the latest version.';
+      'Tätä sovellusversiota ei enää tueta. Päivitä uusimpaan versioon.';
 
   @override
-  String get unsupported_client_screen_title => 'App update required';
+  String get unsupported_client_screen_title => 'Sovelluspäivitys vaaditaan';
 
   @override
   String get url_app_privacy_policy_link => 'https://example.com';
@@ -2334,175 +2355,177 @@ class AppLocalizationsFi extends AppLocalizations {
   String get url_app_tos_link => 'https://example.com';
 
   @override
-  String get verification_error_data_parsing_failed => 'Invalid identification data';
+  String get verification_error_data_parsing_failed => 'Virheelliset tunnistautumistiedot';
 
   @override
-  String get verification_error_data_verification_failed => 'Identity verification failed';
+  String get verification_error_data_verification_failed =>
+      'Henkilöllisyyden vahvistus epäonnistui';
 
   @override
   String get verification_error_method_not_configured =>
-      'App admin has not configured this verification method';
+      'Sovelluksen ylläpitäjä ei ole määrittänyt tätä vahvistustapaa';
 
   @override
-  String get verification_method_eudi_unsupported => 'EUDI wallet (not supported in this version)';
+  String get verification_method_eudi_unsupported => 'EUDI-lompakko (ei tuettu tässä versiossa)';
 
   @override
   String get video_call_tip_dialog_description =>
-      'You can send a video call invitation using the video call icon at the top right of the chat.';
+      'Voit lähettää videopuhelukutsun keskustelun oikeassa yläkulmassa olevasta videopuhelukuvakkeesta.';
 
   @override
-  String get video_call_tip_dialog_title => 'Like video calls?';
+  String get video_call_tip_dialog_title => 'Pidätkö videopuheluista?';
 
   @override
   String get view_image_screen_title => 'Kuva';
 
   @override
   String view_news_screen_edited(String p0) {
-    return 'Edited: $p0';
+    return 'Muokattu: $p0';
   }
 
   @override
   String view_news_screen_published(String p0) {
-    return 'Published: $p0';
+    return 'Julkaistu: $p0';
   }
 
   @override
-  String get view_profile_screen_add_to_favorites_action => 'Add to favorites';
+  String get view_profile_screen_add_to_favorites_action => 'Lisää suosikkeihin';
 
   @override
-  String get view_profile_screen_add_to_favorites_action_successful => 'Added to favorites';
+  String get view_profile_screen_add_to_favorites_action_successful => 'Lisätty suosikkeihin';
 
   @override
   String get view_profile_screen_add_to_favorites_error_too_many_favorites =>
-      'Favorites list is full';
+      'Suosikkilista on täysi';
 
   @override
   String view_profile_screen_add_to_favorites_remaining_space(String p0) {
-    return 'Remaining favorite slots: $p0';
+    return 'Jäljellä olevat suosikkipaikat: $p0';
   }
 
   @override
-  String get view_profile_screen_already_match => 'Chatting is already possible';
+  String get view_profile_screen_already_match => 'Keskustelu on jo mahdollista';
 
   @override
-  String get view_profile_screen_block_action => 'Block';
+  String get view_profile_screen_block_action => 'Estä';
 
   @override
-  String get view_profile_screen_block_action_dialog_title => 'Block profile?';
+  String get view_profile_screen_block_action_dialog_title => 'Estä profiili?';
 
   @override
-  String get view_profile_screen_block_action_successful => 'Profile blocked';
+  String get view_profile_screen_block_action_successful => 'Profiili estetty';
 
   @override
-  String get view_profile_screen_chat_action => 'Chat';
+  String get view_profile_screen_chat_action => 'Keskustele';
 
   @override
-  String get view_profile_screen_like_action => 'Send chat request';
+  String get view_profile_screen_like_action => 'Lähetä keskustelupyyntö';
 
   @override
-  String get view_profile_screen_like_action_dialog_title => 'Send chat request?';
+  String get view_profile_screen_like_action_dialog_title => 'Lähetä keskustelupyyntö?';
 
   @override
   String get view_profile_screen_like_action_like_already_received =>
-      'Chat request already received';
+      'Keskustelupyyntö on jo vastaanotettu';
 
   @override
-  String get view_profile_screen_like_action_like_already_sent => 'Chat request already sent';
+  String get view_profile_screen_like_action_like_already_sent =>
+      'Keskustelupyyntö on jo lähetetty';
 
   @override
-  String get view_profile_screen_like_action_successful => 'Chat request sent';
+  String get view_profile_screen_like_action_successful => 'Keskustelupyyntö lähetetty';
 
   @override
   String get view_profile_screen_like_action_try_again_tomorrow =>
-      'No chat requests left today. Try again tomorrow.';
+      'Päivittäiset keskustelupyynnöt ovat jo käytetty. Yritä huomenna uudelleen.';
 
   @override
-  String get view_profile_screen_my_profile_edit_action => 'Edit profile';
+  String get view_profile_screen_my_profile_edit_action => 'Muokkaa profiilia';
 
   @override
-  String get view_profile_screen_my_profile_initial_setup_not_done => 'Profile is not set up yet';
+  String get view_profile_screen_my_profile_initial_setup_not_done =>
+      'Profiilia ei ole vielä määritetty';
 
   @override
-  String get view_profile_screen_my_profile_title => 'My profile';
+  String get view_profile_screen_my_profile_title => 'Oma profiili';
 
   @override
   String get view_profile_screen_non_accepted_profile_content_info_dialog_text =>
-      'All profile pictures are not yet moderated or some picture is moderated as rejected. Only accepted pictures are visible to users.';
+      'Kaikkia profiilikuvia ei ole vielä moderoitu tai jokin kuva on hylätty. Vain hyväksytyt kuvat näkyvät käyttäjille.';
 
   @override
   String view_profile_screen_non_accepted_profile_content_info_dialog_text_picture_title(
     String p0,
   ) {
-    return 'Picture $p0';
+    return 'Kuva $p0';
   }
 
   @override
   String get view_profile_screen_non_accepted_profile_name_info_dialog_text =>
-      'Profile name is not yet moderated or it is moderated as rejected. Only the first letter is visible to users.';
+      'Profiilinimeä ei ole vielä moderoitu tai se on hylätty. Vain ensimmäinen kirjain näkyy käyttäjille.';
 
   @override
   String get view_profile_screen_non_accepted_profile_text_info_dialog_text =>
-      'Profile text is not yet moderated or it is moderated as rejected. Only the first letter is visible to users.';
+      'Profiilitekstiä ei ole vielä moderoitu tai se on hylätty. Vain ensimmäinen kirjain näkyy käyttäjille.';
 
   @override
-  String get view_profile_screen_profile_currently_online => 'Online';
+  String get view_profile_screen_profile_currently_online => 'Paikalla';
 
   @override
-  String get view_profile_screen_profile_edit_failed => 'Failed to save profile';
+  String get view_profile_screen_profile_edit_failed => 'Profiilin tallennus epäonnistui';
 
   @override
   String view_profile_screen_profile_image_does_not_exist(String p0) {
-    return 'Profile picture $p0 does not exist';
+    return 'Profiilikuva $p0 ei ole olemassa';
   }
 
   @override
   String view_profile_screen_profile_last_seen_day(String p0) {
-    return 'Last seen $p0 day ago';
+    return 'Nähty $p0 päivä sitten';
   }
 
   @override
   String view_profile_screen_profile_last_seen_days(String p0) {
-    return 'Last seen $p0 days ago';
+    return 'Nähty $p0 päivää sitten';
   }
 
   @override
   String view_profile_screen_profile_last_seen_hour(String p0) {
-    return 'Last seen $p0 hour ago';
+    return 'Nähty $p0 tunti sitten';
   }
 
   @override
   String view_profile_screen_profile_last_seen_hours(String p0) {
-    return 'Last seen $p0 hours ago';
+    return 'Nähty $p0 tuntia sitten';
   }
 
   @override
   String view_profile_screen_profile_last_seen_minute(String p0) {
-    return 'Last seen $p0 minute ago';
+    return 'Nähty $p0 minuutti sitten';
   }
 
   @override
   String view_profile_screen_profile_last_seen_minutes(String p0) {
-    return 'Last seen $p0 minutes ago';
+    return 'Nähty $p0 minuuttia sitten';
   }
 
   @override
   String view_profile_screen_profile_last_seen_second(String p0) {
-    return 'Last seen $p0 second ago';
+    return 'Nähty $p0 sekunti sitten';
   }
 
   @override
   String view_profile_screen_profile_last_seen_seconds(String p0) {
-    return 'Last seen $p0 seconds ago';
+    return 'Nähty $p0 sekuntia sitten';
   }
 
   @override
   String get view_profile_screen_profile_verification_requires_verified_account =>
-      'Viewing this info requires a verified account';
+      'Tämän tiedon katselu vaatii vahvistetun tilin';
 
   @override
-  String get view_profile_screen_remove_from_favorites_action => 'Remove from favorites';
+  String get view_profile_screen_remove_from_favorites_action => 'Poista suosikeista';
 
   @override
-  String get view_profile_screen_remove_from_favorites_action_successful =>
-      'Removed from favorites';
+  String get view_profile_screen_remove_from_favorites_action_successful => 'Poistettu suosikeista';
 }

@@ -55,7 +55,7 @@
       }
     }
   },
-  "account_banned_screen_time_text": "Suspension ending will begin at {p0}",
+  "account_banned_screen_time_text": "Ban deletion will begin at {p0}",
   "@account_banned_screen_time_text": {
     "description": "Time when account unban process will begin",
     "placeholders": {
@@ -64,7 +64,7 @@
       }
     }
   },
-  "account_banned_screen_title": "Account suspended",
+  "account_banned_screen_title": "Account banned",
   "@account_banned_screen_title": {
     "description": "Title for account banned screen"
   },
@@ -81,15 +81,15 @@
   "@account_deletion_pending_screen_title": {
     "description": "Title for account deletion pending screen"
   },
-  "account_settings_screen_cancel_email_change_button": "Cancel email change",
+  "account_settings_screen_cancel_email_change_button": "Cancel email address change",
   "@account_settings_screen_cancel_email_change_button": {
     "description": "Button text for cancel email change action"
   },
-  "account_settings_screen_cancel_email_change_confirm_dialog_title": "Cancel email change?",
+  "account_settings_screen_cancel_email_change_confirm_dialog_title": "Cancel email address change?",
   "@account_settings_screen_cancel_email_change_confirm_dialog_title": {
     "description": "Title for cancel email change confirm dialog"
   },
-  "account_settings_screen_change_email_button": "Change email",
+  "account_settings_screen_change_email_button": "Change email address",
   "@account_settings_screen_change_email_button": {
     "description": "Button text for change email action"
   },
@@ -117,11 +117,11 @@
   "@account_settings_screen_delete_account_confirm_dialog_title": {
     "description": "Title for delete account confirm dialog title"
   },
-  "account_settings_screen_email_change_cancelled": "Email change cancelled",
+  "account_settings_screen_email_change_cancelled": "Email address change cancelled",
   "@account_settings_screen_email_change_cancelled": {
     "description": "Snackbar text for successful email change cancellation"
   },
-  "account_settings_screen_email_change_history_limit_reached": "Email change limit reached. Try again after {p0}.",
+  "account_settings_screen_email_change_history_limit_reached": "Email address change limit reached. Try again after {p0}.",
   "@account_settings_screen_email_change_history_limit_reached": {
     "description": "Snackbar text when email change history limit is reached, with formatted wait time",
     "placeholders": {
@@ -130,7 +130,7 @@
       }
     }
   },
-  "account_settings_screen_email_change_initiated": "Email change initiated. Please check your inbox.",
+  "account_settings_screen_email_change_initiated": "Email address change initiated. Please check your inbox.",
   "@account_settings_screen_email_change_initiated": {
     "description": "Snackbar text for successful email change initiation"
   },
@@ -146,7 +146,7 @@
   "@account_settings_screen_email_verified": {
     "description": "Text for verified email status"
   },
-  "account_settings_screen_pending_email_completion_time": "Email change completes at: {p0}",
+  "account_settings_screen_pending_email_completion_time": "Email address change completes at: {p0}",
   "@account_settings_screen_pending_email_completion_time": {
     "description": "Text for email change completion time",
     "placeholders": {
@@ -155,15 +155,15 @@
       }
     }
   },
-  "account_settings_screen_pending_email_not_verified": "Pending email not verified",
+  "account_settings_screen_pending_email_not_verified": "New email address not verified",
   "@account_settings_screen_pending_email_not_verified": {
     "description": "Text for not verified pending email status"
   },
-  "account_settings_screen_pending_email_title": "Pending new email address",
+  "account_settings_screen_pending_email_title": "New email address",
   "@account_settings_screen_pending_email_title": {
     "description": "Title for pending new email text"
   },
-  "account_settings_screen_pending_email_verified": "Pending email verified",
+  "account_settings_screen_pending_email_verified": "New email address verified",
   "@account_settings_screen_pending_email_verified": {
     "description": "Text for verified pending email status"
   },
@@ -183,7 +183,7 @@
   "@account_settings_screen_title": {
     "description": "Title for account settings"
   },
-  "account_verification_screen_error_profile_age_range_mismatch": "Profile age changed during verification",
+  "account_verification_screen_error_profile_age_range_mismatch": "Your age (in your profile) changed during verification",
   "@account_verification_screen_error_profile_age_range_mismatch": {
     "description": "Account verification error: profile age range changed during verification"
   },
@@ -191,7 +191,7 @@
   "@account_verification_screen_error_profile_age_range_verification_failed": {
     "description": "Account verification error: profile age range verification failed"
   },
-  "account_verification_screen_error_profile_age_range_verification_mismatch": "Verified age does not match your profile age",
+  "account_verification_screen_error_profile_age_range_verification_mismatch": "Verified age does not match age in your profile",
   "@account_verification_screen_error_profile_age_range_verification_mismatch": {
     "description": "Account verification error: verified profile age range mismatch"
   },
@@ -253,11 +253,11 @@
   "@account_verification_screen_request_queue_full": {
     "description": "Snackbar text when account verification queue is full"
   },
-  "account_verification_screen_scope_profile_age": "Profile age",
+  "account_verification_screen_scope_profile_age": "Age",
   "@account_verification_screen_scope_profile_age": {
     "description": "Checkbox label for account verification profile age scope"
   },
-  "account_verification_screen_scope_profile_name": "Profile name",
+  "account_verification_screen_scope_profile_name": "First name",
   "@account_verification_screen_scope_profile_name": {
     "description": "Checkbox label for account verification profile name scope"
   },
@@ -946,11 +946,11 @@
   "@edit_profile_screen_one_profile_image_required": {
     "description": "Snackbar text for notifying about that one profile image is required"
   },
-  "edit_profile_screen_primary_profile_content_pending_moderation": "Picture is not currently accepted by moderators. Your profile will not be shown in profile grid until the picture is accepted.",
+  "edit_profile_screen_primary_profile_content_pending_moderation": "Picture is not currently accepted by moderator. Your profile will not be shown in profile grid until the picture is accepted.",
   "@edit_profile_screen_primary_profile_content_pending_moderation": {
     "description": "Info text that primary profile image is pending moderation"
   },
-  "edit_profile_screen_primary_profile_content_rejected": "Picture was rejected by moderators. Replace the picture to make your profile visible in the profile grid.",
+  "edit_profile_screen_primary_profile_content_rejected": "Picture was rejected by moderator. Replace the picture to make your profile visible in the profile grid.",
   "@edit_profile_screen_primary_profile_content_rejected": {
     "description": "Info text that primary profile image was rejected by moderators"
   },
@@ -1559,7 +1559,7 @@
   "@initial_setup_screen_first_chat_backup_save_backup_button": {
     "description": "Title for initial setup save chat backup button"
   },
-  "initial_setup_screen_first_chat_backup_security_info": "The backup contains your encryption key. Keep it safe in case you lose your device, so you can read all message sent to you.",
+  "initial_setup_screen_first_chat_backup_security_info": "The backup contains your encryption key. Keep it safe in case you lose your device, so you can read all messages sent to you.",
   "@initial_setup_screen_first_chat_backup_security_info": {
     "description": "Security info for initial setup first chat backup"
   },
@@ -2642,7 +2642,7 @@
       }
     }
   },
-  "report_screen_false_reports_warning": "Submitting false reports may result in account suspension",
+  "report_screen_false_reports_warning": "Submitting false reports might get your account banned",
   "@report_screen_false_reports_warning": {
     "description": "Warning text about false reports leading to a ban"
   },
@@ -2806,7 +2806,7 @@
   "@server_connection_indicator_connection_failed_dialog_text": {
     "description": "Info dialog message when connection failed after max retries"
   },
-  "server_connection_indicator_reconnecting_in_seconds": "Reconnecting in {p0}s",
+  "server_connection_indicator_reconnecting_in_seconds": "Reconnecting in {p0} seconds",
   "@server_connection_indicator_reconnecting_in_seconds": {
     "description": "Server connection indicator text showing countdown",
     "placeholders": {
@@ -2815,7 +2815,7 @@
       }
     }
   },
-  "server_connection_indicator_websocket_attempts_remaining_today": "You have {p0} connection attempts left today.",
+  "server_connection_indicator_websocket_attempts_remaining_today": "You have {p0} connection attempts left (resets daily)",
   "@server_connection_indicator_websocket_attempts_remaining_today": {
     "description": "Snackbar text showing remaining daily websocket connection attempts",
     "placeholders": {
@@ -3108,7 +3108,7 @@
   "@video_call_tip_dialog_title": {
     "description": "Title for video call tip dialog"
   },
-  "view_image_screen_title": "View image",
+  "view_image_screen_title": "Image",
   "@view_image_screen_title": {
     "description": "Title for view image screen"
   },

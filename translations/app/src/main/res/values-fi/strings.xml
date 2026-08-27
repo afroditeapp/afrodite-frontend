@@ -1,14 +1,879 @@
 <resources>
+    <!-- App branding -->
+    <string name="app_slogan">Deittisovellus</string>
+
+    <!-- Generic texts -->
     <string name="generic_error">Virhe</string>
+    <string name="generic_warning">Varoitus</string>
     <string name="generic_empty">Tyhjä</string>
+    <string name="generic_disabled">Pois käytöstä</string>
+    <string name="generic_details">Tiedot</string>
+    <string name="generic_download">Lataa</string>
+    <string name="generic_save">Tallenna</string>
+    <string name="generic_import">Tuo</string>
+    <string name="generic_receive">Vastaanota</string>
+    <string name="generic_create">Luo</string>
+    <string name="generic_restore">Palauta</string>
+    <string name="generic_remind">Muistuta</string>
+    <string name="generic_resend">Lähetä uudelleen</string>
+    <string name="generic_refresh">Päivitä</string>
+    <string name="generic_update">Päivitä</string>
+    <string name="generic_filters">Suodattimet</string>
+    <string name="generic_retry">Yritä uudelleen</string>
+    <string name="generic_delete">Poista</string>
+    <string name="generic_message">Viesti</string>
+    <string name="generic_time">Aika</string>
+    <string name="generic_state">Tila</string>
     <string name="generic_cancel">Peruuta</string>
+    <string name="generic_later">Myöhemmin</string>
     <string name="generic_close">Sulje</string>
     <string name="generic_ok">OK</string>
-    <string name="login_screen_login_button">Kirjaudu</string>
-    <string name="login_screen_register_button">Rekisteröidy</string>
+    <string name="generic_yes">Kyllä</string>
+    <string name="generic_no">Ei</string>
+    <string name="generic_try_again">Yritä uudelleen</string>
+    <string name="generic_not_found">Ei löytynyt</string>
+    <string name="generic_action_completed">Toiminto suoritettu</string>
+    <string name="generic_setting_saved">Asetus tallennettu</string>
+    <string name="generic_login">Kirjaudu</string>
+    <string name="generic_logout">Kirjaudu ulos</string>
+    <string name="generic_logout_confirmation_title">Kirjaudu ulos?</string>
+    <string name="generic_save_confirmation_title">Tallenna?</string>
+    <string name="generic_error_occurred">Jokin meni pieleen</string>
+    <string name="generic_previous_action_in_progress">Edellinen toiminto on vielä kesken</string>
+    <string name="generic_continue">Jatka</string>
+    <string name="generic_you">Sinä</string>
+    <string name="generic_take_photo">Ota kuva</string>
+    <string name="generic_gender_man">Mies</string>
+    <string name="generic_gender_woman">Nainen</string>
+    <string name="generic_gender_nonbinary">Muunsukupuolinen</string>
+    <string name="generic_gender_man_plural">Miehet</string>
+    <string name="generic_gender_woman_plural">Naiset</string>
+    <string name="generic_gender_nonbinary_plural">Muunsukupuoliset</string>
+    <string name="generic_show_only_selected">Näytä vain valitut</string>
+    <string name="generic_data_sync_failed">Tietojen synkronointi epäonnistui</string>
+    <string name="generic_email_sending_failed">Sähköpostin lähetys epäonnistui</string>
+    <string name="generic_email_sending_timeout">Sähköpostin lähetys aikakatkaistiin</string>
+    <string name="generic_try_again_later_seconds">Yritä uudelleen %s sekunnin kuluttua</string>
+    <string name="generic_time_unit_hour">t</string>
+    <string name="generic_time_unit_minute">min</string>
+    <string name="generic_time_unit_second">s</string>
+    <string name="generic_delete_question">Poista?</string>
+    <string name="generic_cancel_question">Peruuta?</string>
+    <string name="generic_download_question">Lataa?</string>
+    <string name="generic_report_verb">Ilmoita</string>
+    <string name="generic_report_verb_question">Ilmoita?</string>
+    <string name="generic_logout_failed">Uloskirjautuminen epäonnistui</string>
+    <string name="generic_copy">Kopioi</string>
+    <string name="generic_reply">Vastaa</string>
+    <string name="generic_edit">Muokkaa</string>
+    <string name="generic_skip">Ohita</string>
+    <string name="generic_unlink">Poista linkitys</string>
+    <string name="generic_profile_loading_failed">Profiilin lataus epäonnistui</string>
+    <string name="generic_this_feature_is_disabled">Tämä ominaisuus on pois käytöstä</string>
+    <string name="generic_unlimited">Rajoittamaton</string>
+    <string name="generic_min">Min</string>
+    <string name="generic_max">Maks</string>
+    <string name="generic_average">Keskiarvo</string>
+    <string name="generic_login_progress_dialog_text">Kirjaudutaan…</string>
+    <string name="generic_age">Ikä</string>
+    <string name="generic_preview_noun">Esikatselu</string>
+    <string name="generic_small">Pieni</string>
+    <string name="generic_medium">Keskikokoinen</string>
+    <string name="generic_large">Suuri</string>
+    <string name="generic_size">Koko</string>
+    <string name="generic_margin">Marginaali</string>
+    <string name="generic_account_id_text_with_value">Tili ID: %s</string>
+    <string name="generic_account_locked_error">Tili lukittu</string>
+    <string name="generic_copied_to_clipboard">Kopioitu leikepöydälle</string>
+
+    <string name="generic_weekday_mon">ma</string>
+    <string name="generic_weekday_tue">ti</string>
+    <string name="generic_weekday_wed">ke</string>
+    <string name="generic_weekday_thu">to</string>
+    <string name="generic_weekday_fri">pe</string>
+    <string name="generic_weekday_sat">la</string>
+    <string name="generic_weekday_sun">su</string>
+
+    <string name="generic_today">Tänään</string>
+    <string name="generic_yesterday">Eilen</string>
+
+    <string name="generic_text_field_age_hint_text">Syötä ikä väliltä 18-99</string>
+    <string name="generic_error_app_version_is_unsupported">Nykyistä sovellusversiota ei enää tueta</string>
+    <string name="generic_security_selfie">Moderointiselfie</string>
+
+    <string name="generic_reset_to_defaults">Palauta oletukset</string>
+    <string name="generic_reset_to_defaults_dialog_title">Palauta oletukset?</string>
+
+    <!-- Global snackbar texts -->
+    <string name="snackbar_error_api">API-pyyntö epäonnistui</string>
+    <string name="snackbar_error_api_timeout">API-pyyntö aikakatkaistiin</string>
+    <string name="snackbar_error_database">Tietokantavirhe</string>
+    <string name="snackbar_error_file">Tiedostovirhe</string>
+    <string name="snackbar_error_logic">Odottamaton virhe</string>
+    <string name="snackbar_api_forbidden_request">Toiminto ei ole sallittu</string>
+    <string name="snackbar_api_usage_limit_reached">Päivittäinen raja saavutettu. Yritä huomenna uudelleen.</string>
+    <string name="snackbar_play_integrity_api_error">Sovelluksen vahvistusvirhe: %s</string>
+    <string name="snackbar_image_quality_degraded">Monet käyttäjät selaavat profiileja - kuvanlaatu voi olla tilapäisesti heikentynyt</string>
+
+    <!-- Server connection indicator -->
+    <string name="server_connection_indicator_reconnecting_in_seconds">Yhdistetään uudelleen %s sekunnin kuluttua</string>
+    <string name="server_connection_indicator_connection_failed">Yhteys epäonnistui</string>
+    <string name="server_connection_indicator_connection_failed_dialog_text">Yhteyttä palvelimeen ei saatu. Tarkista internetyhteytesi ja yritä myöhemmin uudelleen. Jos ongelma jatkuu, palvelin saattaa olla tilapäisesti poissa käytöstä.</string>
+    <string name="server_connection_indicator_websocket_attempts_remaining_today">Sinulla on %s yhdistämisyritystä jäljellä (nollautuu päivittäin)</string>
+    <string name="server_connection_indicator_websocket_daily_limit_reached">Liian monta yhdistämisyritystä tänään. Yritä huomenna uudelleen.</string>
+
+    <!-- Moderation states -->
+    <string name="moderation_state">Moderoinnin tila: %s</string>
+    <string name="moderation_rejected_category">Hylkäyskategoria: %s</string>
+    <string name="moderation_rejected_details">Hylkäyksen tiedot: %s</string>
+    <string name="moderation_state_waiting_admin_bot">Odottaa ylläpitobottia</string>
+    <string name="moderation_state_waiting_admin">Odottaa ylläpitäjää</string>
+    <string name="moderation_state_rejected_by_admin_bot">Ylläpitobotti hylännyt</string>
+    <string name="moderation_state_rejected_by_admin">Ylläpitäjä hylännyt</string>
+    <string name="moderation_state_accepted">Hyväksytty</string>
+
+    <!-- Notification category groups -->
+    <string name="notification_category_group_general">Yleinen</string>
+    <string name="notification_category_group_chat">Keskustelu</string>
+    <string name="notification_category_group_content_moderation">Sisällön moderointi</string>
+
+    <!-- Notification categories -->
+    <string name="notification_category_messages">Viestit</string>
+    <string name="notification_category_likes">Pyynnöt</string>
+    <string name="notification_category_media_content_moderation_completed">Kuvat</string>
+    <string name="notification_category_profile_string_moderation_completed">Profiilin nimi ja teksti</string>
+    <string name="notification_category_news_item_available">Uutiset</string>
+    <string name="notification_category_automatic_profile_search">Uudet ja päivitetyt profiilit</string>
+
+    <!-- Notification like received -->
+    <string name="notification_like_received_single">Keskustelupyyntö vastaanotettu</string>
+    <string name="notification_like_received_multiple">Keskustelupyyntöjä vastaanotettu</string>
+
+    <!-- Notification media content moderation completed -->
+    <string name="notification_media_content_accepted">Kuva hyväksytty</string>
+    <string name="notification_media_content_rejected">Kuva hylätty</string>
+    <string name="notification_media_content_deleted">Kuva poistettu</string>
+    <string name="notification_media_content_deleted_description">Kuvassasi havaittiin kiellettyä sisältöä. Tämä saattaa olla väärä hälytys.</string>
+
+    <!-- Notification profile string moderation completed -->
+    <string name="notification_profile_name_accepted">Profiilinimi hyväksytty</string>
+    <string name="notification_profile_name_rejected">Profiilinimi hylätty</string>
+    <string name="notification_profile_text_accepted">Profiiliteksti hyväksytty</string>
+    <string name="notification_profile_text_rejected">Profiiliteksti hylätty</string>
+
+    <!-- Notification message received -->
+    <string name="notification_message_received_single">%s lähetti viestin</string>
+    <string name="notification_message_received_multiple">%s lähetti viestejä</string>
+    <string name="notification_message_received_single_generic">Uusi viesti vastaanotettu</string>
+    <string name="notification_message_received_multiple_generic">Uusia viestejä vastaanotettu</string>
+
+    <!-- Notification news item available -->
+    <string name="notification_news_item_available">Uutinen saatavilla</string>
+
+    <!-- Notification automatic profile search completed -->
+    <string name="notification_automatic_profile_search_found_profiles_single">Uusi tai päivitetty profiili löytyi</string>
+    <string name="notification_automatic_profile_search_found_profiles_multiple">%s uutta tai päivitettyä profiilia löytyi</string>
+
+    <!-- Notification settings screen -->
+    <string name="notification_settings_screen_title">Ilmoitukset</string>
+    <string name="notification_settings_screen_notifications_disabled_from_system_settings_text">Ilmoitukset on poistettu käytöstä järjestelmäasetuksista</string>
+    <string name="notification_settings_screen_notification_category_disabled_from_system_settings_text">Pois käytöstä järjestelmäasetuksista</string>
+    <string name="notification_settings_screen_open_system_notification_settings">Järjestelmän ilmoitusasetukset</string>
+    <string name="notification_settings_screen_web_permission_not_enabled">Ilmoitukset eivät ole käytössä</string>
+    <string name="notification_settings_screen_web_request_permission">Ota ilmoitukset käyttöön</string>
+    <string name="notification_settings_screen_web_permission_denied">Lupa evätty. Yritä uudelleen tai salli ilmoitukset selaimen asetuksista.</string>
+    <string name="notification_settings_screen_ios_pwa_permission_denied">Lupa evätty. Yritä uudelleen tai salli ilmoitukset iOS-asetuksista.</string>
+
+    <!-- Email notification settings screen -->
+    <string name="email_notification_settings_screen_title">Sähköposti-ilmoitukset</string>
+
+    <!-- Privacy settings screen -->
+    <string name="privacy_settings_screen_title">Yksityisyys</string>
+    <string name="privacy_settings_screen_chat_category">Keskustelu</string>
+    <string name="privacy_settings_message_state_seen">Viestien lukukuittaukset</string>
+    <string name="privacy_settings_message_state_seen_disabled_description">Et näe lukukuittauksia</string>
+    <string name="privacy_settings_message_state_seen_enabled_description">Anna muiden nähdä, kun olet lukenut heidän viestinsä</string>
+    <string name="privacy_settings_typing_indicator">Kirjoitusilmaisin</string>
+    <string name="privacy_settings_typing_indicator_disabled_description">Et näe, kun toiset kirjoittavat</string>
+    <string name="privacy_settings_typing_indicator_enabled_description">Anna muiden nähdä, kun kirjoitat</string>
+    <string name="privacy_settings_screen_profile_category">Profiili</string>
+    <string name="privacy_settings_last_seen_time">Nähty viimeksi -aika</string>
+    <string name="privacy_settings_last_seen_time_disabled_description">Et näe, milloin toiset olivat viimeksi paikalla</string>
+    <string name="privacy_settings_last_seen_time_enabled_description">Näytä, milloin olit viimeksi paikalla</string>
+    <string name="privacy_settings_online_status">Paikallaolotila</string>
+    <string name="privacy_settings_online_status_disabled_description">Et näe muiden paikallaolotilaa</string>
+    <string name="privacy_settings_online_status_enabled_description">Näytä, milloin olet paikalla</string>
+
+    <!-- Automatic profile search results screen -->
+    <string name="automatic_profile_search_results_screen_title">Uudet ja päivitetyt profiilit</string>
+    <string name="automatic_profile_search_results_screen_no_profiles_found_title">Uusia tai päivitettyjä profiileja ei löytynyt</string>
+    <string name="automatic_profile_search_results_screen_no_profiles_found_description">Saat ilmoituksen, kun tilanne muuttuu</string>
+
+    <!-- App bar actions -->
+    <string name="app_bar_action_about">Tietoja</string>
+
+    <!-- About dialog -->
+    <string name="about_dialog_app_publisher">Julkaisija: %s</string>
+    <string name="about_dialog_git_commit_id">Versiotunniste: %s</string>
+
+    <!-- Image processing UI -->
+    <string name="image_processing_ui_confirm_photo_dialog_title">Jatketaanko tällä kuvalla?</string>
+    <string name="image_processing_ui_upload_in_progress_dialog_description">Lähetetään kuvaa…</string>
+    <string name="image_processing_ui_nsfw_detected_dialog_title">Ladatussa kuvassa havaittiin kiellettyä sisältöä. Tämä saattaa olla väärä hälytys.</string>
+    <string name="image_processing_ui_upload_failed_dialog_title">Lähetys epäonnistui</string>
+    <string name="image_processing_ui_upload_timeout_dialog_title">Lähetys aikakatkaistiin</string>
+    <string name="image_processing_ui_upload_content_processing_ongoing_dialog_title">Palvelin käsittelee vielä edellistä lähetystäsi</string>
+    <string name="image_processing_ui_upload_in_processing_queue_dialog_description">Jonossa. Sija: %s</string>
+    <string name="image_processing_ui_upload_processing_ongoing_description">Käsitellään kuvaa…</string>
+
+    <!-- Profile image errors -->
+    <string name="profile_image_error_no_image">Ei profiilikuvaa</string>
+    <string name="profile_image_error_no_primary_image">Ensisijainen profiilikuva puuttuu</string>
+    <string name="profile_image_error_image_not_accepted">Profiilikuvaa ei ole hyväksytty</string>
+
+    <!-- Splash screen -->
+    <string name="splash_screen_app_is_already_running">Sovellus on jo käynnissä</string>
+    <string name="splash_screen_app_version_downgrade_detected">Varoitus: Sovellusversion vanhentuminen havaittu. Käytä uusinta versiota.</string>
+
+    <!-- Login screen -->
+    <string name="login_screen_login_note_text_beginning">Kirjautumalla sisään hyväksyt palvelumme</string>
+    <string name="login_screen_registration_all_platforms_disabled">Uudet rekisteröitymiset ovat tällä hetkellä pois käytöstä</string>
+    <string name="login_screen_registration_platform_disabled">Uudet rekisteröitymiset ovat tällä hetkellä pois käytöstä tällä alustalla (%s)</string>
+    <string name="login_screen_login_all_platforms_disabled">Kirjautuminen on tällä hetkellä pois käytöstä</string>
+    <string name="login_screen_login_platform_disabled">Kirjautuminen on tällä hetkellä pois käytöstä tällä alustalla (%s)</string>
+    <string name="login_screen_sign_in_with_email_unverified">Sähköpostiosoitetta ei ole vahvistettu</string>
+    <string name="login_screen_email_already_used">Sähköpostiosoite on jo toisen tilin käytössä</string>
+    <string name="login_screen_login_note_text_tos">käyttöehdot</string>
+    <string name="login_screen_login_note_text_and">ja</string>
+    <string name="login_screen_login_note_text_privacy_policy">tietosuojaselosteen</string>
+    <string name="login_screen_shared_computer_warning">Kirjaudu vain henkilökohtaisilla laitteilla. Jaetun tai julkisen tietokoneen käyttäminen vaarantaa yksityisyytesi.</string>
+    <string name="login_screen_demo_account_dialog_title">Demotilille kirjautuminen</string>
+    <string name="login_screen_demo_account_dialog_description">Kirjaudu demotilille, joka sijaitsee demotilipalvelimella.</string>
+    <string name="login_screen_demo_account_username">Käyttäjätunnus</string>
+    <string name="login_screen_demo_account_password">Salasana</string>
+    <string name="login_screen_demo_account_login_failed">Kirjautuminen epäonnistui</string>
+    <string name="login_screen_sign_in_with_email_action">Kirjaudu sähköpostilla</string>
+    <string name="login_screen_email_login_info_dialog_text">Sähköpostiosoitteella kirjautumista on rajoitettu tarkoituksellisesti bottien ja roskapostin vähentämiseksi. Käytä mieluiten tavanomaista kirjautumistapaasi (kuten Google tai Apple) aina kun mahdollista.\n\nJos käytät sähköpostiosoitettasi, yhdistäminen kodin kiinteästä laajakaistasta mobiilidatan sijaan voi auttaa välttämään IP-osoitekohtaisten rajojen saavuttamista.</string>
+    <string name="login_screen_demo_account_login_session_expired">Demotilin istunto vanhentui</string>
+    <string name="login_screen_sign_in_with_error">Kirjautuminen epäonnistui</string>
+    <string name="login_screen_login_api_request_failed">Kirjautumispyyntö epäonnistui. Yritä myöhemmin uudelleen.</string>
+    <string name="login_screen_invalid_email_login_token">Virheellinen sähköpostikirjautumiskoodi</string>
+    <string name="login_screen_app_attestation_app_integrity_error">Sovelluksen eheystarkistus epäonnistui</string>
+    <string name="login_screen_app_attestation_device_integrity_error">Laitteen eheystarkistus epäonnistui</string>
+    <string name="login_screen_app_attestation_failed">Sovelluksen vahvistus epäonnistui. Yritä myöhemmin uudelleen.</string>
+    <string name="login_screen_connecting_websocket_failed">Palvelimeen yhdistäminen epäonnistui. Yritä myöhemmin uudelleen.</string>
+    <string name="login_screen_ios_pwa_install_description">Käyttääksesi tätä sovellusta iOS:llä, lisää se Koti-valikkoon:</string>
+    <string name="login_screen_ios_pwa_install_video_instructions_button">Video-ohjeet</string>
+    <string name="login_screen_ios_pwa_install_text_instructions_button">Tekstiohjeet</string>
+    <string name="login_screen_ios_pwa_install_step1">1. Napauta \"Jaa\"-painiketta</string>
+    <string name="login_screen_ios_pwa_install_step1_ios26">1. Napauta \"Jaa\" tai avaa kolmen pisteen valikko löytääksesi sen</string>
+    <string name="login_screen_ios_pwa_install_step2">2. Vieritä alas ja napauta \"Lisää Koti-valikkoon\"</string>
+    <string name="login_screen_ios_pwa_install_step2_ios26">2. Napauta \"Katso lisää\" ja \"Lisää Koti-valikkoon\"</string>
+    <string name="login_screen_ios_pwa_install_step3">3. Napauta \"Lisää\" oikeassa yläkulmassa</string>
+    <string name="login_screen_ios_pwa_install_step4">4. Avaa sovellus Koti-valikosta</string>
+
+    <!-- Email login screen -->
+    <string name="email_login_screen_title">Sähköpostikirjautuminen</string>
+    <string name="email_login_screen_title_register">Sähköpostirekisteröityminen</string>
+    <string name="email_login_screen_login_only_info">Uuden tilin luominen ei ole tuettu tällä kirjautumistavalla</string>
+    <string name="email_login_screen_registration_only_info">Huomaathan, että kertakäyttösähköpostipalveluiden käyttö on kielletty</string>
+    <string name="email_login_screen_email_hint">Sähköpostiosoite</string>
+    <string name="email_login_screen_send_code_button">Lähetä kirjautumiskoodi</string>
+    <string name="email_login_screen_input_code_description">Syötä osoitteeseen %s lähetetty kirjautumiskoodi</string>
+    <string name="email_login_screen_did_not_receive_code">Jos et saanut koodia:\n• Tarkista roskapostikansio\n• Varmista, että sähköpostiosoite on oikein\n• Odota %s ennen uuden koodin pyytämistä\n• Varmista, että sinulla on olemassa oleva tili tällä sähköpostiosoitteella</string>
+    <string name="email_login_screen_code_hint">Kirjautumiskoodi</string>
+    <string name="email_login_screen_token_validity">Koodi vanhenee: %s</string>
+    <string name="email_login_screen_registration_unsupported_email">Sähköpostiosoitetta ei tueta. Käytä toista kirjautumistapaa.</string>
+    <string name="email_login_screen_registration_all_platforms_disabled_error">Uudet sähköpostirekisteröitymiset ovat tällä hetkellä poissa käytöstä. Käytä toista kirjautumistapaa.</string>
+    <string name="email_login_screen_registration_platform_disabled_error">Uudet sähköpostirekisteröitymiset ovat tällä hetkellä poissa käytöstä tällä alustalla (%s). Käytä toista kirjautumistapaa.</string>
+    <string name="email_login_screen_registration_ip_address_limit_reached_error">IP-osoitteesi päivittäinen rekisteröitymisraja on saavutettu. Yritä uudelleen 24 tunnin kuluttua tai käytä toista kirjautumistapaa.</string>
+    <string name="email_login_screen_registration_limit_reached_error">Päivittäinen rekisteröitymisraja on saavutettu. Yritä uudelleen 24 tunnin kuluttua tai käytä toista kirjautumistapaa.</string>
+    <string name="email_login_screen_registration_domain_not_accepted_error">Sähköpostiosoitteita verkkotunnuksella %s ei voi käyttää rekisteröitymiseen. Käytä toista sähköpostia tai kirjautumistapaa.</string>
+    <string name="email_login_method_screen_title">Kirjaudu sähköpostilla</string>
+    <string name="email_login_method_screen_existing_account">Olemassa oleva tili</string>
+    <string name="email_login_method_screen_existing_account_description">Kirjaudu tilille, joka sinulla jo on</string>
+    <string name="email_login_method_screen_new_account">Uusi tili</string>
+    <string name="email_login_method_screen_new_account_description">Luo uusi tili</string>
+
+    <!-- Demo account screen -->
+    <string name="demo_account_screen_no_accounts_available">Tilejä ei saatavilla</string>
+    <string name="demo_account_screen_new_account_action">Uusi tili</string>
+    <string name="demo_account_screen_new_account_dialog_description">Luo uusi tili ja kirjaudu siihen?</string>
+    <string name="demo_account_screen_login_to_account_dialog_title">Kirjaudu tilille?</string>
+    <string name="demo_account_screen_confirm_logout_dialog_title">Kirjaudu ulos?</string>
+    <string name="demo_account_screen_max_account_count_error">Virhe: tilien enimmäismäärä saavutettu</string>
+
+    <!-- Initial setup -->
+    <string name="initial_setup_screen_skip_dialog_title">Ohitetaanko profiilin määritys?</string>
+    <string name="initial_setup_screen_skip_dialog_description">Ohita profiilin määritys vain, jos sinulla on ylläpitäjän oikeudet palveluun.</string>
+    <string name="initial_setup_screen_refresh_face_detected_values_action">Päivitä kasvojen tunnistuksen tila</string>
+    <string name="initial_setup_screen_email_title">Sähköpostiosoitteeni on…</string>
+    <string name="initial_setup_screen_email_hint_text">Syötä sähköpostiosoite</string>
+    <string name="initial_setup_screen_age_confirmation_title">Iän vahvistus</string>
+    <string name="initial_setup_screen_age_confirmation_checkbox">Olen vähintään 18-vuotias</string>
+    <string name="initial_setup_screen_security_selfie_title">Moderointiselfieni on…</string>
+    <string name="initial_setup_screen_security_selfie_description">Ota selfie etukamerallasi. Tätä selfietä käytetään profiilikuviesi vahvistamiseen ja se näkyy vain moderaattoreille, ellet lisää sitä profiiliisi myöhemmin.</string>
+    <string name="initial_setup_screen_security_selfie_face_not_detected">Kasvoja ei havaittu. Yritä uudelleen selkeässä valaistuksessa tai ota yhteyttä tukeen.</string>
+    <string name="initial_setup_screen_profile_pictures_title">Profiilikuvani ovat…</string>
+    <string name="initial_setup_screen_profile_pictures_select_picture_dialog_title">Valitse kuva…</string>
+    <string name="initial_setup_screen_profile_pictures_select_picture_from_gallery_title">Valitse galleriasta</string>
+    <string name="initial_setup_screen_profile_pictures_select_picture_take_new_picture_title">Ota kuva</string>
+    <string name="initial_setup_screen_profile_pictures_select_picture_security_selfie_title">Käytä moderointiselfietä</string>
+    <string name="initial_setup_screen_profile_pictures_file_size_too_large_error">Kuva on liian suuri (enimmäiskoko on 10 MiB)</string>
+    <string name="initial_setup_screen_profile_pictures_unsupported_image_error">Ei-tuettu kuvamuoto. Valitse JPEG- tai PNG-kuva.</string>
+    <string name="initial_setup_screen_profile_pictures_primary_image_info_dialog_description">Vähintään yksi profiilikuva vaaditaan. Ensimmäisessä kuvassa täytyy näkyä kasvosi selkeästi, ja sen neliömäinen rajaus näytetään profiiliruudukoissa.</string>
+    <string name="initial_setup_screen_profile_pictures_primary_image_face_not_detected">Kasvoja ei havaittu. Valitse kuva, jossa kasvosi näkyvät selkeästi.</string>
+    <string name="initial_setup_screen_profile_basic_info_title">Tietoja minusta…</string>
+    <string name="initial_setup_screen_profile_basic_info_profile_name_title">Etunimi</string>
+    <string name="initial_setup_screen_profile_basic_info_profile_name_hint_text">Syötä etunimesi</string>
+    <string name="initial_setup_screen_gender_title">Olen…</string>
+    <string name="initial_setup_screen_search_settings_title">Etsin…</string>
+    <string name="initial_setup_screen_search_settings_min_age_subtitle">…vähimmäisikä…</string>
+    <string name="initial_setup_screen_search_settings_max_age_subtitle">…enimmäisikä…</string>
+    <string name="initial_setup_screen_location_title">Sijaintini on…</string>
+    <string name="initial_setup_screen_location_help_dialog_text">Napauta tai paina kohtaa kartalla asettaaksesi sijaintisi.</string>
+    <string name="initial_setup_screen_profile_privacy_settings_title">Profiilin yksityisyys</string>
+    <string name="initial_setup_screen_first_chat_backup_title">Ensimmäinen keskusteluvarmuuskopio</string>
+    <string name="initial_setup_screen_first_chat_backup_description">Keskustelut tallennetaan vain tälle laitteelle, joten säännölliset varmuuskopiot ovat suositeltavia. Tallennetaan ensimmäinen varmuuskopiosi.\n\nJos käytät pilvitallennustilaa, varmuuskopion tallentaminen sinne on suositeltavaa.</string>
+    <string name="initial_setup_screen_first_chat_backup_save_backup_button">Tallenna keskusteluvarmuuskopio</string>
+    <string name="initial_setup_screen_first_chat_backup_backup_saved_successfully">Varmuuskopio tallennettu onnistuneesti</string>
+    <string name="initial_setup_screen_first_chat_backup_security_info">Varmuuskopio sisältää salausavaimesi. Pidä se tallessa laitteen katoamisen varalta, jotta voit lukea kaikki sinulle lähetetyt viestit.</string>
+    <string name="initial_setup_screen_first_chat_backup_skip_warning">Sovelluksen poistaminen poistaa keskustelusi ja salausavaimesi. Ilman avainta et voi lukea sinulle lähetettyjä viestejä.\n\nHaluatko varmasti ohittaa varmuuskopion luomisen?</string>
+
+    <!-- Notification permission -->
+    <string name="notification_permission_dialog_title">Salli ilmoitukset?</string>
+    <string name="notification_permission_dialog_description">Salli ilmoitukset saadaksesi hälytyksiä esimerkiksi uusista keskustelupyynnöistä ja viesteistä.</string>
+
+    <!-- App update available dialog -->
+    <string name="app_update_available_dialog_description_update_now">Uusi versio on saatavilla. Päivitetäänkö nyt?</string>
+    <string name="app_update_available_dialog_description_manual_update">Uusi versio on saatavilla. Päivitä sovellus.</string>
+    <string name="app_update_available_dialog_description_web_restart">Uusi versio on saatavilla. Käynnistä sovellus uudelleen päivittääksesi.</string>
+
+    <!-- Video call tip dialog -->
+    <string name="video_call_tip_dialog_title">Pidätkö videopuheluista?</string>
+    <string name="video_call_tip_dialog_description">Voit lähettää videopuhelukutsun keskustelun oikeassa yläkulmassa olevasta videopuhelukuvakkeesta.</string>
+
+    <!-- Camera screen -->
+    <string name="camera_screen_camera_opening_already_in_progress_error">Kamera on jo käynnistymässä</string>
+    <string name="camera_screen_no_front_camera_error">Etukameraa ei löytynyt</string>
+    <string name="camera_screen_camera_initialization_error">Kameran avaaminen epäonnistui</string>
+    <string name="camera_screen_camera_initialization_error_with_error_code">Kameran avaaminen epäonnistui (virhe %s)</string>
+    <string name="camera_screen_camera_permission_error_try_again_or_check_settings">Kameran käyttöoikeus vaaditaan. Yritä uudelleen. Saatat joutua myöntämään luvan järjestelmäasetuksista.</string>
+    <string name="camera_screen_camera_permission_error_check_settings">Kameran käyttöoikeus vaaditaan. Myönnä kameran käyttöoikeus järjestelmäasetuksista.</string>
+    <string name="camera_screen_camera_access_restricted_error">Kameran käyttö on estetty tällä laitteella.</string>
+    <string name="camera_screen_take_photo_error">Kuvan ottaminen epäonnistui</string>
+
+    <!-- Map texts -->
+    <string name="map_select_location_help_text">Napauta tai paina kohtaa kartalla asettaaksesi sijaintisi.</string>
+    <string name="map_location_update_successful">Sijainti päivitetty</string>
+    <string name="map_location_update_failed">Sijainnin päivitys epäonnistui</string>
+    <string name="map_tile_error">Kartan lataaminen epäonnistui</string>
+    <string name="map_openstreetmap_data_attribution_link_text">OpenStreetMapin tekijät</string>
+
+    <!-- Profile grid screen -->
+    <string name="profile_grid_screen_title">Profiilit</string>
+    <string name="profile_grid_screen_start_initial_setup_button">Määritä profiili</string>
+    <string name="profile_grid_screen_email_not_verified">Vahvista sähköpostiosoitteesi. Vahvistuslinkki on lähetetty sähköpostiisi. Jos et löydä sitä, tarkista roskapostikansio.</string>
+    <string name="profile_grid_screen_email_not_verified_button">Tilin asetukset</string>
+    <string name="profile_grid_screen_profile_is_private_info">Selataksesi profiileja, aseta profiilisi julkiseksi Asetuksista.</string>
+    <string name="profile_grid_screen_no_profiles_found_title">Profiileja ei löytynyt</string>
+    <string name="profile_grid_screen_no_profiles_found_description_filters_enabled">Kokeile muokata tai nollata suodattimia</string>
+    <string name="profile_grid_screen_no_profiles_found_description_filters_disabled">Kerro sovelluksesta sosiaalisessa mediassa</string>
+    <string name="profile_grid_screen_selected_age_range">Valittu ikähaarukka: %s</string>
+    <string name="profile_grid_screen_profile_filter_settings_update_ongoing">Päivitetään suodattimia…</string>
+    <string name="profile_grid_screen_security_content_is_not_accepted">Moderointiselfietä ei ole hyväksytty</string>
+    <string name="profile_grid_screen_security_content_does_not_exist">Moderointiselfie puuttuu</string>
+    <string name="profile_grid_screen_security_content_face_not_detected">Kasvoja ei havaittu moderointiselfiessä</string>
+    <string name="profile_grid_screen_primary_profile_content_is_in_moderation">Voit selata ja näkyä muille, kun ensimmäinen profiilikuvasi on hyväksytty</string>
+    <string name="profile_grid_screen_primary_profile_content_is_not_accepted">Ensimmäistä profiilikuvaa ei ole hyväksytty</string>
+    <string name="profile_grid_screen_primary_profile_content_face_not_detected">Kasvoja ei havaittu ensimmäisessä profiilikuvassa</string>
+    <string name="profile_grid_screen_primary_profile_content_does_not_exist">Ensimmäinen profiilikuva puuttuu</string>
+    <string name="profile_grid_screen_show_favorite_profiles_action">Näytä suosikit</string>
+    <string name="profile_grid_screen_show_all_profiles_action">Näytä kaikki profiilit</string>
+    <string name="profile_grid_screen_no_favorite_profiles_found_title">Ei vielä suosikkeja</string>
+    <string name="profile_grid_screen_no_favorite_profiles_found_description">Merkitse profiili tähdellä tallentaaksesi sen tänne.</string>
+    <string name="profile_grid_screen_filtering_favorite_profiles_is_not_supported">Suosikkien suodattamista ei tueta</string>
+    <string name="profile_grid_screen_daily_likes_dialog_text">Päivittäisiä keskustelupyyntöjä jäljellä: %s\nNollaantumisaika: %s</string>
+    <string name="profile_grid_screen_daily_likes_dialog_unlimited_likes_text">Keskustelupyyntöjen lähettäminen treffiseuraa tälle päivälle etsiville ei vähennä päivittäisiä keskustelupyyntöjä.</string>
+    <string name="profile_grid_screen_account_verification_banner_text">Tiliäsi ei ole vahvistettu</string>
+    <string name="profile_grid_screen_account_verification_banner_text_incomplete">Tilin vahvistus on keskeneräinen</string>
+    <string name="profile_grid_screen_account_verification_banner_button">Vahvista nyt</string>
+
+    <!-- View profile screen -->
+    <string name="view_profile_screen_my_profile_initial_setup_not_done">Profiilia ei ole vielä määritetty</string>
+    <string name="view_profile_screen_my_profile_title">Oma profiili</string>
+    <string name="view_profile_screen_my_profile_edit_action">Muokkaa profiilia</string>
+    <string name="view_profile_screen_block_action">Estä</string>
+    <string name="view_profile_screen_block_action_dialog_title">Estä profiili?</string>
+    <string name="view_profile_screen_like_action">Lähetä keskustelupyyntö</string>
+    <string name="view_profile_screen_like_action_dialog_title">Lähetä keskustelupyyntö?</string>
+    <string name="view_profile_screen_chat_action">Keskustele</string>
+    <string name="view_profile_screen_add_to_favorites_action">Lisää suosikkeihin</string>
+    <string name="view_profile_screen_add_to_favorites_action_successful">Lisätty suosikkeihin</string>
+    <string name="view_profile_screen_add_to_favorites_error_too_many_favorites">Suosikkilista on täysi</string>
+    <string name="view_profile_screen_add_to_favorites_remaining_space">Jäljellä olevat suosikkipaikat: %s</string>
+    <string name="view_profile_screen_remove_from_favorites_action">Poista suosikeista</string>
+    <string name="view_profile_screen_remove_from_favorites_action_successful">Poistettu suosikeista</string>
+    <string name="view_profile_screen_like_action_successful">Keskustelupyyntö lähetetty</string>
+    <string name="view_profile_screen_like_action_try_again_tomorrow">Päivittäiset keskustelupyynnöt ovat jo käytetty. Yritä huomenna uudelleen.</string>
+    <string name="view_profile_screen_like_action_like_already_sent">Keskustelupyyntö on jo lähetetty</string>
+    <string name="view_profile_screen_like_action_like_already_received">Keskustelupyyntö on jo vastaanotettu</string>
+    <string name="view_profile_screen_already_match">Keskustelu on jo mahdollista</string>
+    <string name="view_profile_screen_block_action_successful">Profiili estetty</string>
+    <string name="view_profile_screen_profile_edit_failed">Profiilin tallennus epäonnistui</string>
+    <string name="view_profile_screen_profile_image_does_not_exist">Profiilikuva %s ei ole olemassa</string>
+    <string name="view_profile_screen_profile_currently_online">Paikalla</string>
+    <string name="view_profile_screen_profile_last_seen_second">Nähty %s sekunti sitten</string>
+    <string name="view_profile_screen_profile_last_seen_seconds">Nähty %s sekuntia sitten</string>
+    <string name="view_profile_screen_profile_last_seen_minute">Nähty %s minuutti sitten</string>
+    <string name="view_profile_screen_profile_last_seen_minutes">Nähty %s minuuttia sitten</string>
+    <string name="view_profile_screen_profile_last_seen_hour">Nähty %s tunti sitten</string>
+    <string name="view_profile_screen_profile_last_seen_hours">Nähty %s tuntia sitten</string>
+    <string name="view_profile_screen_profile_last_seen_day">Nähty %s päivä sitten</string>
+    <string name="view_profile_screen_profile_last_seen_days">Nähty %s päivää sitten</string>
+    <string name="view_profile_screen_profile_verification_requires_verified_account">Tämän tiedon katselu vaatii vahvistetun tilin</string>
+    <string name="view_profile_screen_non_accepted_profile_name_info_dialog_text">Profiilinimeä ei ole vielä moderoitu tai se on hylätty. Vain ensimmäinen kirjain näkyy käyttäjille.</string>
+    <string name="view_profile_screen_non_accepted_profile_text_info_dialog_text">Profiilitekstiä ei ole vielä moderoitu tai se on hylätty. Vain ensimmäinen kirjain näkyy käyttäjille.</string>
+    <string name="view_profile_screen_non_accepted_profile_content_info_dialog_text">Kaikkia profiilikuvia ei ole vielä moderoitu tai jokin kuva on hylätty. Vain hyväksytyt kuvat näkyvät käyttäjille.</string>
+    <string name="view_profile_screen_non_accepted_profile_content_info_dialog_text_picture_title">Kuva %s</string>
+
+    <!-- Edit profile screen -->
+    <string name="edit_profile_screen_title">Muokkaa profiilia</string>
+    <string name="edit_profile_screen_profile_name">Etunimi</string>
+    <string name="edit_profile_screen_profile_name_description">Etunimen muuttaminen on mahdollista vain ennen kuin moderaattorit ovat hyväksyneet sen.</string>
+    <string name="edit_profile_screen_profile_text">Profiilin teksti</string>
+    <string name="edit_profile_screen_unlimited_likes">Treffiseuraa tälle päivälle</string>
+    <string name="edit_profile_screen_unlimited_likes_description_enabled_and_automatic_disabling">Kytkeytyy pois päältä klo %s</string>
+    <string name="edit_profile_screen_invalid_profile_name">Virheellinen etunimi</string>
+    <string name="edit_profile_screen_invalid_age">Virheellinen ikä</string>
+    <string name="edit_profile_screen_one_profile_image_required">Vähintään yksi profiilikuva vaaditaan</string>
+    <string name="edit_profile_screen_automatic_min_age_incrementing_info_dialog_text">Minimi-ikä nostetaan arvoon %s ajassa %s</string>
+    <string name="edit_profile_screen_primary_profile_content_pending_moderation">Kuva ei ole tällä hetkellä moderaattorin hyväksymä. Profiilisi ei näy profiiliruudukossa ennen kuin kuva on hyväksytty.</string>
+    <string name="edit_profile_screen_primary_profile_content_rejected">Moderaattori hylkäsi kuvan. Vaihda kuva, jotta profiilisi näkyy profiiliruudukossa.</string>
+
+    <!-- Edit profile text screen -->
+    <string name="edit_profile_text_screen_text_length_too_long">Profiiliteksti on liian pitkä (enintään 2000 tavua)</string>
+
+    <!-- Edit attribute value screen -->
+    <string name="edit_attribute_value_screen_one_value_must_be_selected">Vähintään yksi vaihtoehto on valittava</string>
+    <string name="edit_attribute_value_screen_search_placeholder_text">Hae…</string>
+    <string name="edit_attribute_value_screen_max_selected_values_error">Liian monta vaihtoehtoa valittu</string>
+    <string name="attribute_partially_hidden_info">"%s" on osittain piilotettu</string>
+    <string name="attribute_deprecated_info">"%s" on vanhentunut ja poistuu, kun sen valinta poistetaan</string>
+
+    <!-- Select content screen -->
+    <string name="select_content_screen_title">Valitse kuva</string>
+    <string name="select_content_screen_count">Kuvia %s/%s</string>
+    <string name="select_content_screen_face_detected">Kasvot havaittu</string>
+
+    <!-- Content management screen -->
+    <string name="content_management_screen_title">Omat kuvat</string>
+    <string name="content_management_screen_content_profile_content">Profiilikuva %s</string>
+    <string name="content_management_screen_content_deletion_allowed_wait_time">Voidaan poistaa alkaen %s</string>
+    <string name="content_management_screen_content_face_verified">Kasvot vahvistettu</string>
+    <string name="content_management_screen_content_face_not_verified">Kasvoja ei ole vahvistettu</string>
+    <string name="content_management_screen_content_face_verification_pending">Kasvojen vahvistus odottaa</string>
+
+    <!-- Profile filters screen -->
+    <string name="profile_filters_screen_title">Profiilisuodattimet</string>
+    <string name="profile_filters_screen_disable_filters_action">Nollaa suodattimet</string>
+    <string name="profile_filters_screen_profile_verification_requires_verified_account">Tämän suodattimen käyttö vaatii vahvistetun tilin</string>
+    <string name="profile_filters_screen_disable_filters_action_dialog_title">Nollaa suodattimet?</string>
+    <string name="profile_filters_screen_min_age_filter">Minimi-ikä</string>
+    <string name="profile_filters_screen_max_age_filter">Maksimi-ikä</string>
+    <string name="profile_filters_screen_unlimited_likes_filter">Treffiseuraa tälle päivälle</string>
+    <string name="profile_filters_screen_profile_last_seen_time_filter">Viimeksi nähty</string>
+    <string name="profile_filters_screen_profile_last_seen_time_filter_online">Paikalla</string>
+    <string name="profile_filters_screen_profile_last_seen_time_filter_disabled_from_privacy">Pois käytöstä yksityisyysasetuksista</string>
+    <string name="profile_filters_screen_profile_last_seen_time_filter_day">%s päivä</string>
+    <string name="profile_filters_screen_profile_last_seen_time_filter_days">%s päivää</string>
+    <string name="profile_filters_screen_profile_last_seen_time_filter_all">Milloin vain</string>
+    <string name="profile_filters_screen_profile_created_filter">Profiili luotu</string>
+    <string name="profile_filters_screen_profile_edited_filter">Profiili muokattu</string>
+    <string name="profile_filters_screen_distance_filter">Etäisyys</string>
+    <string name="profile_filters_screen_distance_filter_unit">km</string>
+    <string name="profile_filters_screen_profile_text_filter">Profiilitekstin pituus</string>
+    <string name="profile_filters_screen_profile_text_filter_unit">merkkiä</string>
+    <string name="profile_filters_screen_unsigned_integer_filter_min_value">Vähintään %s</string>
+    <string name="profile_filters_screen_unsigned_integer_filter_max_value">Enintään %s</string>
+    <string name="profile_filters_screen_unsigned_integer_filter_min_and_max_value">%s-%s</string>
+    <string name="profile_filters_screen_unsigned_integer_filter_min_value_with_unit">Vähintään %s %s</string>
+    <string name="profile_filters_screen_unsigned_integer_filter_max_value_with_unit">Enintään %s %s</string>
+    <string name="profile_filters_screen_unsigned_integer_filter_min_and_max_value_with_unit">%s-%s %s</string>
+    <string name="profile_filters_screen_profile_verification_status_filter">Profiilin vahvistus</string>
+    <string name="profile_filters_screen_profile_verification_status_filter_face_verified">Kasvokuva</string>
+    <string name="profile_filters_screen_profile_verification_status_filter_profile_age_range_verified">Ikä (vahvistettu kerran)</string>
+    <string name="profile_filters_screen_profile_verification_status_filter_profile_name_verified">Nimi</string>
+    <string name="profile_filters_screen_updating_filters_failed">Suodattimien päivitys epäonnistui</string>
+
+    <!-- Edit profile attribute filter value screen -->
+    <string name="edit_attribute_filter_value_screen_title">Muokkaa suodatinta</string>
+    <string name="edit_attribute_filter_value_screen_search_placeholder_text">Hae…</string>
+    <string name="edit_attribute_filter_value_screen_show_advanced_filters_action">Lisäsuodattimet</string>
+    <string name="edit_attribute_filter_value_screen_show_basic_filters_action">Perussuodattimet</string>
+    <string name="edit_attribute_filter_value_screen_require_all_wanted_values">Vaadi kaikki halutut arvot</string>
+
+    <!-- Search settings screen -->
+    <string name="search_settings_screen_title">Profiilihaku</string>
+    <string name="search_settings_screen_change_gender_filter_action_tile">Sukupuolisuodatin</string>
+    <string name="search_settings_screen_change_my_gender_action_title">Muuta profiilini sukupuoli</string>
+    <string name="search_settings_screen_gender_is_not_selected">Sukupuoltasi ei ole asetettu</string>
+    <string name="search_settings_screen_gender_filter_is_not_selected">Sukupuolisuodatinta ei ole valittu</string>
+    <string name="search_settings_screen_search_settings_update_failed">Hakuasetusten päivitys epäonnistui</string>
+    <string name="search_settings_screen_automatic_search">Uudet ja päivitetyt profiilit</string>
+    <string name="search_settings_screen_distance">Käytä maksimietäisyyssuodatinta</string>
+    <string name="search_settings_screen_filters">Käytä monivalintakysymyssuodattimia</string>
+    <string name="search_settings_screen_new_profiles">Piilota päivitetyt profiilit</string>
+    <string name="search_settings_screen_weekdays">Hakupäivät</string>
+
+    <!-- Edit my gender screen -->
+    <string name="edit_my_gender_screen_gender_setting_title">Profiilini sukupuoli</string>
+
+    <!-- Likes -->
     <string name="likes_screen_title">Pyynnöt</string>
-    <string name="chat_list_screen_title">Chatit</string>
+    <string name="likes_screen_no_received_likes_found">Ei vastaanotettuja keskustelupyyntöjä</string>
+    <string name="likes_screen_no_received_likes_found_description">Kerro sovelluksesta sosiaalisessa mediassa</string>
+    <string name="likes_screen_like_loading_failed">Keskustelupyyntöjen lataus epäonnistui</string>
+    <string name="likes_screen_refresh_action">Päivitä</string>
+
+    <!-- Chat list -->
+    <string name="chat_list_screen_title">Keskustelut</string>
+    <string name="chat_list_screen_no_chats_found">Ei vielä keskusteluja</string>
+    <string name="chat_list_screen_no_chats_found_description">Kerro sovelluksesta sosiaalisessa mediassa</string>
+    <string name="chat_list_screen_unread_message">Uusi viesti</string>
+    <string name="chat_list_screen_open_matches_screen_action">Hyväksytyt keskustelupyynnöt</string>
+    <string name="chat_list_screen_sent_message_indicator">Sinä: %s</string>
+    <string name="chat_list_screen_profile_not_available">Profiili ei saatavilla</string>
+
+    <!-- Select match screen -->
+    <string name="select_match_screen_title">Hyväksytyt keskustelupyynnöt</string>
+    <string name="chat_list_screen_no_matches_found">Ei vielä hyväksyttyjä keskustelupyyntöjä</string>
+
+    <!-- Conversation screen -->
+    <string name="conversation_screen_profile_blocked">Profiili estettiin</string>
+    <string name="conversation_screen_message_list_empty">Ei vielä viestejä</string>
+    <string name="conversation_screen_make_match_instruction">Lähetä viesti hyväksyäksesi keskustelupyynnön!</string>
+    <string name="conversation_screen_chat_box_placeholder_text">Kirjoita viesti…</string>
+    <string name="conversation_screen_message_too_long">Viesti on liian pitkä</string>
+    <string name="conversation_screen_message_too_many_pending_messages">Liian monta toimittamatonta viestiä</string>
+    <string name="conversation_screen_message_send_requires_connection">Yritä uudelleen, kun sovellus yhdistää palvelimeen</string>
+    <string name="conversation_screen_remaining_daily_messages">Päivittäisiä viestejä jäljellä: %s</string>
+    <string name="conversation_screen_remaining_conversation_messages">Viestejä jäljellä tähän keskusteluun: %s (nollautuu toimituksen jälkeen)</string>
+    <string name="conversation_screen_message_state_sending_in_progress">Lähetetään…</string>
+    <string name="conversation_screen_message_state_sent_successfully">Lähetetty</string>
+    <string name="conversation_screen_message_state_delivered">Toimitettu</string>
+    <string name="conversation_screen_message_state_seen">Nähty</string>
+    <string name="conversation_screen_message_state_sending_failed">Lähetys epäonnistui</string>
+    <string name="conversation_screen_message_state_delivery_failed">Toimitus epäonnistui</string>
+    <string name="conversation_screen_message_state_delivery_failed_and_resent">Toimitus epäonnistui, lähetetty uudelleen</string>
+    <string name="conversation_screen_message_state_decrypting_failed">Salauksen purku epäonnistui</string>
+    <string name="conversation_screen_message_state_decrypting_failed_detailed">Salausta ei voitu purkaa. Pyydä lähettäjää lähettämään viesti uudelleen.</string>
+    <string name="conversation_screen_message_state_public_key_download_failed">Salausavaimen lataus epäonnistui</string>
+    <string name="conversation_screen_message_state_received_successfully">Vastaanotettu</string>
+    <string name="conversation_screen_message_state_received_and_seen_locally">Nähty paikallisesti</string>
+    <string name="conversation_screen_message_state_received_and_seen">Nähty</string>
+    <string name="conversation_screen_message_unsupported">Ei tuettu viestimuoto</string>
+    <string name="conversation_screen_message_not_found">Viestiä ei löytynyt</string>
+    <string name="conversation_screen_message_details_message_id">Viestitunniste</string>
+    <string name="conversation_screen_message_details_message_number">Viestin numero</string>
+    <string name="conversation_screen_message_error_is_actually_sent_successfully">Tämä viesti lähetettiin jo onnistuneesti</string>
+    <string name="conversation_screen_message_error_recipient_blocked_sender_or_recipient_not_found">Viestiä ei voitu toimittaa vastaanottajalle</string>
+    <string name="conversation_screen_message_resend_complete">Uudelleenlähetetty onnistuneesti</string>
+    <string name="conversation_screen_message_resent_info">Uudelleenlähetetty (alun perin lähetetty %s, viesti %s)</string>
+    <string name="conversation_screen_message_resend_confirm_title">Lähetä uudelleen?</string>
+    <string name="conversation_screen_message_info_encryption_started">Viestit ovat päästä päähän -salattuja</string>
+    <string name="conversation_screen_message_info_encryption_key_changed">Käyttäjän %s salausavain muuttui</string>
+    <string name="conversation_screen_send_video_call_invitation_action">Lähetä videopuhelukutsu</string>
+    <string name="conversation_screen_send_video_call_invitation_dialog_title">Lähetä videopuhelukutsu?</string>
+    <string name="conversation_screen_join_video_call_button">Liity videopuheluun</string>
+    <string name="conversation_screen_join_video_call_dialog_title">Liity videopuheluun?</string>
+    <string name="conversation_screen_open_details_action_subtitle">Sisältää valittavaa tekstiä</string>
+    <string name="conversation_screen_install_jitsi_meet_dialog_title">Asenna Jitsi Meet?</string>
+    <string name="conversation_screen_install_jitsi_meet_dialog_description_android">Videopuhelut vaativat Jitsi Meet -sovelluksen. Haluatko asentaa sen Google Play Kaupasta?</string>
+    <string name="conversation_screen_install_jitsi_meet_dialog_description_ios">Videopuhelut vaativat Jitsi Meet -sovelluksen. Haluatko asentaa sen App Storesta?</string>
+
+    <!-- Menu screen -->
+    <string name="menu_screen_title">Valikko</string>
+    <string name="menu_screen_server_maintenance_title">Huoltokatko</string>
+    <string name="menu_screen_admin_offline_title">Automaattinen moderointi on tilapäisesti poissa käytöstä</string>
+    <string name="menu_screen_help_center_title">Ohjekeskus</string>
+
+    <!-- Settings -->
     <string name="settings_screen_title">Asetukset</string>
+    <string name="settings_screen_profile_category">Profiili</string>
+    <string name="settings_screen_privacy_and_security_category">Yksityisyys ja turvallisuus</string>
+    <string name="settings_screen_profile_visibility_setting">Profiilin näkyvyys</string>
+    <string name="settings_screen_profile_visibility_private_description">Piilota profiilisi Profiilit-näkymästä</string>
+    <string name="settings_screen_profile_visibility_public_description">Näytä profiilisi Profiilit-näkymässä</string>
+    <string name="settings_screen_data_category">Tiedot</string>
+    <string name="settings_screen_general_category">Yleiset</string>
+
+    <!-- Blocked profiles screen -->
+    <string name="blocked_profiles_screen_title">Estetyt profiilit</string>
+    <string name="blocked_profiles_screen_placeholder_for_private_profile">Yksityinen profiili</string>
+    <string name="blocked_profiles_screen_unblock_profile_dialog_title">Poista profiilin esto?</string>
+    <string name="blocked_profiles_screen_unblock_profile_dialog_description">Poista profiilin %s esto</string>
+    <string name="blocked_profiles_screen_unblock_profile_successful">Profiilin esto poistettu</string>
+    <string name="blocked_profiles_screen_unblock_profile_failed">Profiilin eston poistaminen epäonnistui</string>
+    <string name="blocked_profiles_screen_unblock_profile_in_progress">Edellinen eston poisto on kesken</string>
+    <string name="blocked_profiles_screen_no_blocked_profiles">Ei estettyjä profiileja</string>
+
+    <!-- Current security selfie -->
+    <string name="current_security_selfie_screen_security_selfie_changed">Moderointiselfie päivitetty</string>
+
+    <!-- Profile location screen -->
+    <string name="profile_location_screen_title">Sijainti</string>
+
+    <!-- Data export -->
+    <string name="data_export_screen_title_export_type_user">Lataa omat tiedot</string>
+    <string name="data_export_screen_title_export_type_admin">Tietojen vienti</string>
+    <string name="data_export_screen_api_limit_error">Päivittäinen raja saavutettu. Yritä uudelleen 24 tunnin kuluttua.</string>
+
+    <!-- Chat backup -->
+    <string name="chat_backup_screen_title">Keskusteluvarmuuskopio</string>
+    <string name="chat_backup_screen_import_backup_question">Tuo keskusteluvarmuuskopio?</string>
+    <string name="chat_backup_screen_import_backup_question_details">Tiedosto: %s\n\nNykyiset ja varmuuskopion viestit yhdistetään. Nykyinen salausavain korvataan, jos varmuuskopion avain on uudempi.</string>
+    <string name="chat_backup_screen_import_error_invalid_backup_file">Virheellinen varmuuskopiotiedosto</string>
+    <string name="chat_backup_screen_import_error_unsupported_version">Ei tuettu varmuuskopioversio</string>
+    <string name="chat_backup_screen_import_error_wrong_account">Varmuuskopio on luotu eri tilillä</string>
+    <string name="chat_backup_screen_backup_reminder_interval_day">Joka päivä</string>
+    <string name="chat_backup_screen_backup_reminder_interval_days">Joka %s. päivä</string>
+    <string name="chat_backup_reminder_dialog_title">Keskusteluvarmuuskopio</string>
+    <string name="chat_backup_reminder_dialog_message_no_backup">Keskusteluvarmuuskopiota ei ole vielä luotu. Varmuuskopioidaanko nyt?</string>
+    <string name="chat_backup_reminder_dialog_message_old_backup">Keskusteluvarmuuskopiota ei ole luotu %s päivään. Varmuuskopioidaanko nyt?</string>
+
+    <!-- Account settings selfie -->
+    <string name="account_settings_screen_title">Tili</string>
+    <string name="account_settings_screen_email_title">Sähköpostiosoite</string>
+    <string name="account_settings_screen_email_verified">Sähköposti vahvistettu</string>
+    <string name="account_settings_screen_email_not_verified">Sähköpostia ei ole vahvistettu</string>
+    <string name="account_settings_screen_send_verification_email_button">Lähetä vahvistussähköposti</string>
+    <string name="account_settings_screen_send_verification_email_sent_successfully">Vahvistussähköposti lähetetty</string>
+    <string name="account_settings_screen_send_verification_email_already_verified">Sähköposti on jo vahvistettu</string>
+    <string name="account_settings_screen_delete_account_action">Pyydä tilin poistamista</string>
+    <string name="account_settings_screen_delete_account_action_error">Tilin poistopyyntö epäonnistui</string>
+    <string name="account_settings_screen_delete_account_confirm_dialog_title">Pyydä tilin poistamista?</string>
+    <string name="account_settings_screen_change_email_button">Vaihda sähköpostiosoite</string>
+    <string name="account_settings_screen_change_email_dialog_title">Vaihda sähköpostiosoite</string>
+    <string name="account_settings_screen_change_email_dialog_hint">Syötä uusi sähköpostiosoite</string>
+    <string name="account_settings_screen_change_email_local_auth_reason">Vahvista henkilöllisyytesi vaihtaaksesi sähköpostiosoitteen</string>
+    <string name="account_settings_screen_pending_email_title">Uusi sähköpostiosoite</string>
+    <string name="account_settings_screen_pending_email_verified">Uusi sähköpostiosoite vahvistettu</string>
+    <string name="account_settings_screen_pending_email_not_verified">Uusi sähköpostiosoite ei ole vahvistettu</string>
+    <string name="account_settings_screen_pending_email_completion_time">Sähköpostiosoitteen vaihto valmistuu: %s</string>
+    <string name="account_settings_screen_cancel_email_change_button">Peruuta sähköpostiosoitteen vaihto</string>
+    <string name="account_settings_screen_email_change_initiated">Sähköpostiosoitteen vaihto aloitettu. Tarkista sähköpostisi.</string>
+    <string name="account_settings_screen_email_change_cancelled">Sähköpostiosoitteen vaihto peruutettu</string>
+    <string name="account_settings_screen_email_change_history_limit_reached">Sähköpostiosoitteen vaihtoraja saavutettu. Yritä uudelleen %s kuluttua.</string>
+    <string name="account_settings_screen_cancel_email_change_confirm_dialog_title">Peruuta sähköpostiosoitteen vaihto?</string>
+
+    <!-- Verification errors shared between account and age verification -->
+    <string name="verification_error_data_parsing_failed">Virheelliset tunnistautumistiedot</string>
+    <string name="verification_error_data_verification_failed">Henkilöllisyyden vahvistus epäonnistui</string>
+    <string name="verification_error_method_not_configured">Sovelluksen ylläpitäjä ei ole määrittänyt tätä vahvistustapaa</string>
+    <string name="verification_method_eudi_unsupported">EUDI-lompakko (ei tuettu tässä versiossa)</string>
+
+    <!-- Account verification settings -->
+    <string name="account_verification_screen_title">Tilin vahvistus</string>
+    <string name="account_verification_screen_verification_in_progress_title">Vahvistus käynnissä</string>
+    <string name="account_verification_screen_queue_position">Jonosija: %s</string>
+    <string name="account_verification_screen_request_queue_full">Vahvistusjono on täynnä. Yritä myöhemmin uudelleen.</string>
+    <string name="account_verification_screen_request_initial_setup_not_completed">Profiilia ei ole vielä määritetty</string>
+    <string name="account_verification_screen_previous_verification_title">Edellinen vahvistus</string>
+    <string name="account_verification_screen_previous_verification_time">Aika: %s</string>
+    <string name="account_verification_screen_previous_verification_errors_title">Virheet</string>
+    <string name="account_verification_screen_error_profile_age_range_verification_failed">Iän vahvistus epäonnistui</string>
+    <string name="account_verification_screen_error_profile_age_range_verification_mismatch">Vahvistettu ikä ei vastaa ikääsi profiilissasi</string>
+    <string name="account_verification_screen_error_profile_age_range_mismatch">Ikäsi (profiilissasi) muuttui vahvistuksen aikana</string>
+    <string name="account_verification_screen_error_profile_name_verification_failed">Nimen vahvistus epäonnistui</string>
+    <string name="account_verification_screen_error_profile_name_verification_mismatch">Vahvistettu nimi ei vastaa profiilinimeä</string>
+    <string name="account_verification_screen_error_profile_name_mismatch">Profiilinimi muuttui vahvistuksen aikana</string>
+    <string name="account_verification_screen_error_security_content_verification_failed">Moderointiselfien vahvistus epäonnistui</string>
+    <string name="account_verification_screen_error_security_content_verification_mismatch">Vahvistettu kuva ei vastaa moderointiselfietäsi</string>
+    <string name="account_verification_screen_error_security_content_mismatch">Moderointiselfie muuttui vahvistuksen aikana</string>
+    <string name="account_verification_screen_start_verification_title">Valitse vahvistuskohteet ja -tapa</string>
+    <string name="account_verification_screen_scope_profile_age">Ikä</string>
+    <string name="account_verification_screen_scope_profile_name">Etunimi</string>
+
+    <!-- Age verification settings -->
+    <string name="age_verification_screen_title">Iän vahvistus</string>
+    <string name="age_verification_screen_current_verification_status_title">Nykyinen vahvistustila</string>
+    <string name="age_verification_screen_age_is_18_or_older">Ikä on vähintään 18 vuotta</string>
+    <string name="age_verification_screen_start_verification_title">Aloita vahvistus</string>
+    <string name="age_verification_screen_error_age_already_verified">Ikä on jo vahvistettu</string>
+    <string name="age_verification_screen_error_age_under_18">Täytyy olla vähintään 18-vuotias</string>
+
+    <!-- Age verification required screen -->
+    <string name="age_verification_required_screen_title">Iän vahvistus vaaditaan</string>
+    <string name="age_verification_required_screen_verify_age_action">Vahvista ikä</string>
+
+    <!-- Profile grid settings screen -->
+    <string name="profile_grid_settings_screen_title">Profiiliruudukko</string>
+    <string name="profile_grid_settings_screen_all_grids_title">Kaikki profiiliruudukot</string>
+    <string name="profile_grid_settings_screen_profiles_screen">Profiilit-näkymä</string>
+    <string name="profile_grid_settings_screen_random_profile_order">Satunnainen profiilijärjestys</string>
+    <string name="profile_grid_settings_screen_random_profile_order_description_disabled">Aloita sijainnistasi</string>
+    <string name="profile_grid_settings_screen_random_profile_order_description_enabled">Aloita satunnaisesta sijainnista</string>
+    <string name="profile_grid_settings_screen_images_title">Kuvat</string>
+    <string name="profile_grid_settings_screen_preferred_image_quality">Ensisijainen kuvanlaatu</string>
+    <string name="profile_grid_settings_screen_image_quality_high">Korkea</string>
+    <string name="profile_grid_settings_screen_image_quality_medium">Keskitaso</string>
+    <string name="profile_grid_settings_screen_image_quality_low">Matala</string>
+    <string name="profile_grid_settings_screen_image_quality_lower">Matalampi</string>
+    <string name="profile_grid_settings_screen_image_quality_very_low">Erittäin matala</string>
+
+    <!-- View image screen -->
     <string name="view_image_screen_title">Kuva</string>
-    <string name="app_slogan">Deittisovellus</string>
+
+    <!-- Crop image screen -->
+    <string name="crop_image_screen_title">Rajaa kuva</string>
+
+    <!-- News list screen -->
+    <string name="news_list_screen_title">Uutiset</string>
+    <string name="news_list_screen_not_published">Luonnos</string>
+    <string name="news_list_screen_no_news_found">Ei uutisia saatavilla</string>
+    <string name="news_list_screen_news_loading_failed">Uutisten lataus epäonnistui</string>
+    <string name="news_list_screen_create_new">Luo uusi?</string>
+
+    <!-- View news screen -->
+    <string name="view_news_screen_published">Julkaistu: %s</string>
+    <string name="view_news_screen_edited">Muokattu: %s</string>
+
+    <!-- Statistics screen -->
+    <string name="statistics_screen_title">Tilastot</string>
+    <string name="statistics_screen_count_registered_users">Rekisteröityneet käyttäjät: %s</string>
+    <string name="statistics_screen_count_online_users">Paikalla olevat käyttäjät: %s</string>
+    <string name="statistics_screen_online_users_per_hour_statistics_title">Paikalla olevat käyttäjät tunneittain</string>
+    <string name="statistics_screen_hour_value">Tunti: %s</string>
+    <string name="statistics_screen_count_online_users_bar_chart_tooltip">Paikalla: %s</string>
+    <string name="statistics_screen_count_public_profiles">Julkiset profiilit: %s</string>
+    <string name="statistics_screen_count_private_profiles">Yksityiset profiilit: %s</string>
+    <string name="statistics_screen_count_all_profiles">Kaikki profiilit: %s</string>
+    <string name="statistics_screen_age_range">Iät: %s</string>
+    <string name="statistics_screen_count_men">Miehet: %s</string>
+    <string name="statistics_screen_count_women">Naiset: %s</string>
+    <string name="statistics_screen_count_nonbinaries">Muunsukupuoliset: %s</string>
+    <string name="statistics_screen_time">Aika: %s</string>
+
+    <!-- Account deletion pending screen -->
+    <string name="account_deletion_pending_screen_title">Tilin poisto vireillä</string>
+    <string name="account_deletion_pending_screen_time_text">Tilin poistoprosessi alkaa %s</string>
+
+    <!-- Account banned screen -->
+    <string name="account_banned_screen_title">Tilillä porttikielto</string>
+    <string name="account_banned_screen_ban_reason">Syy: %s</string>
+    <string name="account_banned_screen_ban_reason_category">Kategoria: %s</string>
+    <string name="account_banned_screen_time_text">Porttikiellon poistoprosessi alkaa %s</string>
+
+    <!-- Account ban reason category -->
+    <string name="account_ban_reason_category_profile_name">Profiilinimi</string>
+    <string name="account_ban_reason_category_profile_text">Profiiliteksti</string>
+    <string name="account_ban_reason_category_image">Kuva</string>
+    <string name="account_ban_reason_category_chat_message">Chat-viesti</string>
+    <string name="account_ban_reason_category_report_spam">Ilmoitusten roskapostitus</string>
+
+    <!-- Unsupported client screen -->
+    <string name="unsupported_client_screen_title">Sovelluspäivitys vaaditaan</string>
+    <string name="unsupported_client_screen_info">Tätä sovellusversiota ei enää tueta. Päivitä uusimpaan versioon.</string>
+
+    <!-- Report screen -->
+    <string name="report_screen_profile_name_action">Profiilinimi</string>
+    <string name="report_screen_profile_name_dialog_title">Ilmoita profiilinimi?</string>
+    <string name="report_screen_profile_name_changed_error">Ilmoitus epäonnistui: profiilinimi on muuttunut</string>
+    <string name="report_screen_profile_text_action">Profiiliteksti</string>
+    <string name="report_screen_profile_text_dialog_title">Ilmoita profiiliteksti?</string>
+    <string name="report_screen_profile_text_changed_error">Ilmoitus epäonnistui: profiiliteksti on muuttunut</string>
+    <string name="report_screen_profile_image_action">Profiilikuva</string>
+    <string name="report_screen_chat_message_action">Chat-viesti</string>
+    <string name="report_screen_snackbar_report_successful">Ilmoitus lähetetty</string>
+    <string name="report_screen_snackbar_too_many_reports_error">Liian monta ilmoitusta lähetetty. Yritä myöhemmin uudelleen.</string>
+    <string name="report_screen_custom_report_boolean_dialog_description">Ilmoita käyttäjästä syyllä %s?</string>
+    <string name="report_screen_false_reports_warning">Väärien ilmoitusten tekeminen voi johtaa tilin porttikieltoon</string>
+
+    <!-- Report profile image screen -->
+    <string name="report_profile_image_screen_confirm_dialog_title">Ilmoita profiilikuva?</string>
+    <string name="report_profile_image_screen_image_title">Profiilikuva %s</string>
+    <string name="report_profile_image_screen_profile_image_changed_error">Ilmoitus epäonnistui: profiilikuva on muuttunut</string>
+
+    <!-- Report chat message screen -->
+    <string name="report_chat_message_screen_server_signed_message_not_found">Palvelimen allekirjoittamaa viestiä ei löytynyt</string>
+    <string name="report_chat_message_screen_symmetric_message_encryption_key_not_found">Symmetristä viestinsalausavainta ei löytynyt</string>
+    <string name="report_chat_message_screen_selection_status_none">Valitse enintään 10 viestiä</string>
+    <string name="report_chat_message_screen_selection_status_count">%s/%s viestiä valittu</string>
+
+    <!-- Admin features -->
+
+    <!-- Admin screen -->
+    <string name="admin_settings_title">Ylläpito</string>
+
+    <!-- Profile statistics history screen -->
+    <string name="profile_statistics_history_screen_title">Profiilitilastojen historia</string>
+
+    <!-- Receive chat backup screen -->
+    <string name="receive_chat_backup_screen_title">Vastaanota keskusteluvarmuuskopio</string>
+    <string name="receive_chat_backup_waiting_for_source">Odotetaan toista laitetta…</string>
+    <string name="receive_chat_backup_transferring">Vastaanotetaan varmuuskopiota…</string>
+    <string name="receive_chat_backup_importing">Tuodaan varmuuskopiota…</string>
+    <string name="receive_chat_backup_pairing_code_instruction">Toisella laitteella:</string>
+    <string name="receive_chat_backup_pairing_code_step1">1. Avaa %s</string>
+    <string name="receive_chat_backup_pairing_code_step2">2. Kirjaudu ulos Asetuksista, jos kirjautumisnäkymä ei ole näkyvissä</string>
+    <string name="receive_chat_backup_pairing_code_step3">3. Napauta valikkoa oikeassa yläkulmassa</string>
+    <string name="receive_chat_backup_pairing_code_step4">4. Valitse Lähetä keskusteluvarmuuskopio</string>
+    <string name="receive_chat_backup_pairing_code_step5">5. Skannaa tämä QR-koodi aloittaaksesi siirron</string>
+    <string name="receive_chat_backup_import_success">Varmuuskopio tuotu onnistuneesti</string>
+    <string name="receive_chat_backup_show_text_code">Näytä tekstikoodi</string>
+    <string name="receive_chat_backup_show_qr_code">Näytä QR-koodi</string>
+
+    <!-- Send chat backup screen -->
+    <string name="send_chat_backup_screen_title">Lähetä keskusteluvarmuuskopio</string>
+    <string name="send_chat_backup_idle">Valmis lähettämään varmuuskopio</string>
+    <string name="send_chat_backup_creating_backup">Luodaan varmuuskopiota…</string>
+    <string name="send_chat_backup_transferring">Lähetetään varmuuskopiota…</string>
+    <string name="send_chat_backup_success">Varmuuskopio lähetetty onnistuneesti</string>
+    <string name="send_chat_backup_pairing_code_hint">Syötä parituskoodi vastaanottavasta laitteesta</string>
+    <string name="send_chat_backup_start_button">Aloita siirto</string>
+    <string name="send_chat_backup_send_another_button">Lähetä toinen varmuuskopio</string>
+    <string name="send_chat_backup_scan_qr_button">Skannaa QR-koodi</string>
+    <string name="send_chat_backup_use_text_code_button">Käytä tekstikoodia</string>
+    <string name="scan_pairing_code_screen_title">Skannaa QR-koodi</string>
+    <string name="scan_pairing_code_instruction">Osoita kamera QR-koodiin</string>
+
+    <!-- Chat backup shared -->
+    <string name="chat_backup_connecting">Yhdistetään…</string>
+    <string name="chat_backup_pairing_code_label">Laitteen parituskoodi</string>
+    <string name="chat_backup_transfer_budget_exceeded">Vuosittainen siirtoraja saavutettu. Tallenna varmuuskopio ja siirrä se manuaalisesti.</string>
+    <string name="chat_backup_database_not_found">Keskustelutietoja ei löytynyt tälle tilille</string>
+    <string name="chat_backup_pairing_code_unsupported">Ei tuettu parituskoodiversio</string>
+    <string name="chat_backup_pairing_code_invalid">Virheellinen parituskoodi</string>
+    <string name="chat_backup_data_stream_unsupported">Ei tuettu tietovirta</string>
+
+    <!-- Chat data outdated -->
+    <string name="chat_data_outdated_title">Keskustelutiedot vanhentuneet</string>
+    <string name="chat_data_outdated_description">Laite vaihtunut tai sovellus asennettu uudelleen. Siirretäänkö keskustelut vanhalta laitteeltasi?</string>
+    <string name="chat_data_outdated_receive_backup">Vastaanota varmuuskopio</string>
+    <string name="chat_data_outdated_error_too_many_keys">Salausavainten enimmäismäärä saavutettu. Vastaanota varmuuskopio vanhalta laitteeltasi tai ota yhteyttä tukeen.</string>
+    <string name="chat_data_outdated_pending_messages_warning">Sinulla on lukemattomia viestejä salattuna vanhalla salausavaimellasi. Lukeaksesi ne siirrä keskustelutiedot edelliseltä laitteeltasi tai palauta salausavaimen sisältävä varmuuskopio.\n\nJos jatkat, et voi lukea kyseisiä viestejä. Jatketaanko silti?</string>
+
+    <!-- Association membership -->
+    <string name="association_membership_screen_title">Yhdistyksen jäsenyys</string>
+    <string name="association_membership_screen_full_name_label">Täydellinen nimi</string>
+    <string name="association_membership_screen_domicile_label">Kotipaikka</string>
+    <string name="association_membership_screen_membership_type_label">Jäsenyystyyppi</string>
+    <string name="association_membership_screen_join_button">Liity</string>
+    <string name="association_membership_screen_current_membership_title">Nykyinen jäsenyys</string>
+    <string name="association_membership_screen_end_membership_button">Lopeta jäsenyys</string>
+    <string name="association_membership_screen_end_membership_confirm_title">Lopeta jäsenyys?</string>
+
+    <!-- Sign in with management -->
+    <string name="sign_in_with_management_screen_title">Kirjautumistavat</string>
+    <string name="sign_in_with_management_screen_apple_title">Kirjaudu Applella</string>
+    <string name="sign_in_with_management_screen_google_title">Kirjaudu Googlella</string>
+    <string name="sign_in_with_management_screen_apple_not_linked">Linkitä Apple-tilisi kirjautuaksesi sillä</string>
+    <string name="sign_in_with_management_screen_google_not_linked">Linkitä Google-tilisi kirjautuaksesi sillä</string>
+    <string name="sign_in_with_management_screen_apple_unlink_confirm_title">Poistetaanko Apple-tilin linkitys?</string>
+    <string name="sign_in_with_management_screen_google_unlink_confirm_title">Poistetaanko Google-tilin linkitys?</string>
+    <string name="sign_in_with_management_screen_local_auth_reason">Vahvista henkilöllisyytesi hallitaksesi kirjautumistapoja</string>
+    <string name="sign_in_with_management_screen_link_failed">Kirjautumistavan linkitys epäonnistui</string>
+    <string name="sign_in_with_management_screen_link_history_limit_reached">Kirjautumistavan vaihtoraja saavutettu. Yritä uudelleen %s kuluttua.</string>
+    <string name="sign_in_with_management_screen_unlink_failed">Kirjautumistavan linkityksen poisto epäonnistui</string>
 </resources>

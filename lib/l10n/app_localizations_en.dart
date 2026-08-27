@@ -45,11 +45,11 @@ class AppLocalizationsEn extends AppLocalizations {
 
   @override
   String account_banned_screen_time_text(String p0) {
-    return 'Suspension ending will begin at $p0';
+    return 'Ban deletion will begin at $p0';
   }
 
   @override
-  String get account_banned_screen_title => 'Account suspended';
+  String get account_banned_screen_title => 'Account banned';
 
   @override
   String account_deletion_pending_screen_time_text(String p0) {
@@ -60,14 +60,14 @@ class AppLocalizationsEn extends AppLocalizations {
   String get account_deletion_pending_screen_title => 'Account deletion pending';
 
   @override
-  String get account_settings_screen_cancel_email_change_button => 'Cancel email change';
+  String get account_settings_screen_cancel_email_change_button => 'Cancel email address change';
 
   @override
   String get account_settings_screen_cancel_email_change_confirm_dialog_title =>
-      'Cancel email change?';
+      'Cancel email address change?';
 
   @override
-  String get account_settings_screen_change_email_button => 'Change email';
+  String get account_settings_screen_change_email_button => 'Change email address';
 
   @override
   String get account_settings_screen_change_email_dialog_hint => 'Enter new email address';
@@ -91,16 +91,16 @@ class AppLocalizationsEn extends AppLocalizations {
       'Request account deletion?';
 
   @override
-  String get account_settings_screen_email_change_cancelled => 'Email change cancelled';
+  String get account_settings_screen_email_change_cancelled => 'Email address change cancelled';
 
   @override
   String account_settings_screen_email_change_history_limit_reached(String p0) {
-    return 'Email change limit reached. Try again after $p0.';
+    return 'Email address change limit reached. Try again after $p0.';
   }
 
   @override
   String get account_settings_screen_email_change_initiated =>
-      'Email change initiated. Please check your inbox.';
+      'Email address change initiated. Please check your inbox.';
 
   @override
   String get account_settings_screen_email_not_verified => 'Email not verified';
@@ -113,17 +113,17 @@ class AppLocalizationsEn extends AppLocalizations {
 
   @override
   String account_settings_screen_pending_email_completion_time(String p0) {
-    return 'Email change completes at: $p0';
+    return 'Email address change completes at: $p0';
   }
 
   @override
-  String get account_settings_screen_pending_email_not_verified => 'Pending email not verified';
+  String get account_settings_screen_pending_email_not_verified => 'New email address not verified';
 
   @override
-  String get account_settings_screen_pending_email_title => 'Pending new email address';
+  String get account_settings_screen_pending_email_title => 'New email address';
 
   @override
-  String get account_settings_screen_pending_email_verified => 'Pending email verified';
+  String get account_settings_screen_pending_email_verified => 'New email address verified';
 
   @override
   String get account_settings_screen_send_verification_email_already_verified =>
@@ -141,7 +141,7 @@ class AppLocalizationsEn extends AppLocalizations {
 
   @override
   String get account_verification_screen_error_profile_age_range_mismatch =>
-      'Profile age changed during verification';
+      'Your age (in your profile) changed during verification';
 
   @override
   String get account_verification_screen_error_profile_age_range_verification_failed =>
@@ -149,7 +149,7 @@ class AppLocalizationsEn extends AppLocalizations {
 
   @override
   String get account_verification_screen_error_profile_age_range_verification_mismatch =>
-      'Verified age does not match your profile age';
+      'Verified age does not match age in your profile';
 
   @override
   String get account_verification_screen_error_profile_name_mismatch =>
@@ -200,10 +200,10 @@ class AppLocalizationsEn extends AppLocalizations {
       'Verification queue is full. Please try again later.';
 
   @override
-  String get account_verification_screen_scope_profile_age => 'Profile age';
+  String get account_verification_screen_scope_profile_age => 'Age';
 
   @override
-  String get account_verification_screen_scope_profile_name => 'Profile name';
+  String get account_verification_screen_scope_profile_name => 'First name';
 
   @override
   String get account_verification_screen_start_verification_title =>
@@ -725,11 +725,11 @@ class AppLocalizationsEn extends AppLocalizations {
 
   @override
   String get edit_profile_screen_primary_profile_content_pending_moderation =>
-      'Picture is not currently accepted by moderators. Your profile will not be shown in profile grid until the picture is accepted.';
+      'Picture is not currently accepted by moderator. Your profile will not be shown in profile grid until the picture is accepted.';
 
   @override
   String get edit_profile_screen_primary_profile_content_rejected =>
-      'Picture was rejected by moderators. Replace the picture to make your profile visible in the profile grid.';
+      'Picture was rejected by moderator. Replace the picture to make your profile visible in the profile grid.';
 
   @override
   String get edit_profile_screen_profile_name => 'First name';
@@ -1187,7 +1187,7 @@ class AppLocalizationsEn extends AppLocalizations {
 
   @override
   String get initial_setup_screen_first_chat_backup_security_info =>
-      'The backup contains your encryption key. Keep it safe in case you lose your device, so you can read all message sent to you.';
+      'The backup contains your encryption key. Keep it safe in case you lose your device, so you can read all messages sent to you.';
 
   @override
   String get initial_setup_screen_first_chat_backup_skip_warning =>
@@ -2017,7 +2017,7 @@ class AppLocalizationsEn extends AppLocalizations {
 
   @override
   String get report_screen_false_reports_warning =>
-      'Submitting false reports may result in account suspension';
+      'Submitting false reports might get your account banned';
 
   @override
   String get report_screen_profile_image_action => 'Profile image';
@@ -2141,12 +2141,12 @@ class AppLocalizationsEn extends AppLocalizations {
 
   @override
   String server_connection_indicator_reconnecting_in_seconds(String p0) {
-    return 'Reconnecting in ${p0}s';
+    return 'Reconnecting in $p0 seconds';
   }
 
   @override
   String server_connection_indicator_websocket_attempts_remaining_today(String p0) {
-    return 'You have $p0 connection attempts left today.';
+    return 'You have $p0 connection attempts left (resets daily)';
   }
 
   @override
@@ -2354,7 +2354,7 @@ class AppLocalizationsEn extends AppLocalizations {
   String get video_call_tip_dialog_title => 'Like video calls?';
 
   @override
-  String get view_image_screen_title => 'View image';
+  String get view_image_screen_title => 'Image';
 
   @override
   String view_news_screen_edited(String p0) {

@@ -123,10 +123,10 @@
     <string name="snackbar_image_quality_degraded" description="Snackbar text when server returns lower image quality than requested">Many users are viewing profiles - image quality may be temporarily reduced</string>
 
     <!-- Server connection indicator -->
-    <string name="server_connection_indicator_reconnecting_in_seconds" description="Server connection indicator text showing countdown">Reconnecting in %ss</string>
+    <string name="server_connection_indicator_reconnecting_in_seconds" description="Server connection indicator text showing countdown">Reconnecting in %s seconds</string>
     <string name="server_connection_indicator_connection_failed" description="Server connection indicator text when connection failed after max retries">Connection failed</string>
     <string name="server_connection_indicator_connection_failed_dialog_text" description="Info dialog message when connection failed after max retries">Unable to connect to the server. Please check your internet connection and try again later. If the problem persists, the server may be temporarily unavailable.</string>
-    <string name="server_connection_indicator_websocket_attempts_remaining_today" description="Snackbar text showing remaining daily websocket connection attempts">You have %s connection attempts left today.</string>
+    <string name="server_connection_indicator_websocket_attempts_remaining_today" description="Snackbar text showing remaining daily websocket connection attempts">You have %s connection attempts left (resets daily)</string>
     <string name="server_connection_indicator_websocket_daily_limit_reached" description="Snackbar text when daily websocket connection attempt limit is reached">Too many connection attempts today. Please try again tomorrow.</string>
 
     <!-- Moderation states -->
@@ -344,7 +344,7 @@
     <string name="initial_setup_screen_first_chat_backup_description" description="Description for initial setup first chat backup">Chats are stored on this device only, so regular backups are recommended. Let\'s save your first backup.\n\nIf you use cloud storage, saving the backup there is recommended.</string>
     <string name="initial_setup_screen_first_chat_backup_save_backup_button" description="Title for initial setup save chat backup button">Save chat backup</string>
     <string name="initial_setup_screen_first_chat_backup_backup_saved_successfully" description="Text for initial setup chat backup saved successfully">Backup saved successfully</string>
-    <string name="initial_setup_screen_first_chat_backup_security_info" description="Security info for initial setup first chat backup">The backup contains your encryption key. Keep it safe in case you lose your device, so you can read all message sent to you.</string>
+    <string name="initial_setup_screen_first_chat_backup_security_info" description="Security info for initial setup first chat backup">The backup contains your encryption key. Keep it safe in case you lose your device, so you can read all messages sent to you.</string>
     <string name="initial_setup_screen_first_chat_backup_skip_warning" description="Warning dialog message when skipping first chat backup">Uninstalling the app will delete your chats and encryption key. Without the key, you will not be able to read messages sent to you.\n\nAre you sure you want to skip creating a backup?</string>
 
     <!-- Notification permission -->
@@ -455,8 +455,8 @@
     <string name="edit_profile_screen_invalid_age" description="Snackbar text for notifying about invalid age">Invalid age</string>
     <string name="edit_profile_screen_one_profile_image_required" description="Snackbar text for notifying about that one profile image is required">One profile image is required</string>
     <string name="edit_profile_screen_automatic_min_age_incrementing_info_dialog_text" description="Dialog text for notifying user when profile age min value is incremented">Min age will be increased to %s in %s</string>
-    <string name="edit_profile_screen_primary_profile_content_pending_moderation" description="Info text that primary profile image is pending moderation">Picture is not currently accepted by moderators. Your profile will not be shown in profile grid until the picture is accepted.</string>
-    <string name="edit_profile_screen_primary_profile_content_rejected" description="Info text that primary profile image was rejected by moderators">Picture was rejected by moderators. Replace the picture to make your profile visible in the profile grid.</string>
+    <string name="edit_profile_screen_primary_profile_content_pending_moderation" description="Info text that primary profile image is pending moderation">Picture is not currently accepted by moderator. Your profile will not be shown in profile grid until the picture is accepted.</string>
+    <string name="edit_profile_screen_primary_profile_content_rejected" description="Info text that primary profile image was rejected by moderators">Picture was rejected by moderator. Replace the picture to make your profile visible in the profile grid.</string>
 
     <!-- Edit profile text screen -->
     <string name="edit_profile_text_screen_text_length_too_long" description="Dialog text for notifying user when profile text is too long">Profile text is too long (maximum 2000 bytes)</string>
@@ -660,19 +660,19 @@
     <string name="account_settings_screen_delete_account_action" description="Title for delete account action">Request account deletion</string>
     <string name="account_settings_screen_delete_account_action_error" description="Snackbar text about delete account action failure">Failed to request account deletion</string>
     <string name="account_settings_screen_delete_account_confirm_dialog_title" description="Title for delete account confirm dialog title">Request account deletion?</string>
-    <string name="account_settings_screen_change_email_button" description="Button text for change email action">Change email</string>
+    <string name="account_settings_screen_change_email_button" description="Button text for change email action">Change email address</string>
     <string name="account_settings_screen_change_email_dialog_title" description="Title for change email dialog">Change email address</string>
     <string name="account_settings_screen_change_email_dialog_hint" description="Hint text for new email input">Enter new email address</string>
     <string name="account_settings_screen_change_email_local_auth_reason" description="Reason for local authentication when changing email">Please authenticate to change email address</string>
-    <string name="account_settings_screen_pending_email_title" description="Title for pending new email text">Pending new email address</string>
-    <string name="account_settings_screen_pending_email_verified" description="Text for verified pending email status">Pending email verified</string>
-    <string name="account_settings_screen_pending_email_not_verified" description="Text for not verified pending email status">Pending email not verified</string>
-    <string name="account_settings_screen_pending_email_completion_time" description="Text for email change completion time">Email change completes at: %s</string>
-    <string name="account_settings_screen_cancel_email_change_button" description="Button text for cancel email change action">Cancel email change</string>
-    <string name="account_settings_screen_email_change_initiated" description="Snackbar text for successful email change initiation">Email change initiated. Please check your inbox.</string>
-    <string name="account_settings_screen_email_change_cancelled" description="Snackbar text for successful email change cancellation">Email change cancelled</string>
-    <string name="account_settings_screen_email_change_history_limit_reached" description="Snackbar text when email change history limit is reached, with formatted wait time">Email change limit reached. Try again after %s.</string>
-    <string name="account_settings_screen_cancel_email_change_confirm_dialog_title" description="Title for cancel email change confirm dialog">Cancel email change?</string>
+    <string name="account_settings_screen_pending_email_title" description="Title for pending new email text">New email address</string>
+    <string name="account_settings_screen_pending_email_verified" description="Text for verified pending email status">New email address verified</string>
+    <string name="account_settings_screen_pending_email_not_verified" description="Text for not verified pending email status">New email address not verified</string>
+    <string name="account_settings_screen_pending_email_completion_time" description="Text for email change completion time">Email address change completes at: %s</string>
+    <string name="account_settings_screen_cancel_email_change_button" description="Button text for cancel email change action">Cancel email address change</string>
+    <string name="account_settings_screen_email_change_initiated" description="Snackbar text for successful email change initiation">Email address change initiated. Please check your inbox.</string>
+    <string name="account_settings_screen_email_change_cancelled" description="Snackbar text for successful email change cancellation">Email address change cancelled</string>
+    <string name="account_settings_screen_email_change_history_limit_reached" description="Snackbar text when email change history limit is reached, with formatted wait time">Email address change limit reached. Try again after %s.</string>
+    <string name="account_settings_screen_cancel_email_change_confirm_dialog_title" description="Title for cancel email change confirm dialog">Cancel email address change?</string>
 
     <!-- Verification errors shared between account and age verification -->
     <string name="verification_error_data_parsing_failed" description="Verification error: verification data parsing failed">Invalid identification data</string>
@@ -690,8 +690,8 @@
     <string name="account_verification_screen_previous_verification_time" description="Text shown with previous account verification time">Time: %s</string>
     <string name="account_verification_screen_previous_verification_errors_title" description="Title shown above previous account verification errors">Errors</string>
     <string name="account_verification_screen_error_profile_age_range_verification_failed" description="Account verification error: profile age range verification failed">Age verification failed</string>
-    <string name="account_verification_screen_error_profile_age_range_verification_mismatch" description="Account verification error: verified profile age range mismatch">Verified age does not match your profile age</string>
-    <string name="account_verification_screen_error_profile_age_range_mismatch" description="Account verification error: profile age range changed during verification">Profile age changed during verification</string>
+    <string name="account_verification_screen_error_profile_age_range_verification_mismatch" description="Account verification error: verified profile age range mismatch">Verified age does not match age in your profile</string>
+    <string name="account_verification_screen_error_profile_age_range_mismatch" description="Account verification error: profile age range changed during verification">Your age (in your profile) changed during verification</string>
     <string name="account_verification_screen_error_profile_name_verification_failed" description="Account verification error: profile name verification failed">Name verification failed</string>
     <string name="account_verification_screen_error_profile_name_verification_mismatch" description="Account verification error: verified profile name mismatch">Verified name does not match your profile name</string>
     <string name="account_verification_screen_error_profile_name_mismatch" description="Account verification error: profile name changed during verification">Profile name changed during verification</string>
@@ -699,8 +699,8 @@
     <string name="account_verification_screen_error_security_content_verification_mismatch" description="Account verification error: verified security content mismatch">Verified photo does not match your security selfie</string>
     <string name="account_verification_screen_error_security_content_mismatch" description="Account verification error: security content changed during verification">Security selfie changed during verification</string>
     <string name="account_verification_screen_start_verification_title" description="Title shown above account verification scope and actions section">Select verification scopes and method</string>
-    <string name="account_verification_screen_scope_profile_age" description="Checkbox label for account verification profile age scope">Profile age</string>
-    <string name="account_verification_screen_scope_profile_name" description="Checkbox label for account verification profile name scope">Profile name</string>
+    <string name="account_verification_screen_scope_profile_age" description="Checkbox label for account verification profile age scope">Age</string>
+    <string name="account_verification_screen_scope_profile_name" description="Checkbox label for account verification profile name scope">First name</string>
 
     <!-- Age verification settings -->
     <string name="age_verification_screen_title" description="Title for age verification settings screen">Age verification</string>
@@ -730,7 +730,7 @@
     <string name="profile_grid_settings_screen_image_quality_very_low" description="Very low image quality">Very low</string>
 
     <!-- View image screen -->
-    <string name="view_image_screen_title" description="Title for view image screen">View image</string>
+    <string name="view_image_screen_title" description="Title for view image screen">Image</string>
 
     <!-- Crop image screen -->
     <string name="crop_image_screen_title" description="Title for crop image screen">Crop image</string>
@@ -767,10 +767,10 @@
     <string name="account_deletion_pending_screen_time_text" description="Time when account deletion process will begin">Account deletion will begin at %s</string>
 
     <!-- Account banned screen -->
-    <string name="account_banned_screen_title" description="Title for account banned screen">Account suspended</string>
+    <string name="account_banned_screen_title" description="Title for account banned screen">Account banned</string>
     <string name="account_banned_screen_ban_reason" description="Text for account ban reason">Reason: %s</string>
     <string name="account_banned_screen_ban_reason_category" description="Text for account ban reason category">Category: %s</string>
-    <string name="account_banned_screen_time_text" description="Time when account unban process will begin">Suspension ending will begin at %s</string>
+    <string name="account_banned_screen_time_text" description="Time when account unban process will begin">Ban deletion will begin at %s</string>
 
     <!-- Account ban reason category -->
     <string name="account_ban_reason_category_profile_name" description="Account ban reason category profile name">Profile name</string>
@@ -795,7 +795,7 @@
     <string name="report_screen_snackbar_report_successful" description="Snackbar text for successful report">Report submitted</string>
     <string name="report_screen_snackbar_too_many_reports_error" description="Snackbar text for too many reports error">Too many reports submitted. Please try again later.</string>
     <string name="report_screen_custom_report_boolean_dialog_description" description="Text for dialog for custom report boolean reporting">Report user for "%s"?</string>
-    <string name="report_screen_false_reports_warning" description="Warning text about false reports leading to a ban">Submitting false reports may result in account suspension</string>
+    <string name="report_screen_false_reports_warning" description="Warning text about false reports leading to a ban">Submitting false reports might get your account banned</string>
 
     <!-- Report profile image screen -->
     <string name="report_profile_image_screen_confirm_dialog_title" description="Profile image reporting confirmation dialog title">Report profile image?</string>

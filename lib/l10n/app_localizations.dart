@@ -151,13 +151,13 @@ abstract class AppLocalizations {
   /// Time when account unban process will begin
   ///
   /// In en, this message translates to:
-  /// **'Suspension ending will begin at {p0}'**
+  /// **'Ban deletion will begin at {p0}'**
   String account_banned_screen_time_text(String p0);
 
   /// Title for account banned screen
   ///
   /// In en, this message translates to:
-  /// **'Account suspended'**
+  /// **'Account banned'**
   String get account_banned_screen_title;
 
   /// Time when account deletion process will begin
@@ -175,19 +175,19 @@ abstract class AppLocalizations {
   /// Button text for cancel email change action
   ///
   /// In en, this message translates to:
-  /// **'Cancel email change'**
+  /// **'Cancel email address change'**
   String get account_settings_screen_cancel_email_change_button;
 
   /// Title for cancel email change confirm dialog
   ///
   /// In en, this message translates to:
-  /// **'Cancel email change?'**
+  /// **'Cancel email address change?'**
   String get account_settings_screen_cancel_email_change_confirm_dialog_title;
 
   /// Button text for change email action
   ///
   /// In en, this message translates to:
-  /// **'Change email'**
+  /// **'Change email address'**
   String get account_settings_screen_change_email_button;
 
   /// Hint text for new email input
@@ -229,19 +229,19 @@ abstract class AppLocalizations {
   /// Snackbar text for successful email change cancellation
   ///
   /// In en, this message translates to:
-  /// **'Email change cancelled'**
+  /// **'Email address change cancelled'**
   String get account_settings_screen_email_change_cancelled;
 
   /// Snackbar text when email change history limit is reached, with formatted wait time
   ///
   /// In en, this message translates to:
-  /// **'Email change limit reached. Try again after {p0}.'**
+  /// **'Email address change limit reached. Try again after {p0}.'**
   String account_settings_screen_email_change_history_limit_reached(String p0);
 
   /// Snackbar text for successful email change initiation
   ///
   /// In en, this message translates to:
-  /// **'Email change initiated. Please check your inbox.'**
+  /// **'Email address change initiated. Please check your inbox.'**
   String get account_settings_screen_email_change_initiated;
 
   /// Text for not verified email status
@@ -265,25 +265,25 @@ abstract class AppLocalizations {
   /// Text for email change completion time
   ///
   /// In en, this message translates to:
-  /// **'Email change completes at: {p0}'**
+  /// **'Email address change completes at: {p0}'**
   String account_settings_screen_pending_email_completion_time(String p0);
 
   /// Text for not verified pending email status
   ///
   /// In en, this message translates to:
-  /// **'Pending email not verified'**
+  /// **'New email address not verified'**
   String get account_settings_screen_pending_email_not_verified;
 
   /// Title for pending new email text
   ///
   /// In en, this message translates to:
-  /// **'Pending new email address'**
+  /// **'New email address'**
   String get account_settings_screen_pending_email_title;
 
   /// Text for verified pending email status
   ///
   /// In en, this message translates to:
-  /// **'Pending email verified'**
+  /// **'New email address verified'**
   String get account_settings_screen_pending_email_verified;
 
   /// Snackbar text when email is already verified
@@ -313,7 +313,7 @@ abstract class AppLocalizations {
   /// Account verification error: profile age range changed during verification
   ///
   /// In en, this message translates to:
-  /// **'Profile age changed during verification'**
+  /// **'Your age (in your profile) changed during verification'**
   String get account_verification_screen_error_profile_age_range_mismatch;
 
   /// Account verification error: profile age range verification failed
@@ -325,7 +325,7 @@ abstract class AppLocalizations {
   /// Account verification error: verified profile age range mismatch
   ///
   /// In en, this message translates to:
-  /// **'Verified age does not match your profile age'**
+  /// **'Verified age does not match age in your profile'**
   String get account_verification_screen_error_profile_age_range_verification_mismatch;
 
   /// Account verification error: profile name changed during verification
@@ -403,13 +403,13 @@ abstract class AppLocalizations {
   /// Checkbox label for account verification profile age scope
   ///
   /// In en, this message translates to:
-  /// **'Profile age'**
+  /// **'Age'**
   String get account_verification_screen_scope_profile_age;
 
   /// Checkbox label for account verification profile name scope
   ///
   /// In en, this message translates to:
-  /// **'Profile name'**
+  /// **'First name'**
   String get account_verification_screen_scope_profile_name;
 
   /// Title shown above account verification scope and actions section
@@ -1321,13 +1321,13 @@ abstract class AppLocalizations {
   /// Info text that primary profile image is pending moderation
   ///
   /// In en, this message translates to:
-  /// **'Picture is not currently accepted by moderators. Your profile will not be shown in profile grid until the picture is accepted.'**
+  /// **'Picture is not currently accepted by moderator. Your profile will not be shown in profile grid until the picture is accepted.'**
   String get edit_profile_screen_primary_profile_content_pending_moderation;
 
   /// Info text that primary profile image was rejected by moderators
   ///
   /// In en, this message translates to:
-  /// **'Picture was rejected by moderators. Replace the picture to make your profile visible in the profile grid.'**
+  /// **'Picture was rejected by moderator. Replace the picture to make your profile visible in the profile grid.'**
   String get edit_profile_screen_primary_profile_content_rejected;
 
   /// Title for profile name text field
@@ -2173,7 +2173,7 @@ abstract class AppLocalizations {
   /// Security info for initial setup first chat backup
   ///
   /// In en, this message translates to:
-  /// **'The backup contains your encryption key. Keep it safe in case you lose your device, so you can read all message sent to you.'**
+  /// **'The backup contains your encryption key. Keep it safe in case you lose your device, so you can read all messages sent to you.'**
   String get initial_setup_screen_first_chat_backup_security_info;
 
   /// Warning dialog message when skipping first chat backup
@@ -3605,7 +3605,7 @@ abstract class AppLocalizations {
   /// Warning text about false reports leading to a ban
   ///
   /// In en, this message translates to:
-  /// **'Submitting false reports may result in account suspension'**
+  /// **'Submitting false reports might get your account banned'**
   String get report_screen_false_reports_warning;
 
   /// Title for report profile image action
@@ -3839,13 +3839,13 @@ abstract class AppLocalizations {
   /// Server connection indicator text showing countdown
   ///
   /// In en, this message translates to:
-  /// **'Reconnecting in {p0}s'**
+  /// **'Reconnecting in {p0} seconds'**
   String server_connection_indicator_reconnecting_in_seconds(String p0);
 
   /// Snackbar text showing remaining daily websocket connection attempts
   ///
   /// In en, this message translates to:
-  /// **'You have {p0} connection attempts left today.'**
+  /// **'You have {p0} connection attempts left (resets daily)'**
   String server_connection_indicator_websocket_attempts_remaining_today(String p0);
 
   /// Snackbar text when daily websocket connection attempt limit is reached
@@ -4181,7 +4181,7 @@ abstract class AppLocalizations {
   /// Title for view image screen
   ///
   /// In en, this message translates to:
-  /// **'View image'**
+  /// **'Image'**
   String get view_image_screen_title;
 
   /// Text for news edited time
