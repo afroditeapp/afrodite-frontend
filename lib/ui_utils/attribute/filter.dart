@@ -39,6 +39,9 @@ class AttributeAndFilterState extends AttributeValueAreaInfoProvider {
 
   @override
   UiAttribute attribute() => _attribute;
+
+  @override
+  bool isEmpty() => super.isEmpty() && wanted.unsignedIntegerValues.isEmpty;
 }
 
 class FilterSettingsState {

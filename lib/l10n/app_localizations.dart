@@ -628,6 +628,12 @@ abstract class AppLocalizations {
   /// **'Association membership'**
   String get association_membership_screen_title;
 
+  /// Info box text shown below an attribute which is deprecated. %s is the attribute name
+  ///
+  /// In en, this message translates to:
+  /// **'\"{p0}\" is deprecated and it disappears once you disable it'**
+  String attribute_deprecated_info(String p0);
+
   /// Info box text shown below an attribute which is partially hidden from other users. %s is the attribute name
   ///
   /// In en, this message translates to:

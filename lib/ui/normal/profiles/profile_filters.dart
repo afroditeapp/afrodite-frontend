@@ -685,7 +685,11 @@ class EditAttributeFilters extends StatelessWidget {
     final l = manager.parseFilterStates(myFilters);
 
     for (final a in l) {
-      if (a.attribute().apiAttribute().mode == AttributeMode.unsignedInteger) {
+      final apiAttribute = a.attribute().apiAttribute();
+      if (!apiAttribute.editable && a.isEmpty()) {
+        continue;
+      }
+      if (apiAttribute.mode == AttributeMode.unsignedInteger) {
         attributeWidgets.add(UnsignedIntegerAttributeFilterSlider(a: a));
       } else {
         attributeWidgets.add(
@@ -698,14 +702,7 @@ class EditAttributeFilters extends StatelessWidget {
           ),
         );
       }
-      if (!a.attribute().apiAttribute().visible) {
-        attributeWidgets.add(
-          Padding(
-            padding: const EdgeInsets.only(top: 8),
-            child: AttributeInfoBox(attributeName: a.attribute().uiName()),
-          ),
-        );
-      }
+      attributeWidgets.add(AttributeInfoBox(attribute: a.attribute()));
       attributeWidgets.add(const Divider());
     }
 

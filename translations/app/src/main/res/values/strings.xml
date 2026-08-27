@@ -464,6 +464,7 @@
     <string name="edit_attribute_value_screen_search_placeholder_text" description="Attribute value search box placeholder text">Search…</string>
     <string name="edit_attribute_value_screen_max_selected_values_error" description="Snackbar text for max selected values error">Too many selected values</string>
     <string name="attribute_partially_hidden_info" description="Info box text shown below an attribute which is partially hidden from other users. %s is the attribute name">"%s" is partially hidden</string>
+    <string name="attribute_deprecated_info" description="Info box text shown below an attribute which is deprecated. %s is the attribute name">"%s" is deprecated and it disappears once you disable it</string>
 
     <!-- Select content screen -->
     <string name="select_content_screen_title" description="Title for select content screen">Select image</string>

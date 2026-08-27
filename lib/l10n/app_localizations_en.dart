@@ -328,6 +328,11 @@ class AppLocalizationsEn extends AppLocalizations {
   String get association_membership_screen_title => 'Association membership';
 
   @override
+  String attribute_deprecated_info(String p0) {
+    return '\"$p0\" is deprecated and it disappears once you disable it';
+  }
+
+  @override
   String attribute_partially_hidden_info(String p0) {
     return '\"$p0\" is partially hidden';
   }
