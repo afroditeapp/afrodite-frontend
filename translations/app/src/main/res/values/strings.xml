@@ -45,7 +45,7 @@
     <string name="generic_logout" description="Generic logout text">Logout</string>
     <string name="generic_logout_confirmation_title" description="Generic logout confirmation title text">Logout?</string>
     <string name="generic_save_confirmation_title" description="Generic save confirmation title text">Save?</string>
-    <string name="generic_error_occurred" description="Generic error occurred text">Error occurred</string>
+    <string name="generic_error_occurred" description="Generic error occurred text">Something went wrong</string>
     <string name="generic_previous_action_in_progress" description="Generic previous action in progress text">Previous action is still in progress</string>
     <string name="generic_continue" description="Generic continue text">Continue</string>
     <string name="generic_you" description="Generic you text">You</string>
@@ -58,9 +58,9 @@
     <string name="generic_gender_nonbinary_plural" description="Generic non-binary gender text in plural form">Non-binaries</string>
     <string name="generic_show_only_selected" description="Generic show only selected text">Show only selected</string>
     <string name="generic_data_sync_failed" description="Generic data sync failed">Data sync failed</string>
-    <string name="generic_email_sending_failed" description="Generic email sending failed text">Email sending failed</string>
-    <string name="generic_email_sending_timeout" description="Generic email sending timeout text">Email sending timeout</string>
-    <string name="generic_try_again_later_seconds" description="Generic try again later with seconds text">Try again after %s seconds</string>
+    <string name="generic_email_sending_failed" description="Generic email sending failed text">Failed to send email</string>
+    <string name="generic_email_sending_timeout" description="Generic email sending timeout text">Email sending timed out</string>
+    <string name="generic_try_again_later_seconds" description="Generic try again later with seconds text">Try again in %s seconds</string>
     <string name="generic_time_unit_hour" description="Generic hour time unit abbreviation">h</string>
     <string name="generic_time_unit_minute" description="Generic minute time unit abbreviation">m</string>
     <string name="generic_time_unit_second" description="Generic second time unit abbreviation">s</string>
@@ -69,13 +69,13 @@
     <string name="generic_download_question" description="Generic download question">Download?</string>
     <string name="generic_report_verb" description="Generic report verb">Report</string>
     <string name="generic_report_verb_question" description="Generic report question">Report?</string>
-    <string name="generic_logout_failed" description="Generic logout failed text">Logout failed</string>
+    <string name="generic_logout_failed" description="Generic logout failed text">Failed to log out</string>
     <string name="generic_copy" description="Generic copy text">Copy</string>
     <string name="generic_reply" description="Generic reply action text">Reply</string>
     <string name="generic_edit" description="Generic edit text">Edit</string>
     <string name="generic_skip" description="Generic skip text">Skip</string>
     <string name="generic_unlink" description="Generic unlink text">Unlink</string>
-    <string name="generic_profile_loading_failed" description="Error text displayed when profile loading fails">Profile loading failed</string>
+    <string name="generic_profile_loading_failed" description="Error text displayed when profile loading fails">Failed to load profile</string>
     <string name="generic_this_feature_is_disabled" description="Generic this feature is disabled text">This feature is disabled</string>
     <string name="generic_unlimited" description="Generic unlimited text">Unlimited</string>
     <string name="generic_min" description="Generic min text">Min</string>
@@ -104,22 +104,22 @@
     <string name="generic_today" description="Generic today text">Today</string>
     <string name="generic_yesterday" description="Generic yesterday text">Yesterday</string>
 
-    <string name="generic_text_field_age_hint_text" description="Text field hint text for age">Insert an age between 18–99</string>
-    <string name="generic_error_app_version_is_unsupported" description="Snackbar text that client version is unsupported">Current app version is unsupported</string>
+    <string name="generic_text_field_age_hint_text" description="Text field hint text for age">Enter an age between 18-99</string>
+    <string name="generic_error_app_version_is_unsupported" description="Snackbar text that client version is unsupported">Current app version is no longer supported</string>
 
-    <string name="generic_reset_to_defaults" description="Title for reset values to defaults action">Reset to default values</string>
-    <string name="generic_reset_to_defaults_dialog_title" description="Dialog title for confirming reset values to defaults">Reset to default values?</string>
+    <string name="generic_reset_to_defaults" description="Title for reset values to defaults action">Reset to defaults</string>
+    <string name="generic_reset_to_defaults_dialog_title" description="Dialog title for confirming reset values to defaults">Reset to defaults?</string>
 
     <!-- Global snackbar texts -->
-    <string name="snackbar_error_api" description="Snackbar error text for API errors">API error</string>
-    <string name="snackbar_error_api_timeout" description="Snackbar error text for API timeouts">API timeout</string>
+    <string name="snackbar_error_api" description="Snackbar error text for API errors">API request failed</string>
+    <string name="snackbar_error_api_timeout" description="Snackbar error text for API timeouts">API request timed out</string>
     <string name="snackbar_error_database" description="Snackbar error text for database errors">Database error</string>
     <string name="snackbar_error_file" description="Snackbar error text for file errors">File error</string>
-    <string name="snackbar_error_logic" description="Snackbar error text for logic errors">Logic error</string>
-    <string name="snackbar_api_forbidden_request" description="Snackbar error text for forbidden API requests">API error: forbidden request</string>
-    <string name="snackbar_api_usage_limit_reached" description="Snackbar info text that API usage limit is reached">API usage limit is reached. Try again tomorrow.</string>
-    <string name="snackbar_play_integrity_api_error" description="Snackbar error text for Play Integrity API errors">Play Integrity API error: %s</string>
-    <string name="snackbar_image_quality_degraded" description="Snackbar text when server returns lower image quality than requested">Many users are viewing profiles - image quality may be degraded</string>
+    <string name="snackbar_error_logic" description="Snackbar error text for logic errors">Unexpected error</string>
+    <string name="snackbar_api_forbidden_request" description="Snackbar error text for forbidden API requests">Action not allowed</string>
+    <string name="snackbar_api_usage_limit_reached" description="Snackbar info text that API usage limit is reached">Daily limit reached. Please try again tomorrow.</string>
+    <string name="snackbar_play_integrity_api_error" description="Snackbar error text for Play Integrity API errors">App verification error: %s</string>
+    <string name="snackbar_image_quality_degraded" description="Snackbar text when server returns lower image quality than requested">Many users are viewing profiles - image quality may be temporarily reduced</string>
 
     <!-- Server connection indicator -->
     <string name="server_connection_indicator_reconnecting_in_seconds" description="Server connection indicator text showing countdown">Reconnecting in %ss</string>
@@ -159,7 +159,7 @@
     <string name="notification_media_content_accepted" description="Title for media content accepted notification">Image accepted</string>
     <string name="notification_media_content_rejected" description="Title for media content rejected notification">Image rejected</string>
     <string name="notification_media_content_deleted" description="Title for media content deleted notification">Image deleted</string>
-    <string name="notification_media_content_deleted_description" description="Description for media content deleted notification">Unallowed content was detected from the image. This might be false positive detection.</string>
+    <string name="notification_media_content_deleted_description" description="Description for media content deleted notification">Content not permitted was detected in your image. This might be a false positive.</string>
 
     <!-- Notification profile string moderation completed -->
     <string name="notification_profile_name_accepted" description="Title for profile name accepted notification">Profile name accepted</string>
@@ -182,13 +182,13 @@
 
     <!-- Notification settings screen -->
     <string name="notification_settings_screen_title" description="Title for notification settings screen">Notifications</string>
-    <string name="notification_settings_screen_notifications_disabled_from_system_settings_text" description="Info text that notifications are disabled from system settings">Notifications are disabled from system notification settings</string>
-    <string name="notification_settings_screen_notification_category_disabled_from_system_settings_text" description="Info text that notification category is disabled from system settings">Disabled from system notification settings</string>
+    <string name="notification_settings_screen_notifications_disabled_from_system_settings_text" description="Info text that notifications are disabled from system settings">Notifications are disabled in system settings</string>
+    <string name="notification_settings_screen_notification_category_disabled_from_system_settings_text" description="Info text that notification category is disabled from system settings">Disabled in system settings</string>
     <string name="notification_settings_screen_open_system_notification_settings" description="Action title for opening system notification settings">System notification settings</string>
-    <string name="notification_settings_screen_web_permission_not_enabled" description="Info text for web that notification permission is not enabled">Notification permission is not enabled</string>
+    <string name="notification_settings_screen_web_permission_not_enabled" description="Info text for web that notification permission is not enabled">Notifications are not enabled</string>
     <string name="notification_settings_screen_web_request_permission" description="Action title for requesting web notification permission">Enable notifications</string>
-    <string name="notification_settings_screen_web_permission_denied" description="Info text when web notification permission is denied">Permission not granted. Try again or grant permission from browser settings.</string>
-    <string name="notification_settings_screen_ios_pwa_permission_denied" description="Info text when iOS PWA notification permission is denied">Permission not granted. Try again or grant permission from iOS system settings.</string>
+    <string name="notification_settings_screen_web_permission_denied" description="Info text when web notification permission is denied">Permission denied. Try again or enable notifications in browser settings.</string>
+    <string name="notification_settings_screen_ios_pwa_permission_denied" description="Info text when iOS PWA notification permission is denied">Permission denied. Try again or enable notifications in iOS settings.</string>
 
     <!-- Email notification settings screen -->
     <string name="email_notification_settings_screen_title" description="Title for email notification settings screen">Email notifications</string>
@@ -224,30 +224,30 @@
 
     <!-- Image processing UI -->
     <string name="image_processing_ui_confirm_photo_dialog_title" description="Dialog title for confirming new image">Continue with this photo?</string>
-    <string name="image_processing_ui_upload_in_progress_dialog_description" description="Progress dialog info text that image upload is in progress">Uploading photo</string>
-    <string name="image_processing_ui_nsfw_detected_dialog_title" description="Progress dialog info text that NSFW content is detected">Unallowed content detected from the uploaded photo. This might be false positive detection.</string>
+    <string name="image_processing_ui_upload_in_progress_dialog_description" description="Progress dialog info text that image upload is in progress">Uploading photo…</string>
+    <string name="image_processing_ui_nsfw_detected_dialog_title" description="Progress dialog info text that NSFW content is detected">Content not permitted was detected in the uploaded photo. This might be a false positive.</string>
     <string name="image_processing_ui_upload_failed_dialog_title" description="Progress dialog info text that image upload failed">Upload failed</string>
     <string name="image_processing_ui_upload_timeout_dialog_title" description="Progress dialog info text that image upload timed out">Upload timed out</string>
-    <string name="image_processing_ui_upload_content_processing_ongoing_dialog_title" description="Progress dialog info text that previous image processing is still ongoing on server">Server is processing previous image upload</string>
-    <string name="image_processing_ui_upload_in_processing_queue_dialog_description" description="Progress dialog info text that image is currently in server's processing queue">Waiting for processing. Queue number: %s</string>
-    <string name="image_processing_ui_upload_processing_ongoing_description" description="Progress dialog info text that image processing is ongoing">Processing ongoing</string>
+    <string name="image_processing_ui_upload_content_processing_ongoing_dialog_title" description="Progress dialog info text that previous image processing is still ongoing on server">Server is still processing your previous upload</string>
+    <string name="image_processing_ui_upload_in_processing_queue_dialog_description" description="Progress dialog info text that image is currently in server's processing queue">Waiting in queue. Position: %s</string>
+    <string name="image_processing_ui_upload_processing_ongoing_description" description="Progress dialog info text that image processing is ongoing">Processing photo…</string>
 
     <!-- Profile image errors -->
     <string name="profile_image_error_no_image" description="Snackbar text for no profile image error">No profile image</string>
-    <string name="profile_image_error_no_primary_image" description="Snackbar text for no primary profile image error">No primary profile image</string>
-    <string name="profile_image_error_image_not_accepted" description="Snackbar text for profile image is not accepted error">Profile image is not accepted by moderators</string>
+    <string name="profile_image_error_no_primary_image" description="Snackbar text for no primary profile image error">Primary profile picture missing</string>
+    <string name="profile_image_error_image_not_accepted" description="Snackbar text for profile image is not accepted error">Profile picture has not been approved</string>
 
     <!-- Splash screen -->
     <string name="splash_screen_app_is_already_running" description="Splash screen error text that app is already running">App is already running</string>
-    <string name="splash_screen_app_version_downgrade_detected" description="Splash screen warning text when app major/minor version downgrade is detected">Warning: app version downgrade detected. Please use latest app version if possible.</string>
+    <string name="splash_screen_app_version_downgrade_detected" description="Splash screen warning text when app major/minor version downgrade is detected">Warning: App version downgrade detected. Please use the latest app version.</string>
 
     <!-- Login screen -->
     <string name="login_screen_login_note_text_beginning" description="Text about agreeing terms of service and privacy policy">By signing in, you agree to our</string>
-    <string name="login_screen_registration_all_platforms_disabled" description="Snackbar error message when registration is disabled on all platforms">App admin has disabled registering new accounts</string>
-    <string name="login_screen_registration_platform_disabled" description="Snackbar error message when registration is disabled on current platform">App admin has disabled registering new accounts on current platform (%s)</string>
-    <string name="login_screen_login_all_platforms_disabled" description="Snackbar error message when login is disabled on all platforms">App admin has disabled login</string>
-    <string name="login_screen_login_platform_disabled" description="Snackbar error message when login is disabled on current platform">App admin has disabled login on current platform (%s)</string>
-    <string name="login_screen_sign_in_with_email_unverified" description="Snackbar error message when sign in with account email is not verified">Email address of the selected account is not verified</string>
+    <string name="login_screen_registration_all_platforms_disabled" description="Snackbar error message when registration is disabled on all platforms">New registrations are currently disabled</string>
+    <string name="login_screen_registration_platform_disabled" description="Snackbar error message when registration is disabled on current platform">New registrations are currently disabled on this platform (%s)</string>
+    <string name="login_screen_login_all_platforms_disabled" description="Snackbar error message when login is disabled on all platforms">Login is currently disabled</string>
+    <string name="login_screen_login_platform_disabled" description="Snackbar error message when login is disabled on current platform">Login is currently disabled on this platform (%s)</string>
+    <string name="login_screen_sign_in_with_email_unverified" description="Snackbar error message when sign in with account email is not verified">Email address is not verified</string>
     <string name="login_screen_email_already_used" description="Snackbar error message when email is already used by another account">Email address is already in use by another account</string>
     <string name="login_screen_login_note_text_tos" description="Text for terms of service link">Terms of Service</string>
     <string name="login_screen_login_note_text_and" description="Word 'and' between terms of service and privacy policy links">and</string>
@@ -257,16 +257,16 @@
     <string name="login_screen_demo_account_username" description="Placeholder text for demo account username">Username</string>
     <string name="login_screen_demo_account_password" description="Placeholder text for demo account password">Password</string>
     <string name="login_screen_demo_account_login_failed" description="Snackbar text for demo account login failed">Login failed</string>
-    <string name="login_screen_sign_in_with_email_action" description="Button text for email sign in action on the login screen">Sign in with email address</string>
+    <string name="login_screen_sign_in_with_email_action" description="Button text for email sign in action on the login screen">Sign in with email</string>
     <string name="login_screen_email_login_info_dialog_text" description="Info dialog text shown before email sign in explaining the feature is intentionally limited to reduce bots and spam">Signing in with an email address is intentionally limited to help keep the service free from bots and spam. Please prefer signing in with your usual method (such as Google or Apple) whenever possible.\n\nIf you do use your email address, connecting from your home\'s broadband internet rather than mobile data can help you avoid reaching per-IP limits.</string>
     <string name="login_screen_demo_account_login_session_expired" description="Snackbar text for demo account login session expiration">Demo account session expired</string>
-    <string name="login_screen_sign_in_with_error" description="Snackbar text for sign in with error">Sign in with failed</string>
-    <string name="login_screen_login_api_request_failed" description="Snackbar text for login API request failed">Login API request failed. Try again later.</string>
+    <string name="login_screen_sign_in_with_error" description="Snackbar text for sign in with error">Sign in failed</string>
+    <string name="login_screen_login_api_request_failed" description="Snackbar text for login API request failed">Login request failed. Please try again later.</string>
     <string name="login_screen_invalid_email_login_token" description="Snackbar text for invalid email login token error">Invalid email login code</string>
-    <string name="login_screen_app_attestation_app_integrity_error" description="Snackbar text for app integrity check failed">App integrity verification failed</string>
-    <string name="login_screen_app_attestation_device_integrity_error" description="Snackbar text for device integrity check failed">Device integrity verification failed</string>
+    <string name="login_screen_app_attestation_app_integrity_error" description="Snackbar text for app integrity check failed">App integrity check failed</string>
+    <string name="login_screen_app_attestation_device_integrity_error" description="Snackbar text for device integrity check failed">Device integrity check failed</string>
     <string name="login_screen_app_attestation_failed" description="Snackbar text for app attestation failed">App verification failed. Please try again later.</string>
-    <string name="login_screen_connecting_websocket_failed" description="Snackbar text for connecting WebSocket failed">Connecting WebSocket failed. Try again later.</string>
+    <string name="login_screen_connecting_websocket_failed" description="Snackbar text for connecting WebSocket failed">Failed to connect to server. Please try again later.</string>
     <string name="login_screen_ios_pwa_install_description" description="Description text for iOS PWA installation guide">To use this app on iOS, please add it to your home screen:</string>
     <string name="login_screen_ios_pwa_install_video_instructions_button" description="Button to show video instructions for iOS PWA installation">Video instructions</string>
     <string name="login_screen_ios_pwa_install_text_instructions_button" description="Button to show text instructions for iOS PWA installation">Text instructions</string>
@@ -280,7 +280,7 @@
     <!-- Email login screen -->
     <string name="email_login_screen_title" description="Title for email login screen">Email login</string>
     <string name="email_login_screen_title_register" description="Title for email login screen in registration mode">Email registration</string>
-    <string name="email_login_screen_login_only_info" description="Notice that the selected login method only works for existing accounts">Registering new accounts is unsupported using this login method</string>
+    <string name="email_login_screen_login_only_info" description="Notice that the selected login method only works for existing accounts">Creating a new account is not supported with this login method</string>
     <string name="email_login_screen_registration_only_info" description="Notice that using throwaway email services is forbidden">Please note that using throwaway email services is forbidden</string>
     <string name="email_login_screen_email_hint" description="Hint text for email input field">Email address</string>
     <string name="email_login_screen_send_code_button" description="Button text for sending login code">Send login code</string>
@@ -288,12 +288,12 @@
     <string name="email_login_screen_did_not_receive_code" description="Help text for not receiving code">If you didn\'t receive the code:\n• Check your spam folder\n• Verify the email address is correct\n• Wait %s before requesting a new code\n• Make sure you have an existing account with this email</string>
     <string name="email_login_screen_code_hint" description="Hint text for login code input field">Login code</string>
     <string name="email_login_screen_token_validity" description="Text showing token validity time">Code expires in: %s</string>
-    <string name="email_login_screen_registration_unsupported_email" description="Error message shown when the entered email address is unsupported">Unsupported email address. Please use another login method.</string>
-    <string name="email_login_screen_registration_all_platforms_disabled_error" description="Error message when email registration is disabled on all platforms">App admin has disabled registering new accounts with email address. Please use another login method.</string>
-    <string name="email_login_screen_registration_platform_disabled_error" description="Error message when email registration is disabled on current platform">App admin has disabled registering new accounts with email address on current platform (%s). Please use another login method.</string>
-    <string name="email_login_screen_registration_ip_address_limit_reached_error" description="Error message when email registration per IP address limit is reached">The daily registration limit for your IP address has been reached. Please try again after 24 hours or use another login method.</string>
-    <string name="email_login_screen_registration_limit_reached_error" description="Error message when daily email registration limit is reached">The daily registration limit has been reached. Please try again in 24 hours or use another login method.</string>
-    <string name="email_login_screen_registration_domain_not_accepted_error" description="Error message when the email domain is not accepted for email registration. %s is the email domain.">This email domain (%s) is not accepted for registration. Please use another email address or login method.</string>
+    <string name="email_login_screen_registration_unsupported_email" description="Error message shown when the entered email address is unsupported">Unsupported email address. Please use another sign in method.</string>
+    <string name="email_login_screen_registration_all_platforms_disabled_error" description="Error message when email registration is disabled on all platforms">New registrations via email are currently disabled. Please use another sign in method.</string>
+    <string name="email_login_screen_registration_platform_disabled_error" description="Error message when email registration is disabled on current platform">New registrations via email are currently disabled on this platform (%s). Please use another sign in method.</string>
+    <string name="email_login_screen_registration_ip_address_limit_reached_error" description="Error message when email registration per IP address limit is reached">Daily registration limit for your IP address has been reached. Please try again after 24 hours or use another sign in method.</string>
+    <string name="email_login_screen_registration_limit_reached_error" description="Error message when daily email registration limit is reached">Daily registration limit has been reached. Please try again in 24 hours or use another sign in method.</string>
+    <string name="email_login_screen_registration_domain_not_accepted_error" description="Error message when the email domain is not accepted for email registration. %s is the email domain.">Email addresses with domain %s cannot be used for registration. Please use another email or sign in method.</string>
     <string name="email_login_method_screen_title" description="Title for email login method chooser screen">Email sign in</string>
     <string name="email_login_method_screen_existing_account" description="Button text for logging in to an existing account with email">Existing account</string>
     <string name="email_login_method_screen_existing_account_description" description="Description under the existing account button">Sign in to an account you already have</string>
@@ -309,95 +309,95 @@
     <string name="demo_account_screen_max_account_count_error" description="Snackbar text for max account count error">Error: max account count</string>
 
     <!-- Initial setup -->
-    <string name="initial_setup_screen_skip_dialog_title" description="Title for skip initial setup confirm dialog">Skip account initial setup?</string>
-    <string name="initial_setup_screen_skip_dialog_description" description="Description for skip initial setup confirm dialog">Use this only if you will have some admin rights to the service.</string>
-    <string name="initial_setup_screen_refresh_face_detected_values_action" description="Title for refresh face detected values">Refresh face detection statuses</string>
+    <string name="initial_setup_screen_skip_dialog_title" description="Title for skip initial setup confirm dialog">Skip profile setup?</string>
+    <string name="initial_setup_screen_skip_dialog_description" description="Description for skip initial setup confirm dialog">Skip profile setup only if you will have administrator rights on the service.</string>
+    <string name="initial_setup_screen_refresh_face_detected_values_action" description="Title for refresh face detected values">Refresh face detection status</string>
     <string name="initial_setup_screen_email_title" description="Title for initial setup email address info">My email address is…</string>
-    <string name="initial_setup_screen_email_hint_text" description="Hint text for inserting email address to text field">Insert email address</string>
+    <string name="initial_setup_screen_email_hint_text" description="Hint text for inserting email address to text field">Enter email address</string>
     <string name="initial_setup_screen_age_confirmation_title" description="Title for age confirmation screen">Age confirmation</string>
-    <string name="initial_setup_screen_age_confirmation_checkbox" description="Title for age confirmation checkbox">I\'m at least 18 years old</string>
+    <string name="initial_setup_screen_age_confirmation_checkbox" description="Title for age confirmation checkbox">I am at least 18 years old</string>
     <string name="initial_setup_screen_security_selfie_title" description="Title for initial setup security selfie screen">My security selfie is…</string>
-    <string name="initial_setup_screen_security_selfie_description" description="Description for initial setup security selfie step">Take selfie with your phone\'s front camera. The selfie is used for moderating your profile images and by default it is only visible to content Moderators.</string>
-    <string name="initial_setup_screen_security_selfie_face_not_detected" description="Error text that face is not detected for initial setup security selfie screen">Face is not detected. Please try again several times and if necessary ask customer support to do manual face detection.</string>
+    <string name="initial_setup_screen_security_selfie_description" description="Description for initial setup security selfie step">Take a selfie with your front camera. This selfie is used to verify your profile pictures and is only visible to moderators unless you add it to your profile later.</string>
+    <string name="initial_setup_screen_security_selfie_face_not_detected" description="Error text that face is not detected for initial setup security selfie screen">Face not detected. Please try again with clear lighting, or contact support for help.</string>
     <string name="initial_setup_screen_profile_pictures_title" description="Title for profile pictures selection screen">My profile pictures are…</string>
-    <string name="initial_setup_screen_profile_pictures_select_picture_dialog_title" description="Dialog title for initial setup profile picture selection dialog">Select picture…</string>
-    <string name="initial_setup_screen_profile_pictures_select_picture_from_gallery_title" description="Action title for selecting profile picture from gallery">From gallery</string>
-    <string name="initial_setup_screen_profile_pictures_select_picture_take_new_picture_title" description="Action title for taking new picture to be used as a profile picture">Take new photo</string>
-    <string name="initial_setup_screen_profile_pictures_select_picture_security_selfie_title" description="Action title for using security selfie as a profile picture">Security selfie</string>
-    <string name="initial_setup_screen_profile_pictures_file_size_too_large_error" description="Snackbar error text that selected picture's file size is too large">Selected image is over 10 MiB</string>
-    <string name="initial_setup_screen_profile_pictures_unsupported_image_error" description="Snackbar error text that selected picture is unsupported">Selected image is not a JPEG or PNG image</string>
-    <string name="initial_setup_screen_profile_pictures_primary_image_info_dialog_description" description="Dialog description text about profile primary image">Adding at least of one profile image is required. The first profile image must be a face picture. The square shaped crop of the first profile image is displayed in profile grid and some other places in the app.</string>
-    <string name="initial_setup_screen_profile_pictures_primary_image_face_not_detected" description="Error text that face is not detected for primary profile image">Face is not detected. Please select another picture.</string>
-    <string name="initial_setup_screen_profile_basic_info_title" description="Title text for asking profile information">My profile has this info…</string>
+    <string name="initial_setup_screen_profile_pictures_select_picture_dialog_title" description="Dialog title for initial setup profile picture selection dialog">Choose photo…</string>
+    <string name="initial_setup_screen_profile_pictures_select_picture_from_gallery_title" description="Action title for selecting profile picture from gallery">Choose from gallery</string>
+    <string name="initial_setup_screen_profile_pictures_select_picture_take_new_picture_title" description="Action title for taking new picture to be used as a profile picture">Take photo</string>
+    <string name="initial_setup_screen_profile_pictures_select_picture_security_selfie_title" description="Action title for using security selfie as a profile picture">Use security selfie</string>
+    <string name="initial_setup_screen_profile_pictures_file_size_too_large_error" description="Snackbar error text that selected picture's file size is too large">Image is too large (maximum size is 10 MiB)</string>
+    <string name="initial_setup_screen_profile_pictures_unsupported_image_error" description="Snackbar error text that selected picture is unsupported">Unsupported image format. Please select a JPEG or PNG image.</string>
+    <string name="initial_setup_screen_profile_pictures_primary_image_info_dialog_description" description="Dialog description text about profile primary image">At least one profile picture is required. Your first picture must show your face clearly, and its square crop will be shown in profile grids.</string>
+    <string name="initial_setup_screen_profile_pictures_primary_image_face_not_detected" description="Error text that face is not detected for primary profile image">No face detected. Please select a photo that clearly shows your face.</string>
+    <string name="initial_setup_screen_profile_basic_info_title" description="Title text for asking profile information">About me…</string>
     <string name="initial_setup_screen_profile_basic_info_profile_name_title" description="Title text for profile name text field">First name</string>
-    <string name="initial_setup_screen_profile_basic_info_profile_name_hint_text" description="Text field hint text for profile name">Insert your first name</string>
+    <string name="initial_setup_screen_profile_basic_info_profile_name_hint_text" description="Text field hint text for profile name">Enter your first name</string>
     <string name="initial_setup_screen_gender_title" description="Title for ask gender screen">I am…</string>
-    <string name="initial_setup_screen_search_settings_title" description="Title for ask search settings screen">I am searching for…</string>
-    <string name="initial_setup_screen_search_settings_min_age_subtitle" description="Subtitle for min age search setting">…with min age…</string>
-    <string name="initial_setup_screen_search_settings_max_age_subtitle" description="Subtitle for max age search setting">…with max age…</string>
-    <string name="initial_setup_screen_location_title" description="Title for initial setup location screen">My profile\'s location is…</string>
-    <string name="initial_setup_screen_location_help_dialog_text" description="Text for initial setup location help dialog">Select a location for your profile by tapping or long pressing the map.</string>
+    <string name="initial_setup_screen_search_settings_title" description="Title for ask search settings screen">I am looking for…</string>
+    <string name="initial_setup_screen_search_settings_min_age_subtitle" description="Subtitle for min age search setting">…minimum age…</string>
+    <string name="initial_setup_screen_search_settings_max_age_subtitle" description="Subtitle for max age search setting">…maximum age…</string>
+    <string name="initial_setup_screen_location_title" description="Title for initial setup location screen">My location is…</string>
+    <string name="initial_setup_screen_location_help_dialog_text" description="Text for initial setup location help dialog">Tap or hold on the map to set your location.</string>
     <string name="initial_setup_screen_profile_privacy_settings_title" description="Title for initial setup profile privacy settings screen">Profile privacy</string>
     <string name="initial_setup_screen_first_chat_backup_title" description="Title for initial setup first chat backup screen">First chat backup</string>
-    <string name="initial_setup_screen_first_chat_backup_description" description="Description for initial setup first chat backup">Chats are stored on this device only, so regular backups are recommended. Let's save the first backup.\n\nIf you have cloud storage, it is recommended to save the backup there.</string>
+    <string name="initial_setup_screen_first_chat_backup_description" description="Description for initial setup first chat backup">Chats are stored on this device only, so regular backups are recommended. Let\'s save your first backup.\n\nIf you use cloud storage, saving the backup there is recommended.</string>
     <string name="initial_setup_screen_first_chat_backup_save_backup_button" description="Title for initial setup save chat backup button">Save chat backup</string>
     <string name="initial_setup_screen_first_chat_backup_backup_saved_successfully" description="Text for initial setup chat backup saved successfully">Backup saved successfully</string>
-    <string name="initial_setup_screen_first_chat_backup_security_info" description="Security info for initial setup first chat backup">The backup contains your message encryption key. Keep it accessible in case you lose your device, unless you are willing to ask others to resend their undelivered messages to you.</string>
-    <string name="initial_setup_screen_first_chat_backup_skip_warning" description="Warning dialog message when skipping first chat backup">Uninstalling the app will delete your chats and encryption key. Without the key, you won't be able to read messages encrypted using the key.\n\nYour chat backup contains the encryption key — do you want to skip creating a backup?</string>
+    <string name="initial_setup_screen_first_chat_backup_security_info" description="Security info for initial setup first chat backup">The backup contains your encryption key. Keep it safe in case you lose your device, so you can read all message sent to you.</string>
+    <string name="initial_setup_screen_first_chat_backup_skip_warning" description="Warning dialog message when skipping first chat backup">Uninstalling the app will delete your chats and encryption key. Without the key, you will not be able to read messages sent to you.\n\nAre you sure you want to skip creating a backup?</string>
 
     <!-- Notification permission -->
     <string name="notification_permission_dialog_title" description="Title for notification permission dialog">Allow notifications?</string>
-    <string name="notification_permission_dialog_description" description="Description text for notification permission dialog">Allow notifications to receive notifications for example from new chat requests and messages.</string>
+    <string name="notification_permission_dialog_description" description="Description text for notification permission dialog">Allow notifications to get alerts for new chat requests and messages for example.</string>
 
     <!-- App update available dialog -->
-    <string name="app_update_available_dialog_description_update_now" description="Description text for app update available dialog when update action is available">New app version available. Update now?</string>
-    <string name="app_update_available_dialog_description_manual_update" description="Description text for app update available dialog when update action is not available">New app version available. Please update the app.</string>
-    <string name="app_update_available_dialog_description_web_restart" description="Description text for app update available dialog on web">New app version available. Restart the app.</string>
+    <string name="app_update_available_dialog_description_update_now" description="Description text for app update available dialog when update action is available">A new version is available. Update now?</string>
+    <string name="app_update_available_dialog_description_manual_update" description="Description text for app update available dialog when update action is not available">A new version is available. Please update the app.</string>
+    <string name="app_update_available_dialog_description_web_restart" description="Description text for app update available dialog on web">A new version is available. Restart the app to update.</string>
 
     <!-- Video call tip dialog -->
     <string name="video_call_tip_dialog_title" description="Title for video call tip dialog">Like video calls?</string>
-    <string name="video_call_tip_dialog_description" description="Description text for video call tip dialog">You can send video call invitation using video call button at top right corner of the screen.</string>
+    <string name="video_call_tip_dialog_description" description="Description text for video call tip dialog">You can send a video call invitation using the video call icon at the top right of the chat.</string>
 
     <!-- Camera screen -->
-    <string name="camera_screen_camera_opening_already_in_progress_error" description="Snackbar error text displayed when user tries to open camera but camera initialization is already in progress">Camera opening in progress</string>
-    <string name="camera_screen_no_front_camera_error" description="Error text displayed when there is no front camera available">No front camera available</string>
-    <string name="camera_screen_camera_initialization_error" description="Error text displayed when camera initialization fails">Camera initialization failed</string>
-    <string name="camera_screen_camera_initialization_error_with_error_code" description="Error text displayed when camera initialization fails and error code exists">Camera initialization failed. Error code: %s</string>
-    <string name="camera_screen_camera_permission_error_try_again_or_check_settings" description="Error text displayed when there is no camera permission">No camera permission. Please try again. If that will not work then grant the camera permission from system settings.</string>
-    <string name="camera_screen_camera_permission_error_check_settings" description="Error text displayed when there is no camera permission and system settings must be used for granting the permission">No camera permission. Please grant the camera permission from system settings.</string>
-    <string name="camera_screen_camera_access_restricted_error" description="Error text displayed when camera access is restricted">Camera access is restricted. Opening camera is not possible.</string>
-    <string name="camera_screen_take_photo_error" description="Snackbar error text displayed when taking photo fails">Taking photo failed</string>
+    <string name="camera_screen_camera_opening_already_in_progress_error" description="Snackbar error text displayed when user tries to open camera but camera initialization is already in progress">Camera is already starting</string>
+    <string name="camera_screen_no_front_camera_error" description="Error text displayed when there is no front camera available">No front camera found</string>
+    <string name="camera_screen_camera_initialization_error" description="Error text displayed when camera initialization fails">Failed to open camera</string>
+    <string name="camera_screen_camera_initialization_error_with_error_code" description="Error text displayed when camera initialization fails and error code exists">Failed to open camera (error %s)</string>
+    <string name="camera_screen_camera_permission_error_try_again_or_check_settings" description="Error text displayed when there is no camera permission">Camera permission required. Please try again. You might need to grant camera permission in system settings.</string>
+    <string name="camera_screen_camera_permission_error_check_settings" description="Error text displayed when there is no camera permission and system settings must be used for granting the permission">Camera permission required. Please grant camera permission in system settings.</string>
+    <string name="camera_screen_camera_access_restricted_error" description="Error text displayed when camera access is restricted">Camera access is restricted on this device.</string>
+    <string name="camera_screen_take_photo_error" description="Snackbar error text displayed when taking photo fails">Failed to take photo</string>
 
     <!-- Map texts -->
-    <string name="map_select_location_help_text" description="Help text for selecting map location">Tap or long press the map to select a location.</string>
-    <string name="map_location_update_successful" description="Snackbar text about successful location update">Location update successful</string>
-    <string name="map_location_update_failed" description="Snackbar text about failed location update">Location update failed</string>
-    <string name="map_tile_error" description="Snackbar text about map tile error">Map tile error</string>
+    <string name="map_select_location_help_text" description="Help text for selecting map location">Tap or hold on the map to choose a location.</string>
+    <string name="map_location_update_successful" description="Snackbar text about successful location update">Location updated</string>
+    <string name="map_location_update_failed" description="Snackbar text about failed location update">Failed to update location</string>
+    <string name="map_tile_error" description="Snackbar text about map tile error">Failed to load map</string>
     <string name="map_openstreetmap_data_attribution_link_text" description="OpenStreetMap data attribution link text">OpenStreetMap contributors</string>
 
     <!-- Profile grid screen -->
     <string name="profile_grid_screen_title" description="Title for profile grid screen">Profiles</string>
-    <string name="profile_grid_screen_start_initial_setup_button" description="Button text for start initial setup button">Start account initial setup</string>
+    <string name="profile_grid_screen_start_initial_setup_button" description="Button text for start initial setup button">Set up profile</string>
     <string name="profile_grid_screen_email_not_verified" description="Info text which is shown when email is not verified">Please verify your email address. A verification link has been sent to your email. If you don't see it, check your spam folder.</string>
     <string name="profile_grid_screen_email_not_verified_button" description="Button text for account settings action when email is not verified">Account settings</string>
-    <string name="profile_grid_screen_profile_is_private_info" description="Info text which is shown when profile visibility is set to private">To view profiles, set your profile visibility to public from app settings.</string>
+    <string name="profile_grid_screen_profile_is_private_info" description="Info text which is shown when profile visibility is set to private">To browse profiles, make your profile public in Settings.</string>
     <string name="profile_grid_screen_no_profiles_found_title" description="Title that no profiles were found">No profiles found</string>
-    <string name="profile_grid_screen_no_profiles_found_description_filters_enabled" description="Description displayed when there is no profiles and some filter is enabled">Change or disable filters</string>
-    <string name="profile_grid_screen_no_profiles_found_description_filters_disabled" description="Description displayed when there is no profiles and there is no filters enabled">Spread the word about the app in social media</string>
+    <string name="profile_grid_screen_no_profiles_found_description_filters_enabled" description="Description displayed when there is no profiles and some filter is enabled">Try adjusting or clearing your filters</string>
+    <string name="profile_grid_screen_no_profiles_found_description_filters_disabled" description="Description displayed when there is no profiles and there is no filters enabled">Spread the word about the app on social media</string>
     <string name="profile_grid_screen_selected_age_range" description="Text for selected age range shown in profile grid empty state">Selected age range: %s</string>
     <string name="profile_grid_screen_profile_filter_settings_update_ongoing" description="Snackbar text that profile filter settings update is ongoing">Updating filters…</string>
-    <string name="profile_grid_screen_security_content_is_not_accepted" description="Text displayed when security selfie is not accepted">Security selfie is not accepted</string>
-    <string name="profile_grid_screen_security_content_does_not_exist" description="Text displayed when security selfie does not exist">Security selfie does not exist</string>
-    <string name="profile_grid_screen_security_content_face_not_detected" description="Text displayed when face is not detected from security selfie">Face is not detected from security selfie</string>
-    <string name="profile_grid_screen_primary_profile_content_is_in_moderation" description="Info text that primary profile content is in moderation">You can view profiles and others can see your profile after the first profile picture is moderated</string>
-    <string name="profile_grid_screen_primary_profile_content_is_not_accepted" description="Text displayed when primary profile content is not accepted">First profile picture is not accepted</string>
-    <string name="profile_grid_screen_primary_profile_content_face_not_detected" description="Text displayed when face is not detected from primary profile content">Face is not detected from first profile picture</string>
-    <string name="profile_grid_screen_primary_profile_content_does_not_exist" description="Text displayed when primary profile content does not exist">First profile picture does not exist</string>
-    <string name="profile_grid_screen_show_favorite_profiles_action" description="Title for show favorite profiles action">Show favorite profiles</string>
+    <string name="profile_grid_screen_security_content_is_not_accepted" description="Text displayed when security selfie is not accepted">Security selfie not approved</string>
+    <string name="profile_grid_screen_security_content_does_not_exist" description="Text displayed when security selfie does not exist">Security selfie missing</string>
+    <string name="profile_grid_screen_security_content_face_not_detected" description="Text displayed when face is not detected from security selfie">Face not detected in security selfie</string>
+    <string name="profile_grid_screen_primary_profile_content_is_in_moderation" description="Info text that primary profile content is in moderation">You will be able to browse and be seen once your first profile picture is approved</string>
+    <string name="profile_grid_screen_primary_profile_content_is_not_accepted" description="Text displayed when primary profile content is not accepted">First profile picture not approved</string>
+    <string name="profile_grid_screen_primary_profile_content_face_not_detected" description="Text displayed when face is not detected from primary profile content">Face not detected in first profile picture</string>
+    <string name="profile_grid_screen_primary_profile_content_does_not_exist" description="Text displayed when primary profile content does not exist">First profile picture missing</string>
+    <string name="profile_grid_screen_show_favorite_profiles_action" description="Title for show favorite profiles action">Show favorites</string>
     <string name="profile_grid_screen_show_all_profiles_action" description="Title for show all profiles action">Show all profiles</string>
-    <string name="profile_grid_screen_no_favorite_profiles_found_title" description="Title that no favorite profiles were found">No favorite profiles found</string>
-    <string name="profile_grid_screen_no_favorite_profiles_found_description" description="Description that no favorite profiles were found">Mark a profile as a favorite to add it here.</string>
-    <string name="profile_grid_screen_filtering_favorite_profiles_is_not_supported" description="Snackbar text that filtering favorite profiles is not supported">Filtering favorite profiles is not supported</string>
+    <string name="profile_grid_screen_no_favorite_profiles_found_title" description="Title that no favorite profiles were found">No favorites yet</string>
+    <string name="profile_grid_screen_no_favorite_profiles_found_description" description="Description that no favorite profiles were found">Star a profile to save it here.</string>
+    <string name="profile_grid_screen_filtering_favorite_profiles_is_not_supported" description="Snackbar text that filtering favorite profiles is not supported">Filtering favorites is not supported</string>
     <string name="profile_grid_screen_daily_likes_dialog_text" description="Dialog text for daily likes info dialog">Daily chat requests left: %s\nReset time: %s</string>
     <string name="profile_grid_screen_daily_likes_dialog_unlimited_likes_text" description="Dialog text for unlimited likes specific text in daily likes info dialog">Sending chat requests to those who are up for a date today does not decrease daily chat requests.</string>
     <string name="profile_grid_screen_account_verification_banner_text" description="Info banner text shown when account is unverified">Your account is unverified</string>
@@ -405,7 +405,7 @@
     <string name="profile_grid_screen_account_verification_banner_button" description="Action button text for account verification info banner">Verify now</string>
 
     <!-- View profile screen -->
-    <string name="view_profile_screen_my_profile_initial_setup_not_done" description="Snackbar text that it is not possible to open my profile screen when initial setup is not done">Dating profile is not created</string>
+    <string name="view_profile_screen_my_profile_initial_setup_not_done" description="Snackbar text that it is not possible to open my profile screen when initial setup is not done">Profile is not set up yet</string>
     <string name="view_profile_screen_my_profile_title" description="Title for view profile screen when my profile is viewed">My profile</string>
     <string name="view_profile_screen_my_profile_edit_action" description="Text for view profile screen edit my profile action">Edit profile</string>
     <string name="view_profile_screen_block_action" description="Text for view profile screen block action">Block</string>
@@ -415,18 +415,18 @@
     <string name="view_profile_screen_chat_action" description="Text for view profile screen chat action">Chat</string>
     <string name="view_profile_screen_add_to_favorites_action" description="Text for view profile screen add to favorites action">Add to favorites</string>
     <string name="view_profile_screen_add_to_favorites_action_successful" description="Snackbar text for view profile screen add to favorites action result successful">Added to favorites</string>
-    <string name="view_profile_screen_add_to_favorites_error_too_many_favorites" description="Snackbar text when adding to favorites fails because of too many favorites">Too many favorite profiles</string>
-    <string name="view_profile_screen_add_to_favorites_remaining_space" description="Snackbar text showing remaining favorite profile space">Remaining space in favorite profiles: %s</string>
+    <string name="view_profile_screen_add_to_favorites_error_too_many_favorites" description="Snackbar text when adding to favorites fails because of too many favorites">Favorites list is full</string>
+    <string name="view_profile_screen_add_to_favorites_remaining_space" description="Snackbar text showing remaining favorite profile space">Remaining favorite slots: %s</string>
     <string name="view_profile_screen_remove_from_favorites_action" description="Text for view profile screen remove from favorites action">Remove from favorites</string>
     <string name="view_profile_screen_remove_from_favorites_action_successful" description="Snackbar text for view profile screen remove from favorites action result successful">Removed from favorites</string>
     <string name="view_profile_screen_like_action_successful" description="Snackbar text for view profile screen like action successful">Chat request sent</string>
-    <string name="view_profile_screen_like_action_try_again_tomorrow" description="Snackbar text for view profile screen like action failed because of like limit">No daily chat requests left. Try again tomorrow.</string>
+    <string name="view_profile_screen_like_action_try_again_tomorrow" description="Snackbar text for view profile screen like action failed because of like limit">No chat requests left today. Try again tomorrow.</string>
     <string name="view_profile_screen_like_action_like_already_sent" description="Snackbar text for view profile screen like action failed because of like is already sent">Chat request already sent</string>
     <string name="view_profile_screen_like_action_like_already_received" description="Snackbar text for view profile screen like action failed because of like is already received">Chat request already received</string>
     <string name="view_profile_screen_already_match" description="Snackbar text for view profile screen displayed when action failed because of the profile is already a match">Chatting is already possible</string>
     <string name="view_profile_screen_block_action_successful" description="Snackbar text for view profile screen block action successful">Profile blocked</string>
-    <string name="view_profile_screen_profile_edit_failed" description="Snackbar text for notifying about failed profile edit">Profile editing failed</string>
-    <string name="view_profile_screen_profile_image_does_not_exist" description="Snackbar text for notifying that selected profile image does not exist when saving profile edits">Profile image %s does not exist</string>
+    <string name="view_profile_screen_profile_edit_failed" description="Snackbar text for notifying about failed profile edit">Failed to save profile</string>
+    <string name="view_profile_screen_profile_image_does_not_exist" description="Snackbar text for notifying that selected profile image does not exist when saving profile edits">Profile picture %s does not exist</string>
     <string name="view_profile_screen_profile_currently_online" description="View profile screen text that profile is currently online">Online</string>
     <string name="view_profile_screen_profile_last_seen_second" description="View profile screen text that profile is last seen second ago">Last seen %s second ago</string>
     <string name="view_profile_screen_profile_last_seen_seconds" description="View profile screen text that profile is last seen multiple seconds ago">Last seen %s seconds ago</string>
@@ -436,7 +436,7 @@
     <string name="view_profile_screen_profile_last_seen_hours" description="View profile screen text that profile is last seen multiple hours ago">Last seen %s hours ago</string>
     <string name="view_profile_screen_profile_last_seen_day" description="View profile screen text that profile is last seen day ago">Last seen %s day ago</string>
     <string name="view_profile_screen_profile_last_seen_days" description="View profile screen text that profile is last seen multiple days ago">Last seen %s days ago</string>
-    <string name="view_profile_screen_profile_verification_requires_verified_account" description="Text shown when viewing profile verification info requires verified account">Viewing this info requires verified account</string>
+    <string name="view_profile_screen_profile_verification_requires_verified_account" description="Text shown when viewing profile verification info requires verified account">Viewing this info requires a verified account</string>
     <string name="view_profile_screen_non_accepted_profile_name_info_dialog_text" description="View profile screen info dialog text about non-accepted profile name">Profile name is not yet moderated or it is moderated as rejected. Only the first letter is visible to users.</string>
     <string name="view_profile_screen_non_accepted_profile_text_info_dialog_text" description="View profile screen info dialog text about non-accepted profile text">Profile text is not yet moderated or it is moderated as rejected. Only the first letter is visible to users.</string>
     <string name="view_profile_screen_non_accepted_profile_content_info_dialog_text" description="View profile screen info dialog text about non-accepted profile content">All profile pictures are not yet moderated or some picture is moderated as rejected. Only accepted pictures are visible to users.</string>
@@ -457,14 +457,14 @@
     <string name="edit_profile_screen_primary_profile_content_rejected" description="Info text that primary profile image was rejected by moderators">Picture was rejected by moderators. Replace the picture to make your profile visible in the profile grid.</string>
 
     <!-- Edit profile text screen -->
-    <string name="edit_profile_text_screen_text_length_too_long" description="Dialog text for notifying user when profile text is too long">Profile text byte count is more than 2000 bytes</string>
+    <string name="edit_profile_text_screen_text_length_too_long" description="Dialog text for notifying user when profile text is too long">Profile text is too long (maximum 2000 bytes)</string>
 
     <!-- Edit attribute value screen -->
-    <string name="edit_attribute_value_screen_one_value_must_be_selected" description="Snackbar text for notifying that one at least one option must be selected">At least one selection is required</string>
+    <string name="edit_attribute_value_screen_one_value_must_be_selected" description="Snackbar text for notifying that one at least one option must be selected">At least one option must be selected</string>
     <string name="edit_attribute_value_screen_search_placeholder_text" description="Attribute value search box placeholder text">Search…</string>
-    <string name="edit_attribute_value_screen_max_selected_values_error" description="Snackbar text for max selected values error">Too many selected values</string>
+    <string name="edit_attribute_value_screen_max_selected_values_error" description="Snackbar text for max selected values error">Too many options selected</string>
     <string name="attribute_partially_hidden_info" description="Info box text shown below an attribute which is partially hidden from other users. %s is the attribute name">"%s" is partially hidden</string>
-    <string name="attribute_deprecated_info" description="Info box text shown below an attribute which is deprecated. %s is the attribute name">"%s" is deprecated and it disappears once you disable it</string>
+    <string name="attribute_deprecated_info" description="Info box text shown below an attribute which is deprecated. %s is the attribute name">"%s" is deprecated and will disappear once unselected</string>
 
     <!-- Select content screen -->
     <string name="select_content_screen_title" description="Title for select content screen">Select image</string>
@@ -475,16 +475,16 @@
     <string name="content_management_screen_title" description="Title for content management screen">My images</string>
     <string name="content_management_screen_content_security_content" description="Text for security content">Security selfie</string>
     <string name="content_management_screen_content_profile_content" description="Text for profile content">Profile image %s</string>
-    <string name="content_management_screen_content_deletion_allowed_wait_time" description="Text for content deletion allowed wait time">Deletion possible starting at %s</string>
+    <string name="content_management_screen_content_deletion_allowed_wait_time" description="Text for content deletion allowed wait time">Can be deleted starting at %s</string>
     <string name="content_management_screen_content_face_verified" description="Text for face verified status">Face verified</string>
     <string name="content_management_screen_content_face_not_verified" description="Text for face not verified status">Face not verified</string>
     <string name="content_management_screen_content_face_verification_pending" description="Text for pending face verification status">Face verification pending</string>
 
     <!-- Profile filters screen -->
     <string name="profile_filters_screen_title" description="Title for profile filters screen">Profile filters</string>
-    <string name="profile_filters_screen_disable_filters_action" description="Title for disable filters action">Disable filters</string>
-    <string name="profile_filters_screen_profile_verification_requires_verified_account" description="Text shown when using profile verification filter requires verified account">Using this filter requires verified account</string>
-    <string name="profile_filters_screen_disable_filters_action_dialog_title" description="Title for disable filters action confirm dialog">Disable filters?</string>
+    <string name="profile_filters_screen_disable_filters_action" description="Title for disable filters action">Reset filters</string>
+    <string name="profile_filters_screen_profile_verification_requires_verified_account" description="Text shown when using profile verification filter requires verified account">Using this filter requires a verified account</string>
+    <string name="profile_filters_screen_disable_filters_action_dialog_title" description="Title for disable filters action confirm dialog">Reset filters?</string>
     <string name="profile_filters_screen_min_age_filter" description="Title for min profile age filter">Min age</string>
     <string name="profile_filters_screen_max_age_filter" description="Title for max profile age filter">Max age</string>
     <string name="profile_filters_screen_unlimited_likes_filter" description="Title for unlimited likes filter">Up for a date today</string>
@@ -511,7 +511,7 @@
     <string name="profile_filters_screen_profile_verification_status_filter_security_content_verified" description="Option text for profile verification status filter security content verified">Security selfie</string>
     <string name="profile_filters_screen_profile_verification_status_filter_profile_age_range_verified" description="Option text for profile verification status filter profile age range verified">Age (verified once)</string>
     <string name="profile_filters_screen_profile_verification_status_filter_profile_name_verified" description="Option text for profile verification status filter profile name verified">Name</string>
-    <string name="profile_filters_screen_updating_filters_failed" description="Snackbar text for notifying about failed profile filters update">Updating profile filters failed</string>
+    <string name="profile_filters_screen_updating_filters_failed" description="Snackbar text for notifying about failed profile filters update">Failed to update filters</string>
 
     <!-- Edit profile attribute filter value screen -->
     <string name="edit_attribute_filter_value_screen_title" description="Title for edit attribute filter screen">Edit filter</string>
@@ -524,9 +524,9 @@
     <string name="search_settings_screen_title" description="Title for search settings">Profile search</string>
     <string name="search_settings_screen_change_gender_filter_action_tile" description="Title for change gender filter value action">Gender filter</string>
     <string name="search_settings_screen_change_my_gender_action_title" description="Title for change my profile's gender action">Change my profile\'s gender</string>
-    <string name="search_settings_screen_gender_is_not_selected" description="Snackbar text about missing gender information">Your gender information is not set</string>
+    <string name="search_settings_screen_gender_is_not_selected" description="Snackbar text about missing gender information">Your gender is not set</string>
     <string name="search_settings_screen_gender_filter_is_not_selected" description="Snackbar text about missing gender filter value">Gender filter is not selected</string>
-    <string name="search_settings_screen_search_settings_update_failed" description="Snackbar text about failed search settings update">Updating search settings failed</string>
+    <string name="search_settings_screen_search_settings_update_failed" description="Snackbar text about failed search settings update">Failed to update search settings</string>
     <string name="search_settings_screen_automatic_search" description="Title for automatic profile search settings category">New and updated profiles</string>
     <string name="search_settings_screen_distance" description="Title text for distance setting">Use max distance filter</string>
     <string name="search_settings_screen_filters" description="Title text for filters setting">Use multiple-choice question filters</string>
@@ -539,14 +539,14 @@
     <!-- Likes -->
     <string name="likes_screen_title" description="Title for likes screen">Requests</string>
     <string name="likes_screen_no_received_likes_found" description="Info text displayed when there is no received likes">No received chat requests</string>
-    <string name="likes_screen_no_received_likes_found_description" description="Description text displayed when there is no received likes">Spread the word about the app in social media</string>
-    <string name="likes_screen_like_loading_failed" description="Text displayed when like loading fails">Chat request loading failed</string>
+    <string name="likes_screen_no_received_likes_found_description" description="Description text displayed when there is no received likes">Spread the word about the app on social media</string>
+    <string name="likes_screen_like_loading_failed" description="Text displayed when like loading fails">Failed to load chat requests</string>
     <string name="likes_screen_refresh_action" description="Title for likes screen refresh action">Refresh</string>
 
     <!-- Chat list -->
     <string name="chat_list_screen_title" description="Title for chat list screen">Chats</string>
-    <string name="chat_list_screen_no_chats_found" description="Info text displayed when there is no chats">No chats found</string>
-    <string name="chat_list_screen_no_chats_found_description" description="Description text displayed when there is no chats">Spread the word about the app in social media</string>
+    <string name="chat_list_screen_no_chats_found" description="Info text displayed when there is no chats">No chats yet</string>
+    <string name="chat_list_screen_no_chats_found_description" description="Description text displayed when there is no chats">Spread the word about the app on social media</string>
     <string name="chat_list_screen_unread_message" description="Conversation status text for unread message">New message</string>
     <string name="chat_list_screen_open_matches_screen_action" description="Title for action which opens matches screen">Accepted chat requests</string>
     <string name="chat_list_screen_sent_message_indicator" description="Text indicating that the message is a sent message.">You: %s</string>
@@ -554,38 +554,38 @@
 
     <!-- Select match screen -->
     <string name="select_match_screen_title" description="Title for select match screen">Accepted chat requests</string>
-    <string name="chat_list_screen_no_matches_found" description="Info text displayed when no matches are found">No accepted chat requests found</string>
+    <string name="chat_list_screen_no_matches_found" description="Info text displayed when no matches are found">No accepted chat requests yet</string>
 
     <!-- Conversation screen -->
     <string name="conversation_screen_profile_blocked" description="Snackbar text displayed when profile blocking is successful">Profile was blocked</string>
-    <string name="conversation_screen_message_list_empty" description="Info text that message list is empty">No messages</string>
+    <string name="conversation_screen_message_list_empty" description="Info text that message list is empty">No messages yet</string>
     <string name="conversation_screen_make_match_instruction" description="Instruction text how to make a match">Send a message to accept the chat request!</string>
     <string name="conversation_screen_chat_box_placeholder_text" description="Message input text field placeholder text">Type a message…</string>
     <string name="conversation_screen_message_too_long" description="Snackbar text that message is too long">Message is too long</string>
-    <string name="conversation_screen_message_too_many_pending_messages" description="Snackbar text that server is full of pending messages">Server pending message storage is full</string>
-    <string name="conversation_screen_message_send_requires_connection" description="Snackbar text when message sending is blocked until app reconnects to server">Try again after app connects to server</string>
-    <string name="conversation_screen_remaining_daily_messages" description="Snackbar text showing remaining daily messages count">Remaining daily messages: %s</string>
-    <string name="conversation_screen_remaining_conversation_messages" description="Snackbar text showing remaining messages for currently visible conversation">Remaining messages for this conversation: %s (resets when sent messages are delivered)</string>
-    <string name="conversation_screen_message_state_sending_in_progress" description="Message state text that message sending is in progress">Sending in progress</string>
-    <string name="conversation_screen_message_state_sent_successfully" description="Message state text that message was sent successfully">Sent successfully</string>
+    <string name="conversation_screen_message_too_many_pending_messages" description="Snackbar text that server is full of pending messages">Too many undelivered messages</string>
+    <string name="conversation_screen_message_send_requires_connection" description="Snackbar text when message sending is blocked until app reconnects to server">Please try again after app connects to server</string>
+    <string name="conversation_screen_remaining_daily_messages" description="Snackbar text showing remaining daily messages count">Daily messages remaining: %s</string>
+    <string name="conversation_screen_remaining_conversation_messages" description="Snackbar text showing remaining messages for currently visible conversation">Messages remaining for this chat: %s (resets once delivered)</string>
+    <string name="conversation_screen_message_state_sending_in_progress" description="Message state text that message sending is in progress">Sending…</string>
+    <string name="conversation_screen_message_state_sent_successfully" description="Message state text that message was sent successfully">Sent</string>
     <string name="conversation_screen_message_state_delivered" description="Message state text that message was delivered to recipient">Delivered</string>
     <string name="conversation_screen_message_state_seen" description="Message state text that message was seen by recipient">Seen</string>
-    <string name="conversation_screen_message_state_sending_failed" description="Message state text that message sending failed">Sending failed</string>
+    <string name="conversation_screen_message_state_sending_failed" description="Message state text that message sending failed">Failed to send</string>
     <string name="conversation_screen_message_state_delivery_failed" description="Message state text that message delivery failed">Delivery failed</string>
-    <string name="conversation_screen_message_state_delivery_failed_and_resent" description="Message state text that message delivery failed and it was resent">Delivery failed and resent</string>
+    <string name="conversation_screen_message_state_delivery_failed_and_resent" description="Message state text that message delivery failed and it was resent">Delivery failed, resent</string>
     <string name="conversation_screen_message_state_decrypting_failed" description="Message state text that message decrypting failed">Decrypting failed</string>
-    <string name="conversation_screen_message_state_decrypting_failed_detailed" description="Detailed message state text that message decrypting failed and requires resend">Decrypting failed. Ask resending.</string>
-    <string name="conversation_screen_message_state_public_key_download_failed" description="Message state text that public key download failed">Public key download failed</string>
-    <string name="conversation_screen_message_state_received_successfully" description="Message state text that message was received successfully">Received successfully</string>
-    <string name="conversation_screen_message_state_received_and_seen_locally" description="Message state text that message was received and marked as seen locally">Received and seen locally</string>
-    <string name="conversation_screen_message_state_received_and_seen" description="Message state text that message was received and marked as seen">Received and seen</string>
-    <string name="conversation_screen_message_unsupported" description="Message text that message is unsupported">Unsupported message</string>
+    <string name="conversation_screen_message_state_decrypting_failed_detailed" description="Detailed message state text that message decrypting failed and requires resend">Could not decrypt. Please ask the sender to resend.</string>
+    <string name="conversation_screen_message_state_public_key_download_failed" description="Message state text that public key download failed">Encryption key download failed</string>
+    <string name="conversation_screen_message_state_received_successfully" description="Message state text that message was received successfully">Received</string>
+    <string name="conversation_screen_message_state_received_and_seen_locally" description="Message state text that message was received and marked as seen locally">Seen locally</string>
+    <string name="conversation_screen_message_state_received_and_seen" description="Message state text that message was received and marked as seen">Seen</string>
+    <string name="conversation_screen_message_unsupported" description="Message text that message is unsupported">Unsupported message format</string>
     <string name="conversation_screen_message_not_found" description="Message text that referenced message was not found">Message not found</string>
     <string name="conversation_screen_message_details_message_id" description="Title text for message ID value">Message ID</string>
     <string name="conversation_screen_message_details_message_number" description="Title text for message number value">Message number</string>
-    <string name="conversation_screen_message_error_is_actually_sent_successfully" description="Message remove or resend error that message is actually sent successfully">The message is actually sent successfully</string>
-    <string name="conversation_screen_message_error_recipient_blocked_sender_or_recipient_not_found" description="Message send or resend error that recipient blocked sender or recipient not found">Recipient action prevented message sending</string>
-    <string name="conversation_screen_message_resend_complete" description="Message resend complete text">Resend complete</string>
+    <string name="conversation_screen_message_error_is_actually_sent_successfully" description="Message remove or resend error that message is actually sent successfully">This message was already sent successfully</string>
+    <string name="conversation_screen_message_error_recipient_blocked_sender_or_recipient_not_found" description="Message send or resend error that recipient blocked sender or recipient not found">Unable to deliver message to recipient</string>
+    <string name="conversation_screen_message_resend_complete" description="Message resend complete text">Resent successfully</string>
     <string name="conversation_screen_message_resent_info" description="Message resent info footer text">Resent (originally sent %s, message %s)</string>
     <string name="conversation_screen_message_resend_confirm_title" description="Title for resend confirm dialog">Resend?</string>
     <string name="conversation_screen_message_info_encryption_started" description="Info text that messages in this conversation are end-to-end encrypted">Messages are end-to-end encrypted</string>
@@ -596,13 +596,13 @@
     <string name="conversation_screen_join_video_call_dialog_title" description="Title text for join video call confirm dialog">Join video call?</string>
     <string name="conversation_screen_open_details_action_subtitle" description="Action subtitle for open details action">Contains selectable text</string>
     <string name="conversation_screen_install_jitsi_meet_dialog_title" description="Title for install Jitsi Meet dialog">Install Jitsi Meet?</string>
-    <string name="conversation_screen_install_jitsi_meet_dialog_description_android" description="Description text for install Jitsi Meet dialog when app is running on Android">Video calling requires Jitsi Meet video calling app which is not installed currently. Install the app from Google Play Store? After that, try this again.</string>
-    <string name="conversation_screen_install_jitsi_meet_dialog_description_ios" description="Description text for install Jitsi Meet dialog when app is running on iOS">Video calling requires Jitsi Meet video calling app which is not installed currently. Install the app from App Store? After that, try this again.</string>
+    <string name="conversation_screen_install_jitsi_meet_dialog_description_android" description="Description text for install Jitsi Meet dialog when app is running on Android">Video calling requires the Jitsi Meet app. Would you like to install it from Google Play Store?</string>
+    <string name="conversation_screen_install_jitsi_meet_dialog_description_ios" description="Description text for install Jitsi Meet dialog when app is running on iOS">Video calling requires the Jitsi Meet app. Would you like to install it from the App Store?</string>
 
     <!-- Menu screen -->
     <string name="menu_screen_title" description="Title for menu screen">Menu</string>
     <string name="menu_screen_server_maintenance_title" description="Title text for server maintenance info">Maintenance break</string>
-    <string name="menu_screen_admin_offline_title" description="Title text for admin bot offline info">Automatic moderation is not working currently</string>
+    <string name="menu_screen_admin_offline_title" description="Title text for admin bot offline info">Automatic moderation is temporarily unavailable</string>
     <string name="menu_screen_help_center_title" description="Title for help center menu item">Help center</string>
 
     <!-- Settings -->
@@ -620,14 +620,14 @@
     <string name="blocked_profiles_screen_placeholder_for_private_profile" description="Placeholder text for private profile">Private profile</string>
     <string name="blocked_profiles_screen_unblock_profile_dialog_title" description="Title for unblock profile dialog">Unblock profile?</string>
     <string name="blocked_profiles_screen_unblock_profile_dialog_description" description="Description for unblock profile dialog">Unblock %s</string>
-    <string name="blocked_profiles_screen_unblock_profile_successful" description="Snackbar text displayed when profile unblocking was successful">Unblock successful</string>
-    <string name="blocked_profiles_screen_unblock_profile_failed" description="Snackbar text displayed when profile unblocking failed">Unblock failed</string>
+    <string name="blocked_profiles_screen_unblock_profile_successful" description="Snackbar text displayed when profile unblocking was successful">Profile unblocked</string>
+    <string name="blocked_profiles_screen_unblock_profile_failed" description="Snackbar text displayed when profile unblocking failed">Failed to unblock profile</string>
     <string name="blocked_profiles_screen_unblock_profile_in_progress" description="Snackbar text displayed when profile unblocking failed">Previous unblock is in progress</string>
     <string name="blocked_profiles_screen_no_blocked_profiles" description="Info text displayed when there is no blocked profiles">No blocked profiles</string>
 
     <!-- Current security selfie -->
     <string name="current_security_selfie_screen_title" description="Current security selfie screen title">Security selfie</string>
-    <string name="current_security_selfie_screen_security_selfie_changed" description="Snackbar text displayed when security selfie is changed">Security selfie changed</string>
+    <string name="current_security_selfie_screen_security_selfie_changed" description="Snackbar text displayed when security selfie is changed">Security selfie updated</string>
 
     <!-- Profile location screen -->
     <string name="profile_location_screen_title" description="Title for profile location screen">Location</string>
@@ -635,7 +635,7 @@
     <!-- Data export -->
     <string name="data_export_screen_title_export_type_user" description="Title for data export screen when export type is user">Download my data</string>
     <string name="data_export_screen_title_export_type_admin" description="Title for data export screen when export type is admin">Data export</string>
-    <string name="data_export_screen_api_limit_error" description="Snackbar text for API limit error">Try again after 24 hours</string>
+    <string name="data_export_screen_api_limit_error" description="Snackbar text for API limit error">Daily limit reached. Try again after 24 hours.</string>
 
     <!-- Chat backup -->
     <string name="chat_backup_screen_title" description="Title for chat backup screen">Chat backup</string>
@@ -643,12 +643,12 @@
     <string name="chat_backup_screen_import_backup_question_details" description="Details for import backup confirmation dialog">File: %s\n\nCurrent and backup messages will be merged. Current encryption key will be replaced if the one included in the backup is newer.</string>
     <string name="chat_backup_screen_import_error_invalid_backup_file" description="Error message when backup file is invalid">Invalid backup file</string>
     <string name="chat_backup_screen_import_error_unsupported_version" description="Error message when backup file version is unsupported">Unsupported backup version</string>
-    <string name="chat_backup_screen_import_error_wrong_account" description="Error message when backup was created by different account">Backup created by different account</string>
+    <string name="chat_backup_screen_import_error_wrong_account" description="Error message when backup was created by different account">Backup was created by a different account</string>
     <string name="chat_backup_screen_backup_reminder_interval_day" description="Label for backup reminder interval in singular day">Every day</string>
     <string name="chat_backup_screen_backup_reminder_interval_days" description="Label for backup reminder interval in plural days">Every %s days</string>
     <string name="chat_backup_reminder_dialog_title" description="Title for backup reminder dialog">Chat backup</string>
-    <string name="chat_backup_reminder_dialog_message_no_backup" description="Message when no backup has been created">Chat backup is not yet created. Backup now?</string>
-    <string name="chat_backup_reminder_dialog_message_old_backup" description="Message when backup is old">Chat backup has not been created since %s days. Backup now?</string>
+    <string name="chat_backup_reminder_dialog_message_no_backup" description="Message when no backup has been created">No chat backup created yet. Back up now?</string>
+    <string name="chat_backup_reminder_dialog_message_old_backup" description="Message when backup is old">Chat backup has not been created in %s days. Back up now?</string>
 
     <!-- Account settings selfie -->
     <string name="account_settings_screen_title" description="Title for account settings">Account</string>
@@ -656,10 +656,10 @@
     <string name="account_settings_screen_email_verified" description="Text for verified email status">Email verified</string>
     <string name="account_settings_screen_email_not_verified" description="Text for not verified email status">Email not verified</string>
     <string name="account_settings_screen_send_verification_email_button" description="Button text for send verification email action">Send verification email</string>
-    <string name="account_settings_screen_send_verification_email_sent_successfully" description="Snackbar text for successful email verification sending">Verification email sent successfully</string>
+    <string name="account_settings_screen_send_verification_email_sent_successfully" description="Snackbar text for successful email verification sending">Verification email sent</string>
     <string name="account_settings_screen_send_verification_email_already_verified" description="Snackbar text when email is already verified">Email is already verified</string>
     <string name="account_settings_screen_delete_account_action" description="Title for delete account action">Request account deletion</string>
-    <string name="account_settings_screen_delete_account_action_error" description="Snackbar text about delete account action failure">Requesting account deletion failed</string>
+    <string name="account_settings_screen_delete_account_action_error" description="Snackbar text about delete account action failure">Failed to request account deletion</string>
     <string name="account_settings_screen_delete_account_confirm_dialog_title" description="Title for delete account confirm dialog title">Request account deletion?</string>
     <string name="account_settings_screen_change_email_button" description="Button text for change email action">Change email</string>
     <string name="account_settings_screen_change_email_dialog_title" description="Title for change email dialog">Change email address</string>
@@ -670,47 +670,47 @@
     <string name="account_settings_screen_pending_email_not_verified" description="Text for not verified pending email status">Pending email not verified</string>
     <string name="account_settings_screen_pending_email_completion_time" description="Text for email change completion time">Email change completes at: %s</string>
     <string name="account_settings_screen_cancel_email_change_button" description="Button text for cancel email change action">Cancel email change</string>
-    <string name="account_settings_screen_email_change_initiated" description="Snackbar text for successful email change initiation">Email change initiated. Please check your email.</string>
+    <string name="account_settings_screen_email_change_initiated" description="Snackbar text for successful email change initiation">Email change initiated. Please check your inbox.</string>
     <string name="account_settings_screen_email_change_cancelled" description="Snackbar text for successful email change cancellation">Email change cancelled</string>
-    <string name="account_settings_screen_email_change_history_limit_reached" description="Snackbar text when email change history limit is reached, with formatted wait time">Email change history limit reached. Try again after %s.</string>
+    <string name="account_settings_screen_email_change_history_limit_reached" description="Snackbar text when email change history limit is reached, with formatted wait time">Email change limit reached. Try again after %s.</string>
     <string name="account_settings_screen_cancel_email_change_confirm_dialog_title" description="Title for cancel email change confirm dialog">Cancel email change?</string>
 
     <!-- Account verification settings -->
     <string name="account_verification_screen_title" description="Title for account verification settings screen">Account verification</string>
     <string name="account_verification_screen_verification_in_progress_title" description="Title shown for account verification in progress section">Verification in progress</string>
     <string name="account_verification_screen_queue_position" description="Text shown with current account verification queue position">Queue position: %s</string>
-    <string name="account_verification_screen_request_queue_full" description="Snackbar text when account verification queue is full">Account verification queue is full. Please try again later.</string>
-    <string name="account_verification_screen_request_initial_setup_not_completed" description="Snackbar text when account verification fails because initial setup is not completed">Dating profile not created</string>
+    <string name="account_verification_screen_request_queue_full" description="Snackbar text when account verification queue is full">Verification queue is full. Please try again later.</string>
+    <string name="account_verification_screen_request_initial_setup_not_completed" description="Snackbar text when account verification fails because initial setup is not completed">Profile is not set up yet</string>
     <string name="account_verification_screen_previous_verification_title" description="Title shown for previous account verification details">Previous verification</string>
     <string name="account_verification_screen_previous_verification_time" description="Text shown with previous account verification time">Time: %s</string>
     <string name="account_verification_screen_previous_verification_errors_title" description="Title shown above previous account verification errors">Errors</string>
-    <string name="account_verification_screen_error_verification_method_not_configured" description="Account verification error: verification method is not configured">App admin has not configured this verification method</string>
-    <string name="account_verification_screen_error_verification_data_parsing_failed" description="Account verification error: verification data parsing failed">Unsupported person identification data</string>
-    <string name="account_verification_screen_error_verification_data_verification_failed" description="Account verification error: verification data verification failed">Verifying person identification data failed</string>
-    <string name="account_verification_screen_error_profile_age_range_verification_failed" description="Account verification error: profile age range verification failed">Profile age verification failed</string>
-    <string name="account_verification_screen_error_profile_age_range_verification_mismatch" description="Account verification error: verified profile age range mismatch">Provided age does not match your profile age</string>
+    <string name="account_verification_screen_error_verification_method_not_configured" description="Account verification error: verification method is not configured">This verification method is not configured</string>
+    <string name="account_verification_screen_error_verification_data_parsing_failed" description="Account verification error: verification data parsing failed">Invalid identification data</string>
+    <string name="account_verification_screen_error_verification_data_verification_failed" description="Account verification error: verification data verification failed">Identity verification failed</string>
+    <string name="account_verification_screen_error_profile_age_range_verification_failed" description="Account verification error: profile age range verification failed">Age verification failed</string>
+    <string name="account_verification_screen_error_profile_age_range_verification_mismatch" description="Account verification error: verified profile age range mismatch">Verified age does not match your profile age</string>
     <string name="account_verification_screen_error_profile_age_range_mismatch" description="Account verification error: profile age range changed during verification">Profile age changed during verification</string>
-    <string name="account_verification_screen_error_profile_name_verification_failed" description="Account verification error: profile name verification failed">Profile name verification failed</string>
-    <string name="account_verification_screen_error_profile_name_verification_mismatch" description="Account verification error: verified profile name mismatch">Provided name does not match your profile name</string>
+    <string name="account_verification_screen_error_profile_name_verification_failed" description="Account verification error: profile name verification failed">Name verification failed</string>
+    <string name="account_verification_screen_error_profile_name_verification_mismatch" description="Account verification error: verified profile name mismatch">Verified name does not match your profile name</string>
     <string name="account_verification_screen_error_profile_name_mismatch" description="Account verification error: profile name changed during verification">Profile name changed during verification</string>
     <string name="account_verification_screen_error_security_content_verification_failed" description="Account verification error: security content verification failed">Security selfie verification failed</string>
-    <string name="account_verification_screen_error_security_content_verification_mismatch" description="Account verification error: verified security content mismatch">Provided image does not match your security selfie</string>
+    <string name="account_verification_screen_error_security_content_verification_mismatch" description="Account verification error: verified security content mismatch">Verified photo does not match your security selfie</string>
     <string name="account_verification_screen_error_security_content_mismatch" description="Account verification error: security content changed during verification">Security selfie changed during verification</string>
     <string name="account_verification_screen_start_verification_title" description="Title shown above account verification scope and actions section">Select verification scopes and method</string>
     <string name="account_verification_screen_scope_profile_age" description="Checkbox label for account verification profile age scope">Profile age</string>
     <string name="account_verification_screen_scope_profile_name" description="Checkbox label for account verification profile name scope">Profile name</string>
-    <string name="account_verification_screen_verification_method_eudi_unsupported" description="Account verification method label for eudi when it is not yet supported">EUDI wallet (current app version does not support this method)</string>
+    <string name="account_verification_screen_verification_method_eudi_unsupported" description="Account verification method label for eudi when it is not yet supported">EUDI wallet (not supported in this version)</string>
 
     <!-- Age verification settings -->
     <string name="age_verification_screen_title" description="Title for age verification settings screen">Age verification</string>
     <string name="age_verification_screen_current_verification_status_title" description="Title shown for current age verification status section">Current verification status</string>
     <string name="age_verification_screen_age_is_18_or_older" description="Age verification status label for adult age">Age is 18 or older</string>
     <string name="age_verification_screen_start_verification_title" description="Title shown above age verification methods section">Start verification</string>
-    <string name="age_verification_screen_verification_method_eudi_unsupported" description="Age verification method label for eudi when it is not yet supported">EUDI wallet (current app version does not support this method)</string>
-    <string name="age_verification_screen_error_age_already_verified" description="Age verification error: age is already verified">Age already verified</string>
-    <string name="age_verification_screen_error_age_under_18" description="Age verification error: age is under 18">Age is under 18</string>
-    <string name="age_verification_screen_error_verification_data_parsing_failed" description="Age verification error: verification data parsing failed">Unsupported person identification data</string>
-    <string name="age_verification_screen_error_verification_data_verification_failed" description="Age verification error: verification data verification failed">Verifying person identification data failed</string>
+    <string name="age_verification_screen_verification_method_eudi_unsupported" description="Age verification method label for eudi when it is not yet supported">EUDI wallet (not supported in this version)</string>
+    <string name="age_verification_screen_error_age_already_verified" description="Age verification error: age is already verified">Age is already verified</string>
+    <string name="age_verification_screen_error_age_under_18" description="Age verification error: age is under 18">Must be 18 or older</string>
+    <string name="age_verification_screen_error_verification_data_parsing_failed" description="Age verification error: verification data parsing failed">Invalid identification data</string>
+    <string name="age_verification_screen_error_verification_data_verification_failed" description="Age verification error: verification data verification failed">Identity verification failed</string>
     <string name="age_verification_screen_error_verification_method_not_configured" description="Age verification error: verification method is not configured">App admin has not configured this verification method</string>
 
     <!-- Age verification required screen -->
@@ -740,9 +740,9 @@
 
     <!-- News list screen -->
     <string name="news_list_screen_title" description="Title for news list screen title">News</string>
-    <string name="news_list_screen_not_published" description="News item state text for not yet published news item">Not published</string>
-    <string name="news_list_screen_no_news_found" description="Info text displayed when no news are found">No news found</string>
-    <string name="news_list_screen_news_loading_failed" description="Info text displayed when news loading fails">News loading failed</string>
+    <string name="news_list_screen_not_published" description="News item state text for not yet published news item">Draft</string>
+    <string name="news_list_screen_no_news_found" description="Info text displayed when no news are found">No news available</string>
+    <string name="news_list_screen_news_loading_failed" description="Info text displayed when news loading fails">Failed to load news</string>
     <string name="news_list_screen_create_new" description="Dialog title for create new news item confirmation dialog">Create new?</string>
 
     <!-- View news screen -->
@@ -767,13 +767,13 @@
 
     <!-- Account deletion pending screen -->
     <string name="account_deletion_pending_screen_title" description="Title for account deletion pending screen">Account deletion pending</string>
-    <string name="account_deletion_pending_screen_time_text" description="Time when account deletion process will begin">Account automatic deletion process begins at %s</string>
+    <string name="account_deletion_pending_screen_time_text" description="Time when account deletion process will begin">Account deletion will begin at %s</string>
 
     <!-- Account banned screen -->
-    <string name="account_banned_screen_title" description="Title for account banned screen">Account banned</string>
-    <string name="account_banned_screen_ban_reason" description="Text for account ban reason">Ban reason: %s</string>
-    <string name="account_banned_screen_ban_reason_category" description="Text for account ban reason category">Ban reason category: %s</string>
-    <string name="account_banned_screen_time_text" description="Time when account unban process will begin">Account automatic unban process begins at %s</string>
+    <string name="account_banned_screen_title" description="Title for account banned screen">Account suspended</string>
+    <string name="account_banned_screen_ban_reason" description="Text for account ban reason">Reason: %s</string>
+    <string name="account_banned_screen_ban_reason_category" description="Text for account ban reason category">Category: %s</string>
+    <string name="account_banned_screen_time_text" description="Time when account unban process will begin">Suspension ending will begin at %s</string>
 
     <!-- Account ban reason category -->
     <string name="account_ban_reason_category_profile_name" description="Account ban reason category profile name">Profile name</string>
@@ -784,31 +784,31 @@
 
     <!-- Unsupported client screen -->
     <string name="unsupported_client_screen_title" description="Title for unsupported client screen">App update required</string>
-    <string name="unsupported_client_screen_info" description="Info text that app update is required">Current app version is not supported. Please update the app.</string>
+    <string name="unsupported_client_screen_info" description="Info text that app update is required">This app version is no longer supported. Please update to the latest version.</string>
 
     <!-- Report screen -->
     <string name="report_screen_profile_name_action" description="Title for report profile name action">Profile name</string>
     <string name="report_screen_profile_name_dialog_title" description="Profile name reporting confirmation dialog title">Report profile name?</string>
-    <string name="report_screen_profile_name_changed_error" description="Snackbar text for when reporting old profile name">Report failed. Profile name has changed.</string>
+    <string name="report_screen_profile_name_changed_error" description="Snackbar text for when reporting old profile name">Report failed: profile name has changed</string>
     <string name="report_screen_profile_text_action" description="Title for report profile text action">Profile text</string>
     <string name="report_screen_profile_text_dialog_title" description="Profile text reporting confirmation dialog title">Report profile text?</string>
-    <string name="report_screen_profile_text_changed_error" description="Snackbar text for when reporting old profile text">Report failed. Profile text has changed.</string>
+    <string name="report_screen_profile_text_changed_error" description="Snackbar text for when reporting old profile text">Report failed: profile text has changed</string>
     <string name="report_screen_profile_image_action" description="Title for report profile image action">Profile image</string>
     <string name="report_screen_chat_message_action" description="Title for report chat message action">Chat message</string>
-    <string name="report_screen_snackbar_report_successful" description="Snackbar text for successful report">Reported</string>
-    <string name="report_screen_snackbar_too_many_reports_error" description="Snackbar text for too many reports error">Report failed. Too many reports.</string>
-    <string name="report_screen_custom_report_boolean_dialog_description" description="Text for dialog for custom report boolean reporting">Report user as '%s'?</string>
-    <string name="report_screen_false_reports_warning" description="Warning text about false reports leading to a ban">False reports may result in a ban</string>
+    <string name="report_screen_snackbar_report_successful" description="Snackbar text for successful report">Report submitted</string>
+    <string name="report_screen_snackbar_too_many_reports_error" description="Snackbar text for too many reports error">Too many reports submitted. Please try again later.</string>
+    <string name="report_screen_custom_report_boolean_dialog_description" description="Text for dialog for custom report boolean reporting">Report user for "%s"?</string>
+    <string name="report_screen_false_reports_warning" description="Warning text about false reports leading to a ban">Submitting false reports may result in account suspension</string>
 
     <!-- Report profile image screen -->
     <string name="report_profile_image_screen_confirm_dialog_title" description="Profile image reporting confirmation dialog title">Report profile image?</string>
     <string name="report_profile_image_screen_image_title" description="Profile image title for reporting screen">Profile image %s</string>
-    <string name="report_profile_image_screen_profile_image_changed_error" description="Snackbar text displayed when reporting old profile image">Report failed. Profile image has changed.</string>
+    <string name="report_profile_image_screen_profile_image_changed_error" description="Snackbar text displayed when reporting old profile image">Report failed: profile image has changed</string>
 
     <!-- Report chat message screen -->
-    <string name="report_chat_message_screen_server_signed_message_not_found" description="Snackbar text for server signed message not found error">Server signed message not found</string>
+    <string name="report_chat_message_screen_server_signed_message_not_found" description="Snackbar text for server signed message not found error">Server-signed message not found</string>
     <string name="report_chat_message_screen_symmetric_message_encryption_key_not_found" description="Snackbar text for symmetric message encryption key not found error">Symmetric message encryption key not found</string>
-    <string name="report_chat_message_screen_selection_status_none" description="Status text when no messages are selected for reporting">Select max 10 messages</string>
+    <string name="report_chat_message_screen_selection_status_none" description="Status text when no messages are selected for reporting">Select up to 10 messages</string>
     <string name="report_chat_message_screen_selection_status_count" description="Status text showing how many messages are selected for reporting. %s is the count and max count">%s/%s messages selected</string>
 
     <!-- Admin features -->
@@ -821,15 +821,15 @@
 
     <!-- Receive chat backup screen -->
     <string name="receive_chat_backup_screen_title" description="Title for receive chat backup screen">Receive chat backup</string>
-    <string name="receive_chat_backup_waiting_for_source" description="Status text when waiting for source device">Waiting for source device</string>
+    <string name="receive_chat_backup_waiting_for_source" description="Status text when waiting for source device">Waiting for other device…</string>
     <string name="receive_chat_backup_transferring" description="Status text when transferring backup data">Receiving backup…</string>
     <string name="receive_chat_backup_importing" description="Status text when importing backup">Importing backup…</string>
-    <string name="receive_chat_backup_pairing_code_instruction" description="Instruction for using pairing code">On the source device:</string>
+    <string name="receive_chat_backup_pairing_code_instruction" description="Instruction for using pairing code">On the other device:</string>
     <string name="receive_chat_backup_pairing_code_step1" description="First step for using pairing code">1. Open %s</string>
-    <string name="receive_chat_backup_pairing_code_step2" description="Second step for using pairing code">2. Logout from settings if login screen is not visible</string>
-    <string name="receive_chat_backup_pairing_code_step3" description="Third step for using pairing code">3. Tap the three dots in the top right corner</string>
+    <string name="receive_chat_backup_pairing_code_step2" description="Second step for using pairing code">2. Log out from Settings if the login screen is not visible</string>
+    <string name="receive_chat_backup_pairing_code_step3" description="Third step for using pairing code">3. Tap the menu in the top right corner</string>
     <string name="receive_chat_backup_pairing_code_step4" description="Fourth step for using pairing code">4. Select "Send chat backup"</string>
-    <string name="receive_chat_backup_pairing_code_step5" description="Fifth step for using pairing code">5. Scan the QR code and start transfer</string>
+    <string name="receive_chat_backup_pairing_code_step5" description="Fifth step for using pairing code">5. Scan this QR code to start transfer</string>
     <string name="receive_chat_backup_import_success" description="Success message after backup import">Backup imported successfully</string>
     <string name="receive_chat_backup_show_text_code" description="Button text to show textual pairing code">Show text code</string>
     <string name="receive_chat_backup_show_qr_code" description="Button text to show QR code">Show QR code</string>
@@ -840,29 +840,29 @@
     <string name="send_chat_backup_creating_backup" description="Status text when creating backup">Creating backup…</string>
     <string name="send_chat_backup_transferring" description="Status text when transferring backup">Sending backup…</string>
     <string name="send_chat_backup_success" description="Status text when backup sent successfully">Backup sent successfully</string>
-    <string name="send_chat_backup_pairing_code_hint" description="Hint text for pairing code input">Enter code from receiving device</string>
+    <string name="send_chat_backup_pairing_code_hint" description="Hint text for pairing code input">Enter pairing code from receiving device</string>
     <string name="send_chat_backup_start_button" description="Button text to start sending backup">Start transfer</string>
     <string name="send_chat_backup_send_another_button" description="Button text to send another backup">Send another backup</string>
     <string name="send_chat_backup_scan_qr_button" description="Button text to scan QR code">Scan QR code</string>
     <string name="send_chat_backup_use_text_code_button" description="Button text to show text code input">Use text code</string>
-    <string name="scan_pairing_code_screen_title" description="Title for scan pairing code screen">Scan QR Code</string>
-    <string name="scan_pairing_code_instruction" description="Instruction for scanning QR code">Point your camera at the QR code</string>
+    <string name="scan_pairing_code_screen_title" description="Title for scan pairing code screen">Scan QR code</string>
+    <string name="scan_pairing_code_instruction" description="Instruction for scanning QR code">Point camera at QR code</string>
 
     <!-- Chat backup shared -->
     <string name="chat_backup_connecting" description="Status text when connecting to transfer API">Connecting…</string>
     <string name="chat_backup_pairing_code_label" description="Label for pairing code">Device pairing code</string>
-    <string name="chat_backup_transfer_budget_exceeded" description="Error message when transfer budget is exceeded">Yearly chat backup transfer budget exceeded. Please create a backup and transfer it manually.</string>
-    <string name="chat_backup_database_not_found" description="Error message when database for requested account does not exist">Database for requested account does not exist</string>
+    <string name="chat_backup_transfer_budget_exceeded" description="Error message when transfer budget is exceeded">Yearly transfer limit reached. Please save a backup and transfer it manually.</string>
+    <string name="chat_backup_database_not_found" description="Error message when database for requested account does not exist">No chat data found for this account</string>
     <string name="chat_backup_pairing_code_unsupported" description="Error message when pairing code version is not supported">Unsupported pairing code version</string>
     <string name="chat_backup_pairing_code_invalid" description="Error message when pairing code format is invalid">Invalid pairing code</string>
     <string name="chat_backup_data_stream_unsupported" description="Error message when data stream version is not supported">Unsupported data stream</string>
 
     <!-- Chat data outdated -->
     <string name="chat_data_outdated_title" description="Title for chat data outdated state">Chat data outdated</string>
-    <string name="chat_data_outdated_description" description="Description for chat data outdated state">Device changed or app reinstalled. Receive chat backup from previous device?</string>
+    <string name="chat_data_outdated_description" description="Description for chat data outdated state">Device changed or app reinstalled. Transfer chats from your old device?</string>
     <string name="chat_data_outdated_receive_backup" description="Button text to receive chat backup">Receive backup</string>
-    <string name="chat_data_outdated_error_too_many_keys" description="Error when too many public keys">Maximum number of encryption keys reached. Receive backup from previous device or contact service admins.</string>
-    <string name="chat_data_outdated_pending_messages_warning" description="Warning dialog message when public key adding fails because pending messages exists">You have unread messages encrypted using your old encryption key. To read them, you should transfer chat data from your old device or import a backup containing the encryption key from Settings.\n\nIf you continue, you will not be able to read these messages. Do you want to continue?</string>
+    <string name="chat_data_outdated_error_too_many_keys" description="Error when too many public keys">Maximum number of encryption keys reached. Receive a backup from your old device or contact support.</string>
+    <string name="chat_data_outdated_pending_messages_warning" description="Warning dialog message when public key adding fails because pending messages exists">You have unread messages encrypted with your old encryption key. To read them, transfer chat data from your previous device or restore a backup containing the encryption key.\n\nIf you continue, you will not be able to read those messages. Continue anyway?</string>
 
     <!-- Association membership -->
     <string name="association_membership_screen_title" description="Title for association membership screen">Association membership</string>
@@ -883,8 +883,8 @@
     <string name="sign_in_with_management_screen_apple_unlink_confirm_title" description="Title for unlink Apple sign in method confirm dialog">Unlink Apple account?</string>
     <string name="sign_in_with_management_screen_google_unlink_confirm_title" description="Title for unlink Google sign in method confirm dialog">Unlink Google account?</string>
     <string name="sign_in_with_management_screen_local_auth_reason" description="Reason for local authentication when managing sign in methods">Please authenticate to manage sign in methods</string>
-    <string name="sign_in_with_management_screen_link_failed" description="Snackbar text when linking sign in method fails">Linking sign in method failed</string>
-    <string name="sign_in_with_management_screen_link_history_limit_reached" description="Snackbar text when sign in with history limit is reached, with formatted wait time">Sign in method history limit reached. Try again after %s.</string>
-    <string name="sign_in_with_management_screen_unlink_failed" description="Snackbar text when unlinking sign in method fails">Unlinking sign in method failed</string>
+    <string name="sign_in_with_management_screen_link_failed" description="Snackbar text when linking sign in method fails">Failed to link sign in method</string>
+    <string name="sign_in_with_management_screen_link_history_limit_reached" description="Snackbar text when sign in with history limit is reached, with formatted wait time">Sign in method change limit reached. Try again after %s.</string>
+    <string name="sign_in_with_management_screen_unlink_failed" description="Snackbar text when unlinking sign in method fails">Failed to unlink sign in method</string>
 
 </resources>

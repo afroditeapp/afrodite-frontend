@@ -37,7 +37,7 @@
   "@account_ban_reason_category_report_spam": {
     "description": "Account ban reason category report spam"
   },
-  "account_banned_screen_ban_reason": "Ban reason: {p0}",
+  "account_banned_screen_ban_reason": "Reason: {p0}",
   "@account_banned_screen_ban_reason": {
     "description": "Text for account ban reason",
     "placeholders": {
@@ -46,7 +46,7 @@
       }
     }
   },
-  "account_banned_screen_ban_reason_category": "Ban reason category: {p0}",
+  "account_banned_screen_ban_reason_category": "Category: {p0}",
   "@account_banned_screen_ban_reason_category": {
     "description": "Text for account ban reason category",
     "placeholders": {
@@ -55,7 +55,7 @@
       }
     }
   },
-  "account_banned_screen_time_text": "Account automatic unban process begins at {p0}",
+  "account_banned_screen_time_text": "Suspension ending will begin at {p0}",
   "@account_banned_screen_time_text": {
     "description": "Time when account unban process will begin",
     "placeholders": {
@@ -64,11 +64,11 @@
       }
     }
   },
-  "account_banned_screen_title": "Account banned",
+  "account_banned_screen_title": "Account suspended",
   "@account_banned_screen_title": {
     "description": "Title for account banned screen"
   },
-  "account_deletion_pending_screen_time_text": "Account automatic deletion process begins at {p0}",
+  "account_deletion_pending_screen_time_text": "Account deletion will begin at {p0}",
   "@account_deletion_pending_screen_time_text": {
     "description": "Time when account deletion process will begin",
     "placeholders": {
@@ -109,7 +109,7 @@
   "@account_settings_screen_delete_account_action": {
     "description": "Title for delete account action"
   },
-  "account_settings_screen_delete_account_action_error": "Requesting account deletion failed",
+  "account_settings_screen_delete_account_action_error": "Failed to request account deletion",
   "@account_settings_screen_delete_account_action_error": {
     "description": "Snackbar text about delete account action failure"
   },
@@ -121,7 +121,7 @@
   "@account_settings_screen_email_change_cancelled": {
     "description": "Snackbar text for successful email change cancellation"
   },
-  "account_settings_screen_email_change_history_limit_reached": "Email change history limit reached. Try again after {p0}.",
+  "account_settings_screen_email_change_history_limit_reached": "Email change limit reached. Try again after {p0}.",
   "@account_settings_screen_email_change_history_limit_reached": {
     "description": "Snackbar text when email change history limit is reached, with formatted wait time",
     "placeholders": {
@@ -130,7 +130,7 @@
       }
     }
   },
-  "account_settings_screen_email_change_initiated": "Email change initiated. Please check your email.",
+  "account_settings_screen_email_change_initiated": "Email change initiated. Please check your inbox.",
   "@account_settings_screen_email_change_initiated": {
     "description": "Snackbar text for successful email change initiation"
   },
@@ -175,7 +175,7 @@
   "@account_settings_screen_send_verification_email_button": {
     "description": "Button text for send verification email action"
   },
-  "account_settings_screen_send_verification_email_sent_successfully": "Verification email sent successfully",
+  "account_settings_screen_send_verification_email_sent_successfully": "Verification email sent",
   "@account_settings_screen_send_verification_email_sent_successfully": {
     "description": "Snackbar text for successful email verification sending"
   },
@@ -187,11 +187,11 @@
   "@account_verification_screen_error_profile_age_range_mismatch": {
     "description": "Account verification error: profile age range changed during verification"
   },
-  "account_verification_screen_error_profile_age_range_verification_failed": "Profile age verification failed",
+  "account_verification_screen_error_profile_age_range_verification_failed": "Age verification failed",
   "@account_verification_screen_error_profile_age_range_verification_failed": {
     "description": "Account verification error: profile age range verification failed"
   },
-  "account_verification_screen_error_profile_age_range_verification_mismatch": "Provided age does not match your profile age",
+  "account_verification_screen_error_profile_age_range_verification_mismatch": "Verified age does not match your profile age",
   "@account_verification_screen_error_profile_age_range_verification_mismatch": {
     "description": "Account verification error: verified profile age range mismatch"
   },
@@ -199,11 +199,11 @@
   "@account_verification_screen_error_profile_name_mismatch": {
     "description": "Account verification error: profile name changed during verification"
   },
-  "account_verification_screen_error_profile_name_verification_failed": "Profile name verification failed",
+  "account_verification_screen_error_profile_name_verification_failed": "Name verification failed",
   "@account_verification_screen_error_profile_name_verification_failed": {
     "description": "Account verification error: profile name verification failed"
   },
-  "account_verification_screen_error_profile_name_verification_mismatch": "Provided name does not match your profile name",
+  "account_verification_screen_error_profile_name_verification_mismatch": "Verified name does not match your profile name",
   "@account_verification_screen_error_profile_name_verification_mismatch": {
     "description": "Account verification error: verified profile name mismatch"
   },
@@ -215,19 +215,19 @@
   "@account_verification_screen_error_security_content_verification_failed": {
     "description": "Account verification error: security content verification failed"
   },
-  "account_verification_screen_error_security_content_verification_mismatch": "Provided image does not match your security selfie",
+  "account_verification_screen_error_security_content_verification_mismatch": "Verified photo does not match your security selfie",
   "@account_verification_screen_error_security_content_verification_mismatch": {
     "description": "Account verification error: verified security content mismatch"
   },
-  "account_verification_screen_error_verification_data_parsing_failed": "Unsupported person identification data",
+  "account_verification_screen_error_verification_data_parsing_failed": "Invalid identification data",
   "@account_verification_screen_error_verification_data_parsing_failed": {
     "description": "Account verification error: verification data parsing failed"
   },
-  "account_verification_screen_error_verification_data_verification_failed": "Verifying person identification data failed",
+  "account_verification_screen_error_verification_data_verification_failed": "Identity verification failed",
   "@account_verification_screen_error_verification_data_verification_failed": {
     "description": "Account verification error: verification data verification failed"
   },
-  "account_verification_screen_error_verification_method_not_configured": "App admin has not configured this verification method",
+  "account_verification_screen_error_verification_method_not_configured": "This verification method is not configured",
   "@account_verification_screen_error_verification_method_not_configured": {
     "description": "Account verification error: verification method is not configured"
   },
@@ -257,11 +257,11 @@
       }
     }
   },
-  "account_verification_screen_request_initial_setup_not_completed": "Dating profile not created",
+  "account_verification_screen_request_initial_setup_not_completed": "Profile is not set up yet",
   "@account_verification_screen_request_initial_setup_not_completed": {
     "description": "Snackbar text when account verification fails because initial setup is not completed"
   },
-  "account_verification_screen_request_queue_full": "Account verification queue is full. Please try again later.",
+  "account_verification_screen_request_queue_full": "Verification queue is full. Please try again later.",
   "@account_verification_screen_request_queue_full": {
     "description": "Snackbar text when account verification queue is full"
   },
@@ -285,7 +285,7 @@
   "@account_verification_screen_verification_in_progress_title": {
     "description": "Title shown for account verification in progress section"
   },
-  "account_verification_screen_verification_method_eudi_unsupported": "EUDI wallet (current app version does not support this method)",
+  "account_verification_screen_verification_method_eudi_unsupported": "EUDI wallet (not supported in this version)",
   "@account_verification_screen_verification_method_eudi_unsupported": {
     "description": "Account verification method label for eudi when it is not yet supported"
   },
@@ -309,19 +309,19 @@
   "@age_verification_screen_current_verification_status_title": {
     "description": "Title shown for current age verification status section"
   },
-  "age_verification_screen_error_age_already_verified": "Age already verified",
+  "age_verification_screen_error_age_already_verified": "Age is already verified",
   "@age_verification_screen_error_age_already_verified": {
     "description": "Age verification error: age is already verified"
   },
-  "age_verification_screen_error_age_under_18": "Age is under 18",
+  "age_verification_screen_error_age_under_18": "Must be 18 or older",
   "@age_verification_screen_error_age_under_18": {
     "description": "Age verification error: age is under 18"
   },
-  "age_verification_screen_error_verification_data_parsing_failed": "Unsupported person identification data",
+  "age_verification_screen_error_verification_data_parsing_failed": "Invalid identification data",
   "@age_verification_screen_error_verification_data_parsing_failed": {
     "description": "Age verification error: verification data parsing failed"
   },
-  "age_verification_screen_error_verification_data_verification_failed": "Verifying person identification data failed",
+  "age_verification_screen_error_verification_data_verification_failed": "Identity verification failed",
   "@age_verification_screen_error_verification_data_verification_failed": {
     "description": "Age verification error: verification data verification failed"
   },
@@ -337,7 +337,7 @@
   "@age_verification_screen_title": {
     "description": "Title for age verification settings screen"
   },
-  "age_verification_screen_verification_method_eudi_unsupported": "EUDI wallet (current app version does not support this method)",
+  "age_verification_screen_verification_method_eudi_unsupported": "EUDI wallet (not supported in this version)",
   "@age_verification_screen_verification_method_eudi_unsupported": {
     "description": "Age verification method label for eudi when it is not yet supported"
   },
@@ -361,15 +361,15 @@
   "@app_slogan": {
     "description": "Slogan for the app"
   },
-  "app_update_available_dialog_description_manual_update": "New app version available. Please update the app.",
+  "app_update_available_dialog_description_manual_update": "A new version is available. Please update the app.",
   "@app_update_available_dialog_description_manual_update": {
     "description": "Description text for app update available dialog when update action is not available"
   },
-  "app_update_available_dialog_description_update_now": "New app version available. Update now?",
+  "app_update_available_dialog_description_update_now": "A new version is available. Update now?",
   "@app_update_available_dialog_description_update_now": {
     "description": "Description text for app update available dialog when update action is available"
   },
-  "app_update_available_dialog_description_web_restart": "New app version available. Restart the app.",
+  "app_update_available_dialog_description_web_restart": "A new version is available. Restart the app to update.",
   "@app_update_available_dialog_description_web_restart": {
     "description": "Description text for app update available dialog on web"
   },
@@ -405,7 +405,7 @@
   "@association_membership_screen_title": {
     "description": "Title for association membership screen"
   },
-  "attribute_deprecated_info": "\"{p0}\" is deprecated and it disappears once you disable it",
+  "attribute_deprecated_info": "\"{p0}\" is deprecated and will disappear once unselected",
   "@attribute_deprecated_info": {
     "description": "Info box text shown below an attribute which is deprecated. %s is the attribute name",
     "placeholders": {
@@ -460,7 +460,7 @@
   "@blocked_profiles_screen_unblock_profile_dialog_title": {
     "description": "Title for unblock profile dialog"
   },
-  "blocked_profiles_screen_unblock_profile_failed": "Unblock failed",
+  "blocked_profiles_screen_unblock_profile_failed": "Failed to unblock profile",
   "@blocked_profiles_screen_unblock_profile_failed": {
     "description": "Snackbar text displayed when profile unblocking failed"
   },
@@ -468,19 +468,19 @@
   "@blocked_profiles_screen_unblock_profile_in_progress": {
     "description": "Snackbar text displayed when profile unblocking failed"
   },
-  "blocked_profiles_screen_unblock_profile_successful": "Unblock successful",
+  "blocked_profiles_screen_unblock_profile_successful": "Profile unblocked",
   "@blocked_profiles_screen_unblock_profile_successful": {
     "description": "Snackbar text displayed when profile unblocking was successful"
   },
-  "camera_screen_camera_access_restricted_error": "Camera access is restricted. Opening camera is not possible.",
+  "camera_screen_camera_access_restricted_error": "Camera access is restricted on this device.",
   "@camera_screen_camera_access_restricted_error": {
     "description": "Error text displayed when camera access is restricted"
   },
-  "camera_screen_camera_initialization_error": "Camera initialization failed",
+  "camera_screen_camera_initialization_error": "Failed to open camera",
   "@camera_screen_camera_initialization_error": {
     "description": "Error text displayed when camera initialization fails"
   },
-  "camera_screen_camera_initialization_error_with_error_code": "Camera initialization failed. Error code: {p0}",
+  "camera_screen_camera_initialization_error_with_error_code": "Failed to open camera (error {p0})",
   "@camera_screen_camera_initialization_error_with_error_code": {
     "description": "Error text displayed when camera initialization fails and error code exists",
     "placeholders": {
@@ -489,23 +489,23 @@
       }
     }
   },
-  "camera_screen_camera_opening_already_in_progress_error": "Camera opening in progress",
+  "camera_screen_camera_opening_already_in_progress_error": "Camera is already starting",
   "@camera_screen_camera_opening_already_in_progress_error": {
     "description": "Snackbar error text displayed when user tries to open camera but camera initialization is already in progress"
   },
-  "camera_screen_camera_permission_error_check_settings": "No camera permission. Please grant the camera permission from system settings.",
+  "camera_screen_camera_permission_error_check_settings": "Camera permission required. Please grant camera permission in system settings.",
   "@camera_screen_camera_permission_error_check_settings": {
     "description": "Error text displayed when there is no camera permission and system settings must be used for granting the permission"
   },
-  "camera_screen_camera_permission_error_try_again_or_check_settings": "No camera permission. Please try again. If that will not work then grant the camera permission from system settings.",
+  "camera_screen_camera_permission_error_try_again_or_check_settings": "Camera permission required. Please try again. You might need to grant camera permission in system settings.",
   "@camera_screen_camera_permission_error_try_again_or_check_settings": {
     "description": "Error text displayed when there is no camera permission"
   },
-  "camera_screen_no_front_camera_error": "No front camera available",
+  "camera_screen_no_front_camera_error": "No front camera found",
   "@camera_screen_no_front_camera_error": {
     "description": "Error text displayed when there is no front camera available"
   },
-  "camera_screen_take_photo_error": "Taking photo failed",
+  "camera_screen_take_photo_error": "Failed to take photo",
   "@camera_screen_take_photo_error": {
     "description": "Snackbar error text displayed when taking photo fails"
   },
@@ -517,7 +517,7 @@
   "@chat_backup_data_stream_unsupported": {
     "description": "Error message when data stream version is not supported"
   },
-  "chat_backup_database_not_found": "Database for requested account does not exist",
+  "chat_backup_database_not_found": "No chat data found for this account",
   "@chat_backup_database_not_found": {
     "description": "Error message when database for requested account does not exist"
   },
@@ -533,11 +533,11 @@
   "@chat_backup_pairing_code_unsupported": {
     "description": "Error message when pairing code version is not supported"
   },
-  "chat_backup_reminder_dialog_message_no_backup": "Chat backup is not yet created. Backup now?",
+  "chat_backup_reminder_dialog_message_no_backup": "No chat backup created yet. Back up now?",
   "@chat_backup_reminder_dialog_message_no_backup": {
     "description": "Message when no backup has been created"
   },
-  "chat_backup_reminder_dialog_message_old_backup": "Chat backup has not been created since {p0} days. Backup now?",
+  "chat_backup_reminder_dialog_message_old_backup": "Chat backup has not been created in {p0} days. Back up now?",
   "@chat_backup_reminder_dialog_message_old_backup": {
     "description": "Message when backup is old",
     "placeholders": {
@@ -584,7 +584,7 @@
   "@chat_backup_screen_import_error_unsupported_version": {
     "description": "Error message when backup file version is unsupported"
   },
-  "chat_backup_screen_import_error_wrong_account": "Backup created by different account",
+  "chat_backup_screen_import_error_wrong_account": "Backup was created by a different account",
   "@chat_backup_screen_import_error_wrong_account": {
     "description": "Error message when backup was created by different account"
   },
@@ -592,19 +592,19 @@
   "@chat_backup_screen_title": {
     "description": "Title for chat backup screen"
   },
-  "chat_backup_transfer_budget_exceeded": "Yearly chat backup transfer budget exceeded. Please create a backup and transfer it manually.",
+  "chat_backup_transfer_budget_exceeded": "Yearly transfer limit reached. Please save a backup and transfer it manually.",
   "@chat_backup_transfer_budget_exceeded": {
     "description": "Error message when transfer budget is exceeded"
   },
-  "chat_data_outdated_description": "Device changed or app reinstalled. Receive chat backup from previous device?",
+  "chat_data_outdated_description": "Device changed or app reinstalled. Transfer chats from your old device?",
   "@chat_data_outdated_description": {
     "description": "Description for chat data outdated state"
   },
-  "chat_data_outdated_error_too_many_keys": "Maximum number of encryption keys reached. Receive backup from previous device or contact service admins.",
+  "chat_data_outdated_error_too_many_keys": "Maximum number of encryption keys reached. Receive a backup from your old device or contact support.",
   "@chat_data_outdated_error_too_many_keys": {
     "description": "Error when too many public keys"
   },
-  "chat_data_outdated_pending_messages_warning": "You have unread messages encrypted using your old encryption key. To read them, you should transfer chat data from your old device or import a backup containing the encryption key from Settings.\n\nIf you continue, you will not be able to read these messages. Do you want to continue?",
+  "chat_data_outdated_pending_messages_warning": "You have unread messages encrypted with your old encryption key. To read them, transfer chat data from your previous device or restore a backup containing the encryption key.\n\nIf you continue, you will not be able to read those messages. Continue anyway?",
   "@chat_data_outdated_pending_messages_warning": {
     "description": "Warning dialog message when public key adding fails because pending messages exists"
   },
@@ -616,15 +616,15 @@
   "@chat_data_outdated_title": {
     "description": "Title for chat data outdated state"
   },
-  "chat_list_screen_no_chats_found": "No chats found",
+  "chat_list_screen_no_chats_found": "No chats yet",
   "@chat_list_screen_no_chats_found": {
     "description": "Info text displayed when there is no chats"
   },
-  "chat_list_screen_no_chats_found_description": "Spread the word about the app in social media",
+  "chat_list_screen_no_chats_found_description": "Spread the word about the app on social media",
   "@chat_list_screen_no_chats_found_description": {
     "description": "Description text displayed when there is no chats"
   },
-  "chat_list_screen_no_matches_found": "No accepted chat requests found",
+  "chat_list_screen_no_matches_found": "No accepted chat requests yet",
   "@chat_list_screen_no_matches_found": {
     "description": "Info text displayed when no matches are found"
   },
@@ -653,7 +653,7 @@
   "@chat_list_screen_unread_message": {
     "description": "Conversation status text for unread message"
   },
-  "content_management_screen_content_deletion_allowed_wait_time": "Deletion possible starting at {p0}",
+  "content_management_screen_content_deletion_allowed_wait_time": "Can be deleted starting at {p0}",
   "@content_management_screen_content_deletion_allowed_wait_time": {
     "description": "Text for content deletion allowed wait time",
     "placeholders": {
@@ -695,11 +695,11 @@
   "@conversation_screen_chat_box_placeholder_text": {
     "description": "Message input text field placeholder text"
   },
-  "conversation_screen_install_jitsi_meet_dialog_description_android": "Video calling requires Jitsi Meet video calling app which is not installed currently. Install the app from Google Play Store? After that, try this again.",
+  "conversation_screen_install_jitsi_meet_dialog_description_android": "Video calling requires the Jitsi Meet app. Would you like to install it from Google Play Store?",
   "@conversation_screen_install_jitsi_meet_dialog_description_android": {
     "description": "Description text for install Jitsi Meet dialog when app is running on Android"
   },
-  "conversation_screen_install_jitsi_meet_dialog_description_ios": "Video calling requires Jitsi Meet video calling app which is not installed currently. Install the app from App Store? After that, try this again.",
+  "conversation_screen_install_jitsi_meet_dialog_description_ios": "Video calling requires the Jitsi Meet app. Would you like to install it from the App Store?",
   "@conversation_screen_install_jitsi_meet_dialog_description_ios": {
     "description": "Description text for install Jitsi Meet dialog when app is running on iOS"
   },
@@ -727,11 +727,11 @@
   "@conversation_screen_message_details_message_number": {
     "description": "Title text for message number value"
   },
-  "conversation_screen_message_error_is_actually_sent_successfully": "The message is actually sent successfully",
+  "conversation_screen_message_error_is_actually_sent_successfully": "This message was already sent successfully",
   "@conversation_screen_message_error_is_actually_sent_successfully": {
     "description": "Message remove or resend error that message is actually sent successfully"
   },
-  "conversation_screen_message_error_recipient_blocked_sender_or_recipient_not_found": "Recipient action prevented message sending",
+  "conversation_screen_message_error_recipient_blocked_sender_or_recipient_not_found": "Unable to deliver message to recipient",
   "@conversation_screen_message_error_recipient_blocked_sender_or_recipient_not_found": {
     "description": "Message send or resend error that recipient blocked sender or recipient not found"
   },
@@ -748,7 +748,7 @@
   "@conversation_screen_message_info_encryption_started": {
     "description": "Info text that messages in this conversation are end-to-end encrypted"
   },
-  "conversation_screen_message_list_empty": "No messages",
+  "conversation_screen_message_list_empty": "No messages yet",
   "@conversation_screen_message_list_empty": {
     "description": "Info text that message list is empty"
   },
@@ -756,7 +756,7 @@
   "@conversation_screen_message_not_found": {
     "description": "Message text that referenced message was not found"
   },
-  "conversation_screen_message_resend_complete": "Resend complete",
+  "conversation_screen_message_resend_complete": "Resent successfully",
   "@conversation_screen_message_resend_complete": {
     "description": "Message resend complete text"
   },
@@ -776,7 +776,7 @@
       }
     }
   },
-  "conversation_screen_message_send_requires_connection": "Try again after app connects to server",
+  "conversation_screen_message_send_requires_connection": "Please try again after app connects to server",
   "@conversation_screen_message_send_requires_connection": {
     "description": "Snackbar text when message sending is blocked until app reconnects to server"
   },
@@ -784,7 +784,7 @@
   "@conversation_screen_message_state_decrypting_failed": {
     "description": "Message state text that message decrypting failed"
   },
-  "conversation_screen_message_state_decrypting_failed_detailed": "Decrypting failed. Ask resending.",
+  "conversation_screen_message_state_decrypting_failed_detailed": "Could not decrypt. Please ask the sender to resend.",
   "@conversation_screen_message_state_decrypting_failed_detailed": {
     "description": "Detailed message state text that message decrypting failed and requires resend"
   },
@@ -796,23 +796,23 @@
   "@conversation_screen_message_state_delivery_failed": {
     "description": "Message state text that message delivery failed"
   },
-  "conversation_screen_message_state_delivery_failed_and_resent": "Delivery failed and resent",
+  "conversation_screen_message_state_delivery_failed_and_resent": "Delivery failed, resent",
   "@conversation_screen_message_state_delivery_failed_and_resent": {
     "description": "Message state text that message delivery failed and it was resent"
   },
-  "conversation_screen_message_state_public_key_download_failed": "Public key download failed",
+  "conversation_screen_message_state_public_key_download_failed": "Encryption key download failed",
   "@conversation_screen_message_state_public_key_download_failed": {
     "description": "Message state text that public key download failed"
   },
-  "conversation_screen_message_state_received_and_seen": "Received and seen",
+  "conversation_screen_message_state_received_and_seen": "Seen",
   "@conversation_screen_message_state_received_and_seen": {
     "description": "Message state text that message was received and marked as seen"
   },
-  "conversation_screen_message_state_received_and_seen_locally": "Received and seen locally",
+  "conversation_screen_message_state_received_and_seen_locally": "Seen locally",
   "@conversation_screen_message_state_received_and_seen_locally": {
     "description": "Message state text that message was received and marked as seen locally"
   },
-  "conversation_screen_message_state_received_successfully": "Received successfully",
+  "conversation_screen_message_state_received_successfully": "Received",
   "@conversation_screen_message_state_received_successfully": {
     "description": "Message state text that message was received successfully"
   },
@@ -820,15 +820,15 @@
   "@conversation_screen_message_state_seen": {
     "description": "Message state text that message was seen by recipient"
   },
-  "conversation_screen_message_state_sending_failed": "Sending failed",
+  "conversation_screen_message_state_sending_failed": "Failed to send",
   "@conversation_screen_message_state_sending_failed": {
     "description": "Message state text that message sending failed"
   },
-  "conversation_screen_message_state_sending_in_progress": "Sending in progress",
+  "conversation_screen_message_state_sending_in_progress": "Sending…",
   "@conversation_screen_message_state_sending_in_progress": {
     "description": "Message state text that message sending is in progress"
   },
-  "conversation_screen_message_state_sent_successfully": "Sent successfully",
+  "conversation_screen_message_state_sent_successfully": "Sent",
   "@conversation_screen_message_state_sent_successfully": {
     "description": "Message state text that message was sent successfully"
   },
@@ -836,11 +836,11 @@
   "@conversation_screen_message_too_long": {
     "description": "Snackbar text that message is too long"
   },
-  "conversation_screen_message_too_many_pending_messages": "Server pending message storage is full",
+  "conversation_screen_message_too_many_pending_messages": "Too many undelivered messages",
   "@conversation_screen_message_too_many_pending_messages": {
     "description": "Snackbar text that server is full of pending messages"
   },
-  "conversation_screen_message_unsupported": "Unsupported message",
+  "conversation_screen_message_unsupported": "Unsupported message format",
   "@conversation_screen_message_unsupported": {
     "description": "Message text that message is unsupported"
   },
@@ -852,7 +852,7 @@
   "@conversation_screen_profile_blocked": {
     "description": "Snackbar text displayed when profile blocking is successful"
   },
-  "conversation_screen_remaining_conversation_messages": "Remaining messages for this conversation: {p0} (resets when sent messages are delivered)",
+  "conversation_screen_remaining_conversation_messages": "Messages remaining for this chat: {p0} (resets once delivered)",
   "@conversation_screen_remaining_conversation_messages": {
     "description": "Snackbar text showing remaining messages for currently visible conversation",
     "placeholders": {
@@ -861,7 +861,7 @@
       }
     }
   },
-  "conversation_screen_remaining_daily_messages": "Remaining daily messages: {p0}",
+  "conversation_screen_remaining_daily_messages": "Daily messages remaining: {p0}",
   "@conversation_screen_remaining_daily_messages": {
     "description": "Snackbar text showing remaining daily messages count",
     "placeholders": {
@@ -882,7 +882,7 @@
   "@crop_image_screen_title": {
     "description": "Title for crop image screen"
   },
-  "current_security_selfie_screen_security_selfie_changed": "Security selfie changed",
+  "current_security_selfie_screen_security_selfie_changed": "Security selfie updated",
   "@current_security_selfie_screen_security_selfie_changed": {
     "description": "Snackbar text displayed when security selfie is changed"
   },
@@ -890,7 +890,7 @@
   "@current_security_selfie_screen_title": {
     "description": "Current security selfie screen title"
   },
-  "data_export_screen_api_limit_error": "Try again after 24 hours",
+  "data_export_screen_api_limit_error": "Daily limit reached. Try again after 24 hours.",
   "@data_export_screen_api_limit_error": {
     "description": "Snackbar text for API limit error"
   },
@@ -946,11 +946,11 @@
   "@edit_attribute_filter_value_screen_title": {
     "description": "Title for edit attribute filter screen"
   },
-  "edit_attribute_value_screen_max_selected_values_error": "Too many selected values",
+  "edit_attribute_value_screen_max_selected_values_error": "Too many options selected",
   "@edit_attribute_value_screen_max_selected_values_error": {
     "description": "Snackbar text for max selected values error"
   },
-  "edit_attribute_value_screen_one_value_must_be_selected": "At least one selection is required",
+  "edit_attribute_value_screen_one_value_must_be_selected": "At least one option must be selected",
   "@edit_attribute_value_screen_one_value_must_be_selected": {
     "description": "Snackbar text for notifying that one at least one option must be selected"
   },
@@ -1023,7 +1023,7 @@
       }
     }
   },
-  "edit_profile_text_screen_text_length_too_long": "Profile text byte count is more than 2000 bytes",
+  "edit_profile_text_screen_text_length_too_long": "Profile text is too long (maximum 2000 bytes)",
   "@edit_profile_text_screen_text_length_too_long": {
     "description": "Dialog text for notifying user when profile text is too long"
   },
@@ -1073,15 +1073,15 @@
       }
     }
   },
-  "email_login_screen_login_only_info": "Registering new accounts is unsupported using this login method",
+  "email_login_screen_login_only_info": "Creating a new account is not supported with this login method",
   "@email_login_screen_login_only_info": {
     "description": "Notice that the selected login method only works for existing accounts"
   },
-  "email_login_screen_registration_all_platforms_disabled_error": "App admin has disabled registering new accounts with email address. Please use another login method.",
+  "email_login_screen_registration_all_platforms_disabled_error": "New registrations via email are currently disabled. Please use another sign in method.",
   "@email_login_screen_registration_all_platforms_disabled_error": {
     "description": "Error message when email registration is disabled on all platforms"
   },
-  "email_login_screen_registration_domain_not_accepted_error": "This email domain ({p0}) is not accepted for registration. Please use another email address or login method.",
+  "email_login_screen_registration_domain_not_accepted_error": "Email addresses with domain {p0} cannot be used for registration. Please use another email or sign in method.",
   "@email_login_screen_registration_domain_not_accepted_error": {
     "description": "Error message when the email domain is not accepted for email registration. %s is the email domain.",
     "placeholders": {
@@ -1090,11 +1090,11 @@
       }
     }
   },
-  "email_login_screen_registration_ip_address_limit_reached_error": "The daily registration limit for your IP address has been reached. Please try again after 24 hours or use another login method.",
+  "email_login_screen_registration_ip_address_limit_reached_error": "Daily registration limit for your IP address has been reached. Please try again after 24 hours or use another sign in method.",
   "@email_login_screen_registration_ip_address_limit_reached_error": {
     "description": "Error message when email registration per IP address limit is reached"
   },
-  "email_login_screen_registration_limit_reached_error": "The daily registration limit has been reached. Please try again in 24 hours or use another login method.",
+  "email_login_screen_registration_limit_reached_error": "Daily registration limit has been reached. Please try again in 24 hours or use another sign in method.",
   "@email_login_screen_registration_limit_reached_error": {
     "description": "Error message when daily email registration limit is reached"
   },
@@ -1102,7 +1102,7 @@
   "@email_login_screen_registration_only_info": {
     "description": "Notice that using throwaway email services is forbidden"
   },
-  "email_login_screen_registration_platform_disabled_error": "App admin has disabled registering new accounts with email address on current platform ({p0}). Please use another login method.",
+  "email_login_screen_registration_platform_disabled_error": "New registrations via email are currently disabled on this platform ({p0}). Please use another sign in method.",
   "@email_login_screen_registration_platform_disabled_error": {
     "description": "Error message when email registration is disabled on current platform",
     "placeholders": {
@@ -1111,7 +1111,7 @@
       }
     }
   },
-  "email_login_screen_registration_unsupported_email": "Unsupported email address. Please use another login method.",
+  "email_login_screen_registration_unsupported_email": "Unsupported email address. Please use another sign in method.",
   "@email_login_screen_registration_unsupported_email": {
     "description": "Error message shown when the entered email address is unsupported"
   },
@@ -1225,11 +1225,11 @@
   "@generic_edit": {
     "description": "Generic edit text"
   },
-  "generic_email_sending_failed": "Email sending failed",
+  "generic_email_sending_failed": "Failed to send email",
   "@generic_email_sending_failed": {
     "description": "Generic email sending failed text"
   },
-  "generic_email_sending_timeout": "Email sending timeout",
+  "generic_email_sending_timeout": "Email sending timed out",
   "@generic_email_sending_timeout": {
     "description": "Generic email sending timeout text"
   },
@@ -1241,11 +1241,11 @@
   "@generic_error": {
     "description": "Generic error message"
   },
-  "generic_error_app_version_is_unsupported": "Current app version is unsupported",
+  "generic_error_app_version_is_unsupported": "Current app version is no longer supported",
   "@generic_error_app_version_is_unsupported": {
     "description": "Snackbar text that client version is unsupported"
   },
-  "generic_error_occurred": "Error occurred",
+  "generic_error_occurred": "Something went wrong",
   "@generic_error_occurred": {
     "description": "Generic error occurred text"
   },
@@ -1305,7 +1305,7 @@
   "@generic_logout_confirmation_title": {
     "description": "Generic logout confirmation title text"
   },
-  "generic_logout_failed": "Logout failed",
+  "generic_logout_failed": "Failed to log out",
   "@generic_logout_failed": {
     "description": "Generic logout failed text"
   },
@@ -1349,7 +1349,7 @@
   "@generic_previous_action_in_progress": {
     "description": "Generic previous action in progress text"
   },
-  "generic_profile_loading_failed": "Profile loading failed",
+  "generic_profile_loading_failed": "Failed to load profile",
   "@generic_profile_loading_failed": {
     "description": "Error text displayed when profile loading fails"
   },
@@ -1381,11 +1381,11 @@
   "@generic_resend": {
     "description": "Generic resend text"
   },
-  "generic_reset_to_defaults": "Reset to default values",
+  "generic_reset_to_defaults": "Reset to defaults",
   "@generic_reset_to_defaults": {
     "description": "Title for reset values to defaults action"
   },
-  "generic_reset_to_defaults_dialog_title": "Reset to default values?",
+  "generic_reset_to_defaults_dialog_title": "Reset to defaults?",
   "@generic_reset_to_defaults_dialog_title": {
     "description": "Dialog title for confirming reset values to defaults"
   },
@@ -1433,7 +1433,7 @@
   "@generic_take_photo": {
     "description": "Generic take photo text"
   },
-  "generic_text_field_age_hint_text": "Insert an age between 18–99",
+  "generic_text_field_age_hint_text": "Enter an age between 18-99",
   "@generic_text_field_age_hint_text": {
     "description": "Text field hint text for age"
   },
@@ -1465,7 +1465,7 @@
   "@generic_try_again": {
     "description": "Generic try again text"
   },
-  "generic_try_again_later_seconds": "Try again after {p0} seconds",
+  "generic_try_again_later_seconds": "Try again in {p0} seconds",
   "@generic_try_again_later_seconds": {
     "description": "Generic try again later with seconds text",
     "placeholders": {
@@ -1534,11 +1534,11 @@
   "@image_processing_ui_confirm_photo_dialog_title": {
     "description": "Dialog title for confirming new image"
   },
-  "image_processing_ui_nsfw_detected_dialog_title": "Unallowed content detected from the uploaded photo. This might be false positive detection.",
+  "image_processing_ui_nsfw_detected_dialog_title": "Content not permitted was detected in the uploaded photo. This might be a false positive.",
   "@image_processing_ui_nsfw_detected_dialog_title": {
     "description": "Progress dialog info text that NSFW content is detected"
   },
-  "image_processing_ui_upload_content_processing_ongoing_dialog_title": "Server is processing previous image upload",
+  "image_processing_ui_upload_content_processing_ongoing_dialog_title": "Server is still processing your previous upload",
   "@image_processing_ui_upload_content_processing_ongoing_dialog_title": {
     "description": "Progress dialog info text that previous image processing is still ongoing on server"
   },
@@ -1546,7 +1546,7 @@
   "@image_processing_ui_upload_failed_dialog_title": {
     "description": "Progress dialog info text that image upload failed"
   },
-  "image_processing_ui_upload_in_processing_queue_dialog_description": "Waiting for processing. Queue number: {p0}",
+  "image_processing_ui_upload_in_processing_queue_dialog_description": "Waiting in queue. Position: {p0}",
   "@image_processing_ui_upload_in_processing_queue_dialog_description": {
     "description": "Progress dialog info text that image is currently in server's processing queue",
     "placeholders": {
@@ -1555,11 +1555,11 @@
       }
     }
   },
-  "image_processing_ui_upload_in_progress_dialog_description": "Uploading photo",
+  "image_processing_ui_upload_in_progress_dialog_description": "Uploading photo…",
   "@image_processing_ui_upload_in_progress_dialog_description": {
     "description": "Progress dialog info text that image upload is in progress"
   },
-  "image_processing_ui_upload_processing_ongoing_description": "Processing ongoing",
+  "image_processing_ui_upload_processing_ongoing_description": "Processing photo…",
   "@image_processing_ui_upload_processing_ongoing_description": {
     "description": "Progress dialog info text that image processing is ongoing"
   },
@@ -1567,7 +1567,7 @@
   "@image_processing_ui_upload_timeout_dialog_title": {
     "description": "Progress dialog info text that image upload timed out"
   },
-  "initial_setup_screen_age_confirmation_checkbox": "I'm at least 18 years old",
+  "initial_setup_screen_age_confirmation_checkbox": "I am at least 18 years old",
   "@initial_setup_screen_age_confirmation_checkbox": {
     "description": "Title for age confirmation checkbox"
   },
@@ -1575,7 +1575,7 @@
   "@initial_setup_screen_age_confirmation_title": {
     "description": "Title for age confirmation screen"
   },
-  "initial_setup_screen_email_hint_text": "Insert email address",
+  "initial_setup_screen_email_hint_text": "Enter email address",
   "@initial_setup_screen_email_hint_text": {
     "description": "Hint text for inserting email address to text field"
   },
@@ -1587,7 +1587,7 @@
   "@initial_setup_screen_first_chat_backup_backup_saved_successfully": {
     "description": "Text for initial setup chat backup saved successfully"
   },
-  "initial_setup_screen_first_chat_backup_description": "Chats are stored on this device only, so regular backups are recommended. Let's save the first backup.\n\nIf you have cloud storage, it is recommended to save the backup there.",
+  "initial_setup_screen_first_chat_backup_description": "Chats are stored on this device only, so regular backups are recommended. Let's save your first backup.\n\nIf you use cloud storage, saving the backup there is recommended.",
   "@initial_setup_screen_first_chat_backup_description": {
     "description": "Description for initial setup first chat backup"
   },
@@ -1595,11 +1595,11 @@
   "@initial_setup_screen_first_chat_backup_save_backup_button": {
     "description": "Title for initial setup save chat backup button"
   },
-  "initial_setup_screen_first_chat_backup_security_info": "The backup contains your message encryption key. Keep it accessible in case you lose your device, unless you are willing to ask others to resend their undelivered messages to you.",
+  "initial_setup_screen_first_chat_backup_security_info": "The backup contains your encryption key. Keep it safe in case you lose your device, so you can read all message sent to you.",
   "@initial_setup_screen_first_chat_backup_security_info": {
     "description": "Security info for initial setup first chat backup"
   },
-  "initial_setup_screen_first_chat_backup_skip_warning": "Uninstalling the app will delete your chats and encryption key. Without the key, you won't be able to read messages encrypted using the key.\n\nYour chat backup contains the encryption key — do you want to skip creating a backup?",
+  "initial_setup_screen_first_chat_backup_skip_warning": "Uninstalling the app will delete your chats and encryption key. Without the key, you will not be able to read messages sent to you.\n\nAre you sure you want to skip creating a backup?",
   "@initial_setup_screen_first_chat_backup_skip_warning": {
     "description": "Warning dialog message when skipping first chat backup"
   },
@@ -1611,15 +1611,15 @@
   "@initial_setup_screen_gender_title": {
     "description": "Title for ask gender screen"
   },
-  "initial_setup_screen_location_help_dialog_text": "Select a location for your profile by tapping or long pressing the map.",
+  "initial_setup_screen_location_help_dialog_text": "Tap or hold on the map to set your location.",
   "@initial_setup_screen_location_help_dialog_text": {
     "description": "Text for initial setup location help dialog"
   },
-  "initial_setup_screen_location_title": "My profile's location is…",
+  "initial_setup_screen_location_title": "My location is…",
   "@initial_setup_screen_location_title": {
     "description": "Title for initial setup location screen"
   },
-  "initial_setup_screen_profile_basic_info_profile_name_hint_text": "Insert your first name",
+  "initial_setup_screen_profile_basic_info_profile_name_hint_text": "Enter your first name",
   "@initial_setup_screen_profile_basic_info_profile_name_hint_text": {
     "description": "Text field hint text for profile name"
   },
@@ -1627,35 +1627,35 @@
   "@initial_setup_screen_profile_basic_info_profile_name_title": {
     "description": "Title text for profile name text field"
   },
-  "initial_setup_screen_profile_basic_info_title": "My profile has this info…",
+  "initial_setup_screen_profile_basic_info_title": "About me…",
   "@initial_setup_screen_profile_basic_info_title": {
     "description": "Title text for asking profile information"
   },
-  "initial_setup_screen_profile_pictures_file_size_too_large_error": "Selected image is over 10 MiB",
+  "initial_setup_screen_profile_pictures_file_size_too_large_error": "Image is too large (maximum size is 10 MiB)",
   "@initial_setup_screen_profile_pictures_file_size_too_large_error": {
     "description": "Snackbar error text that selected picture's file size is too large"
   },
-  "initial_setup_screen_profile_pictures_primary_image_face_not_detected": "Face is not detected. Please select another picture.",
+  "initial_setup_screen_profile_pictures_primary_image_face_not_detected": "No face detected. Please select a photo that clearly shows your face.",
   "@initial_setup_screen_profile_pictures_primary_image_face_not_detected": {
     "description": "Error text that face is not detected for primary profile image"
   },
-  "initial_setup_screen_profile_pictures_primary_image_info_dialog_description": "Adding at least of one profile image is required. The first profile image must be a face picture. The square shaped crop of the first profile image is displayed in profile grid and some other places in the app.",
+  "initial_setup_screen_profile_pictures_primary_image_info_dialog_description": "At least one profile picture is required. Your first picture must show your face clearly, and its square crop will be shown in profile grids.",
   "@initial_setup_screen_profile_pictures_primary_image_info_dialog_description": {
     "description": "Dialog description text about profile primary image"
   },
-  "initial_setup_screen_profile_pictures_select_picture_dialog_title": "Select picture…",
+  "initial_setup_screen_profile_pictures_select_picture_dialog_title": "Choose photo…",
   "@initial_setup_screen_profile_pictures_select_picture_dialog_title": {
     "description": "Dialog title for initial setup profile picture selection dialog"
   },
-  "initial_setup_screen_profile_pictures_select_picture_from_gallery_title": "From gallery",
+  "initial_setup_screen_profile_pictures_select_picture_from_gallery_title": "Choose from gallery",
   "@initial_setup_screen_profile_pictures_select_picture_from_gallery_title": {
     "description": "Action title for selecting profile picture from gallery"
   },
-  "initial_setup_screen_profile_pictures_select_picture_security_selfie_title": "Security selfie",
+  "initial_setup_screen_profile_pictures_select_picture_security_selfie_title": "Use security selfie",
   "@initial_setup_screen_profile_pictures_select_picture_security_selfie_title": {
     "description": "Action title for using security selfie as a profile picture"
   },
-  "initial_setup_screen_profile_pictures_select_picture_take_new_picture_title": "Take new photo",
+  "initial_setup_screen_profile_pictures_select_picture_take_new_picture_title": "Take photo",
   "@initial_setup_screen_profile_pictures_select_picture_take_new_picture_title": {
     "description": "Action title for taking new picture to be used as a profile picture"
   },
@@ -1663,7 +1663,7 @@
   "@initial_setup_screen_profile_pictures_title": {
     "description": "Title for profile pictures selection screen"
   },
-  "initial_setup_screen_profile_pictures_unsupported_image_error": "Selected image is not a JPEG or PNG image",
+  "initial_setup_screen_profile_pictures_unsupported_image_error": "Unsupported image format. Please select a JPEG or PNG image.",
   "@initial_setup_screen_profile_pictures_unsupported_image_error": {
     "description": "Snackbar error text that selected picture is unsupported"
   },
@@ -1671,27 +1671,27 @@
   "@initial_setup_screen_profile_privacy_settings_title": {
     "description": "Title for initial setup profile privacy settings screen"
   },
-  "initial_setup_screen_refresh_face_detected_values_action": "Refresh face detection statuses",
+  "initial_setup_screen_refresh_face_detected_values_action": "Refresh face detection status",
   "@initial_setup_screen_refresh_face_detected_values_action": {
     "description": "Title for refresh face detected values"
   },
-  "initial_setup_screen_search_settings_max_age_subtitle": "…with max age…",
+  "initial_setup_screen_search_settings_max_age_subtitle": "…maximum age…",
   "@initial_setup_screen_search_settings_max_age_subtitle": {
     "description": "Subtitle for max age search setting"
   },
-  "initial_setup_screen_search_settings_min_age_subtitle": "…with min age…",
+  "initial_setup_screen_search_settings_min_age_subtitle": "…minimum age…",
   "@initial_setup_screen_search_settings_min_age_subtitle": {
     "description": "Subtitle for min age search setting"
   },
-  "initial_setup_screen_search_settings_title": "I am searching for…",
+  "initial_setup_screen_search_settings_title": "I am looking for…",
   "@initial_setup_screen_search_settings_title": {
     "description": "Title for ask search settings screen"
   },
-  "initial_setup_screen_security_selfie_description": "Take selfie with your phone's front camera. The selfie is used for moderating your profile images and by default it is only visible to content Moderators.",
+  "initial_setup_screen_security_selfie_description": "Take a selfie with your front camera. This selfie is used to verify your profile pictures and is only visible to moderators unless you add it to your profile later.",
   "@initial_setup_screen_security_selfie_description": {
     "description": "Description for initial setup security selfie step"
   },
-  "initial_setup_screen_security_selfie_face_not_detected": "Face is not detected. Please try again several times and if necessary ask customer support to do manual face detection.",
+  "initial_setup_screen_security_selfie_face_not_detected": "Face not detected. Please try again with clear lighting, or contact support for help.",
   "@initial_setup_screen_security_selfie_face_not_detected": {
     "description": "Error text that face is not detected for initial setup security selfie screen"
   },
@@ -1699,15 +1699,15 @@
   "@initial_setup_screen_security_selfie_title": {
     "description": "Title for initial setup security selfie screen"
   },
-  "initial_setup_screen_skip_dialog_description": "Use this only if you will have some admin rights to the service.",
+  "initial_setup_screen_skip_dialog_description": "Skip profile setup only if you will have administrator rights on the service.",
   "@initial_setup_screen_skip_dialog_description": {
     "description": "Description for skip initial setup confirm dialog"
   },
-  "initial_setup_screen_skip_dialog_title": "Skip account initial setup?",
+  "initial_setup_screen_skip_dialog_title": "Skip profile setup?",
   "@initial_setup_screen_skip_dialog_title": {
     "description": "Title for skip initial setup confirm dialog"
   },
-  "likes_screen_like_loading_failed": "Chat request loading failed",
+  "likes_screen_like_loading_failed": "Failed to load chat requests",
   "@likes_screen_like_loading_failed": {
     "description": "Text displayed when like loading fails"
   },
@@ -1715,7 +1715,7 @@
   "@likes_screen_no_received_likes_found": {
     "description": "Info text displayed when there is no received likes"
   },
-  "likes_screen_no_received_likes_found_description": "Spread the word about the app in social media",
+  "likes_screen_no_received_likes_found_description": "Spread the word about the app on social media",
   "@likes_screen_no_received_likes_found_description": {
     "description": "Description text displayed when there is no received likes"
   },
@@ -1727,11 +1727,11 @@
   "@likes_screen_title": {
     "description": "Title for likes screen"
   },
-  "login_screen_app_attestation_app_integrity_error": "App integrity verification failed",
+  "login_screen_app_attestation_app_integrity_error": "App integrity check failed",
   "@login_screen_app_attestation_app_integrity_error": {
     "description": "Snackbar text for app integrity check failed"
   },
-  "login_screen_app_attestation_device_integrity_error": "Device integrity verification failed",
+  "login_screen_app_attestation_device_integrity_error": "Device integrity check failed",
   "@login_screen_app_attestation_device_integrity_error": {
     "description": "Snackbar text for device integrity check failed"
   },
@@ -1739,7 +1739,7 @@
   "@login_screen_app_attestation_failed": {
     "description": "Snackbar text for app attestation failed"
   },
-  "login_screen_connecting_websocket_failed": "Connecting WebSocket failed. Try again later.",
+  "login_screen_connecting_websocket_failed": "Failed to connect to server. Please try again later.",
   "@login_screen_connecting_websocket_failed": {
     "description": "Snackbar text for connecting WebSocket failed"
   },
@@ -1815,11 +1815,11 @@
   "@login_screen_ios_pwa_install_video_instructions_button": {
     "description": "Button to show video instructions for iOS PWA installation"
   },
-  "login_screen_login_all_platforms_disabled": "App admin has disabled login",
+  "login_screen_login_all_platforms_disabled": "Login is currently disabled",
   "@login_screen_login_all_platforms_disabled": {
     "description": "Snackbar error message when login is disabled on all platforms"
   },
-  "login_screen_login_api_request_failed": "Login API request failed. Try again later.",
+  "login_screen_login_api_request_failed": "Login request failed. Please try again later.",
   "@login_screen_login_api_request_failed": {
     "description": "Snackbar text for login API request failed"
   },
@@ -1839,7 +1839,7 @@
   "@login_screen_login_note_text_tos": {
     "description": "Text for terms of service link"
   },
-  "login_screen_login_platform_disabled": "App admin has disabled login on current platform ({p0})",
+  "login_screen_login_platform_disabled": "Login is currently disabled on this platform ({p0})",
   "@login_screen_login_platform_disabled": {
     "description": "Snackbar error message when login is disabled on current platform",
     "placeholders": {
@@ -1848,11 +1848,11 @@
       }
     }
   },
-  "login_screen_registration_all_platforms_disabled": "App admin has disabled registering new accounts",
+  "login_screen_registration_all_platforms_disabled": "New registrations are currently disabled",
   "@login_screen_registration_all_platforms_disabled": {
     "description": "Snackbar error message when registration is disabled on all platforms"
   },
-  "login_screen_registration_platform_disabled": "App admin has disabled registering new accounts on current platform ({p0})",
+  "login_screen_registration_platform_disabled": "New registrations are currently disabled on this platform ({p0})",
   "@login_screen_registration_platform_disabled": {
     "description": "Snackbar error message when registration is disabled on current platform",
     "placeholders": {
@@ -1861,23 +1861,23 @@
       }
     }
   },
-  "login_screen_sign_in_with_email_action": "Sign in with email address",
+  "login_screen_sign_in_with_email_action": "Sign in with email",
   "@login_screen_sign_in_with_email_action": {
     "description": "Button text for email sign in action on the login screen"
   },
-  "login_screen_sign_in_with_email_unverified": "Email address of the selected account is not verified",
+  "login_screen_sign_in_with_email_unverified": "Email address is not verified",
   "@login_screen_sign_in_with_email_unverified": {
     "description": "Snackbar error message when sign in with account email is not verified"
   },
-  "login_screen_sign_in_with_error": "Sign in with failed",
+  "login_screen_sign_in_with_error": "Sign in failed",
   "@login_screen_sign_in_with_error": {
     "description": "Snackbar text for sign in with error"
   },
-  "map_location_update_failed": "Location update failed",
+  "map_location_update_failed": "Failed to update location",
   "@map_location_update_failed": {
     "description": "Snackbar text about failed location update"
   },
-  "map_location_update_successful": "Location update successful",
+  "map_location_update_successful": "Location updated",
   "@map_location_update_successful": {
     "description": "Snackbar text about successful location update"
   },
@@ -1885,15 +1885,15 @@
   "@map_openstreetmap_data_attribution_link_text": {
     "description": "OpenStreetMap data attribution link text"
   },
-  "map_select_location_help_text": "Tap or long press the map to select a location.",
+  "map_select_location_help_text": "Tap or hold on the map to choose a location.",
   "@map_select_location_help_text": {
     "description": "Help text for selecting map location"
   },
-  "map_tile_error": "Map tile error",
+  "map_tile_error": "Failed to load map",
   "@map_tile_error": {
     "description": "Snackbar text about map tile error"
   },
-  "menu_screen_admin_offline_title": "Automatic moderation is not working currently",
+  "menu_screen_admin_offline_title": "Automatic moderation is temporarily unavailable",
   "@menu_screen_admin_offline_title": {
     "description": "Title text for admin bot offline info"
   },
@@ -1960,15 +1960,15 @@
   "@news_list_screen_create_new": {
     "description": "Dialog title for create new news item confirmation dialog"
   },
-  "news_list_screen_news_loading_failed": "News loading failed",
+  "news_list_screen_news_loading_failed": "Failed to load news",
   "@news_list_screen_news_loading_failed": {
     "description": "Info text displayed when news loading fails"
   },
-  "news_list_screen_no_news_found": "No news found",
+  "news_list_screen_no_news_found": "No news available",
   "@news_list_screen_no_news_found": {
     "description": "Info text displayed when no news are found"
   },
-  "news_list_screen_not_published": "Not published",
+  "news_list_screen_not_published": "Draft",
   "@news_list_screen_not_published": {
     "description": "News item state text for not yet published news item"
   },
@@ -2041,7 +2041,7 @@
   "@notification_media_content_deleted": {
     "description": "Title for media content deleted notification"
   },
-  "notification_media_content_deleted_description": "Unallowed content was detected from the image. This might be false positive detection.",
+  "notification_media_content_deleted_description": "Content not permitted was detected in your image. This might be a false positive.",
   "@notification_media_content_deleted_description": {
     "description": "Description for media content deleted notification"
   },
@@ -2079,7 +2079,7 @@
   "@notification_news_item_available": {
     "description": "Title for news item available notification"
   },
-  "notification_permission_dialog_description": "Allow notifications to receive notifications for example from new chat requests and messages.",
+  "notification_permission_dialog_description": "Allow notifications to get alerts for new chat requests and messages for example.",
   "@notification_permission_dialog_description": {
     "description": "Description text for notification permission dialog"
   },
@@ -2103,15 +2103,15 @@
   "@notification_profile_text_rejected": {
     "description": "Title for profile text rejected notification"
   },
-  "notification_settings_screen_ios_pwa_permission_denied": "Permission not granted. Try again or grant permission from iOS system settings.",
+  "notification_settings_screen_ios_pwa_permission_denied": "Permission denied. Try again or enable notifications in iOS settings.",
   "@notification_settings_screen_ios_pwa_permission_denied": {
     "description": "Info text when iOS PWA notification permission is denied"
   },
-  "notification_settings_screen_notification_category_disabled_from_system_settings_text": "Disabled from system notification settings",
+  "notification_settings_screen_notification_category_disabled_from_system_settings_text": "Disabled in system settings",
   "@notification_settings_screen_notification_category_disabled_from_system_settings_text": {
     "description": "Info text that notification category is disabled from system settings"
   },
-  "notification_settings_screen_notifications_disabled_from_system_settings_text": "Notifications are disabled from system notification settings",
+  "notification_settings_screen_notifications_disabled_from_system_settings_text": "Notifications are disabled in system settings",
   "@notification_settings_screen_notifications_disabled_from_system_settings_text": {
     "description": "Info text that notifications are disabled from system settings"
   },
@@ -2123,11 +2123,11 @@
   "@notification_settings_screen_title": {
     "description": "Title for notification settings screen"
   },
-  "notification_settings_screen_web_permission_denied": "Permission not granted. Try again or grant permission from browser settings.",
+  "notification_settings_screen_web_permission_denied": "Permission denied. Try again or enable notifications in browser settings.",
   "@notification_settings_screen_web_permission_denied": {
     "description": "Info text when web notification permission is denied"
   },
-  "notification_settings_screen_web_permission_not_enabled": "Notification permission is not enabled",
+  "notification_settings_screen_web_permission_not_enabled": "Notifications are not enabled",
   "@notification_settings_screen_web_permission_not_enabled": {
     "description": "Info text for web that notification permission is not enabled"
   },
@@ -2195,11 +2195,11 @@
   "@privacy_settings_typing_indicator_enabled_description": {
     "description": "Description when typing indicator is enabled"
   },
-  "profile_filters_screen_disable_filters_action": "Disable filters",
+  "profile_filters_screen_disable_filters_action": "Reset filters",
   "@profile_filters_screen_disable_filters_action": {
     "description": "Title for disable filters action"
   },
-  "profile_filters_screen_disable_filters_action_dialog_title": "Disable filters?",
+  "profile_filters_screen_disable_filters_action_dialog_title": "Reset filters?",
   "@profile_filters_screen_disable_filters_action_dialog_title": {
     "description": "Title for disable filters action confirm dialog"
   },
@@ -2269,7 +2269,7 @@
   "@profile_filters_screen_profile_text_filter_unit": {
     "description": "Unit text for profile text filter"
   },
-  "profile_filters_screen_profile_verification_requires_verified_account": "Using this filter requires verified account",
+  "profile_filters_screen_profile_verification_requires_verified_account": "Using this filter requires a verified account",
   "@profile_filters_screen_profile_verification_requires_verified_account": {
     "description": "Text shown when using profile verification filter requires verified account"
   },
@@ -2370,7 +2370,7 @@
       }
     }
   },
-  "profile_filters_screen_updating_filters_failed": "Updating profile filters failed",
+  "profile_filters_screen_updating_filters_failed": "Failed to update filters",
   "@profile_filters_screen_updating_filters_failed": {
     "description": "Snackbar text for notifying about failed profile filters update"
   },
@@ -2410,23 +2410,23 @@
   "@profile_grid_screen_email_not_verified_button": {
     "description": "Button text for account settings action when email is not verified"
   },
-  "profile_grid_screen_filtering_favorite_profiles_is_not_supported": "Filtering favorite profiles is not supported",
+  "profile_grid_screen_filtering_favorite_profiles_is_not_supported": "Filtering favorites is not supported",
   "@profile_grid_screen_filtering_favorite_profiles_is_not_supported": {
     "description": "Snackbar text that filtering favorite profiles is not supported"
   },
-  "profile_grid_screen_no_favorite_profiles_found_description": "Mark a profile as a favorite to add it here.",
+  "profile_grid_screen_no_favorite_profiles_found_description": "Star a profile to save it here.",
   "@profile_grid_screen_no_favorite_profiles_found_description": {
     "description": "Description that no favorite profiles were found"
   },
-  "profile_grid_screen_no_favorite_profiles_found_title": "No favorite profiles found",
+  "profile_grid_screen_no_favorite_profiles_found_title": "No favorites yet",
   "@profile_grid_screen_no_favorite_profiles_found_title": {
     "description": "Title that no favorite profiles were found"
   },
-  "profile_grid_screen_no_profiles_found_description_filters_disabled": "Spread the word about the app in social media",
+  "profile_grid_screen_no_profiles_found_description_filters_disabled": "Spread the word about the app on social media",
   "@profile_grid_screen_no_profiles_found_description_filters_disabled": {
     "description": "Description displayed when there is no profiles and there is no filters enabled"
   },
-  "profile_grid_screen_no_profiles_found_description_filters_enabled": "Change or disable filters",
+  "profile_grid_screen_no_profiles_found_description_filters_enabled": "Try adjusting or clearing your filters",
   "@profile_grid_screen_no_profiles_found_description_filters_enabled": {
     "description": "Description displayed when there is no profiles and some filter is enabled"
   },
@@ -2434,19 +2434,19 @@
   "@profile_grid_screen_no_profiles_found_title": {
     "description": "Title that no profiles were found"
   },
-  "profile_grid_screen_primary_profile_content_does_not_exist": "First profile picture does not exist",
+  "profile_grid_screen_primary_profile_content_does_not_exist": "First profile picture missing",
   "@profile_grid_screen_primary_profile_content_does_not_exist": {
     "description": "Text displayed when primary profile content does not exist"
   },
-  "profile_grid_screen_primary_profile_content_face_not_detected": "Face is not detected from first profile picture",
+  "profile_grid_screen_primary_profile_content_face_not_detected": "Face not detected in first profile picture",
   "@profile_grid_screen_primary_profile_content_face_not_detected": {
     "description": "Text displayed when face is not detected from primary profile content"
   },
-  "profile_grid_screen_primary_profile_content_is_in_moderation": "You can view profiles and others can see your profile after the first profile picture is moderated",
+  "profile_grid_screen_primary_profile_content_is_in_moderation": "You will be able to browse and be seen once your first profile picture is approved",
   "@profile_grid_screen_primary_profile_content_is_in_moderation": {
     "description": "Info text that primary profile content is in moderation"
   },
-  "profile_grid_screen_primary_profile_content_is_not_accepted": "First profile picture is not accepted",
+  "profile_grid_screen_primary_profile_content_is_not_accepted": "First profile picture not approved",
   "@profile_grid_screen_primary_profile_content_is_not_accepted": {
     "description": "Text displayed when primary profile content is not accepted"
   },
@@ -2454,19 +2454,19 @@
   "@profile_grid_screen_profile_filter_settings_update_ongoing": {
     "description": "Snackbar text that profile filter settings update is ongoing"
   },
-  "profile_grid_screen_profile_is_private_info": "To view profiles, set your profile visibility to public from app settings.",
+  "profile_grid_screen_profile_is_private_info": "To browse profiles, make your profile public in Settings.",
   "@profile_grid_screen_profile_is_private_info": {
     "description": "Info text which is shown when profile visibility is set to private"
   },
-  "profile_grid_screen_security_content_does_not_exist": "Security selfie does not exist",
+  "profile_grid_screen_security_content_does_not_exist": "Security selfie missing",
   "@profile_grid_screen_security_content_does_not_exist": {
     "description": "Text displayed when security selfie does not exist"
   },
-  "profile_grid_screen_security_content_face_not_detected": "Face is not detected from security selfie",
+  "profile_grid_screen_security_content_face_not_detected": "Face not detected in security selfie",
   "@profile_grid_screen_security_content_face_not_detected": {
     "description": "Text displayed when face is not detected from security selfie"
   },
-  "profile_grid_screen_security_content_is_not_accepted": "Security selfie is not accepted",
+  "profile_grid_screen_security_content_is_not_accepted": "Security selfie not approved",
   "@profile_grid_screen_security_content_is_not_accepted": {
     "description": "Text displayed when security selfie is not accepted"
   },
@@ -2483,11 +2483,11 @@
   "@profile_grid_screen_show_all_profiles_action": {
     "description": "Title for show all profiles action"
   },
-  "profile_grid_screen_show_favorite_profiles_action": "Show favorite profiles",
+  "profile_grid_screen_show_favorite_profiles_action": "Show favorites",
   "@profile_grid_screen_show_favorite_profiles_action": {
     "description": "Title for show favorite profiles action"
   },
-  "profile_grid_screen_start_initial_setup_button": "Start account initial setup",
+  "profile_grid_screen_start_initial_setup_button": "Set up profile",
   "@profile_grid_screen_start_initial_setup_button": {
     "description": "Button text for start initial setup button"
   },
@@ -2547,7 +2547,7 @@
   "@profile_grid_settings_screen_title": {
     "description": "Profile grid settings screen title"
   },
-  "profile_image_error_image_not_accepted": "Profile image is not accepted by moderators",
+  "profile_image_error_image_not_accepted": "Profile picture has not been approved",
   "@profile_image_error_image_not_accepted": {
     "description": "Snackbar text for profile image is not accepted error"
   },
@@ -2555,7 +2555,7 @@
   "@profile_image_error_no_image": {
     "description": "Snackbar text for no profile image error"
   },
-  "profile_image_error_no_primary_image": "No primary profile image",
+  "profile_image_error_no_primary_image": "Primary profile picture missing",
   "@profile_image_error_no_primary_image": {
     "description": "Snackbar text for no primary profile image error"
   },
@@ -2575,7 +2575,7 @@
   "@receive_chat_backup_importing": {
     "description": "Status text when importing backup"
   },
-  "receive_chat_backup_pairing_code_instruction": "On the source device:",
+  "receive_chat_backup_pairing_code_instruction": "On the other device:",
   "@receive_chat_backup_pairing_code_instruction": {
     "description": "Instruction for using pairing code"
   },
@@ -2588,11 +2588,11 @@
       }
     }
   },
-  "receive_chat_backup_pairing_code_step2": "2. Logout from settings if login screen is not visible",
+  "receive_chat_backup_pairing_code_step2": "2. Log out from Settings if the login screen is not visible",
   "@receive_chat_backup_pairing_code_step2": {
     "description": "Second step for using pairing code"
   },
-  "receive_chat_backup_pairing_code_step3": "3. Tap the three dots in the top right corner",
+  "receive_chat_backup_pairing_code_step3": "3. Tap the menu in the top right corner",
   "@receive_chat_backup_pairing_code_step3": {
     "description": "Third step for using pairing code"
   },
@@ -2600,7 +2600,7 @@
   "@receive_chat_backup_pairing_code_step4": {
     "description": "Fourth step for using pairing code"
   },
-  "receive_chat_backup_pairing_code_step5": "5. Scan the QR code and start transfer",
+  "receive_chat_backup_pairing_code_step5": "5. Scan this QR code to start transfer",
   "@receive_chat_backup_pairing_code_step5": {
     "description": "Fifth step for using pairing code"
   },
@@ -2620,7 +2620,7 @@
   "@receive_chat_backup_transferring": {
     "description": "Status text when transferring backup data"
   },
-  "receive_chat_backup_waiting_for_source": "Waiting for source device",
+  "receive_chat_backup_waiting_for_source": "Waiting for other device…",
   "@receive_chat_backup_waiting_for_source": {
     "description": "Status text when waiting for source device"
   },
@@ -2636,11 +2636,11 @@
       }
     }
   },
-  "report_chat_message_screen_selection_status_none": "Select max 10 messages",
+  "report_chat_message_screen_selection_status_none": "Select up to 10 messages",
   "@report_chat_message_screen_selection_status_none": {
     "description": "Status text when no messages are selected for reporting"
   },
-  "report_chat_message_screen_server_signed_message_not_found": "Server signed message not found",
+  "report_chat_message_screen_server_signed_message_not_found": "Server-signed message not found",
   "@report_chat_message_screen_server_signed_message_not_found": {
     "description": "Snackbar text for server signed message not found error"
   },
@@ -2661,7 +2661,7 @@
       }
     }
   },
-  "report_profile_image_screen_profile_image_changed_error": "Report failed. Profile image has changed.",
+  "report_profile_image_screen_profile_image_changed_error": "Report failed: profile image has changed",
   "@report_profile_image_screen_profile_image_changed_error": {
     "description": "Snackbar text displayed when reporting old profile image"
   },
@@ -2669,7 +2669,7 @@
   "@report_screen_chat_message_action": {
     "description": "Title for report chat message action"
   },
-  "report_screen_custom_report_boolean_dialog_description": "Report user as '{p0}'?",
+  "report_screen_custom_report_boolean_dialog_description": "Report user for \"{p0}\"?",
   "@report_screen_custom_report_boolean_dialog_description": {
     "description": "Text for dialog for custom report boolean reporting",
     "placeholders": {
@@ -2678,7 +2678,7 @@
       }
     }
   },
-  "report_screen_false_reports_warning": "False reports may result in a ban",
+  "report_screen_false_reports_warning": "Submitting false reports may result in account suspension",
   "@report_screen_false_reports_warning": {
     "description": "Warning text about false reports leading to a ban"
   },
@@ -2690,7 +2690,7 @@
   "@report_screen_profile_name_action": {
     "description": "Title for report profile name action"
   },
-  "report_screen_profile_name_changed_error": "Report failed. Profile name has changed.",
+  "report_screen_profile_name_changed_error": "Report failed: profile name has changed",
   "@report_screen_profile_name_changed_error": {
     "description": "Snackbar text for when reporting old profile name"
   },
@@ -2702,7 +2702,7 @@
   "@report_screen_profile_text_action": {
     "description": "Title for report profile text action"
   },
-  "report_screen_profile_text_changed_error": "Report failed. Profile text has changed.",
+  "report_screen_profile_text_changed_error": "Report failed: profile text has changed",
   "@report_screen_profile_text_changed_error": {
     "description": "Snackbar text for when reporting old profile text"
   },
@@ -2710,19 +2710,19 @@
   "@report_screen_profile_text_dialog_title": {
     "description": "Profile text reporting confirmation dialog title"
   },
-  "report_screen_snackbar_report_successful": "Reported",
+  "report_screen_snackbar_report_successful": "Report submitted",
   "@report_screen_snackbar_report_successful": {
     "description": "Snackbar text for successful report"
   },
-  "report_screen_snackbar_too_many_reports_error": "Report failed. Too many reports.",
+  "report_screen_snackbar_too_many_reports_error": "Too many reports submitted. Please try again later.",
   "@report_screen_snackbar_too_many_reports_error": {
     "description": "Snackbar text for too many reports error"
   },
-  "scan_pairing_code_instruction": "Point your camera at the QR code",
+  "scan_pairing_code_instruction": "Point camera at QR code",
   "@scan_pairing_code_instruction": {
     "description": "Instruction for scanning QR code"
   },
-  "scan_pairing_code_screen_title": "Scan QR Code",
+  "scan_pairing_code_screen_title": "Scan QR code",
   "@scan_pairing_code_screen_title": {
     "description": "Title for scan pairing code screen"
   },
@@ -2750,7 +2750,7 @@
   "@search_settings_screen_gender_filter_is_not_selected": {
     "description": "Snackbar text about missing gender filter value"
   },
-  "search_settings_screen_gender_is_not_selected": "Your gender information is not set",
+  "search_settings_screen_gender_is_not_selected": "Your gender is not set",
   "@search_settings_screen_gender_is_not_selected": {
     "description": "Snackbar text about missing gender information"
   },
@@ -2758,7 +2758,7 @@
   "@search_settings_screen_new_profiles": {
     "description": "Title text for new profiles setting"
   },
-  "search_settings_screen_search_settings_update_failed": "Updating search settings failed",
+  "search_settings_screen_search_settings_update_failed": "Failed to update search settings",
   "@search_settings_screen_search_settings_update_failed": {
     "description": "Snackbar text about failed search settings update"
   },
@@ -2802,7 +2802,7 @@
   "@send_chat_backup_idle": {
     "description": "Status text when idle and ready to send"
   },
-  "send_chat_backup_pairing_code_hint": "Enter code from receiving device",
+  "send_chat_backup_pairing_code_hint": "Enter pairing code from receiving device",
   "@send_chat_backup_pairing_code_hint": {
     "description": "Hint text for pairing code input"
   },
@@ -2920,11 +2920,11 @@
   "@sign_in_with_management_screen_google_unlink_confirm_title": {
     "description": "Title for unlink Google sign in method confirm dialog"
   },
-  "sign_in_with_management_screen_link_failed": "Linking sign in method failed",
+  "sign_in_with_management_screen_link_failed": "Failed to link sign in method",
   "@sign_in_with_management_screen_link_failed": {
     "description": "Snackbar text when linking sign in method fails"
   },
-  "sign_in_with_management_screen_link_history_limit_reached": "Sign in method history limit reached. Try again after {p0}.",
+  "sign_in_with_management_screen_link_history_limit_reached": "Sign in method change limit reached. Try again after {p0}.",
   "@sign_in_with_management_screen_link_history_limit_reached": {
     "description": "Snackbar text when sign in with history limit is reached, with formatted wait time",
     "placeholders": {
@@ -2941,23 +2941,23 @@
   "@sign_in_with_management_screen_title": {
     "description": "Title for sign in methods management screen"
   },
-  "sign_in_with_management_screen_unlink_failed": "Unlinking sign in method failed",
+  "sign_in_with_management_screen_unlink_failed": "Failed to unlink sign in method",
   "@sign_in_with_management_screen_unlink_failed": {
     "description": "Snackbar text when unlinking sign in method fails"
   },
-  "snackbar_api_forbidden_request": "API error: forbidden request",
+  "snackbar_api_forbidden_request": "Action not allowed",
   "@snackbar_api_forbidden_request": {
     "description": "Snackbar error text for forbidden API requests"
   },
-  "snackbar_api_usage_limit_reached": "API usage limit is reached. Try again tomorrow.",
+  "snackbar_api_usage_limit_reached": "Daily limit reached. Please try again tomorrow.",
   "@snackbar_api_usage_limit_reached": {
     "description": "Snackbar info text that API usage limit is reached"
   },
-  "snackbar_error_api": "API error",
+  "snackbar_error_api": "API request failed",
   "@snackbar_error_api": {
     "description": "Snackbar error text for API errors"
   },
-  "snackbar_error_api_timeout": "API timeout",
+  "snackbar_error_api_timeout": "API request timed out",
   "@snackbar_error_api_timeout": {
     "description": "Snackbar error text for API timeouts"
   },
@@ -2969,15 +2969,15 @@
   "@snackbar_error_file": {
     "description": "Snackbar error text for file errors"
   },
-  "snackbar_error_logic": "Logic error",
+  "snackbar_error_logic": "Unexpected error",
   "@snackbar_error_logic": {
     "description": "Snackbar error text for logic errors"
   },
-  "snackbar_image_quality_degraded": "Many users are viewing profiles - image quality may be degraded",
+  "snackbar_image_quality_degraded": "Many users are viewing profiles - image quality may be temporarily reduced",
   "@snackbar_image_quality_degraded": {
     "description": "Snackbar text when server returns lower image quality than requested"
   },
-  "snackbar_play_integrity_api_error": "Play Integrity API error: {p0}",
+  "snackbar_play_integrity_api_error": "App verification error: {p0}",
   "@snackbar_play_integrity_api_error": {
     "description": "Snackbar error text for Play Integrity API errors",
     "placeholders": {
@@ -2990,7 +2990,7 @@
   "@splash_screen_app_is_already_running": {
     "description": "Splash screen error text that app is already running"
   },
-  "splash_screen_app_version_downgrade_detected": "Warning: app version downgrade detected. Please use latest app version if possible.",
+  "splash_screen_app_version_downgrade_detected": "Warning: App version downgrade detected. Please use the latest app version.",
   "@splash_screen_app_version_downgrade_detected": {
     "description": "Splash screen warning text when app major/minor version downgrade is detected"
   },
@@ -3110,7 +3110,7 @@
   "@statistics_screen_title": {
     "description": "Title for statistics screen"
   },
-  "unsupported_client_screen_info": "Current app version is not supported. Please update the app.",
+  "unsupported_client_screen_info": "This app version is no longer supported. Please update to the latest version.",
   "@unsupported_client_screen_info": {
     "description": "Info text that app update is required"
   },
@@ -3120,7 +3120,7 @@
   },
   "url_app_privacy_policy_link": "https://example.com",
   "url_app_tos_link": "https://example.com",
-  "video_call_tip_dialog_description": "You can send video call invitation using video call button at top right corner of the screen.",
+  "video_call_tip_dialog_description": "You can send a video call invitation using the video call icon at the top right of the chat.",
   "@video_call_tip_dialog_description": {
     "description": "Description text for video call tip dialog"
   },
@@ -3158,11 +3158,11 @@
   "@view_profile_screen_add_to_favorites_action_successful": {
     "description": "Snackbar text for view profile screen add to favorites action result successful"
   },
-  "view_profile_screen_add_to_favorites_error_too_many_favorites": "Too many favorite profiles",
+  "view_profile_screen_add_to_favorites_error_too_many_favorites": "Favorites list is full",
   "@view_profile_screen_add_to_favorites_error_too_many_favorites": {
     "description": "Snackbar text when adding to favorites fails because of too many favorites"
   },
-  "view_profile_screen_add_to_favorites_remaining_space": "Remaining space in favorite profiles: {p0}",
+  "view_profile_screen_add_to_favorites_remaining_space": "Remaining favorite slots: {p0}",
   "@view_profile_screen_add_to_favorites_remaining_space": {
     "description": "Snackbar text showing remaining favorite profile space",
     "placeholders": {
@@ -3211,7 +3211,7 @@
   "@view_profile_screen_like_action_successful": {
     "description": "Snackbar text for view profile screen like action successful"
   },
-  "view_profile_screen_like_action_try_again_tomorrow": "No daily chat requests left. Try again tomorrow.",
+  "view_profile_screen_like_action_try_again_tomorrow": "No chat requests left today. Try again tomorrow.",
   "@view_profile_screen_like_action_try_again_tomorrow": {
     "description": "Snackbar text for view profile screen like action failed because of like limit"
   },
@@ -3219,7 +3219,7 @@
   "@view_profile_screen_my_profile_edit_action": {
     "description": "Text for view profile screen edit my profile action"
   },
-  "view_profile_screen_my_profile_initial_setup_not_done": "Dating profile is not created",
+  "view_profile_screen_my_profile_initial_setup_not_done": "Profile is not set up yet",
   "@view_profile_screen_my_profile_initial_setup_not_done": {
     "description": "Snackbar text that it is not possible to open my profile screen when initial setup is not done"
   },
@@ -3252,11 +3252,11 @@
   "@view_profile_screen_profile_currently_online": {
     "description": "View profile screen text that profile is currently online"
   },
-  "view_profile_screen_profile_edit_failed": "Profile editing failed",
+  "view_profile_screen_profile_edit_failed": "Failed to save profile",
   "@view_profile_screen_profile_edit_failed": {
     "description": "Snackbar text for notifying about failed profile edit"
   },
-  "view_profile_screen_profile_image_does_not_exist": "Profile image {p0} does not exist",
+  "view_profile_screen_profile_image_does_not_exist": "Profile picture {p0} does not exist",
   "@view_profile_screen_profile_image_does_not_exist": {
     "description": "Snackbar text for notifying that selected profile image does not exist when saving profile edits",
     "placeholders": {
@@ -3337,7 +3337,7 @@
       }
     }
   },
-  "view_profile_screen_profile_verification_requires_verified_account": "Viewing this info requires verified account",
+  "view_profile_screen_profile_verification_requires_verified_account": "Viewing this info requires a verified account",
   "@view_profile_screen_profile_verification_requires_verified_account": {
     "description": "Text shown when viewing profile verification info requires verified account"
   },

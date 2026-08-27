@@ -35,25 +35,25 @@ class AppLocalizationsFi extends AppLocalizations {
 
   @override
   String account_banned_screen_ban_reason(String p0) {
-    return 'Ban reason: $p0';
+    return 'Reason: $p0';
   }
 
   @override
   String account_banned_screen_ban_reason_category(String p0) {
-    return 'Ban reason category: $p0';
+    return 'Category: $p0';
   }
 
   @override
   String account_banned_screen_time_text(String p0) {
-    return 'Account automatic unban process begins at $p0';
+    return 'Suspension ending will begin at $p0';
   }
 
   @override
-  String get account_banned_screen_title => 'Account banned';
+  String get account_banned_screen_title => 'Account suspended';
 
   @override
   String account_deletion_pending_screen_time_text(String p0) {
-    return 'Account automatic deletion process begins at $p0';
+    return 'Account deletion will begin at $p0';
   }
 
   @override
@@ -84,7 +84,7 @@ class AppLocalizationsFi extends AppLocalizations {
 
   @override
   String get account_settings_screen_delete_account_action_error =>
-      'Requesting account deletion failed';
+      'Failed to request account deletion';
 
   @override
   String get account_settings_screen_delete_account_confirm_dialog_title =>
@@ -95,12 +95,12 @@ class AppLocalizationsFi extends AppLocalizations {
 
   @override
   String account_settings_screen_email_change_history_limit_reached(String p0) {
-    return 'Email change history limit reached. Try again after $p0.';
+    return 'Email change limit reached. Try again after $p0.';
   }
 
   @override
   String get account_settings_screen_email_change_initiated =>
-      'Email change initiated. Please check your email.';
+      'Email change initiated. Please check your inbox.';
 
   @override
   String get account_settings_screen_email_not_verified => 'Email not verified';
@@ -134,7 +134,7 @@ class AppLocalizationsFi extends AppLocalizations {
 
   @override
   String get account_settings_screen_send_verification_email_sent_successfully =>
-      'Verification email sent successfully';
+      'Verification email sent';
 
   @override
   String get account_settings_screen_title => 'Account';
@@ -145,11 +145,11 @@ class AppLocalizationsFi extends AppLocalizations {
 
   @override
   String get account_verification_screen_error_profile_age_range_verification_failed =>
-      'Profile age verification failed';
+      'Age verification failed';
 
   @override
   String get account_verification_screen_error_profile_age_range_verification_mismatch =>
-      'Provided age does not match your profile age';
+      'Verified age does not match your profile age';
 
   @override
   String get account_verification_screen_error_profile_name_mismatch =>
@@ -157,11 +157,11 @@ class AppLocalizationsFi extends AppLocalizations {
 
   @override
   String get account_verification_screen_error_profile_name_verification_failed =>
-      'Profile name verification failed';
+      'Name verification failed';
 
   @override
   String get account_verification_screen_error_profile_name_verification_mismatch =>
-      'Provided name does not match your profile name';
+      'Verified name does not match your profile name';
 
   @override
   String get account_verification_screen_error_security_content_mismatch =>
@@ -173,19 +173,19 @@ class AppLocalizationsFi extends AppLocalizations {
 
   @override
   String get account_verification_screen_error_security_content_verification_mismatch =>
-      'Provided image does not match your security selfie';
+      'Verified photo does not match your security selfie';
 
   @override
   String get account_verification_screen_error_verification_data_parsing_failed =>
-      'Unsupported person identification data';
+      'Invalid identification data';
 
   @override
   String get account_verification_screen_error_verification_data_verification_failed =>
-      'Verifying person identification data failed';
+      'Identity verification failed';
 
   @override
   String get account_verification_screen_error_verification_method_not_configured =>
-      'App admin has not configured this verification method';
+      'This verification method is not configured';
 
   @override
   String get account_verification_screen_previous_verification_errors_title => 'Errors';
@@ -205,11 +205,11 @@ class AppLocalizationsFi extends AppLocalizations {
 
   @override
   String get account_verification_screen_request_initial_setup_not_completed =>
-      'Dating profile not created';
+      'Profile is not set up yet';
 
   @override
   String get account_verification_screen_request_queue_full =>
-      'Account verification queue is full. Please try again later.';
+      'Verification queue is full. Please try again later.';
 
   @override
   String get account_verification_screen_scope_profile_age => 'Profile age';
@@ -230,7 +230,7 @@ class AppLocalizationsFi extends AppLocalizations {
 
   @override
   String get account_verification_screen_verification_method_eudi_unsupported =>
-      'EUDI wallet (current app version does not support this method)';
+      'EUDI wallet (not supported in this version)';
 
   @override
   String get admin_settings_title => 'Admin';
@@ -249,18 +249,18 @@ class AppLocalizationsFi extends AppLocalizations {
       'Current verification status';
 
   @override
-  String get age_verification_screen_error_age_already_verified => 'Age already verified';
+  String get age_verification_screen_error_age_already_verified => 'Age is already verified';
 
   @override
-  String get age_verification_screen_error_age_under_18 => 'Age is under 18';
+  String get age_verification_screen_error_age_under_18 => 'Must be 18 or older';
 
   @override
   String get age_verification_screen_error_verification_data_parsing_failed =>
-      'Unsupported person identification data';
+      'Invalid identification data';
 
   @override
   String get age_verification_screen_error_verification_data_verification_failed =>
-      'Verifying person identification data failed';
+      'Identity verification failed';
 
   @override
   String get age_verification_screen_error_verification_method_not_configured =>
@@ -274,7 +274,7 @@ class AppLocalizationsFi extends AppLocalizations {
 
   @override
   String get age_verification_screen_verification_method_eudi_unsupported =>
-      'EUDI wallet (current app version does not support this method)';
+      'EUDI wallet (not supported in this version)';
 
   @override
   String get app_bar_action_about => 'About';
@@ -293,15 +293,15 @@ class AppLocalizationsFi extends AppLocalizations {
 
   @override
   String get app_update_available_dialog_description_manual_update =>
-      'New app version available. Please update the app.';
+      'A new version is available. Please update the app.';
 
   @override
   String get app_update_available_dialog_description_update_now =>
-      'New app version available. Update now?';
+      'A new version is available. Update now?';
 
   @override
   String get app_update_available_dialog_description_web_restart =>
-      'New app version available. Restart the app.';
+      'A new version is available. Restart the app to update.';
 
   @override
   String get association_membership_screen_current_membership_title => 'Current membership';
@@ -329,7 +329,7 @@ class AppLocalizationsFi extends AppLocalizations {
 
   @override
   String attribute_deprecated_info(String p0) {
-    return '\"$p0\" is deprecated and it disappears once you disable it';
+    return '\"$p0\" is deprecated and will disappear once unselected';
   }
 
   @override
@@ -366,43 +366,43 @@ class AppLocalizationsFi extends AppLocalizations {
   String get blocked_profiles_screen_unblock_profile_dialog_title => 'Unblock profile?';
 
   @override
-  String get blocked_profiles_screen_unblock_profile_failed => 'Unblock failed';
+  String get blocked_profiles_screen_unblock_profile_failed => 'Failed to unblock profile';
 
   @override
   String get blocked_profiles_screen_unblock_profile_in_progress =>
       'Previous unblock is in progress';
 
   @override
-  String get blocked_profiles_screen_unblock_profile_successful => 'Unblock successful';
+  String get blocked_profiles_screen_unblock_profile_successful => 'Profile unblocked';
 
   @override
   String get camera_screen_camera_access_restricted_error =>
-      'Camera access is restricted. Opening camera is not possible.';
+      'Camera access is restricted on this device.';
 
   @override
-  String get camera_screen_camera_initialization_error => 'Camera initialization failed';
+  String get camera_screen_camera_initialization_error => 'Failed to open camera';
 
   @override
   String camera_screen_camera_initialization_error_with_error_code(String p0) {
-    return 'Camera initialization failed. Error code: $p0';
+    return 'Failed to open camera (error $p0)';
   }
 
   @override
-  String get camera_screen_camera_opening_already_in_progress_error => 'Camera opening in progress';
+  String get camera_screen_camera_opening_already_in_progress_error => 'Camera is already starting';
 
   @override
   String get camera_screen_camera_permission_error_check_settings =>
-      'No camera permission. Please grant the camera permission from system settings.';
+      'Camera permission required. Please grant camera permission in system settings.';
 
   @override
   String get camera_screen_camera_permission_error_try_again_or_check_settings =>
-      'No camera permission. Please try again. If that will not work then grant the camera permission from system settings.';
+      'Camera permission required. Please try again. You might need to grant camera permission in system settings.';
 
   @override
-  String get camera_screen_no_front_camera_error => 'No front camera available';
+  String get camera_screen_no_front_camera_error => 'No front camera found';
 
   @override
-  String get camera_screen_take_photo_error => 'Taking photo failed';
+  String get camera_screen_take_photo_error => 'Failed to take photo';
 
   @override
   String get chat_backup_connecting => 'Connecting…';
@@ -411,7 +411,7 @@ class AppLocalizationsFi extends AppLocalizations {
   String get chat_backup_data_stream_unsupported => 'Unsupported data stream';
 
   @override
-  String get chat_backup_database_not_found => 'Database for requested account does not exist';
+  String get chat_backup_database_not_found => 'No chat data found for this account';
 
   @override
   String get chat_backup_pairing_code_invalid => 'Invalid pairing code';
@@ -424,11 +424,11 @@ class AppLocalizationsFi extends AppLocalizations {
 
   @override
   String get chat_backup_reminder_dialog_message_no_backup =>
-      'Chat backup is not yet created. Backup now?';
+      'No chat backup created yet. Back up now?';
 
   @override
   String chat_backup_reminder_dialog_message_old_backup(String p0) {
-    return 'Chat backup has not been created since $p0 days. Backup now?';
+    return 'Chat backup has not been created in $p0 days. Back up now?';
   }
 
   @override
@@ -457,26 +457,27 @@ class AppLocalizationsFi extends AppLocalizations {
   String get chat_backup_screen_import_error_unsupported_version => 'Unsupported backup version';
 
   @override
-  String get chat_backup_screen_import_error_wrong_account => 'Backup created by different account';
+  String get chat_backup_screen_import_error_wrong_account =>
+      'Backup was created by a different account';
 
   @override
   String get chat_backup_screen_title => 'Chat backup';
 
   @override
   String get chat_backup_transfer_budget_exceeded =>
-      'Yearly chat backup transfer budget exceeded. Please create a backup and transfer it manually.';
+      'Yearly transfer limit reached. Please save a backup and transfer it manually.';
 
   @override
   String get chat_data_outdated_description =>
-      'Device changed or app reinstalled. Receive chat backup from previous device?';
+      'Device changed or app reinstalled. Transfer chats from your old device?';
 
   @override
   String get chat_data_outdated_error_too_many_keys =>
-      'Maximum number of encryption keys reached. Receive backup from previous device or contact service admins.';
+      'Maximum number of encryption keys reached. Receive a backup from your old device or contact support.';
 
   @override
   String get chat_data_outdated_pending_messages_warning =>
-      'You have unread messages encrypted using your old encryption key. To read them, you should transfer chat data from your old device or import a backup containing the encryption key from Settings.\n\nIf you continue, you will not be able to read these messages. Do you want to continue?';
+      'You have unread messages encrypted with your old encryption key. To read them, transfer chat data from your previous device or restore a backup containing the encryption key.\n\nIf you continue, you will not be able to read those messages. Continue anyway?';
 
   @override
   String get chat_data_outdated_receive_backup => 'Receive backup';
@@ -485,14 +486,14 @@ class AppLocalizationsFi extends AppLocalizations {
   String get chat_data_outdated_title => 'Chat data outdated';
 
   @override
-  String get chat_list_screen_no_chats_found => 'No chats found';
+  String get chat_list_screen_no_chats_found => 'No chats yet';
 
   @override
   String get chat_list_screen_no_chats_found_description =>
-      'Spread the word about the app in social media';
+      'Spread the word about the app on social media';
 
   @override
-  String get chat_list_screen_no_matches_found => 'No accepted chat requests found';
+  String get chat_list_screen_no_matches_found => 'No accepted chat requests yet';
 
   @override
   String get chat_list_screen_open_matches_screen_action => 'Accepted chat requests';
@@ -513,7 +514,7 @@ class AppLocalizationsFi extends AppLocalizations {
 
   @override
   String content_management_screen_content_deletion_allowed_wait_time(String p0) {
-    return 'Deletion possible starting at $p0';
+    return 'Can be deleted starting at $p0';
   }
 
   @override
@@ -542,11 +543,11 @@ class AppLocalizationsFi extends AppLocalizations {
 
   @override
   String get conversation_screen_install_jitsi_meet_dialog_description_android =>
-      'Video calling requires Jitsi Meet video calling app which is not installed currently. Install the app from Google Play Store? After that, try this again.';
+      'Video calling requires the Jitsi Meet app. Would you like to install it from Google Play Store?';
 
   @override
   String get conversation_screen_install_jitsi_meet_dialog_description_ios =>
-      'Video calling requires Jitsi Meet video calling app which is not installed currently. Install the app from App Store? After that, try this again.';
+      'Video calling requires the Jitsi Meet app. Would you like to install it from the App Store?';
 
   @override
   String get conversation_screen_install_jitsi_meet_dialog_title => 'Install Jitsi Meet?';
@@ -569,11 +570,11 @@ class AppLocalizationsFi extends AppLocalizations {
 
   @override
   String get conversation_screen_message_error_is_actually_sent_successfully =>
-      'The message is actually sent successfully';
+      'This message was already sent successfully';
 
   @override
   String get conversation_screen_message_error_recipient_blocked_sender_or_recipient_not_found =>
-      'Recipient action prevented message sending';
+      'Unable to deliver message to recipient';
 
   @override
   String conversation_screen_message_info_encryption_key_changed(String p0) {
@@ -585,13 +586,13 @@ class AppLocalizationsFi extends AppLocalizations {
       'Messages are end-to-end encrypted';
 
   @override
-  String get conversation_screen_message_list_empty => 'No messages';
+  String get conversation_screen_message_list_empty => 'No messages yet';
 
   @override
   String get conversation_screen_message_not_found => 'Message not found';
 
   @override
-  String get conversation_screen_message_resend_complete => 'Resend complete';
+  String get conversation_screen_message_resend_complete => 'Resent successfully';
 
   @override
   String get conversation_screen_message_resend_confirm_title => 'Resend?';
@@ -603,14 +604,14 @@ class AppLocalizationsFi extends AppLocalizations {
 
   @override
   String get conversation_screen_message_send_requires_connection =>
-      'Try again after app connects to server';
+      'Please try again after app connects to server';
 
   @override
   String get conversation_screen_message_state_decrypting_failed => 'Decrypting failed';
 
   @override
   String get conversation_screen_message_state_decrypting_failed_detailed =>
-      'Decrypting failed. Ask resending.';
+      'Could not decrypt. Please ask the sender to resend.';
 
   @override
   String get conversation_screen_message_state_delivered => 'Delivered';
@@ -620,43 +621,42 @@ class AppLocalizationsFi extends AppLocalizations {
 
   @override
   String get conversation_screen_message_state_delivery_failed_and_resent =>
-      'Delivery failed and resent';
+      'Delivery failed, resent';
 
   @override
   String get conversation_screen_message_state_public_key_download_failed =>
-      'Public key download failed';
+      'Encryption key download failed';
 
   @override
-  String get conversation_screen_message_state_received_and_seen => 'Received and seen';
+  String get conversation_screen_message_state_received_and_seen => 'Seen';
 
   @override
-  String get conversation_screen_message_state_received_and_seen_locally =>
-      'Received and seen locally';
+  String get conversation_screen_message_state_received_and_seen_locally => 'Seen locally';
 
   @override
-  String get conversation_screen_message_state_received_successfully => 'Received successfully';
+  String get conversation_screen_message_state_received_successfully => 'Received';
 
   @override
   String get conversation_screen_message_state_seen => 'Seen';
 
   @override
-  String get conversation_screen_message_state_sending_failed => 'Sending failed';
+  String get conversation_screen_message_state_sending_failed => 'Failed to send';
 
   @override
-  String get conversation_screen_message_state_sending_in_progress => 'Sending in progress';
+  String get conversation_screen_message_state_sending_in_progress => 'Sending…';
 
   @override
-  String get conversation_screen_message_state_sent_successfully => 'Sent successfully';
+  String get conversation_screen_message_state_sent_successfully => 'Sent';
 
   @override
   String get conversation_screen_message_too_long => 'Message is too long';
 
   @override
   String get conversation_screen_message_too_many_pending_messages =>
-      'Server pending message storage is full';
+      'Too many undelivered messages';
 
   @override
-  String get conversation_screen_message_unsupported => 'Unsupported message';
+  String get conversation_screen_message_unsupported => 'Unsupported message format';
 
   @override
   String get conversation_screen_open_details_action_subtitle => 'Contains selectable text';
@@ -666,12 +666,12 @@ class AppLocalizationsFi extends AppLocalizations {
 
   @override
   String conversation_screen_remaining_conversation_messages(String p0) {
-    return 'Remaining messages for this conversation: $p0 (resets when sent messages are delivered)';
+    return 'Messages remaining for this chat: $p0 (resets once delivered)';
   }
 
   @override
   String conversation_screen_remaining_daily_messages(String p0) {
-    return 'Remaining daily messages: $p0';
+    return 'Daily messages remaining: $p0';
   }
 
   @override
@@ -685,13 +685,13 @@ class AppLocalizationsFi extends AppLocalizations {
   String get crop_image_screen_title => 'Crop image';
 
   @override
-  String get current_security_selfie_screen_security_selfie_changed => 'Security selfie changed';
+  String get current_security_selfie_screen_security_selfie_changed => 'Security selfie updated';
 
   @override
   String get current_security_selfie_screen_title => 'Security selfie';
 
   @override
-  String get data_export_screen_api_limit_error => 'Try again after 24 hours';
+  String get data_export_screen_api_limit_error => 'Daily limit reached. Try again after 24 hours.';
 
   @override
   String get data_export_screen_title_export_type_admin => 'Data export';
@@ -735,11 +735,11 @@ class AppLocalizationsFi extends AppLocalizations {
   String get edit_attribute_filter_value_screen_title => 'Edit filter';
 
   @override
-  String get edit_attribute_value_screen_max_selected_values_error => 'Too many selected values';
+  String get edit_attribute_value_screen_max_selected_values_error => 'Too many options selected';
 
   @override
   String get edit_attribute_value_screen_one_value_must_be_selected =>
-      'At least one selection is required';
+      'At least one option must be selected';
 
   @override
   String get edit_attribute_value_screen_search_placeholder_text => 'Search…';
@@ -794,7 +794,7 @@ class AppLocalizationsFi extends AppLocalizations {
 
   @override
   String get edit_profile_text_screen_text_length_too_long =>
-      'Profile text byte count is more than 2000 bytes';
+      'Profile text is too long (maximum 2000 bytes)';
 
   @override
   String get email_login_method_screen_existing_account => 'Existing account';
@@ -830,24 +830,24 @@ class AppLocalizationsFi extends AppLocalizations {
 
   @override
   String get email_login_screen_login_only_info =>
-      'Registering new accounts is unsupported using this login method';
+      'Creating a new account is not supported with this login method';
 
   @override
   String get email_login_screen_registration_all_platforms_disabled_error =>
-      'App admin has disabled registering new accounts with email address. Please use another login method.';
+      'New registrations via email are currently disabled. Please use another sign in method.';
 
   @override
   String email_login_screen_registration_domain_not_accepted_error(String p0) {
-    return 'This email domain ($p0) is not accepted for registration. Please use another email address or login method.';
+    return 'Email addresses with domain $p0 cannot be used for registration. Please use another email or sign in method.';
   }
 
   @override
   String get email_login_screen_registration_ip_address_limit_reached_error =>
-      'The daily registration limit for your IP address has been reached. Please try again after 24 hours or use another login method.';
+      'Daily registration limit for your IP address has been reached. Please try again after 24 hours or use another sign in method.';
 
   @override
   String get email_login_screen_registration_limit_reached_error =>
-      'The daily registration limit has been reached. Please try again in 24 hours or use another login method.';
+      'Daily registration limit has been reached. Please try again in 24 hours or use another sign in method.';
 
   @override
   String get email_login_screen_registration_only_info =>
@@ -855,12 +855,12 @@ class AppLocalizationsFi extends AppLocalizations {
 
   @override
   String email_login_screen_registration_platform_disabled_error(String p0) {
-    return 'App admin has disabled registering new accounts with email address on current platform ($p0). Please use another login method.';
+    return 'New registrations via email are currently disabled on this platform ($p0). Please use another sign in method.';
   }
 
   @override
   String get email_login_screen_registration_unsupported_email =>
-      'Unsupported email address. Please use another login method.';
+      'Unsupported email address. Please use another sign in method.';
 
   @override
   String get email_login_screen_send_code_button => 'Send login code';
@@ -942,10 +942,10 @@ class AppLocalizationsFi extends AppLocalizations {
   String get generic_edit => 'Edit';
 
   @override
-  String get generic_email_sending_failed => 'Email sending failed';
+  String get generic_email_sending_failed => 'Failed to send email';
 
   @override
-  String get generic_email_sending_timeout => 'Email sending timeout';
+  String get generic_email_sending_timeout => 'Email sending timed out';
 
   @override
   String get generic_empty => 'Tyhjä';
@@ -954,10 +954,11 @@ class AppLocalizationsFi extends AppLocalizations {
   String get generic_error => 'Virhe';
 
   @override
-  String get generic_error_app_version_is_unsupported => 'Current app version is unsupported';
+  String get generic_error_app_version_is_unsupported =>
+      'Current app version is no longer supported';
 
   @override
-  String get generic_error_occurred => 'Error occurred';
+  String get generic_error_occurred => 'Something went wrong';
 
   @override
   String get generic_filters => 'Filters';
@@ -1002,7 +1003,7 @@ class AppLocalizationsFi extends AppLocalizations {
   String get generic_logout_confirmation_title => 'Logout?';
 
   @override
-  String get generic_logout_failed => 'Logout failed';
+  String get generic_logout_failed => 'Failed to log out';
 
   @override
   String get generic_margin => 'Margin';
@@ -1035,7 +1036,7 @@ class AppLocalizationsFi extends AppLocalizations {
   String get generic_previous_action_in_progress => 'Previous action is still in progress';
 
   @override
-  String get generic_profile_loading_failed => 'Profile loading failed';
+  String get generic_profile_loading_failed => 'Failed to load profile';
 
   @override
   String get generic_receive => 'Receive';
@@ -1059,10 +1060,10 @@ class AppLocalizationsFi extends AppLocalizations {
   String get generic_resend => 'Resend';
 
   @override
-  String get generic_reset_to_defaults => 'Reset to default values';
+  String get generic_reset_to_defaults => 'Reset to defaults';
 
   @override
-  String get generic_reset_to_defaults_dialog_title => 'Reset to default values?';
+  String get generic_reset_to_defaults_dialog_title => 'Reset to defaults?';
 
   @override
   String get generic_restore => 'Restore';
@@ -1098,7 +1099,7 @@ class AppLocalizationsFi extends AppLocalizations {
   String get generic_take_photo => 'Take photo';
 
   @override
-  String get generic_text_field_age_hint_text => 'Insert an age between 18–99';
+  String get generic_text_field_age_hint_text => 'Enter an age between 18-99';
 
   @override
   String get generic_this_feature_is_disabled => 'This feature is disabled';
@@ -1123,7 +1124,7 @@ class AppLocalizationsFi extends AppLocalizations {
 
   @override
   String generic_try_again_later_seconds(String p0) {
-    return 'Try again after $p0 seconds';
+    return 'Try again in $p0 seconds';
   }
 
   @override
@@ -1173,37 +1174,37 @@ class AppLocalizationsFi extends AppLocalizations {
 
   @override
   String get image_processing_ui_nsfw_detected_dialog_title =>
-      'Unallowed content detected from the uploaded photo. This might be false positive detection.';
+      'Content not permitted was detected in the uploaded photo. This might be a false positive.';
 
   @override
   String get image_processing_ui_upload_content_processing_ongoing_dialog_title =>
-      'Server is processing previous image upload';
+      'Server is still processing your previous upload';
 
   @override
   String get image_processing_ui_upload_failed_dialog_title => 'Upload failed';
 
   @override
   String image_processing_ui_upload_in_processing_queue_dialog_description(String p0) {
-    return 'Waiting for processing. Queue number: $p0';
+    return 'Waiting in queue. Position: $p0';
   }
 
   @override
-  String get image_processing_ui_upload_in_progress_dialog_description => 'Uploading photo';
+  String get image_processing_ui_upload_in_progress_dialog_description => 'Uploading photo…';
 
   @override
-  String get image_processing_ui_upload_processing_ongoing_description => 'Processing ongoing';
+  String get image_processing_ui_upload_processing_ongoing_description => 'Processing photo…';
 
   @override
   String get image_processing_ui_upload_timeout_dialog_title => 'Upload timed out';
 
   @override
-  String get initial_setup_screen_age_confirmation_checkbox => 'I\'m at least 18 years old';
+  String get initial_setup_screen_age_confirmation_checkbox => 'I am at least 18 years old';
 
   @override
   String get initial_setup_screen_age_confirmation_title => 'Age confirmation';
 
   @override
-  String get initial_setup_screen_email_hint_text => 'Insert email address';
+  String get initial_setup_screen_email_hint_text => 'Enter email address';
 
   @override
   String get initial_setup_screen_email_title => 'My email address is…';
@@ -1214,18 +1215,18 @@ class AppLocalizationsFi extends AppLocalizations {
 
   @override
   String get initial_setup_screen_first_chat_backup_description =>
-      'Chats are stored on this device only, so regular backups are recommended. Let\'s save the first backup.\n\nIf you have cloud storage, it is recommended to save the backup there.';
+      'Chats are stored on this device only, so regular backups are recommended. Let\'s save your first backup.\n\nIf you use cloud storage, saving the backup there is recommended.';
 
   @override
   String get initial_setup_screen_first_chat_backup_save_backup_button => 'Save chat backup';
 
   @override
   String get initial_setup_screen_first_chat_backup_security_info =>
-      'The backup contains your message encryption key. Keep it accessible in case you lose your device, unless you are willing to ask others to resend their undelivered messages to you.';
+      'The backup contains your encryption key. Keep it safe in case you lose your device, so you can read all message sent to you.';
 
   @override
   String get initial_setup_screen_first_chat_backup_skip_warning =>
-      'Uninstalling the app will delete your chats and encryption key. Without the key, you won\'t be able to read messages encrypted using the key.\n\nYour chat backup contains the encryption key — do you want to skip creating a backup?';
+      'Uninstalling the app will delete your chats and encryption key. Without the key, you will not be able to read messages sent to you.\n\nAre you sure you want to skip creating a backup?';
 
   @override
   String get initial_setup_screen_first_chat_backup_title => 'First chat backup';
@@ -1235,98 +1236,98 @@ class AppLocalizationsFi extends AppLocalizations {
 
   @override
   String get initial_setup_screen_location_help_dialog_text =>
-      'Select a location for your profile by tapping or long pressing the map.';
+      'Tap or hold on the map to set your location.';
 
   @override
-  String get initial_setup_screen_location_title => 'My profile\'s location is…';
+  String get initial_setup_screen_location_title => 'My location is…';
 
   @override
   String get initial_setup_screen_profile_basic_info_profile_name_hint_text =>
-      'Insert your first name';
+      'Enter your first name';
 
   @override
   String get initial_setup_screen_profile_basic_info_profile_name_title => 'First name';
 
   @override
-  String get initial_setup_screen_profile_basic_info_title => 'My profile has this info…';
+  String get initial_setup_screen_profile_basic_info_title => 'About me…';
 
   @override
   String get initial_setup_screen_profile_pictures_file_size_too_large_error =>
-      'Selected image is over 10 MiB';
+      'Image is too large (maximum size is 10 MiB)';
 
   @override
   String get initial_setup_screen_profile_pictures_primary_image_face_not_detected =>
-      'Face is not detected. Please select another picture.';
+      'No face detected. Please select a photo that clearly shows your face.';
 
   @override
   String get initial_setup_screen_profile_pictures_primary_image_info_dialog_description =>
-      'Adding at least of one profile image is required. The first profile image must be a face picture. The square shaped crop of the first profile image is displayed in profile grid and some other places in the app.';
+      'At least one profile picture is required. Your first picture must show your face clearly, and its square crop will be shown in profile grids.';
 
   @override
-  String get initial_setup_screen_profile_pictures_select_picture_dialog_title => 'Select picture…';
+  String get initial_setup_screen_profile_pictures_select_picture_dialog_title => 'Choose photo…';
 
   @override
   String get initial_setup_screen_profile_pictures_select_picture_from_gallery_title =>
-      'From gallery';
+      'Choose from gallery';
 
   @override
   String get initial_setup_screen_profile_pictures_select_picture_security_selfie_title =>
-      'Security selfie';
+      'Use security selfie';
 
   @override
   String get initial_setup_screen_profile_pictures_select_picture_take_new_picture_title =>
-      'Take new photo';
+      'Take photo';
 
   @override
   String get initial_setup_screen_profile_pictures_title => 'My profile pictures are…';
 
   @override
   String get initial_setup_screen_profile_pictures_unsupported_image_error =>
-      'Selected image is not a JPEG or PNG image';
+      'Unsupported image format. Please select a JPEG or PNG image.';
 
   @override
   String get initial_setup_screen_profile_privacy_settings_title => 'Profile privacy';
 
   @override
   String get initial_setup_screen_refresh_face_detected_values_action =>
-      'Refresh face detection statuses';
+      'Refresh face detection status';
 
   @override
-  String get initial_setup_screen_search_settings_max_age_subtitle => '…with max age…';
+  String get initial_setup_screen_search_settings_max_age_subtitle => '…maximum age…';
 
   @override
-  String get initial_setup_screen_search_settings_min_age_subtitle => '…with min age…';
+  String get initial_setup_screen_search_settings_min_age_subtitle => '…minimum age…';
 
   @override
-  String get initial_setup_screen_search_settings_title => 'I am searching for…';
+  String get initial_setup_screen_search_settings_title => 'I am looking for…';
 
   @override
   String get initial_setup_screen_security_selfie_description =>
-      'Take selfie with your phone\'s front camera. The selfie is used for moderating your profile images and by default it is only visible to content Moderators.';
+      'Take a selfie with your front camera. This selfie is used to verify your profile pictures and is only visible to moderators unless you add it to your profile later.';
 
   @override
   String get initial_setup_screen_security_selfie_face_not_detected =>
-      'Face is not detected. Please try again several times and if necessary ask customer support to do manual face detection.';
+      'Face not detected. Please try again with clear lighting, or contact support for help.';
 
   @override
   String get initial_setup_screen_security_selfie_title => 'My security selfie is…';
 
   @override
   String get initial_setup_screen_skip_dialog_description =>
-      'Use this only if you will have some admin rights to the service.';
+      'Skip profile setup only if you will have administrator rights on the service.';
 
   @override
-  String get initial_setup_screen_skip_dialog_title => 'Skip account initial setup?';
+  String get initial_setup_screen_skip_dialog_title => 'Skip profile setup?';
 
   @override
-  String get likes_screen_like_loading_failed => 'Chat request loading failed';
+  String get likes_screen_like_loading_failed => 'Failed to load chat requests';
 
   @override
   String get likes_screen_no_received_likes_found => 'No received chat requests';
 
   @override
   String get likes_screen_no_received_likes_found_description =>
-      'Spread the word about the app in social media';
+      'Spread the word about the app on social media';
 
   @override
   String get likes_screen_refresh_action => 'Refresh';
@@ -1335,12 +1336,10 @@ class AppLocalizationsFi extends AppLocalizations {
   String get likes_screen_title => 'Pyynnöt';
 
   @override
-  String get login_screen_app_attestation_app_integrity_error =>
-      'App integrity verification failed';
+  String get login_screen_app_attestation_app_integrity_error => 'App integrity check failed';
 
   @override
-  String get login_screen_app_attestation_device_integrity_error =>
-      'Device integrity verification failed';
+  String get login_screen_app_attestation_device_integrity_error => 'Device integrity check failed';
 
   @override
   String get login_screen_app_attestation_failed =>
@@ -1348,7 +1347,7 @@ class AppLocalizationsFi extends AppLocalizations {
 
   @override
   String get login_screen_connecting_websocket_failed =>
-      'Connecting WebSocket failed. Try again later.';
+      'Failed to connect to server. Please try again later.';
 
   @override
   String get login_screen_demo_account_dialog_description =>
@@ -1411,10 +1410,11 @@ class AppLocalizationsFi extends AppLocalizations {
   String get login_screen_ios_pwa_install_video_instructions_button => 'Video instructions';
 
   @override
-  String get login_screen_login_all_platforms_disabled => 'App admin has disabled login';
+  String get login_screen_login_all_platforms_disabled => 'Login is currently disabled';
 
   @override
-  String get login_screen_login_api_request_failed => 'Login API request failed. Try again later.';
+  String get login_screen_login_api_request_failed =>
+      'Login request failed. Please try again later.';
 
   @override
   String get login_screen_login_note_text_and => 'and';
@@ -1430,45 +1430,44 @@ class AppLocalizationsFi extends AppLocalizations {
 
   @override
   String login_screen_login_platform_disabled(String p0) {
-    return 'App admin has disabled login on current platform ($p0)';
+    return 'Login is currently disabled on this platform ($p0)';
   }
 
   @override
   String get login_screen_registration_all_platforms_disabled =>
-      'App admin has disabled registering new accounts';
+      'New registrations are currently disabled';
 
   @override
   String login_screen_registration_platform_disabled(String p0) {
-    return 'App admin has disabled registering new accounts on current platform ($p0)';
+    return 'New registrations are currently disabled on this platform ($p0)';
   }
 
   @override
-  String get login_screen_sign_in_with_email_action => 'Sign in with email address';
+  String get login_screen_sign_in_with_email_action => 'Sign in with email';
 
   @override
-  String get login_screen_sign_in_with_email_unverified =>
-      'Email address of the selected account is not verified';
+  String get login_screen_sign_in_with_email_unverified => 'Email address is not verified';
 
   @override
-  String get login_screen_sign_in_with_error => 'Sign in with failed';
+  String get login_screen_sign_in_with_error => 'Sign in failed';
 
   @override
-  String get map_location_update_failed => 'Location update failed';
+  String get map_location_update_failed => 'Failed to update location';
 
   @override
-  String get map_location_update_successful => 'Location update successful';
+  String get map_location_update_successful => 'Location updated';
 
   @override
   String get map_openstreetmap_data_attribution_link_text => 'OpenStreetMap contributors';
 
   @override
-  String get map_select_location_help_text => 'Tap or long press the map to select a location.';
+  String get map_select_location_help_text => 'Tap or hold on the map to choose a location.';
 
   @override
-  String get map_tile_error => 'Map tile error';
+  String get map_tile_error => 'Failed to load map';
 
   @override
-  String get menu_screen_admin_offline_title => 'Automatic moderation is not working currently';
+  String get menu_screen_admin_offline_title => 'Automatic moderation is temporarily unavailable';
 
   @override
   String get menu_screen_help_center_title => 'Help center';
@@ -1513,13 +1512,13 @@ class AppLocalizationsFi extends AppLocalizations {
   String get news_list_screen_create_new => 'Create new?';
 
   @override
-  String get news_list_screen_news_loading_failed => 'News loading failed';
+  String get news_list_screen_news_loading_failed => 'Failed to load news';
 
   @override
-  String get news_list_screen_no_news_found => 'No news found';
+  String get news_list_screen_no_news_found => 'No news available';
 
   @override
-  String get news_list_screen_not_published => 'Not published';
+  String get news_list_screen_not_published => 'Draft';
 
   @override
   String get news_list_screen_title => 'News';
@@ -1574,7 +1573,7 @@ class AppLocalizationsFi extends AppLocalizations {
 
   @override
   String get notification_media_content_deleted_description =>
-      'Unallowed content was detected from the image. This might be false positive detection.';
+      'Content not permitted was detected in your image. This might be a false positive.';
 
   @override
   String get notification_media_content_rejected => 'Image rejected';
@@ -1600,7 +1599,7 @@ class AppLocalizationsFi extends AppLocalizations {
 
   @override
   String get notification_permission_dialog_description =>
-      'Allow notifications to receive notifications for example from new chat requests and messages.';
+      'Allow notifications to get alerts for new chat requests and messages for example.';
 
   @override
   String get notification_permission_dialog_title => 'Allow notifications?';
@@ -1619,16 +1618,16 @@ class AppLocalizationsFi extends AppLocalizations {
 
   @override
   String get notification_settings_screen_ios_pwa_permission_denied =>
-      'Permission not granted. Try again or grant permission from iOS system settings.';
+      'Permission denied. Try again or enable notifications in iOS settings.';
 
   @override
   String
   get notification_settings_screen_notification_category_disabled_from_system_settings_text =>
-      'Disabled from system notification settings';
+      'Disabled in system settings';
 
   @override
   String get notification_settings_screen_notifications_disabled_from_system_settings_text =>
-      'Notifications are disabled from system notification settings';
+      'Notifications are disabled in system settings';
 
   @override
   String get notification_settings_screen_open_system_notification_settings =>
@@ -1639,11 +1638,11 @@ class AppLocalizationsFi extends AppLocalizations {
 
   @override
   String get notification_settings_screen_web_permission_denied =>
-      'Permission not granted. Try again or grant permission from browser settings.';
+      'Permission denied. Try again or enable notifications in browser settings.';
 
   @override
   String get notification_settings_screen_web_permission_not_enabled =>
-      'Notification permission is not enabled';
+      'Notifications are not enabled';
 
   @override
   String get notification_settings_screen_web_request_permission => 'Enable notifications';
@@ -1701,10 +1700,10 @@ class AppLocalizationsFi extends AppLocalizations {
       'Let others see when you\'re typing';
 
   @override
-  String get profile_filters_screen_disable_filters_action => 'Disable filters';
+  String get profile_filters_screen_disable_filters_action => 'Reset filters';
 
   @override
-  String get profile_filters_screen_disable_filters_action_dialog_title => 'Disable filters?';
+  String get profile_filters_screen_disable_filters_action_dialog_title => 'Reset filters?';
 
   @override
   String get profile_filters_screen_distance_filter => 'Distance';
@@ -1755,7 +1754,7 @@ class AppLocalizationsFi extends AppLocalizations {
 
   @override
   String get profile_filters_screen_profile_verification_requires_verified_account =>
-      'Using this filter requires verified account';
+      'Using this filter requires a verified account';
 
   @override
   String get profile_filters_screen_profile_verification_status_filter => 'Profile verification';
@@ -1817,7 +1816,7 @@ class AppLocalizationsFi extends AppLocalizations {
   }
 
   @override
-  String get profile_filters_screen_updating_filters_failed => 'Updating profile filters failed';
+  String get profile_filters_screen_updating_filters_failed => 'Failed to update filters';
 
   @override
   String get profile_grid_screen_account_verification_banner_button => 'Verify now';
@@ -1847,60 +1846,58 @@ class AppLocalizationsFi extends AppLocalizations {
 
   @override
   String get profile_grid_screen_filtering_favorite_profiles_is_not_supported =>
-      'Filtering favorite profiles is not supported';
+      'Filtering favorites is not supported';
 
   @override
   String get profile_grid_screen_no_favorite_profiles_found_description =>
-      'Mark a profile as a favorite to add it here.';
+      'Star a profile to save it here.';
 
   @override
-  String get profile_grid_screen_no_favorite_profiles_found_title => 'No favorite profiles found';
+  String get profile_grid_screen_no_favorite_profiles_found_title => 'No favorites yet';
 
   @override
   String get profile_grid_screen_no_profiles_found_description_filters_disabled =>
-      'Spread the word about the app in social media';
+      'Spread the word about the app on social media';
 
   @override
   String get profile_grid_screen_no_profiles_found_description_filters_enabled =>
-      'Change or disable filters';
+      'Try adjusting or clearing your filters';
 
   @override
   String get profile_grid_screen_no_profiles_found_title => 'No profiles found';
 
   @override
   String get profile_grid_screen_primary_profile_content_does_not_exist =>
-      'First profile picture does not exist';
+      'First profile picture missing';
 
   @override
   String get profile_grid_screen_primary_profile_content_face_not_detected =>
-      'Face is not detected from first profile picture';
+      'Face not detected in first profile picture';
 
   @override
   String get profile_grid_screen_primary_profile_content_is_in_moderation =>
-      'You can view profiles and others can see your profile after the first profile picture is moderated';
+      'You will be able to browse and be seen once your first profile picture is approved';
 
   @override
   String get profile_grid_screen_primary_profile_content_is_not_accepted =>
-      'First profile picture is not accepted';
+      'First profile picture not approved';
 
   @override
   String get profile_grid_screen_profile_filter_settings_update_ongoing => 'Updating filters…';
 
   @override
   String get profile_grid_screen_profile_is_private_info =>
-      'To view profiles, set your profile visibility to public from app settings.';
+      'To browse profiles, make your profile public in Settings.';
 
   @override
-  String get profile_grid_screen_security_content_does_not_exist =>
-      'Security selfie does not exist';
+  String get profile_grid_screen_security_content_does_not_exist => 'Security selfie missing';
 
   @override
   String get profile_grid_screen_security_content_face_not_detected =>
-      'Face is not detected from security selfie';
+      'Face not detected in security selfie';
 
   @override
-  String get profile_grid_screen_security_content_is_not_accepted =>
-      'Security selfie is not accepted';
+  String get profile_grid_screen_security_content_is_not_accepted => 'Security selfie not approved';
 
   @override
   String profile_grid_screen_selected_age_range(String p0) {
@@ -1911,10 +1908,10 @@ class AppLocalizationsFi extends AppLocalizations {
   String get profile_grid_screen_show_all_profiles_action => 'Show all profiles';
 
   @override
-  String get profile_grid_screen_show_favorite_profiles_action => 'Show favorite profiles';
+  String get profile_grid_screen_show_favorite_profiles_action => 'Show favorites';
 
   @override
-  String get profile_grid_screen_start_initial_setup_button => 'Start account initial setup';
+  String get profile_grid_screen_start_initial_setup_button => 'Set up profile';
 
   @override
   String get profile_grid_screen_title => 'Profiles';
@@ -1961,14 +1958,13 @@ class AppLocalizationsFi extends AppLocalizations {
   String get profile_grid_settings_screen_title => 'Profile grid';
 
   @override
-  String get profile_image_error_image_not_accepted =>
-      'Profile image is not accepted by moderators';
+  String get profile_image_error_image_not_accepted => 'Profile picture has not been approved';
 
   @override
   String get profile_image_error_no_image => 'No profile image';
 
   @override
-  String get profile_image_error_no_primary_image => 'No primary profile image';
+  String get profile_image_error_no_primary_image => 'Primary profile picture missing';
 
   @override
   String get profile_location_screen_title => 'Location';
@@ -1983,7 +1979,7 @@ class AppLocalizationsFi extends AppLocalizations {
   String get receive_chat_backup_importing => 'Importing backup…';
 
   @override
-  String get receive_chat_backup_pairing_code_instruction => 'On the source device:';
+  String get receive_chat_backup_pairing_code_instruction => 'On the other device:';
 
   @override
   String receive_chat_backup_pairing_code_step1(String p0) {
@@ -1992,17 +1988,16 @@ class AppLocalizationsFi extends AppLocalizations {
 
   @override
   String get receive_chat_backup_pairing_code_step2 =>
-      '2. Logout from settings if login screen is not visible';
+      '2. Log out from Settings if the login screen is not visible';
 
   @override
-  String get receive_chat_backup_pairing_code_step3 =>
-      '3. Tap the three dots in the top right corner';
+  String get receive_chat_backup_pairing_code_step3 => '3. Tap the menu in the top right corner';
 
   @override
   String get receive_chat_backup_pairing_code_step4 => '4. Select \"Send chat backup\"';
 
   @override
-  String get receive_chat_backup_pairing_code_step5 => '5. Scan the QR code and start transfer';
+  String get receive_chat_backup_pairing_code_step5 => '5. Scan this QR code to start transfer';
 
   @override
   String get receive_chat_backup_screen_title => 'Receive chat backup';
@@ -2017,7 +2012,7 @@ class AppLocalizationsFi extends AppLocalizations {
   String get receive_chat_backup_transferring => 'Receiving backup…';
 
   @override
-  String get receive_chat_backup_waiting_for_source => 'Waiting for source device';
+  String get receive_chat_backup_waiting_for_source => 'Waiting for other device…';
 
   @override
   String report_chat_message_screen_selection_status_count(String p0, String p1) {
@@ -2025,11 +2020,11 @@ class AppLocalizationsFi extends AppLocalizations {
   }
 
   @override
-  String get report_chat_message_screen_selection_status_none => 'Select max 10 messages';
+  String get report_chat_message_screen_selection_status_none => 'Select up to 10 messages';
 
   @override
   String get report_chat_message_screen_server_signed_message_not_found =>
-      'Server signed message not found';
+      'Server-signed message not found';
 
   @override
   String get report_chat_message_screen_symmetric_message_encryption_key_not_found =>
@@ -2045,18 +2040,19 @@ class AppLocalizationsFi extends AppLocalizations {
 
   @override
   String get report_profile_image_screen_profile_image_changed_error =>
-      'Report failed. Profile image has changed.';
+      'Report failed: profile image has changed';
 
   @override
   String get report_screen_chat_message_action => 'Chat message';
 
   @override
   String report_screen_custom_report_boolean_dialog_description(String p0) {
-    return 'Report user as \'$p0\'?';
+    return 'Report user for \"$p0\"?';
   }
 
   @override
-  String get report_screen_false_reports_warning => 'False reports may result in a ban';
+  String get report_screen_false_reports_warning =>
+      'Submitting false reports may result in account suspension';
 
   @override
   String get report_screen_profile_image_action => 'Profile image';
@@ -2065,7 +2061,7 @@ class AppLocalizationsFi extends AppLocalizations {
   String get report_screen_profile_name_action => 'Profile name';
 
   @override
-  String get report_screen_profile_name_changed_error => 'Report failed. Profile name has changed.';
+  String get report_screen_profile_name_changed_error => 'Report failed: profile name has changed';
 
   @override
   String get report_screen_profile_name_dialog_title => 'Report profile name?';
@@ -2074,22 +2070,23 @@ class AppLocalizationsFi extends AppLocalizations {
   String get report_screen_profile_text_action => 'Profile text';
 
   @override
-  String get report_screen_profile_text_changed_error => 'Report failed. Profile text has changed.';
+  String get report_screen_profile_text_changed_error => 'Report failed: profile text has changed';
 
   @override
   String get report_screen_profile_text_dialog_title => 'Report profile text?';
 
   @override
-  String get report_screen_snackbar_report_successful => 'Reported';
+  String get report_screen_snackbar_report_successful => 'Report submitted';
 
   @override
-  String get report_screen_snackbar_too_many_reports_error => 'Report failed. Too many reports.';
+  String get report_screen_snackbar_too_many_reports_error =>
+      'Too many reports submitted. Please try again later.';
 
   @override
-  String get scan_pairing_code_instruction => 'Point your camera at the QR code';
+  String get scan_pairing_code_instruction => 'Point camera at QR code';
 
   @override
-  String get scan_pairing_code_screen_title => 'Scan QR Code';
+  String get scan_pairing_code_screen_title => 'Scan QR code';
 
   @override
   String get search_settings_screen_automatic_search => 'New and updated profiles';
@@ -2111,14 +2108,14 @@ class AppLocalizationsFi extends AppLocalizations {
       'Gender filter is not selected';
 
   @override
-  String get search_settings_screen_gender_is_not_selected => 'Your gender information is not set';
+  String get search_settings_screen_gender_is_not_selected => 'Your gender is not set';
 
   @override
   String get search_settings_screen_new_profiles => 'Hide updated profiles';
 
   @override
   String get search_settings_screen_search_settings_update_failed =>
-      'Updating search settings failed';
+      'Failed to update search settings';
 
   @override
   String get search_settings_screen_title => 'Profile search';
@@ -2147,7 +2144,7 @@ class AppLocalizationsFi extends AppLocalizations {
   String get send_chat_backup_idle => 'Ready to send backup';
 
   @override
-  String get send_chat_backup_pairing_code_hint => 'Enter code from receiving device';
+  String get send_chat_backup_pairing_code_hint => 'Enter pairing code from receiving device';
 
   @override
   String get send_chat_backup_scan_qr_button => 'Scan QR code';
@@ -2238,11 +2235,11 @@ class AppLocalizationsFi extends AppLocalizations {
   String get sign_in_with_management_screen_google_unlink_confirm_title => 'Unlink Google account?';
 
   @override
-  String get sign_in_with_management_screen_link_failed => 'Linking sign in method failed';
+  String get sign_in_with_management_screen_link_failed => 'Failed to link sign in method';
 
   @override
   String sign_in_with_management_screen_link_history_limit_reached(String p0) {
-    return 'Sign in method history limit reached. Try again after $p0.';
+    return 'Sign in method change limit reached. Try again after $p0.';
   }
 
   @override
@@ -2253,19 +2250,19 @@ class AppLocalizationsFi extends AppLocalizations {
   String get sign_in_with_management_screen_title => 'Sign in methods';
 
   @override
-  String get sign_in_with_management_screen_unlink_failed => 'Unlinking sign in method failed';
+  String get sign_in_with_management_screen_unlink_failed => 'Failed to unlink sign in method';
 
   @override
-  String get snackbar_api_forbidden_request => 'API error: forbidden request';
+  String get snackbar_api_forbidden_request => 'Action not allowed';
 
   @override
-  String get snackbar_api_usage_limit_reached => 'API usage limit is reached. Try again tomorrow.';
+  String get snackbar_api_usage_limit_reached => 'Daily limit reached. Please try again tomorrow.';
 
   @override
-  String get snackbar_error_api => 'API error';
+  String get snackbar_error_api => 'API request failed';
 
   @override
-  String get snackbar_error_api_timeout => 'API timeout';
+  String get snackbar_error_api_timeout => 'API request timed out';
 
   @override
   String get snackbar_error_database => 'Database error';
@@ -2274,15 +2271,15 @@ class AppLocalizationsFi extends AppLocalizations {
   String get snackbar_error_file => 'File error';
 
   @override
-  String get snackbar_error_logic => 'Logic error';
+  String get snackbar_error_logic => 'Unexpected error';
 
   @override
   String get snackbar_image_quality_degraded =>
-      'Many users are viewing profiles - image quality may be degraded';
+      'Many users are viewing profiles - image quality may be temporarily reduced';
 
   @override
   String snackbar_play_integrity_api_error(String p0) {
-    return 'Play Integrity API error: $p0';
+    return 'App verification error: $p0';
   }
 
   @override
@@ -2290,7 +2287,7 @@ class AppLocalizationsFi extends AppLocalizations {
 
   @override
   String get splash_screen_app_version_downgrade_detected =>
-      'Warning: app version downgrade detected. Please use latest app version if possible.';
+      'Warning: App version downgrade detected. Please use the latest app version.';
 
   @override
   String statistics_screen_age_range(String p0) {
@@ -2360,7 +2357,7 @@ class AppLocalizationsFi extends AppLocalizations {
 
   @override
   String get unsupported_client_screen_info =>
-      'Current app version is not supported. Please update the app.';
+      'This app version is no longer supported. Please update to the latest version.';
 
   @override
   String get unsupported_client_screen_title => 'App update required';
@@ -2373,7 +2370,7 @@ class AppLocalizationsFi extends AppLocalizations {
 
   @override
   String get video_call_tip_dialog_description =>
-      'You can send video call invitation using video call button at top right corner of the screen.';
+      'You can send a video call invitation using the video call icon at the top right of the chat.';
 
   @override
   String get video_call_tip_dialog_title => 'Like video calls?';
@@ -2399,11 +2396,11 @@ class AppLocalizationsFi extends AppLocalizations {
 
   @override
   String get view_profile_screen_add_to_favorites_error_too_many_favorites =>
-      'Too many favorite profiles';
+      'Favorites list is full';
 
   @override
   String view_profile_screen_add_to_favorites_remaining_space(String p0) {
-    return 'Remaining space in favorite profiles: $p0';
+    return 'Remaining favorite slots: $p0';
   }
 
   @override
@@ -2439,14 +2436,13 @@ class AppLocalizationsFi extends AppLocalizations {
 
   @override
   String get view_profile_screen_like_action_try_again_tomorrow =>
-      'No daily chat requests left. Try again tomorrow.';
+      'No chat requests left today. Try again tomorrow.';
 
   @override
   String get view_profile_screen_my_profile_edit_action => 'Edit profile';
 
   @override
-  String get view_profile_screen_my_profile_initial_setup_not_done =>
-      'Dating profile is not created';
+  String get view_profile_screen_my_profile_initial_setup_not_done => 'Profile is not set up yet';
 
   @override
   String get view_profile_screen_my_profile_title => 'My profile';
@@ -2474,11 +2470,11 @@ class AppLocalizationsFi extends AppLocalizations {
   String get view_profile_screen_profile_currently_online => 'Online';
 
   @override
-  String get view_profile_screen_profile_edit_failed => 'Profile editing failed';
+  String get view_profile_screen_profile_edit_failed => 'Failed to save profile';
 
   @override
   String view_profile_screen_profile_image_does_not_exist(String p0) {
-    return 'Profile image $p0 does not exist';
+    return 'Profile picture $p0 does not exist';
   }
 
   @override
@@ -2523,7 +2519,7 @@ class AppLocalizationsFi extends AppLocalizations {
 
   @override
   String get view_profile_screen_profile_verification_requires_verified_account =>
-      'Viewing this info requires verified account';
+      'Viewing this info requires a verified account';
 
   @override
   String get view_profile_screen_remove_from_favorites_action => 'Remove from favorites';

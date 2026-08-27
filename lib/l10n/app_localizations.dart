@@ -139,31 +139,31 @@ abstract class AppLocalizations {
   /// Text for account ban reason
   ///
   /// In en, this message translates to:
-  /// **'Ban reason: {p0}'**
+  /// **'Reason: {p0}'**
   String account_banned_screen_ban_reason(String p0);
 
   /// Text for account ban reason category
   ///
   /// In en, this message translates to:
-  /// **'Ban reason category: {p0}'**
+  /// **'Category: {p0}'**
   String account_banned_screen_ban_reason_category(String p0);
 
   /// Time when account unban process will begin
   ///
   /// In en, this message translates to:
-  /// **'Account automatic unban process begins at {p0}'**
+  /// **'Suspension ending will begin at {p0}'**
   String account_banned_screen_time_text(String p0);
 
   /// Title for account banned screen
   ///
   /// In en, this message translates to:
-  /// **'Account banned'**
+  /// **'Account suspended'**
   String get account_banned_screen_title;
 
   /// Time when account deletion process will begin
   ///
   /// In en, this message translates to:
-  /// **'Account automatic deletion process begins at {p0}'**
+  /// **'Account deletion will begin at {p0}'**
   String account_deletion_pending_screen_time_text(String p0);
 
   /// Title for account deletion pending screen
@@ -217,7 +217,7 @@ abstract class AppLocalizations {
   /// Snackbar text about delete account action failure
   ///
   /// In en, this message translates to:
-  /// **'Requesting account deletion failed'**
+  /// **'Failed to request account deletion'**
   String get account_settings_screen_delete_account_action_error;
 
   /// Title for delete account confirm dialog title
@@ -235,13 +235,13 @@ abstract class AppLocalizations {
   /// Snackbar text when email change history limit is reached, with formatted wait time
   ///
   /// In en, this message translates to:
-  /// **'Email change history limit reached. Try again after {p0}.'**
+  /// **'Email change limit reached. Try again after {p0}.'**
   String account_settings_screen_email_change_history_limit_reached(String p0);
 
   /// Snackbar text for successful email change initiation
   ///
   /// In en, this message translates to:
-  /// **'Email change initiated. Please check your email.'**
+  /// **'Email change initiated. Please check your inbox.'**
   String get account_settings_screen_email_change_initiated;
 
   /// Text for not verified email status
@@ -301,7 +301,7 @@ abstract class AppLocalizations {
   /// Snackbar text for successful email verification sending
   ///
   /// In en, this message translates to:
-  /// **'Verification email sent successfully'**
+  /// **'Verification email sent'**
   String get account_settings_screen_send_verification_email_sent_successfully;
 
   /// Title for account settings
@@ -319,13 +319,13 @@ abstract class AppLocalizations {
   /// Account verification error: profile age range verification failed
   ///
   /// In en, this message translates to:
-  /// **'Profile age verification failed'**
+  /// **'Age verification failed'**
   String get account_verification_screen_error_profile_age_range_verification_failed;
 
   /// Account verification error: verified profile age range mismatch
   ///
   /// In en, this message translates to:
-  /// **'Provided age does not match your profile age'**
+  /// **'Verified age does not match your profile age'**
   String get account_verification_screen_error_profile_age_range_verification_mismatch;
 
   /// Account verification error: profile name changed during verification
@@ -337,13 +337,13 @@ abstract class AppLocalizations {
   /// Account verification error: profile name verification failed
   ///
   /// In en, this message translates to:
-  /// **'Profile name verification failed'**
+  /// **'Name verification failed'**
   String get account_verification_screen_error_profile_name_verification_failed;
 
   /// Account verification error: verified profile name mismatch
   ///
   /// In en, this message translates to:
-  /// **'Provided name does not match your profile name'**
+  /// **'Verified name does not match your profile name'**
   String get account_verification_screen_error_profile_name_verification_mismatch;
 
   /// Account verification error: security content changed during verification
@@ -361,25 +361,25 @@ abstract class AppLocalizations {
   /// Account verification error: verified security content mismatch
   ///
   /// In en, this message translates to:
-  /// **'Provided image does not match your security selfie'**
+  /// **'Verified photo does not match your security selfie'**
   String get account_verification_screen_error_security_content_verification_mismatch;
 
   /// Account verification error: verification data parsing failed
   ///
   /// In en, this message translates to:
-  /// **'Unsupported person identification data'**
+  /// **'Invalid identification data'**
   String get account_verification_screen_error_verification_data_parsing_failed;
 
   /// Account verification error: verification data verification failed
   ///
   /// In en, this message translates to:
-  /// **'Verifying person identification data failed'**
+  /// **'Identity verification failed'**
   String get account_verification_screen_error_verification_data_verification_failed;
 
   /// Account verification error: verification method is not configured
   ///
   /// In en, this message translates to:
-  /// **'App admin has not configured this verification method'**
+  /// **'This verification method is not configured'**
   String get account_verification_screen_error_verification_method_not_configured;
 
   /// Title shown above previous account verification errors
@@ -409,13 +409,13 @@ abstract class AppLocalizations {
   /// Snackbar text when account verification fails because initial setup is not completed
   ///
   /// In en, this message translates to:
-  /// **'Dating profile not created'**
+  /// **'Profile is not set up yet'**
   String get account_verification_screen_request_initial_setup_not_completed;
 
   /// Snackbar text when account verification queue is full
   ///
   /// In en, this message translates to:
-  /// **'Account verification queue is full. Please try again later.'**
+  /// **'Verification queue is full. Please try again later.'**
   String get account_verification_screen_request_queue_full;
 
   /// Checkbox label for account verification profile age scope
@@ -451,7 +451,7 @@ abstract class AppLocalizations {
   /// Account verification method label for eudi when it is not yet supported
   ///
   /// In en, this message translates to:
-  /// **'EUDI wallet (current app version does not support this method)'**
+  /// **'EUDI wallet (not supported in this version)'**
   String get account_verification_screen_verification_method_eudi_unsupported;
 
   /// Title for admin settings screen
@@ -487,25 +487,25 @@ abstract class AppLocalizations {
   /// Age verification error: age is already verified
   ///
   /// In en, this message translates to:
-  /// **'Age already verified'**
+  /// **'Age is already verified'**
   String get age_verification_screen_error_age_already_verified;
 
   /// Age verification error: age is under 18
   ///
   /// In en, this message translates to:
-  /// **'Age is under 18'**
+  /// **'Must be 18 or older'**
   String get age_verification_screen_error_age_under_18;
 
   /// Age verification error: verification data parsing failed
   ///
   /// In en, this message translates to:
-  /// **'Unsupported person identification data'**
+  /// **'Invalid identification data'**
   String get age_verification_screen_error_verification_data_parsing_failed;
 
   /// Age verification error: verification data verification failed
   ///
   /// In en, this message translates to:
-  /// **'Verifying person identification data failed'**
+  /// **'Identity verification failed'**
   String get age_verification_screen_error_verification_data_verification_failed;
 
   /// Age verification error: verification method is not configured
@@ -529,7 +529,7 @@ abstract class AppLocalizations {
   /// Age verification method label for eudi when it is not yet supported
   ///
   /// In en, this message translates to:
-  /// **'EUDI wallet (current app version does not support this method)'**
+  /// **'EUDI wallet (not supported in this version)'**
   String get age_verification_screen_verification_method_eudi_unsupported;
 
   /// Title for app bar action which opens about dialog
@@ -565,19 +565,19 @@ abstract class AppLocalizations {
   /// Description text for app update available dialog when update action is not available
   ///
   /// In en, this message translates to:
-  /// **'New app version available. Please update the app.'**
+  /// **'A new version is available. Please update the app.'**
   String get app_update_available_dialog_description_manual_update;
 
   /// Description text for app update available dialog when update action is available
   ///
   /// In en, this message translates to:
-  /// **'New app version available. Update now?'**
+  /// **'A new version is available. Update now?'**
   String get app_update_available_dialog_description_update_now;
 
   /// Description text for app update available dialog on web
   ///
   /// In en, this message translates to:
-  /// **'New app version available. Restart the app.'**
+  /// **'A new version is available. Restart the app to update.'**
   String get app_update_available_dialog_description_web_restart;
 
   /// Title for current membership info section
@@ -631,7 +631,7 @@ abstract class AppLocalizations {
   /// Info box text shown below an attribute which is deprecated. %s is the attribute name
   ///
   /// In en, this message translates to:
-  /// **'\"{p0}\" is deprecated and it disappears once you disable it'**
+  /// **'\"{p0}\" is deprecated and will disappear once unselected'**
   String attribute_deprecated_info(String p0);
 
   /// Info box text shown below an attribute which is partially hidden from other users. %s is the attribute name
@@ -691,7 +691,7 @@ abstract class AppLocalizations {
   /// Snackbar text displayed when profile unblocking failed
   ///
   /// In en, this message translates to:
-  /// **'Unblock failed'**
+  /// **'Failed to unblock profile'**
   String get blocked_profiles_screen_unblock_profile_failed;
 
   /// Snackbar text displayed when profile unblocking failed
@@ -703,55 +703,55 @@ abstract class AppLocalizations {
   /// Snackbar text displayed when profile unblocking was successful
   ///
   /// In en, this message translates to:
-  /// **'Unblock successful'**
+  /// **'Profile unblocked'**
   String get blocked_profiles_screen_unblock_profile_successful;
 
   /// Error text displayed when camera access is restricted
   ///
   /// In en, this message translates to:
-  /// **'Camera access is restricted. Opening camera is not possible.'**
+  /// **'Camera access is restricted on this device.'**
   String get camera_screen_camera_access_restricted_error;
 
   /// Error text displayed when camera initialization fails
   ///
   /// In en, this message translates to:
-  /// **'Camera initialization failed'**
+  /// **'Failed to open camera'**
   String get camera_screen_camera_initialization_error;
 
   /// Error text displayed when camera initialization fails and error code exists
   ///
   /// In en, this message translates to:
-  /// **'Camera initialization failed. Error code: {p0}'**
+  /// **'Failed to open camera (error {p0})'**
   String camera_screen_camera_initialization_error_with_error_code(String p0);
 
   /// Snackbar error text displayed when user tries to open camera but camera initialization is already in progress
   ///
   /// In en, this message translates to:
-  /// **'Camera opening in progress'**
+  /// **'Camera is already starting'**
   String get camera_screen_camera_opening_already_in_progress_error;
 
   /// Error text displayed when there is no camera permission and system settings must be used for granting the permission
   ///
   /// In en, this message translates to:
-  /// **'No camera permission. Please grant the camera permission from system settings.'**
+  /// **'Camera permission required. Please grant camera permission in system settings.'**
   String get camera_screen_camera_permission_error_check_settings;
 
   /// Error text displayed when there is no camera permission
   ///
   /// In en, this message translates to:
-  /// **'No camera permission. Please try again. If that will not work then grant the camera permission from system settings.'**
+  /// **'Camera permission required. Please try again. You might need to grant camera permission in system settings.'**
   String get camera_screen_camera_permission_error_try_again_or_check_settings;
 
   /// Error text displayed when there is no front camera available
   ///
   /// In en, this message translates to:
-  /// **'No front camera available'**
+  /// **'No front camera found'**
   String get camera_screen_no_front_camera_error;
 
   /// Snackbar error text displayed when taking photo fails
   ///
   /// In en, this message translates to:
-  /// **'Taking photo failed'**
+  /// **'Failed to take photo'**
   String get camera_screen_take_photo_error;
 
   /// Status text when connecting to transfer API
@@ -769,7 +769,7 @@ abstract class AppLocalizations {
   /// Error message when database for requested account does not exist
   ///
   /// In en, this message translates to:
-  /// **'Database for requested account does not exist'**
+  /// **'No chat data found for this account'**
   String get chat_backup_database_not_found;
 
   /// Error message when pairing code format is invalid
@@ -793,13 +793,13 @@ abstract class AppLocalizations {
   /// Message when no backup has been created
   ///
   /// In en, this message translates to:
-  /// **'Chat backup is not yet created. Backup now?'**
+  /// **'No chat backup created yet. Back up now?'**
   String get chat_backup_reminder_dialog_message_no_backup;
 
   /// Message when backup is old
   ///
   /// In en, this message translates to:
-  /// **'Chat backup has not been created since {p0} days. Backup now?'**
+  /// **'Chat backup has not been created in {p0} days. Back up now?'**
   String chat_backup_reminder_dialog_message_old_backup(String p0);
 
   /// Title for backup reminder dialog
@@ -847,7 +847,7 @@ abstract class AppLocalizations {
   /// Error message when backup was created by different account
   ///
   /// In en, this message translates to:
-  /// **'Backup created by different account'**
+  /// **'Backup was created by a different account'**
   String get chat_backup_screen_import_error_wrong_account;
 
   /// Title for chat backup screen
@@ -859,25 +859,25 @@ abstract class AppLocalizations {
   /// Error message when transfer budget is exceeded
   ///
   /// In en, this message translates to:
-  /// **'Yearly chat backup transfer budget exceeded. Please create a backup and transfer it manually.'**
+  /// **'Yearly transfer limit reached. Please save a backup and transfer it manually.'**
   String get chat_backup_transfer_budget_exceeded;
 
   /// Description for chat data outdated state
   ///
   /// In en, this message translates to:
-  /// **'Device changed or app reinstalled. Receive chat backup from previous device?'**
+  /// **'Device changed or app reinstalled. Transfer chats from your old device?'**
   String get chat_data_outdated_description;
 
   /// Error when too many public keys
   ///
   /// In en, this message translates to:
-  /// **'Maximum number of encryption keys reached. Receive backup from previous device or contact service admins.'**
+  /// **'Maximum number of encryption keys reached. Receive a backup from your old device or contact support.'**
   String get chat_data_outdated_error_too_many_keys;
 
   /// Warning dialog message when public key adding fails because pending messages exists
   ///
   /// In en, this message translates to:
-  /// **'You have unread messages encrypted using your old encryption key. To read them, you should transfer chat data from your old device or import a backup containing the encryption key from Settings.\n\nIf you continue, you will not be able to read these messages. Do you want to continue?'**
+  /// **'You have unread messages encrypted with your old encryption key. To read them, transfer chat data from your previous device or restore a backup containing the encryption key.\n\nIf you continue, you will not be able to read those messages. Continue anyway?'**
   String get chat_data_outdated_pending_messages_warning;
 
   /// Button text to receive chat backup
@@ -895,19 +895,19 @@ abstract class AppLocalizations {
   /// Info text displayed when there is no chats
   ///
   /// In en, this message translates to:
-  /// **'No chats found'**
+  /// **'No chats yet'**
   String get chat_list_screen_no_chats_found;
 
   /// Description text displayed when there is no chats
   ///
   /// In en, this message translates to:
-  /// **'Spread the word about the app in social media'**
+  /// **'Spread the word about the app on social media'**
   String get chat_list_screen_no_chats_found_description;
 
   /// Info text displayed when no matches are found
   ///
   /// In en, this message translates to:
-  /// **'No accepted chat requests found'**
+  /// **'No accepted chat requests yet'**
   String get chat_list_screen_no_matches_found;
 
   /// Title for action which opens matches screen
@@ -943,7 +943,7 @@ abstract class AppLocalizations {
   /// Text for content deletion allowed wait time
   ///
   /// In en, this message translates to:
-  /// **'Deletion possible starting at {p0}'**
+  /// **'Can be deleted starting at {p0}'**
   String content_management_screen_content_deletion_allowed_wait_time(String p0);
 
   /// Text for face not verified status
@@ -991,13 +991,13 @@ abstract class AppLocalizations {
   /// Description text for install Jitsi Meet dialog when app is running on Android
   ///
   /// In en, this message translates to:
-  /// **'Video calling requires Jitsi Meet video calling app which is not installed currently. Install the app from Google Play Store? After that, try this again.'**
+  /// **'Video calling requires the Jitsi Meet app. Would you like to install it from Google Play Store?'**
   String get conversation_screen_install_jitsi_meet_dialog_description_android;
 
   /// Description text for install Jitsi Meet dialog when app is running on iOS
   ///
   /// In en, this message translates to:
-  /// **'Video calling requires Jitsi Meet video calling app which is not installed currently. Install the app from App Store? After that, try this again.'**
+  /// **'Video calling requires the Jitsi Meet app. Would you like to install it from the App Store?'**
   String get conversation_screen_install_jitsi_meet_dialog_description_ios;
 
   /// Title for install Jitsi Meet dialog
@@ -1039,13 +1039,13 @@ abstract class AppLocalizations {
   /// Message remove or resend error that message is actually sent successfully
   ///
   /// In en, this message translates to:
-  /// **'The message is actually sent successfully'**
+  /// **'This message was already sent successfully'**
   String get conversation_screen_message_error_is_actually_sent_successfully;
 
   /// Message send or resend error that recipient blocked sender or recipient not found
   ///
   /// In en, this message translates to:
-  /// **'Recipient action prevented message sending'**
+  /// **'Unable to deliver message to recipient'**
   String get conversation_screen_message_error_recipient_blocked_sender_or_recipient_not_found;
 
   /// Info text that encryption key changed
@@ -1063,7 +1063,7 @@ abstract class AppLocalizations {
   /// Info text that message list is empty
   ///
   /// In en, this message translates to:
-  /// **'No messages'**
+  /// **'No messages yet'**
   String get conversation_screen_message_list_empty;
 
   /// Message text that referenced message was not found
@@ -1075,7 +1075,7 @@ abstract class AppLocalizations {
   /// Message resend complete text
   ///
   /// In en, this message translates to:
-  /// **'Resend complete'**
+  /// **'Resent successfully'**
   String get conversation_screen_message_resend_complete;
 
   /// Title for resend confirm dialog
@@ -1093,7 +1093,7 @@ abstract class AppLocalizations {
   /// Snackbar text when message sending is blocked until app reconnects to server
   ///
   /// In en, this message translates to:
-  /// **'Try again after app connects to server'**
+  /// **'Please try again after app connects to server'**
   String get conversation_screen_message_send_requires_connection;
 
   /// Message state text that message decrypting failed
@@ -1105,7 +1105,7 @@ abstract class AppLocalizations {
   /// Detailed message state text that message decrypting failed and requires resend
   ///
   /// In en, this message translates to:
-  /// **'Decrypting failed. Ask resending.'**
+  /// **'Could not decrypt. Please ask the sender to resend.'**
   String get conversation_screen_message_state_decrypting_failed_detailed;
 
   /// Message state text that message was delivered to recipient
@@ -1123,31 +1123,31 @@ abstract class AppLocalizations {
   /// Message state text that message delivery failed and it was resent
   ///
   /// In en, this message translates to:
-  /// **'Delivery failed and resent'**
+  /// **'Delivery failed, resent'**
   String get conversation_screen_message_state_delivery_failed_and_resent;
 
   /// Message state text that public key download failed
   ///
   /// In en, this message translates to:
-  /// **'Public key download failed'**
+  /// **'Encryption key download failed'**
   String get conversation_screen_message_state_public_key_download_failed;
 
   /// Message state text that message was received and marked as seen
   ///
   /// In en, this message translates to:
-  /// **'Received and seen'**
+  /// **'Seen'**
   String get conversation_screen_message_state_received_and_seen;
 
   /// Message state text that message was received and marked as seen locally
   ///
   /// In en, this message translates to:
-  /// **'Received and seen locally'**
+  /// **'Seen locally'**
   String get conversation_screen_message_state_received_and_seen_locally;
 
   /// Message state text that message was received successfully
   ///
   /// In en, this message translates to:
-  /// **'Received successfully'**
+  /// **'Received'**
   String get conversation_screen_message_state_received_successfully;
 
   /// Message state text that message was seen by recipient
@@ -1159,19 +1159,19 @@ abstract class AppLocalizations {
   /// Message state text that message sending failed
   ///
   /// In en, this message translates to:
-  /// **'Sending failed'**
+  /// **'Failed to send'**
   String get conversation_screen_message_state_sending_failed;
 
   /// Message state text that message sending is in progress
   ///
   /// In en, this message translates to:
-  /// **'Sending in progress'**
+  /// **'Sending…'**
   String get conversation_screen_message_state_sending_in_progress;
 
   /// Message state text that message was sent successfully
   ///
   /// In en, this message translates to:
-  /// **'Sent successfully'**
+  /// **'Sent'**
   String get conversation_screen_message_state_sent_successfully;
 
   /// Snackbar text that message is too long
@@ -1183,13 +1183,13 @@ abstract class AppLocalizations {
   /// Snackbar text that server is full of pending messages
   ///
   /// In en, this message translates to:
-  /// **'Server pending message storage is full'**
+  /// **'Too many undelivered messages'**
   String get conversation_screen_message_too_many_pending_messages;
 
   /// Message text that message is unsupported
   ///
   /// In en, this message translates to:
-  /// **'Unsupported message'**
+  /// **'Unsupported message format'**
   String get conversation_screen_message_unsupported;
 
   /// Action subtitle for open details action
@@ -1207,13 +1207,13 @@ abstract class AppLocalizations {
   /// Snackbar text showing remaining messages for currently visible conversation
   ///
   /// In en, this message translates to:
-  /// **'Remaining messages for this conversation: {p0} (resets when sent messages are delivered)'**
+  /// **'Messages remaining for this chat: {p0} (resets once delivered)'**
   String conversation_screen_remaining_conversation_messages(String p0);
 
   /// Snackbar text showing remaining daily messages count
   ///
   /// In en, this message translates to:
-  /// **'Remaining daily messages: {p0}'**
+  /// **'Daily messages remaining: {p0}'**
   String conversation_screen_remaining_daily_messages(String p0);
 
   /// Action text for send video call invitation action
@@ -1237,7 +1237,7 @@ abstract class AppLocalizations {
   /// Snackbar text displayed when security selfie is changed
   ///
   /// In en, this message translates to:
-  /// **'Security selfie changed'**
+  /// **'Security selfie updated'**
   String get current_security_selfie_screen_security_selfie_changed;
 
   /// Current security selfie screen title
@@ -1249,7 +1249,7 @@ abstract class AppLocalizations {
   /// Snackbar text for API limit error
   ///
   /// In en, this message translates to:
-  /// **'Try again after 24 hours'**
+  /// **'Daily limit reached. Try again after 24 hours.'**
   String get data_export_screen_api_limit_error;
 
   /// Title for data export screen when export type is admin
@@ -1333,13 +1333,13 @@ abstract class AppLocalizations {
   /// Snackbar text for max selected values error
   ///
   /// In en, this message translates to:
-  /// **'Too many selected values'**
+  /// **'Too many options selected'**
   String get edit_attribute_value_screen_max_selected_values_error;
 
   /// Snackbar text for notifying that one at least one option must be selected
   ///
   /// In en, this message translates to:
-  /// **'At least one selection is required'**
+  /// **'At least one option must be selected'**
   String get edit_attribute_value_screen_one_value_must_be_selected;
 
   /// Attribute value search box placeholder text
@@ -1429,7 +1429,7 @@ abstract class AppLocalizations {
   /// Dialog text for notifying user when profile text is too long
   ///
   /// In en, this message translates to:
-  /// **'Profile text byte count is more than 2000 bytes'**
+  /// **'Profile text is too long (maximum 2000 bytes)'**
   String get edit_profile_text_screen_text_length_too_long;
 
   /// Button text for logging in to an existing account with email
@@ -1489,31 +1489,31 @@ abstract class AppLocalizations {
   /// Notice that the selected login method only works for existing accounts
   ///
   /// In en, this message translates to:
-  /// **'Registering new accounts is unsupported using this login method'**
+  /// **'Creating a new account is not supported with this login method'**
   String get email_login_screen_login_only_info;
 
   /// Error message when email registration is disabled on all platforms
   ///
   /// In en, this message translates to:
-  /// **'App admin has disabled registering new accounts with email address. Please use another login method.'**
+  /// **'New registrations via email are currently disabled. Please use another sign in method.'**
   String get email_login_screen_registration_all_platforms_disabled_error;
 
   /// Error message when the email domain is not accepted for email registration. %s is the email domain.
   ///
   /// In en, this message translates to:
-  /// **'This email domain ({p0}) is not accepted for registration. Please use another email address or login method.'**
+  /// **'Email addresses with domain {p0} cannot be used for registration. Please use another email or sign in method.'**
   String email_login_screen_registration_domain_not_accepted_error(String p0);
 
   /// Error message when email registration per IP address limit is reached
   ///
   /// In en, this message translates to:
-  /// **'The daily registration limit for your IP address has been reached. Please try again after 24 hours or use another login method.'**
+  /// **'Daily registration limit for your IP address has been reached. Please try again after 24 hours or use another sign in method.'**
   String get email_login_screen_registration_ip_address_limit_reached_error;
 
   /// Error message when daily email registration limit is reached
   ///
   /// In en, this message translates to:
-  /// **'The daily registration limit has been reached. Please try again in 24 hours or use another login method.'**
+  /// **'Daily registration limit has been reached. Please try again in 24 hours or use another sign in method.'**
   String get email_login_screen_registration_limit_reached_error;
 
   /// Notice that using throwaway email services is forbidden
@@ -1525,13 +1525,13 @@ abstract class AppLocalizations {
   /// Error message when email registration is disabled on current platform
   ///
   /// In en, this message translates to:
-  /// **'App admin has disabled registering new accounts with email address on current platform ({p0}). Please use another login method.'**
+  /// **'New registrations via email are currently disabled on this platform ({p0}). Please use another sign in method.'**
   String email_login_screen_registration_platform_disabled_error(String p0);
 
   /// Error message shown when the entered email address is unsupported
   ///
   /// In en, this message translates to:
-  /// **'Unsupported email address. Please use another login method.'**
+  /// **'Unsupported email address. Please use another sign in method.'**
   String get email_login_screen_registration_unsupported_email;
 
   /// Button text for sending login code
@@ -1687,13 +1687,13 @@ abstract class AppLocalizations {
   /// Generic email sending failed text
   ///
   /// In en, this message translates to:
-  /// **'Email sending failed'**
+  /// **'Failed to send email'**
   String get generic_email_sending_failed;
 
   /// Generic email sending timeout text
   ///
   /// In en, this message translates to:
-  /// **'Email sending timeout'**
+  /// **'Email sending timed out'**
   String get generic_email_sending_timeout;
 
   /// Generic empty text
@@ -1711,13 +1711,13 @@ abstract class AppLocalizations {
   /// Snackbar text that client version is unsupported
   ///
   /// In en, this message translates to:
-  /// **'Current app version is unsupported'**
+  /// **'Current app version is no longer supported'**
   String get generic_error_app_version_is_unsupported;
 
   /// Generic error occurred text
   ///
   /// In en, this message translates to:
-  /// **'Error occurred'**
+  /// **'Something went wrong'**
   String get generic_error_occurred;
 
   /// Generic filters text
@@ -1807,7 +1807,7 @@ abstract class AppLocalizations {
   /// Generic logout failed text
   ///
   /// In en, this message translates to:
-  /// **'Logout failed'**
+  /// **'Failed to log out'**
   String get generic_logout_failed;
 
   /// Generic margin text
@@ -1873,7 +1873,7 @@ abstract class AppLocalizations {
   /// Error text displayed when profile loading fails
   ///
   /// In en, this message translates to:
-  /// **'Profile loading failed'**
+  /// **'Failed to load profile'**
   String get generic_profile_loading_failed;
 
   /// Generic receive text
@@ -1921,13 +1921,13 @@ abstract class AppLocalizations {
   /// Title for reset values to defaults action
   ///
   /// In en, this message translates to:
-  /// **'Reset to default values'**
+  /// **'Reset to defaults'**
   String get generic_reset_to_defaults;
 
   /// Dialog title for confirming reset values to defaults
   ///
   /// In en, this message translates to:
-  /// **'Reset to default values?'**
+  /// **'Reset to defaults?'**
   String get generic_reset_to_defaults_dialog_title;
 
   /// Generic restore text
@@ -1999,7 +1999,7 @@ abstract class AppLocalizations {
   /// Text field hint text for age
   ///
   /// In en, this message translates to:
-  /// **'Insert an age between 18–99'**
+  /// **'Enter an age between 18-99'**
   String get generic_text_field_age_hint_text;
 
   /// Generic this feature is disabled text
@@ -2047,7 +2047,7 @@ abstract class AppLocalizations {
   /// Generic try again later with seconds text
   ///
   /// In en, this message translates to:
-  /// **'Try again after {p0} seconds'**
+  /// **'Try again in {p0} seconds'**
   String generic_try_again_later_seconds(String p0);
 
   /// Generic unlimited text
@@ -2143,13 +2143,13 @@ abstract class AppLocalizations {
   /// Progress dialog info text that NSFW content is detected
   ///
   /// In en, this message translates to:
-  /// **'Unallowed content detected from the uploaded photo. This might be false positive detection.'**
+  /// **'Content not permitted was detected in the uploaded photo. This might be a false positive.'**
   String get image_processing_ui_nsfw_detected_dialog_title;
 
   /// Progress dialog info text that previous image processing is still ongoing on server
   ///
   /// In en, this message translates to:
-  /// **'Server is processing previous image upload'**
+  /// **'Server is still processing your previous upload'**
   String get image_processing_ui_upload_content_processing_ongoing_dialog_title;
 
   /// Progress dialog info text that image upload failed
@@ -2161,19 +2161,19 @@ abstract class AppLocalizations {
   /// Progress dialog info text that image is currently in server's processing queue
   ///
   /// In en, this message translates to:
-  /// **'Waiting for processing. Queue number: {p0}'**
+  /// **'Waiting in queue. Position: {p0}'**
   String image_processing_ui_upload_in_processing_queue_dialog_description(String p0);
 
   /// Progress dialog info text that image upload is in progress
   ///
   /// In en, this message translates to:
-  /// **'Uploading photo'**
+  /// **'Uploading photo…'**
   String get image_processing_ui_upload_in_progress_dialog_description;
 
   /// Progress dialog info text that image processing is ongoing
   ///
   /// In en, this message translates to:
-  /// **'Processing ongoing'**
+  /// **'Processing photo…'**
   String get image_processing_ui_upload_processing_ongoing_description;
 
   /// Progress dialog info text that image upload timed out
@@ -2185,7 +2185,7 @@ abstract class AppLocalizations {
   /// Title for age confirmation checkbox
   ///
   /// In en, this message translates to:
-  /// **'I\'m at least 18 years old'**
+  /// **'I am at least 18 years old'**
   String get initial_setup_screen_age_confirmation_checkbox;
 
   /// Title for age confirmation screen
@@ -2197,7 +2197,7 @@ abstract class AppLocalizations {
   /// Hint text for inserting email address to text field
   ///
   /// In en, this message translates to:
-  /// **'Insert email address'**
+  /// **'Enter email address'**
   String get initial_setup_screen_email_hint_text;
 
   /// Title for initial setup email address info
@@ -2215,7 +2215,7 @@ abstract class AppLocalizations {
   /// Description for initial setup first chat backup
   ///
   /// In en, this message translates to:
-  /// **'Chats are stored on this device only, so regular backups are recommended. Let\'s save the first backup.\n\nIf you have cloud storage, it is recommended to save the backup there.'**
+  /// **'Chats are stored on this device only, so regular backups are recommended. Let\'s save your first backup.\n\nIf you use cloud storage, saving the backup there is recommended.'**
   String get initial_setup_screen_first_chat_backup_description;
 
   /// Title for initial setup save chat backup button
@@ -2227,13 +2227,13 @@ abstract class AppLocalizations {
   /// Security info for initial setup first chat backup
   ///
   /// In en, this message translates to:
-  /// **'The backup contains your message encryption key. Keep it accessible in case you lose your device, unless you are willing to ask others to resend their undelivered messages to you.'**
+  /// **'The backup contains your encryption key. Keep it safe in case you lose your device, so you can read all message sent to you.'**
   String get initial_setup_screen_first_chat_backup_security_info;
 
   /// Warning dialog message when skipping first chat backup
   ///
   /// In en, this message translates to:
-  /// **'Uninstalling the app will delete your chats and encryption key. Without the key, you won\'t be able to read messages encrypted using the key.\n\nYour chat backup contains the encryption key — do you want to skip creating a backup?'**
+  /// **'Uninstalling the app will delete your chats and encryption key. Without the key, you will not be able to read messages sent to you.\n\nAre you sure you want to skip creating a backup?'**
   String get initial_setup_screen_first_chat_backup_skip_warning;
 
   /// Title for initial setup first chat backup screen
@@ -2251,19 +2251,19 @@ abstract class AppLocalizations {
   /// Text for initial setup location help dialog
   ///
   /// In en, this message translates to:
-  /// **'Select a location for your profile by tapping or long pressing the map.'**
+  /// **'Tap or hold on the map to set your location.'**
   String get initial_setup_screen_location_help_dialog_text;
 
   /// Title for initial setup location screen
   ///
   /// In en, this message translates to:
-  /// **'My profile\'s location is…'**
+  /// **'My location is…'**
   String get initial_setup_screen_location_title;
 
   /// Text field hint text for profile name
   ///
   /// In en, this message translates to:
-  /// **'Insert your first name'**
+  /// **'Enter your first name'**
   String get initial_setup_screen_profile_basic_info_profile_name_hint_text;
 
   /// Title text for profile name text field
@@ -2275,49 +2275,49 @@ abstract class AppLocalizations {
   /// Title text for asking profile information
   ///
   /// In en, this message translates to:
-  /// **'My profile has this info…'**
+  /// **'About me…'**
   String get initial_setup_screen_profile_basic_info_title;
 
   /// Snackbar error text that selected picture's file size is too large
   ///
   /// In en, this message translates to:
-  /// **'Selected image is over 10 MiB'**
+  /// **'Image is too large (maximum size is 10 MiB)'**
   String get initial_setup_screen_profile_pictures_file_size_too_large_error;
 
   /// Error text that face is not detected for primary profile image
   ///
   /// In en, this message translates to:
-  /// **'Face is not detected. Please select another picture.'**
+  /// **'No face detected. Please select a photo that clearly shows your face.'**
   String get initial_setup_screen_profile_pictures_primary_image_face_not_detected;
 
   /// Dialog description text about profile primary image
   ///
   /// In en, this message translates to:
-  /// **'Adding at least of one profile image is required. The first profile image must be a face picture. The square shaped crop of the first profile image is displayed in profile grid and some other places in the app.'**
+  /// **'At least one profile picture is required. Your first picture must show your face clearly, and its square crop will be shown in profile grids.'**
   String get initial_setup_screen_profile_pictures_primary_image_info_dialog_description;
 
   /// Dialog title for initial setup profile picture selection dialog
   ///
   /// In en, this message translates to:
-  /// **'Select picture…'**
+  /// **'Choose photo…'**
   String get initial_setup_screen_profile_pictures_select_picture_dialog_title;
 
   /// Action title for selecting profile picture from gallery
   ///
   /// In en, this message translates to:
-  /// **'From gallery'**
+  /// **'Choose from gallery'**
   String get initial_setup_screen_profile_pictures_select_picture_from_gallery_title;
 
   /// Action title for using security selfie as a profile picture
   ///
   /// In en, this message translates to:
-  /// **'Security selfie'**
+  /// **'Use security selfie'**
   String get initial_setup_screen_profile_pictures_select_picture_security_selfie_title;
 
   /// Action title for taking new picture to be used as a profile picture
   ///
   /// In en, this message translates to:
-  /// **'Take new photo'**
+  /// **'Take photo'**
   String get initial_setup_screen_profile_pictures_select_picture_take_new_picture_title;
 
   /// Title for profile pictures selection screen
@@ -2329,7 +2329,7 @@ abstract class AppLocalizations {
   /// Snackbar error text that selected picture is unsupported
   ///
   /// In en, this message translates to:
-  /// **'Selected image is not a JPEG or PNG image'**
+  /// **'Unsupported image format. Please select a JPEG or PNG image.'**
   String get initial_setup_screen_profile_pictures_unsupported_image_error;
 
   /// Title for initial setup profile privacy settings screen
@@ -2341,37 +2341,37 @@ abstract class AppLocalizations {
   /// Title for refresh face detected values
   ///
   /// In en, this message translates to:
-  /// **'Refresh face detection statuses'**
+  /// **'Refresh face detection status'**
   String get initial_setup_screen_refresh_face_detected_values_action;
 
   /// Subtitle for max age search setting
   ///
   /// In en, this message translates to:
-  /// **'…with max age…'**
+  /// **'…maximum age…'**
   String get initial_setup_screen_search_settings_max_age_subtitle;
 
   /// Subtitle for min age search setting
   ///
   /// In en, this message translates to:
-  /// **'…with min age…'**
+  /// **'…minimum age…'**
   String get initial_setup_screen_search_settings_min_age_subtitle;
 
   /// Title for ask search settings screen
   ///
   /// In en, this message translates to:
-  /// **'I am searching for…'**
+  /// **'I am looking for…'**
   String get initial_setup_screen_search_settings_title;
 
   /// Description for initial setup security selfie step
   ///
   /// In en, this message translates to:
-  /// **'Take selfie with your phone\'s front camera. The selfie is used for moderating your profile images and by default it is only visible to content Moderators.'**
+  /// **'Take a selfie with your front camera. This selfie is used to verify your profile pictures and is only visible to moderators unless you add it to your profile later.'**
   String get initial_setup_screen_security_selfie_description;
 
   /// Error text that face is not detected for initial setup security selfie screen
   ///
   /// In en, this message translates to:
-  /// **'Face is not detected. Please try again several times and if necessary ask customer support to do manual face detection.'**
+  /// **'Face not detected. Please try again with clear lighting, or contact support for help.'**
   String get initial_setup_screen_security_selfie_face_not_detected;
 
   /// Title for initial setup security selfie screen
@@ -2383,19 +2383,19 @@ abstract class AppLocalizations {
   /// Description for skip initial setup confirm dialog
   ///
   /// In en, this message translates to:
-  /// **'Use this only if you will have some admin rights to the service.'**
+  /// **'Skip profile setup only if you will have administrator rights on the service.'**
   String get initial_setup_screen_skip_dialog_description;
 
   /// Title for skip initial setup confirm dialog
   ///
   /// In en, this message translates to:
-  /// **'Skip account initial setup?'**
+  /// **'Skip profile setup?'**
   String get initial_setup_screen_skip_dialog_title;
 
   /// Text displayed when like loading fails
   ///
   /// In en, this message translates to:
-  /// **'Chat request loading failed'**
+  /// **'Failed to load chat requests'**
   String get likes_screen_like_loading_failed;
 
   /// Info text displayed when there is no received likes
@@ -2407,7 +2407,7 @@ abstract class AppLocalizations {
   /// Description text displayed when there is no received likes
   ///
   /// In en, this message translates to:
-  /// **'Spread the word about the app in social media'**
+  /// **'Spread the word about the app on social media'**
   String get likes_screen_no_received_likes_found_description;
 
   /// Title for likes screen refresh action
@@ -2425,13 +2425,13 @@ abstract class AppLocalizations {
   /// Snackbar text for app integrity check failed
   ///
   /// In en, this message translates to:
-  /// **'App integrity verification failed'**
+  /// **'App integrity check failed'**
   String get login_screen_app_attestation_app_integrity_error;
 
   /// Snackbar text for device integrity check failed
   ///
   /// In en, this message translates to:
-  /// **'Device integrity verification failed'**
+  /// **'Device integrity check failed'**
   String get login_screen_app_attestation_device_integrity_error;
 
   /// Snackbar text for app attestation failed
@@ -2443,7 +2443,7 @@ abstract class AppLocalizations {
   /// Snackbar text for connecting WebSocket failed
   ///
   /// In en, this message translates to:
-  /// **'Connecting WebSocket failed. Try again later.'**
+  /// **'Failed to connect to server. Please try again later.'**
   String get login_screen_connecting_websocket_failed;
 
   /// Description for demo account login dialog
@@ -2557,13 +2557,13 @@ abstract class AppLocalizations {
   /// Snackbar error message when login is disabled on all platforms
   ///
   /// In en, this message translates to:
-  /// **'App admin has disabled login'**
+  /// **'Login is currently disabled'**
   String get login_screen_login_all_platforms_disabled;
 
   /// Snackbar text for login API request failed
   ///
   /// In en, this message translates to:
-  /// **'Login API request failed. Try again later.'**
+  /// **'Login request failed. Please try again later.'**
   String get login_screen_login_api_request_failed;
 
   /// Word 'and' between terms of service and privacy policy links
@@ -2593,49 +2593,49 @@ abstract class AppLocalizations {
   /// Snackbar error message when login is disabled on current platform
   ///
   /// In en, this message translates to:
-  /// **'App admin has disabled login on current platform ({p0})'**
+  /// **'Login is currently disabled on this platform ({p0})'**
   String login_screen_login_platform_disabled(String p0);
 
   /// Snackbar error message when registration is disabled on all platforms
   ///
   /// In en, this message translates to:
-  /// **'App admin has disabled registering new accounts'**
+  /// **'New registrations are currently disabled'**
   String get login_screen_registration_all_platforms_disabled;
 
   /// Snackbar error message when registration is disabled on current platform
   ///
   /// In en, this message translates to:
-  /// **'App admin has disabled registering new accounts on current platform ({p0})'**
+  /// **'New registrations are currently disabled on this platform ({p0})'**
   String login_screen_registration_platform_disabled(String p0);
 
   /// Button text for email sign in action on the login screen
   ///
   /// In en, this message translates to:
-  /// **'Sign in with email address'**
+  /// **'Sign in with email'**
   String get login_screen_sign_in_with_email_action;
 
   /// Snackbar error message when sign in with account email is not verified
   ///
   /// In en, this message translates to:
-  /// **'Email address of the selected account is not verified'**
+  /// **'Email address is not verified'**
   String get login_screen_sign_in_with_email_unverified;
 
   /// Snackbar text for sign in with error
   ///
   /// In en, this message translates to:
-  /// **'Sign in with failed'**
+  /// **'Sign in failed'**
   String get login_screen_sign_in_with_error;
 
   /// Snackbar text about failed location update
   ///
   /// In en, this message translates to:
-  /// **'Location update failed'**
+  /// **'Failed to update location'**
   String get map_location_update_failed;
 
   /// Snackbar text about successful location update
   ///
   /// In en, this message translates to:
-  /// **'Location update successful'**
+  /// **'Location updated'**
   String get map_location_update_successful;
 
   /// OpenStreetMap data attribution link text
@@ -2647,19 +2647,19 @@ abstract class AppLocalizations {
   /// Help text for selecting map location
   ///
   /// In en, this message translates to:
-  /// **'Tap or long press the map to select a location.'**
+  /// **'Tap or hold on the map to choose a location.'**
   String get map_select_location_help_text;
 
   /// Snackbar text about map tile error
   ///
   /// In en, this message translates to:
-  /// **'Map tile error'**
+  /// **'Failed to load map'**
   String get map_tile_error;
 
   /// Title text for admin bot offline info
   ///
   /// In en, this message translates to:
-  /// **'Automatic moderation is not working currently'**
+  /// **'Automatic moderation is temporarily unavailable'**
   String get menu_screen_admin_offline_title;
 
   /// Title for help center menu item
@@ -2737,19 +2737,19 @@ abstract class AppLocalizations {
   /// Info text displayed when news loading fails
   ///
   /// In en, this message translates to:
-  /// **'News loading failed'**
+  /// **'Failed to load news'**
   String get news_list_screen_news_loading_failed;
 
   /// Info text displayed when no news are found
   ///
   /// In en, this message translates to:
-  /// **'No news found'**
+  /// **'No news available'**
   String get news_list_screen_no_news_found;
 
   /// News item state text for not yet published news item
   ///
   /// In en, this message translates to:
-  /// **'Not published'**
+  /// **'Draft'**
   String get news_list_screen_not_published;
 
   /// Title for news list screen title
@@ -2851,7 +2851,7 @@ abstract class AppLocalizations {
   /// Description for media content deleted notification
   ///
   /// In en, this message translates to:
-  /// **'Unallowed content was detected from the image. This might be false positive detection.'**
+  /// **'Content not permitted was detected in your image. This might be a false positive.'**
   String get notification_media_content_deleted_description;
 
   /// Title for media content rejected notification
@@ -2893,7 +2893,7 @@ abstract class AppLocalizations {
   /// Description text for notification permission dialog
   ///
   /// In en, this message translates to:
-  /// **'Allow notifications to receive notifications for example from new chat requests and messages.'**
+  /// **'Allow notifications to get alerts for new chat requests and messages for example.'**
   String get notification_permission_dialog_description;
 
   /// Title for notification permission dialog
@@ -2929,19 +2929,19 @@ abstract class AppLocalizations {
   /// Info text when iOS PWA notification permission is denied
   ///
   /// In en, this message translates to:
-  /// **'Permission not granted. Try again or grant permission from iOS system settings.'**
+  /// **'Permission denied. Try again or enable notifications in iOS settings.'**
   String get notification_settings_screen_ios_pwa_permission_denied;
 
   /// Info text that notification category is disabled from system settings
   ///
   /// In en, this message translates to:
-  /// **'Disabled from system notification settings'**
+  /// **'Disabled in system settings'**
   String get notification_settings_screen_notification_category_disabled_from_system_settings_text;
 
   /// Info text that notifications are disabled from system settings
   ///
   /// In en, this message translates to:
-  /// **'Notifications are disabled from system notification settings'**
+  /// **'Notifications are disabled in system settings'**
   String get notification_settings_screen_notifications_disabled_from_system_settings_text;
 
   /// Action title for opening system notification settings
@@ -2959,13 +2959,13 @@ abstract class AppLocalizations {
   /// Info text when web notification permission is denied
   ///
   /// In en, this message translates to:
-  /// **'Permission not granted. Try again or grant permission from browser settings.'**
+  /// **'Permission denied. Try again or enable notifications in browser settings.'**
   String get notification_settings_screen_web_permission_denied;
 
   /// Info text for web that notification permission is not enabled
   ///
   /// In en, this message translates to:
-  /// **'Notification permission is not enabled'**
+  /// **'Notifications are not enabled'**
   String get notification_settings_screen_web_permission_not_enabled;
 
   /// Action title for requesting web notification permission
@@ -3067,13 +3067,13 @@ abstract class AppLocalizations {
   /// Title for disable filters action
   ///
   /// In en, this message translates to:
-  /// **'Disable filters'**
+  /// **'Reset filters'**
   String get profile_filters_screen_disable_filters_action;
 
   /// Title for disable filters action confirm dialog
   ///
   /// In en, this message translates to:
-  /// **'Disable filters?'**
+  /// **'Reset filters?'**
   String get profile_filters_screen_disable_filters_action_dialog_title;
 
   /// Title text for distance filter
@@ -3163,7 +3163,7 @@ abstract class AppLocalizations {
   /// Text shown when using profile verification filter requires verified account
   ///
   /// In en, this message translates to:
-  /// **'Using this filter requires verified account'**
+  /// **'Using this filter requires a verified account'**
   String get profile_filters_screen_profile_verification_requires_verified_account;
 
   /// Title for profile verification status filter
@@ -3251,7 +3251,7 @@ abstract class AppLocalizations {
   /// Snackbar text for notifying about failed profile filters update
   ///
   /// In en, this message translates to:
-  /// **'Updating profile filters failed'**
+  /// **'Failed to update filters'**
   String get profile_filters_screen_updating_filters_failed;
 
   /// Action button text for account verification info banner
@@ -3299,31 +3299,31 @@ abstract class AppLocalizations {
   /// Snackbar text that filtering favorite profiles is not supported
   ///
   /// In en, this message translates to:
-  /// **'Filtering favorite profiles is not supported'**
+  /// **'Filtering favorites is not supported'**
   String get profile_grid_screen_filtering_favorite_profiles_is_not_supported;
 
   /// Description that no favorite profiles were found
   ///
   /// In en, this message translates to:
-  /// **'Mark a profile as a favorite to add it here.'**
+  /// **'Star a profile to save it here.'**
   String get profile_grid_screen_no_favorite_profiles_found_description;
 
   /// Title that no favorite profiles were found
   ///
   /// In en, this message translates to:
-  /// **'No favorite profiles found'**
+  /// **'No favorites yet'**
   String get profile_grid_screen_no_favorite_profiles_found_title;
 
   /// Description displayed when there is no profiles and there is no filters enabled
   ///
   /// In en, this message translates to:
-  /// **'Spread the word about the app in social media'**
+  /// **'Spread the word about the app on social media'**
   String get profile_grid_screen_no_profiles_found_description_filters_disabled;
 
   /// Description displayed when there is no profiles and some filter is enabled
   ///
   /// In en, this message translates to:
-  /// **'Change or disable filters'**
+  /// **'Try adjusting or clearing your filters'**
   String get profile_grid_screen_no_profiles_found_description_filters_enabled;
 
   /// Title that no profiles were found
@@ -3335,25 +3335,25 @@ abstract class AppLocalizations {
   /// Text displayed when primary profile content does not exist
   ///
   /// In en, this message translates to:
-  /// **'First profile picture does not exist'**
+  /// **'First profile picture missing'**
   String get profile_grid_screen_primary_profile_content_does_not_exist;
 
   /// Text displayed when face is not detected from primary profile content
   ///
   /// In en, this message translates to:
-  /// **'Face is not detected from first profile picture'**
+  /// **'Face not detected in first profile picture'**
   String get profile_grid_screen_primary_profile_content_face_not_detected;
 
   /// Info text that primary profile content is in moderation
   ///
   /// In en, this message translates to:
-  /// **'You can view profiles and others can see your profile after the first profile picture is moderated'**
+  /// **'You will be able to browse and be seen once your first profile picture is approved'**
   String get profile_grid_screen_primary_profile_content_is_in_moderation;
 
   /// Text displayed when primary profile content is not accepted
   ///
   /// In en, this message translates to:
-  /// **'First profile picture is not accepted'**
+  /// **'First profile picture not approved'**
   String get profile_grid_screen_primary_profile_content_is_not_accepted;
 
   /// Snackbar text that profile filter settings update is ongoing
@@ -3365,25 +3365,25 @@ abstract class AppLocalizations {
   /// Info text which is shown when profile visibility is set to private
   ///
   /// In en, this message translates to:
-  /// **'To view profiles, set your profile visibility to public from app settings.'**
+  /// **'To browse profiles, make your profile public in Settings.'**
   String get profile_grid_screen_profile_is_private_info;
 
   /// Text displayed when security selfie does not exist
   ///
   /// In en, this message translates to:
-  /// **'Security selfie does not exist'**
+  /// **'Security selfie missing'**
   String get profile_grid_screen_security_content_does_not_exist;
 
   /// Text displayed when face is not detected from security selfie
   ///
   /// In en, this message translates to:
-  /// **'Face is not detected from security selfie'**
+  /// **'Face not detected in security selfie'**
   String get profile_grid_screen_security_content_face_not_detected;
 
   /// Text displayed when security selfie is not accepted
   ///
   /// In en, this message translates to:
-  /// **'Security selfie is not accepted'**
+  /// **'Security selfie not approved'**
   String get profile_grid_screen_security_content_is_not_accepted;
 
   /// Text for selected age range shown in profile grid empty state
@@ -3401,13 +3401,13 @@ abstract class AppLocalizations {
   /// Title for show favorite profiles action
   ///
   /// In en, this message translates to:
-  /// **'Show favorite profiles'**
+  /// **'Show favorites'**
   String get profile_grid_screen_show_favorite_profiles_action;
 
   /// Button text for start initial setup button
   ///
   /// In en, this message translates to:
-  /// **'Start account initial setup'**
+  /// **'Set up profile'**
   String get profile_grid_screen_start_initial_setup_button;
 
   /// Title for profile grid screen
@@ -3497,7 +3497,7 @@ abstract class AppLocalizations {
   /// Snackbar text for profile image is not accepted error
   ///
   /// In en, this message translates to:
-  /// **'Profile image is not accepted by moderators'**
+  /// **'Profile picture has not been approved'**
   String get profile_image_error_image_not_accepted;
 
   /// Snackbar text for no profile image error
@@ -3509,7 +3509,7 @@ abstract class AppLocalizations {
   /// Snackbar text for no primary profile image error
   ///
   /// In en, this message translates to:
-  /// **'No primary profile image'**
+  /// **'Primary profile picture missing'**
   String get profile_image_error_no_primary_image;
 
   /// Title for profile location screen
@@ -3539,7 +3539,7 @@ abstract class AppLocalizations {
   /// Instruction for using pairing code
   ///
   /// In en, this message translates to:
-  /// **'On the source device:'**
+  /// **'On the other device:'**
   String get receive_chat_backup_pairing_code_instruction;
 
   /// First step for using pairing code
@@ -3551,13 +3551,13 @@ abstract class AppLocalizations {
   /// Second step for using pairing code
   ///
   /// In en, this message translates to:
-  /// **'2. Logout from settings if login screen is not visible'**
+  /// **'2. Log out from Settings if the login screen is not visible'**
   String get receive_chat_backup_pairing_code_step2;
 
   /// Third step for using pairing code
   ///
   /// In en, this message translates to:
-  /// **'3. Tap the three dots in the top right corner'**
+  /// **'3. Tap the menu in the top right corner'**
   String get receive_chat_backup_pairing_code_step3;
 
   /// Fourth step for using pairing code
@@ -3569,7 +3569,7 @@ abstract class AppLocalizations {
   /// Fifth step for using pairing code
   ///
   /// In en, this message translates to:
-  /// **'5. Scan the QR code and start transfer'**
+  /// **'5. Scan this QR code to start transfer'**
   String get receive_chat_backup_pairing_code_step5;
 
   /// Title for receive chat backup screen
@@ -3599,7 +3599,7 @@ abstract class AppLocalizations {
   /// Status text when waiting for source device
   ///
   /// In en, this message translates to:
-  /// **'Waiting for source device'**
+  /// **'Waiting for other device…'**
   String get receive_chat_backup_waiting_for_source;
 
   /// Status text showing how many messages are selected for reporting. %s is the count and max count
@@ -3611,13 +3611,13 @@ abstract class AppLocalizations {
   /// Status text when no messages are selected for reporting
   ///
   /// In en, this message translates to:
-  /// **'Select max 10 messages'**
+  /// **'Select up to 10 messages'**
   String get report_chat_message_screen_selection_status_none;
 
   /// Snackbar text for server signed message not found error
   ///
   /// In en, this message translates to:
-  /// **'Server signed message not found'**
+  /// **'Server-signed message not found'**
   String get report_chat_message_screen_server_signed_message_not_found;
 
   /// Snackbar text for symmetric message encryption key not found error
@@ -3641,7 +3641,7 @@ abstract class AppLocalizations {
   /// Snackbar text displayed when reporting old profile image
   ///
   /// In en, this message translates to:
-  /// **'Report failed. Profile image has changed.'**
+  /// **'Report failed: profile image has changed'**
   String get report_profile_image_screen_profile_image_changed_error;
 
   /// Title for report chat message action
@@ -3653,13 +3653,13 @@ abstract class AppLocalizations {
   /// Text for dialog for custom report boolean reporting
   ///
   /// In en, this message translates to:
-  /// **'Report user as \'{p0}\'?'**
+  /// **'Report user for \"{p0}\"?'**
   String report_screen_custom_report_boolean_dialog_description(String p0);
 
   /// Warning text about false reports leading to a ban
   ///
   /// In en, this message translates to:
-  /// **'False reports may result in a ban'**
+  /// **'Submitting false reports may result in account suspension'**
   String get report_screen_false_reports_warning;
 
   /// Title for report profile image action
@@ -3677,7 +3677,7 @@ abstract class AppLocalizations {
   /// Snackbar text for when reporting old profile name
   ///
   /// In en, this message translates to:
-  /// **'Report failed. Profile name has changed.'**
+  /// **'Report failed: profile name has changed'**
   String get report_screen_profile_name_changed_error;
 
   /// Profile name reporting confirmation dialog title
@@ -3695,7 +3695,7 @@ abstract class AppLocalizations {
   /// Snackbar text for when reporting old profile text
   ///
   /// In en, this message translates to:
-  /// **'Report failed. Profile text has changed.'**
+  /// **'Report failed: profile text has changed'**
   String get report_screen_profile_text_changed_error;
 
   /// Profile text reporting confirmation dialog title
@@ -3707,25 +3707,25 @@ abstract class AppLocalizations {
   /// Snackbar text for successful report
   ///
   /// In en, this message translates to:
-  /// **'Reported'**
+  /// **'Report submitted'**
   String get report_screen_snackbar_report_successful;
 
   /// Snackbar text for too many reports error
   ///
   /// In en, this message translates to:
-  /// **'Report failed. Too many reports.'**
+  /// **'Too many reports submitted. Please try again later.'**
   String get report_screen_snackbar_too_many_reports_error;
 
   /// Instruction for scanning QR code
   ///
   /// In en, this message translates to:
-  /// **'Point your camera at the QR code'**
+  /// **'Point camera at QR code'**
   String get scan_pairing_code_instruction;
 
   /// Title for scan pairing code screen
   ///
   /// In en, this message translates to:
-  /// **'Scan QR Code'**
+  /// **'Scan QR code'**
   String get scan_pairing_code_screen_title;
 
   /// Title for automatic profile search settings category
@@ -3767,7 +3767,7 @@ abstract class AppLocalizations {
   /// Snackbar text about missing gender information
   ///
   /// In en, this message translates to:
-  /// **'Your gender information is not set'**
+  /// **'Your gender is not set'**
   String get search_settings_screen_gender_is_not_selected;
 
   /// Title text for new profiles setting
@@ -3779,7 +3779,7 @@ abstract class AppLocalizations {
   /// Snackbar text about failed search settings update
   ///
   /// In en, this message translates to:
-  /// **'Updating search settings failed'**
+  /// **'Failed to update search settings'**
   String get search_settings_screen_search_settings_update_failed;
 
   /// Title for search settings
@@ -3833,7 +3833,7 @@ abstract class AppLocalizations {
   /// Hint text for pairing code input
   ///
   /// In en, this message translates to:
-  /// **'Enter code from receiving device'**
+  /// **'Enter pairing code from receiving device'**
   String get send_chat_backup_pairing_code_hint;
 
   /// Button text to scan QR code
@@ -3995,13 +3995,13 @@ abstract class AppLocalizations {
   /// Snackbar text when linking sign in method fails
   ///
   /// In en, this message translates to:
-  /// **'Linking sign in method failed'**
+  /// **'Failed to link sign in method'**
   String get sign_in_with_management_screen_link_failed;
 
   /// Snackbar text when sign in with history limit is reached, with formatted wait time
   ///
   /// In en, this message translates to:
-  /// **'Sign in method history limit reached. Try again after {p0}.'**
+  /// **'Sign in method change limit reached. Try again after {p0}.'**
   String sign_in_with_management_screen_link_history_limit_reached(String p0);
 
   /// Reason for local authentication when managing sign in methods
@@ -4019,31 +4019,31 @@ abstract class AppLocalizations {
   /// Snackbar text when unlinking sign in method fails
   ///
   /// In en, this message translates to:
-  /// **'Unlinking sign in method failed'**
+  /// **'Failed to unlink sign in method'**
   String get sign_in_with_management_screen_unlink_failed;
 
   /// Snackbar error text for forbidden API requests
   ///
   /// In en, this message translates to:
-  /// **'API error: forbidden request'**
+  /// **'Action not allowed'**
   String get snackbar_api_forbidden_request;
 
   /// Snackbar info text that API usage limit is reached
   ///
   /// In en, this message translates to:
-  /// **'API usage limit is reached. Try again tomorrow.'**
+  /// **'Daily limit reached. Please try again tomorrow.'**
   String get snackbar_api_usage_limit_reached;
 
   /// Snackbar error text for API errors
   ///
   /// In en, this message translates to:
-  /// **'API error'**
+  /// **'API request failed'**
   String get snackbar_error_api;
 
   /// Snackbar error text for API timeouts
   ///
   /// In en, this message translates to:
-  /// **'API timeout'**
+  /// **'API request timed out'**
   String get snackbar_error_api_timeout;
 
   /// Snackbar error text for database errors
@@ -4061,19 +4061,19 @@ abstract class AppLocalizations {
   /// Snackbar error text for logic errors
   ///
   /// In en, this message translates to:
-  /// **'Logic error'**
+  /// **'Unexpected error'**
   String get snackbar_error_logic;
 
   /// Snackbar text when server returns lower image quality than requested
   ///
   /// In en, this message translates to:
-  /// **'Many users are viewing profiles - image quality may be degraded'**
+  /// **'Many users are viewing profiles - image quality may be temporarily reduced'**
   String get snackbar_image_quality_degraded;
 
   /// Snackbar error text for Play Integrity API errors
   ///
   /// In en, this message translates to:
-  /// **'Play Integrity API error: {p0}'**
+  /// **'App verification error: {p0}'**
   String snackbar_play_integrity_api_error(String p0);
 
   /// Splash screen error text that app is already running
@@ -4085,7 +4085,7 @@ abstract class AppLocalizations {
   /// Splash screen warning text when app major/minor version downgrade is detected
   ///
   /// In en, this message translates to:
-  /// **'Warning: app version downgrade detected. Please use latest app version if possible.'**
+  /// **'Warning: App version downgrade detected. Please use the latest app version.'**
   String get splash_screen_app_version_downgrade_detected;
 
   /// Text for age range
@@ -4175,7 +4175,7 @@ abstract class AppLocalizations {
   /// Info text that app update is required
   ///
   /// In en, this message translates to:
-  /// **'Current app version is not supported. Please update the app.'**
+  /// **'This app version is no longer supported. Please update to the latest version.'**
   String get unsupported_client_screen_info;
 
   /// Title for unsupported client screen
@@ -4199,7 +4199,7 @@ abstract class AppLocalizations {
   /// Description text for video call tip dialog
   ///
   /// In en, this message translates to:
-  /// **'You can send video call invitation using video call button at top right corner of the screen.'**
+  /// **'You can send a video call invitation using the video call icon at the top right of the chat.'**
   String get video_call_tip_dialog_description;
 
   /// Title for video call tip dialog
@@ -4241,13 +4241,13 @@ abstract class AppLocalizations {
   /// Snackbar text when adding to favorites fails because of too many favorites
   ///
   /// In en, this message translates to:
-  /// **'Too many favorite profiles'**
+  /// **'Favorites list is full'**
   String get view_profile_screen_add_to_favorites_error_too_many_favorites;
 
   /// Snackbar text showing remaining favorite profile space
   ///
   /// In en, this message translates to:
-  /// **'Remaining space in favorite profiles: {p0}'**
+  /// **'Remaining favorite slots: {p0}'**
   String view_profile_screen_add_to_favorites_remaining_space(String p0);
 
   /// Snackbar text for view profile screen displayed when action failed because of the profile is already a match
@@ -4313,7 +4313,7 @@ abstract class AppLocalizations {
   /// Snackbar text for view profile screen like action failed because of like limit
   ///
   /// In en, this message translates to:
-  /// **'No daily chat requests left. Try again tomorrow.'**
+  /// **'No chat requests left today. Try again tomorrow.'**
   String get view_profile_screen_like_action_try_again_tomorrow;
 
   /// Text for view profile screen edit my profile action
@@ -4325,7 +4325,7 @@ abstract class AppLocalizations {
   /// Snackbar text that it is not possible to open my profile screen when initial setup is not done
   ///
   /// In en, this message translates to:
-  /// **'Dating profile is not created'**
+  /// **'Profile is not set up yet'**
   String get view_profile_screen_my_profile_initial_setup_not_done;
 
   /// Title for view profile screen when my profile is viewed
@@ -4367,13 +4367,13 @@ abstract class AppLocalizations {
   /// Snackbar text for notifying about failed profile edit
   ///
   /// In en, this message translates to:
-  /// **'Profile editing failed'**
+  /// **'Failed to save profile'**
   String get view_profile_screen_profile_edit_failed;
 
   /// Snackbar text for notifying that selected profile image does not exist when saving profile edits
   ///
   /// In en, this message translates to:
-  /// **'Profile image {p0} does not exist'**
+  /// **'Profile picture {p0} does not exist'**
   String view_profile_screen_profile_image_does_not_exist(String p0);
 
   /// View profile screen text that profile is last seen day ago
@@ -4427,7 +4427,7 @@ abstract class AppLocalizations {
   /// Text shown when viewing profile verification info requires verified account
   ///
   /// In en, this message translates to:
-  /// **'Viewing this info requires verified account'**
+  /// **'Viewing this info requires a verified account'**
   String get view_profile_screen_profile_verification_requires_verified_account;
 
   /// Text for view profile screen remove from favorites action
