@@ -384,19 +384,13 @@ class _AccountVerificationSettingsScreenState extends State<AccountVerificationS
 
     final errors = <String>[];
     if (errorFlags & _verificationMethodNotConfigured != 0) {
-      errors.add(
-        context.strings.account_verification_screen_error_verification_method_not_configured,
-      );
+      errors.add(context.strings.verification_error_method_not_configured);
     }
     if (errorFlags & _verificationDataParsingFailed != 0) {
-      errors.add(
-        context.strings.account_verification_screen_error_verification_data_parsing_failed,
-      );
+      errors.add(context.strings.verification_error_data_parsing_failed);
     }
     if (errorFlags & _verificationDataVerificationFailed != 0) {
-      errors.add(
-        context.strings.account_verification_screen_error_verification_data_verification_failed,
-      );
+      errors.add(context.strings.verification_error_data_verification_failed);
     }
     if (errorFlags & _profileAgeRangeVerificationFailed != 0) {
       errors.add(
@@ -483,9 +477,7 @@ class _AccountVerificationSettingsScreenState extends State<AccountVerificationS
       if (widget.methods.eudiEnabled)
         ListTile(
           leading: const Icon(Icons.badge_outlined),
-          title: Text(
-            context.strings.account_verification_screen_verification_method_eudi_unsupported,
-          ),
+          title: Text(context.strings.verification_method_eudi_unsupported),
           enabled: false,
         ),
     ];

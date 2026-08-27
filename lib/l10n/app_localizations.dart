@@ -364,24 +364,6 @@ abstract class AppLocalizations {
   /// **'Verified photo does not match your security selfie'**
   String get account_verification_screen_error_security_content_verification_mismatch;
 
-  /// Account verification error: verification data parsing failed
-  ///
-  /// In en, this message translates to:
-  /// **'Invalid identification data'**
-  String get account_verification_screen_error_verification_data_parsing_failed;
-
-  /// Account verification error: verification data verification failed
-  ///
-  /// In en, this message translates to:
-  /// **'Identity verification failed'**
-  String get account_verification_screen_error_verification_data_verification_failed;
-
-  /// Account verification error: verification method is not configured
-  ///
-  /// In en, this message translates to:
-  /// **'This verification method is not configured'**
-  String get account_verification_screen_error_verification_method_not_configured;
-
   /// Title shown above previous account verification errors
   ///
   /// In en, this message translates to:
@@ -448,12 +430,6 @@ abstract class AppLocalizations {
   /// **'Verification in progress'**
   String get account_verification_screen_verification_in_progress_title;
 
-  /// Account verification method label for eudi when it is not yet supported
-  ///
-  /// In en, this message translates to:
-  /// **'EUDI wallet (not supported in this version)'**
-  String get account_verification_screen_verification_method_eudi_unsupported;
-
   /// Title for admin settings screen
   ///
   /// In en, this message translates to:
@@ -496,24 +472,6 @@ abstract class AppLocalizations {
   /// **'Must be 18 or older'**
   String get age_verification_screen_error_age_under_18;
 
-  /// Age verification error: verification data parsing failed
-  ///
-  /// In en, this message translates to:
-  /// **'Invalid identification data'**
-  String get age_verification_screen_error_verification_data_parsing_failed;
-
-  /// Age verification error: verification data verification failed
-  ///
-  /// In en, this message translates to:
-  /// **'Identity verification failed'**
-  String get age_verification_screen_error_verification_data_verification_failed;
-
-  /// Age verification error: verification method is not configured
-  ///
-  /// In en, this message translates to:
-  /// **'App admin has not configured this verification method'**
-  String get age_verification_screen_error_verification_method_not_configured;
-
   /// Title shown above age verification methods section
   ///
   /// In en, this message translates to:
@@ -525,12 +483,6 @@ abstract class AppLocalizations {
   /// In en, this message translates to:
   /// **'Age verification'**
   String get age_verification_screen_title;
-
-  /// Age verification method label for eudi when it is not yet supported
-  ///
-  /// In en, this message translates to:
-  /// **'EUDI wallet (not supported in this version)'**
-  String get age_verification_screen_verification_method_eudi_unsupported;
 
   /// Title for app bar action which opens about dialog
   ///
@@ -4195,6 +4147,30 @@ abstract class AppLocalizations {
   /// In en, this message translates to:
   /// **'https://example.com'**
   String get url_app_tos_link;
+
+  /// Verification error: verification data parsing failed
+  ///
+  /// In en, this message translates to:
+  /// **'Invalid identification data'**
+  String get verification_error_data_parsing_failed;
+
+  /// Verification error: verification data verification failed
+  ///
+  /// In en, this message translates to:
+  /// **'Identity verification failed'**
+  String get verification_error_data_verification_failed;
+
+  /// Verification error: verification method is not configured
+  ///
+  /// In en, this message translates to:
+  /// **'App admin has not configured this verification method'**
+  String get verification_error_method_not_configured;
+
+  /// Verification method label for eudi when it is not yet supported
+  ///
+  /// In en, this message translates to:
+  /// **'EUDI wallet (not supported in this version)'**
+  String get verification_method_eudi_unsupported;
 
   /// Description text for video call tip dialog
   ///

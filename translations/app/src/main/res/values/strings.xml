@@ -675,6 +675,12 @@
     <string name="account_settings_screen_email_change_history_limit_reached" description="Snackbar text when email change history limit is reached, with formatted wait time">Email change limit reached. Try again after %s.</string>
     <string name="account_settings_screen_cancel_email_change_confirm_dialog_title" description="Title for cancel email change confirm dialog">Cancel email change?</string>
 
+    <!-- Verification errors shared between account and age verification -->
+    <string name="verification_error_data_parsing_failed" description="Verification error: verification data parsing failed">Invalid identification data</string>
+    <string name="verification_error_data_verification_failed" description="Verification error: verification data verification failed">Identity verification failed</string>
+    <string name="verification_error_method_not_configured" description="Verification error: verification method is not configured">App admin has not configured this verification method</string>
+    <string name="verification_method_eudi_unsupported" description="Verification method label for eudi when it is not yet supported">EUDI wallet (not supported in this version)</string>
+
     <!-- Account verification settings -->
     <string name="account_verification_screen_title" description="Title for account verification settings screen">Account verification</string>
     <string name="account_verification_screen_verification_in_progress_title" description="Title shown for account verification in progress section">Verification in progress</string>
@@ -684,9 +690,6 @@
     <string name="account_verification_screen_previous_verification_title" description="Title shown for previous account verification details">Previous verification</string>
     <string name="account_verification_screen_previous_verification_time" description="Text shown with previous account verification time">Time: %s</string>
     <string name="account_verification_screen_previous_verification_errors_title" description="Title shown above previous account verification errors">Errors</string>
-    <string name="account_verification_screen_error_verification_method_not_configured" description="Account verification error: verification method is not configured">This verification method is not configured</string>
-    <string name="account_verification_screen_error_verification_data_parsing_failed" description="Account verification error: verification data parsing failed">Invalid identification data</string>
-    <string name="account_verification_screen_error_verification_data_verification_failed" description="Account verification error: verification data verification failed">Identity verification failed</string>
     <string name="account_verification_screen_error_profile_age_range_verification_failed" description="Account verification error: profile age range verification failed">Age verification failed</string>
     <string name="account_verification_screen_error_profile_age_range_verification_mismatch" description="Account verification error: verified profile age range mismatch">Verified age does not match your profile age</string>
     <string name="account_verification_screen_error_profile_age_range_mismatch" description="Account verification error: profile age range changed during verification">Profile age changed during verification</string>
@@ -699,19 +702,14 @@
     <string name="account_verification_screen_start_verification_title" description="Title shown above account verification scope and actions section">Select verification scopes and method</string>
     <string name="account_verification_screen_scope_profile_age" description="Checkbox label for account verification profile age scope">Profile age</string>
     <string name="account_verification_screen_scope_profile_name" description="Checkbox label for account verification profile name scope">Profile name</string>
-    <string name="account_verification_screen_verification_method_eudi_unsupported" description="Account verification method label for eudi when it is not yet supported">EUDI wallet (not supported in this version)</string>
 
     <!-- Age verification settings -->
     <string name="age_verification_screen_title" description="Title for age verification settings screen">Age verification</string>
     <string name="age_verification_screen_current_verification_status_title" description="Title shown for current age verification status section">Current verification status</string>
     <string name="age_verification_screen_age_is_18_or_older" description="Age verification status label for adult age">Age is 18 or older</string>
     <string name="age_verification_screen_start_verification_title" description="Title shown above age verification methods section">Start verification</string>
-    <string name="age_verification_screen_verification_method_eudi_unsupported" description="Age verification method label for eudi when it is not yet supported">EUDI wallet (not supported in this version)</string>
     <string name="age_verification_screen_error_age_already_verified" description="Age verification error: age is already verified">Age is already verified</string>
     <string name="age_verification_screen_error_age_under_18" description="Age verification error: age is under 18">Must be 18 or older</string>
-    <string name="age_verification_screen_error_verification_data_parsing_failed" description="Age verification error: verification data parsing failed">Invalid identification data</string>
-    <string name="age_verification_screen_error_verification_data_verification_failed" description="Age verification error: verification data verification failed">Identity verification failed</string>
-    <string name="age_verification_screen_error_verification_method_not_configured" description="Age verification error: verification method is not configured">App admin has not configured this verification method</string>
 
     <!-- Age verification required screen -->
     <string name="age_verification_required_screen_title" description="Title for age verification required screen">Age verification required</string>

@@ -176,18 +176,6 @@ class AppLocalizationsEn extends AppLocalizations {
       'Verified photo does not match your security selfie';
 
   @override
-  String get account_verification_screen_error_verification_data_parsing_failed =>
-      'Invalid identification data';
-
-  @override
-  String get account_verification_screen_error_verification_data_verification_failed =>
-      'Identity verification failed';
-
-  @override
-  String get account_verification_screen_error_verification_method_not_configured =>
-      'This verification method is not configured';
-
-  @override
   String get account_verification_screen_previous_verification_errors_title => 'Errors';
 
   @override
@@ -229,10 +217,6 @@ class AppLocalizationsEn extends AppLocalizations {
       'Verification in progress';
 
   @override
-  String get account_verification_screen_verification_method_eudi_unsupported =>
-      'EUDI wallet (not supported in this version)';
-
-  @override
   String get admin_settings_title => 'Admin';
 
   @override
@@ -255,26 +239,10 @@ class AppLocalizationsEn extends AppLocalizations {
   String get age_verification_screen_error_age_under_18 => 'Must be 18 or older';
 
   @override
-  String get age_verification_screen_error_verification_data_parsing_failed =>
-      'Invalid identification data';
-
-  @override
-  String get age_verification_screen_error_verification_data_verification_failed =>
-      'Identity verification failed';
-
-  @override
-  String get age_verification_screen_error_verification_method_not_configured =>
-      'App admin has not configured this verification method';
-
-  @override
   String get age_verification_screen_start_verification_title => 'Start verification';
 
   @override
   String get age_verification_screen_title => 'Age verification';
-
-  @override
-  String get age_verification_screen_verification_method_eudi_unsupported =>
-      'EUDI wallet (not supported in this version)';
 
   @override
   String get app_bar_action_about => 'About';
@@ -2367,6 +2335,19 @@ class AppLocalizationsEn extends AppLocalizations {
 
   @override
   String get url_app_tos_link => 'https://example.com';
+
+  @override
+  String get verification_error_data_parsing_failed => 'Invalid identification data';
+
+  @override
+  String get verification_error_data_verification_failed => 'Identity verification failed';
+
+  @override
+  String get verification_error_method_not_configured =>
+      'App admin has not configured this verification method';
+
+  @override
+  String get verification_method_eudi_unsupported => 'EUDI wallet (not supported in this version)';
 
   @override
   String get video_call_tip_dialog_description =>

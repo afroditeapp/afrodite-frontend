@@ -158,7 +158,7 @@ class _AgeVerificationContentState extends State<AgeVerificationContent> {
       if (widget.methods.eudiEnabled)
         ListTile(
           leading: Icon(Icons.badge_outlined),
-          title: Text(context.strings.age_verification_screen_verification_method_eudi_unsupported),
+          title: Text(context.strings.verification_method_eudi_unsupported),
           enabled: false,
         ),
     ];
@@ -224,15 +224,11 @@ class _AgeVerificationContentState extends State<AgeVerificationContent> {
     } else if (result?.errorAgeUnder18 == true) {
       showSnackBar(context.strings.age_verification_screen_error_age_under_18);
     } else if (result?.errorVerificationDataParsingFailed == true) {
-      showSnackBar(context.strings.age_verification_screen_error_verification_data_parsing_failed);
+      showSnackBar(context.strings.verification_error_data_parsing_failed);
     } else if (result?.errorVerificationDataVerificationFailed == true) {
-      showSnackBar(
-        context.strings.age_verification_screen_error_verification_data_verification_failed,
-      );
+      showSnackBar(context.strings.verification_error_data_verification_failed);
     } else if (result?.errorVerificationMethodNotConfigured == true) {
-      showSnackBar(
-        context.strings.age_verification_screen_error_verification_method_not_configured,
-      );
+      showSnackBar(context.strings.verification_error_method_not_configured);
     } else if (result?.error == true) {
       showSnackBar(context.strings.generic_error);
     }

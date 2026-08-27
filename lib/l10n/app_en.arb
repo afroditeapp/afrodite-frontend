@@ -219,18 +219,6 @@
   "@account_verification_screen_error_security_content_verification_mismatch": {
     "description": "Account verification error: verified security content mismatch"
   },
-  "account_verification_screen_error_verification_data_parsing_failed": "Invalid identification data",
-  "@account_verification_screen_error_verification_data_parsing_failed": {
-    "description": "Account verification error: verification data parsing failed"
-  },
-  "account_verification_screen_error_verification_data_verification_failed": "Identity verification failed",
-  "@account_verification_screen_error_verification_data_verification_failed": {
-    "description": "Account verification error: verification data verification failed"
-  },
-  "account_verification_screen_error_verification_method_not_configured": "This verification method is not configured",
-  "@account_verification_screen_error_verification_method_not_configured": {
-    "description": "Account verification error: verification method is not configured"
-  },
   "account_verification_screen_previous_verification_errors_title": "Errors",
   "@account_verification_screen_previous_verification_errors_title": {
     "description": "Title shown above previous account verification errors"
@@ -285,10 +273,6 @@
   "@account_verification_screen_verification_in_progress_title": {
     "description": "Title shown for account verification in progress section"
   },
-  "account_verification_screen_verification_method_eudi_unsupported": "EUDI wallet (not supported in this version)",
-  "@account_verification_screen_verification_method_eudi_unsupported": {
-    "description": "Account verification method label for eudi when it is not yet supported"
-  },
   "admin_settings_title": "Admin",
   "@admin_settings_title": {
     "description": "Title for admin settings screen"
@@ -317,18 +301,6 @@
   "@age_verification_screen_error_age_under_18": {
     "description": "Age verification error: age is under 18"
   },
-  "age_verification_screen_error_verification_data_parsing_failed": "Invalid identification data",
-  "@age_verification_screen_error_verification_data_parsing_failed": {
-    "description": "Age verification error: verification data parsing failed"
-  },
-  "age_verification_screen_error_verification_data_verification_failed": "Identity verification failed",
-  "@age_verification_screen_error_verification_data_verification_failed": {
-    "description": "Age verification error: verification data verification failed"
-  },
-  "age_verification_screen_error_verification_method_not_configured": "App admin has not configured this verification method",
-  "@age_verification_screen_error_verification_method_not_configured": {
-    "description": "Age verification error: verification method is not configured"
-  },
   "age_verification_screen_start_verification_title": "Start verification",
   "@age_verification_screen_start_verification_title": {
     "description": "Title shown above age verification methods section"
@@ -336,10 +308,6 @@
   "age_verification_screen_title": "Age verification",
   "@age_verification_screen_title": {
     "description": "Title for age verification settings screen"
-  },
-  "age_verification_screen_verification_method_eudi_unsupported": "EUDI wallet (not supported in this version)",
-  "@age_verification_screen_verification_method_eudi_unsupported": {
-    "description": "Age verification method label for eudi when it is not yet supported"
   },
   "app_bar_action_about": "About",
   "@app_bar_action_about": {
@@ -3120,6 +3088,22 @@
   },
   "url_app_privacy_policy_link": "https://example.com",
   "url_app_tos_link": "https://example.com",
+  "verification_error_data_parsing_failed": "Invalid identification data",
+  "@verification_error_data_parsing_failed": {
+    "description": "Verification error: verification data parsing failed"
+  },
+  "verification_error_data_verification_failed": "Identity verification failed",
+  "@verification_error_data_verification_failed": {
+    "description": "Verification error: verification data verification failed"
+  },
+  "verification_error_method_not_configured": "App admin has not configured this verification method",
+  "@verification_error_method_not_configured": {
+    "description": "Verification error: verification method is not configured"
+  },
+  "verification_method_eudi_unsupported": "EUDI wallet (not supported in this version)",
+  "@verification_method_eudi_unsupported": {
+    "description": "Verification method label for eudi when it is not yet supported"
+  },
   "video_call_tip_dialog_description": "You can send a video call invitation using the video call icon at the top right of the chat.",
   "@video_call_tip_dialog_description": {
     "description": "Description text for video call tip dialog"
