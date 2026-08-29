@@ -40,6 +40,7 @@ import 'package:app/ui_utils/dialog.dart';
 import 'package:app/ui_utils/icon_button.dart';
 import 'package:app/ui_utils/bloc_listener.dart';
 import 'package:app/ui_utils/extensions/api.dart';
+import 'package:app/ui_utils/extensions/locale.dart';
 import 'package:app/utils/age.dart';
 import 'package:app/utils/list.dart';
 
@@ -325,7 +326,7 @@ class _EditProfileScreenState extends State<EditProfileScreen> {
               if (resetTime != null) {
                 subtitle = context.strings
                     .edit_profile_screen_unlimited_likes_description_enabled_and_automatic_disabling(
-                      resetTime.uiString(),
+                      resetTime.uiString(Localizations.localeOf(context).localeString()),
                     );
               } else {
                 subtitle = null;

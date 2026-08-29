@@ -13,6 +13,7 @@ import 'package:app/ui_utils/consts/icons.dart';
 import 'package:app/ui_utils/info_banners.dart';
 import 'package:app/ui_utils/moderation.dart';
 import 'package:app/ui_utils/extensions/api.dart';
+import 'package:app/ui_utils/extensions/locale.dart';
 import 'package:app/ui_utils/snack_bar.dart';
 import 'package:app/utils/api.dart';
 import 'package:app/utils/list.dart';
@@ -373,7 +374,8 @@ Future<void> showDailyLikesInfoDialog(BuildContext context, ClientFeaturesConfig
   Widget dialogBuilder(BuildContext context, PageCloser<()> closer) {
     final dailyLikesText = context.strings.profile_grid_screen_daily_likes_dialog_text(
       state.valueDailyLikesLeft().toString(),
-      state.dailyLikesResetTime()?.uiString() ?? context.strings.generic_error,
+      state.dailyLikesResetTime()?.uiString(Localizations.localeOf(context).localeString()) ??
+          context.strings.generic_error,
     );
 
     final showUnlimitedLikesInfo = state.unlimitedLikesResetTime() != null;

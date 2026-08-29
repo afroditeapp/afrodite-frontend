@@ -131,9 +131,9 @@ class Time {
     return Time(hour, minute);
   }
 
-  String uiString() {
+  String uiString(String localeString) {
     final currentTime = UtcDateTime.now();
-    return DateFormat('HH:mm').format(currentDayTime(currentTime, this).dateTime.toLocal());
+    return DateFormat.Hm(localeString).format(currentDayTime(currentTime, this).dateTime.toLocal());
   }
 
   @override
