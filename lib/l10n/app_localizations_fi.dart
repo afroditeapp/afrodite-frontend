@@ -457,14 +457,14 @@ class AppLocalizationsFi extends AppLocalizations {
   String get chat_data_outdated_title => 'Keskustelutiedot vanhentuneet';
 
   @override
-  String get chat_list_screen_no_chats_found => 'Ei vielä keskusteluja';
+  String get chat_list_screen_no_chats_found => 'Ei keskusteluja vielä';
 
   @override
   String get chat_list_screen_no_chats_found_description =>
       'Kerro sovelluksesta sosiaalisessa mediassa';
 
   @override
-  String get chat_list_screen_no_matches_found => 'Ei vielä hyväksyttyjä keskustelupyyntöjä';
+  String get chat_list_screen_no_matches_found => 'Ei hyväksyttyjä keskustelupyyntöjä vielä';
 
   @override
   String get chat_list_screen_open_matches_screen_action => 'Hyväksytyt keskustelupyynnöt';
@@ -554,7 +554,7 @@ class AppLocalizationsFi extends AppLocalizations {
       'Viestit ovat päästä päähän -salattuja';
 
   @override
-  String get conversation_screen_message_list_empty => 'Ei vielä viestejä';
+  String get conversation_screen_message_list_empty => 'Ei viestejä vielä';
 
   @override
   String get conversation_screen_message_not_found => 'Viestiä ei löytynyt';
@@ -1295,7 +1295,7 @@ class AppLocalizationsFi extends AppLocalizations {
   String get likes_screen_like_loading_failed => 'Keskustelupyyntöjen lataus epäonnistui';
 
   @override
-  String get likes_screen_no_received_likes_found => 'Ei vastaanotettuja keskustelupyyntöjä';
+  String get likes_screen_no_received_likes_found => 'Ei keskustelupyyntöjä vielä';
 
   @override
   String get likes_screen_no_received_likes_found_description =>
@@ -1705,7 +1705,7 @@ class AppLocalizationsFi extends AppLocalizations {
   String get profile_filters_screen_profile_edited_filter => 'Profiili muokattu';
 
   @override
-  String get profile_filters_screen_profile_last_seen_time_filter => 'Viimeksi nähty';
+  String get profile_filters_screen_profile_last_seen_time_filter => 'Nähty viimeksi';
 
   @override
   String get profile_filters_screen_profile_last_seen_time_filter_all => 'Milloin vain';
@@ -1741,7 +1741,8 @@ class AppLocalizationsFi extends AppLocalizations {
   String get profile_filters_screen_profile_verification_status_filter => 'Profiilin vahvistus';
 
   @override
-  String get profile_filters_screen_profile_verification_status_filter_face_verified => 'Kasvokuva';
+  String get profile_filters_screen_profile_verification_status_filter_face_verified =>
+      'Kasvokuva vahvistettu moderointiselfiellä';
 
   @override
   String get profile_filters_screen_profile_verification_status_filter_profile_age_range_verified =>
@@ -1826,10 +1827,10 @@ class AppLocalizationsFi extends AppLocalizations {
 
   @override
   String get profile_grid_screen_no_favorite_profiles_found_description =>
-      'Merkitse profiili tähdellä tallentaaksesi sen tänne.';
+      'Merkitse profiili tähdellä tallentaaksesi sen tänne';
 
   @override
-  String get profile_grid_screen_no_favorite_profiles_found_title => 'Ei vielä suosikkeja';
+  String get profile_grid_screen_no_favorite_profiles_found_title => 'Ei suosikkeja vielä';
 
   @override
   String get profile_grid_screen_no_profiles_found_description_filters_disabled =>

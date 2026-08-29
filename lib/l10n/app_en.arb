@@ -1675,7 +1675,7 @@
   "@likes_screen_like_loading_failed": {
     "description": "Text displayed when like loading fails"
   },
-  "likes_screen_no_received_likes_found": "No received chat requests",
+  "likes_screen_no_received_likes_found": "No chat requests yet",
   "@likes_screen_no_received_likes_found": {
     "description": "Info text displayed when there is no received likes"
   },
@@ -2245,7 +2245,7 @@
   "@profile_filters_screen_profile_verification_status_filter": {
     "description": "Title for profile verification status filter"
   },
-  "profile_filters_screen_profile_verification_status_filter_face_verified": "Face picture",
+  "profile_filters_screen_profile_verification_status_filter_face_verified": "Face picture verified with security selfie",
   "@profile_filters_screen_profile_verification_status_filter_face_verified": {
     "description": "Option text for profile verification status filter face verified"
   },
@@ -2378,7 +2378,7 @@
   "@profile_grid_screen_filtering_favorite_profiles_is_not_supported": {
     "description": "Snackbar text that filtering favorite profiles is not supported"
   },
-  "profile_grid_screen_no_favorite_profiles_found_description": "Star a profile to save it here.",
+  "profile_grid_screen_no_favorite_profiles_found_description": "Star a profile to save it here",
   "@profile_grid_screen_no_favorite_profiles_found_description": {
     "description": "Description that no favorite profiles were found"
   },

@@ -398,7 +398,7 @@
     <string name="profile_grid_screen_show_favorite_profiles_action" description="Title for show favorite profiles action">Show favorites</string>
     <string name="profile_grid_screen_show_all_profiles_action" description="Title for show all profiles action">Show all profiles</string>
     <string name="profile_grid_screen_no_favorite_profiles_found_title" description="Title that no favorite profiles were found">No favorites yet</string>
-    <string name="profile_grid_screen_no_favorite_profiles_found_description" description="Description that no favorite profiles were found">Star a profile to save it here.</string>
+    <string name="profile_grid_screen_no_favorite_profiles_found_description" description="Description that no favorite profiles were found">Star a profile to save it here</string>
     <string name="profile_grid_screen_filtering_favorite_profiles_is_not_supported" description="Snackbar text that filtering favorite profiles is not supported">Filtering favorites is not supported</string>
     <string name="profile_grid_screen_daily_likes_dialog_text" description="Dialog text for daily likes info dialog">Daily chat requests left: %s\nReset time: %s</string>
     <string name="profile_grid_screen_daily_likes_dialog_unlimited_likes_text" description="Dialog text for unlimited likes specific text in daily likes info dialog">Sending chat requests to those who are up for a date today does not decrease daily chat requests.</string>
@@ -508,7 +508,7 @@
     <string name="profile_filters_screen_unsigned_integer_filter_max_value_with_unit" description="Value text for unsigned integer attribute filter when only max value is selected and the attribute has a unit">Max %s %s</string>
     <string name="profile_filters_screen_unsigned_integer_filter_min_and_max_value_with_unit" description="Value text for unsigned integer attribute filter when both min and max values are selected and the attribute has a unit">%s-%s %s</string>
     <string name="profile_filters_screen_profile_verification_status_filter" description="Title for profile verification status filter">Profile verification</string>
-    <string name="profile_filters_screen_profile_verification_status_filter_face_verified" description="Option text for profile verification status filter face verified">Face picture</string>
+    <string name="profile_filters_screen_profile_verification_status_filter_face_verified" description="Option text for profile verification status filter face verified">Face picture verified with security selfie</string>
     <string name="profile_filters_screen_profile_verification_status_filter_profile_age_range_verified" description="Option text for profile verification status filter profile age range verified">Age (verified once)</string>
     <string name="profile_filters_screen_profile_verification_status_filter_profile_name_verified" description="Option text for profile verification status filter profile name verified">Name</string>
     <string name="profile_filters_screen_updating_filters_failed" description="Snackbar text for notifying about failed profile filters update">Failed to update filters</string>
@@ -538,7 +538,7 @@
 
     <!-- Likes -->
     <string name="likes_screen_title" description="Title for likes screen">Requests</string>
-    <string name="likes_screen_no_received_likes_found" description="Info text displayed when there is no received likes">No received chat requests</string>
+    <string name="likes_screen_no_received_likes_found" description="Info text displayed when there is no received likes">No chat requests yet</string>
     <string name="likes_screen_no_received_likes_found_description" description="Description text displayed when there is no received likes">Spread the word about the app on social media</string>
     <string name="likes_screen_like_loading_failed" description="Text displayed when like loading fails">Failed to load chat requests</string>
     <string name="likes_screen_refresh_action" description="Title for likes screen refresh action">Refresh</string>

@@ -1288,7 +1288,7 @@ class AppLocalizationsEn extends AppLocalizations {
   String get likes_screen_like_loading_failed => 'Failed to load chat requests';
 
   @override
-  String get likes_screen_no_received_likes_found => 'No received chat requests';
+  String get likes_screen_no_received_likes_found => 'No chat requests yet';
 
   @override
   String get likes_screen_no_received_likes_found_description =>
@@ -1730,7 +1730,7 @@ class AppLocalizationsEn extends AppLocalizations {
 
   @override
   String get profile_filters_screen_profile_verification_status_filter_face_verified =>
-      'Face picture';
+      'Face picture verified with security selfie';
 
   @override
   String get profile_filters_screen_profile_verification_status_filter_profile_age_range_verified =>
@@ -1815,7 +1815,7 @@ class AppLocalizationsEn extends AppLocalizations {
 
   @override
   String get profile_grid_screen_no_favorite_profiles_found_description =>
-      'Star a profile to save it here.';
+      'Star a profile to save it here';
 
   @override
   String get profile_grid_screen_no_favorite_profiles_found_title => 'No favorites yet';

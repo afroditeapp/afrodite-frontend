@@ -2346,7 +2346,7 @@ abstract class AppLocalizations {
   /// Info text displayed when there is no received likes
   ///
   /// In en, this message translates to:
-  /// **'No received chat requests'**
+  /// **'No chat requests yet'**
   String get likes_screen_no_received_likes_found;
 
   /// Description text displayed when there is no received likes
@@ -3126,7 +3126,7 @@ abstract class AppLocalizations {
   /// Option text for profile verification status filter face verified
   ///
   /// In en, this message translates to:
-  /// **'Face picture'**
+  /// **'Face picture verified with security selfie'**
   String get profile_filters_screen_profile_verification_status_filter_face_verified;
 
   /// Option text for profile verification status filter profile age range verified
@@ -3250,7 +3250,7 @@ abstract class AppLocalizations {
   /// Description that no favorite profiles were found
   ///
   /// In en, this message translates to:
-  /// **'Star a profile to save it here.'**
+  /// **'Star a profile to save it here'**
   String get profile_grid_screen_no_favorite_profiles_found_description;
 
   /// Title that no favorite profiles were found
