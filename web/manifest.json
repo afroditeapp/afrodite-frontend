@@ -3,8 +3,6 @@
     "short_name": "Afrodite",
     "start_url": "/app/index.html",
     "display": "standalone",
-    "background_color": "#0175C2",
-    "theme_color": "#0175C2",
     "orientation": "portrait-primary",
     "prefer_related_applications": false,
     "icons": [
