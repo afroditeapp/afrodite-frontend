@@ -68,6 +68,7 @@ update-translations:
 
 update-app-icon:
 	dart run flutter_launcher_icons
+	./tools/generate_web_icons.sh
 
 update-native-utils-ffi-code:
 	cd packages/native_utils_ffi && dart run ffigen --config ffigen.yaml
