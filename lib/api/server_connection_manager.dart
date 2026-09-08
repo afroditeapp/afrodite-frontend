@@ -25,9 +25,9 @@ final _log = Logger("ServerConnectionManager");
 
 class ConnectionRetryManager {
   static const int maxRetries = 1;
-  static const List<int> baseWaitSeconds = [10];
+  static const List<int> baseWaitSeconds = [5];
   static const int minJitterSeconds = 0;
-  static const int maxJitterSeconds = 20;
+  static const int maxJitterSeconds = 10;
 
   int _retryCount = 0;
   final Random _random = Random();
