@@ -116,6 +116,9 @@ build-rust-utils-for-web:
 build-android-release:
 	flutter build apk --release --dart-define=GIT_COMMIT_ID=`git rev-parse --short HEAD`
 
+build-android-release-aab:
+	flutter build appbundle --release --dart-define=GIT_COMMIT_ID=`git rev-parse --short HEAD`
+
 build-ios-release:
 	flutter build ios --release --dart-define=GIT_COMMIT_ID=`git rev-parse --short HEAD`
 

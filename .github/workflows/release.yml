@@ -1,0 +1,68 @@
+name: Release
+
+permissions:
+  contents: write
+
+on:
+  push:
+    tags:
+      - "*v*.*.*"
+
+jobs:
+  release:
+    name: Release
+    runs-on: ubuntu-24.04
+    steps:
+      - name: Checkout code
+        uses: actions/checkout@v4
+
+      - name: Install wasm-pack
+        run: |
+          curl -sL "https://github.com/wasm-bindgen/wasm-pack/releases/download/v0.15.0/wasm-pack-v0.15.0-x86_64-unknown-linux-musl.tar.gz" -o wasm-pack.tar.gz
+          echo "c09f971ecaed9a2efc80fdcea7a00ef6b53c7fadc8c57d1f61b53a6aa66b668a  wasm-pack.tar.gz" | shasum -a 256 -c
+          tar -xzf wasm-pack.tar.gz
+          sudo mv wasm-pack-v0.15.0-x86_64-unknown-linux-musl/wasm-pack /usr/local/bin/
+          wasm-pack --version
+
+      - name: Install Rust wasm target
+        run: |
+          rustup target add wasm32-unknown-unknown
+
+      - name: Set up Flutter
+        uses: subosito/flutter-action@1a449444c387b1966244ae4d4f8c696479add0b2 # v2.23.0
+        with:
+          flutter-version: '3.44.6'
+          channel: 'stable'
+
+      - name: Download web dependencies
+        run: |
+          make remove-and-download-drift-web-dependencies
+          make remove-and-download-native-push-web-dependencies
+          make remove-and-download-mobile-scanner-web-dependencies
+
+      - name: Build rust utils for web
+        run: |
+          make build-rust-utils-for-web
+
+      - name: Build Android release
+        run: |
+          make build-android-release-aab
+
+      - name: Build web release
+        run: |
+          make build-web-release
+
+      - name: Create release assets
+        run: |
+          mkdir -p target/assets
+          cp build/app/outputs/bundle/release/app-release.aab "target/assets/app-release-$GITHUB_REF_NAME.aab"
+          cp build/web-release.tar.gz "target/assets/web-release-$GITHUB_REF_NAME.tar.gz"
+
+      - name: Upload assets
+        uses: softprops/action-gh-release@c95fe1489396fe8a9eb87c0abf8aa5b2ef267fda # v2.2.1
+        if: startsWith(github.ref, 'refs/tags/')
+        with:
+          fail_on_unmatched_files: true
+          files: |
+            target/assets/*.aab
+            target/assets/*.tar.gz

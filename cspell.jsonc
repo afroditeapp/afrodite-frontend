@@ -72,6 +72,10 @@
     "pubspec",
     "unallowed",
     "Elrte",
-    "abackup"
+    "abackup",
+    "appbundle",
+    "rustup",
+    "subosito",
+    "softprops"
   ]
 }
