@@ -650,7 +650,7 @@
   "snackbar_error_logic": "Odottamaton virhe",
   "snackbar_image_quality_degraded": "Monet käyttäjät selaavat profiileja - kuvanlaatu voi olla tilapäisesti heikentynyt",
   "snackbar_play_integrity_api_error": "Sovelluksen vahvistusvirhe: {p0}",
-  "splash_screen_app_is_already_running": "Sovellus on jo käynnissä",
+  "splash_screen_app_is_already_running": "Sovellus on jo käynnissä toisessa ikkunassa. Sulje toinen sovellusinstanssi ja varmista, ettei sovellusta ole auki missään selainikkunassa tai -välilehdessä.",
   "splash_screen_app_version_downgrade_detected": "Varoitus: Sovellusversion vanhentuminen havaittu. Käytä uusinta versiota.",
   "statistics_screen_age_range": "Iät: {p0}",
   "statistics_screen_count_all_profiles": "Kaikki profiilit: {p0}",

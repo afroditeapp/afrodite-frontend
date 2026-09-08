@@ -2248,7 +2248,8 @@ class AppLocalizationsEn extends AppLocalizations {
   }
 
   @override
-  String get splash_screen_app_is_already_running => 'App is already running';
+  String get splash_screen_app_is_already_running =>
+      'App is already running in another window. Please close the other app instance and make sure no browser windows or tabs have this app open.';
 
   @override
   String get splash_screen_app_version_downgrade_detected =>

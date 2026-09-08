@@ -4024,7 +4024,7 @@ abstract class AppLocalizations {
   /// Splash screen error text that app is already running
   ///
   /// In en, this message translates to:
-  /// **'App is already running'**
+  /// **'App is already running in another window. Please close the other app instance and make sure no browser windows or tabs have this app open.'**
   String get splash_screen_app_is_already_running;
 
   /// Splash screen warning text when app major/minor version downgrade is detected

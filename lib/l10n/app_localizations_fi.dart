@@ -2269,7 +2269,8 @@ class AppLocalizationsFi extends AppLocalizations {
   }
 
   @override
-  String get splash_screen_app_is_already_running => 'Sovellus on jo käynnissä';
+  String get splash_screen_app_is_already_running =>
+      'Sovellus on jo käynnissä toisessa ikkunassa. Sulje toinen sovellusinstanssi ja varmista, ettei sovellusta ole auki missään selainikkunassa tai -välilehdessä.';
 
   @override
   String get splash_screen_app_version_downgrade_detected =>

@@ -232,7 +232,7 @@
     <string name="profile_image_error_image_not_accepted">Profiilikuvaa ei ole hyväksytty</string>
 
     <!-- Splash screen -->
-    <string name="splash_screen_app_is_already_running">Sovellus on jo käynnissä</string>
+    <string name="splash_screen_app_is_already_running">Sovellus on jo käynnissä toisessa ikkunassa. Sulje toinen sovellusinstanssi ja varmista, ettei sovellusta ole auki missään selainikkunassa tai -välilehdessä.</string>
     <string name="splash_screen_app_version_downgrade_detected">Varoitus: Sovellusversion vanhentuminen havaittu. Käytä uusinta versiota.</string>
 
     <!-- Login screen -->
