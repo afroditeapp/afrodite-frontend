@@ -33,21 +33,24 @@ Widget signInButtonArea(BuildContext context) {
       Row(
         mainAxisAlignment: MainAxisAlignment.center,
         children: [
-          SizedBox(
-            width: 300,
-            child: Column(
-              children: [
-                termsOfServiceAndPrivacyPolicyInfo(context),
-                if (kIsWeb &&
-                    !(defaultTargetPlatform == TargetPlatform.iOS ||
-                        defaultTargetPlatform == TargetPlatform.android)) ...[
-                  const Padding(padding: EdgeInsets.symmetric(vertical: COMMON_PADDING)),
-                  Text(
-                    context.strings.login_screen_shared_computer_warning,
-                    style: Theme.of(context).textTheme.bodySmall,
-                  ),
+          ConstrainedBox(
+            constraints: const BoxConstraints(maxWidth: 360),
+            child: Padding(
+              padding: const EdgeInsets.symmetric(horizontal: 16.0),
+              child: Column(
+                children: [
+                  termsOfServiceAndPrivacyPolicyInfo(context),
+                  if (kIsWeb &&
+                      !(defaultTargetPlatform == TargetPlatform.iOS ||
+                          defaultTargetPlatform == TargetPlatform.android)) ...[
+                    const Padding(padding: EdgeInsets.symmetric(vertical: COMMON_PADDING)),
+                    Text(
+                      context.strings.login_screen_shared_computer_warning,
+                      style: Theme.of(context).textTheme.bodySmall,
+                    ),
+                  ],
                 ],
-              ],
+              ),
             ),
           ),
         ],
