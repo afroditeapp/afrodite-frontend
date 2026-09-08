@@ -196,6 +196,7 @@ Widget logoAndAppNameAndSlogan(BuildContext context) {
       logoRow,
       const Padding(padding: EdgeInsets.symmetric(vertical: 4)),
       Text(context.strings.app_slogan, style: Theme.of(context).textTheme.titleLarge),
+      const Padding(padding: EdgeInsets.symmetric(vertical: 8)),
     ],
   );
 }
