@@ -441,7 +441,7 @@
     <string name="edit_profile_screen_title">Muokkaa profiilia</string>
     <string name="edit_profile_screen_profile_name">Etunimi</string>
     <string name="edit_profile_screen_profile_name_description">Etunimen muuttaminen on mahdollista vain ennen kuin moderaattorit ovat hyväksyneet sen.</string>
-    <string name="edit_profile_screen_profile_text">Profiilin teksti</string>
+    <string name="edit_profile_screen_profile_text">Profiiliteksti</string>
     <string name="edit_profile_screen_unlimited_likes">Treffiseuraa tälle päivälle</string>
     <string name="edit_profile_screen_unlimited_likes_description_enabled_and_automatic_disabling">Kytkeytyy pois päältä klo %s</string>
     <string name="edit_profile_screen_invalid_profile_name">Virheellinen etunimi</string>

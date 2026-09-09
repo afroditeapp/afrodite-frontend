@@ -747,7 +747,7 @@ class AppLocalizationsFi extends AppLocalizations {
       'Etunimen muuttaminen on mahdollista vain ennen kuin moderaattorit ovat hyväksyneet sen.';
 
   @override
-  String get edit_profile_screen_profile_text => 'Profiilin teksti';
+  String get edit_profile_screen_profile_text => 'Profiiliteksti';
 
   @override
   String get edit_profile_screen_title => 'Muokkaa profiilia';

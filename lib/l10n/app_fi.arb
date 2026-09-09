@@ -204,7 +204,7 @@
   "edit_profile_screen_primary_profile_content_rejected": "Moderaattori hylkäsi kuvan. Vaihda kuva, jotta profiilisi näkyy profiiliruudukossa.",
   "edit_profile_screen_profile_name": "Etunimi",
   "edit_profile_screen_profile_name_description": "Etunimen muuttaminen on mahdollista vain ennen kuin moderaattorit ovat hyväksyneet sen.",
-  "edit_profile_screen_profile_text": "Profiilin teksti",
+  "edit_profile_screen_profile_text": "Profiiliteksti",
   "edit_profile_screen_title": "Muokkaa profiilia",
   "edit_profile_screen_unlimited_likes": "Treffiseuraa tälle päivälle",
   "edit_profile_screen_unlimited_likes_description_enabled_and_automatic_disabling": "Kytkeytyy pois päältä klo {p0}",
