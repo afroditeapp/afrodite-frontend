@@ -113,7 +113,7 @@ lib/config_services.dart
 ```dart
 import 'package:app/data/push_notification_manager.dart';
 
-String signInWithGoogleBackendClientId() => "";
+String signInWithGoogleWebClientId() => "";
 String signInWithAppleServiceIdForAndroidAndWebLogin() => "";
 String iosAppGroupIdentifier() => "";
 

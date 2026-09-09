@@ -39,11 +39,10 @@ class SignInWithGoogleManager {
     }
 
     try {
-      if (kIsWeb || Platform.isAndroid) {
-        await GoogleSignIn.instance.initialize(nonce: _hashedNonceBase64Url);
-      } else if (Platform.isIOS) {
-        await GoogleSignIn.instance.initialize(serverClientId: signInWithGoogleBackendClientId());
-      }
+      await GoogleSignIn.instance.initialize(
+        nonce: _hashedNonceBase64Url,
+        serverClientId: signInWithGoogleWebClientId(),
+      );
     } catch (_) {
       _log.error("Init failed");
       return;
