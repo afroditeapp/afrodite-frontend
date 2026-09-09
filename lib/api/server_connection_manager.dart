@@ -3,6 +3,7 @@ import 'dart:math';
 
 import 'package:app/api/manual_maintenance_info_check.dart';
 import 'package:app/data/login_repository.dart';
+import 'package:app/logic/app/app_visibility_provider.dart';
 import 'package:app/localizations.dart';
 import 'package:app/ui/utils/server_connection_indicator.dart';
 import 'package:app/ui_utils/snack_bar.dart';
@@ -205,6 +206,13 @@ class HandleServerConnectionState extends ServerConnectionManagerCmd<()> {
   }
 }
 
+class HandleAppForegrounding extends ServerConnectionManagerCmd<()> {
+  @override
+  String toString() {
+    return "App foregrounding";
+  }
+}
+
 class ServerConnectionManager extends ApiManager
     implements LifecycleMethods, ServerConnectionInterface {
   final AccountDatabaseManager accountDb;
@@ -304,6 +312,10 @@ class ServerConnectionManager extends ApiManager
                   _serverConnection = null;
                 }
                 await _handleConnectionError(null);
+              case HandleAppForegrounding():
+                if (currentState is NoServerConnection) {
+                  unawaited(restartIfRestartNotOngoing());
+                }
               case HandleServerConnectionState():
                 final currentConnection = _serverConnection;
                 if (currentConnection == null || currentConnection != cmd.serverConnection) {
@@ -334,6 +346,12 @@ class ServerConnectionManager extends ApiManager
   Future<void> _handleConnectionError(ServerConnectionError? error) async {
     switch (error) {
       case ServerConnectionError.connectionFailure:
+        if (!AppVisibilityProvider.getInstance().isForeground) {
+          // Action banner is not needed as app foregrounding starts
+          // connection automatically.
+          _state.add(NoServerConnection(showRetryActionBanner: false));
+          return;
+        }
         final retryDelay = _retryManager.getNextRetryDelaySeconds();
         if (retryDelay != null) {
           _retryManager.recordRetry();
@@ -419,6 +437,13 @@ class ServerConnectionManager extends ApiManager
     _cmds.add(event);
     await event.waitCompletionAndDispose();
     _restartOngoing = false;
+  }
+
+  /// Reconnect client if needed
+  Future<void> handleAppForegrounding() async {
+    final event = HandleAppForegrounding();
+    _cmds.add(event);
+    await event.waitCompletionAndDispose();
   }
 
   Future<void> close() async {

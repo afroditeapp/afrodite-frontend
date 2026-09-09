@@ -64,9 +64,7 @@ class CommonRepository extends DataRepositoryWithLifecycle {
             }
             _backgroundedAt = null;
 
-            if (connectionManager.currentState is NoServerConnection) {
-              await connectionManager.restartIfRestartNotOngoing();
-            }
+            await connectionManager.handleAppForegrounding();
           } else {
             _backgroundedAt = DateTime.now();
             _disconnectTimer = Timer(Duration(seconds: 10), () async {
