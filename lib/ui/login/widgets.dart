@@ -8,9 +8,7 @@ import 'package:app/logic/sign_in_with.dart';
 import 'package:app/ui_utils/consts/colors.dart';
 import 'package:app/ui_utils/image.dart';
 import 'package:app/ui_utils/sign_in_with_google_web_button/button.dart';
-import 'package:app/ui/login/email_login.dart';
 import 'package:app/ui/utils/web_pwa/web_pwa.dart';
-import 'package:app/ui_utils/dialog.dart';
 import 'package:flutter/foundation.dart';
 import 'package:flutter/gestures.dart';
 import 'package:flutter/material.dart';
@@ -68,19 +66,6 @@ Widget signInButtonArea(BuildContext context) {
         ),
       ),
       const Padding(padding: EdgeInsets.symmetric(vertical: COMMON_PADDING)),
-      if (kIsWeb || !Platform.isAndroid)
-        TextButton(
-          onPressed: () async {
-            await showInfoDialog(
-              context,
-              context.strings.login_screen_email_login_info_dialog_text,
-            );
-            if (context.mounted) {
-              openEmailLoginMethodScreen(context);
-            }
-          },
-          child: Text(context.strings.login_screen_sign_in_with_email_action),
-        ),
     ],
   );
 }
