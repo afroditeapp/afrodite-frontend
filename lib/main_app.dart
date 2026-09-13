@@ -4,9 +4,9 @@ import 'package:flutter/material.dart';
 import 'package:app/data/app_version.dart';
 import 'package:app/database/common_database_manager.dart';
 import 'package:app/localizations.dart';
+import 'package:app/localizations_slim.dart';
 
 import 'package:app/l10n/app_localizations.dart';
-import 'package:app/l10n/app_localizations_en.dart';
 import 'package:app/logic/app/main_state.dart';
 import 'package:app/ui/utils/app_lifecycle_handler.dart';
 import 'package:app/ui/utils/main_state_ui_logic.dart';
@@ -16,6 +16,8 @@ import 'package:flutter_bloc/flutter_bloc.dart';
 final globalScaffoldMessengerKey = GlobalKey<ScaffoldMessengerState>();
 
 Future<void> startApp() async {
+  await initLocalizations(WidgetsBinding.instance.platformDispatcher.locale);
+
   // CommonDatabaseManager requires initialized AppVersionManager
   await AppVersionManager.getInstance().init();
   // Locale saving needs database so init here
@@ -38,8 +40,7 @@ class MyApp extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
     return MaterialApp(
-      // Don't use context.strings here to avoid exception on web
-      title: AppLocalizationsEn().app_name,
+      onGenerateTitle: (context) => context.strings.app_name,
       localizationsDelegates: AppLocalizations.localizationsDelegates,
       supportedLocales: AppLocalizations.supportedLocales,
       theme: ThemeData.light().copyWith(pageTransitionsTheme: createPageTransitionsTheme()),
