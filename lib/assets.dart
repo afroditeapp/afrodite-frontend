@@ -4,6 +4,7 @@ import 'package:device_info_plus/device_info_plus.dart';
 import 'package:flutter/foundation.dart';
 import 'package:flutter/services.dart';
 import 'package:app/config.dart';
+import 'package:app/config_slim.dart';
 import 'package:app/data/notification_manager.dart';
 
 Future<Uint8List> loadLetsEncryptRootCertificates() async {
@@ -41,7 +42,7 @@ Future<SecurityContext> createSecurityContextForBackendConnection(String serverA
 }
 
 enum ImageAsset {
-  appLogo(path: "assets/app-icon.png"),
+  appLogo(path: APP_LOGO_PATH),
   signInWithGoogleButtonAndroidDark(path: "assets/sign_in_with_google_android_dark_rd_SI@4x.png"),
   signInWithGoogleButtonAndroidLight(path: "assets/sign_in_with_google_android_light_rd_SI@4x.png"),
   signInWithGoogleButtonIosDark(path: "assets/sign_in_with_google_ios_dark_rd_SI@4x.png"),

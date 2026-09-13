@@ -4,8 +4,9 @@ import 'dart:io';
 
 import 'package:app/ui/login/widgets.dart';
 import 'package:flutter/foundation.dart';
-import 'package:flutter/services.dart';
 import 'package:app/ui/utils/web_navigation/web_navigation.dart';
+
+export 'package:app/config_slim.dart' show DEFAULT_ORIENTATIONS;
 
 const String _debugServerUrlAndroid = "http://10.0.2.2:3000"; // Android emulator host
 const String _debugServerUrlIosAndWeb =
@@ -59,11 +60,6 @@ String defaultServerUrl() {
     throw UnimplementedError();
   }
 }
-
-const List<DeviceOrientation> DEFAULT_ORIENTATIONS = [
-  DeviceOrientation.portraitUp,
-  DeviceOrientation.portraitDown,
-];
 
 const String? GIT_COMMIT_ID = bool.hasEnvironment("GIT_COMMIT_ID")
     ? String.fromEnvironment("GIT_COMMIT_ID")
