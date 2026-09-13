@@ -1,9 +1,9 @@
 import "package:app/data/notification_manager.dart";
 import "package:app/data/push_notification_manager.dart";
 import "package:app/data/utils/repository_instances.dart";
+import "package:app/logic/app/global_init.dart";
 import "package:app/logic/app/main_state_types.dart";
 import "package:app/logic/app/bottom_navigation_state.dart";
-import "package:app/main.dart";
 import "package:app/model/freezed/logic/main/bottom_navigation_state.dart";
 import "package:app/model/freezed/logic/main/navigator_state.dart";
 import "package:app/ui/initial_setup/navigation.dart";
