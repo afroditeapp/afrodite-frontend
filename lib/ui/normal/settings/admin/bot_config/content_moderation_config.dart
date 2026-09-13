@@ -164,11 +164,6 @@ class _EditContentModerationConfigScreenState extends State<EditContentModeratio
           },
         ),
         SwitchListTile(
-          title: const Text("Delete accepted"),
-          value: llm.deleteAccepted,
-          onChanged: (v) => setState(() => llm.deleteAccepted = v),
-        ),
-        SwitchListTile(
           title: const Text("Ignore rejected"),
           value: llm.ignoreRejected,
           onChanged: (v) => setState(() => llm.ignoreRejected = v),

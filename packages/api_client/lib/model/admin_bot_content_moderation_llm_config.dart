@@ -16,9 +16,11 @@ class AdminBotContentModerationLlmConfig {
     required this.expectedResponse,
     required this.systemText,
     this.addLlmOutputToUserVisibleRejectionDetails = false,
-    this.deleteAccepted = false,
+    this.expectedNsfwResponse,
+    this.ignoreNsfw = false,
     this.ignoreRejected = false,
     this.moveAcceptedToHumanModeration = false,
+    this.moveNsfwToHumanModeration = false,
     this.moveRejectedToHumanModeration = false,
   });
 
@@ -29,13 +31,18 @@ class AdminBotContentModerationLlmConfig {
 
   bool addLlmOutputToUserVisibleRejectionDetails;
 
-  /// Overrides [Self::move_accepted_to_human_moderation]
-  bool deleteAccepted;
+  /// If LLM response starts with this text or the first line of the response contains this text, the content is moderated as NSFW which deletes the content from server. The comparisons are case insensitive. If this is None, NSFW detection is disabled.
+  String? expectedNsfwResponse;
+
+  /// Overrides [Self::move_nsfw_to_human_moderation]
+  bool ignoreNsfw;
 
   /// Overrides [Self::move_rejected_to_human_moderation]
   bool ignoreRejected;
 
   bool moveAcceptedToHumanModeration;
+
+  bool moveNsfwToHumanModeration;
 
   bool moveRejectedToHumanModeration;
 
@@ -44,9 +51,11 @@ class AdminBotContentModerationLlmConfig {
     other.expectedResponse == expectedResponse &&
     other.systemText == systemText &&
     other.addLlmOutputToUserVisibleRejectionDetails == addLlmOutputToUserVisibleRejectionDetails &&
-    other.deleteAccepted == deleteAccepted &&
+    other.expectedNsfwResponse == expectedNsfwResponse &&
+    other.ignoreNsfw == ignoreNsfw &&
     other.ignoreRejected == ignoreRejected &&
     other.moveAcceptedToHumanModeration == moveAcceptedToHumanModeration &&
+    other.moveNsfwToHumanModeration == moveNsfwToHumanModeration &&
     other.moveRejectedToHumanModeration == moveRejectedToHumanModeration;
 
   @override
@@ -55,22 +64,30 @@ class AdminBotContentModerationLlmConfig {
     (expectedResponse.hashCode) +
     (systemText.hashCode) +
     (addLlmOutputToUserVisibleRejectionDetails.hashCode) +
-    (deleteAccepted.hashCode) +
+    (expectedNsfwResponse == null ? 0 : expectedNsfwResponse!.hashCode) +
+    (ignoreNsfw.hashCode) +
     (ignoreRejected.hashCode) +
     (moveAcceptedToHumanModeration.hashCode) +
+    (moveNsfwToHumanModeration.hashCode) +
     (moveRejectedToHumanModeration.hashCode);
 
   @override
-  String toString() => 'AdminBotContentModerationLlmConfig[expectedResponse=$expectedResponse, systemText=$systemText, addLlmOutputToUserVisibleRejectionDetails=$addLlmOutputToUserVisibleRejectionDetails, deleteAccepted=$deleteAccepted, ignoreRejected=$ignoreRejected, moveAcceptedToHumanModeration=$moveAcceptedToHumanModeration, moveRejectedToHumanModeration=$moveRejectedToHumanModeration]';
+  String toString() => 'AdminBotContentModerationLlmConfig[expectedResponse=$expectedResponse, systemText=$systemText, addLlmOutputToUserVisibleRejectionDetails=$addLlmOutputToUserVisibleRejectionDetails, expectedNsfwResponse=$expectedNsfwResponse, ignoreNsfw=$ignoreNsfw, ignoreRejected=$ignoreRejected, moveAcceptedToHumanModeration=$moveAcceptedToHumanModeration, moveNsfwToHumanModeration=$moveNsfwToHumanModeration, moveRejectedToHumanModeration=$moveRejectedToHumanModeration]';
 
   Map<String, dynamic> toJson() {
     final json = <String, dynamic>{};
       json[r'expected_response'] = this.expectedResponse;
       json[r'system_text'] = this.systemText;
       json[r'add_llm_output_to_user_visible_rejection_details'] = this.addLlmOutputToUserVisibleRejectionDetails;
-      json[r'delete_accepted'] = this.deleteAccepted;
+    if (this.expectedNsfwResponse != null) {
+      json[r'expected_nsfw_response'] = this.expectedNsfwResponse;
+    } else {
+      json[r'expected_nsfw_response'] = null;
+    }
+      json[r'ignore_nsfw'] = this.ignoreNsfw;
       json[r'ignore_rejected'] = this.ignoreRejected;
       json[r'move_accepted_to_human_moderation'] = this.moveAcceptedToHumanModeration;
+      json[r'move_nsfw_to_human_moderation'] = this.moveNsfwToHumanModeration;
       json[r'move_rejected_to_human_moderation'] = this.moveRejectedToHumanModeration;
     return json;
   }
@@ -97,9 +114,11 @@ class AdminBotContentModerationLlmConfig {
         expectedResponse: mapValueOfType<String>(json, r'expected_response')!,
         systemText: mapValueOfType<String>(json, r'system_text')!,
         addLlmOutputToUserVisibleRejectionDetails: mapValueOfType<bool>(json, r'add_llm_output_to_user_visible_rejection_details') ?? false,
-        deleteAccepted: mapValueOfType<bool>(json, r'delete_accepted') ?? false,
+        expectedNsfwResponse: mapValueOfType<String>(json, r'expected_nsfw_response'),
+        ignoreNsfw: mapValueOfType<bool>(json, r'ignore_nsfw') ?? false,
         ignoreRejected: mapValueOfType<bool>(json, r'ignore_rejected') ?? false,
         moveAcceptedToHumanModeration: mapValueOfType<bool>(json, r'move_accepted_to_human_moderation') ?? false,
+        moveNsfwToHumanModeration: mapValueOfType<bool>(json, r'move_nsfw_to_human_moderation') ?? false,
         moveRejectedToHumanModeration: mapValueOfType<bool>(json, r'move_rejected_to_human_moderation') ?? false,
       );
     }

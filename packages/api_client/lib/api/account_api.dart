@@ -433,6 +433,55 @@ class AccountApi {
     return null;
   }
 
+  /// Get email registration platforms from dynamic server config.
+  ///
+  /// This route is unauthenticated so that the client can check whether email registration is enabled for its platform before starting the email registration flow.
+  ///
+  /// Note: This method returns the HTTP [Response].
+  Future<Response> getEmailRegistrationPlatformsWithHttpInfo({ Future<void>? abortTrigger, }) async {
+    // ignore: prefer_const_declarations
+    final path = r'/account_api/email_registration_platforms';
+
+    // ignore: prefer_final_locals
+    Object? postBody;
+
+    final queryParams = <QueryParam>[];
+    final headerParams = <String, String>{};
+    final formParams = <String, String>{};
+
+    const contentTypes = <String>[];
+
+
+    return apiClient.invokeAPI(
+      path,
+      'GET',
+      queryParams,
+      postBody,
+      headerParams,
+      formParams,
+      contentTypes.isEmpty ? null : contentTypes.first,
+      abortTrigger: abortTrigger,
+    );
+  }
+
+  /// Get email registration platforms from dynamic server config.
+  ///
+  /// This route is unauthenticated so that the client can check whether email registration is enabled for its platform before starting the email registration flow.
+  Future<EmailRegistrationPlatforms?> getEmailRegistrationPlatforms({ Future<void>? abortTrigger, }) async {
+    final response = await getEmailRegistrationPlatformsWithHttpInfo(abortTrigger: abortTrigger,);
+    if (response.statusCode >= HttpStatus.badRequest) {
+      throw ApiException(response.statusCode, await _decodeBodyBytes(response));
+    }
+    // When a remote server returns no body with a status of 204, we shall not decode it.
+    // At the time of writing this, `dart:convert` will throw an "Unexpected end of input"
+    // FormatException when trying to decode an empty string.
+    if (response.body.isNotEmpty && response.statusCode != HttpStatus.noContent) {
+      return await apiClient.deserializeAsync(await _decodeBodyBytes(response), 'EmailRegistrationPlatforms',) as EmailRegistrationPlatforms;
+    
+    }
+    return null;
+  }
+
   /// Get news item content using specific locale and fallback to locale \"en\" if news translation is not found.
   ///
   /// If specific locale is not found when [RequireNewsLocale::require_locale] is `true` then [GetNewsItemResult::item] is `None`.

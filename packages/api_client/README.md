@@ -72,6 +72,7 @@ Class | Method | HTTP request | Description
 *AccountApi* | [**getAssociationMembersOnlyInfo**](doc//AccountApi.md#getassociationmembersonlyinfo) | **GET** /account_api/association_members_only_info | Get association members-only info markdown text.
 *AccountApi* | [**getAssociationMembership**](doc//AccountApi.md#getassociationmembership) | **GET** /account_api/association_membership | Get current association membership.
 *AccountApi* | [**getEmailAddressState**](doc//AccountApi.md#getemailaddressstate) | **GET** /account_api/email_address_state | 
+*AccountApi* | [**getEmailRegistrationPlatforms**](doc//AccountApi.md#getemailregistrationplatforms) | **GET** /account_api/email_registration_platforms | Get email registration platforms from dynamic server config.
 *AccountApi* | [**getNewsItem**](doc//AccountApi.md#getnewsitem) | **GET** /account_api/news_item/{nid} | Get news item content using specific locale and fallback to locale \"en\" if news translation is not found.
 *AccountApi* | [**getSignInWithInfo**](doc//AccountApi.md#getsigninwithinfo) | **GET** /account_api/sign_in_with_info | Get current sign in with Apple and Google state.
 *AccountApi* | [**getVerifyEmail**](doc//AccountApi.md#getverifyemail) | **GET** /verify_email | Show email verification form page. Token is passed via query parameter to prevent email scanners from accidentally verifying the email.
