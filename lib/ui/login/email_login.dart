@@ -3,6 +3,7 @@ import 'package:app/logic/account/email_login.dart';
 import 'package:app/logic/sign_in_with.dart';
 import 'package:app/model/freezed/logic/main/navigator_state.dart';
 import 'package:app/model/freezed/logic/account/email_login.dart';
+import 'package:app/data/app_version.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:app/localizations.dart';
@@ -11,6 +12,7 @@ import 'package:app/ui_utils/extensions/api.dart';
 import 'package:app/utils/consts/limit.dart';
 import 'package:app/utils/email_address_validator.dart';
 import 'package:app/utils/time.dart';
+import 'package:openapi/api.dart';
 
 /// Email sign in method chooser screen. Lets the user choose between logging
 /// in to an existing account or registering a new account.
@@ -19,14 +21,35 @@ void openEmailLoginMethodScreen(BuildContext context) {
 }
 
 class EmailLoginMethodPage extends MyScreenPage<()> with SimpleUrlParser<EmailLoginMethodPage> {
-  EmailLoginMethodPage() : super(builder: (_) => const EmailLoginMethodScreen());
+  EmailLoginMethodPage() : super(builder: (_) => const EmailLoginMethodScreenOpener());
 
   @override
   EmailLoginMethodPage create() => EmailLoginMethodPage();
 }
 
-class EmailLoginMethodScreen extends StatelessWidget {
-  const EmailLoginMethodScreen({super.key});
+class EmailLoginMethodScreenOpener extends StatelessWidget {
+  const EmailLoginMethodScreenOpener({super.key});
+
+  @override
+  Widget build(BuildContext context) {
+    return EmailLoginMethodScreen(emailLoginBloc: context.read<EmailLoginBloc>());
+  }
+}
+
+class EmailLoginMethodScreen extends StatefulWidget {
+  final EmailLoginBloc emailLoginBloc;
+  const EmailLoginMethodScreen({required this.emailLoginBloc, super.key});
+
+  @override
+  State<EmailLoginMethodScreen> createState() => _EmailLoginMethodScreenState();
+}
+
+class _EmailLoginMethodScreenState extends State<EmailLoginMethodScreen> {
+  @override
+  void initState() {
+    super.initState();
+    widget.emailLoginBloc.add(CheckEmailRegistrationEnabled());
+  }
 
   @override
   Widget build(BuildContext context) {
@@ -45,15 +68,57 @@ class EmailLoginMethodScreen extends StatelessWidget {
               onPressed: () => MyNavigator.push(context, EmailLoginPage(loginOnly: true)),
             ),
             const SizedBox(height: 16),
-            _MethodButton(
-              icon: Icons.person_add,
-              title: context.strings.email_login_method_screen_new_account,
-              description: context.strings.email_login_method_screen_new_account_description,
-              onPressed: () => MyNavigator.push(context, EmailLoginPage(loginOnly: false)),
-            ),
+            registerButton(),
           ],
         ),
       ),
+    );
+  }
+
+  Widget registerButton() {
+    return BlocBuilder<EmailLoginBloc, EmailLoginBlocData>(
+      builder: (context, state) {
+        final platforms = state.emailRegistrationPlatforms;
+        final checkDone = state.registrationEnabledCheckDone;
+
+        final registrationActionEnabled =
+            !checkDone || platforms == null || _isRegistrationEnabled(platforms);
+
+        final description = platforms != null && !_isRegistrationEnabled(platforms)
+            ? _registrationDisabledExplanation(context, platforms)
+            : context.strings.email_login_method_screen_new_account_description;
+
+        return _MethodButton(
+          icon: Icons.person_add,
+          title: context.strings.email_login_method_screen_new_account,
+          description: description,
+          onPressed: registrationActionEnabled
+              ? () => MyNavigator.push(context, EmailLoginPage(loginOnly: false))
+              : null,
+        );
+      },
+    );
+  }
+
+  bool _isRegistrationEnabled(EmailRegistrationPlatforms platforms) {
+    return switch (AppVersionManager.getInstance().clientType) {
+      ClientType.android => platforms.android,
+      ClientType.ios => platforms.ios,
+      ClientType.web => platforms.web,
+      ClientType.bot || ClientType.unknownDefaultOpenApi => false,
+    };
+  }
+
+  String _registrationDisabledExplanation(
+    BuildContext context,
+    EmailRegistrationPlatforms platforms,
+  ) {
+    final allPlatformsDisabled = !platforms.android && !platforms.ios && !platforms.web;
+    if (allPlatformsDisabled) {
+      return context.strings.login_screen_registration_all_platforms_disabled;
+    }
+    return context.strings.login_screen_registration_platform_disabled(
+      platformNameFromClientType(),
     );
   }
 }
@@ -62,7 +127,7 @@ class _MethodButton extends StatelessWidget {
   final IconData icon;
   final String title;
   final String description;
-  final VoidCallback onPressed;
+  final VoidCallback? onPressed;
 
   const _MethodButton({
     required this.icon,
@@ -74,6 +139,7 @@ class _MethodButton extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
     final colorScheme = Theme.of(context).colorScheme;
+    final enabled = onPressed != null;
     return Card(
       elevation: 2,
       shape: RoundedRectangleBorder(borderRadius: BorderRadius.circular(16)),
@@ -87,10 +153,16 @@ class _MethodButton extends StatelessWidget {
               Container(
                 padding: const EdgeInsets.all(12),
                 decoration: BoxDecoration(
-                  color: colorScheme.primaryContainer,
+                  color: enabled
+                      ? colorScheme.primaryContainer
+                      : colorScheme.surfaceContainerHighest,
                   shape: BoxShape.circle,
                 ),
-                child: Icon(icon, size: 32, color: colorScheme.onPrimaryContainer),
+                child: Icon(
+                  icon,
+                  size: 32,
+                  color: enabled ? colorScheme.onPrimaryContainer : colorScheme.onSurfaceVariant,
+                ),
               ),
               const SizedBox(width: 16),
               Expanded(
@@ -103,7 +175,10 @@ class _MethodButton extends StatelessWidget {
                   ],
                 ),
               ),
-              const Icon(Icons.chevron_right),
+              Icon(
+                enabled ? Icons.chevron_right : Icons.block,
+                color: enabled ? null : colorScheme.onSurfaceVariant,
+              ),
             ],
           ),
         ),

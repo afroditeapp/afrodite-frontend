@@ -1,5 +1,6 @@
 import "dart:async";
 import "package:app/logic/sign_in_with.dart";
+import "package:bloc_concurrency/bloc_concurrency.dart";
 import "package:flutter_bloc/flutter_bloc.dart";
 import "package:app/config.dart";
 import "package:app/data/login_repository.dart";
@@ -20,6 +21,8 @@ class RequestEmailToken extends EmailLoginEvent {
   RequestEmailToken(this.email, {this.loginOnly = false});
 }
 
+class CheckEmailRegistrationEnabled extends EmailLoginEvent {}
+
 class SubmitLoginCode extends EmailLoginEvent {
   final String clientToken;
   final String emailToken;
@@ -33,6 +36,21 @@ class EmailLoginBloc extends Bloc<EmailLoginEvent, EmailLoginBlocData> with Acti
   Timer? _tokenValidityTimer;
 
   EmailLoginBloc() : login = LoginRepository.getInstance(), super(EmailLoginBlocData()) {
+    on<CheckEmailRegistrationEnabled>((event, emit) async {
+      final currentServerAddress = await login.accountServerAddress.first;
+      final serverAddress = serverAddressForSignIn(currentServerAddress);
+      final result = await login.getEmailRegistrationPlatforms(serverAddress);
+
+      switch (result) {
+        case Ok(:final v):
+          emit(state.copyWith(emailRegistrationPlatforms: v, registrationEnabledCheckDone: true));
+        case Err():
+          // If the request failed, keep registration enabled by default.
+          emit(
+            state.copyWith(emailRegistrationPlatforms: null, registrationEnabledCheckDone: true),
+          );
+      }
+    }, transformer: droppable());
     on<RequestEmailToken>((event, emit) async {
       await runOnce(() async {
         emit(state.copyWith(isLoading: true, error: null));

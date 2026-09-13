@@ -44,5 +44,7 @@ class EmailLoginBlocData with _$EmailLoginBlocData, UpdateStateProvider {
     int? tokenValiditySeconds,
     int? resendWaitSeconds,
     @Default(UpdateIdle()) UpdateState updateState,
+    EmailRegistrationPlatforms? emailRegistrationPlatforms,
+    @Default(false) bool registrationEnabledCheckDone,
   }) = _EmailLoginBlocData;
 }

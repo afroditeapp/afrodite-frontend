@@ -28,6 +28,8 @@ mixin _$EmailLoginBlocData {
   int? get tokenValiditySeconds => throw _privateConstructorErrorEmailLoginBlocData;
   int? get resendWaitSeconds => throw _privateConstructorErrorEmailLoginBlocData;
   UpdateState get updateState => throw _privateConstructorErrorEmailLoginBlocData;
+  EmailRegistrationPlatforms? get emailRegistrationPlatforms => throw _privateConstructorErrorEmailLoginBlocData;
+  bool get registrationEnabledCheckDone => throw _privateConstructorErrorEmailLoginBlocData;
 
   EmailLoginBlocData copyWith({
     bool? isLoading,
@@ -37,6 +39,8 @@ mixin _$EmailLoginBlocData {
     int? tokenValiditySeconds,
     int? resendWaitSeconds,
     UpdateState? updateState,
+    EmailRegistrationPlatforms? emailRegistrationPlatforms,
+    bool? registrationEnabledCheckDone,
   }) => throw _privateConstructorErrorEmailLoginBlocData;
 }
 
@@ -50,6 +54,8 @@ abstract class _EmailLoginBlocData implements EmailLoginBlocData {
     int? tokenValiditySeconds,
     int? resendWaitSeconds,
     UpdateState updateState,
+    EmailRegistrationPlatforms? emailRegistrationPlatforms,
+    bool registrationEnabledCheckDone,
   }) = _$EmailLoginBlocDataImpl;
 }
 
@@ -57,6 +63,7 @@ abstract class _EmailLoginBlocData implements EmailLoginBlocData {
 class _$EmailLoginBlocDataImpl with DiagnosticableTreeMixin implements _EmailLoginBlocData {
   static const bool _isLoadingDefaultValue = false;
   static const UpdateState _updateStateDefaultValue = UpdateIdle();
+  static const bool _registrationEnabledCheckDoneDefaultValue = false;
 
   _$EmailLoginBlocDataImpl({
     this.isLoading = _isLoadingDefaultValue,
@@ -66,6 +73,8 @@ class _$EmailLoginBlocDataImpl with DiagnosticableTreeMixin implements _EmailLog
     this.tokenValiditySeconds,
     this.resendWaitSeconds,
     this.updateState = _updateStateDefaultValue,
+    this.emailRegistrationPlatforms,
+    this.registrationEnabledCheckDone = _registrationEnabledCheckDoneDefaultValue,
   });
 
   @override
@@ -82,10 +91,14 @@ class _$EmailLoginBlocDataImpl with DiagnosticableTreeMixin implements _EmailLog
   final int? resendWaitSeconds;
   @override
   final UpdateState updateState;
+  @override
+  final EmailRegistrationPlatforms? emailRegistrationPlatforms;
+  @override
+  final bool registrationEnabledCheckDone;
 
   @override
   String toString({DiagnosticLevel minLevel = DiagnosticLevel.info}) {
-    return 'EmailLoginBlocData(isLoading: $isLoading, error: $error, email: $email, clientToken: $clientToken, tokenValiditySeconds: $tokenValiditySeconds, resendWaitSeconds: $resendWaitSeconds, updateState: $updateState)';
+    return 'EmailLoginBlocData(isLoading: $isLoading, error: $error, email: $email, clientToken: $clientToken, tokenValiditySeconds: $tokenValiditySeconds, resendWaitSeconds: $resendWaitSeconds, updateState: $updateState, emailRegistrationPlatforms: $emailRegistrationPlatforms, registrationEnabledCheckDone: $registrationEnabledCheckDone)';
   }
 
   @override
@@ -99,7 +112,9 @@ class _$EmailLoginBlocDataImpl with DiagnosticableTreeMixin implements _EmailLog
       ..add(DiagnosticsProperty('clientToken', clientToken))
       ..add(DiagnosticsProperty('tokenValiditySeconds', tokenValiditySeconds))
       ..add(DiagnosticsProperty('resendWaitSeconds', resendWaitSeconds))
-      ..add(DiagnosticsProperty('updateState', updateState));
+      ..add(DiagnosticsProperty('updateState', updateState))
+      ..add(DiagnosticsProperty('emailRegistrationPlatforms', emailRegistrationPlatforms))
+      ..add(DiagnosticsProperty('registrationEnabledCheckDone', registrationEnabledCheckDone));
   }
 
   @override
@@ -120,7 +135,11 @@ class _$EmailLoginBlocDataImpl with DiagnosticableTreeMixin implements _EmailLog
         (identical(other.resendWaitSeconds, resendWaitSeconds) ||
           other.resendWaitSeconds == resendWaitSeconds) &&
         (identical(other.updateState, updateState) ||
-          other.updateState == updateState)
+          other.updateState == updateState) &&
+        (identical(other.emailRegistrationPlatforms, emailRegistrationPlatforms) ||
+          other.emailRegistrationPlatforms == emailRegistrationPlatforms) &&
+        (identical(other.registrationEnabledCheckDone, registrationEnabledCheckDone) ||
+          other.registrationEnabledCheckDone == registrationEnabledCheckDone)
     );
   }
 
@@ -134,6 +153,8 @@ class _$EmailLoginBlocDataImpl with DiagnosticableTreeMixin implements _EmailLog
     tokenValiditySeconds,
     resendWaitSeconds,
     updateState,
+    emailRegistrationPlatforms,
+    registrationEnabledCheckDone,
   );
 
   @override
@@ -145,6 +166,8 @@ class _$EmailLoginBlocDataImpl with DiagnosticableTreeMixin implements _EmailLog
     Object? tokenValiditySeconds = _detectDefaultValueInCopyWith,
     Object? resendWaitSeconds = _detectDefaultValueInCopyWith,
     Object? updateState,
+    Object? emailRegistrationPlatforms = _detectDefaultValueInCopyWith,
+    Object? registrationEnabledCheckDone,
   }) => _$EmailLoginBlocDataImpl(
     isLoading: (isLoading ?? this.isLoading) as bool,
     error: (error == _detectDefaultValueInCopyWith ? this.error : error) as EmailLoginError?,
@@ -153,5 +176,7 @@ class _$EmailLoginBlocDataImpl with DiagnosticableTreeMixin implements _EmailLog
     tokenValiditySeconds: (tokenValiditySeconds == _detectDefaultValueInCopyWith ? this.tokenValiditySeconds : tokenValiditySeconds) as int?,
     resendWaitSeconds: (resendWaitSeconds == _detectDefaultValueInCopyWith ? this.resendWaitSeconds : resendWaitSeconds) as int?,
     updateState: (updateState ?? this.updateState) as UpdateState,
+    emailRegistrationPlatforms: (emailRegistrationPlatforms == _detectDefaultValueInCopyWith ? this.emailRegistrationPlatforms : emailRegistrationPlatforms) as EmailRegistrationPlatforms?,
+    registrationEnabledCheckDone: (registrationEnabledCheckDone ?? this.registrationEnabledCheckDone) as bool,
   );
 }

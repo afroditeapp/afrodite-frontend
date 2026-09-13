@@ -68,6 +68,12 @@ class EmailLoginWithToken extends LoginRepositoryCmd<Result<(), CommonSignInErro
   EmailLoginWithToken(this.clientToken, this.emailToken);
 }
 
+class GetEmailRegistrationPlatforms
+    extends LoginRepositoryCmd<Result<EmailRegistrationPlatforms, ()>> {
+  final String serverAddress;
+  GetEmailRegistrationPlatforms(this.serverAddress);
+}
+
 class DemoAccountLogin extends LoginRepositoryCmd<Result<(), DemoAccountLoginError>> {
   final DemoAccountCredentials credentials;
   final String serverAddress;
@@ -237,6 +243,8 @@ class LoginRepository extends AppSingleton {
               cmd.completed.add(await _handleEmailLoginRequestToken(cmd));
             case EmailLoginWithToken():
               cmd.completed.add(await _handleEmailLoginWithToken(cmd));
+            case GetEmailRegistrationPlatforms():
+              cmd.completed.add(await _handleGetEmailRegistrationPlatforms(cmd));
             case DemoAccountLogin():
               final changeServerResult = await _setCurrentServerAddressIfNeeded(cmd.serverAddress);
               if (changeServerResult.isErr()) {
@@ -383,6 +391,23 @@ class LoginRepository extends AppSingleton {
   }
 
   String _emailDomain(String email) => email.split('@').last;
+
+  Future<Result<EmailRegistrationPlatforms, ()>> _handleGetEmailRegistrationPlatforms(
+    GetEmailRegistrationPlatforms cmd,
+  ) async {
+    final changeServerResult = await _setCurrentServerAddressIfNeeded(cmd.serverAddress);
+    if (changeServerResult.isErr()) {
+      return Err(());
+    }
+
+    final platforms = await _apiNoConnection
+        .account((api) => api.getEmailRegistrationPlatforms())
+        .ok();
+    if (platforms == null) {
+      return Err(());
+    }
+    return Ok(platforms);
+  }
 
   Future<Result<(), CommonSignInError>> _handleEmailLoginWithToken(EmailLoginWithToken cmd) async {
     final clientInfo = await AppVersionManager.getInstance().clientInfoWithAppAttestation();
@@ -630,6 +655,15 @@ class LoginRepository extends AppSingleton {
     required bool loginOnly,
   }) async {
     final event = EmailLoginRequestToken(email, serverAddress, loginOnly: loginOnly);
+    _cmds.add(event);
+    return await event.waitCompletionAndDispose();
+  }
+
+  /// Get email registration platforms from the server.
+  Future<Result<EmailRegistrationPlatforms, ()>> getEmailRegistrationPlatforms(
+    String serverAddress,
+  ) async {
+    final event = GetEmailRegistrationPlatforms(serverAddress);
     _cmds.add(event);
     return await event.waitCompletionAndDispose();
   }
