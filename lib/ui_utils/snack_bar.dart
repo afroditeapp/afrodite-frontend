@@ -1,5 +1,5 @@
+import 'package:app/main_app.dart';
 import 'package:flutter/material.dart';
-import 'package:app/main.dart';
 
 void showSnackBar(String text) {
   Future.delayed(Duration.zero, () {

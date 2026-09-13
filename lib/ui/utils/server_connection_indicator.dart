@@ -2,7 +2,7 @@ import 'dart:async';
 
 import 'package:app/api/server_connection_manager.dart';
 import 'package:app/localizations.dart';
-import 'package:app/main.dart';
+import 'package:app/main_app.dart';
 import 'package:app/ui_utils/extensions/api.dart';
 import 'package:app/ui_utils/dialog.dart';
 import 'package:flutter/material.dart';
