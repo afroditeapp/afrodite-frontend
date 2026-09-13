@@ -146,11 +146,21 @@ class _EditContentModerationConfigScreenState extends State<EditContentModeratio
       children: [
         TextFormField(
           initialValue: llm.expectedResponse,
-          decoration: const InputDecoration(labelText: "Expected Response"),
+          decoration: const InputDecoration(labelText: "Expected Accepted Response"),
           validator: _validateRequiredText,
           onChanged: (v) {
             setState(() => llm.expectedResponse = v);
             _formKey.currentState?.validate();
+          },
+        ),
+        TextFormField(
+          initialValue: llm.expectedNsfwResponse,
+          decoration: const InputDecoration(
+            labelText: "Expected NSFW Response",
+            helperText: "Leave empty to disable NSFW removing",
+          ),
+          onChanged: (v) {
+            setState(() => llm.expectedNsfwResponse = v.isEmpty ? null : v);
           },
         ),
         TextFormField(
@@ -162,6 +172,16 @@ class _EditContentModerationConfigScreenState extends State<EditContentModeratio
             setState(() => llm.systemText = v);
             _formKey.currentState?.validate();
           },
+        ),
+        SwitchListTile(
+          title: const Text("Ignore NSFW"),
+          value: llm.ignoreNsfw,
+          onChanged: (v) => setState(() => llm.ignoreNsfw = v),
+        ),
+        SwitchListTile(
+          title: const Text("Move NSFW to human"),
+          value: llm.moveNsfwToHumanModeration,
+          onChanged: (v) => setState(() => llm.moveNsfwToHumanModeration = v),
         ),
         SwitchListTile(
           title: const Text("Ignore rejected"),
