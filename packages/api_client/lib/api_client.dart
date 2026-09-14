@@ -299,6 +299,8 @@ class ApiClient {
           return ApiUsageStatistics.fromJson(value);
         case 'AppAttestation':
           return AppAttestation.fromJson(value);
+        case 'AppAttestationTypeNumber':
+          return AppAttestationTypeNumberTypeTransformer().decode(value);
         case 'AssociationConfig':
           return AssociationConfig.fromJson(value);
         case 'AssociationMember':
@@ -493,6 +495,8 @@ class ApiClient {
           return GetAccountDeletionRequestResult.fromJson(value);
         case 'GetAccountIdFromEmailResult':
           return GetAccountIdFromEmailResult.fromJson(value);
+        case 'GetAccountLoginSessionInfo':
+          return GetAccountLoginSessionInfo.fromJson(value);
         case 'GetAccountVerificationQueueNextItemResult':
           return GetAccountVerificationQueueNextItemResult.fromJson(value);
         case 'GetAllAdminsResult':
@@ -621,6 +625,8 @@ class ApiClient {
           return Location.fromJson(value);
         case 'LoginResult':
           return LoginResult.fromJson(value);
+        case 'LoginSessionInfo':
+          return LoginSessionInfo.fromJson(value);
         case 'MaintenanceTask':
           return MaintenanceTask.fromJson(value);
         case 'ManagerInstanceNameList':

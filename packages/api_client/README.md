@@ -114,6 +114,7 @@ Class | Method | HTTP request | Description
 *AccountAdminApi* | [**deleteNewsTranslation**](doc//AccountAdminApi.md#deletenewstranslation) | **DELETE** /account_api/delete_news_translation/{nid}/{locale} | 
 *AccountAdminApi* | [**getAccountIdFromEmail**](doc//AccountAdminApi.md#getaccountidfromemail) | **GET** /account_api/get_account_id_from_email/{email} | Get account ID from email
 *AccountAdminApi* | [**getAccountLockedState**](doc//AccountAdminApi.md#getaccountlockedstate) | **GET** /account_api/get_account_locked_state/{aid} | Get account locked state
+*AccountAdminApi* | [**getAccountLoginSessionInfo**](doc//AccountAdminApi.md#getaccountloginsessioninfo) | **GET** /account_api/get_account_login_session_info/{aid} | Get login session info for specific account.
 *AccountAdminApi* | [**getAccountStateAdmin**](doc//AccountAdminApi.md#getaccountstateadmin) | **GET** /account_api/get_account_state_admin/{aid} | Get [model::Account] for specific account.
 *AccountAdminApi* | [**getAccountVerificationQueueNextItem**](doc//AccountAdminApi.md#getaccountverificationqueuenextitem) | **GET** /account_api/account_verification_queue_next_item | Get next item in account verification queue.
 *AccountAdminApi* | [**getAllAdmins**](doc//AccountAdminApi.md#getalladmins) | **GET** /account_api/get_all_admins | Get all admins
@@ -366,6 +367,7 @@ Class | Method | HTTP request | Description
  - [ApiUsageCount](doc//ApiUsageCount.md)
  - [ApiUsageStatistics](doc//ApiUsageStatistics.md)
  - [AppAttestation](doc//AppAttestation.md)
+ - [AppAttestationTypeNumber](doc//AppAttestationTypeNumber.md)
  - [AssociationConfig](doc//AssociationConfig.md)
  - [AssociationMember](doc//AssociationMember.md)
  - [AssociationMembersPage](doc//AssociationMembersPage.md)
@@ -463,6 +465,7 @@ Class | Method | HTTP request | Description
  - [GetAccountBanTimeResult](doc//GetAccountBanTimeResult.md)
  - [GetAccountDeletionRequestResult](doc//GetAccountDeletionRequestResult.md)
  - [GetAccountIdFromEmailResult](doc//GetAccountIdFromEmailResult.md)
+ - [GetAccountLoginSessionInfo](doc//GetAccountLoginSessionInfo.md)
  - [GetAccountVerificationQueueNextItemResult](doc//GetAccountVerificationQueueNextItemResult.md)
  - [GetAllAdminsResult](doc//GetAllAdminsResult.md)
  - [GetApiUsageStatisticsResult](doc//GetApiUsageStatisticsResult.md)
@@ -527,6 +530,7 @@ Class | Method | HTTP request | Description
  - [LimitedActionStatus](doc//LimitedActionStatus.md)
  - [Location](doc//Location.md)
  - [LoginResult](doc//LoginResult.md)
+ - [LoginSessionInfo](doc//LoginSessionInfo.md)
  - [MaintenanceTask](doc//MaintenanceTask.md)
  - [ManagerInstanceNameList](doc//ManagerInstanceNameList.md)
  - [ManualAssociationMembershipRegistry](doc//ManualAssociationMembershipRegistry.md)

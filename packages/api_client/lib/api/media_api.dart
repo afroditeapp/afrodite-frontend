@@ -18,7 +18,7 @@ class MediaApi {
 
   /// Delete content data.
   ///
-  /// # Own account Content can be deleted after specific time has passed since removing all usage of it (content is not assigned as security or profile content).  # Admin Admin can remove content without restrictions with permission `admin_delete_media_content`.
+  /// # Own account Content can be deleted after specific time has passed since removing all usage of it (content is not assigned as security or profile content).  # Admin Admin can remove content without restrictions with permission `admin_delete_media_content`.  When bot removes the content, the unallowed content notification is sent to content owner.
   ///
   /// Note: This method returns the HTTP [Response].
   ///
@@ -57,7 +57,7 @@ class MediaApi {
 
   /// Delete content data.
   ///
-  /// # Own account Content can be deleted after specific time has passed since removing all usage of it (content is not assigned as security or profile content).  # Admin Admin can remove content without restrictions with permission `admin_delete_media_content`.
+  /// # Own account Content can be deleted after specific time has passed since removing all usage of it (content is not assigned as security or profile content).  # Admin Admin can remove content without restrictions with permission `admin_delete_media_content`.  When bot removes the content, the unallowed content notification is sent to content owner.
   ///
   /// Parameters:
   ///

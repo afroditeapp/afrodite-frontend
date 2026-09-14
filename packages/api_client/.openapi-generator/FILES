@@ -80,6 +80,7 @@ lib/model/age_verification_platforms.dart
 lib/model/api_usage_count.dart
 lib/model/api_usage_statistics.dart
 lib/model/app_attestation.dart
+lib/model/app_attestation_type_number.dart
 lib/model/association_config.dart
 lib/model/association_member.dart
 lib/model/association_members_page.dart
@@ -177,6 +178,7 @@ lib/model/first_image_config.dart
 lib/model/get_account_ban_time_result.dart
 lib/model/get_account_deletion_request_result.dart
 lib/model/get_account_id_from_email_result.dart
+lib/model/get_account_login_session_info.dart
 lib/model/get_account_verification_queue_next_item_result.dart
 lib/model/get_all_admins_result.dart
 lib/model/get_api_usage_statistics_result.dart
@@ -241,6 +243,7 @@ lib/model/likes_config.dart
 lib/model/limited_action_status.dart
 lib/model/location.dart
 lib/model/login_result.dart
+lib/model/login_session_info.dart
 lib/model/maintenance_task.dart
 lib/model/manager_instance_name_list.dart
 lib/model/manual_association_membership_registry.dart
