@@ -123,10 +123,10 @@ build-ios-release:
 	flutter build ios --release --dart-define=GIT_COMMIT_ID=`git rev-parse --short HEAD`
 
 build-web-release:
-	make _build-web BUILD_ARGS="--release --wasm --dart-define=GIT_COMMIT_ID=`git rev-parse --short HEAD`" OUTPUT=web-release.tar.gz
+	make _build-web BUILD_ARGS="--release --wasm --enable-wasm-deferred-loading --dart-define=GIT_COMMIT_ID=`git rev-parse --short HEAD`" OUTPUT=web-release.tar.gz
 
 build-web-profile:
-	make _build-web BUILD_ARGS="--profile --wasm" OUTPUT=web-profile.tar.gz BUILD_TIME=`date +%s`
+	make _build-web BUILD_ARGS="--profile --wasm --enable-wasm-deferred-loading" OUTPUT=web-profile.tar.gz BUILD_TIME=`date +%s`
 
 build-web-debug:
 	make _build-web BUILD_ARGS="--debug" OUTPUT=web-debug.tar.gz BUILD_TIME=`date +%s`
