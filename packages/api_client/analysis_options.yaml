@@ -3,3 +3,4 @@
 analyzer:
   errors:
     todo: ignore
+    unawaited_return_in_try_block: ignore
