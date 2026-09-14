@@ -359,7 +359,7 @@ class _AccountAdminSettingsScreenState extends State<AccountAdminSettingsScreen>
       );
     }
 
-    if (permissions.adminEditLogin) {
+    if (permissions.adminViewLogin || permissions.adminEditLogin) {
       list.add(
         Setting.createSetting(
           Icons.login,
@@ -421,6 +421,7 @@ class AccountAdminSettingsPermissions {
   bool get adminExportData => _permissions.adminExportData;
   bool get adminEditProfileName => _permissions.adminEditProfileName;
   bool get adminEditLogin => _permissions.adminEditLogin;
+  bool get adminViewLogin => _permissions.adminViewLogin;
   bool get adminEditMediaContentFaceVerifiedValue =>
       _permissions.adminEditMediaContentFaceVerifiedValue;
   bool get adminEditProfileAgeRangeVerifiedValue =>
@@ -450,6 +451,7 @@ class AccountAdminSettingsPermissions {
     return adminModifyPermissions ||
         adminEditProfileName ||
         adminEditLogin ||
+        adminViewLogin ||
         adminEditMediaContentFaceVerifiedValue ||
         adminEditProfileAgeRangeVerifiedValue ||
         adminEditProfileNameVerifiedValue ||
