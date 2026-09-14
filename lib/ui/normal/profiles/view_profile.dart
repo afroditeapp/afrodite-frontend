@@ -236,7 +236,7 @@ class ViewProfileScreen extends StatelessWidget {
         return FloatingActionButton(
           onPressed: () => openConversationScreen(context, state.profile.accountId, state.profile),
           tooltip: context.strings.view_profile_screen_chat_action,
-          child: const Icon(Icons.chat_rounded),
+          child: const Icon(Icons.chat),
         );
       case null:
         return null;
