@@ -257,9 +257,8 @@ Widget settingsCategoryTitle(BuildContext context, String text) {
     padding: const EdgeInsets.symmetric(horizontal: 16, vertical: 8),
     child: Text(
       text,
-      style: Theme.of(
-        context,
-      ).textTheme.titleSmall?.copyWith(color: Theme.of(context).colorScheme.primary),
+      style: Theme.of(context).textTheme.titleSmall
+          ?.copyWith(color: Theme.of(context).colorScheme.primary),
     ),
   );
 }

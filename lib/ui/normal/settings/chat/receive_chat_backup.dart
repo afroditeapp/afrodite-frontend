@@ -169,9 +169,8 @@ class _ReceiveChatBackupScreenState extends State<ReceiveChatBackupScreen> {
                 Expanded(
                   child: Text(
                     pairingCode,
-                    style: Theme.of(
-                      context,
-                    ).textTheme.bodyMedium?.copyWith(fontFamily: 'monospace'),
+                    style: Theme.of(context).textTheme.bodyMedium
+                        ?.copyWith(fontFamily: 'monospace'),
                     textAlign: TextAlign.center,
                   ),
                 ),

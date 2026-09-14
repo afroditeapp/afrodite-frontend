@@ -17,9 +17,8 @@ class DaoWriteLoginSession extends DatabaseAccessor<AccountDatabase>
     await transaction(() async {
       final currentAccountId = await db.read.loginSession.watchAccountId().firstOrNull;
       if (currentAccountId == null) {
-        await into(
-          dbOwner,
-        ).insertOnConflictUpdate(DbOwnerCompanion.insert(id: SingleRowTable.ID, accountId: id));
+        await into(dbOwner)
+            .insertOnConflictUpdate(DbOwnerCompanion.insert(id: SingleRowTable.ID, accountId: id));
       }
     });
   }

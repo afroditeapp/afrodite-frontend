@@ -55,14 +55,12 @@ Future<(EncryptResult?, int)> encryptMessage(
 ) async {
   try {
     final module = await _rustUtils.toDart as RustUtils;
-    final result =
-        module.encryptDataRust.callAsFunction(
-              null,
-              senderPrivateKey.toJS,
-              recipientPublicKey.toJS,
-              data.toJS,
-            )
-            as EncryptingOutput;
+    final result = module.encryptDataRust.callAsFunction(
+      null,
+      senderPrivateKey.toJS,
+      recipientPublicKey.toJS,
+      data.toJS,
+    ) as EncryptingOutput;
     return (
       EncryptResult(pgpMessage: result.message.toDart, sessionKey: result.sessionKey.toDart),
       0,
@@ -79,14 +77,12 @@ Future<(DecryptResult?, int)> decryptMessage(
 ) async {
   try {
     final module = await _rustUtils.toDart as RustUtils;
-    final result =
-        module.decryptDataRust.callAsFunction(
-              null,
-              senderPublicKey.toJS,
-              recipientPrivateKey.toJS,
-              pgpMessage.toJS,
-            )
-            as DecryptingOutput;
+    final result = module.decryptDataRust.callAsFunction(
+      null,
+      senderPublicKey.toJS,
+      recipientPrivateKey.toJS,
+      pgpMessage.toJS,
+    ) as DecryptingOutput;
     return (
       DecryptResult(messageData: result.data.toDart, sessionKey: result.sessionKey.toDart),
       0,

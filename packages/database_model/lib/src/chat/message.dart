@@ -44,9 +44,8 @@ sealed class Message {
         return UnsupportedMessage(bytes);
       }
       final littleEndianBytes = [numberList[1], numberList[2]];
-      final utf8Length = ByteData.sublistView(
-        Uint8List.fromList(littleEndianBytes),
-      ).getUint16(0, Endian.little);
+      final utf8Length = ByteData.sublistView(Uint8List.fromList(littleEndianBytes))
+          .getUint16(0, Endian.little);
       final utf8Text = numberList.skip(3).take(utf8Length).toList();
       try {
         final textMessage = TextMessage.create(utf8.decode(utf8Text));
@@ -65,9 +64,8 @@ sealed class Message {
         return UnsupportedMessage(bytes);
       }
       final littleEndianBytes = [numberList[1], numberList[2]];
-      final utf8Length = ByteData.sublistView(
-        Uint8List.fromList(littleEndianBytes),
-      ).getUint16(0, Endian.little);
+      final utf8Length = ByteData.sublistView(Uint8List.fromList(littleEndianBytes))
+          .getUint16(0, Endian.little);
       if (numberList.length < 3 + utf8Length) {
         return UnsupportedMessage(bytes);
       }

@@ -27,6 +27,7 @@ import 'package:logging/logging.dart';
 import 'package:openapi/api.dart';
 import 'package:flutter_chat_core/flutter_chat_core.dart' as chat_core;
 import 'package:flutter_chat_ui/flutter_chat_ui.dart' as chat_ui;
+
 import 'dart:async';
 
 final _log = Logger("ChatList");

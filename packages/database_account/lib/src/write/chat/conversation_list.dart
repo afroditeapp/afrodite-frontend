@@ -21,9 +21,8 @@ class DaoWriteConversationList extends DatabaseAccessor<AccountDatabase>
   Future<void> setSentBlockStatusList(api.SentBlocksPage sentBlocks) async {
     await transaction(() async {
       // Clear
-      await update(
-        conversationList,
-      ).write(const ConversationListCompanion(isInSentBlocks: Value(null)));
+      await update(conversationList)
+          .write(const ConversationListCompanion(isInSentBlocks: Value(null)));
 
       for (final a in sentBlocks.profiles) {
         await setSentBlockStatus(a, true);

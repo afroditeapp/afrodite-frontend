@@ -961,9 +961,8 @@ class ProfileImageBottomRowRejectionWidget extends StatelessWidget {
                     padding: EdgeInsets.fromLTRB(8.0, 8.0, 8.0, hasInfo ? 0.0 : 8.0),
                     child: Text(
                       stateText,
-                      style: Theme.of(context).textTheme.bodySmall?.copyWith(
-                        color: Theme.of(context).colorScheme.onPrimaryContainer,
-                      ),
+                      style: Theme.of(context).textTheme.bodySmall
+                          ?.copyWith(color: Theme.of(context).colorScheme.onPrimaryContainer),
                       textAlign: TextAlign.center,
                       maxLines: 1,
                       overflow: TextOverflow.ellipsis,

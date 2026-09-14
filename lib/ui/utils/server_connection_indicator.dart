@@ -205,9 +205,8 @@ class _ServerConnectionBannerContentState extends State<ServerConnectionBannerCo
           context.strings.server_connection_indicator_reconnecting_in_seconds(
             remainingSeconds.toString(),
           ),
-          style: Theme.of(
-            context,
-          ).textTheme.bodySmall?.copyWith(color: Theme.of(context).colorScheme.onSurface),
+          style: Theme.of(context).textTheme.bodySmall
+              ?.copyWith(color: Theme.of(context).colorScheme.onSurface),
         ),
       ],
     );

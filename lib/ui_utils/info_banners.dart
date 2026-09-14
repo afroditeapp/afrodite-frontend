@@ -270,9 +270,8 @@ class _InfoBannerItemLayout extends StatelessWidget {
                 padding: verticalPadding,
                 child: Text(
                   body,
-                  style: Theme.of(
-                    context,
-                  ).textTheme.bodyMedium?.copyWith(color: colorScheme.onPrimaryContainer),
+                  style: Theme.of(context).textTheme.bodyMedium
+                      ?.copyWith(color: colorScheme.onPrimaryContainer),
                 ),
               ),
             ),

@@ -1,5 +1,6 @@
 import 'dart:async';
 import 'dart:js_interop';
+
 import 'package:web/web.dart';
 
 enum NotificationPermissionStatus { granted, denied, default_ }

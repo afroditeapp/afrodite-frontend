@@ -513,9 +513,8 @@ class _EmailLoginCodeScreenState extends State<EmailLoginCodeScreen> {
                 if (error is LoginFailed)
                   Text(
                     error.error,
-                    style: Theme.of(
-                      context,
-                    ).textTheme.bodyLarge?.copyWith(color: Theme.of(context).colorScheme.error),
+                    style: Theme.of(context).textTheme.bodyLarge
+                        ?.copyWith(color: Theme.of(context).colorScheme.error),
                   ),
                 if (error is LoginFailed) const Padding(padding: EdgeInsets.all(8)),
                 if (state.tokenValiditySeconds != null)

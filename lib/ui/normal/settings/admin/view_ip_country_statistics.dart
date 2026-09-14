@@ -79,9 +79,8 @@ class GetIpCountryHistory extends GetMetrics {
       return Ok(());
     }
 
-    final r = await downloadStatistics(
-      IpCountryStatisticsType.newTcpConnections,
-    ).andThen((_) => downloadStatistics(IpCountryStatisticsType.newHttpRequests));
+    final r = await downloadStatistics(IpCountryStatisticsType.newTcpConnections)
+        .andThen((_) => downloadStatistics(IpCountryStatisticsType.newHttpRequests));
 
     if (r.isErr()) {
       return Err(());

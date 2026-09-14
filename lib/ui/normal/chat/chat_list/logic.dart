@@ -82,11 +82,9 @@ class ChatListLogic {
 
     final loadOldMessagesEvents = _loadOldMessagesRelay.stream;
 
-    _eventSubscription = Rx.merge([
-      messageEvents,
-      typingEvents,
-      loadOldMessagesEvents,
-    ]).asyncMap((event) async => await _handleEvent(event)).listen((_) {});
+    _eventSubscription = Rx.merge([messageEvents, typingEvents, loadOldMessagesEvents])
+        .asyncMap((event) async => await _handleEvent(event))
+        .listen((_) {});
   }
 
   Future<void> _handleEvent(_ChatEvent event) async {
@@ -246,9 +244,8 @@ Future<List<IteratorMessage>> _getNewMessages(
     }
 
     for (final iteratorMessage in messages) {
-      if (iteratorMessage case IteratorMessageEntry(
-        :final entry,
-      ) when entry.localId == latestCurrentMessageLocalId) {
+      if (iteratorMessage case IteratorMessageEntry(:final entry)
+          when entry.localId == latestCurrentMessageLocalId) {
         readMessages = false;
         break;
       } else {

@@ -70,9 +70,8 @@ class DaoWriteAccount extends DatabaseAccessor<AccountDatabase> with _$DaoWriteA
       if (localId != null) {
         return localId;
       }
-      final r = await into(
-        localAccountId,
-      ).insertReturning(LocalAccountIdCompanion.insert(uuid: value));
+      final r = await into(localAccountId)
+          .insertReturning(LocalAccountIdCompanion.insert(uuid: value));
       return r.id;
     });
   }

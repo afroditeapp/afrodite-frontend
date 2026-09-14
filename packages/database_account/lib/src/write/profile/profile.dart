@@ -192,9 +192,8 @@ class DaoWriteProfile extends DatabaseAccessor<AccountDatabase> with _$DaoWriteP
   Future<void> addToProfileGrid(api.AccountId accountId) async {
     await transaction(() async {
       final lowestUnusedId = await _nextProfileGridId();
-      await into(
-        profileGrid,
-      ).insert(ProfileGridCompanion.insert(id: Value(lowestUnusedId), accountId: accountId));
+      await into(profileGrid)
+          .insert(ProfileGridCompanion.insert(id: Value(lowestUnusedId), accountId: accountId));
     });
   }
 

@@ -8,6 +8,7 @@ import 'package:database_converter/database_converter.dart';
 import 'package:database_utils/database_utils.dart';
 import 'package:drift/drift.dart';
 import 'package:openapi/api.dart';
+
 import 'schema.dart' as schema;
 
 part 'database.g.dart';

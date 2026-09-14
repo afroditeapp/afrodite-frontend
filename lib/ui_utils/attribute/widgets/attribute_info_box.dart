@@ -38,9 +38,8 @@ class AttributeInfoBox extends StatelessWidget {
               Expanded(
                 child: Text(
                   text,
-                  style: Theme.of(
-                    context,
-                  ).textTheme.bodyMedium?.copyWith(color: colorScheme.onPrimaryContainer),
+                  style: Theme.of(context).textTheme.bodyMedium
+                      ?.copyWith(color: colorScheme.onPrimaryContainer),
                 ),
               ),
             ],
