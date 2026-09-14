@@ -1442,6 +1442,12 @@ abstract class AppLocalizations {
   /// **'Email addresses with domain {p0} cannot be used for registration. Please use another email or sign in method.'**
   String email_login_screen_registration_domain_not_accepted_error(String p0);
 
+  /// Info dialog text shown before email registration explaining the feature is intentionally limited to reduce bots and spam
+  ///
+  /// In en, this message translates to:
+  /// **'Creating new account with an email address is intentionally limited to help keep the service free from bots and spam. Please prefer signing in with your usual method (such as Google or Apple) whenever possible.\n\nIf you do use your email address, connecting from your home\'s broadband internet rather than mobile data can help you avoid reaching per-IP limits.'**
+  String get email_login_screen_registration_info_dialog_text;
+
   /// Error message when email registration per IP address limit is reached
   ///
   /// In en, this message translates to:
@@ -2431,12 +2437,6 @@ abstract class AppLocalizations {
   /// In en, this message translates to:
   /// **'Email address is already in use by another account'**
   String get login_screen_email_already_used;
-
-  /// Info dialog text shown before email sign in explaining the feature is intentionally limited to reduce bots and spam
-  ///
-  /// In en, this message translates to:
-  /// **'Signing in with an email address is intentionally limited to help keep the service free from bots and spam. Please prefer signing in with your usual method (such as Google or Apple) whenever possible.\n\nIf you do use your email address, connecting from your home\'s broadband internet rather than mobile data can help you avoid reaching per-IP limits.'**
-  String get login_screen_email_login_info_dialog_text;
 
   /// Snackbar text for invalid email login token error
   ///

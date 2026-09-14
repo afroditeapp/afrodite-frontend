@@ -253,7 +253,6 @@
     <string name="login_screen_demo_account_password">Salasana</string>
     <string name="login_screen_demo_account_login_failed">Kirjautuminen epäonnistui</string>
     <string name="login_screen_sign_in_with_email_action">Kirjaudu sähköpostilla</string>
-    <string name="login_screen_email_login_info_dialog_text">Sähköpostiosoitteella kirjautumista on rajoitettu tarkoituksellisesti bottien ja roskapostin vähentämiseksi. Käytä mieluiten tavanomaista kirjautumistapaasi (kuten Google tai Apple) aina kun mahdollista.\n\nJos käytät sähköpostiosoitettasi, yhdistäminen kodin kiinteästä laajakaistasta mobiilidatan sijaan voi auttaa välttämään IP-osoitekohtaisten rajojen saavuttamista.</string>
     <string name="login_screen_demo_account_login_session_expired">Demotilin istunto vanhentui</string>
     <string name="login_screen_sign_in_with_error">Kirjautuminen epäonnistui</string>
     <string name="login_screen_login_api_request_failed">Kirjautumispyyntö epäonnistui. Yritä myöhemmin uudelleen.</string>
@@ -283,6 +282,7 @@
     <string name="email_login_screen_did_not_receive_code">Jos et saanut koodia:\n• Tarkista roskapostikansio\n• Varmista, että sähköpostiosoite on oikein\n• Odota %s ennen uuden koodin pyytämistä\n• Varmista, että sinulla on olemassa oleva tili tällä sähköpostiosoitteella</string>
     <string name="email_login_screen_code_hint">Kirjautumiskoodi</string>
     <string name="email_login_screen_token_validity">Koodi vanhenee: %s</string>
+    <string name="email_login_screen_registration_info_dialog_text">Uuden tilin luominen sähköpostiosoitteella on rajoitettu tarkoituksellisesti bottien ja roskapostin vähentämiseksi. Käytä mieluiten tavanomaista kirjautumistapaasi (kuten Google tai Apple) aina kun mahdollista.\n\nJos käytät sähköpostiosoitettasi, yhdistäminen kodin kiinteästä laajakaistasta mobiilidatan sijaan voi auttaa välttämään IP-osoitekohtaisten rajojen saavuttamista.</string>
     <string name="email_login_screen_registration_unsupported_email">Sähköpostiosoitetta ei tueta. Käytä toista kirjautumistapaa.</string>
     <string name="email_login_screen_registration_all_platforms_disabled_error">Uudet sähköpostirekisteröitymiset ovat tällä hetkellä poissa käytöstä. Käytä toista kirjautumistapaa.</string>
     <string name="email_login_screen_registration_platform_disabled_error">Uudet sähköpostirekisteröitymiset ovat tällä hetkellä poissa käytöstä tällä alustalla (%s). Käytä toista kirjautumistapaa.</string>

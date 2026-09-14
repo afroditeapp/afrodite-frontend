@@ -14,7 +14,6 @@ import "package:app/model/freezed/logic/main/navigator_state.dart";
 import "package:app/model/freezed/logic/sign_in_with.dart";
 import "package:app/ui/login.dart";
 import "package:app/ui/login/email_login.dart";
-import "package:app/ui_utils/dialog.dart";
 import "package:app/ui_utils/loading_dialog.dart";
 import "package:app/ui_utils/app_bar/common_actions.dart";
 import "package:app/ui_utils/app_bar/menu_actions.dart";
@@ -63,14 +62,8 @@ class LoginScreen extends StatelessWidget {
             MenuItemButton(
               leadingIcon: const Icon(Icons.mail),
               child: Text(context.strings.login_screen_sign_in_with_email_action),
-              onPressed: () async {
-                await showInfoDialog(
-                  context,
-                  context.strings.login_screen_email_login_info_dialog_text,
-                );
-                if (context.mounted) {
-                  openEmailLoginMethodScreen(context);
-                }
+              onPressed: () {
+                openEmailLoginMethodScreen(context);
               },
             ),
             MenuItemButton(

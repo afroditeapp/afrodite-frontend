@@ -1050,6 +1050,10 @@
       }
     }
   },
+  "email_login_screen_registration_info_dialog_text": "Creating new account with an email address is intentionally limited to help keep the service free from bots and spam. Please prefer signing in with your usual method (such as Google or Apple) whenever possible.\n\nIf you do use your email address, connecting from your home's broadband internet rather than mobile data can help you avoid reaching per-IP limits.",
+  "@email_login_screen_registration_info_dialog_text": {
+    "description": "Info dialog text shown before email registration explaining the feature is intentionally limited to reduce bots and spam"
+  },
   "email_login_screen_registration_ip_address_limit_reached_error": "Daily registration limit for your IP address has been reached. Please try again after 24 hours or use another sign in method.",
   "@email_login_screen_registration_ip_address_limit_reached_error": {
     "description": "Error message when email registration per IP address limit is reached"
@@ -1734,10 +1738,6 @@
   "login_screen_email_already_used": "Email address is already in use by another account",
   "@login_screen_email_already_used": {
     "description": "Snackbar error message when email is already used by another account"
-  },
-  "login_screen_email_login_info_dialog_text": "Signing in with an email address is intentionally limited to help keep the service free from bots and spam. Please prefer signing in with your usual method (such as Google or Apple) whenever possible.\n\nIf you do use your email address, connecting from your home's broadband internet rather than mobile data can help you avoid reaching per-IP limits.",
-  "@login_screen_email_login_info_dialog_text": {
-    "description": "Info dialog text shown before email sign in explaining the feature is intentionally limited to reduce bots and spam"
   },
   "login_screen_invalid_email_login_token": "Invalid email login code",
   "@login_screen_invalid_email_login_token": {

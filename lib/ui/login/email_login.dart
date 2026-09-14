@@ -8,6 +8,7 @@ import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:app/localizations.dart';
 import 'package:app/ui_utils/common_update_logic.dart';
+import 'package:app/ui_utils/dialog.dart';
 import 'package:app/ui_utils/extensions/api.dart';
 import 'package:app/utils/consts/limit.dart';
 import 'package:app/utils/email_address_validator.dart';
@@ -93,7 +94,15 @@ class _EmailLoginMethodScreenState extends State<EmailLoginMethodScreen> {
           title: context.strings.email_login_method_screen_new_account,
           description: description,
           onPressed: registrationActionEnabled
-              ? () => MyNavigator.push(context, EmailLoginPage(loginOnly: false))
+              ? () async {
+                  await showInfoDialog(
+                    context,
+                    context.strings.email_login_screen_registration_info_dialog_text,
+                  );
+                  if (context.mounted) {
+                    await MyNavigator.push(context, EmailLoginPage(loginOnly: false));
+                  }
+                }
               : null,
         );
       },

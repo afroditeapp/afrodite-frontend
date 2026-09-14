@@ -804,6 +804,10 @@ class AppLocalizationsEn extends AppLocalizations {
   }
 
   @override
+  String get email_login_screen_registration_info_dialog_text =>
+      'Creating new account with an email address is intentionally limited to help keep the service free from bots and spam. Please prefer signing in with your usual method (such as Google or Apple) whenever possible.\n\nIf you do use your email address, connecting from your home\'s broadband internet rather than mobile data can help you avoid reaching per-IP limits.';
+
+  @override
   String get email_login_screen_registration_ip_address_limit_reached_error =>
       'Daily registration limit for your IP address has been reached. Please try again after 24 hours or use another sign in method.';
 
@@ -1336,10 +1340,6 @@ class AppLocalizationsEn extends AppLocalizations {
   @override
   String get login_screen_email_already_used =>
       'Email address is already in use by another account';
-
-  @override
-  String get login_screen_email_login_info_dialog_text =>
-      'Signing in with an email address is intentionally limited to help keep the service free from bots and spam. Please prefer signing in with your usual method (such as Google or Apple) whenever possible.\n\nIf you do use your email address, connecting from your home\'s broadband internet rather than mobile data can help you avoid reaching per-IP limits.';
 
   @override
   String get login_screen_invalid_email_login_token => 'Invalid email login code';

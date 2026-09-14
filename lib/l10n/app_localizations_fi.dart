@@ -812,6 +812,10 @@ class AppLocalizationsFi extends AppLocalizations {
   }
 
   @override
+  String get email_login_screen_registration_info_dialog_text =>
+      'Uuden tilin luominen sähköpostiosoitteella on rajoitettu tarkoituksellisesti bottien ja roskapostin vähentämiseksi. Käytä mieluiten tavanomaista kirjautumistapaasi (kuten Google tai Apple) aina kun mahdollista.\n\nJos käytät sähköpostiosoitettasi, yhdistäminen kodin kiinteästä laajakaistasta mobiilidatan sijaan voi auttaa välttämään IP-osoitekohtaisten rajojen saavuttamista.';
+
+  @override
   String get email_login_screen_registration_ip_address_limit_reached_error =>
       'IP-osoitteesi päivittäinen rekisteröitymisraja on saavutettu. Yritä uudelleen 24 tunnin kuluttua tai käytä toista kirjautumistapaa.';
 
@@ -1344,10 +1348,6 @@ class AppLocalizationsFi extends AppLocalizations {
 
   @override
   String get login_screen_email_already_used => 'Sähköpostiosoite on jo toisen tilin käytössä';
-
-  @override
-  String get login_screen_email_login_info_dialog_text =>
-      'Sähköpostiosoitteella kirjautumista on rajoitettu tarkoituksellisesti bottien ja roskapostin vähentämiseksi. Käytä mieluiten tavanomaista kirjautumistapaasi (kuten Google tai Apple) aina kun mahdollista.\n\nJos käytät sähköpostiosoitettasi, yhdistäminen kodin kiinteästä laajakaistasta mobiilidatan sijaan voi auttaa välttämään IP-osoitekohtaisten rajojen saavuttamista.';
 
   @override
   String get login_screen_invalid_email_login_token => 'Virheellinen sähköpostikirjautumiskoodi';
