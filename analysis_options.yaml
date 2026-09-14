@@ -42,6 +42,11 @@ analyzer:
     unrelated_type_equality_checks: error
     must_be_immutable: error
     exhaustive_cases: error
+  exclude:
+    - build/**
+    - android/**
+    - ios/**
+    - web/**
 
 formatter:
   page_width: 100
