@@ -19,15 +19,8 @@ class EmojiAttributeIcon extends AttributeIcon {
 
 class AttributeIcons {
   static const Map<String, IconData> materialIcons = {
-    "celebration_rounded": Icons.celebration_rounded,
-    "close_rounded": Icons.close_rounded,
-    "color_lens_rounded": Icons.color_lens_rounded,
-    "favorite_rounded": Icons.favorite_rounded,
-    "location_city_rounded": Icons.location_city_rounded,
-    "question_mark_rounded": Icons.question_mark_rounded,
-    "search_rounded": Icons.search_rounded,
-    "waving_hand_rounded": Icons.waving_hand_rounded,
-    "star_rounded": Icons.star_rounded,
+    "videocam": Icons.videocam,
+    "chat": Icons.chat,
   };
 
   static AttributeIcon? parseIconResource(String? iconResource) {
