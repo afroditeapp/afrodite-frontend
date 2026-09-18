@@ -8,11 +8,14 @@ import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:app/logic/app/navigator_state.dart';
 import 'package:app/logic/profile/my_profile.dart';
+import 'package:app/model/freezed/logic/account/account.dart';
 import 'package:app/model/freezed/logic/main/navigator_state.dart';
 import 'package:app/model/freezed/logic/profile/my_profile.dart';
+import 'package:app/ui/normal/settings/admin/account_admin_settings.dart';
 import 'package:app/ui/normal/settings/location.dart';
 import 'package:app/ui/normal/settings/profile/edit_profile.dart';
 import 'package:app/ui/utils/view_profile.dart';
+import 'package:app/ui_utils/app_bar/menu_actions.dart';
 
 import 'package:app/localizations.dart';
 import 'package:app/ui_utils/loading_dialog.dart';
@@ -57,6 +60,25 @@ class MyProfileScreen extends StatelessWidget {
             onPressed: () => MyNavigator.push(context, LocationPage()),
             icon: const Icon(Icons.location_on),
             tooltip: context.strings.profile_location_screen_title,
+          ),
+          BlocBuilder<AccountBloc, AccountBlocData>(
+            builder: (_, state) {
+              final p = AccountAdminSettingsPermissions(state.permissions);
+              if (p.somePermissionEnabled()) {
+                return menuActions([
+                  MenuItemButton(
+                    onPressed: () => getAgeAndNameAndShowAdminSettings(
+                      context,
+                      context.read<RepositoryInstances>().api,
+                      context.read<RepositoryInstances>().accountId,
+                    ),
+                    child: const Text("Admin"),
+                  ),
+                ]);
+              } else {
+                return const SizedBox.shrink();
+              }
+            },
           ),
         ],
       ),

@@ -351,7 +351,7 @@ class _AccountAdminSettingsScreenState extends State<AccountAdminSettingsScreen>
 
     list.add(settingsCategoryTitle(context, "Account management"));
 
-    if (permissions.adminViewPermissions && permissions.adminModifyPermissions) {
+    if (permissions.adminViewPermissions && permissions.adminEditPermissions) {
       list.add(
         Setting.createSetting(Icons.admin_panel_settings, "Edit permissions", () {
           MyNavigator.pushLimited(context, EditPermissionsPage(r, widget.accountId));
@@ -417,7 +417,7 @@ class _AccountAdminSettingsScreenState extends State<AccountAdminSettingsScreen>
 
 class AccountAdminSettingsPermissions {
   final Permissions _permissions;
-  bool get adminModifyPermissions => _permissions.adminEditPermissions;
+  bool get adminEditPermissions => _permissions.adminEditPermissions;
   bool get adminExportData => _permissions.adminExportData;
   bool get adminEditProfileName => _permissions.adminEditProfileName;
   bool get adminEditLogin => _permissions.adminEditLogin;
@@ -448,7 +448,7 @@ class AccountAdminSettingsPermissions {
   AccountAdminSettingsPermissions(this._permissions);
 
   bool somePermissionEnabled() {
-    return adminModifyPermissions ||
+    return adminEditPermissions ||
         adminEditProfileName ||
         adminEditLogin ||
         adminViewLogin ||
