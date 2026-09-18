@@ -44,6 +44,11 @@ class NotificationManager extends AppSingleton {
     }
     _initDone = true;
 
+    if (kIsWeb) {
+      _osSupportsNotificationPermission = webNotificationsSupported();
+      return;
+    }
+
     const android = AndroidInitializationSettings(_ANDROID_ICON_RESOURCE_NAME);
     const darwin = DarwinInitializationSettings(
       requestAlertPermission: false,
@@ -109,9 +114,7 @@ class NotificationManager extends AppSingleton {
   }
 
   Future<bool> _notificationPermissionShouldBeAsked() async {
-    if (kIsWeb) {
-      return webNotificationsSupported();
-    } else if (Platform.isAndroid) {
+    if (Platform.isAndroid) {
       DeviceInfoPlugin deviceInfo = DeviceInfoPlugin();
       AndroidDeviceInfo androidInfo = await deviceInfo.androidInfo;
       if (androidInfo.version.sdkInt >= _ANDROID_13_API_LEVEL) {
@@ -185,7 +188,11 @@ class NotificationManager extends AppSingleton {
   }
 
   Future<void> hideNotification(LocalNotificationId id) async {
-    await _pluginHandle.cancel(id: id.value);
+    if (kIsWeb) {
+      // TODO
+    } else {
+      await _pluginHandle.cancel(id: id.value);
+    }
   }
 
   Future<void> _createAndroidNotificationChannelsIfNeeded() async {
