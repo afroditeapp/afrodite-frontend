@@ -6,4 +6,5 @@ export '_impl_empty.dart'
         webNotificationsSupported,
         watchWebNotificationPermission,
         displayWebNotification,
+        hideWebNotification,
         NotificationPermissionStatus;

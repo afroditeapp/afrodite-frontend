@@ -106,3 +106,31 @@ Future<bool> displayWebNotification({
     return false;
   }
 }
+
+/// Hides (closes) a web notification through the service worker.
+///
+/// Parameters:
+/// - [tag]: The tag identifying the notification to hide
+Future<void> hideWebNotification({required String tag}) async {
+  // Check if notifications are supported
+  if (!webNotificationsSupported()) {
+    return;
+  }
+
+  try {
+    // Get the service worker registration
+    final registration = await window.navigator.serviceWorker.ready.toDart;
+
+    // Get the currently open notifications with the matching tag
+    final notifications = await registration
+        .getNotifications(GetNotificationOptions(tag: tag))
+        .toDart;
+
+    // Close all matching notifications
+    for (final notification in notifications.toDart) {
+      notification.close();
+    }
+  } catch (e) {
+    // Ignore errors when hiding notifications
+  }
+}

@@ -189,7 +189,7 @@ class NotificationManager extends AppSingleton {
 
   Future<void> hideNotification(LocalNotificationId id) async {
     if (kIsWeb) {
-      // TODO
+      await hideWebNotification(tag: id.value.toString());
     } else {
       await _pluginHandle.cancel(id: id.value);
     }

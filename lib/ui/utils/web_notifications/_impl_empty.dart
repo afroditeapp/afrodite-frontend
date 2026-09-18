@@ -32,3 +32,11 @@ Future<bool> displayWebNotification({
   // Not supported on non-web platforms
   return false;
 }
+
+/// Hides (closes) a web notification through the service worker.
+///
+/// Parameters:
+/// - [tag]: The tag identifying the notification to hide
+Future<void> hideWebNotification({required String tag}) async {
+  // Not supported on non-web platforms
+}
