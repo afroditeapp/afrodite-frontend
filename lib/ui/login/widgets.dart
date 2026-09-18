@@ -8,6 +8,7 @@ import 'package:app/logic/sign_in_with.dart';
 import 'package:app/ui_utils/consts/colors.dart';
 import 'package:app/ui_utils/image.dart';
 import 'package:app/ui_utils/sign_in_with_google_web_button/button.dart';
+import 'package:app/ui/login/email_login.dart';
 import 'package:app/ui/utils/web_pwa/web_pwa.dart';
 import 'package:flutter/foundation.dart';
 import 'package:flutter/gestures.dart';
@@ -64,6 +65,11 @@ Widget signInButtonArea(BuildContext context) {
             secondSignInButton(context),
           ],
         ),
+      ),
+      const Padding(padding: EdgeInsets.symmetric(vertical: COMMON_PADDING / 2)),
+      TextButton(
+        onPressed: () => openEmailLoginMethodScreen(context),
+        child: Text(context.strings.login_screen_sign_in_with_email_action),
       ),
       const Padding(padding: EdgeInsets.symmetric(vertical: COMMON_PADDING)),
     ],
