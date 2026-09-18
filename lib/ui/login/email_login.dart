@@ -550,11 +550,17 @@ class _EmailLoginCodeScreenState extends State<EmailLoginCodeScreen> {
                 ),
                 const Padding(padding: EdgeInsets.only(top: 24)),
                 Text(
-                  context.strings.email_login_screen_did_not_receive_code(
-                    state.resendWaitSeconds != null
-                        ? formatSeconds(state.resendWaitSeconds!)
-                        : '...',
-                  ),
+                  widget.loginOnly
+                      ? context.strings.email_login_screen_did_not_receive_code(
+                          state.resendWaitSeconds != null
+                              ? formatSeconds(state.resendWaitSeconds!)
+                              : '...',
+                        )
+                      : context.strings.email_login_screen_did_not_receive_code_registration(
+                          state.resendWaitSeconds != null
+                              ? formatSeconds(state.resendWaitSeconds!)
+                              : '...',
+                        ),
                   style: Theme.of(context).textTheme.bodyMedium,
                 ),
               ],

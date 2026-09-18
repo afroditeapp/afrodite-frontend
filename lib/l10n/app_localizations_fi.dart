@@ -792,6 +792,11 @@ class AppLocalizationsFi extends AppLocalizations {
   }
 
   @override
+  String email_login_screen_did_not_receive_code_registration(String p0) {
+    return 'Jos et saanut koodia:\n• Tarkista roskapostikansio\n• Varmista, että sähköpostiosoite on oikein\n• Odota $p0 ennen uuden koodin pyytämistä';
+  }
+
+  @override
   String get email_login_screen_email_hint => 'Sähköpostiosoite';
 
   @override

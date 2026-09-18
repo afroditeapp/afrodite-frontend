@@ -1412,6 +1412,12 @@ abstract class AppLocalizations {
   /// **'If you didn\'t receive the code:\n• Check your spam folder\n• Verify the email address is correct\n• Wait {p0} before requesting a new code\n• Make sure you have an existing account with this email'**
   String email_login_screen_did_not_receive_code(String p0);
 
+  /// Help text for not receiving code during registration
+  ///
+  /// In en, this message translates to:
+  /// **'If you didn\'t receive the code:\n• Check your spam folder\n• Verify the email address is correct\n• Wait {p0} before requesting a new code'**
+  String email_login_screen_did_not_receive_code_registration(String p0);
+
   /// Hint text for email input field
   ///
   /// In en, this message translates to:

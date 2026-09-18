@@ -1020,6 +1020,15 @@
       }
     }
   },
+  "email_login_screen_did_not_receive_code_registration": "If you didn't receive the code:\n• Check your spam folder\n• Verify the email address is correct\n• Wait {p0} before requesting a new code",
+  "@email_login_screen_did_not_receive_code_registration": {
+    "description": "Help text for not receiving code during registration",
+    "placeholders": {
+      "p0": {
+        "type": "String"
+      }
+    }
+  },
   "email_login_screen_email_hint": "Email address",
   "@email_login_screen_email_hint": {
     "description": "Hint text for email input field"

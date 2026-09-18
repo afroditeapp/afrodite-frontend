@@ -280,6 +280,7 @@
     <string name="email_login_screen_send_code_button">Lähetä kirjautumiskoodi</string>
     <string name="email_login_screen_input_code_description">Syötä osoitteeseen %s lähetetty kirjautumiskoodi</string>
     <string name="email_login_screen_did_not_receive_code">Jos et saanut koodia:\n• Tarkista roskapostikansio\n• Varmista, että sähköpostiosoite on oikein\n• Odota %s ennen uuden koodin pyytämistä\n• Varmista, että sinulla on olemassa oleva tili tällä sähköpostiosoitteella</string>
+    <string name="email_login_screen_did_not_receive_code_registration">Jos et saanut koodia:\n• Tarkista roskapostikansio\n• Varmista, että sähköpostiosoite on oikein\n• Odota %s ennen uuden koodin pyytämistä</string>
     <string name="email_login_screen_code_hint">Kirjautumiskoodi</string>
     <string name="email_login_screen_token_validity">Koodi vanhenee: %s</string>
     <string name="email_login_screen_registration_info_dialog_text">Uuden tilin luominen sähköpostiosoitteella on rajoitettu tarkoituksellisesti bottien ja roskapostin vähentämiseksi. Käytä mieluiten tavanomaista kirjautumistapaasi (kuten Google tai Apple) aina kun mahdollista.\n\nJos käytät sähköpostiosoitettasi, yhdistäminen kodin kiinteästä laajakaistasta mobiilidatan sijaan voi auttaa välttämään IP-osoitekohtaisten rajojen saavuttamista.</string>

@@ -784,6 +784,11 @@ class AppLocalizationsEn extends AppLocalizations {
   }
 
   @override
+  String email_login_screen_did_not_receive_code_registration(String p0) {
+    return 'If you didn\'t receive the code:\n• Check your spam folder\n• Verify the email address is correct\n• Wait $p0 before requesting a new code';
+  }
+
+  @override
   String get email_login_screen_email_hint => 'Email address';
 
   @override

@@ -216,6 +216,7 @@
   "email_login_method_screen_title": "Kirjaudu sähköpostilla",
   "email_login_screen_code_hint": "Kirjautumiskoodi",
   "email_login_screen_did_not_receive_code": "Jos et saanut koodia:\n• Tarkista roskapostikansio\n• Varmista, että sähköpostiosoite on oikein\n• Odota {p0} ennen uuden koodin pyytämistä\n• Varmista, että sinulla on olemassa oleva tili tällä sähköpostiosoitteella",
+  "email_login_screen_did_not_receive_code_registration": "Jos et saanut koodia:\n• Tarkista roskapostikansio\n• Varmista, että sähköpostiosoite on oikein\n• Odota {p0} ennen uuden koodin pyytämistä",
   "email_login_screen_email_hint": "Sähköpostiosoite",
   "email_login_screen_input_code_description": "Syötä osoitteeseen {p0} lähetetty kirjautumiskoodi",
   "email_login_screen_login_only_info": "Uuden tilin luominen ei ole tuettu tällä kirjautumistavalla",
