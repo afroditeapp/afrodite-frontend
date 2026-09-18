@@ -75,21 +75,19 @@ Stream<NotificationPermissionStatus> watchWebNotificationPermission() async* {
 /// - [title]: The title of the notification
 /// - [body]: The body text of the notification (optional)
 /// - [tag]: A tag to identify the notification (notifications with the same tag replace each other)
-///
-/// Returns true if the notification was displayed, false otherwise.
-Future<bool> displayWebNotification({
+Future<void> displayWebNotification({
   required String title,
   String? body,
   required String tag,
 }) async {
   // Check if notifications are supported
   if (!webNotificationsSupported()) {
-    return false;
+    return;
   }
 
   // Check if permission is granted
   if (getWebNotificationPermission() != NotificationPermissionStatus.granted) {
-    return false;
+    return;
   }
 
   try {
@@ -101,9 +99,8 @@ Future<bool> displayWebNotification({
 
     // Display notification through service worker
     await registration.showNotification(title, options).toDart;
-    return true;
   } catch (e) {
-    return false;
+    // Ignore errors when displaying notifications
   }
 }
 
