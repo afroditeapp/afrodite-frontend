@@ -1,4 +1,6 @@
 import 'dart:convert';
+import 'dart:io';
+import 'dart:typed_data';
 
 import 'package:app/api/server_connection_manager.dart';
 import 'package:app/data/utils/repository_instances.dart';
@@ -6,9 +8,13 @@ import 'package:app/localizations.dart';
 import 'package:app/logic/app/navigator_state.dart';
 import 'package:app/model/freezed/logic/main/navigator_state.dart';
 import 'package:app/ui/normal/settings/admin/bot_config/admin_bot_config.dart';
+import 'package:app/ui_utils/app_bar/menu_actions.dart';
 import 'package:app/ui_utils/padding.dart';
+import 'package:file_selector/file_selector.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
+import 'package:flutter_file_saver/flutter_file_saver.dart';
+import 'package:intl/intl.dart';
 import 'package:openapi/api.dart';
 import 'package:app/logic/account/account.dart';
 import 'package:app/model/freezed/logic/account/account.dart';
@@ -106,7 +112,18 @@ class _BotConfigScreenState extends State<BotConfigScreen> {
       builder: (context, state) {
         final permissions = state.permissions;
         return Scaffold(
-          appBar: AppBar(title: const Text("Bots")),
+          appBar: AppBar(
+            title: const Text("Bots"),
+            actions: [
+              menuActions([
+                MenuItemButton(
+                  onPressed: _initialConfig == null ? null : _exportConfig,
+                  child: const Text("Export"),
+                ),
+                MenuItemButton(onPressed: _importConfig, child: const Text("Import")),
+              ]),
+            ],
+          ),
           body: displayState(context, permissions),
           floatingActionButton: permissions.adminServerEditBotConfig && _hasUnsavedChanges()
               ? FloatingActionButton(
@@ -269,6 +286,74 @@ class _BotConfigScreenState extends State<BotConfigScreen> {
     }
 
     return true;
+  }
+
+  Future<void> _exportConfig() async {
+    final adminBotConfig = _adminBotConfig;
+
+    if (adminBotConfig == null) {
+      showSnackBar("Config not loaded");
+      return;
+    }
+
+    final config = BotConfig(
+      remoteBotLogin: _remoteBotLogin,
+      adminBot: _adminBotEnabled,
+      adminBotConfig: adminBotConfig,
+      userBots: _userBots,
+    );
+
+    final jsonString = jsonEncode(config);
+    final bytes = Uint8List.fromList(utf8.encode(jsonString));
+
+    final timestamp = DateFormat('yyyy-MM-dd_HH-mm').format(DateTime.now());
+    final fileName = "bot_config_$timestamp.json";
+
+    try {
+      await FlutterFileSaver().writeFileAsBytes(fileName: fileName, bytes: bytes);
+      if (mounted) {
+        showSnackBar("Config exported!");
+      }
+    } catch (e) {
+      if (mounted) {
+        showSnackBar("Export failed!");
+      }
+    }
+  }
+
+  Future<void> _importConfig() async {
+    const typeGroup = XTypeGroup(label: 'JSON', extensions: <String>['json']);
+    final XFile? file = await openFile(acceptedTypeGroups: <XTypeGroup>[typeGroup]);
+    if (file != null && mounted) {
+      final confirm = await showConfirmDialog(
+        context,
+        "Import config?",
+        details: "This will overwrite your unsaved changes with the contents of ${file.name}.",
+        yesNoActions: true,
+      );
+
+      if (confirm == true && mounted) {
+        try {
+          final jsonString = await File(file.path).readAsString();
+          final data = jsonDecode(jsonString);
+          final newConfig = BotConfig.fromJson(data);
+          if (newConfig != null) {
+            setState(() {
+              _remoteBotLogin = newConfig.remoteBotLogin;
+              _adminBotEnabled = newConfig.adminBot;
+              _adminBotConfig = newConfig.adminBotConfig;
+              _userBots = newConfig.userBots;
+              _userBotsController.text = _userBots.toString();
+            });
+            showSnackBar("Config imported!");
+          } else {
+            showSnackBar("Import failed! Invalid config format.");
+          }
+        } catch (e) {
+          showSnackBar("Import failed! Invalid JSON or config format.");
+        }
+      }
+    }
   }
 
   @override
