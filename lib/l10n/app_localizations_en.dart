@@ -307,6 +307,12 @@ class AppLocalizationsEn extends AppLocalizations {
   }
 
   @override
+  String get attribute_value_deprecated_note => '(deprecated)';
+
+  @override
+  String get attribute_value_partially_hidden_note => '(partially hidden)';
+
+  @override
   String get automatic_profile_search_results_screen_no_profiles_found_description =>
       'You will be notified when this changes';
 

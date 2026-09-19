@@ -606,7 +606,7 @@ class AttributeValuesArea extends StatelessWidget {
       if (hideNonVisibleValues && !v.apiValue().visible) {
         continue;
       }
-      final text = v.uiName();
+      final text = valueChipLabel(c, v);
       final icon = v.uiIcon();
       final Widget? avatar;
       if (icon != null) {
@@ -628,7 +628,7 @@ class AttributeValuesArea extends StatelessWidget {
       if (hideNonVisibleValues && !v.apiValue().visible) {
         continue;
       }
-      final text = v.uiName();
+      final text = valueChipLabel(c, v);
       final icon = v.uiIcon();
       final Widget? avatar;
       if (icon != null) {
@@ -653,5 +653,20 @@ class AttributeValuesArea extends StatelessWidget {
     } else {
       return Wrap(spacing: 8, children: valueWidgets);
     }
+  }
+
+  /// Builds the chip label for a value, appending a short note when the
+  /// value is deprecated or hidden from other users.
+  String valueChipLabel(BuildContext c, UiAttributeValue v) {
+    final apiValue = v.apiValue();
+    final String note;
+    if (!apiValue.editable) {
+      note = c.strings.attribute_value_deprecated_note;
+    } else if (!apiValue.visible) {
+      note = c.strings.attribute_value_partially_hidden_note;
+    } else {
+      return v.uiName();
+    }
+    return "${v.uiName()} $note";
   }
 }

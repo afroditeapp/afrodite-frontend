@@ -79,6 +79,8 @@
   "association_membership_screen_title": "Yhdistyksen jäsenyys",
   "attribute_deprecated_info": "\"{p0}\" on vanhentunut ja poistuu, kun sen valinta poistetaan",
   "attribute_partially_hidden_info": "\"{p0}\" on osittain piilotettu",
+  "attribute_value_deprecated_note": "(vanhentunut)",
+  "attribute_value_partially_hidden_note": "(osittain piilotettu)",
   "automatic_profile_search_results_screen_no_profiles_found_description": "Saat ilmoituksen, kun tilanne muuttuu",
   "automatic_profile_search_results_screen_no_profiles_found_title": "Uusia tai päivitettyjä profiileja ei löytynyt",
   "automatic_profile_search_results_screen_title": "Uudet ja päivitetyt profiilit",

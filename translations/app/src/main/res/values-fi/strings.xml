@@ -465,6 +465,8 @@
     <string name="edit_attribute_value_screen_max_selected_values_error">Liian monta vaihtoehtoa valittu</string>
     <string name="attribute_partially_hidden_info">"%s" on osittain piilotettu</string>
     <string name="attribute_deprecated_info">"%s" on vanhentunut ja poistuu, kun sen valinta poistetaan</string>
+    <string name="attribute_value_partially_hidden_note">(osittain piilotettu)</string>
+    <string name="attribute_value_deprecated_note">(vanhentunut)</string>
 
     <!-- Select content screen -->
     <string name="select_content_screen_title">Valitse kuva</string>

@@ -210,6 +210,7 @@ class _SelectAttributeValueState extends State<SelectAttributeValue> {
   Widget title(UiAttributeValue v) {
     final icon = v.uiIcon();
     final text = v.uiName();
+    final statusNote = valueStatusNote(v);
 
     final Widget title;
     if (icon != null) {
@@ -217,13 +218,47 @@ class _SelectAttributeValueState extends State<SelectAttributeValue> {
         children: [
           AttributeIconWidget(icon: icon),
           const Padding(padding: EdgeInsets.all(8.0)),
-          Text(text),
+          Flexible(child: Text(text)),
+          if (statusNote != null) ...[
+            const Padding(padding: EdgeInsets.only(left: 8)),
+            Text(
+              statusNote,
+              style: Theme.of(context).textTheme.bodyMedium
+                  ?.copyWith(color: Theme.of(context).colorScheme.outline),
+            ),
+          ],
         ],
       );
     } else {
-      title = Text(text);
+      title = Row(
+        children: [
+          Flexible(child: Text(text)),
+          if (statusNote != null) ...[
+            const Padding(padding: EdgeInsets.only(left: 8)),
+            Text(
+              statusNote,
+              style: Theme.of(context).textTheme.bodyMedium
+                  ?.copyWith(color: Theme.of(context).colorScheme.outline),
+            ),
+          ],
+        ],
+      );
     }
     return title;
+  }
+
+  /// Returns a short note for values which are not editable or not visible,
+  /// mirroring the attribute level info texts. Returns null when the value
+  /// has no special status.
+  String? valueStatusNote(UiAttributeValue v) {
+    final apiValue = v.apiValue();
+    if (!apiValue.editable) {
+      return context.strings.attribute_value_deprecated_note;
+    } else if (!apiValue.visible) {
+      return context.strings.attribute_value_partially_hidden_note;
+    } else {
+      return null;
+    }
   }
 
   Widget showOnlySelectedSetting(BuildContext context) {

@@ -590,6 +590,18 @@ abstract class AppLocalizations {
   /// **'\"{p0}\" is partially hidden'**
   String attribute_partially_hidden_info(String p0);
 
+  /// Short note shown after an attribute value name which is deprecated
+  ///
+  /// In en, this message translates to:
+  /// **'(deprecated)'**
+  String get attribute_value_deprecated_note;
+
+  /// Short note shown after an attribute value name which is hidden from other users
+  ///
+  /// In en, this message translates to:
+  /// **'(partially hidden)'**
+  String get attribute_value_partially_hidden_note;
+
   /// Description text displayed when no profiles are found
   ///
   /// In en, this message translates to:

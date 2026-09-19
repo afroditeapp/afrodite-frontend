@@ -308,6 +308,12 @@ class AppLocalizationsFi extends AppLocalizations {
   }
 
   @override
+  String get attribute_value_deprecated_note => '(vanhentunut)';
+
+  @override
+  String get attribute_value_partially_hidden_note => '(osittain piilotettu)';
+
+  @override
   String get automatic_profile_search_results_screen_no_profiles_found_description =>
       'Saat ilmoituksen, kun tilanne muuttuu';
 

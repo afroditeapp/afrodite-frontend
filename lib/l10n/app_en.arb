@@ -391,6 +391,14 @@
       }
     }
   },
+  "attribute_value_deprecated_note": "(deprecated)",
+  "@attribute_value_deprecated_note": {
+    "description": "Short note shown after an attribute value name which is deprecated"
+  },
+  "attribute_value_partially_hidden_note": "(partially hidden)",
+  "@attribute_value_partially_hidden_note": {
+    "description": "Short note shown after an attribute value name which is hidden from other users"
+  },
   "automatic_profile_search_results_screen_no_profiles_found_description": "You will be notified when this changes",
   "@automatic_profile_search_results_screen_no_profiles_found_description": {
     "description": "Description text displayed when no profiles are found"
