@@ -1,5 +1,10 @@
+import "package:app/logic/app/navigator_state.dart";
+import "package:app/logic/sign_in_with.dart";
 import "package:app/model/freezed/logic/main/navigator_state.dart";
+import "package:app/model/freezed/logic/sign_in_with.dart";
+import "package:app/ui/login/widgets.dart";
 import "package:app/ui/normal/settings/chat/send_chat_backup.dart";
+import "package:app/ui_utils/loading_dialog.dart";
 import "package:app/ui_utils/snack_bar.dart";
 import "package:flutter/material.dart";
 import "package:flutter_bloc/flutter_bloc.dart";
@@ -72,6 +77,12 @@ class _DemoAccountScreenContentState extends State<DemoAccountScreenContent> {
             MenuItemButton(
               child: Text(context.strings.send_chat_backup_screen_title),
               onPressed: () => openSendChatBackupScreenForDemoAccount(context),
+            ),
+            MenuItemButton(
+              child: Text(context.strings.generic_sign_in),
+              onPressed: () {
+                MyNavigator.push(context, DemoServerSignInPage());
+              },
             ),
             ...commonActionsWhenLoggedOut(context),
           ]),
@@ -149,4 +160,53 @@ Widget content(BuildContext context) {
       );
     },
   );
+}
+
+class DemoServerSignInPage extends MyScreenPage<()> with SimpleUrlParser<DemoServerSignInPage> {
+  DemoServerSignInPage() : super(builder: (_) => const DemoServerSignInScreen());
+
+  @override
+  DemoServerSignInPage create() => DemoServerSignInPage();
+}
+
+class DemoServerSignInScreen extends StatelessWidget {
+  const DemoServerSignInScreen({super.key});
+
+  @override
+  Widget build(BuildContext context) {
+    return Scaffold(
+      body: Column(
+        children: [
+          Expanded(
+            child: LayoutBuilder(
+              builder: (context, constraints) {
+                return SingleChildScrollView(
+                  child: ConstrainedBox(
+                    constraints: BoxConstraints(minHeight: constraints.maxHeight),
+                    child: IntrinsicHeight(
+                      child: Column(
+                        children: [
+                          const Spacer(flex: 2),
+                          Text("Sign in to demo server using normal login methods"),
+                          const Spacer(flex: 10),
+                          signInButtonArea(context, demoServer: true),
+                          const Spacer(flex: 1),
+                        ],
+                      ),
+                    ),
+                  ),
+                );
+              },
+            ),
+          ),
+          ProgressDialogOpener<SignInWithBloc, SignInWithData>(
+            dialogVisibilityGetter: (state) => state.showProgress,
+            loadingText: context.strings.generic_login_progress_dialog_text,
+          ),
+        ],
+      ),
+      resizeToAvoidBottomInset: false,
+      appBar: AppBar(title: Text(context.strings.generic_sign_in)),
+    );
+  }
 }

@@ -27,7 +27,6 @@ import 'package:app/ui/normal/settings/blocked_profiles.dart';
 import 'package:app/ui/normal/settings/chat/chat_backup.dart';
 import 'package:app/ui/normal/settings/data_export.dart';
 import 'package:app/ui/normal/settings/debug.dart';
-import 'package:app/ui/login/email_login.dart';
 import 'package:app/ui/normal/settings/general/profile_grid_settings.dart';
 import 'package:app/ui/normal/settings/location.dart';
 import 'package:app/ui/normal/settings/media/content_management.dart';
@@ -123,11 +122,9 @@ List<UrlParser<MyScreenPage<Object>>> loggedOutPages() => [
   DemoAccountPage(),
 
   // Other
-  EmailLoginMethodPage(),
-  EmailLoginPage(),
-  EmailLoginCodePage(),
   SendChatBackupPage(),
   SendChatBackupDemoAccountPage(),
+  DemoServerSignInPage(),
 ];
 
 List<UrlParser<MyScreenPage<Object>>> loggedInPages(RepositoryInstances r) => [

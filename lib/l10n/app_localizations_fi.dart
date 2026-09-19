@@ -1072,6 +1072,9 @@ class AppLocalizationsFi extends AppLocalizations {
   String get generic_show_only_selected => 'Näytä vain valitut';
 
   @override
+  String get generic_sign_in => 'Kirjaudu sisään';
+
+  @override
   String get generic_size => 'Koko';
 
   @override

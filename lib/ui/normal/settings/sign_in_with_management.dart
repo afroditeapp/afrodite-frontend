@@ -145,6 +145,7 @@ class _AppleSection extends StatelessWidget {
                   context,
                   onPressed: () =>
                       context.read<SignInWithManagementBloc>().add(LinkAppleSignInWith()),
+                  demoServer: null,
                 ),
               ),
             ),
@@ -210,6 +211,7 @@ class _GoogleSection extends StatelessWidget {
             child: signInWithGoogleButton(
               context,
               onPressed: () => context.read<SignInWithManagementBloc>().add(LinkGoogleSignInWith()),
+              demoServer: null,
             ),
           ),
         ),

@@ -20,7 +20,11 @@ import 'package:video_player/video_player.dart';
 
 const SIGN_IN_BUTTON_HEIGHT = 50.0;
 
-Widget signInButtonArea(BuildContext context) {
+/// Sign in button area shown on the login screen.
+///
+/// When [demoServer] is true, the sign in actions are performed against the
+/// demo server instead of the normal server.
+Widget signInButtonArea(BuildContext context, {required bool demoServer}) {
   const COMMON_PADDING = 8.0;
 
   return Column(
@@ -60,15 +64,15 @@ Widget signInButtonArea(BuildContext context) {
         child: Column(
           mainAxisAlignment: MainAxisAlignment.center,
           children: [
-            firstSignInButton(context),
+            firstSignInButton(context, demoServer: demoServer),
             const Padding(padding: EdgeInsets.symmetric(vertical: COMMON_PADDING)),
-            secondSignInButton(context),
+            secondSignInButton(context, demoServer: demoServer),
           ],
         ),
       ),
       const Padding(padding: EdgeInsets.symmetric(vertical: COMMON_PADDING / 2)),
       TextButton(
-        onPressed: () => openEmailLoginMethodScreen(context),
+        onPressed: () => openEmailLoginMethodScreen(context, demoServer: demoServer),
         child: Text(context.strings.login_screen_sign_in_with_email_action),
       ),
       const Padding(padding: EdgeInsets.symmetric(vertical: COMMON_PADDING)),
@@ -106,7 +110,7 @@ Widget termsOfServiceAndPrivacyPolicyInfo(BuildContext context) {
   );
 }
 
-Widget firstSignInButton(BuildContext context) {
+Widget firstSignInButton(BuildContext context, {required bool demoServer}) {
   if (kIsWeb) {
     return SizedBox(
       height: SIGN_IN_BUTTON_HEIGHT,
@@ -118,23 +122,27 @@ Widget firstSignInButton(BuildContext context) {
       ),
     );
   } else if (Platform.isIOS && signInWithAppleServiceIdForAndroidAndWebLogin().isNotEmpty) {
-    return signInWithAppleButton(context);
+    return signInWithAppleButton(context, demoServer: demoServer);
   } else {
-    return signInWithGoogleButton(context);
+    return signInWithGoogleButton(context, demoServer: demoServer);
   }
 }
 
-Widget secondSignInButton(BuildContext context) {
+Widget secondSignInButton(BuildContext context, {required bool demoServer}) {
   if (!kIsWeb && Platform.isIOS && signInWithAppleServiceIdForAndroidAndWebLogin().isNotEmpty) {
-    return signInWithGoogleButton(context);
+    return signInWithGoogleButton(context, demoServer: demoServer);
   } else if (signInWithAppleServiceIdForAndroidAndWebLogin().isNotEmpty) {
-    return signInWithAppleButton(context);
+    return signInWithAppleButton(context, demoServer: demoServer);
   } else {
     return SizedBox.shrink();
   }
 }
 
-Widget signInWithAppleButton(BuildContext context, {VoidCallback? onPressed}) {
+Widget signInWithAppleButton(
+  BuildContext context, {
+  VoidCallback? onPressed,
+  required bool? demoServer,
+}) {
   final SignInWithAppleButtonStyle style;
   if (Theme.of(context).brightness == Brightness.light) {
     style = SignInWithAppleButtonStyle.black;
@@ -143,14 +151,20 @@ Widget signInWithAppleButton(BuildContext context, {VoidCallback? onPressed}) {
   }
 
   return SignInWithAppleButton(
-    onPressed: onPressed ?? () => context.read<SignInWithBloc>().add(SignInWithAppleEvent()),
+    onPressed:
+        onPressed ??
+        () => context.read<SignInWithBloc>().add(SignInWithAppleEvent(demoServer: demoServer)),
     borderRadius: const BorderRadius.all(Radius.circular(24.0)),
     height: SIGN_IN_BUTTON_HEIGHT,
     style: style,
   );
 }
 
-Widget signInWithGoogleButton(BuildContext context, {VoidCallback? onPressed}) {
+Widget signInWithGoogleButton(
+  BuildContext context, {
+  VoidCallback? onPressed,
+  required bool? demoServer,
+}) {
   final String iconPath;
   if (Theme.of(context).brightness == Brightness.light) {
     iconPath = ImageAsset.signInWithGoogleButtonImageDark().path;
@@ -166,7 +180,9 @@ Widget signInWithGoogleButton(BuildContext context, {VoidCallback? onPressed}) {
       cacheHeight: calculateCachedImageSize(context, SIGN_IN_BUTTON_HEIGHT),
     ),
     padding: EdgeInsets.zero,
-    onPressed: onPressed ?? () => context.read<SignInWithBloc>().add(SignInWithGoogle()),
+    onPressed:
+        onPressed ??
+        () => context.read<SignInWithBloc>().add(SignInWithGoogle(demoServer: demoServer)),
   );
 }
 

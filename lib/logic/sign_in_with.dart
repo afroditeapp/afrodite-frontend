@@ -9,11 +9,37 @@ import "package:app/ui_utils/snack_bar.dart";
 import "package:app/utils.dart";
 import "package:openapi/api.dart";
 
+/// Returns the server address to use for a sign in action.
+///
+/// When [demoServer] is null, the [currentServerAddress] is used as is.
+/// When [demoServer] is true, the demo server address is used.
+/// When [demoServer] is false, the normal server address is used.
+String serverAddressForSignInAction(String currentServerAddress, bool? demoServer) {
+  if (demoServer == null) {
+    return currentServerAddress;
+  }
+  return demoServer
+      ? serverAddressForDemoAccountLogin(currentServerAddress)
+      : serverAddressForSignIn(currentServerAddress);
+}
+
 sealed class SignInWithBlocEvent {}
 
-class SignInWithGoogle extends SignInWithBlocEvent {}
+class SignInWithGoogle extends SignInWithBlocEvent {
+  /// If true, the sign in is done against the demo server instead of the
+  /// normal server. If false, the sign in is done against the normal server.
+  /// If null, the current server address is used.
+  final bool? demoServer;
+  SignInWithGoogle({required this.demoServer});
+}
 
-class SignInWithAppleEvent extends SignInWithBlocEvent {}
+class SignInWithAppleEvent extends SignInWithBlocEvent {
+  /// If true, the sign in is done against the demo server instead of the
+  /// normal server. If false, the sign in is done against the normal server.
+  /// If null, the current server address is used.
+  final bool? demoServer;
+  SignInWithAppleEvent({required this.demoServer});
+}
 
 class SignInWithBloc extends Bloc<SignInWithBlocEvent, SignInWithData> with ActionRunner {
   final LoginRepository login = LoginRepository.getInstance();
@@ -22,14 +48,14 @@ class SignInWithBloc extends Bloc<SignInWithBlocEvent, SignInWithData> with Acti
     on<SignInWithGoogle>((data, emit) async {
       await runOnce(() async {
         final currentServerAddress = await login.accountServerAddress.first;
-        final serverAddress = serverAddressForSignIn(currentServerAddress);
+        final serverAddress = serverAddressForSignInAction(currentServerAddress, data.demoServer);
         await _handleSignInWith(emit, login.signInWithGoogle(serverAddress));
       });
     });
     on<SignInWithAppleEvent>((data, emit) async {
       // On Android this might not never complete
       final currentServerAddress = await login.accountServerAddress.first;
-      final serverAddress = serverAddressForSignIn(currentServerAddress);
+      final serverAddress = serverAddressForSignInAction(currentServerAddress, data.demoServer);
       await _handleSignInWith(emit, login.signInWithApple(serverAddress));
     });
   }

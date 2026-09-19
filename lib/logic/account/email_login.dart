@@ -19,10 +19,19 @@ class RequestEmailToken extends EmailLoginEvent {
 
   /// If true, the token is requested for logging in to an existing account.
   final bool loginOnly;
-  RequestEmailToken(this.email, {this.loginOnly = false});
+
+  /// If true, the request is done against the demo server instead of the
+  /// normal server.
+  final bool demoServer;
+  RequestEmailToken(this.email, {this.loginOnly = false, required this.demoServer});
 }
 
-class CheckEmailRegistrationEnabled extends EmailLoginEvent {}
+class CheckEmailRegistrationEnabled extends EmailLoginEvent {
+  /// If true, the request is done against the demo server instead of the
+  /// normal server.
+  final bool demoServer;
+  CheckEmailRegistrationEnabled({required this.demoServer});
+}
 
 class SubmitLoginCode extends EmailLoginEvent {
   final String clientToken;
@@ -39,7 +48,9 @@ class EmailLoginBloc extends Bloc<EmailLoginEvent, EmailLoginBlocData> with Acti
   EmailLoginBloc() : login = LoginRepository.getInstance(), super(EmailLoginBlocData()) {
     on<CheckEmailRegistrationEnabled>((event, emit) async {
       final currentServerAddress = await login.accountServerAddress.first;
-      final serverAddress = serverAddressForSignIn(currentServerAddress);
+      final serverAddress = event.demoServer
+          ? serverAddressForDemoAccountLogin(currentServerAddress)
+          : serverAddressForSignIn(currentServerAddress);
       final result = await login.getEmailRegistrationPlatforms(serverAddress);
 
       switch (result) {
@@ -59,7 +70,9 @@ class EmailLoginBloc extends Bloc<EmailLoginEvent, EmailLoginBlocData> with Acti
         final waitTime = WantedWaitingTimeManager();
 
         final currentServerAddress = await login.accountServerAddress.first;
-        final serverAddress = serverAddressForSignIn(currentServerAddress);
+        final serverAddress = event.demoServer
+            ? serverAddressForDemoAccountLogin(currentServerAddress)
+            : serverAddressForSignIn(currentServerAddress);
         final result = await login.emailLoginRequestToken(
           event.email,
           serverAddress,

@@ -1398,6 +1398,10 @@
   "@generic_show_only_selected": {
     "description": "Generic show only selected text"
   },
+  "generic_sign_in": "Sign in",
+  "@generic_sign_in": {
+    "description": "Generic sign in text"
+  },
   "generic_size": "Size",
   "@generic_size": {
     "description": "Generic size text"

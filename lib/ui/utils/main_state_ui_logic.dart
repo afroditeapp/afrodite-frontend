@@ -153,7 +153,11 @@ class NavigatorDemoAccount extends BasicRootScreen {
   @override
   Widget blocProvider(Widget child) {
     return MultiBlocProvider(
-      providers: [BlocProvider(create: (_) => DemoAccountBloc())],
+      providers: [
+        BlocProvider(create: (_) => DemoAccountBloc()),
+        BlocProvider(create: (_) => SignInWithBloc()),
+        BlocProvider(create: (_) => EmailLoginBloc()),
+      ],
       child: child,
     );
   }

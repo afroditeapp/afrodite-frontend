@@ -44,6 +44,7 @@
     <string name="generic_action_completed" description="Generic action completed text">Action completed</string>
     <string name="generic_setting_saved" description="Generic setting saved text">Setting saved</string>
     <string name="generic_login" description="Generic login text">Login</string>
+    <string name="generic_sign_in" description="Generic sign in text">Sign in</string>
     <string name="generic_logout" description="Generic logout text">Logout</string>
     <string name="generic_logout_confirmation_title" description="Generic logout confirmation title text">Logout?</string>
     <string name="generic_save_confirmation_title" description="Generic save confirmation title text">Save?</string>

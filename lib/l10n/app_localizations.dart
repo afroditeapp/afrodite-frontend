@@ -1934,6 +1934,12 @@ abstract class AppLocalizations {
   /// **'Show only selected'**
   String get generic_show_only_selected;
 
+  /// Generic sign in text
+  ///
+  /// In en, this message translates to:
+  /// **'Sign in'**
+  String get generic_sign_in;
+
   /// Generic size text
   ///
   /// In en, this message translates to:

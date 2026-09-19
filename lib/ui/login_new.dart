@@ -104,7 +104,7 @@ class LoginScreen extends StatelessWidget {
         const Spacer(flex: 2),
         logoAndAppNameAndSlogan(context),
         const Spacer(flex: 10),
-        signInButtonArea(context),
+        signInButtonArea(context, demoServer: false),
         const Spacer(flex: 1),
       ],
     );

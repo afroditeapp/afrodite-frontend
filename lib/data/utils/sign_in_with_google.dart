@@ -4,9 +4,11 @@ import 'dart:io';
 import 'package:app/data/app_version.dart';
 import 'package:app/data/login_repository.dart';
 import 'package:app/data/utils/sign_in_with_apple.dart';
+import 'package:app/logic/app/navigator_state.dart';
 import 'package:app/logic/sign_in_with.dart';
 import 'package:app/config.dart';
 import 'package:app/config_services.dart';
+import 'package:app/ui/demo_account.dart';
 import 'package:app/utils/result.dart';
 import 'package:crypto/crypto.dart';
 import 'package:flutter/foundation.dart';
@@ -85,7 +87,9 @@ class SignInWithGoogleManager {
             );
             final login = LoginRepository.getInstance();
             final currentServerAddress = await login.accountServerAddress.first;
-            final serverAddress = serverAddressForSignIn(currentServerAddress);
+            final serverAddress = _isDemoServerSignInScreenInNavigationStack()
+                ? serverAddressForDemoAccountLogin(currentServerAddress)
+                : serverAddressForSignIn(currentServerAddress);
             switch (await login.sendSignInWithLoginCmd(info, serverAddress)) {
               case Ok():
                 ();
@@ -105,6 +109,11 @@ class SignInWithGoogleManager {
 
   void disableLinking() {
     _linkingEnabled = false;
+  }
+
+  bool _isDemoServerSignInScreenInNavigationStack() {
+    final pages = NavigationStateBlocInstance.getInstance().navigationState.pages;
+    return pages.any((page) => page is DemoServerSignInPage);
   }
 
   Future<Result<SignInWithGoogleInfo, ()>> login() async {

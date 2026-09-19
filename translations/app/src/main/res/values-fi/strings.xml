@@ -37,6 +37,7 @@
     <string name="generic_action_completed">Toiminto suoritettu</string>
     <string name="generic_setting_saved">Asetus tallennettu</string>
     <string name="generic_login">Kirjaudu</string>
+    <string name="generic_sign_in">Kirjaudu sisään</string>
     <string name="generic_logout">Kirjaudu ulos</string>
     <string name="generic_logout_confirmation_title">Kirjaudu ulos?</string>
     <string name="generic_save_confirmation_title">Tallenna?</string>

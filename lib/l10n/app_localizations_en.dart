@@ -1065,6 +1065,9 @@ class AppLocalizationsEn extends AppLocalizations {
   String get generic_show_only_selected => 'Show only selected';
 
   @override
+  String get generic_sign_in => 'Sign in';
+
+  @override
   String get generic_size => 'Size';
 
   @override

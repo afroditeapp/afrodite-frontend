@@ -17,29 +17,39 @@ import 'package:openapi/api.dart';
 
 /// Email sign in method chooser screen. Lets the user choose between logging
 /// in to an existing account or registering a new account.
-void openEmailLoginMethodScreen(BuildContext context) {
-  MyNavigator.push(context, EmailLoginMethodPage());
+///
+/// When [demoServer] is true, the email login is performed against the demo
+/// server instead of the normal server.
+void openEmailLoginMethodScreen(BuildContext context, {required bool demoServer}) {
+  MyNavigator.push(context, EmailLoginMethodPage(demoServer: demoServer));
 }
 
 class EmailLoginMethodPage extends MyScreenPage<()> with SimpleUrlParser<EmailLoginMethodPage> {
-  EmailLoginMethodPage() : super(builder: (_) => const EmailLoginMethodScreenOpener());
+  final bool demoServer;
+  EmailLoginMethodPage({required this.demoServer})
+    : super(builder: (_) => EmailLoginMethodScreenOpener(demoServer: demoServer));
 
   @override
-  EmailLoginMethodPage create() => EmailLoginMethodPage();
+  EmailLoginMethodPage create() => EmailLoginMethodPage(demoServer: demoServer);
 }
 
 class EmailLoginMethodScreenOpener extends StatelessWidget {
-  const EmailLoginMethodScreenOpener({super.key});
+  final bool demoServer;
+  const EmailLoginMethodScreenOpener({required this.demoServer, super.key});
 
   @override
   Widget build(BuildContext context) {
-    return EmailLoginMethodScreen(emailLoginBloc: context.read<EmailLoginBloc>());
+    return EmailLoginMethodScreen(
+      emailLoginBloc: context.read<EmailLoginBloc>(),
+      demoServer: demoServer,
+    );
   }
 }
 
 class EmailLoginMethodScreen extends StatefulWidget {
   final EmailLoginBloc emailLoginBloc;
-  const EmailLoginMethodScreen({required this.emailLoginBloc, super.key});
+  final bool demoServer;
+  const EmailLoginMethodScreen({required this.emailLoginBloc, required this.demoServer, super.key});
 
   @override
   State<EmailLoginMethodScreen> createState() => _EmailLoginMethodScreenState();
@@ -49,7 +59,7 @@ class _EmailLoginMethodScreenState extends State<EmailLoginMethodScreen> {
   @override
   void initState() {
     super.initState();
-    widget.emailLoginBloc.add(CheckEmailRegistrationEnabled());
+    widget.emailLoginBloc.add(CheckEmailRegistrationEnabled(demoServer: widget.demoServer));
   }
 
   @override
@@ -66,7 +76,10 @@ class _EmailLoginMethodScreenState extends State<EmailLoginMethodScreen> {
               icon: Icons.login,
               title: context.strings.email_login_method_screen_existing_account,
               description: context.strings.email_login_method_screen_existing_account_description,
-              onPressed: () => MyNavigator.push(context, EmailLoginPage(loginOnly: true)),
+              onPressed: () => MyNavigator.push(
+                context,
+                EmailLoginPage(loginOnly: true, demoServer: widget.demoServer),
+              ),
             ),
             const SizedBox(height: 16),
             registerButton(),
@@ -100,7 +113,10 @@ class _EmailLoginMethodScreenState extends State<EmailLoginMethodScreen> {
                     context.strings.email_login_screen_registration_info_dialog_text,
                   );
                   if (context.mounted) {
-                    await MyNavigator.push(context, EmailLoginPage(loginOnly: false));
+                    await MyNavigator.push(
+                      context,
+                      EmailLoginPage(loginOnly: false, demoServer: widget.demoServer),
+                    );
                   }
                 }
               : null,
@@ -202,16 +218,23 @@ class EmailLoginPage extends MyScreenPage<()> with SimpleUrlParser<EmailLoginPag
   /// registration.
   final bool loginOnly;
 
-  EmailLoginPage({this.loginOnly = false})
-    : super(builder: (_) => EmailLoginScreen(loginOnly: loginOnly));
+  /// If true, the email login is performed against the demo server instead of
+  /// the normal server.
+  final bool demoServer;
+
+  EmailLoginPage({this.loginOnly = false, required this.demoServer})
+    : super(
+        builder: (_) => EmailLoginScreen(loginOnly: loginOnly, demoServer: demoServer),
+      );
 
   @override
-  EmailLoginPage create() => EmailLoginPage(loginOnly: loginOnly);
+  EmailLoginPage create() => EmailLoginPage(loginOnly: loginOnly, demoServer: demoServer);
 }
 
 class EmailLoginScreen extends StatefulWidget {
   final bool loginOnly;
-  const EmailLoginScreen({super.key, this.loginOnly = false});
+  final bool demoServer;
+  const EmailLoginScreen({super.key, this.loginOnly = false, required this.demoServer});
 
   @override
   State<EmailLoginScreen> createState() => _EmailLoginScreenState();
@@ -326,9 +349,19 @@ class _EmailLoginScreenState extends State<EmailLoginScreen> {
                     FocusScope.of(context).unfocus();
                     final email = _emailController.text.trim();
                     context.read<EmailLoginBloc>().add(
-                      RequestEmailToken(email, loginOnly: widget.loginOnly),
+                      RequestEmailToken(
+                        email,
+                        loginOnly: widget.loginOnly,
+                        demoServer: widget.demoServer,
+                      ),
                     );
-                    MyNavigator.push(context, EmailLoginCodePage(loginOnly: widget.loginOnly));
+                    MyNavigator.push(
+                      context,
+                      EmailLoginCodePage(
+                        loginOnly: widget.loginOnly,
+                        demoServer: widget.demoServer,
+                      ),
+                    );
                   }
                 : null,
             child: Text(context.strings.email_login_screen_send_code_button),
@@ -341,16 +374,20 @@ class _EmailLoginScreenState extends State<EmailLoginScreen> {
 
 class EmailLoginCodePage extends MyScreenPage<()> with SimpleUrlParser<EmailLoginCodePage> {
   final bool loginOnly;
-  EmailLoginCodePage({this.loginOnly = false})
-    : super(builder: (_) => EmailLoginCodeScreen(loginOnly: loginOnly));
+  final bool demoServer;
+  EmailLoginCodePage({this.loginOnly = false, required this.demoServer})
+    : super(
+        builder: (_) => EmailLoginCodeScreen(loginOnly: loginOnly, demoServer: demoServer),
+      );
 
   @override
-  EmailLoginCodePage create() => EmailLoginCodePage(loginOnly: loginOnly);
+  EmailLoginCodePage create() => EmailLoginCodePage(loginOnly: loginOnly, demoServer: demoServer);
 }
 
 class EmailLoginCodeScreen extends StatefulWidget {
   final bool loginOnly;
-  const EmailLoginCodeScreen({super.key, this.loginOnly = false});
+  final bool demoServer;
+  const EmailLoginCodeScreen({super.key, this.loginOnly = false, required this.demoServer});
 
   @override
   State<EmailLoginCodeScreen> createState() => _EmailLoginCodeScreenState();
