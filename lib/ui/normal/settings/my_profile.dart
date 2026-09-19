@@ -101,6 +101,9 @@ class MyProfileScreen extends StatelessWidget {
           }
 
           return FloatingActionButton(
+            // Show this button reliably when navigating back to this screen
+            // after discarding profile changes.
+            heroTag: null,
             onPressed: onPressed,
             tooltip: context.strings.view_profile_screen_my_profile_edit_action,
             child: const Icon(EDIT_PROFILE_ICON),
