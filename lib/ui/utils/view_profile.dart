@@ -572,7 +572,7 @@ class AttributeList extends StatelessWidget {
         const Padding(padding: EdgeInsets.all(4)),
         Padding(
           padding: const EdgeInsets.symmetric(horizontal: COMMON_SCREEN_EDGE_PADDING),
-          child: AttributeValuesArea(a: a, isFilter: false),
+          child: AttributeValuesArea(a: a, isFilter: false, hideNonVisibleValues: true),
         ),
       ],
     );
@@ -582,7 +582,13 @@ class AttributeList extends StatelessWidget {
 class AttributeValuesArea extends StatelessWidget {
   final AttributeValueAreaInfoProvider a;
   final bool isFilter;
-  const AttributeValuesArea({required this.a, required this.isFilter, super.key});
+  final bool hideNonVisibleValues;
+  const AttributeValuesArea({
+    required this.a,
+    required this.isFilter,
+    this.hideNonVisibleValues = false,
+    super.key,
+  });
 
   @override
   Widget build(BuildContext context) {
@@ -597,6 +603,9 @@ class AttributeValuesArea extends StatelessWidget {
     }
 
     for (final v in a.valueAreaSelectedValues()) {
+      if (hideNonVisibleValues && !v.apiValue().visible) {
+        continue;
+      }
       final text = v.uiName();
       final icon = v.uiIcon();
       final Widget? avatar;
@@ -616,6 +625,9 @@ class AttributeValuesArea extends StatelessWidget {
     }
 
     for (final v in a.valueAreaUnwantedValues()) {
+      if (hideNonVisibleValues && !v.apiValue().visible) {
+        continue;
+      }
       final text = v.uiName();
       final icon = v.uiIcon();
       final Widget? avatar;
