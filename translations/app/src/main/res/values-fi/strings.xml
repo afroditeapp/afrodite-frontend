@@ -7,6 +7,8 @@
     <string name="generic_warning">Varoitus</string>
     <string name="generic_empty">Tyhjä</string>
     <string name="generic_disabled">Pois käytöstä</string>
+    <string name="generic_enable">Ota käyttöön</string>
+    <string name="generic_disable">Poista käytöstä</string>
     <string name="generic_details">Tiedot</string>
     <string name="generic_download">Lataa</string>
     <string name="generic_save">Tallenna</string>
@@ -877,4 +879,9 @@
     <string name="sign_in_with_management_screen_link_failed">Kirjautumistavan linkitys epäonnistui</string>
     <string name="sign_in_with_management_screen_link_history_limit_reached">Kirjautumistavan vaihtoraja saavutettu. Yritä uudelleen %s kuluttua.</string>
     <string name="sign_in_with_management_screen_unlink_failed">Kirjautumistavan linkityksen poisto epäonnistui</string>
+    <string name="sign_in_with_management_screen_email_login_title">Sähköpostikirjautuminen</string>
+    <string name="sign_in_with_management_screen_email_login_enabled">Sähköpostikirjautuminen on käytössä</string>
+    <string name="sign_in_with_management_screen_email_login_disabled">Sähköpostikirjautuminen on pois käytöstä</string>
+    <string name="sign_in_with_management_screen_email_login_enable_confirm_title">Otetaanko sähköpostikirjautuminen käyttöön?</string>
+    <string name="sign_in_with_management_screen_email_login_disable_confirm_title">Poistetaanko sähköpostikirjautuminen käytöstä?</string>
 </resources>

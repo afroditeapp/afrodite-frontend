@@ -910,6 +910,9 @@ class AppLocalizationsFi extends AppLocalizations {
   String get generic_details => 'Tiedot';
 
   @override
+  String get generic_disable => 'Poista käytöstä';
+
+  @override
   String get generic_disabled => 'Pois käytöstä';
 
   @override
@@ -929,6 +932,9 @@ class AppLocalizationsFi extends AppLocalizations {
 
   @override
   String get generic_empty => 'Tyhjä';
+
+  @override
+  String get generic_enable => 'Ota käyttöön';
 
   @override
   String get generic_error => 'Virhe';
@@ -2212,6 +2218,25 @@ class AppLocalizationsFi extends AppLocalizations {
   @override
   String get sign_in_with_management_screen_apple_unlink_confirm_title =>
       'Poistetaanko Apple-tilin linkitys?';
+
+  @override
+  String get sign_in_with_management_screen_email_login_disable_confirm_title =>
+      'Poistetaanko sähköpostikirjautuminen käytöstä?';
+
+  @override
+  String get sign_in_with_management_screen_email_login_disabled =>
+      'Sähköpostikirjautuminen on pois käytöstä';
+
+  @override
+  String get sign_in_with_management_screen_email_login_enable_confirm_title =>
+      'Otetaanko sähköpostikirjautuminen käyttöön?';
+
+  @override
+  String get sign_in_with_management_screen_email_login_enabled =>
+      'Sähköpostikirjautuminen on käytössä';
+
+  @override
+  String get sign_in_with_management_screen_email_login_title => 'Sähköpostikirjautuminen';
 
   @override
   String get sign_in_with_management_screen_google_not_linked =>

@@ -11,6 +11,7 @@ class SignInWithManagementBlocData with _$SignInWithManagementBlocData, UpdateSt
     @Default(false) bool isError,
     @Default(false) bool apple,
     @Default(false) bool google,
+    @Default(true) bool emailLoginEnabled,
     @Default(UpdateIdle()) UpdateState updateState,
   }) = _SignInWithManagementBlocData;
 }

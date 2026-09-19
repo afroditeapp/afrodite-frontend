@@ -902,6 +902,9 @@ class AppLocalizationsEn extends AppLocalizations {
   String get generic_details => 'Details';
 
   @override
+  String get generic_disable => 'Disable';
+
+  @override
   String get generic_disabled => 'Disabled';
 
   @override
@@ -921,6 +924,9 @@ class AppLocalizationsEn extends AppLocalizations {
 
   @override
   String get generic_empty => 'Empty';
+
+  @override
+  String get generic_enable => 'Enable';
 
   @override
   String get generic_error => 'Error';
@@ -2194,6 +2200,23 @@ class AppLocalizationsEn extends AppLocalizations {
 
   @override
   String get sign_in_with_management_screen_apple_unlink_confirm_title => 'Unlink Apple account?';
+
+  @override
+  String get sign_in_with_management_screen_email_login_disable_confirm_title =>
+      'Disable email login?';
+
+  @override
+  String get sign_in_with_management_screen_email_login_disabled => 'Email login is disabled';
+
+  @override
+  String get sign_in_with_management_screen_email_login_enable_confirm_title =>
+      'Enable email login?';
+
+  @override
+  String get sign_in_with_management_screen_email_login_enabled => 'Email login is enabled';
+
+  @override
+  String get sign_in_with_management_screen_email_login_title => 'Email login';
 
   @override
   String get sign_in_with_management_screen_google_not_linked =>

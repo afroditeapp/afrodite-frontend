@@ -32,6 +32,11 @@ class UnlinkAppleSignInWith extends SignInWithManagementEvent {}
 
 class UnlinkGoogleSignInWith extends SignInWithManagementEvent {}
 
+class SetEmailLoginEnabledEvent extends SignInWithManagementEvent {
+  final bool enabled;
+  SetEmailLoginEnabledEvent(this.enabled);
+}
+
 class SignInWithManagementBloc extends Bloc<SignInWithManagementEvent, SignInWithManagementBlocData>
     with ActionRunner {
   final RepositoryInstances r;
@@ -93,10 +98,14 @@ class SignInWithManagementBloc extends Bloc<SignInWithManagementEvent, SignInWit
         ),
       );
     });
+    on<SetEmailLoginEnabledEvent>((event, emit) async {
+      await _setEmailLoginEnabled(emit, event.enabled);
+    });
   }
 
   Future<void> _reload(Emitter<SignInWithManagementBlocData> emit) async {
     final state = await r.account.api.account((api) => api.getSignInWithInfo()).ok();
+    final emailState = await r.account.api.account((api) => api.getEmailAddressState()).ok();
     if (state != null) {
       emit(
         this.state.copyWith(
@@ -104,11 +113,39 @@ class SignInWithManagementBloc extends Bloc<SignInWithManagementEvent, SignInWit
           isError: false,
           apple: state.apple,
           google: state.google,
+          emailLoginEnabled: emailState?.emailLoginEnabled ?? true,
         ),
       );
     } else {
       emit(this.state.copyWith(isLoading: false, isError: true));
     }
+  }
+
+  Future<void> _setEmailLoginEnabled(
+    Emitter<SignInWithManagementBlocData> emit,
+    bool enabled,
+  ) async {
+    await runOnce(() async {
+      emit(state.copyWith(updateState: const UpdateStarted()));
+
+      final waitTime = WantedWaitingTimeManager();
+      emit(state.copyWith(updateState: const UpdateInProgress()));
+
+      final request = SetEmailLoginEnabled(aid: r.accountId, enabled: enabled);
+      final ok = await r.account.api
+          .accountAction((api) => api.postSetEmailLoginEnabled(request))
+          .ok();
+
+      await waitTime.waitIfNeeded();
+
+      if (ok != null) {
+        await _reload(emit);
+      } else {
+        showSnackBar(R.strings.generic_error_occurred);
+      }
+
+      emit(state.copyWith(updateState: const UpdateIdle()));
+    });
   }
 
   /// Links a new sign in method. Result of [getInfo] is either the sign in

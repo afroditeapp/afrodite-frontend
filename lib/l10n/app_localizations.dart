@@ -1610,6 +1610,12 @@ abstract class AppLocalizations {
   /// **'Details'**
   String get generic_details;
 
+  /// Generic disable text
+  ///
+  /// In en, this message translates to:
+  /// **'Disable'**
+  String get generic_disable;
+
   /// Generic disabled text
   ///
   /// In en, this message translates to:
@@ -1651,6 +1657,12 @@ abstract class AppLocalizations {
   /// In en, this message translates to:
   /// **'Empty'**
   String get generic_empty;
+
+  /// Generic enable text
+  ///
+  /// In en, this message translates to:
+  /// **'Enable'**
+  String get generic_enable;
 
   /// Generic error message
   ///
@@ -3923,6 +3935,36 @@ abstract class AppLocalizations {
   /// In en, this message translates to:
   /// **'Unlink Apple account?'**
   String get sign_in_with_management_screen_apple_unlink_confirm_title;
+
+  /// Title for disable email login confirm dialog
+  ///
+  /// In en, this message translates to:
+  /// **'Disable email login?'**
+  String get sign_in_with_management_screen_email_login_disable_confirm_title;
+
+  /// Text shown when email login is disabled for the account
+  ///
+  /// In en, this message translates to:
+  /// **'Email login is disabled'**
+  String get sign_in_with_management_screen_email_login_disabled;
+
+  /// Title for enable email login confirm dialog
+  ///
+  /// In en, this message translates to:
+  /// **'Enable email login?'**
+  String get sign_in_with_management_screen_email_login_enable_confirm_title;
+
+  /// Text shown when email login is enabled for the account
+  ///
+  /// In en, this message translates to:
+  /// **'Email login is enabled'**
+  String get sign_in_with_management_screen_email_login_enabled;
+
+  /// Title for email login row
+  ///
+  /// In en, this message translates to:
+  /// **'Email login'**
+  String get sign_in_with_management_screen_email_login_title;
 
   /// Text shown when Google sign in is not linked to the account
   ///

@@ -81,6 +81,8 @@ class SignInWithManagementScreen extends StatelessWidget {
                   ],
                   _GoogleSection(google: state.google),
                   const Divider(),
+                  _EmailLoginSection(emailLoginEnabled: state.emailLoginEnabled),
+                  const Divider(),
                 ],
               ),
             );
@@ -222,6 +224,71 @@ class _GoogleSection extends StatelessWidget {
         hPad(Text(context.strings.sign_in_with_management_screen_google_not_linked)),
         const Padding(padding: EdgeInsets.only(top: 8)),
         hPad(button),
+      ],
+    );
+  }
+}
+
+class _EmailLoginSection extends StatelessWidget {
+  final bool emailLoginEnabled;
+  const _EmailLoginSection({required this.emailLoginEnabled});
+
+  @override
+  Widget build(BuildContext context) {
+    return Column(
+      crossAxisAlignment: CrossAxisAlignment.start,
+      children: [
+        settingsCategoryTitle(
+          context,
+          context.strings.sign_in_with_management_screen_email_login_title,
+        ),
+        const Padding(padding: EdgeInsets.only(top: 8)),
+        hPad(
+          Row(
+            children: [
+              Icon(
+                emailLoginEnabled ? Icons.check : Icons.close,
+                color: emailLoginEnabled ? Colors.green : Colors.red,
+              ),
+              const SizedBox(width: 8),
+              Text(
+                emailLoginEnabled
+                    ? context.strings.sign_in_with_management_screen_email_login_enabled
+                    : context.strings.sign_in_with_management_screen_email_login_disabled,
+              ),
+            ],
+          ),
+        ),
+        const Padding(padding: EdgeInsets.only(top: 8)),
+        hPad(
+          Center(
+            child: ElevatedButton(
+              onPressed: () async {
+                final newEnabled = !emailLoginEnabled;
+                final confirmed = await showConfirmDialog(
+                  context,
+                  newEnabled
+                      ? context
+                            .strings
+                            .sign_in_with_management_screen_email_login_enable_confirm_title
+                      : context
+                            .strings
+                            .sign_in_with_management_screen_email_login_disable_confirm_title,
+                );
+                if (context.mounted && confirmed == true) {
+                  context.read<SignInWithManagementBloc>().add(
+                    SetEmailLoginEnabledEvent(newEnabled),
+                  );
+                }
+              },
+              child: Text(
+                emailLoginEnabled
+                    ? context.strings.generic_disable
+                    : context.strings.generic_enable,
+              ),
+            ),
+          ),
+        ),
       ],
     );
   }

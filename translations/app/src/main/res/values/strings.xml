@@ -14,6 +14,8 @@
     <string name="generic_warning" description="Generic warning message">Warning</string>
     <string name="generic_empty" description="Generic empty text">Empty</string>
     <string name="generic_disabled" description="Generic disabled text">Disabled</string>
+    <string name="generic_enable" description="Generic enable text">Enable</string>
+    <string name="generic_disable" description="Generic disable text">Disable</string>
     <string name="generic_details" description="Generic details text">Details</string>
     <string name="generic_download" description="Generic download text">Download</string>
     <string name="generic_save" description="Generic save text">Save</string>
@@ -884,5 +886,10 @@
     <string name="sign_in_with_management_screen_link_failed" description="Snackbar text when linking sign in method fails">Failed to link sign in method</string>
     <string name="sign_in_with_management_screen_link_history_limit_reached" description="Snackbar text when sign in with history limit is reached, with formatted wait time">Sign in method change limit reached. Try again after %s.</string>
     <string name="sign_in_with_management_screen_unlink_failed" description="Snackbar text when unlinking sign in method fails">Failed to unlink sign in method</string>
+    <string name="sign_in_with_management_screen_email_login_title" description="Title for email login row">Email login</string>
+    <string name="sign_in_with_management_screen_email_login_enabled" description="Text shown when email login is enabled for the account">Email login is enabled</string>
+    <string name="sign_in_with_management_screen_email_login_disabled" description="Text shown when email login is disabled for the account">Email login is disabled</string>
+    <string name="sign_in_with_management_screen_email_login_enable_confirm_title" description="Title for enable email login confirm dialog">Enable email login?</string>
+    <string name="sign_in_with_management_screen_email_login_disable_confirm_title" description="Title for disable email login confirm dialog">Disable email login?</string>
 
 </resources>

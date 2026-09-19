@@ -1182,6 +1182,10 @@
   "@generic_details": {
     "description": "Generic details text"
   },
+  "generic_disable": "Disable",
+  "@generic_disable": {
+    "description": "Generic disable text"
+  },
   "generic_disabled": "Disabled",
   "@generic_disabled": {
     "description": "Generic disabled text"
@@ -1209,6 +1213,10 @@
   "generic_empty": "Empty",
   "@generic_empty": {
     "description": "Generic empty text"
+  },
+  "generic_enable": "Enable",
+  "@generic_enable": {
+    "description": "Generic enable text"
   },
   "generic_error": "Error",
   "@generic_error": {
@@ -2880,6 +2888,26 @@
   "sign_in_with_management_screen_apple_unlink_confirm_title": "Unlink Apple account?",
   "@sign_in_with_management_screen_apple_unlink_confirm_title": {
     "description": "Title for unlink Apple sign in method confirm dialog"
+  },
+  "sign_in_with_management_screen_email_login_disable_confirm_title": "Disable email login?",
+  "@sign_in_with_management_screen_email_login_disable_confirm_title": {
+    "description": "Title for disable email login confirm dialog"
+  },
+  "sign_in_with_management_screen_email_login_disabled": "Email login is disabled",
+  "@sign_in_with_management_screen_email_login_disabled": {
+    "description": "Text shown when email login is disabled for the account"
+  },
+  "sign_in_with_management_screen_email_login_enable_confirm_title": "Enable email login?",
+  "@sign_in_with_management_screen_email_login_enable_confirm_title": {
+    "description": "Title for enable email login confirm dialog"
+  },
+  "sign_in_with_management_screen_email_login_enabled": "Email login is enabled",
+  "@sign_in_with_management_screen_email_login_enabled": {
+    "description": "Text shown when email login is enabled for the account"
+  },
+  "sign_in_with_management_screen_email_login_title": "Email login",
+  "@sign_in_with_management_screen_email_login_title": {
+    "description": "Title for email login row"
   },
   "sign_in_with_management_screen_google_not_linked": "Link your Google account to sign in with it",
   "@sign_in_with_management_screen_google_not_linked": {
