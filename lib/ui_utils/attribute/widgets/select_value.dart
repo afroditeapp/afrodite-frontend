@@ -84,12 +84,13 @@ class _SelectAttributeValueState extends State<SelectAttributeValue> {
       } else {
         matchesFilter = true;
       }
-      return matchesFilter &&
-          (!showOnlySelected ||
-              storageSelected.isSelected(a) ||
-              (a.isParentOfGroupValue() && storageSelected.groupValueSelected(a)) ||
-              storageUnwanted.isSelected(a) ||
-              (a.isParentOfGroupValue() && storageUnwanted.groupValueSelected(a)));
+      final isSelected =
+          storageSelected.isSelected(a) ||
+          storageUnwanted.isSelected(a) ||
+          (a.isParentOfGroupValue() &&
+              (storageSelected.groupValueSelected(a) || storageUnwanted.groupValueSelected(a)));
+      final isEditable = a.apiValue().editable;
+      return matchesFilter && (isEditable || isSelected) && (!showOnlySelected || isSelected);
     }).toList();
   }
 
