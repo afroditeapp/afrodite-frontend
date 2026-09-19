@@ -41,8 +41,8 @@ String dbFileToDbName(DbFile dbFile) {
       return "common.db";
     case AccountDbFile():
       return "account_${dbFile.accountId}.db";
-    case CacheDbFile():
-      return "cache.db";
+    case CacheDbFile(:final accountId):
+      return "cache_$accountId.db";
   }
 }
 

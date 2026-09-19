@@ -4,10 +4,12 @@ import 'package:database_provider/database_provider.dart';
 import 'package:drift/drift.dart';
 import 'package:drift/isolate.dart';
 import 'package:database/database.dart';
+import 'package:database_cache/database_cache.dart';
 import 'package:database_utils/database_utils.dart';
 import 'package:logging/logging.dart';
 import 'package:openapi/api.dart';
 import 'package:app/database/account_database_manager.dart';
+import 'package:app/database/cache_database_manager.dart';
 import 'package:app/data/app_version.dart';
 import 'package:app/utils/app_error.dart';
 import 'package:app/utils/result.dart';
@@ -144,8 +146,6 @@ class CommonDatabaseManager extends AppSingleton {
     }
   }
 
-  // Access current account database
-
   Future<AccountDatabaseManager> getAccountDatabaseManager(AccountId accountId) async {
     _log.info("AccountDatabase init");
     final dbProvider = DbProvider(AccountDbFile(accountId.aid));
@@ -158,6 +158,17 @@ class CommonDatabaseManager extends AppSingleton {
       (db) => db.app.updateClientVersionInfo(AppVersionManager.getInstance().clientVersion),
     );
     _log.info("AccountDatabase init completed");
+    return manager;
+  }
+
+  Future<CacheDatabaseManager> getCacheDatabaseManager(AccountId accountId) async {
+    _log.info("CacheDatabase init");
+    final dbProvider = DbProvider(CacheDbFile(accountId.aid));
+    final db = CacheDatabase(dbProvider);
+    final ensureOpenResult = await dbProvider.getQueryExecutor().ensureOpen(db);
+    _log.info("CacheDatabase ensureOpen result: $ensureOpenResult");
+    final manager = CacheDatabaseManager(db);
+    _log.info("CacheDatabase init completed");
     return manager;
   }
 }

@@ -22,7 +22,10 @@ class AccountDbFile extends DbFile {
   AccountDbFile(this.accountId);
 }
 
-class CacheDbFile extends DbFile {}
+class CacheDbFile extends DbFile {
+  final String accountId;
+  CacheDbFile(this.accountId);
+}
 
 class SingleRowTable extends Table {
   static const Value<int> ID = Value(0);

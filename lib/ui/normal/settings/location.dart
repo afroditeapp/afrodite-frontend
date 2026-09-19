@@ -11,7 +11,6 @@ import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:flutter_map/flutter_map.dart';
 import 'package:latlong2/latlong.dart';
 import 'package:openapi/api.dart';
-import 'package:app/data/image_cache.dart';
 import 'package:app/data/profile_repository.dart';
 import 'package:app/logic/profile/location.dart';
 
@@ -568,7 +567,7 @@ class CustomImageProvider extends ImageProvider<(int, int, int, int)> {
   @override
   ImageStreamCompleter loadImage((int, int, int, int) key, ImageDecoderCallback decode) {
     return OneFrameImageStreamCompleter(() async {
-      final pngBytes = await ImageCacheData.getInstance().getMapTile(
+      final pngBytes = await media.imageCache.getMapTile(
         coordinates.z,
         coordinates.x,
         coordinates.y,

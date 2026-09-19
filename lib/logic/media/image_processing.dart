@@ -5,7 +5,6 @@ import "package:app/data/utils/repository_instances.dart";
 import "package:flutter_bloc/flutter_bloc.dart";
 import "package:app/data/account_repository.dart";
 
-import "package:app/data/image_cache.dart";
 import "package:app/data/media_repository.dart";
 import "package:app/data/media/send_to_slot.dart";
 import "package:app/model/freezed/logic/media/image_processing.dart";
@@ -32,7 +31,6 @@ class ImageProcessingBloc extends Bloc<ImageProcessingEvent, ImageProcessingData
   final AccountRepository account;
   final MediaRepository media;
   final ServerConnectionManager connection;
-  final ImageCacheData imageCache = ImageCacheData.getInstance();
 
   ImageProcessingBloc(RepositoryInstances r)
     : account = r.account,
@@ -80,7 +78,7 @@ class ImageProcessingBloc extends Bloc<ImageProcessingEvent, ImageProcessingData
             }
           case ProcessingCompleted(:final contentId, :final faceDetected):
             {
-              final imgFile = await imageCache.getImage(currentUser, contentId, media: media);
+              final imgFile = await media.imageCache.getImage(currentUser, contentId, media: media);
               if (imgFile == null) {
                 emit(state.copyWith(processingState: SendingFailed()));
               } else {

@@ -2,12 +2,10 @@ import 'dart:async';
 
 import 'package:app/api/error_manager.dart';
 import 'package:app/data/app_version.dart';
-import 'package:app/data/image_cache.dart';
 import 'package:app/data/login_repository.dart';
 import 'package:app/data/notification_manager.dart';
 import 'package:app/data/push_notification_manager.dart';
 import 'package:app/data/utils/app_attestation.dart';
-import 'package:app/database/cache_database_manager.dart';
 import 'package:app/database/common_database_manager.dart';
 import 'package:app/utils/app_running_detector/app_running_detector.dart';
 import 'package:app/utils/camera.dart';
@@ -61,10 +59,8 @@ class GlobalInitManager extends AppSingletonNoInit {
 
   Future<void> _continueInit() async {
     await CommonDatabaseManager.getInstance().init();
-    await CacheDatabaseManager.getInstance().init();
 
     await ErrorManager.getInstance().init();
-    await ImageCacheData.getInstance().init();
     await CameraManager.getInstance().init();
     await NotificationManager.getInstance().init();
     await PushNotificationManager.getInstance().init();

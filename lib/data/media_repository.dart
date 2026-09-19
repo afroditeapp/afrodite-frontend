@@ -6,9 +6,11 @@ import 'package:openapi/api.dart';
 import 'package:openapi/manual_additions.dart';
 import 'package:app/api/server_connection_manager.dart';
 import 'package:app/data/account_repository.dart';
+import 'package:app/data/image_cache.dart';
 import 'package:app/data/media/send_to_slot.dart';
 import 'package:app/data/utils.dart';
 import 'package:app/database/account_database_manager.dart';
+import 'package:app/database/cache_database_manager.dart';
 import 'package:app/utils/result.dart';
 import 'package:utils/utils.dart';
 
@@ -23,12 +25,20 @@ class MediaRepository extends DataRepositoryWithLifecycle {
 
   final AccountId currentUser;
 
-  MediaRepository(this.account, this.db, this.connectionManager, this.currentUser)
-    : api = connectionManager;
+  final ImageCacheData imageCache;
+
+  MediaRepository(
+    this.account,
+    this.db,
+    this.connectionManager,
+    this.currentUser,
+    CacheDatabaseManager cacheDb,
+  ) : api = connectionManager,
+      imageCache = ImageCacheData(currentUser, cacheDb);
 
   @override
   Future<void> init() async {
-    // nothing to do
+    await imageCache.init();
   }
 
   @override

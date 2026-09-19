@@ -6,7 +6,6 @@ import 'package:openapi/manual_additions.dart';
 import 'package:app/api/binary/get_profile.dart';
 import 'package:app/api/binary/get_profile_content_info.dart';
 import 'package:app/api/server_connection_manager.dart';
-import 'package:app/data/image_cache.dart';
 import 'package:app/data/media_repository.dart';
 import 'package:database/database.dart';
 import 'package:app/database/account_database_manager.dart';
@@ -63,7 +62,7 @@ class ProfileEntryDownloader {
             return Err(OtherProfileDownloadError());
           }
 
-          final bytes = await ImageCacheData.getInstance().getImage(
+          final bytes = await media.imageCache.getImage(
             accountId,
             primaryContentId,
             isMatch: isMatch,

@@ -27,8 +27,8 @@ Future<File> dbFileToFile(DbFile dbFile) async {
       return File(await DbDirUtils.commonDbPath());
     case AccountDbFile():
       return File(await DbDirUtils.accountDbPath(dbFile.accountId));
-    case CacheDbFile():
-      return File(await DbDirUtils.cacheDbPath());
+    case CacheDbFile(:final accountId):
+      return File(await DbDirUtils.cacheDbPath(accountId));
   }
 }
 

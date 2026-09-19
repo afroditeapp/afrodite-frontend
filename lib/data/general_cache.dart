@@ -4,6 +4,7 @@ import 'dart:io';
 import 'package:app/database/cache_database_manager.dart';
 import 'package:app/utils/result.dart';
 import 'package:flutter/foundation.dart';
+import 'package:openapi/api.dart';
 import 'package:path/path.dart' as p;
 import 'package:path_provider/path_provider.dart';
 
@@ -13,10 +14,11 @@ const _expireExtraDuration = Duration(days: 90);
 /// A cache manager that stores cache entries on disk with ETag support.
 class GeneralCacheManager {
   final int _maxNrOfCacheObjects;
+  final AccountId accountId;
+  final CacheDatabaseManager _cacheDb;
   late final Directory _cacheDir;
-  final CacheDatabaseManager _cacheDb = CacheDatabaseManager.getInstance();
 
-  GeneralCacheManager({this._maxNrOfCacheObjects = 10000});
+  GeneralCacheManager(this.accountId, this._cacheDb, {this._maxNrOfCacheObjects = 10000});
 
   /// Must be called before using this cache manager.
   Future<void> init() async {
@@ -24,7 +26,7 @@ class GeneralCacheManager {
       return;
     }
     final appCacheDir = await getApplicationCacheDirectory();
-    final dir = Directory(p.join(appCacheDir.path, 'general_cache'));
+    final dir = Directory(p.join(appCacheDir.path, 'general_cache', accountId.aid));
     if (!await dir.exists()) {
       await dir.create(recursive: true);
     }
@@ -89,7 +91,7 @@ class GeneralCacheManager {
       final staleAt = now.add(cacheControlMaxAge);
       final expireAt = staleAt.add(_expireExtraDuration);
 
-      final idResult = await _cacheDb.cacheActionReturn(
+      final idResult = await _cacheDb.cacheDataWrite(
         (db) => db.cacheEntry.upsertCacheEntry(
           entryKey: key,
           staleAt: staleAt,

@@ -5,6 +5,7 @@ import 'dart:ui';
 
 import 'package:app/data/general_cache.dart';
 import 'package:app/data/utils/repository_instances.dart';
+import 'package:app/database/cache_database_manager.dart';
 import 'package:app/ui/utils/view_profile.dart';
 import 'package:app/ui_utils/crop_image_screen.dart';
 import 'package:app/ui_utils/profile_thumbnail_image.dart';
@@ -26,23 +27,26 @@ import 'package:app/model/freezed/utils/account_img_key.dart';
 import 'package:app/ui_utils/snack_bar.dart';
 import 'package:app/localizations.dart';
 
-class ImageCacheData extends AppSingleton {
-  ImageCacheData._private()
+class ImageCacheData {
+  final AccountId accountId;
+  final GeneralCacheManager cacheManager;
+
+  ImageCacheData(this.accountId, CacheDatabaseManager cacheDb)
     : cacheManager = GeneralCacheManager(
+        accountId,
+        cacheDb,
         // Images are about 100 KiB each on high quality, so 10 000 images is about 1 GiB
         maxNrOfCacheObjects: 10000,
       );
-  static final _instance = ImageCacheData._private();
-  factory ImageCacheData.getInstance() {
-    return _instance;
-  }
-
-  final GeneralCacheManager cacheManager;
 
   /// 1 hour cooldown for showing image quality degraded snackbar.
   static const _degradedQualitySnackbarCooldown = Duration(hours: 1);
 
   UtcDateTime? _lastDegradedQualitySnackbarTime;
+
+  Future<void> init() async {
+    await cacheManager.init();
+  }
 
   /// Get image bytes for profile picture.
   Future<Uint8List?> getImage(
@@ -209,11 +213,6 @@ class ImageCacheData extends AppSingleton {
         return fileInfo?.data;
     }
   }
-
-  @override
-  Future<void> init() async {
-    await cacheManager.init();
-  }
 }
 
 String createMapTileKey(int z, int x, int y, int version) {
@@ -252,7 +251,7 @@ class AccountImageProvider extends ImageProvider<AccountImgKey> {
   @override
   ImageStreamCompleter loadImage(AccountImgKey key, ImageDecoderCallback decode) {
     return OneFrameImageStreamCompleter(() async {
-      final imgBytes = await ImageCacheData.getInstance().getImage(
+      final imgBytes = await media.imageCache.getImage(
         imgInfo.accountId,
         imgInfo.contentId,
         isMatch: isMatch,

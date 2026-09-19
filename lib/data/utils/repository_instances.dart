@@ -13,6 +13,7 @@ import 'package:app/data/media_repository.dart';
 import 'package:app/data/profile_repository.dart';
 import 'package:app/data/utils.dart';
 import 'package:app/database/account_database_manager.dart';
+import 'package:app/database/cache_database_manager.dart';
 import 'package:app/database/common_database_manager.dart';
 import 'package:utils/utils.dart';
 import 'package:app/utils/result.dart';
@@ -39,6 +40,7 @@ class RepositoryInstances {
   final ChatRepository chat;
 
   final AccountDatabaseManager accountDb;
+  final CacheDatabaseManager cacheDb;
   final ServerConnectionManager connectionManager;
   final MessageKeyManager messageKeyManager;
 
@@ -55,6 +57,7 @@ class RepositoryInstances {
     required this.media,
     required this.chat,
     required this.accountDb,
+    required this.cacheDb,
     required this.connectionManager,
     required this.messageKeyManager,
   });
@@ -157,6 +160,12 @@ class RepositoryInstances {
       _log.error("Closing account DB timed out");
     }
 
+    try {
+      await cacheDb.close().timeout(const Duration(seconds: 2));
+    } on TimeoutException {
+      _log.error("Closing cache DB timed out");
+    }
+
     _log.info("Logout completed");
   }
 
@@ -168,6 +177,7 @@ class RepositoryInstances {
     final accountDb = await CommonDatabaseManager.getInstance().getAccountDatabaseManager(
       accountId,
     );
+    final cacheDb = await CommonDatabaseManager.getInstance().getCacheDatabaseManager(accountId);
 
     final connectionManager = ServerConnectionManager(serverAddress, accountDb, accountId);
 
@@ -177,7 +187,7 @@ class RepositoryInstances {
       rememberToInitRepositoriesLateFinal: true,
       currentUser: accountId,
     );
-    final media = MediaRepository(account, accountDb, connectionManager, accountId);
+    final media = MediaRepository(account, accountDb, connectionManager, accountId, cacheDb);
     final profile = ProfileRepository(media, account, accountDb, connectionManager, accountId);
     final common = CommonRepository(accountId, accountDb, connectionManager, profile);
     final messageKeyManager = MessageKeyManager(accountDb, connectionManager, accountId);
@@ -199,6 +209,7 @@ class RepositoryInstances {
       media: media,
       chat: chat,
       accountDb: accountDb,
+      cacheDb: cacheDb,
       connectionManager: connectionManager,
       messageKeyManager: messageKeyManager,
     );

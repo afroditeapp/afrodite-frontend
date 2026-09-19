@@ -8,7 +8,6 @@ import "package:database/database.dart";
 import "package:flutter_bloc/flutter_bloc.dart";
 import "package:openapi/api.dart";
 import "package:app/api/server_connection_manager.dart";
-import "package:app/data/image_cache.dart";
 
 import "package:app/data/media_repository.dart";
 import "package:app/database/account_database_manager.dart";
@@ -37,7 +36,6 @@ class ContentBloc extends Bloc<ContentEvent, ContentData> with ActionRunner {
   final ServerConnectionManager connection;
   final AccountId currentUser;
   final ApiManager api;
-  final ImageCacheData cache = ImageCacheData.getInstance();
 
   StreamSubscription<PrimaryProfileContent?>? _primaryContentSubscription;
   StreamSubscription<MyContent?>? _securityContentSubscription;

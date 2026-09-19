@@ -459,11 +459,8 @@ Future<void> openEditThumbnail(
   int imgStateIndex,
   ProfilePicturesBlocInterface bloc,
 ) async {
-  final bytes = await ImageCacheData.getInstance().getImage(
-    img.accountId,
-    img.contentId,
-    media: context.read<RepositoryInstances>().media,
-  );
+  final media = context.read<RepositoryInstances>().media;
+  final bytes = await media.imageCache.getImage(img.accountId, img.contentId, media: media);
   if (!context.mounted) {
     return;
   }
