@@ -76,6 +76,9 @@
     "appbundle",
     "rustup",
     "subosito",
-    "softprops"
+    "softprops",
+    "cooldown",
+    "magick",
+    "hexcolor"
   ]
 }
