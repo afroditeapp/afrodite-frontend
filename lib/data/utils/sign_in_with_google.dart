@@ -9,6 +9,7 @@ import 'package:app/logic/sign_in_with.dart';
 import 'package:app/config.dart';
 import 'package:app/config_services.dart';
 import 'package:app/ui/demo_account.dart';
+import 'package:app/ui/login_new.dart';
 import 'package:app/utils/result.dart';
 import 'package:crypto/crypto.dart';
 import 'package:flutter/foundation.dart';
@@ -87,9 +88,11 @@ class SignInWithGoogleManager {
             );
             final login = LoginRepository.getInstance();
             final currentServerAddress = await login.accountServerAddress.first;
-            final serverAddress = _isDemoServerSignInScreenInNavigationStack()
-                ? serverAddressForDemoAccountLogin(currentServerAddress)
-                : serverAddressForSignIn(currentServerAddress);
+            final serverAddress = _serverAddressForWebSignIn(currentServerAddress);
+            if (serverAddress == null) {
+              showSnackBarTextsForSignInWithEvent(SignInWithLoginScreenNotOpen());
+              return;
+            }
             switch (await login.sendSignInWithLoginCmd(info, serverAddress)) {
               case Ok():
                 ();
@@ -111,9 +114,16 @@ class SignInWithGoogleManager {
     _linkingEnabled = false;
   }
 
-  bool _isDemoServerSignInScreenInNavigationStack() {
-    final pages = NavigationStateBlocInstance.getInstance().navigationState.pages;
-    return pages.any((page) => page is DemoServerSignInPage);
+  /// Returns appropriate server address if login screen is open
+  String? _serverAddressForWebSignIn(String currentServerAddress) {
+    final topPage = NavigationStateBlocInstance.getInstance().navigationState.pages.lastOrNull;
+    if (topPage is DemoServerSignInPage) {
+      return serverAddressForDemoAccountLogin(currentServerAddress);
+    }
+    if (topPage is LoginPage) {
+      return serverAddressForSignIn(currentServerAddress);
+    }
+    return null;
   }
 
   Future<Result<SignInWithGoogleInfo, ()>> login() async {

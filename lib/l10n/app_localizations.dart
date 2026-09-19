@@ -2600,6 +2600,12 @@ abstract class AppLocalizations {
   /// **'Sign in failed'**
   String get login_screen_sign_in_with_error;
 
+  /// Snackbar text shown when sign in with Google is attempted but the login screen is no longer open
+  ///
+  /// In en, this message translates to:
+  /// **'Sign in was cancelled because the login screen is no longer open. Please try again.'**
+  String get login_screen_sign_in_with_login_screen_not_open;
+
   /// Snackbar text about failed location update
   ///
   /// In en, this message translates to:

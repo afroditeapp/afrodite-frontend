@@ -258,6 +258,7 @@
     <string name="login_screen_sign_in_with_email_action">Kirjaudu sähköpostilla</string>
     <string name="login_screen_demo_account_login_session_expired">Demotilin istunto vanhentui</string>
     <string name="login_screen_sign_in_with_error">Kirjautuminen epäonnistui</string>
+    <string name="login_screen_sign_in_with_login_screen_not_open">Kirjautuminen peruutettiin, koska kirjautumisnäyttö ei ole enää auki. Yritä uudelleen.</string>
     <string name="login_screen_login_api_request_failed">Kirjautumispyyntö epäonnistui. Yritä myöhemmin uudelleen.</string>
     <string name="login_screen_invalid_email_login_token">Virheellinen sähköpostikirjautumiskoodi</string>
     <string name="login_screen_app_attestation_app_integrity_error">Sovelluksen eheystarkistus epäonnistui</string>

@@ -1436,6 +1436,10 @@ class AppLocalizationsEn extends AppLocalizations {
   String get login_screen_sign_in_with_error => 'Sign in failed';
 
   @override
+  String get login_screen_sign_in_with_login_screen_not_open =>
+      'Sign in was cancelled because the login screen is no longer open. Please try again.';
+
+  @override
   String get map_location_update_failed => 'Failed to update location';
 
   @override

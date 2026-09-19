@@ -740,6 +740,9 @@ class SignInWithGetTokenCompleted extends SignInWithEvent {}
 
 class SignInWithGetTokenFailed extends SignInWithEvent {}
 
+/// Sign in was cancelled because the login screen is no longer open.
+class SignInWithLoginScreenNotOpen extends SignInWithEvent {}
+
 class SignInWithSignInError extends SignInWithEvent {
   final CommonSignInError error;
   SignInWithSignInError(this.error);

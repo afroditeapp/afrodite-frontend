@@ -1862,6 +1862,10 @@
   "@login_screen_sign_in_with_error": {
     "description": "Snackbar text for sign in with error"
   },
+  "login_screen_sign_in_with_login_screen_not_open": "Sign in was cancelled because the login screen is no longer open. Please try again.",
+  "@login_screen_sign_in_with_login_screen_not_open": {
+    "description": "Snackbar text shown when sign in with Google is attempted but the login screen is no longer open"
+  },
   "map_location_update_failed": "Failed to update location",
   "@map_location_update_failed": {
     "description": "Snackbar text about failed location update"

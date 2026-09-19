@@ -265,6 +265,7 @@
     <string name="login_screen_sign_in_with_email_action" description="Button text for email sign in action on the login screen">Sign in with email</string>
     <string name="login_screen_demo_account_login_session_expired" description="Snackbar text for demo account login session expiration">Demo account session expired</string>
     <string name="login_screen_sign_in_with_error" description="Snackbar text for sign in with error">Sign in failed</string>
+    <string name="login_screen_sign_in_with_login_screen_not_open" description="Snackbar text shown when sign in with Google is attempted but the login screen is no longer open">Sign in was cancelled because the login screen is no longer open. Please try again.</string>
     <string name="login_screen_login_api_request_failed" description="Snackbar text for login API request failed">Login request failed. Please try again later.</string>
     <string name="login_screen_invalid_email_login_token" description="Snackbar text for invalid email login token error">Invalid email login code</string>
     <string name="login_screen_app_attestation_app_integrity_error" description="Snackbar text for app integrity check failed">App integrity check failed</string>

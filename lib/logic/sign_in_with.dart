@@ -81,6 +81,8 @@ void showSnackBarTextsForSignInWithEvent(SignInWithEvent event) {
       ();
     case SignInWithGetTokenFailed():
       showSnackBar(R.strings.login_screen_sign_in_with_error);
+    case SignInWithLoginScreenNotOpen():
+      showSnackBar(R.strings.login_screen_sign_in_with_login_screen_not_open);
     case SignInWithSignInError(:final error):
       showSnackBar(signInErrorToString(error));
   }

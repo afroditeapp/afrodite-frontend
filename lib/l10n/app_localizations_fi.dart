@@ -1446,6 +1446,10 @@ class AppLocalizationsFi extends AppLocalizations {
   String get login_screen_sign_in_with_error => 'Kirjautuminen epäonnistui';
 
   @override
+  String get login_screen_sign_in_with_login_screen_not_open =>
+      'Kirjautuminen peruutettiin, koska kirjautumisnäyttö ei ole enää auki. Yritä uudelleen.';
+
+  @override
   String get map_location_update_failed => 'Sijainnin päivitys epäonnistui';
 
   @override
