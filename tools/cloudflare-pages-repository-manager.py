@@ -77,6 +77,9 @@ def generate_headers(allow_bots, version_dirs):
         lines.append("/app/%s/*" % v)
         lines.append("  Cache-Control: public, max-age=%d, immutable" % IMMUTABLE_MAX_AGE)
         lines.append("")
+    lines.append("/app/*/sw.js")
+    lines.append("  Service-Worker-Allowed: /")
+    lines.append("")
     return "\n".join(lines)
 
 
