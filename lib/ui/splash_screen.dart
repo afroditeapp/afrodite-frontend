@@ -2,6 +2,7 @@ import "package:app/localizations.dart";
 import "package:app/logic/app/global_init.dart";
 import "package:app/model/freezed/logic/main/navigator_state.dart";
 import "package:app/loading_splash_screen.dart";
+import "package:flutter/foundation.dart";
 import "package:flutter/material.dart";
 
 class SplashPage extends MyScreenPage<()> with SimpleUrlParser<SplashPage> {
@@ -31,6 +32,7 @@ class _SplashScreenState extends State<SplashScreen> {
   Widget build(BuildContext context) {
     return SplashScreenLayout(
       bottom: _errorText(context),
+      showAppIcon: kIsWeb,
       zeroSizedWidget: FutureBuilder(
         future: GlobalInitManager.getInstance().triggerGlobalInit(),
         builder: (context, snapshot) {
