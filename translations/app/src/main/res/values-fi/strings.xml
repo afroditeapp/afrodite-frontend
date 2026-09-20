@@ -325,6 +325,8 @@
     <string name="initial_setup_screen_profile_pictures_select_picture_take_new_picture_title">Ota kuva</string>
     <string name="initial_setup_screen_profile_pictures_select_picture_security_selfie_title">Käytä moderointiselfietä</string>
     <string name="initial_setup_screen_profile_pictures_file_size_too_large_error">Kuva on liian suuri (enimmäiskoko on 10 MiB)</string>
+    <string name="initial_setup_screen_profile_pictures_image_too_small_error">Kuva on liian pieni. Vähimmäiskoko on 480x480 pikseliä.</string>
+    <string name="initial_setup_screen_profile_pictures_invalid_image_error">Virheellinen kuvatiedosto. Valitse kelvollinen JPEG- tai PNG-kuva.</string>
     <string name="initial_setup_screen_profile_pictures_unsupported_image_error">Ei-tuettu kuvamuoto. Valitse JPEG- tai PNG-kuva.</string>
     <string name="initial_setup_screen_profile_pictures_primary_image_info_dialog_description">Vähintään yksi profiilikuva vaaditaan. Ensimmäisessä kuvassa täytyy näkyä kasvosi selkeästi, ja sen neliömäinen rajaus näytetään profiiliruudukoissa.</string>
     <string name="initial_setup_screen_profile_pictures_primary_image_face_not_detected">Kasvoja ei havaittu. Valitse kuva, jossa kasvosi näkyvät selkeästi.</string>

@@ -2270,6 +2270,18 @@ abstract class AppLocalizations {
   /// **'Image is too large (maximum size is 10 MiB)'**
   String get initial_setup_screen_profile_pictures_file_size_too_large_error;
 
+  /// Snackbar error text that selected picture is smaller than the minimum required dimensions
+  ///
+  /// In en, this message translates to:
+  /// **'Image is too small. Minimum size is 480x480 pixels.'**
+  String get initial_setup_screen_profile_pictures_image_too_small_error;
+
+  /// Snackbar error text that selected picture file is invalid or corrupt
+  ///
+  /// In en, this message translates to:
+  /// **'Invalid image file. Please select a valid JPEG or PNG image.'**
+  String get initial_setup_screen_profile_pictures_invalid_image_error;
+
   /// Error text that face is not detected for primary profile image
   ///
   /// In en, this message translates to:

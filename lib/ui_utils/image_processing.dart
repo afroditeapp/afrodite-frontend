@@ -15,6 +15,7 @@ import "package:app/ui_utils/loading_dialog.dart";
 import "package:app/ui_utils/view_image_screen.dart";
 import "package:app/ui_utils/dialog.dart";
 import "package:image_picker/image_picker.dart";
+import "package:image/image.dart" as img;
 import "package:logging/logging.dart";
 import "package:utils/utils.dart";
 
@@ -179,6 +180,20 @@ bool _isPng(Uint8List bytes) {
 }
 
 const _maxImageSizeInBytes = 10 * 1024 * 1024;
+const _minImageWidth = 480;
+const _minImageHeight = 480;
+
+enum _ImageFormat { jpeg, png }
+
+_ImageFormat? _detectImageFormat(Uint8List bytes) {
+  if (_isJpeg(bytes)) {
+    return _ImageFormat.jpeg;
+  } else if (_isPng(bytes)) {
+    return _ImageFormat.png;
+  } else {
+    return null;
+  }
+}
 
 bool validateImage(Uint8List bytes) {
   if (bytes.length > _maxImageSizeInBytes) {
@@ -186,11 +201,40 @@ bool validateImage(Uint8List bytes) {
     return false;
   }
 
-  if (!_isJpeg(bytes) && !_isPng(bytes)) {
+  final format = _detectImageFormat(bytes);
+  if (format == null) {
     showSnackBar(R.strings.initial_setup_screen_profile_pictures_unsupported_image_error);
     return false;
   }
+
+  final dimensions = _readImageDimensions(bytes, format);
+  if (dimensions == null) {
+    showSnackBar(R.strings.initial_setup_screen_profile_pictures_invalid_image_error);
+    return false;
+  }
+  if (dimensions.width < _minImageWidth || dimensions.height < _minImageHeight) {
+    showSnackBar(R.strings.initial_setup_screen_profile_pictures_image_too_small_error);
+    return false;
+  }
   return true;
+}
+
+/// Reads image dimensions from the file header without decoding the whole
+/// image. Returns null if the dimensions could not be determined.
+({int width, int height})? _readImageDimensions(Uint8List bytes, _ImageFormat format) {
+  final img.Decoder decoder = switch (format) {
+    _ImageFormat.jpeg => img.JpegDecoder(),
+    _ImageFormat.png => img.PngDecoder(),
+  };
+  try {
+    final info = decoder.startDecode(bytes);
+    if (info == null) {
+      return null;
+    }
+    return (width: info.width, height: info.height);
+  } catch (_) {
+    return null;
+  }
 }
 
 sealed class LostImageData {}

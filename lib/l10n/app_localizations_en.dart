@@ -1246,6 +1246,14 @@ class AppLocalizationsEn extends AppLocalizations {
       'Image is too large (maximum size is 10 MiB)';
 
   @override
+  String get initial_setup_screen_profile_pictures_image_too_small_error =>
+      'Image is too small. Minimum size is 480x480 pixels.';
+
+  @override
+  String get initial_setup_screen_profile_pictures_invalid_image_error =>
+      'Invalid image file. Please select a valid JPEG or PNG image.';
+
+  @override
   String get initial_setup_screen_profile_pictures_primary_image_face_not_detected =>
       'No face detected. Please select a photo that clearly shows your face.';
 

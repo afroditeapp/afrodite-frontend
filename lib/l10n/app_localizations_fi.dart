@@ -1253,6 +1253,14 @@ class AppLocalizationsFi extends AppLocalizations {
       'Kuva on liian suuri (enimmäiskoko on 10 MiB)';
 
   @override
+  String get initial_setup_screen_profile_pictures_image_too_small_error =>
+      'Kuva on liian pieni. Vähimmäiskoko on 480x480 pikseliä.';
+
+  @override
+  String get initial_setup_screen_profile_pictures_invalid_image_error =>
+      'Virheellinen kuvatiedosto. Valitse kelvollinen JPEG- tai PNG-kuva.';
+
+  @override
   String get initial_setup_screen_profile_pictures_primary_image_face_not_detected =>
       'Kasvoja ei havaittu. Valitse kuva, jossa kasvosi näkyvät selkeästi.';
 
