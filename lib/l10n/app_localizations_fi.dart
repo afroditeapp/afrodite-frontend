@@ -1195,6 +1195,22 @@ class AppLocalizationsFi extends AppLocalizations {
   String get image_processing_ui_upload_timeout_dialog_title => 'Lähetys aikakatkaistiin';
 
   @override
+  String get image_validation_file_size_too_large_error =>
+      'Kuva on liian suuri (enimmäiskoko on 10 MiB)';
+
+  @override
+  String get image_validation_image_too_small_error =>
+      'Kuva on liian pieni. Vähimmäiskoko on 480x480 pikseliä.';
+
+  @override
+  String get image_validation_invalid_image_error =>
+      'Virheellinen kuvatiedosto. Yritä uudelleen toisella kuvalla.';
+
+  @override
+  String get image_validation_unsupported_image_error =>
+      'Ei-tuettu kuvamuoto. Yritä uudelleen JPEG- tai PNG-kuvalla.';
+
+  @override
   String get initial_setup_screen_age_confirmation_checkbox => 'Olen vähintään 18-vuotias';
 
   @override
@@ -1249,18 +1265,6 @@ class AppLocalizationsFi extends AppLocalizations {
   String get initial_setup_screen_profile_basic_info_title => 'Tietoja minusta…';
 
   @override
-  String get initial_setup_screen_profile_pictures_file_size_too_large_error =>
-      'Kuva on liian suuri (enimmäiskoko on 10 MiB)';
-
-  @override
-  String get initial_setup_screen_profile_pictures_image_too_small_error =>
-      'Kuva on liian pieni. Vähimmäiskoko on 480x480 pikseliä.';
-
-  @override
-  String get initial_setup_screen_profile_pictures_invalid_image_error =>
-      'Virheellinen kuvatiedosto. Valitse kelvollinen JPEG- tai PNG-kuva.';
-
-  @override
   String get initial_setup_screen_profile_pictures_primary_image_face_not_detected =>
       'Kasvoja ei havaittu. Valitse kuva, jossa kasvosi näkyvät selkeästi.';
 
@@ -1285,10 +1289,6 @@ class AppLocalizationsFi extends AppLocalizations {
 
   @override
   String get initial_setup_screen_profile_pictures_title => 'Profiilikuvani ovat…';
-
-  @override
-  String get initial_setup_screen_profile_pictures_unsupported_image_error =>
-      'Ei-tuettu kuvamuoto. Valitse JPEG- tai PNG-kuva.';
 
   @override
   String get initial_setup_screen_profile_privacy_settings_title => 'Profiilin yksityisyys';

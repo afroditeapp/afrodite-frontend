@@ -1188,6 +1188,22 @@ class AppLocalizationsEn extends AppLocalizations {
   String get image_processing_ui_upload_timeout_dialog_title => 'Upload timed out';
 
   @override
+  String get image_validation_file_size_too_large_error =>
+      'Image is too large (maximum size is 10 MiB)';
+
+  @override
+  String get image_validation_image_too_small_error =>
+      'Image is too small. Minimum size is 480x480 pixels.';
+
+  @override
+  String get image_validation_invalid_image_error =>
+      'Invalid image file. Please try again with a different image.';
+
+  @override
+  String get image_validation_unsupported_image_error =>
+      'Unsupported image format. Please try again with a JPEG or PNG image.';
+
+  @override
   String get initial_setup_screen_age_confirmation_checkbox => 'I am at least 18 years old';
 
   @override
@@ -1242,18 +1258,6 @@ class AppLocalizationsEn extends AppLocalizations {
   String get initial_setup_screen_profile_basic_info_title => 'About me…';
 
   @override
-  String get initial_setup_screen_profile_pictures_file_size_too_large_error =>
-      'Image is too large (maximum size is 10 MiB)';
-
-  @override
-  String get initial_setup_screen_profile_pictures_image_too_small_error =>
-      'Image is too small. Minimum size is 480x480 pixels.';
-
-  @override
-  String get initial_setup_screen_profile_pictures_invalid_image_error =>
-      'Invalid image file. Please select a valid JPEG or PNG image.';
-
-  @override
   String get initial_setup_screen_profile_pictures_primary_image_face_not_detected =>
       'No face detected. Please select a photo that clearly shows your face.';
 
@@ -1278,10 +1282,6 @@ class AppLocalizationsEn extends AppLocalizations {
 
   @override
   String get initial_setup_screen_profile_pictures_title => 'My profile pictures are…';
-
-  @override
-  String get initial_setup_screen_profile_pictures_unsupported_image_error =>
-      'Unsupported image format. Please select a JPEG or PNG image.';
 
   @override
   String get initial_setup_screen_profile_privacy_settings_title => 'Profile privacy';

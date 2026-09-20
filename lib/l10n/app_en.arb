@@ -1564,6 +1564,22 @@
   "@image_processing_ui_upload_timeout_dialog_title": {
     "description": "Progress dialog info text that image upload timed out"
   },
+  "image_validation_file_size_too_large_error": "Image is too large (maximum size is 10 MiB)",
+  "@image_validation_file_size_too_large_error": {
+    "description": "Snackbar error text that image file size is too large"
+  },
+  "image_validation_image_too_small_error": "Image is too small. Minimum size is 480x480 pixels.",
+  "@image_validation_image_too_small_error": {
+    "description": "Snackbar error text that image is smaller than the minimum required dimensions"
+  },
+  "image_validation_invalid_image_error": "Invalid image file. Please try again with a different image.",
+  "@image_validation_invalid_image_error": {
+    "description": "Snackbar error text that image file is invalid or corrupt"
+  },
+  "image_validation_unsupported_image_error": "Unsupported image format. Please try again with a JPEG or PNG image.",
+  "@image_validation_unsupported_image_error": {
+    "description": "Snackbar error text that image format is unsupported"
+  },
   "initial_setup_screen_age_confirmation_checkbox": "I am at least 18 years old",
   "@initial_setup_screen_age_confirmation_checkbox": {
     "description": "Title for age confirmation checkbox"
@@ -1628,18 +1644,6 @@
   "@initial_setup_screen_profile_basic_info_title": {
     "description": "Title text for asking profile information"
   },
-  "initial_setup_screen_profile_pictures_file_size_too_large_error": "Image is too large (maximum size is 10 MiB)",
-  "@initial_setup_screen_profile_pictures_file_size_too_large_error": {
-    "description": "Snackbar error text that selected picture's file size is too large"
-  },
-  "initial_setup_screen_profile_pictures_image_too_small_error": "Image is too small. Minimum size is 480x480 pixels.",
-  "@initial_setup_screen_profile_pictures_image_too_small_error": {
-    "description": "Snackbar error text that selected picture is smaller than the minimum required dimensions"
-  },
-  "initial_setup_screen_profile_pictures_invalid_image_error": "Invalid image file. Please select a valid JPEG or PNG image.",
-  "@initial_setup_screen_profile_pictures_invalid_image_error": {
-    "description": "Snackbar error text that selected picture file is invalid or corrupt"
-  },
   "initial_setup_screen_profile_pictures_primary_image_face_not_detected": "No face detected. Please select a photo that clearly shows your face.",
   "@initial_setup_screen_profile_pictures_primary_image_face_not_detected": {
     "description": "Error text that face is not detected for primary profile image"
@@ -1667,10 +1671,6 @@
   "initial_setup_screen_profile_pictures_title": "My profile pictures are…",
   "@initial_setup_screen_profile_pictures_title": {
     "description": "Title for profile pictures selection screen"
-  },
-  "initial_setup_screen_profile_pictures_unsupported_image_error": "Unsupported image format. Please select a JPEG or PNG image.",
-  "@initial_setup_screen_profile_pictures_unsupported_image_error": {
-    "description": "Snackbar error text that selected picture is unsupported"
   },
   "initial_setup_screen_profile_privacy_settings_title": "Profile privacy",
   "@initial_setup_screen_profile_privacy_settings_title": {

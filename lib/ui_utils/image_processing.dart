@@ -41,6 +41,9 @@ Widget confirmDialogOpener<B extends Bloc<ImageProcessingEvent, ImageProcessingD
       if (processingState is UnconfirmedImage) {
         final bloc = context.read<B>();
         bloc.add(ResetState());
+        if (!validateImage(processingState.imgBytes)) {
+          return;
+        }
         final accepted = await _confirmDialogForImage(context, processingState.imgBytes);
         if (accepted == true) {
           bloc.add(
@@ -197,23 +200,23 @@ _ImageFormat? _detectImageFormat(Uint8List bytes) {
 
 bool validateImage(Uint8List bytes) {
   if (bytes.length > _maxImageSizeInBytes) {
-    showSnackBar(R.strings.initial_setup_screen_profile_pictures_file_size_too_large_error);
+    showSnackBar(R.strings.image_validation_file_size_too_large_error);
     return false;
   }
 
   final format = _detectImageFormat(bytes);
   if (format == null) {
-    showSnackBar(R.strings.initial_setup_screen_profile_pictures_unsupported_image_error);
+    showSnackBar(R.strings.image_validation_unsupported_image_error);
     return false;
   }
 
   final dimensions = _readImageDimensions(bytes, format);
   if (dimensions == null) {
-    showSnackBar(R.strings.initial_setup_screen_profile_pictures_invalid_image_error);
+    showSnackBar(R.strings.image_validation_invalid_image_error);
     return false;
   }
   if (dimensions.width < _minImageWidth || dimensions.height < _minImageHeight) {
-    showSnackBar(R.strings.initial_setup_screen_profile_pictures_image_too_small_error);
+    showSnackBar(R.strings.image_validation_image_too_small_error);
     return false;
   }
   return true;

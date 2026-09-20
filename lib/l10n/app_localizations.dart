@@ -2168,6 +2168,30 @@ abstract class AppLocalizations {
   /// **'Upload timed out'**
   String get image_processing_ui_upload_timeout_dialog_title;
 
+  /// Snackbar error text that image file size is too large
+  ///
+  /// In en, this message translates to:
+  /// **'Image is too large (maximum size is 10 MiB)'**
+  String get image_validation_file_size_too_large_error;
+
+  /// Snackbar error text that image is smaller than the minimum required dimensions
+  ///
+  /// In en, this message translates to:
+  /// **'Image is too small. Minimum size is 480x480 pixels.'**
+  String get image_validation_image_too_small_error;
+
+  /// Snackbar error text that image file is invalid or corrupt
+  ///
+  /// In en, this message translates to:
+  /// **'Invalid image file. Please try again with a different image.'**
+  String get image_validation_invalid_image_error;
+
+  /// Snackbar error text that image format is unsupported
+  ///
+  /// In en, this message translates to:
+  /// **'Unsupported image format. Please try again with a JPEG or PNG image.'**
+  String get image_validation_unsupported_image_error;
+
   /// Title for age confirmation checkbox
   ///
   /// In en, this message translates to:
@@ -2264,24 +2288,6 @@ abstract class AppLocalizations {
   /// **'About me…'**
   String get initial_setup_screen_profile_basic_info_title;
 
-  /// Snackbar error text that selected picture's file size is too large
-  ///
-  /// In en, this message translates to:
-  /// **'Image is too large (maximum size is 10 MiB)'**
-  String get initial_setup_screen_profile_pictures_file_size_too_large_error;
-
-  /// Snackbar error text that selected picture is smaller than the minimum required dimensions
-  ///
-  /// In en, this message translates to:
-  /// **'Image is too small. Minimum size is 480x480 pixels.'**
-  String get initial_setup_screen_profile_pictures_image_too_small_error;
-
-  /// Snackbar error text that selected picture file is invalid or corrupt
-  ///
-  /// In en, this message translates to:
-  /// **'Invalid image file. Please select a valid JPEG or PNG image.'**
-  String get initial_setup_screen_profile_pictures_invalid_image_error;
-
   /// Error text that face is not detected for primary profile image
   ///
   /// In en, this message translates to:
@@ -2323,12 +2329,6 @@ abstract class AppLocalizations {
   /// In en, this message translates to:
   /// **'My profile pictures are…'**
   String get initial_setup_screen_profile_pictures_title;
-
-  /// Snackbar error text that selected picture is unsupported
-  ///
-  /// In en, this message translates to:
-  /// **'Unsupported image format. Please select a JPEG or PNG image.'**
-  String get initial_setup_screen_profile_pictures_unsupported_image_error;
 
   /// Title for initial setup profile privacy settings screen
   ///

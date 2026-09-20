@@ -315,6 +315,12 @@
     <string name="demo_account_screen_confirm_logout_dialog_title" description="Dialog title text for confirming logout from demo account">Logout?</string>
     <string name="demo_account_screen_max_account_count_error" description="Snackbar text for max account count error">Error: max account count</string>
 
+    <!-- Image validation -->
+    <string name="image_validation_file_size_too_large_error" description="Snackbar error text that image file size is too large">Image is too large (maximum size is 10 MiB)</string>
+    <string name="image_validation_image_too_small_error" description="Snackbar error text that image is smaller than the minimum required dimensions">Image is too small. Minimum size is 480x480 pixels.</string>
+    <string name="image_validation_invalid_image_error" description="Snackbar error text that image file is invalid or corrupt">Invalid image file. Please try again with a different image.</string>
+    <string name="image_validation_unsupported_image_error" description="Snackbar error text that image format is unsupported">Unsupported image format. Please try again with a JPEG or PNG image.</string>
+
     <!-- Initial setup -->
     <string name="initial_setup_screen_skip_dialog_title" description="Title for skip initial setup confirm dialog">Skip profile setup?</string>
     <string name="initial_setup_screen_skip_dialog_description" description="Description for skip initial setup confirm dialog">Skip profile setup only if you will have administrator rights on the service.</string>
@@ -331,10 +337,6 @@
     <string name="initial_setup_screen_profile_pictures_select_picture_from_gallery_title" description="Action title for selecting profile picture from gallery">Choose from gallery</string>
     <string name="initial_setup_screen_profile_pictures_select_picture_take_new_picture_title" description="Action title for taking new picture to be used as a profile picture">Take photo</string>
     <string name="initial_setup_screen_profile_pictures_select_picture_security_selfie_title" description="Action title for using security selfie as a profile picture">Use security selfie</string>
-    <string name="initial_setup_screen_profile_pictures_file_size_too_large_error" description="Snackbar error text that selected picture's file size is too large">Image is too large (maximum size is 10 MiB)</string>
-    <string name="initial_setup_screen_profile_pictures_image_too_small_error" description="Snackbar error text that selected picture is smaller than the minimum required dimensions">Image is too small. Minimum size is 480x480 pixels.</string>
-    <string name="initial_setup_screen_profile_pictures_invalid_image_error" description="Snackbar error text that selected picture file is invalid or corrupt">Invalid image file. Please select a valid JPEG or PNG image.</string>
-    <string name="initial_setup_screen_profile_pictures_unsupported_image_error" description="Snackbar error text that selected picture is unsupported">Unsupported image format. Please select a JPEG or PNG image.</string>
     <string name="initial_setup_screen_profile_pictures_primary_image_info_dialog_description" description="Dialog description text about profile primary image">At least one profile picture is required. Your first picture must show your face clearly, and its square crop will be shown in profile grids.</string>
     <string name="initial_setup_screen_profile_pictures_primary_image_face_not_detected" description="Error text that face is not detected for primary profile image">No face detected. Please select a photo that clearly shows your face.</string>
     <string name="initial_setup_screen_profile_basic_info_title" description="Title text for asking profile information">About me…</string>
