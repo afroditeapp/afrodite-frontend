@@ -1,5 +1,4 @@
 import 'package:app/api/http_client/http_client.dart';
-import 'package:flutter/foundation.dart';
 import 'package:http/http.dart';
 import 'package:openapi/api.dart';
 
@@ -32,9 +31,8 @@ class ApiProvider {
 
   ApiProvider(String address) : this._withClient(ApiClient(basePath: address), address);
 
-  ApiProvider._withClient(ApiClient client, String serverAddress)
-    : _serverAddress = serverAddress,
-      _account = AccountApi(client),
+  ApiProvider._withClient(ApiClient client, this._serverAddress)
+    : _account = AccountApi(client),
       _accountAdmin = AccountAdminApi(client),
       _profile = ProfileApi(client),
       _profileAdmin = ProfileAdminApi(client),
@@ -67,13 +65,7 @@ class ApiProvider {
   }
 
   Future<void> init() async {
-    final Client client;
-    if (kIsWeb) {
-      client = Client();
-    } else {
-      client = await nonWebHttpClient(_serverAddress);
-    }
-    httpClient = client;
+    httpClient = await HttpClientManager.getInstance().getHttpClient(_serverAddress);
     _refreshApiClient(_auth);
   }
 }

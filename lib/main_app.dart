@@ -1,6 +1,8 @@
 import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
 
+import 'package:app/api/http_client/http_client.dart';
+import 'package:app/config.dart';
 import 'package:app/data/app_version.dart';
 import 'package:app/database/common_database_manager.dart';
 import 'package:app/localizations.dart';
@@ -22,6 +24,12 @@ Future<void> startApp() async {
   await AppVersionManager.getInstance().init();
   // Locale saving needs database so init here
   await CommonDatabaseManager.getInstance().init();
+
+  final serverAddress = await CommonDatabaseManager.getInstance().commonStreamSingleOrDefault(
+    (db) => db.app.watchServerUrl(),
+    defaultServerUrl(),
+  );
+  await HttpClientManager.getInstance().init(serverAddress);
 
   runApp(
     MultiBlocProvider(

@@ -2,7 +2,7 @@ import 'dart:async';
 import 'dart:convert';
 import 'dart:io';
 
-import 'package:app/api/websocket_builder.dart';
+import 'package:app/api/http_client/http_client.dart';
 import 'package:app/api/server_connection_protocol/client.dart';
 import 'package:app/api/server_connection_protocol/server.dart';
 import 'package:app/data/app_version.dart';
@@ -116,7 +116,7 @@ class ServerConnection {
     final protocols = ["v1", "t${accessToken.token}", clientVersionInfoString()];
 
     try {
-      final webSocket = await WebSocketBuilder.connect(
+      final webSocket = await HttpClientManager.getInstance().connectWebSocket(
         serverAddress,
         protocols,
         path: "/common_api/connect",
