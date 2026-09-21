@@ -67,7 +67,12 @@ flutter run --release -d DEVICE
 
 2. Install [Flutter](https://docs.flutter.dev/get-started/install).
 
-3. Install [wasm-pack](https://github.com/drager/wasm-pack).
+3. Install [wasm-pack](https://github.com/drager/wasm-pack). Download binary
+   or install with cargo.
+
+```
+cargo install --locked wasm-pack@0.15.0
+```
 
 ### Development dependencies
 
