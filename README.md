@@ -192,12 +192,13 @@ Add web client ID by modifying web/index.html line
 <meta name="google-signin-client_id" content="TODO">
 ```
 
-Add iOS client ID by modifying ios/Runner/Info.plist location
+Replace TODOs with proper values at ios/Runner/Info.plist where
 
 ```xml
-<!-- Copied from downloaded OAuth 2 client info. Value for key REVERSED_CLIENT_ID. -->
-<string>TODO</string>
+<!-- Google Sign-in Section -->
 ```
+
+is located.
 
 Also add file
 

@@ -78,6 +78,10 @@
 	<string>Photo library permission is not asked at runtime even if image_picker library includes code related to it</string>
 
 	<!-- Google Sign-in Section -->
+	<key>GIDClientID</key>
+	<string>TODO</string>
+	<key>GIDServerClientID</key>
+	<string>TODO</string>
 	<key>CFBundleURLTypes</key>
 	<array>
 		<dict>
