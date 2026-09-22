@@ -122,6 +122,9 @@ build-android-release-aab:
 build-ios-release:
 	flutter build ios --release --dart-define=GIT_COMMIT_ID=`git rev-parse --short HEAD`
 
+build-ios-release-xcarchive:
+	flutter build ipa --release --no-codesign --dart-define=GIT_COMMIT_ID=`git rev-parse --short HEAD`
+
 build-web-release:
 	make _build-web BUILD_ARGS="--release --dart-define=GIT_COMMIT_ID=`git rev-parse --short HEAD`" OUTPUT=web-release.tar.gz
 

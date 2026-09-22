@@ -79,6 +79,8 @@
     "softprops",
     "cooldown",
     "magick",
-    "hexcolor"
+    "hexcolor",
+    "codesign",
+    "xcarchive"
   ]
 }
