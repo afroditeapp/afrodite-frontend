@@ -35,6 +35,13 @@ android {
             signingConfig = signingConfigs.getByName("debug")
         }
     }
+
+    packagingOptions {
+        jniLibs {
+            // Reduce APK file size
+            useLegacyPackaging = true
+        }
+    }
 }
 
 kotlin {
