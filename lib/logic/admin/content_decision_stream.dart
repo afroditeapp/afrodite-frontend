@@ -118,7 +118,9 @@ class ContentDecisionStreamLogic<C> {
     final currentState = relay.value;
     if (currentState is ContentRow<C> && (!currentState.sentToServer || ignoreSentToServer)) {
       final status = accept ? RowStatus.accepted : RowStatus.rejected;
-      final newRejectedDetails = status == RowStatus.rejected ? rejectedDetails : null;
+      final newRejectedDetails = status == RowStatus.rejected
+          ? (rejectedDetails ?? currentState.rejectedDetails)
+          : null;
       final newState = currentState.copyWith(
         status: status,
         sentToServer: currentState.sentToServer,
