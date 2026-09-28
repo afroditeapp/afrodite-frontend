@@ -405,7 +405,7 @@ class VideoCallTipDialog extends StatelessWidget {
   Widget build(BuildContext context) {
     final dialogContent = Column(
       children: [
-        const Icon(Icons.videocam_outlined, size: 48),
+        const Icon(Icons.videocam, size: 48),
         const Padding(padding: EdgeInsets.all(8.0)),
         Text(
           context.strings.video_call_tip_dialog_title,
