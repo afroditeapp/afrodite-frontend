@@ -80,9 +80,18 @@ class StatisticsScreen extends StatefulWidget {
 class StatisticsScreenState extends State<StatisticsScreen> {
   bool adminGenerateStatistics = false;
   int adminVisibilitySelection = 0;
+  late final List<StatisticsProfileVisibility> adminVisibilityOptions;
 
   HourGroup? startPositionForConnectionStatisticsByGender;
   SelectedConnectionStatistics selectedConnectionStatistics = SelectedConnectionStatistics.max;
+
+  @override
+  void initState() {
+    super.initState();
+    adminVisibilityOptions = StatisticsProfileVisibility.values
+        .where((v) => v != StatisticsProfileVisibility.unknownDefaultOpenApi)
+        .toList();
+  }
 
   @override
   Widget build(BuildContext context) {
@@ -514,9 +523,9 @@ class StatisticsScreenState extends State<StatisticsScreen> {
           padding: const EdgeInsets.symmetric(horizontal: 16.0),
           child: Wrap(
             spacing: 5.0,
-            children: List<ChoiceChip>.generate(StatisticsProfileVisibility.values.length, (i) {
+            children: List<ChoiceChip>.generate(adminVisibilityOptions.length, (i) {
               return ChoiceChip(
-                label: Text(StatisticsProfileVisibility.values[i].toString()),
+                label: Text(adminVisibilityOptions[i].toString()),
                 selected: adminVisibilitySelection == i,
                 onSelected: (value) {
                   setState(() {
@@ -538,7 +547,7 @@ class StatisticsScreenState extends State<StatisticsScreen> {
       Reload(
         adminRefresh: true,
         generateNew: adminGenerateStatistics,
-        visibility: StatisticsProfileVisibility.values[adminVisibilitySelection],
+        visibility: adminVisibilityOptions[adminVisibilitySelection],
       ),
     );
   }
