@@ -96,12 +96,17 @@ class _EditProfileAttributeScreenState extends State<EditProfileAttributeScreen>
         NewAttributeValue(state.selected.toAttributeValueUpdate(widget.a.attribute())),
       ),
       firstListItem: EditAttributeTitle(a: widget.a.attribute()),
-      lastListItem: invalidSelection
-          ? Padding(
+      lastListItem: Column(
+        mainAxisSize: MainAxisSize.min,
+        children: [
+          if (invalidSelection)
+            Padding(
               padding: const EdgeInsets.all(COMMON_SCREEN_EDGE_PADDING),
               child: Text(context.strings.edit_attribute_value_screen_one_value_must_be_selected),
-            )
-          : null,
+            ),
+          const Padding(padding: EdgeInsets.only(top: LIST_END_EMPTY_AREA)),
+        ],
+      ),
       filterText: filterValue,
     );
   }
