@@ -40,6 +40,7 @@ class ProcessReportsScreen extends ContentDecisionScreen<WrappedReportDetailed> 
         infoMessageRowHeight: ROW_HEIGHT,
         io: ReportIo(r.api, queueType),
         builder: ReportUiBuilder(),
+        initialScrollUpActionIsAccept: queueType != ReportQueueType.rejectedByAdminBot,
       );
 }
 

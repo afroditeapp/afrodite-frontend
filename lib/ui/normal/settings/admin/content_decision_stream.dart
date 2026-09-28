@@ -17,6 +17,7 @@ class ContentDecisionScreen<C extends ContentInfoGetter> extends StatefulWidget 
   final ContentIo<C> io;
   final ContentUiBuilder<C> builder;
   final ApiManager api;
+  final bool initialScrollUpActionIsAccept;
   const ContentDecisionScreen({
     required this.title,
     this.screenInstructions,
@@ -24,6 +25,7 @@ class ContentDecisionScreen<C extends ContentInfoGetter> extends StatefulWidget 
     required this.io,
     required this.builder,
     required this.api,
+    this.initialScrollUpActionIsAccept = true,
     super.key,
   });
 
@@ -37,7 +39,7 @@ class _ContentDecisionScreenState<C extends ContentInfoGetter>
   late final ContentDecisionStreamLogic<C> _logic;
 
   late final Stream<ContentDecisionStreamStatus> _stream;
-  bool _scrollUpActionIsAccept = true;
+  late bool _scrollUpActionIsAccept;
 
   /// List item size changes cause issues when scrolling upwards, so
   /// cache latest state for each row.
@@ -46,6 +48,7 @@ class _ContentDecisionScreenState<C extends ContentInfoGetter>
   @override
   void initState() {
     super.initState();
+    _scrollUpActionIsAccept = widget.initialScrollUpActionIsAccept;
     _logic = ContentDecisionStreamLogic<C>(widget.api, widget.io);
     _logic.reset();
     _listener.itemPositions.addListener(positionListener);

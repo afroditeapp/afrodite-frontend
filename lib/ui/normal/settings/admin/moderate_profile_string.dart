@@ -34,6 +34,8 @@ class ModerateProfileStringsScreen extends ContentDecisionScreen<WrappedProfileS
          infoMessageRowHeight: ROW_HEIGHT,
          io: ProfileStringIo(r.api, contentType, queueType),
          builder: ProfileTextUiBuilder(),
+         initialScrollUpActionIsAccept:
+             queueType != ProfileStringModerationQueueType.rejectedByAdminBot,
        );
 }
 

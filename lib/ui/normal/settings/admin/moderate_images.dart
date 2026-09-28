@@ -41,6 +41,8 @@ class ModerateImagesScreen extends ContentDecisionScreen<WrappedMediaContentPend
          infoMessageRowHeight: IMAGE_MODERATION_ROW_HEIGHT,
          io: MediaContentIo(r.api, r.media, moderationType, queueType),
          builder: MediaContentUiBuilder(),
+         initialScrollUpActionIsAccept:
+             queueType != MediaContentModerationQueueType.rejectedByAdminBot,
        );
 }
 
