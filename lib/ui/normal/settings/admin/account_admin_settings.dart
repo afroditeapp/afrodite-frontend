@@ -39,25 +39,25 @@ Future<void> getAgeAndNameAndShowAdminSettings(
 ) async {
   final ageAndName = await api.profileAdmin((api) => api.getProfileAgeAndName(account.aid)).ok();
 
-  if (ageAndName != null && context.mounted) {
-    await MyNavigator.pushLimited(
-      context,
-      AccountAdminSettingsPage(
-        accountId: account,
-        initialAge: ageAndName.age,
-        initialName: ageAndName.name ?? "",
-      ),
-    );
-  } else if (ageAndName == null) {
-    showSnackBar("Get profile age and name failed");
+  if (!context.mounted) {
+    return;
   }
+
+  await MyNavigator.pushLimited(
+    context,
+    AccountAdminSettingsPage(
+      accountId: account,
+      initialAge: ageAndName?.age,
+      initialName: ageAndName?.name,
+    ),
+  );
 }
 
 class AccountAdminSettingsPage extends MyScreenPageLimited<()> {
   AccountAdminSettingsPage({
     required AccountId accountId,
-    required String initialName,
-    required int initialAge,
+    required String? initialName,
+    required int? initialAge,
   }) : super(
          builder: (_) => AccountAdminSettingsScreen(
            accountId: accountId,
@@ -71,8 +71,8 @@ class AccountAdminSettingsPage extends MyScreenPageLimited<()> {
 /// as profile name editing is possible and current UI might have old name data.
 class AccountAdminSettingsScreen extends StatefulWidget {
   final AccountId accountId;
-  final String initialName;
-  final int initialAge;
+  final String? initialName;
+  final int? initialAge;
   const AccountAdminSettingsScreen({
     required this.accountId,
     required this.initialName,
@@ -85,8 +85,8 @@ class AccountAdminSettingsScreen extends StatefulWidget {
 }
 
 class _AccountAdminSettingsScreenState extends State<AccountAdminSettingsScreen> {
-  late String name;
-  late int age;
+  String? name;
+  int? age;
 
   @override
   void initState() {
@@ -102,7 +102,7 @@ class _AccountAdminSettingsScreenState extends State<AccountAdminSettingsScreen>
     if (ageAndName != null && context.mounted) {
       setState(() {
         age = ageAndName.age;
-        name = ageAndName.name ?? "";
+        name = ageAndName.name;
       });
     }
   }
@@ -183,9 +183,13 @@ class _AccountAdminSettingsScreenState extends State<AccountAdminSettingsScreen>
     if (permissions.adminEditProfileName) {
       list.add(
         Setting.createSetting(Icons.edit, "Edit profile name", () async {
+          if (name == null) {
+            showSnackBar("Profile name is not available");
+            return;
+          }
           await MyNavigator.pushLimited(
             context,
-            EditProfileNamePage(r, widget.accountId, initialName: name),
+            EditProfileNamePage(r, widget.accountId, initialName: name!),
           );
           await updateProfileAgeAndName(r.api);
         }).toListTile(),
@@ -229,19 +233,21 @@ class _AccountAdminSettingsScreenState extends State<AccountAdminSettingsScreen>
     if (permissions.adminEditProfileAgeRangeVerifiedValue ||
         permissions.adminEditProfileNameVerifiedValue) {
       list.add(
-        Setting.createSetting(
-          Icons.verified_user,
-          "Profile verification info",
-          () => MyNavigator.pushLimited(
+        Setting.createSetting(Icons.verified_user, "Profile verification info", () {
+          if (name == null || age == null) {
+            showSnackBar("Profile name and age are not available");
+            return;
+          }
+          MyNavigator.pushLimited(
             context,
             AdminProfileVerificationInfoPage(
               r,
               widget.accountId,
-              currentName: name,
-              currentAge: age,
+              currentName: name!,
+              currentAge: age!,
             ),
-          ),
-        ).toListTile(),
+          );
+        }).toListTile(),
       );
     }
 
