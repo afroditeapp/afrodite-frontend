@@ -198,7 +198,7 @@
   "edit_attribute_value_screen_one_value_must_be_selected": "Vähintään yksi vaihtoehto on valittava",
   "edit_attribute_value_screen_search_placeholder_text": "Hae…",
   "edit_my_gender_screen_gender_setting_title": "Profiilini sukupuoli",
-  "edit_profile_screen_automatic_min_age_incrementing_info_dialog_text": "Minimi-ikä nostetaan arvoon {p0} ajassa {p1}",
+  "edit_profile_screen_automatic_min_age_incrementing_info_dialog_text": "Minimi-ikä nostetaan arvoon {p0} vuonna {p1}",
   "edit_profile_screen_invalid_age": "Virheellinen ikä",
   "edit_profile_screen_invalid_profile_name": "Virheellinen etunimi",
   "edit_profile_screen_one_profile_image_required": "Vähintään yksi profiilikuva vaaditaan",

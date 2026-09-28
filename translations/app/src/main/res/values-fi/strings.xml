@@ -456,7 +456,7 @@
     <string name="edit_profile_screen_invalid_profile_name">Virheellinen etunimi</string>
     <string name="edit_profile_screen_invalid_age">Virheellinen ikä</string>
     <string name="edit_profile_screen_one_profile_image_required">Vähintään yksi profiilikuva vaaditaan</string>
-    <string name="edit_profile_screen_automatic_min_age_incrementing_info_dialog_text">Minimi-ikä nostetaan arvoon %s ajassa %s</string>
+    <string name="edit_profile_screen_automatic_min_age_incrementing_info_dialog_text">Minimi-ikä nostetaan arvoon %s vuonna %s</string>
     <string name="edit_profile_screen_primary_profile_content_pending_moderation">Kuva ei ole tällä hetkellä moderaattorin hyväksymä. Profiilisi ei näy profiiliruudukossa ennen kuin kuva on hyväksytty.</string>
     <string name="edit_profile_screen_primary_profile_content_rejected">Moderaattori hylkäsi kuvan. Vaihda kuva, jotta profiilisi näkyy profiiliruudukossa.</string>
 

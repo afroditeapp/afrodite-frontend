@@ -725,7 +725,7 @@ class AppLocalizationsFi extends AppLocalizations {
 
   @override
   String edit_profile_screen_automatic_min_age_incrementing_info_dialog_text(String p0, String p1) {
-    return 'Minimi-ikä nostetaan arvoon $p0 ajassa $p1';
+    return 'Minimi-ikä nostetaan arvoon $p0 vuonna $p1';
   }
 
   @override
