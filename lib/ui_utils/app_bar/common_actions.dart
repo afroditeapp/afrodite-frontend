@@ -1,5 +1,8 @@
+import 'package:app/logic/account/account.dart';
+import 'package:app/logic/app/navigator_state.dart';
 import 'package:app/model/freezed/logic/account/client_features_config.dart';
 import 'package:app/ui/normal/settings.dart';
+import 'package:app/ui/normal/settings/admin.dart';
 import 'package:app/ui_utils/app_bar/menu_actions.dart';
 import 'package:app/ui_utils/snack_bar.dart';
 import 'package:flutter/material.dart';
@@ -61,7 +64,13 @@ MenuItemButton commonActionBlockProfile(BuildContext context, void Function() bl
 }
 
 Widget loggedInBasicScreenActionsMenu(BuildContext context) {
+  final permissions = context.read<AccountBloc>().state.permissions;
   return menuActions([
+    if (AdminSettingsPermissions(permissions).somePermissionEnabled())
+      MenuItemButton(
+        child: Text(context.strings.admin_settings_title),
+        onPressed: () => MyNavigator.push(context, AdminSettingsPage()),
+      ),
     MenuItemButton(
       child: Text(context.strings.settings_screen_title),
       onPressed: () => openSettingsScreen(context),
