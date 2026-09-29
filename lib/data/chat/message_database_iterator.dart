@@ -33,11 +33,11 @@ class MessageDatabaseIterator {
     localAccountId = local;
     remoteAccountId = remote;
     previousMessage = null;
-    await resetToLatest();
+    await _resetToLatest();
   }
 
   /// Resets the iterator to the latest message of the current conversation
-  Future<void> resetToLatest() async {
+  Future<void> _resetToLatest() async {
     final latestMessage = await db
         .accountData((db) => db.message.getMessage(remoteAccountId, 0))
         .ok();
@@ -49,27 +49,10 @@ class MessageDatabaseIterator {
     nextLocalKey = startLocalKey;
   }
 
-  /// Resets the iterator to the beginning
-  /// (same position as the previous resetToLatest or switchConversation)
-  void reset() {
-    nextLocalKey = startLocalKey;
-    previousMessage = null;
-  }
-
-  /// Clear all iterator state.
-  /// Iterator must be initialized with switchConversation after calling this.
-  void resetToInitialState() {
-    startLocalKey = 0;
-    nextLocalKey = 0;
-    localAccountId = AccountId(aid: "");
-    remoteAccountId = AccountId(aid: "");
-    previousMessage = null;
-  }
-
   // Get max 10 next messages.
   Future<List<IteratorMessage>> nextList() async {
     if (nextLocalKey < 0) {
-      return createOldestDateChangeMessageIfNeeded();
+      return _createOldestDateChangeMessageIfNeeded();
     }
 
     const queryCount = 10;
@@ -109,13 +92,13 @@ class MessageDatabaseIterator {
     }
 
     if (result.isEmpty) {
-      return createOldestDateChangeMessageIfNeeded();
+      return _createOldestDateChangeMessageIfNeeded();
     } else {
       return result;
     }
   }
 
-  List<IteratorMessage> createOldestDateChangeMessageIfNeeded() {
+  List<IteratorMessage> _createOldestDateChangeMessageIfNeeded() {
     final currentPreviousMessage = previousMessage;
     if (currentPreviousMessage != null) {
       previousMessage = null;
