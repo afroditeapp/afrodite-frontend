@@ -363,6 +363,7 @@ class SendMessageUtils {
             currentMessage.localId,
             sentState: SentMessageState.sent,
             messageIdFromServer: serverSignedMessage.messageId,
+            messageNumberFromServer: serverSignedMessage.messageNumber,
             unixTimeFromServer: serverSignedMessage.serverTime,
             serverSignedPgpMessage: decoded,
           ),
