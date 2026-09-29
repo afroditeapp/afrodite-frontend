@@ -170,7 +170,8 @@ class EditNewsScreenState extends State<EditNewsScreen> {
           Text(locale),
           const Spacer(),
           IconButton(
-            onPressed: () => openEditNewsTranslationScreen(context, c, locale),
+            onPressed: () =>
+                openEditNewsTranslationScreen(context, context.read<EditNewsBloc>(), c, locale),
             icon: const Icon(Icons.edit),
           ),
         ],
