@@ -20,8 +20,8 @@ class MessageAdapter {
         messageStateSeenEnabled: messageStateSeenEnabled,
         localeString: localeString,
       ),
-      MessageDateChange(:final date) => chat.Message.system(
-        id: 'date_${date.millisecondsSinceEpoch}',
+      MessageDateChange(:final date, :final localId) => chat.Message.system(
+        id: 'date_${localId.id}',
         authorId: currentUserId,
         text: "",
         createdAt: date,

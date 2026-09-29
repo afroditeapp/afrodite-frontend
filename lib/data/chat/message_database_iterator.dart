@@ -14,7 +14,8 @@ final class IteratorMessageEntry extends IteratorMessage {
 
 final class MessageDateChange extends IteratorMessage {
   final DateTime date;
-  MessageDateChange(this.date);
+  final LocalMessageId localId;
+  MessageDateChange(this.date, this.localId);
 }
 
 /// MessageDatabaseIterator must only create new system message
@@ -80,11 +81,12 @@ class MessageDatabaseIterator {
       final messageDateOnly = DateTime(messageDate.year, messageDate.month, messageDate.day);
 
       final prevDate = previousMessage?.userVisibleTime().dateTime.toLocal();
-      if (prevDate != null) {
+      final prevLocalId = previousMessage?.localId;
+      if (prevDate != null && prevLocalId != null) {
         final prevDateOnly = DateTime(prevDate.year, prevDate.month, prevDate.day);
         if (!messageDateOnly.isAtSameMomentAs(prevDateOnly)) {
           // Message iteration order is from newer to older
-          result.add(MessageDateChange(prevDateOnly));
+          result.add(MessageDateChange(prevDateOnly, prevLocalId));
         }
       }
 
@@ -108,7 +110,7 @@ class MessageDatabaseIterator {
       final now = DateTime.now();
       final today = DateTime(now.year, now.month, now.day);
       if (!prevDateOnly.isAtSameMomentAs(today)) {
-        return [MessageDateChange(prevDateOnly)];
+        return [MessageDateChange(prevDateOnly, currentPreviousMessage.localId)];
       }
     }
 
