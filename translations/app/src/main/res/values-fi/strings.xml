@@ -587,7 +587,7 @@
     <string name="conversation_screen_message_not_found">Viestiä ei löytynyt</string>
     <string name="conversation_screen_message_details_message_id">Viestitunniste</string>
     <string name="conversation_screen_message_details_message_number">Viestin numero</string>
-    <string name="conversation_screen_message_error_is_actually_sent_successfully">Tämä viesti lähetettiin jo onnistuneesti</string>
+    <string name="conversation_screen_message_error_is_actually_sent_successfully">Tämä viesti onkin jo lähetetty onnistuneesti</string>
     <string name="conversation_screen_message_error_recipient_blocked_sender_or_recipient_not_found">Viestiä ei voitu toimittaa vastaanottajalle</string>
     <string name="conversation_screen_message_resend_complete">Uudelleenlähetetty onnistuneesti</string>
     <string name="conversation_screen_message_resent_info">Uudelleenlähetetty (alun perin lähetetty %s, viesti %s)</string>

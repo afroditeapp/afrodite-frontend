@@ -146,7 +146,7 @@
   "conversation_screen_make_match_instruction": "Lähetä viesti hyväksyäksesi keskustelupyynnön!",
   "conversation_screen_message_details_message_id": "Viestitunniste",
   "conversation_screen_message_details_message_number": "Viestin numero",
-  "conversation_screen_message_error_is_actually_sent_successfully": "Tämä viesti lähetettiin jo onnistuneesti",
+  "conversation_screen_message_error_is_actually_sent_successfully": "Tämä viesti onkin jo lähetetty onnistuneesti",
   "conversation_screen_message_error_recipient_blocked_sender_or_recipient_not_found": "Viestiä ei voitu toimittaa vastaanottajalle",
   "conversation_screen_message_info_encryption_key_changed": "Käyttäjän {p0} salausavain muuttui",
   "conversation_screen_message_info_encryption_started": "Viestit ovat päästä päähän -salattuja",

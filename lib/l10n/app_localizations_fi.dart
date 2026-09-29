@@ -545,7 +545,7 @@ class AppLocalizationsFi extends AppLocalizations {
 
   @override
   String get conversation_screen_message_error_is_actually_sent_successfully =>
-      'Tämä viesti lähetettiin jo onnistuneesti';
+      'Tämä viesti onkin jo lähetetty onnistuneesti';
 
   @override
   String get conversation_screen_message_error_recipient_blocked_sender_or_recipient_not_found =>
