@@ -190,11 +190,7 @@ class _ReportChatMessageScreen extends State<ReportChatMessageScreen> {
 
     final textWidget = Padding(
       padding: const EdgeInsets.symmetric(horizontal: 8.0),
-      child: Text(
-        text,
-        style: Theme.of(context).textTheme.bodyMedium,
-        overflow: TextOverflow.ellipsis,
-      ),
+      child: Text(text, style: Theme.of(context).textTheme.bodyMedium),
     );
 
     final timeTextWidget = Padding(
