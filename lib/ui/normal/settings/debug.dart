@@ -19,6 +19,7 @@ import 'package:app/database/account_database_manager.dart';
 import 'package:app/logic/app/navigator_state.dart';
 import 'package:app/ui/normal/chat/conversation_list_page.dart';
 import 'package:app/ui/normal/settings.dart';
+import 'package:app/ui/normal/settings/chat_data.dart';
 import 'package:app/ui_utils/snack_bar.dart';
 import 'package:app/utils/result.dart';
 
@@ -31,13 +32,15 @@ class DebugSettingsPage extends MyScreenPage<()> with SimpleUrlParser<DebugSetti
 }
 
 class DebugSettingsScreen extends StatefulWidget {
+  final RepositoryInstances r;
   final ApiManager api;
   final ProfileRepository profile;
   final AccountDatabaseManager accountDb;
   final AccountId accountId;
 
   DebugSettingsScreen(RepositoryInstances r, {super.key})
-    : api = r.api,
+    : r = r,
+      api = r.api,
       profile = r.profile,
       accountDb = r.accountDb,
       accountId = r.accountId;
@@ -95,6 +98,14 @@ class _DebugSettingsScreenState extends State<DebugSettingsScreen> {
         Icons.chat,
         "Chats",
         () => MyNavigator.push(context, ConversationListPage()),
+      ),
+    );
+
+    settings.add(
+      Setting.createSetting(
+        Icons.storage,
+        "Chat data",
+        () => MyNavigator.push(context, ChatDataPage(widget.r)),
       ),
     );
 

@@ -158,6 +158,11 @@ class DaoWriteMessage extends DatabaseAccessor<AccountDatabase> with _$DaoWriteM
     await (delete(message)..where((t) => t.localId.equals(localId.id))).go();
   }
 
+  /// Deletes all messages from the database.
+  Future<void> deleteAllMessages() async {
+    await delete(message).go();
+  }
+
   Future<void> updateStateToReceivedAndSeenLocally(dbm.LocalMessageId localId) async {
     await (update(message)..where((t) => t.localId.equals(localId.id))).write(
       MessageCompanion(
