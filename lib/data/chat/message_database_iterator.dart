@@ -83,7 +83,8 @@ class MessageDatabaseIterator {
       if (prevDate != null) {
         final prevDateOnly = DateTime(prevDate.year, prevDate.month, prevDate.day);
         if (!messageDateOnly.isAtSameMomentAs(prevDateOnly)) {
-          result.add(MessageDateChange(messageDateOnly));
+          // Message iteration order is from newer to older
+          result.add(MessageDateChange(prevDateOnly));
         }
       }
 
