@@ -50,8 +50,7 @@ Future<ConversationPage?> createConversationPage(
   // Load initial messages for the conversation
   final messageIterator = MessageDatabaseIterator(r.accountDb);
   await messageIterator.switchConversation(r.chat.currentUser, accountId);
-  final initialMessages = await messageIterator.nextList();
-  initialMessages.addAll(await messageIterator.nextList());
+  final initialMessages = await messageIterator.loadInitialMessages(INITIAL_MESSAGES_THRESHOLD);
 
   // Create and populate QuotationCache with visible quotations
   final quotationCache = QuotationCache();

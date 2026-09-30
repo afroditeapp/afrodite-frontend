@@ -50,6 +50,21 @@ class MessageDatabaseIterator {
     nextLocalKey = startLocalKey;
   }
 
+  /// Loads initial messages (newest first) until [threshold] is reached or
+  /// all messages are loaded, ensuring the oldest message gets its date marker
+  /// (as UI switches to mode which supports loading more messages).
+  Future<List<IteratorMessage>> loadInitialMessages(int threshold) async {
+    final List<IteratorMessage> messages = [];
+    while (messages.length < threshold) {
+      final page = await nextList();
+      if (page.isEmpty) {
+        break;
+      }
+      messages.addAll(page);
+    }
+    return messages;
+  }
+
   // Get max 10 next messages.
   Future<List<IteratorMessage>> nextList() async {
     if (nextLocalKey < 0) {

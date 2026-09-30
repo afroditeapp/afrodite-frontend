@@ -32,8 +32,9 @@ import 'dart:async';
 
 final _log = Logger("ChatList");
 
-/// Two pages must be queried from MessageDatabaseIterator so
-/// that _reversed boolean will work correctly.
+/// Message count threshold that selects between the two chat list modes.
+const int INITIAL_MESSAGES_THRESHOLD = 20;
+
 class ChatList extends StatefulWidget {
   final AccountId currentUser;
   final AccountId messageRecipient;
@@ -100,12 +101,10 @@ class _ChatListState extends State<ChatList> {
     _textEditingController.addListener(_onTextChanged);
 
     // Use reversed mode only when there is enough
-    // messages as otherwise there would be empty space
+    // messages because otherwise there would be empty space
     // on top. When reversed is false, loading old messages
-    // is not smooth, so that is disabled as 19 messages
-    // means that there is no more old messages
-    // (two pages = 20 messages).
-    _reversed = initialMessages.length >= 20;
+    // is disabled because the loading does not look smooth.
+    _reversed = initialMessages.length >= INITIAL_MESSAGES_THRESHOLD;
 
     final r = context.read<RepositoryInstances>();
     _chatListLogic = ChatListLogic(
