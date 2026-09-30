@@ -39,6 +39,11 @@ class DaoReadProfile extends DatabaseAccessor<AccountDatabase> with _$DaoReadPro
     (r, content) => _rowToProfileEntry(r, content),
   );
 
+  Stream<int?> watchProfileLastSeenTime(api.AccountId accountId) =>
+      (select(profile)..where((t) => t.accountId.equals(accountId.aid))).watchSingleOrNull().map(
+        (r) => r?.profileLastSeenTimeValue,
+      );
+
   Stream<ProfileThumbnail?> watchProfileThumbnail(api.AccountId accountId) => Rx.combineLatest3(
     (select(profile)..where((t) => t.accountId.equals(accountId.aid))).watchSingleOrNull(),
     db.read.media.watchAllProfileContent(accountId),

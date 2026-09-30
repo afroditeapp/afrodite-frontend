@@ -21,6 +21,11 @@ class HandleProfileChange extends ViewProfileEvent {
   HandleProfileChange(this.change);
 }
 
+class UpdateLastSeenTime extends ViewProfileEvent {
+  final int? lastSeenTimeValue;
+  UpdateLastSeenTime(this.lastSeenTimeValue);
+}
+
 class ReloadProfileAction extends ViewProfileEvent {
   ReloadProfileAction();
 }
@@ -52,6 +57,7 @@ class ViewProfileBloc extends Bloc<ViewProfileEvent, ViewProfilesData> with Acti
   StreamSubscription<ProfileChange>? _profileChangeSubscription;
   StreamSubscription<void>? _profileActionSubscription;
   StreamSubscription<ProfileEntry?>? _profileRefreshSubscription;
+  StreamSubscription<int?>? _lastSeenTimeSubscription;
 
   ViewProfileBloc(
     RepositoryInstances r,
@@ -116,6 +122,12 @@ class ViewProfileBloc extends Bloc<ViewProfileEvent, ViewProfilesData> with Acti
           );
         }
       });
+    });
+    on<UpdateLastSeenTime>((data, emit) async {
+      final current = state.lastSeenTimeState;
+      if (current is! LastSeenTimeReceived || current.value != data.lastSeenTimeValue) {
+        emit(state.copyWith(lastSeenTimeState: LastSeenTimeReceived(data.lastSeenTimeValue)));
+      }
     });
     on<HandleProfileChange>((data, emit) async {
       final change = data.change;
@@ -225,11 +237,18 @@ class ViewProfileBloc extends Bloc<ViewProfileEvent, ViewProfilesData> with Acti
         .getProfileStream(chat, currentProfile.accountId, ProfileRefreshPriority.low)
         .listen((_) {});
 
+    _lastSeenTimeSubscription = profile.watchProfileLastSeenTime(currentProfile.accountId).listen((
+      value,
+    ) {
+      add(UpdateLastSeenTime(value));
+    });
+
     add(InitEvent());
   }
 
   @override
   Future<void> close() async {
+    await _lastSeenTimeSubscription?.cancel();
     await _profileRefreshSubscription?.cancel();
     await _profileChangeSubscription?.cancel();
     await _profileActionSubscription?.cancel();

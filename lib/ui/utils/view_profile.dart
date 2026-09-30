@@ -21,6 +21,7 @@ import 'package:app/logic/settings/privacy_settings.dart';
 import 'package:app/model/freezed/logic/account/client_features_config.dart';
 import 'package:app/model/freezed/logic/profile/my_profile.dart';
 import 'package:app/model/freezed/logic/profile/attributes.dart';
+import 'package:app/model/freezed/logic/profile/view_profiles.dart';
 import 'package:app/model/freezed/logic/settings/privacy_settings.dart';
 import 'package:app/ui/normal/settings/profile/edit_profile.dart';
 import 'package:app/ui/normal/profiles/profile_filters/profile_verification.dart';
@@ -35,7 +36,15 @@ const double VIEW_PROFILE_WIDGET_IMG_HEIGHT = 400;
 class ViewProfileEntry extends StatefulWidget {
   final ProfileEntry profile;
   final bool isMyProfile;
-  const ViewProfileEntry({required this.profile, required this.isMyProfile, super.key});
+
+  /// Overrides [ProfileEntry.lastSeenTimeValue]
+  final LastSeenTimeState lastSeenTimeState;
+  const ViewProfileEntry({
+    required this.profile,
+    required this.isMyProfile,
+    this.lastSeenTimeState = const LastSeenTimeNotReceived(),
+    super.key,
+  });
 
   @override
   State<ViewProfileEntry> createState() => _ViewProfileEntryState();
@@ -202,16 +211,17 @@ class _ViewProfileEntryState extends State<ViewProfileEntry> {
   }
 
   Widget lastSeenTime(BuildContext context, PrivacySettingsData privacySettings) {
-    final lastSeenTime = widget.profile.lastSeenTimeValue;
+    final lastSeenTime = switch (widget.lastSeenTimeState) {
+      LastSeenTimeNotReceived() => widget.profile.lastSeenTimeValue,
+      LastSeenTimeReceived(:final value) => value,
+    };
     final List<Widget> widgets;
     if (lastSeenTime == null ||
         lastSeenTime < -1 ||
-        (widget.profile.lastSeenTimeValue == -1 && !privacySettings.onlineStatus) ||
-        (widget.profile.lastSeenTimeValue != null &&
-            widget.profile.lastSeenTimeValue! >= 0 &&
-            !privacySettings.lastSeenTime)) {
+        (lastSeenTime == -1 && !privacySettings.onlineStatus) ||
+        (lastSeenTime >= 0 && !privacySettings.lastSeenTime)) {
       return const SizedBox.shrink();
-    } else if (widget.profile.lastSeenTimeValue == -1) {
+    } else if (lastSeenTime == -1) {
       widgets = [
         Container(
           padding: const EdgeInsets.all(8),

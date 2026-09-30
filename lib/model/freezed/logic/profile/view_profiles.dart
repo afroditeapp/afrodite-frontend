@@ -11,6 +11,7 @@ enum ProfileActionState { like, makeMatch, chat }
 class ViewProfilesData with _$ViewProfilesData {
   factory ViewProfilesData({
     required ProfileEntry profile,
+    @Default(LastSeenTimeNotReceived()) LastSeenTimeState lastSeenTimeState,
     @Default(FavoriteStateIdle(false)) FavoriteState isFavorite,
     ProfileActionState? profileActionState,
     @Default(false) bool isBlocked,
@@ -38,4 +39,17 @@ class FavoriteStateChangeInProgress extends FavoriteState {
 
 class FavoriteStateIdle extends FavoriteState {
   const FavoriteStateIdle(super.isFavorite);
+}
+
+sealed class LastSeenTimeState {
+  const LastSeenTimeState();
+}
+
+class LastSeenTimeNotReceived extends LastSeenTimeState {
+  const LastSeenTimeNotReceived();
+}
+
+class LastSeenTimeReceived extends LastSeenTimeState {
+  final int? value;
+  const LastSeenTimeReceived(this.value);
 }

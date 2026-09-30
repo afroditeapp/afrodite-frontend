@@ -261,7 +261,11 @@ class ViewProfileScreen extends StatelessWidget {
       builder: (context, state) {
         handleStateAction(context, state);
 
-        return ViewProfileEntry(profile: state.profile, isMyProfile: false);
+        return ViewProfileEntry(
+          profile: state.profile,
+          isMyProfile: false,
+          lastSeenTimeState: state.lastSeenTimeState,
+        );
       },
     );
   }

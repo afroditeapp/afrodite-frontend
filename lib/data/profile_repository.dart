@@ -48,6 +48,9 @@ class ProfileRepository extends DataRepositoryWithLifecycle {
   Stream<ProfileAttributes?> get profileAttributes =>
       db.accountStream((db) => db.config.watchAvailableProfileAttributes());
 
+  Stream<int?> watchProfileLastSeenTime(AccountId accountId) =>
+      db.accountStream((db) => db.profile.watchProfileLastSeenTime(accountId));
+
   @override
   Future<void> init() async {
     // empty

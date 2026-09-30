@@ -22,6 +22,7 @@ final _privateConstructorErrorViewProfilesData = UnsupportedError(
 /// @nodoc
 mixin _$ViewProfilesData {
   ProfileEntry get profile => throw _privateConstructorErrorViewProfilesData;
+  LastSeenTimeState get lastSeenTimeState => throw _privateConstructorErrorViewProfilesData;
   FavoriteState get isFavorite => throw _privateConstructorErrorViewProfilesData;
   ProfileActionState? get profileActionState => throw _privateConstructorErrorViewProfilesData;
   bool get isBlocked => throw _privateConstructorErrorViewProfilesData;
@@ -38,6 +39,7 @@ mixin _$ViewProfilesData {
 
   ViewProfilesData copyWith({
     ProfileEntry? profile,
+    LastSeenTimeState? lastSeenTimeState,
     FavoriteState? isFavorite,
     ProfileActionState? profileActionState,
     bool? isBlocked,
@@ -58,6 +60,7 @@ mixin _$ViewProfilesData {
 abstract class _ViewProfilesData implements ViewProfilesData {
   factory _ViewProfilesData({
     required ProfileEntry profile,
+    LastSeenTimeState lastSeenTimeState,
     FavoriteState isFavorite,
     ProfileActionState? profileActionState,
     bool isBlocked,
@@ -76,6 +79,7 @@ abstract class _ViewProfilesData implements ViewProfilesData {
 
 /// @nodoc
 class _$ViewProfilesDataImpl with DiagnosticableTreeMixin implements _ViewProfilesData {
+  static const LastSeenTimeState _lastSeenTimeStateDefaultValue = LastSeenTimeNotReceived();
   static const FavoriteState _isFavoriteDefaultValue = FavoriteStateIdle(false);
   static const bool _isBlockedDefaultValue = false;
   static const bool _showAddToFavoritesCompletedDefaultValue = false;
@@ -91,6 +95,7 @@ class _$ViewProfilesDataImpl with DiagnosticableTreeMixin implements _ViewProfil
 
   _$ViewProfilesDataImpl({
     required this.profile,
+    this.lastSeenTimeState = _lastSeenTimeStateDefaultValue,
     this.isFavorite = _isFavoriteDefaultValue,
     this.profileActionState,
     this.isBlocked = _isBlockedDefaultValue,
@@ -108,6 +113,8 @@ class _$ViewProfilesDataImpl with DiagnosticableTreeMixin implements _ViewProfil
 
   @override
   final ProfileEntry profile;
+  @override
+  final LastSeenTimeState lastSeenTimeState;
   @override
   final FavoriteState isFavorite;
   @override
@@ -137,7 +144,7 @@ class _$ViewProfilesDataImpl with DiagnosticableTreeMixin implements _ViewProfil
 
   @override
   String toString({DiagnosticLevel minLevel = DiagnosticLevel.info}) {
-    return 'ViewProfilesData(profile: $profile, isFavorite: $isFavorite, profileActionState: $profileActionState, isBlocked: $isBlocked, showAddToFavoritesCompleted: $showAddToFavoritesCompleted, addToFavoritesRemainingSpace: $addToFavoritesRemainingSpace, showAddToFavoritesFailedTooMany: $showAddToFavoritesFailedTooMany, showRemoveFromFavoritesCompleted: $showRemoveFromFavoritesCompleted, showLikeCompleted: $showLikeCompleted, showLikeFailedBecauseAlreadyLiked: $showLikeFailedBecauseAlreadyLiked, showLikeFailedBecauseAlreadyLikeReceived: $showLikeFailedBecauseAlreadyLikeReceived, showLikeFailedBecauseAlreadyMatch: $showLikeFailedBecauseAlreadyMatch, showLikeFailedBecauseOfLimit: $showLikeFailedBecauseOfLimit, showGenericError: $showGenericError)';
+    return 'ViewProfilesData(profile: $profile, lastSeenTimeState: $lastSeenTimeState, isFavorite: $isFavorite, profileActionState: $profileActionState, isBlocked: $isBlocked, showAddToFavoritesCompleted: $showAddToFavoritesCompleted, addToFavoritesRemainingSpace: $addToFavoritesRemainingSpace, showAddToFavoritesFailedTooMany: $showAddToFavoritesFailedTooMany, showRemoveFromFavoritesCompleted: $showRemoveFromFavoritesCompleted, showLikeCompleted: $showLikeCompleted, showLikeFailedBecauseAlreadyLiked: $showLikeFailedBecauseAlreadyLiked, showLikeFailedBecauseAlreadyLikeReceived: $showLikeFailedBecauseAlreadyLikeReceived, showLikeFailedBecauseAlreadyMatch: $showLikeFailedBecauseAlreadyMatch, showLikeFailedBecauseOfLimit: $showLikeFailedBecauseOfLimit, showGenericError: $showGenericError)';
   }
 
   @override
@@ -146,6 +153,7 @@ class _$ViewProfilesDataImpl with DiagnosticableTreeMixin implements _ViewProfil
     properties
       ..add(DiagnosticsProperty('type', 'ViewProfilesData'))
       ..add(DiagnosticsProperty('profile', profile))
+      ..add(DiagnosticsProperty('lastSeenTimeState', lastSeenTimeState))
       ..add(DiagnosticsProperty('isFavorite', isFavorite))
       ..add(DiagnosticsProperty('profileActionState', profileActionState))
       ..add(DiagnosticsProperty('isBlocked', isBlocked))
@@ -168,6 +176,8 @@ class _$ViewProfilesDataImpl with DiagnosticableTreeMixin implements _ViewProfil
         other is _$ViewProfilesDataImpl &&
         (identical(other.profile, profile) ||
           other.profile == profile) &&
+        (identical(other.lastSeenTimeState, lastSeenTimeState) ||
+          other.lastSeenTimeState == lastSeenTimeState) &&
         (identical(other.isFavorite, isFavorite) ||
           other.isFavorite == isFavorite) &&
         (identical(other.profileActionState, profileActionState) ||
@@ -201,6 +211,7 @@ class _$ViewProfilesDataImpl with DiagnosticableTreeMixin implements _ViewProfil
   int get hashCode => Object.hash(
     runtimeType,
     profile,
+    lastSeenTimeState,
     isFavorite,
     profileActionState,
     isBlocked,
@@ -219,6 +230,7 @@ class _$ViewProfilesDataImpl with DiagnosticableTreeMixin implements _ViewProfil
   @override
   ViewProfilesData copyWith({
     Object? profile,
+    Object? lastSeenTimeState,
     Object? isFavorite,
     Object? profileActionState = _detectDefaultValueInCopyWith,
     Object? isBlocked,
@@ -234,6 +246,7 @@ class _$ViewProfilesDataImpl with DiagnosticableTreeMixin implements _ViewProfil
     Object? showGenericError,
   }) => _$ViewProfilesDataImpl(
     profile: (profile ?? this.profile) as ProfileEntry,
+    lastSeenTimeState: (lastSeenTimeState ?? this.lastSeenTimeState) as LastSeenTimeState,
     isFavorite: (isFavorite ?? this.isFavorite) as FavoriteState,
     profileActionState: (profileActionState == _detectDefaultValueInCopyWith ? this.profileActionState : profileActionState) as ProfileActionState?,
     isBlocked: (isBlocked ?? this.isBlocked) as bool,
