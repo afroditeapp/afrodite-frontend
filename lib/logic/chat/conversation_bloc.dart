@@ -129,6 +129,7 @@ class ConversationBloc extends Bloc<ConversationEvent, ConversationData> with Ac
   final AccountDatabaseManager db;
   final ApiManager api;
   final AccountRepository account;
+  final ServerConnectionManager connectionManager;
 
   StreamSubscription<ProfileChange>? _profileChangeSubscription;
   StreamSubscription<bool>? _isInMatchesSubscription;
@@ -140,18 +141,17 @@ class ConversationBloc extends Bloc<ConversationEvent, ConversationData> with Ac
       db = r.accountDb,
       api = r.api,
       account = r.account,
+      connectionManager = r.connectionManager,
       super(ConversationData(accountId: messageSenderAccountId)) {
     on<InitEvent>((data, emit) async {
       _log.info("Set conversation bloc initial state");
 
-      final isBlocked = await dataProvider.isInSentBlocks(state.accountId);
+      emit(state.copyWith(isBlocked: await dataProvider.isInSentBlocks(state.accountId)));
 
       // Send check online status request when conversation is opened
       chat.checkOnlineStatusManager.handleCheckOnlineStatusRequest(state.accountId);
 
       await markMessagesAsSeen();
-
-      emit(state.copyWith(isBlocked: isBlocked));
     });
     on<HandleProfileChange>((data, emit) async {
       final change = data.change;
@@ -355,7 +355,7 @@ class ConversationBloc extends Bloc<ConversationEvent, ConversationData> with Ac
       }
     }
 
-    await markMessageEntryListSeen(api, db, allMessages);
+    await markMessageEntryListSeen(api, db, allMessages, connectionManager: connectionManager);
   }
 
   @override
@@ -369,8 +369,13 @@ class ConversationBloc extends Bloc<ConversationEvent, ConversationData> with Ac
 Future<void> markMessageEntryListSeen(
   ApiManager api,
   AccountDatabaseManager db,
-  List<MessageEntry> allMessages,
-) async {
+  List<MessageEntry> allMessages, {
+  ServerConnectionManager? connectionManager,
+}) async {
+  // Make user visible API error more unlikely when app launches
+  // to conversation screen.
+  await connectionManager?.tryWaitUntilConnected();
+
   SeenMessage? latestMessage;
   for (final m in allMessages) {
     final mn = m.messageNumber;
