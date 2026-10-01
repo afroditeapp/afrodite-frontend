@@ -20,6 +20,7 @@ import 'package:app/ui/normal/settings/admin/association_membership_registry.dar
 import 'package:app/ui/normal/settings/admin/custom_email/custom_email_list.dart';
 import 'package:app/ui/normal/settings/admin/profile_attributes/schema_editor.dart';
 import 'package:app/ui/normal/settings/metrics.dart';
+import 'package:app/ui_utils/consts/padding.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:openapi/api.dart';
@@ -50,19 +51,38 @@ class AdminSettingsScreen extends StatelessWidget {
   Widget settingsListWidget(BuildContext context) {
     return BlocBuilder<AccountBloc, AccountBlocData>(
       builder: (context, state) {
-        List<Setting> settings = settingsList(context, AdminSettingsPermissions(state.permissions));
+        final permissions = AdminSettingsPermissions(state.permissions);
+        final r = context.read<RepositoryInstances>();
+        final widgets = <Widget>[];
+
+        void addCategory(String title, List<Setting> settings) {
+          if (settings.isEmpty) return;
+          widgets.add(settingsCategoryTitle(context, title));
+          widgets.addAll(settings.map((setting) => setting.toListTile()));
+        }
+
+        addCategory("Moderation", moderationSettings(context, r, permissions));
+        addCategory("Server configuration", serverConfigSettings(context, r, permissions));
+        addCategory("Metrics & accounts", metricsAndAccountsSettings(context, r, permissions));
+        addCategory("Schema & content", schemaAndContentSettings(context, r, permissions));
+        addCategory("Association", associationSettings(context, r, permissions));
+        addCategory("Notifications", notificationsSettings(context, permissions));
+
+        widgets.add(const Padding(padding: EdgeInsets.only(top: LIST_END_EMPTY_AREA)));
+
         return SingleChildScrollView(
-          child: Column(children: [...settings.map((setting) => setting.toListTile())]),
+          child: Column(crossAxisAlignment: CrossAxisAlignment.start, children: widgets),
         );
       },
     );
   }
 
-  List<Setting> settingsList(BuildContext context, AdminSettingsPermissions permissions) {
-    List<Setting> settings = [];
-
-    final r = context.read<RepositoryInstances>();
-
+  List<Setting> moderationSettings(
+    BuildContext context,
+    RepositoryInstances r,
+    AdminSettingsPermissions permissions,
+  ) {
+    final settings = <Setting>[];
     if (permissions.adminModerateMediaContent ||
         permissions.adminModerateProfileNames ||
         permissions.adminModerateProfileTexts ||
@@ -100,7 +120,15 @@ class AdminSettingsScreen extends StatelessWidget {
         ),
       );
     }
+    return settings;
+  }
 
+  List<Setting> serverConfigSettings(
+    BuildContext context,
+    RepositoryInstances r,
+    AdminSettingsPermissions permissions,
+  ) {
+    final settings = <Setting>[];
     if (permissions.adminServerEditBotConfig || permissions.adminServerViewBotConfig) {
       settings.add(
         Setting.createSetting(
@@ -163,25 +191,15 @@ class AdminSettingsScreen extends StatelessWidget {
         ),
       );
     }
-    if (permissions.adminServerEditInfoBanners) {
-      settings.add(
-        Setting.createSetting(
-          Icons.campaign,
-          "Info banners",
-          () => MyNavigator.pushLimited(context, InfoBannersSchemaPage(r)),
-        ),
-      );
-    }
-    if (permissions.adminServerEditMaintenanceNotification) {
-      settings.add(
-        Setting.createSetting(
-          Icons.settings,
-          "Edit maintenance notification",
-          () => MyNavigator.pushLimited(context, EditMaintenanceNotificationPage(r)),
-        ),
-      );
-    }
+    return settings;
+  }
 
+  List<Setting> metricsAndAccountsSettings(
+    BuildContext context,
+    RepositoryInstances r,
+    AdminSettingsPermissions permissions,
+  ) {
+    final settings = <Setting>[];
     if (permissions.adminServerViewInfo || permissions.adminProfileStatistics) {
       const title = "Metrics";
       settings.add(
@@ -219,6 +237,15 @@ class AdminSettingsScreen extends StatelessWidget {
         ),
       );
     }
+    return settings;
+  }
+
+  List<Setting> schemaAndContentSettings(
+    BuildContext context,
+    RepositoryInstances r,
+    AdminSettingsPermissions permissions,
+  ) {
+    final settings = <Setting>[];
     if (permissions.adminEditProfileAttributesSchema) {
       settings.add(
         Setting.createSetting(
@@ -237,6 +264,33 @@ class AdminSettingsScreen extends StatelessWidget {
         ),
       );
     }
+    if (permissions.adminServerEditInfoBanners) {
+      settings.add(
+        Setting.createSetting(
+          Icons.campaign,
+          "Info banners",
+          () => MyNavigator.pushLimited(context, InfoBannersSchemaPage(r)),
+        ),
+      );
+    }
+    if (permissions.adminServerEditMaintenanceNotification) {
+      settings.add(
+        Setting.createSetting(
+          Icons.settings,
+          "Edit maintenance notification",
+          () => MyNavigator.pushLimited(context, EditMaintenanceNotificationPage(r)),
+        ),
+      );
+    }
+    return settings;
+  }
+
+  List<Setting> associationSettings(
+    BuildContext context,
+    RepositoryInstances r,
+    AdminSettingsPermissions permissions,
+  ) {
+    final settings = <Setting>[];
     if (permissions.adminViewAssociationMembership &&
         context.read<ClientFeaturesConfigBloc>().state.config.association != null) {
       settings.add(
@@ -260,6 +314,11 @@ class AdminSettingsScreen extends StatelessWidget {
         ),
       );
     }
+    return settings;
+  }
+
+  List<Setting> notificationsSettings(BuildContext context, AdminSettingsPermissions permissions) {
+    final settings = <Setting>[];
     if (permissions.adminSubscribeAdminNotifications) {
       settings.add(
         Setting.createSetting(
