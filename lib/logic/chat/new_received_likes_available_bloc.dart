@@ -5,6 +5,7 @@ import "package:app/data/general/notification/state/like_received.dart";
 import "package:app/data/utils/repository_instances.dart";
 import "package:app/database/account_database_manager.dart";
 import "package:app/logic/app/app_visibility_provider.dart";
+import "package:app/logic/app/bottom_navigation_state.dart";
 import "package:app/utils/result.dart";
 import 'package:bloc_concurrency/bloc_concurrency.dart' show droppable, sequential;
 import "package:flutter_bloc/flutter_bloc.dart";
@@ -36,10 +37,32 @@ class _ResetBadgeCount extends NewReceivedLikesAvailableEvent {
   final completer = Completer<()>();
 }
 
+class ReceivedLikesRefreshScheduler {
+  static const _cooldown = Duration(minutes: 2);
+
+  DateTime? _lastRefreshTime;
+
+  bool shouldRefreshNow() {
+    final now = DateTime.now();
+    final refreshCooldownPassed =
+        _lastRefreshTime == null || now.difference(_lastRefreshTime!) >= _cooldown;
+
+    final notScrolled =
+        !BottomNavigationStateBlocInstance.getInstance().navigationState.isScrolledLikes;
+
+    return refreshCooldownPassed && notScrolled;
+  }
+
+  void markRefreshDone() {
+    _lastRefreshTime = DateTime.now();
+  }
+}
+
 class NewReceivedLikesAvailableBloc
     extends Bloc<NewReceivedLikesAvailableEvent, NewReceivedLikesAvailableData> {
   final ApiManager api;
   final AccountDatabaseManager db;
+  final ReceivedLikesRefreshScheduler _refreshScheduler = ReceivedLikesRefreshScheduler();
 
   StreamSubscription<NewReceivedLikesCount?>? _countSubscription;
   StreamSubscription<NewReceivedLikesCount?>? _countDebounceSubscription;
@@ -59,9 +82,15 @@ class NewReceivedLikesAvailableBloc
     on<_CountUpdateDebounced>((data, emit) {
       if (state.newReceivedLikesCount > 0 &&
           AppVisibilityProvider.getInstance().isForeground &&
-          !NotificationLikeReceived.getInstance().isLikesUiOpen()) {
-        // Leave badge count unchanged
-        emit(state.copyWith(triggerReceivedLikesRefresh: true, showRefreshButton: false));
+          _refreshScheduler.shouldRefreshNow()) {
+        if (NotificationLikeReceived.getInstance().isLikesUiOpen()) {
+          add(RefreshReceivedLikes());
+          // The event calls _refreshScheduler.markRefreshDone()
+        } else {
+          // Leave badge count unchanged
+          emit(state.copyWith(triggerReceivedLikesRefresh: true, showRefreshButton: false));
+          _refreshScheduler.markRefreshDone();
+        }
       }
     }, transformer: sequential());
     on<_IsForegroundChanged>((data, emit) async {
@@ -72,14 +101,17 @@ class NewReceivedLikesAvailableBloc
         final latestIteratorState = await db
             .accountStreamSingle((db) => db.common.watchReceivedLikesIteratorState())
             .ok();
-        if (latestReceivedLikeId == null ||
-            latestIteratorState == null ||
-            latestReceivedLikeId != latestIteratorState.idAtReset) {
+        if ((latestReceivedLikeId == null ||
+                latestIteratorState == null ||
+                latestReceivedLikeId != latestIteratorState.idAtReset) &&
+            _refreshScheduler.shouldRefreshNow()) {
           if (NotificationLikeReceived.getInstance().isLikesUiOpen()) {
             add(RefreshReceivedLikes());
+            // The event calls _refreshScheduler.markRefreshDone()
           } else {
             // Leave badge count unchanged
             emit(state.copyWith(triggerReceivedLikesRefresh: true, showRefreshButton: false));
+            _refreshScheduler.markRefreshDone();
           }
         }
       }
@@ -90,6 +122,7 @@ class NewReceivedLikesAvailableBloc
       add(event);
       await event.completer.future;
       emit(state.copyWith(triggerReceivedLikesRefresh: true));
+      _refreshScheduler.markRefreshDone();
     }, transformer: droppable());
     on<MarkReceivedLikesRefreshDone>((data, emit) {
       emit(state.copyWith(triggerReceivedLikesRefresh: false));
