@@ -1,17 +1,24 @@
 import 'package:app/data/utils/repository_instances.dart';
 import 'package:app/logic/account/client_features_config.dart';
 import 'package:app/model/freezed/logic/main/navigator_state.dart';
+import 'package:app/ui/normal/settings/admin/bot_config.dart';
+import 'package:app/ui/normal/settings/admin/dynamic_server_config.dart';
 import 'package:app/ui/normal/settings/admin/edit_admin_notifications.dart';
+import 'package:app/ui/normal/settings/admin/edit_maintenance_notification.dart';
+import 'package:app/ui/normal/settings/admin/image_processing_config.dart';
+import 'package:app/ui/normal/settings/admin/info_banners/schema_editor.dart';
 import 'package:app/ui/normal/settings/admin/moderator_tasks.dart';
 import 'package:app/ui/normal/settings/admin/admin_bot_processed_content_tasks.dart';
 import 'package:app/ui/normal/settings/admin/open_account_admin_settings.dart';
+import 'package:app/ui/normal/settings/admin/server_software_update.dart';
+import 'package:app/ui/normal/settings/admin/server_system_info.dart';
+import 'package:app/ui/normal/settings/admin/server_tasks.dart';
 import 'package:app/ui/normal/settings/admin/view_accounts.dart';
 import 'package:app/ui/normal/settings/admin/view_admins.dart';
 import 'package:app/ui/normal/settings/admin/manual_association_membership_registry.dart';
 import 'package:app/ui/normal/settings/admin/association_membership_registry.dart';
 import 'package:app/ui/normal/settings/admin/custom_email/custom_email_list.dart';
 import 'package:app/ui/normal/settings/admin/profile_attributes/schema_editor.dart';
-import 'package:app/ui/normal/settings/server.dart';
 import 'package:app/ui/normal/settings/metrics.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
@@ -93,30 +100,88 @@ class AdminSettingsScreen extends StatelessWidget {
         ),
       );
     }
-    if (permissions.adminServerEditBotConfig ||
-        permissions.adminServerViewBotConfig ||
-        permissions.adminServerEditServerConfig ||
-        permissions.adminServerViewServerConfig ||
-        permissions.adminServerEditImageProcessingConfig ||
-        permissions.adminServerViewImageProcessingConfig ||
-        permissions.adminServerViewInfo ||
-        permissions.adminServerRestart ||
-        permissions.adminServerReboot ||
-        permissions.adminServerScheduledRestart ||
-        permissions.adminServerScheduledReboot ||
-        permissions.adminServerDataReset ||
-        permissions.adminServerSoftwareUpdate ||
-        permissions.adminServerEditInfoBanners ||
-        permissions.adminServerEditMaintenanceNotification) {
-      const title = "Server";
+
+    if (permissions.adminServerEditBotConfig || permissions.adminServerViewBotConfig) {
       settings.add(
         Setting.createSetting(
           Icons.settings,
-          title,
-          () => MyNavigator.pushLimited(context, ServerPage(title: title)),
+          "Bots",
+          () => MyNavigator.pushLimited(context, BotConfigPage(r)),
         ),
       );
     }
+    if (permissions.adminServerEditImageProcessingConfig ||
+        permissions.adminServerViewImageProcessingConfig) {
+      settings.add(
+        Setting.createSetting(
+          Icons.image,
+          "Image processing",
+          () => MyNavigator.pushLimited(context, ImageProcessingConfigPage(r)),
+        ),
+      );
+    }
+    if (permissions.adminServerEditServerConfig || permissions.adminServerViewServerConfig) {
+      settings.add(
+        Setting.createSetting(
+          Icons.tune,
+          "Server config",
+          () => MyNavigator.pushLimited(context, DynamicServerConfigPage(r)),
+        ),
+      );
+    }
+    if (permissions.adminServerViewInfo) {
+      settings.add(
+        Setting.createSetting(
+          Icons.info_outline,
+          "Server system info",
+          () => MyNavigator.pushLimited(context, ServerSystemInfoPage(r)),
+        ),
+      );
+    }
+    if (permissions.adminServerRestart ||
+        permissions.adminServerReboot ||
+        permissions.adminServerScheduledRestart ||
+        permissions.adminServerScheduledReboot ||
+        permissions.adminServerDataReset) {
+      settings.add(
+        Setting.createSetting(
+          Icons.schedule,
+          "Server tasks",
+          () => MyNavigator.pushLimited(
+            context,
+            ServerTasksPage(r, permissions: permissions.apiPermissions),
+          ),
+        ),
+      );
+    }
+    if (permissions.adminServerSoftwareUpdate) {
+      settings.add(
+        Setting.createSetting(
+          Icons.system_update_alt,
+          "Server software update",
+          () => MyNavigator.pushLimited(context, ServerSoftwareUpdatePage(r)),
+        ),
+      );
+    }
+    if (permissions.adminServerEditInfoBanners) {
+      settings.add(
+        Setting.createSetting(
+          Icons.campaign,
+          "Info banners",
+          () => MyNavigator.pushLimited(context, InfoBannersSchemaPage(r)),
+        ),
+      );
+    }
+    if (permissions.adminServerEditMaintenanceNotification) {
+      settings.add(
+        Setting.createSetting(
+          Icons.settings,
+          "Edit maintenance notification",
+          () => MyNavigator.pushLimited(context, EditMaintenanceNotificationPage(r)),
+        ),
+      );
+    }
+
     if (permissions.adminServerViewInfo || permissions.adminProfileStatistics) {
       const title = "Metrics";
       settings.add(
