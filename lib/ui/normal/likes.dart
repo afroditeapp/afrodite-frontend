@@ -304,6 +304,39 @@ class LikeViewContentState extends State<LikeViewContent> {
           child: Column(
             children: [
               const InfoBannersWidget(location: InfoBannerLocation.likes),
+              BlocBuilder<NewReceivedLikesAvailableBloc, NewReceivedLikesAvailableData>(
+                buildWhen: (previous, current) =>
+                    previous.showRefreshButton != current.showRefreshButton,
+                builder: (context, state) {
+                  if (!state.showRefreshButton) {
+                    return const SizedBox.shrink();
+                  }
+                  return Container(
+                    color: Theme.of(context).colorScheme.primaryContainer,
+                    padding: const EdgeInsets.only(left: 16, top: 4, bottom: 4),
+                    child: Row(
+                      children: [
+                        Expanded(
+                          child: Text(
+                            context.strings.likes_screen_new_likes_available,
+                            style: Theme.of(context).textTheme.bodyMedium
+                                ?.copyWith(color: Theme.of(context).colorScheme.onPrimaryContainer),
+                          ),
+                        ),
+                        TextButton.icon(
+                          onPressed: () => widget.receivedLikesBloc.add(RefreshReceivedLikes()),
+                          icon: Icon(
+                            Icons.refresh,
+                            size: 18,
+                            color: Theme.of(context).colorScheme.onPrimaryContainer,
+                          ),
+                          label: Text(context.strings.likes_screen_refresh_action),
+                        ),
+                      ],
+                    ),
+                  );
+                },
+              ),
               Expanded(
                 child: BlocBuilder<UiSettingsBloc, UiSettingsData>(
                   buildWhen: (previous, current) => previous.gridSettings != current.gridSettings,

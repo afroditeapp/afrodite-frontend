@@ -1321,6 +1321,9 @@ class AppLocalizationsEn extends AppLocalizations {
   String get likes_screen_like_loading_failed => 'Failed to load chat requests';
 
   @override
+  String get likes_screen_new_likes_available => 'New chat requests available';
+
+  @override
   String get likes_screen_no_received_likes_found => 'No chat requests yet';
 
   @override

@@ -1328,6 +1328,9 @@ class AppLocalizationsFi extends AppLocalizations {
   String get likes_screen_like_loading_failed => 'Keskustelupyyntöjen lataus epäonnistui';
 
   @override
+  String get likes_screen_new_likes_available => 'Uusia keskustelupyyntöjä saatavilla';
+
+  @override
   String get likes_screen_no_received_likes_found => 'Ei keskustelupyyntöjä vielä';
 
   @override

@@ -553,6 +553,7 @@
     <string name="likes_screen_no_received_likes_found_description" description="Description text displayed when there is no received likes">Spread the word about the app on social media</string>
     <string name="likes_screen_like_loading_failed" description="Text displayed when like loading fails">Failed to load chat requests</string>
     <string name="likes_screen_refresh_action" description="Title for likes screen refresh action">Refresh</string>
+    <string name="likes_screen_new_likes_available" description="Banner text shown above likes grid when new likes are available">New chat requests available</string>
 
     <!-- Chat list -->
     <string name="chat_list_screen_title" description="Title for chat list screen">Chats</string>

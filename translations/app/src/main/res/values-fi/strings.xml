@@ -546,6 +546,7 @@
     <string name="likes_screen_no_received_likes_found_description">Kerro sovelluksesta sosiaalisessa mediassa</string>
     <string name="likes_screen_like_loading_failed">Keskustelupyyntöjen lataus epäonnistui</string>
     <string name="likes_screen_refresh_action">Päivitä</string>
+    <string name="likes_screen_new_likes_available">Uusia keskustelupyyntöjä saatavilla</string>
 
     <!-- Chat list -->
     <string name="chat_list_screen_title">Keskustelut</string>

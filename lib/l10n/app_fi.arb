@@ -380,6 +380,7 @@
   "initial_setup_screen_skip_dialog_description": "Ohita profiilin määritys vain, jos sinulla on ylläpitäjän oikeudet palveluun.",
   "initial_setup_screen_skip_dialog_title": "Ohitetaanko profiilin määritys?",
   "likes_screen_like_loading_failed": "Keskustelupyyntöjen lataus epäonnistui",
+  "likes_screen_new_likes_available": "Uusia keskustelupyyntöjä saatavilla",
   "likes_screen_no_received_likes_found": "Ei keskustelupyyntöjä vielä",
   "likes_screen_no_received_likes_found_description": "Kerro sovelluksesta sosiaalisessa mediassa",
   "likes_screen_refresh_action": "Päivitä",

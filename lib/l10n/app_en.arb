@@ -1716,6 +1716,10 @@
   "@likes_screen_like_loading_failed": {
     "description": "Text displayed when like loading fails"
   },
+  "likes_screen_new_likes_available": "New chat requests available",
+  "@likes_screen_new_likes_available": {
+    "description": "Banner text shown above likes grid when new likes are available"
+  },
   "likes_screen_no_received_likes_found": "No chat requests yet",
   "@likes_screen_no_received_likes_found": {
     "description": "Info text displayed when there is no received likes"

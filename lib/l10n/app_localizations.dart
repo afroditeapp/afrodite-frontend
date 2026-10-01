@@ -2396,6 +2396,12 @@ abstract class AppLocalizations {
   /// **'Failed to load chat requests'**
   String get likes_screen_like_loading_failed;
 
+  /// Banner text shown above likes grid when new likes are available
+  ///
+  /// In en, this message translates to:
+  /// **'New chat requests available'**
+  String get likes_screen_new_likes_available;
+
   /// Info text displayed when there is no received likes
   ///
   /// In en, this message translates to:
