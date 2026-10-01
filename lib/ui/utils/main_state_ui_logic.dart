@@ -157,6 +157,7 @@ class NavigatorDemoAccount extends BasicRootScreen {
         BlocProvider(create: (_) => DemoAccountBloc()),
         BlocProvider(create: (_) => SignInWithBloc()),
         BlocProvider(create: (_) => EmailLoginBloc()),
+        BlocProvider(create: (_) => SendChatBackupBloc()),
       ],
       child: child,
     );
