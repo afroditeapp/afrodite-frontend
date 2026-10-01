@@ -26,6 +26,8 @@ import 'package:openapi/api.dart';
 
 const double ROW_HEIGHT = 100;
 
+enum ReportListMode { viewReports, processReports, processAcceptedReports, processRejectedReports }
+
 class ProcessReportsPage extends MyScreenPageLimited<()> {
   ProcessReportsPage(RepositoryInstances r, {required ReportQueueType queueType})
     : super(builder: (_) => ProcessReportsScreen(r, queueType: queueType));
@@ -72,7 +74,17 @@ class ReportIo extends ContentIo<WrappedReportDetailed> {
     return await api
         .commonAdmin((api) => api.postGetReportQueuePage(GetReportQueuePage(queueType: queueType)))
         .andThenEmptyErr(
-          (v) => handleReportList(api, addedReports, v.values, onlyNotProcessed: true),
+          (v) => handleReportList(
+            api,
+            addedReports,
+            v.values,
+            mode: switch (queueType) {
+              ReportQueueType.waiting => ReportListMode.processReports,
+              ReportQueueType.acceptedByAdminBot => ReportListMode.processAcceptedReports,
+              ReportQueueType.rejectedByAdminBot => ReportListMode.processRejectedReports,
+              ReportQueueType.unknownDefaultOpenApi => throw Exception("Invalid queue type"),
+            },
+          ),
         );
   }
 
@@ -97,7 +109,7 @@ Future<Result<List<WrappedReportDetailed>, ApiError>> handleReportList(
   ApiManager api,
   Set<ReportId> addedReports,
   List<ReportDetailed> reportList, {
-  required bool onlyNotProcessed,
+  required ReportListMode mode,
 }) async {
   final detailedReports = <WrappedReportDetailed>[];
   for (final r in reportList) {
@@ -111,7 +123,7 @@ Future<Result<List<WrappedReportDetailed>, ApiError>> handleReportList(
           GetChatMessageReports(
             creator: r.info.creator,
             target: r.info.target,
-            onlyNotProcessed: onlyNotProcessed,
+            onlyNotProcessed: mode == ReportListMode.processReports,
           ),
         ),
       );
@@ -121,6 +133,12 @@ Future<Result<List<WrappedReportDetailed>, ApiError>> handleReportList(
           return Err(e);
         case Ok(:final v):
           for (final chatReport in v.values) {
+            if ((mode == ReportListMode.processAcceptedReports &&
+                    chatReport.info.processingState != ReportProcessingState.acceptedByAdminBot) ||
+                (mode == ReportListMode.processRejectedReports &&
+                    chatReport.info.processingState != ReportProcessingState.rejectedByAdminBot)) {
+              continue;
+            }
             if (addedReports.contains(chatReport.info.id)) {
               continue;
             }

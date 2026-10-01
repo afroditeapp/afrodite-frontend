@@ -75,7 +75,7 @@ class ViewReportReportIo extends ContentIo<WrappedReportDetailed> {
           api,
           addedReports,
           result.v.values,
-          onlyNotProcessed: false,
+          mode: ReportListMode.viewReports,
         ).emptyErr();
         if (getReportListResult.isOk()) {
           page += 1;
