@@ -818,9 +818,6 @@
     <!-- Admin screen -->
     <string name="admin_settings_title">Ylläpito</string>
 
-    <!-- Profile statistics history screen -->
-    <string name="profile_statistics_history_screen_title">Profiilitilastojen historia</string>
-
     <!-- Receive chat backup screen -->
     <string name="receive_chat_backup_screen_title">Vastaanota keskusteluvarmuuskopio</string>
     <string name="receive_chat_backup_waiting_for_source">Odotetaan toista laitetta…</string>

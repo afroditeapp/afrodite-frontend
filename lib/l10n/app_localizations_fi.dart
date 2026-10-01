@@ -1985,9 +1985,6 @@ class AppLocalizationsFi extends AppLocalizations {
   String get profile_location_screen_title => 'Sijainti';
 
   @override
-  String get profile_statistics_history_screen_title => 'Profiilitilastojen historia';
-
-  @override
   String get receive_chat_backup_import_success => 'Varmuuskopio tuotu onnistuneesti';
 
   @override

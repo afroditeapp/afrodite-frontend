@@ -1971,9 +1971,6 @@ class AppLocalizationsEn extends AppLocalizations {
   String get profile_location_screen_title => 'Location';
 
   @override
-  String get profile_statistics_history_screen_title => 'Profile statistics history';
-
-  @override
   String get receive_chat_backup_import_success => 'Backup imported successfully';
 
   @override

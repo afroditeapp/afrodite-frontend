@@ -825,9 +825,6 @@
     <!-- Admin screen -->
     <string name="admin_settings_title" description="Title for admin settings screen">Admin</string>
 
-    <!-- Profile statistics history screen -->
-    <string name="profile_statistics_history_screen_title" description="Title for profile statistics history screen">Profile statistics history</string>
-
     <!-- Receive chat backup screen -->
     <string name="receive_chat_backup_screen_title" description="Title for receive chat backup screen">Receive chat backup</string>
     <string name="receive_chat_backup_waiting_for_source" description="Status text when waiting for source device">Waiting for other device…</string>

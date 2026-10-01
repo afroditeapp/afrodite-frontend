@@ -3522,12 +3522,6 @@ abstract class AppLocalizations {
   /// **'Location'**
   String get profile_location_screen_title;
 
-  /// Title for profile statistics history screen
-  ///
-  /// In en, this message translates to:
-  /// **'Profile statistics history'**
-  String get profile_statistics_history_screen_title;
-
   /// Success message after backup import
   ///
   /// In en, this message translates to:

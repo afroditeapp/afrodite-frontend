@@ -1,5 +1,4 @@
 import 'package:app/data/utils/repository_instances.dart';
-import 'package:app/localizations.dart';
 import 'package:app/logic/account/client_features_config.dart';
 import 'package:app/model/freezed/logic/main/navigator_state.dart';
 import 'package:app/ui/normal/settings/admin.dart';
@@ -124,7 +123,7 @@ class MetricsScreen extends StatelessWidget {
       settings.add(
         Setting.createSetting(
           Icons.query_stats,
-          context.strings.profile_statistics_history_screen_title,
+          PROFILE_STATISTICS_HISTORY_SCREEN_TITLE,
           () => openProfileStatisticsHistoryScreen(context),
         ),
       );

@@ -567,7 +567,6 @@
   "profile_image_error_no_image": "Ei profiilikuvaa",
   "profile_image_error_no_primary_image": "Ensisijainen profiilikuva puuttuu",
   "profile_location_screen_title": "Sijainti",
-  "profile_statistics_history_screen_title": "Profiilitilastojen historia",
   "receive_chat_backup_import_success": "Varmuuskopio tuotu onnistuneesti",
   "receive_chat_backup_importing": "Tuodaan varmuuskopiota…",
   "receive_chat_backup_pairing_code_instruction": "Toisella laitteella:",

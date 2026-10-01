@@ -17,6 +17,8 @@ import 'package:app/utils/api.dart';
 import 'package:app/ui_utils/extensions/locale.dart';
 import 'package:app/ui_utils/time.dart';
 
+const PROFILE_STATISTICS_HISTORY_SCREEN_TITLE = "Profile statistics history";
+
 Future<void> openProfileStatisticsHistoryScreen(BuildContext context) {
   return MyNavigator.pushLimited(context, ProfileStatisticsHistoryPage());
 }
@@ -46,7 +48,7 @@ class ProfileStatisticsHistoryScreenState extends State<ProfileStatisticsHistory
   @override
   Widget build(BuildContext context) {
     return Scaffold(
-      appBar: AppBar(title: Text(context.strings.profile_statistics_history_screen_title)),
+      appBar: AppBar(title: Text(PROFILE_STATISTICS_HISTORY_SCREEN_TITLE)),
       body: content(),
     );
   }

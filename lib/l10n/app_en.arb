@@ -2572,10 +2572,6 @@
   "@profile_location_screen_title": {
     "description": "Title for profile location screen"
   },
-  "profile_statistics_history_screen_title": "Profile statistics history",
-  "@profile_statistics_history_screen_title": {
-    "description": "Title for profile statistics history screen"
-  },
   "receive_chat_backup_import_success": "Backup imported successfully",
   "@receive_chat_backup_import_success": {
     "description": "Success message after backup import"
