@@ -2540,18 +2540,6 @@ abstract class AppLocalizations {
   /// **'4. Open the app from your home screen'**
   String get login_screen_ios_pwa_install_step4;
 
-  /// Button to show text instructions for iOS PWA installation
-  ///
-  /// In en, this message translates to:
-  /// **'Text instructions'**
-  String get login_screen_ios_pwa_install_text_instructions_button;
-
-  /// Button to show video instructions for iOS PWA installation
-  ///
-  /// In en, this message translates to:
-  /// **'Video instructions'**
-  String get login_screen_ios_pwa_install_video_instructions_button;
-
   /// Snackbar error message when login is disabled on all platforms
   ///
   /// In en, this message translates to:

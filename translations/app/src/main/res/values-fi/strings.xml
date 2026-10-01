@@ -266,8 +266,6 @@
     <string name="login_screen_app_attestation_failed">Sovelluksen vahvistus epäonnistui. Yritä myöhemmin uudelleen.</string>
     <string name="login_screen_connecting_websocket_failed">Palvelimeen yhdistäminen epäonnistui. Yritä myöhemmin uudelleen.</string>
     <string name="login_screen_ios_pwa_install_description">Käyttääksesi tätä sovellusta iOS:llä, lisää se Koti-valikkoon:</string>
-    <string name="login_screen_ios_pwa_install_video_instructions_button">Video-ohjeet</string>
-    <string name="login_screen_ios_pwa_install_text_instructions_button">Tekstiohjeet</string>
     <string name="login_screen_ios_pwa_install_step1">1. Napauta \"Jaa\"-painiketta</string>
     <string name="login_screen_ios_pwa_install_step1_ios26">1. Napauta \"Jaa\" tai avaa kolmen pisteen valikko löytääksesi sen</string>
     <string name="login_screen_ios_pwa_install_step2">2. Vieritä alas ja napauta \"Lisää Koti-valikkoon\"</string>

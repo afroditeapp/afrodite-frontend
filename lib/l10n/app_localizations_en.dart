@@ -1401,12 +1401,6 @@ class AppLocalizationsEn extends AppLocalizations {
   String get login_screen_ios_pwa_install_step4 => '4. Open the app from your home screen';
 
   @override
-  String get login_screen_ios_pwa_install_text_instructions_button => 'Text instructions';
-
-  @override
-  String get login_screen_ios_pwa_install_video_instructions_button => 'Video instructions';
-
-  @override
   String get login_screen_login_all_platforms_disabled => 'Login is currently disabled';
 
   @override

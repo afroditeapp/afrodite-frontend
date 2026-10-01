@@ -1812,14 +1812,6 @@
   "@login_screen_ios_pwa_install_step4": {
     "description": "Fourth step for iOS PWA installation"
   },
-  "login_screen_ios_pwa_install_text_instructions_button": "Text instructions",
-  "@login_screen_ios_pwa_install_text_instructions_button": {
-    "description": "Button to show text instructions for iOS PWA installation"
-  },
-  "login_screen_ios_pwa_install_video_instructions_button": "Video instructions",
-  "@login_screen_ios_pwa_install_video_instructions_button": {
-    "description": "Button to show video instructions for iOS PWA installation"
-  },
   "login_screen_login_all_platforms_disabled": "Login is currently disabled",
   "@login_screen_login_all_platforms_disabled": {
     "description": "Snackbar error message when login is disabled on all platforms"

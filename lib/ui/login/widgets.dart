@@ -1,7 +1,6 @@
 import 'dart:io';
 
 import 'package:app/assets.dart';
-import 'package:app/config.dart';
 import 'package:app/config_services.dart';
 import 'package:app/localizations.dart';
 import 'package:app/logic/sign_in_with.dart';
@@ -16,7 +15,6 @@ import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:sign_in_with_apple/sign_in_with_apple.dart';
 import 'package:url_launcher/url_launcher_string.dart';
-import 'package:video_player/video_player.dart';
 
 const SIGN_IN_BUTTON_HEIGHT = 50.0;
 
@@ -211,21 +209,6 @@ Widget logoAndAppNameAndSlogan(BuildContext context) {
   );
 }
 
-/// Video instruction URLs for the iOS PWA installation guide.
-class IosPwaInstallVideoInstructionUrls {
-  final String ios18LightTheme;
-  final String ios18DarkTheme;
-  final String ios26LightTheme;
-  final String ios26DarkTheme;
-
-  const IosPwaInstallVideoInstructionUrls({
-    required this.ios18LightTheme,
-    required this.ios18DarkTheme,
-    required this.ios26LightTheme,
-    required this.ios26DarkTheme,
-  });
-}
-
 class IosPwaInstallationGuide extends StatefulWidget {
   const IosPwaInstallationGuide({super.key});
 
@@ -234,13 +217,9 @@ class IosPwaInstallationGuide extends StatefulWidget {
 }
 
 class _IosPwaInstallationGuideState extends State<IosPwaInstallationGuide> {
-  final _videoInstructions = IOS_PWA_INSTALL_VIDEO_INSTRUCTION_URLS;
-  bool _videoInstructionsVisible = true;
-
   @override
   Widget build(BuildContext context) {
     final ios26OrNewer = isIos26OrNewer();
-    final videoInstructions = _videoInstructions;
 
     return Column(
       children: [
@@ -256,50 +235,14 @@ class _IosPwaInstallationGuideState extends State<IosPwaInstallationGuide> {
                 context.strings.login_screen_ios_pwa_install_description,
                 style: Theme.of(context).textTheme.bodyLarge,
               ),
-              if (videoInstructions != null) ...[
-                const SizedBox(height: 8),
-                TextButton.icon(
-                  onPressed: () {
-                    setState(() {
-                      _videoInstructionsVisible = !_videoInstructionsVisible;
-                    });
-                  },
-                  icon: Icon(
-                    _videoInstructionsVisible ? Icons.text_fields : Icons.play_circle_outline,
-                  ),
-                  label: Text(
-                    _videoInstructionsVisible
-                        ? context.strings.login_screen_ios_pwa_install_text_instructions_button
-                        : context.strings.login_screen_ios_pwa_install_video_instructions_button,
-                  ),
-                ),
-                const SizedBox(height: 8),
-                if (_videoInstructionsVisible)
-                  _videoInstructionsWidget(context, videoInstructions)
-                else
-                  _textInstructions(context, ios26OrNewer),
-              ] else ...[
-                const SizedBox(height: 24),
-                _textInstructions(context, ios26OrNewer),
-              ],
+              const SizedBox(height: 24),
+              _textInstructions(context, ios26OrNewer),
             ],
           ),
         ),
         const Spacer(flex: 7),
       ],
     );
-  }
-
-  Widget _videoInstructionsWidget(
-    BuildContext context,
-    IosPwaInstallVideoInstructionUrls videoInstructions,
-  ) {
-    final isDark = Theme.of(context).brightness == Brightness.dark;
-    final url = isIos26OrNewer()
-        ? (isDark ? videoInstructions.ios26DarkTheme : videoInstructions.ios26LightTheme)
-        : (isDark ? videoInstructions.ios18DarkTheme : videoInstructions.ios18LightTheme);
-
-    return _AutoplayVideo(url: url);
   }
 
   Widget _textInstructions(BuildContext context, bool ios26OrNewer) {
@@ -330,51 +273,6 @@ class _IosPwaInstallationGuideState extends State<IosPwaInstallationGuide> {
         const SizedBox(height: 12),
         _installStep(context, context.strings.login_screen_ios_pwa_install_step4),
       ],
-    );
-  }
-}
-
-class _AutoplayVideo extends StatefulWidget {
-  final String url;
-
-  const _AutoplayVideo({required this.url});
-
-  @override
-  State<_AutoplayVideo> createState() => _AutoplayVideoState();
-}
-
-class _AutoplayVideoState extends State<_AutoplayVideo> {
-  late VideoPlayerController _controller;
-
-  @override
-  void initState() {
-    super.initState();
-    _controller = VideoPlayerController.networkUrl(Uri.parse(widget.url));
-    _configureAndInitController();
-  }
-
-  Future<void> _configureAndInitController() async {
-    await _controller.setLooping(true);
-    if (!mounted) return;
-    await _controller.initialize();
-    if (!mounted) return;
-    setState(() {});
-    await _controller.play();
-  }
-
-  @override
-  void dispose() {
-    _controller.dispose();
-    super.dispose();
-  }
-
-  @override
-  Widget build(BuildContext context) {
-    return Center(
-      child: ConstrainedBox(
-        constraints: const BoxConstraints(maxHeight: 400),
-        child: AspectRatio(aspectRatio: 1, child: VideoPlayer(_controller)),
-      ),
     );
   }
 }

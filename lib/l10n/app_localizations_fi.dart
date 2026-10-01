@@ -1410,12 +1410,6 @@ class AppLocalizationsFi extends AppLocalizations {
   String get login_screen_ios_pwa_install_step4 => '4. Avaa sovellus Koti-valikosta';
 
   @override
-  String get login_screen_ios_pwa_install_text_instructions_button => 'Tekstiohjeet';
-
-  @override
-  String get login_screen_ios_pwa_install_video_instructions_button => 'Video-ohjeet';
-
-  @override
   String get login_screen_login_all_platforms_disabled =>
       'Kirjautuminen on tällä hetkellä pois käytöstä';
 
