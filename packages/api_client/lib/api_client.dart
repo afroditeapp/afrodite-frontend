@@ -325,6 +325,8 @@ class ApiClient {
           return AttributionConfig.fromJson(value);
         case 'AuthPair':
           return AuthPair.fromJson(value);
+        case 'AutomaticBanningConfig':
+          return AutomaticBanningConfig.fromJson(value);
         case 'AutomaticBanningDayCountConfig':
           return AutomaticBanningDayCountConfig.fromJson(value);
         case 'AutomaticBanningExpectedLlmResponsesConfig':

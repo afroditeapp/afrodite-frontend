@@ -111,6 +111,7 @@ part 'model/attribute_value.dart';
 part 'model/attribute_value_order_mode.dart';
 part 'model/attribution_config.dart';
 part 'model/auth_pair.dart';
+part 'model/automatic_banning_config.dart';
 part 'model/automatic_banning_day_count_config.dart';
 part 'model/automatic_banning_expected_llm_responses_config.dart';
 part 'model/automatic_profile_search_iterator_session_id.dart';

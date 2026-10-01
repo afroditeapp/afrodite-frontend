@@ -131,7 +131,7 @@ class ProfileAdminApi {
 
   /// Get profile age and name
   ///
-  /// # Access - Permission [model::Permissions::admin_edit_profile_name] - Permission [model::Permissions::admin_find_account_by_email_address] - Permission [model::Permissions::admin_view_permissions] - Permission [model::Permissions::admin_moderate_media_content] - Permission [model::Permissions::admin_moderate_profile_names] - Permission [model::Permissions::admin_moderate_profile_texts] - Permission [model::Permissions::admin_edit_profile_age_range_verified_value] - Permission [model::Permissions::admin_edit_profile_name_verified_value] - Permission [model::Permissions::admin_verify_account]
+  /// # Access  Admin bot required permissions: - Permission [model::Permissions::admin_verify_account]  Client required permissions: - Permission [model::Permissions::admin_edit_profile_name]  Required by both admin bot and client: - Permission [model::Permissions::admin_edit_profile_age_range_verified_value] - Permission [model::Permissions::admin_edit_profile_name_verified_value]
   ///
   /// Note: This method returns the HTTP [Response].
   ///
@@ -167,7 +167,7 @@ class ProfileAdminApi {
 
   /// Get profile age and name
   ///
-  /// # Access - Permission [model::Permissions::admin_edit_profile_name] - Permission [model::Permissions::admin_find_account_by_email_address] - Permission [model::Permissions::admin_view_permissions] - Permission [model::Permissions::admin_moderate_media_content] - Permission [model::Permissions::admin_moderate_profile_names] - Permission [model::Permissions::admin_moderate_profile_texts] - Permission [model::Permissions::admin_edit_profile_age_range_verified_value] - Permission [model::Permissions::admin_edit_profile_name_verified_value] - Permission [model::Permissions::admin_verify_account]
+  /// # Access  Admin bot required permissions: - Permission [model::Permissions::admin_verify_account]  Client required permissions: - Permission [model::Permissions::admin_edit_profile_name]  Required by both admin bot and client: - Permission [model::Permissions::admin_edit_profile_age_range_verified_value] - Permission [model::Permissions::admin_edit_profile_name_verified_value]
   ///
   /// Parameters:
   ///

@@ -17,6 +17,7 @@ class GetAccountBanTimeResult {
     this.bannedUntil,
     this.reasonCategory,
     this.reasonDetails,
+    this.reasonDetailsVisibleToUser = false,
   });
 
   ///
@@ -52,12 +53,15 @@ class GetAccountBanTimeResult {
   ///
   AccountBanReasonDetails? reasonDetails;
 
+  bool reasonDetailsVisibleToUser;
+
   @override
   bool operator ==(Object other) => identical(this, other) || other is GetAccountBanTimeResult &&
     other.adminType == adminType &&
     other.bannedUntil == bannedUntil &&
     other.reasonCategory == reasonCategory &&
-    other.reasonDetails == reasonDetails;
+    other.reasonDetails == reasonDetails &&
+    other.reasonDetailsVisibleToUser == reasonDetailsVisibleToUser;
 
   @override
   int get hashCode =>
@@ -65,10 +69,11 @@ class GetAccountBanTimeResult {
     (adminType == null ? 0 : adminType!.hashCode) +
     (bannedUntil == null ? 0 : bannedUntil!.hashCode) +
     (reasonCategory == null ? 0 : reasonCategory!.hashCode) +
-    (reasonDetails == null ? 0 : reasonDetails!.hashCode);
+    (reasonDetails == null ? 0 : reasonDetails!.hashCode) +
+    (reasonDetailsVisibleToUser.hashCode);
 
   @override
-  String toString() => 'GetAccountBanTimeResult[adminType=$adminType, bannedUntil=$bannedUntil, reasonCategory=$reasonCategory, reasonDetails=$reasonDetails]';
+  String toString() => 'GetAccountBanTimeResult[adminType=$adminType, bannedUntil=$bannedUntil, reasonCategory=$reasonCategory, reasonDetails=$reasonDetails, reasonDetailsVisibleToUser=$reasonDetailsVisibleToUser]';
 
   Map<String, dynamic> toJson() {
     final json = <String, dynamic>{};
@@ -92,6 +97,7 @@ class GetAccountBanTimeResult {
     } else {
       json[r'reason_details'] = null;
     }
+      json[r'reason_details_visible_to_user'] = this.reasonDetailsVisibleToUser;
     return json;
   }
 
@@ -114,6 +120,7 @@ class GetAccountBanTimeResult {
         bannedUntil: UnixTime.fromJson(json[r'banned_until']),
         reasonCategory: AccountBanReasonCategory.fromJson(json[r'reason_category']),
         reasonDetails: AccountBanReasonDetails.fromJson(json[r'reason_details']),
+        reasonDetailsVisibleToUser: mapValueOfType<bool>(json, r'reason_details_visible_to_user') ?? false,
       );
     }
     return null;

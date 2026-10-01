@@ -16,7 +16,7 @@ class EmailLoginToken {
     required this.token,
   });
 
-  /// Base64 URL safe without padding
+  /// Base64 URL safe without padding where `-` is encoded as `_a` and `_` as `_b`.
   String token;
 
   @override

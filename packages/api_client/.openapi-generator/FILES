@@ -93,6 +93,7 @@ lib/model/attribute_value.dart
 lib/model/attribute_value_order_mode.dart
 lib/model/attribution_config.dart
 lib/model/auth_pair.dart
+lib/model/automatic_banning_config.dart
 lib/model/automatic_banning_day_count_config.dart
 lib/model/automatic_banning_expected_llm_responses_config.dart
 lib/model/automatic_profile_search_iterator_session_id.dart

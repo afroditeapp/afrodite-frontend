@@ -17,6 +17,7 @@ class SetAccountBanState {
     this.banUntil,
     this.reasonCategory,
     this.reasonDetails,
+    this.reasonDetailsVisibleToUser = false,
   });
 
   AccountId account;
@@ -46,12 +47,15 @@ class SetAccountBanState {
   ///
   AccountBanReasonDetails? reasonDetails;
 
+  bool reasonDetailsVisibleToUser;
+
   @override
   bool operator ==(Object other) => identical(this, other) || other is SetAccountBanState &&
     other.account == account &&
     other.banUntil == banUntil &&
     other.reasonCategory == reasonCategory &&
-    other.reasonDetails == reasonDetails;
+    other.reasonDetails == reasonDetails &&
+    other.reasonDetailsVisibleToUser == reasonDetailsVisibleToUser;
 
   @override
   int get hashCode =>
@@ -59,10 +63,11 @@ class SetAccountBanState {
     (account.hashCode) +
     (banUntil == null ? 0 : banUntil!.hashCode) +
     (reasonCategory == null ? 0 : reasonCategory!.hashCode) +
-    (reasonDetails == null ? 0 : reasonDetails!.hashCode);
+    (reasonDetails == null ? 0 : reasonDetails!.hashCode) +
+    (reasonDetailsVisibleToUser.hashCode);
 
   @override
-  String toString() => 'SetAccountBanState[account=$account, banUntil=$banUntil, reasonCategory=$reasonCategory, reasonDetails=$reasonDetails]';
+  String toString() => 'SetAccountBanState[account=$account, banUntil=$banUntil, reasonCategory=$reasonCategory, reasonDetails=$reasonDetails, reasonDetailsVisibleToUser=$reasonDetailsVisibleToUser]';
 
   Map<String, dynamic> toJson() {
     final json = <String, dynamic>{};
@@ -82,6 +87,7 @@ class SetAccountBanState {
     } else {
       json[r'reason_details'] = null;
     }
+      json[r'reason_details_visible_to_user'] = this.reasonDetailsVisibleToUser;
     return json;
   }
 
@@ -106,6 +112,7 @@ class SetAccountBanState {
         banUntil: UnixTime.fromJson(json[r'ban_until']),
         reasonCategory: AccountBanReasonCategory.fromJson(json[r'reason_category']),
         reasonDetails: AccountBanReasonDetails.fromJson(json[r'reason_details']),
+        reasonDetailsVisibleToUser: mapValueOfType<bool>(json, r'reason_details_visible_to_user') ?? false,
       );
     }
     return null;

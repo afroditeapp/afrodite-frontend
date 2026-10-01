@@ -1064,7 +1064,7 @@ class AccountApi {
 
   /// Access demo account, which allows accessing all or specific accounts depending on the server configuration.
   ///
-  /// This API route has 1 second wait time to make password guessing harder. Account will be locked if the password is guessed. Server process restart will reset the lock.
+  /// This API route has 1 second wait time to make password guessing harder. Account will be locked after `demo_account_login_attempt_max_count` wrong attempts. Server process restart will reset the lock.
   ///
   /// Note: This method returns the HTTP [Response].
   ///
@@ -1099,7 +1099,7 @@ class AccountApi {
 
   /// Access demo account, which allows accessing all or specific accounts depending on the server configuration.
   ///
-  /// This API route has 1 second wait time to make password guessing harder. Account will be locked if the password is guessed. Server process restart will reset the lock.
+  /// This API route has 1 second wait time to make password guessing harder. Account will be locked after `demo_account_login_attempt_max_count` wrong attempts. Server process restart will reset the lock.
   ///
   /// Parameters:
   ///

@@ -13,14 +13,14 @@ part of openapi.api;
 class AdminBotReportProcessingProfileStringConfig {
   /// Returns a new [AdminBotReportProcessingProfileStringConfig] instance.
   AdminBotReportProcessingProfileStringConfig({
-    required this.automaticBanningDayCounts,
+    required this.automaticBanning,
     this.automaticBanningEnabled = false,
     required this.defaultAction,
     required this.llm,
     this.llmEnabled = false,
   });
 
-  AutomaticBanningDayCountConfig automaticBanningDayCounts;
+  AutomaticBanningConfig automaticBanning;
 
   bool automaticBanningEnabled;
 
@@ -32,7 +32,7 @@ class AdminBotReportProcessingProfileStringConfig {
 
   @override
   bool operator ==(Object other) => identical(this, other) || other is AdminBotReportProcessingProfileStringConfig &&
-    other.automaticBanningDayCounts == automaticBanningDayCounts &&
+    other.automaticBanning == automaticBanning &&
     other.automaticBanningEnabled == automaticBanningEnabled &&
     other.defaultAction == defaultAction &&
     other.llm == llm &&
@@ -41,18 +41,18 @@ class AdminBotReportProcessingProfileStringConfig {
   @override
   int get hashCode =>
     // ignore: unnecessary_parenthesis
-    (automaticBanningDayCounts.hashCode) +
+    (automaticBanning.hashCode) +
     (automaticBanningEnabled.hashCode) +
     (defaultAction.hashCode) +
     (llm.hashCode) +
     (llmEnabled.hashCode);
 
   @override
-  String toString() => 'AdminBotReportProcessingProfileStringConfig[automaticBanningDayCounts=$automaticBanningDayCounts, automaticBanningEnabled=$automaticBanningEnabled, defaultAction=$defaultAction, llm=$llm, llmEnabled=$llmEnabled]';
+  String toString() => 'AdminBotReportProcessingProfileStringConfig[automaticBanning=$automaticBanning, automaticBanningEnabled=$automaticBanningEnabled, defaultAction=$defaultAction, llm=$llm, llmEnabled=$llmEnabled]';
 
   Map<String, dynamic> toJson() {
     final json = <String, dynamic>{};
-      json[r'automatic_banning_day_counts'] = this.automaticBanningDayCounts;
+      json[r'automatic_banning'] = this.automaticBanning;
       json[r'automatic_banning_enabled'] = this.automaticBanningEnabled;
       json[r'default_action'] = this.defaultAction;
       json[r'llm'] = this.llm;
@@ -71,8 +71,8 @@ class AdminBotReportProcessingProfileStringConfig {
       // Note 1: the values aren't checked for validity beyond being non-null.
       // Note 2: this code is stripped in release mode!
       assert(() {
-        assert(json.containsKey(r'automatic_banning_day_counts'), 'Required key "AdminBotReportProcessingProfileStringConfig[automatic_banning_day_counts]" is missing from JSON.');
-        assert(json[r'automatic_banning_day_counts'] != null, 'Required key "AdminBotReportProcessingProfileStringConfig[automatic_banning_day_counts]" has a null value in JSON.');
+        assert(json.containsKey(r'automatic_banning'), 'Required key "AdminBotReportProcessingProfileStringConfig[automatic_banning]" is missing from JSON.');
+        assert(json[r'automatic_banning'] != null, 'Required key "AdminBotReportProcessingProfileStringConfig[automatic_banning]" has a null value in JSON.');
         assert(json.containsKey(r'default_action'), 'Required key "AdminBotReportProcessingProfileStringConfig[default_action]" is missing from JSON.');
         assert(json[r'default_action'] != null, 'Required key "AdminBotReportProcessingProfileStringConfig[default_action]" has a null value in JSON.');
         assert(json.containsKey(r'llm'), 'Required key "AdminBotReportProcessingProfileStringConfig[llm]" is missing from JSON.');
@@ -81,7 +81,7 @@ class AdminBotReportProcessingProfileStringConfig {
       }());
 
       return AdminBotReportProcessingProfileStringConfig(
-        automaticBanningDayCounts: AutomaticBanningDayCountConfig.fromJson(json[r'automatic_banning_day_counts'])!,
+        automaticBanning: AutomaticBanningConfig.fromJson(json[r'automatic_banning'])!,
         automaticBanningEnabled: mapValueOfType<bool>(json, r'automatic_banning_enabled') ?? false,
         defaultAction: AcceptOrReject.fromJson(json[r'default_action'])!,
         llm: AdminBotReportProcessingProfileStringLlmConfig.fromJson(json[r'llm'])!,
@@ -133,7 +133,7 @@ class AdminBotReportProcessingProfileStringConfig {
 
   /// The list of required keys that must be present in a JSON.
   static const requiredKeys = <String>{
-    'automatic_banning_day_counts',
+    'automatic_banning',
     'default_action',
     'llm',
   };
