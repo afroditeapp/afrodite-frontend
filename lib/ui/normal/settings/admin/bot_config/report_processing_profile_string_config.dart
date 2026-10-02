@@ -86,15 +86,15 @@ class _EditReportProcessingProfileStringConfigScreenState
           value: _config.automaticBanningEnabled,
           onChanged: (v) => setState(() => _config.automaticBanningEnabled = v),
         ),
-        if (_config.automaticBanningEnabled) hPad(_dayCountEditor()),
+        if (_config.automaticBanningEnabled) hPad(_banningConfigEditor()),
       ],
     );
   }
 
-  Widget _dayCountEditor() {
-    return dayCountEditor(
+  Widget _banningConfigEditor() {
+    return banningConfigEditor(
       context: context,
-      dayCounts: _config.automaticBanningDayCounts,
+      config: _config.automaticBanning,
       formKey: _formKey,
       setState: setState,
     );

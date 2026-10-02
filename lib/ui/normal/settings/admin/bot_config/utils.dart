@@ -1,13 +1,15 @@
 import 'package:flutter/material.dart';
 import 'package:openapi/api.dart';
 
-/// Builds low/medium/high day count text fields.
-Widget dayCountEditor({
+/// Builds the automatic banning config editor: low/medium/high day count
+/// text fields plus the two boolean options.
+Widget banningConfigEditor({
   required BuildContext context,
-  required AutomaticBanningDayCountConfig dayCounts,
+  required AutomaticBanningConfig config,
   required GlobalKey<FormState> formKey,
   required void Function(void Function()) setState,
 }) {
+  final dayCounts = config.dayCounts;
   return Column(
     crossAxisAlignment: CrossAxisAlignment.start,
     children: [
@@ -45,6 +47,17 @@ Widget dayCountEditor({
             formKey.currentState?.validate();
           });
         },
+      ),
+      const SizedBox(height: 8),
+      SwitchListTile(
+        title: const Text("Show ban reason details to user"),
+        value: config.reasonDetailsVisibleToUser,
+        onChanged: (v) => setState(() => config.reasonDetailsVisibleToUser = v),
+      ),
+      SwitchListTile(
+        title: const Text("Save LLM response as ban reason details"),
+        value: config.saveReasonDetails,
+        onChanged: (v) => setState(() => config.saveReasonDetails = v),
       ),
     ],
   );
