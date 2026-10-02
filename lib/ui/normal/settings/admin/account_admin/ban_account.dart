@@ -72,6 +72,7 @@ class _BanAccountScreenState extends State<BanAccountScreen> {
 
   int? selectedBanSeconds;
   int selectedBanReasonCategory = _banReasonCategoryEmpty;
+  bool banReasonDetailsVisibleToUser = false;
 
   Future<void> _getData() async {
     final result = await widget.api
@@ -152,6 +153,10 @@ class _BanAccountScreenState extends State<BanAccountScreen> {
           if (bannedUntil == null) hPad(const Text("Not banned")),
           if (banningReason != null) const Padding(padding: EdgeInsets.all(8.0)),
           if (banningReason != null) hPad(Text("Banning reason: $banningReason")),
+          if (banningReason != null)
+            hPad(
+              Text("Ban reason details visible to user: ${bannedInfo.reasonDetailsVisibleToUser}"),
+            ),
           const Padding(padding: EdgeInsets.all(8.0)),
           if (bannedUntil != null) hPad(unbanWidget(context)),
           if (bannedUntil == null) hPad(banWidget(context)),
@@ -202,6 +207,16 @@ class _BanAccountScreenState extends State<BanAccountScreen> {
           },
         ),
         const Padding(padding: EdgeInsets.all(8.0)),
+        CheckboxListTile(
+          value: banReasonDetailsVisibleToUser,
+          onChanged: (value) {
+            setState(() {
+              banReasonDetailsVisibleToUser = value ?? false;
+            });
+          },
+          title: const Text("Ban reason details visible to user"),
+        ),
+        const Padding(padding: EdgeInsets.all(8.0)),
         bannedUntilTimePreview(),
         const Padding(padding: EdgeInsets.all(8.0)),
         ElevatedButton(
@@ -232,6 +247,7 @@ class _BanAccountScreenState extends State<BanAccountScreen> {
                           banUntil: UtcDateTime.now().toUnixTime()..addSeconds(seconds),
                           reasonCategory: reasonCategory,
                           reasonDetails: banDetails,
+                          reasonDetailsVisibleToUser: banReasonDetailsVisibleToUser,
                         ),
                       ),
                     );
