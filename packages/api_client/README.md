@@ -234,6 +234,7 @@ Class | Method | HTTP request | Description
 *CommonAdminApi* | [**postScheduleTask**](doc//CommonAdminApi.md#postscheduletask) | **POST** /common_api/schedule_task | Schedule task.
 *CommonAdminApi* | [**postTriggerServerDataReset**](doc//CommonAdminApi.md#posttriggerserverdatareset) | **POST** /common_api/trigger_server_data_reset | Trigger server data reset.
 *CommonAdminApi* | [**postTriggerServerRestart**](doc//CommonAdminApi.md#posttriggerserverrestart) | **POST** /common_api/trigger_server_restart | Trigger server restart.
+*CommonAdminApi* | [**postTriggerServerShutdown**](doc//CommonAdminApi.md#posttriggerservershutdown) | **POST** /common_api/trigger_server_shutdown | Trigger server shutdown.
 *CommonAdminApi* | [**postTriggerSoftwareUpdateDownload**](doc//CommonAdminApi.md#posttriggersoftwareupdatedownload) | **POST** /common_api/trigger_software_update_download | Trigger software update download.
 *CommonAdminApi* | [**postTriggerSoftwareUpdateInstall**](doc//CommonAdminApi.md#posttriggersoftwareupdateinstall) | **POST** /common_api/trigger_software_update_install | Trigger software update install.
 *CommonAdminApi* | [**postTriggerSystemReboot**](doc//CommonAdminApi.md#posttriggersystemreboot) | **POST** /common_api/trigger_system_reboot | Trigger system reboot.

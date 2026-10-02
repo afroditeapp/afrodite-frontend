@@ -1417,6 +1417,57 @@ class CommonAdminApi {
     }
   }
 
+  /// Trigger server shutdown.
+  ///
+  /// # Access * Permission [model::Permissions::admin_server_shutdown]
+  ///
+  /// Note: This method returns the HTTP [Response].
+  ///
+  /// Parameters:
+  ///
+  /// * [String] managerName (required):
+  Future<Response> postTriggerServerShutdownWithHttpInfo(String managerName, { Future<void>? abortTrigger, }) async {
+    // ignore: prefer_const_declarations
+    final path = r'/common_api/trigger_server_shutdown';
+
+    // ignore: prefer_final_locals
+    Object? postBody;
+
+    final queryParams = <QueryParam>[];
+    final headerParams = <String, String>{};
+    final formParams = <String, String>{};
+
+      queryParams.addAll(_queryParams('', 'manager_name', managerName));
+
+    const contentTypes = <String>[];
+
+
+    return apiClient.invokeAPI(
+      path,
+      'POST',
+      queryParams,
+      postBody,
+      headerParams,
+      formParams,
+      contentTypes.isEmpty ? null : contentTypes.first,
+      abortTrigger: abortTrigger,
+    );
+  }
+
+  /// Trigger server shutdown.
+  ///
+  /// # Access * Permission [model::Permissions::admin_server_shutdown]
+  ///
+  /// Parameters:
+  ///
+  /// * [String] managerName (required):
+  Future<void> postTriggerServerShutdown(String managerName, { Future<void>? abortTrigger, }) async {
+    final response = await postTriggerServerShutdownWithHttpInfo(managerName, abortTrigger: abortTrigger,);
+    if (response.statusCode >= HttpStatus.badRequest) {
+      throw ApiException(response.statusCode, await _decodeBodyBytes(response));
+    }
+  }
+
   /// Trigger software update download.
   ///
   /// # Access * Permission [model::Permissions::admin_server_software_update]
