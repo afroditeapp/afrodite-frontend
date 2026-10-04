@@ -472,11 +472,18 @@ class LoginRepository extends AppSingleton {
       return Err(CseOtherError());
     }
 
-    return await _completeLoginWithAppAttestation(verifyAppAttestationToken);
+    final aid = loginResult.aid;
+    if (aid == null) {
+      _log.error("LoginPhaseOneResult doesn't contain account ID");
+      return Err(CseOtherError());
+    }
+
+    return await _completeLoginWithAppAttestation(verifyAppAttestationToken, aid);
   }
 
   Future<Result<(), CommonSignInError>> _completeLoginWithAppAttestation(
     VerifyAppAttestationToken verifyAppAttestationToken,
+    AccountId aid,
   ) async {
     final appAttestationResult = await _getAppAttestationForLogin(verifyAppAttestationToken);
     final AppAttestation? appAttestation;
@@ -502,7 +509,7 @@ class LoginRepository extends AppSingleton {
       return Err(CseLoginApiRequestFailed());
     }
 
-    return await _handleLoginPhaseTwoResult(loginResult);
+    return await _handleLoginPhaseTwoResult(loginResult, aid);
   }
 
   Future<Result<AppAttestation?, CommonSignInError>> _getAppAttestationForLogin(
@@ -559,6 +566,7 @@ class LoginRepository extends AppSingleton {
 
   Future<Result<(), CommonSignInError>> _handleLoginPhaseTwoResult(
     LoginPhaseTwoResult loginResult,
+    AccountId aid,
   ) async {
     if (loginResult.errorAccountLocked) {
       return Err(CseAccountLocked());
@@ -578,9 +586,8 @@ class LoginRepository extends AppSingleton {
     if (loginResult.error) {
       return Err(CseOtherError());
     }
-    final aid = loginResult.aid;
     final authPair = loginResult.tokens;
-    if (aid == null || authPair == null) {
+    if (authPair == null) {
       _log.error("LoginPhaseTwoResult doesn't contain required info");
       return Err(CseOtherError());
     }

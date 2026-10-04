@@ -13,6 +13,7 @@ part of openapi.api;
 /// App attestation method used in the last login session.
 enum AppAttestationTypeNumber {
   playIntegrity._(r'PlayIntegrity'),
+  appleAppAttest._(r'AppleAppAttest'),
   unknownDefaultOpenApi._(r'unknown_default_open_api'),
   ;
 
@@ -74,6 +75,7 @@ class AppAttestationTypeNumberTypeTransformer {
     if (data != null) {
       switch (data) {
         case r'PlayIntegrity': return AppAttestationTypeNumber.playIntegrity;
+        case r'AppleAppAttest': return AppAttestationTypeNumber.appleAppAttest;
         case r'unknown_default_open_api': return AppAttestationTypeNumber.unknownDefaultOpenApi;
         default:
           if (!allowNull) {

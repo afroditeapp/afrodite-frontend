@@ -81,6 +81,7 @@ lib/model/api_usage_count.dart
 lib/model/api_usage_statistics.dart
 lib/model/app_attestation.dart
 lib/model/app_attestation_type_number.dart
+lib/model/apple_app_attest.dart
 lib/model/association_config.dart
 lib/model/association_member.dart
 lib/model/association_members_page.dart

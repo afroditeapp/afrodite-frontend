@@ -13,7 +13,6 @@ part of openapi.api;
 class LoginPhaseTwoResult {
   /// Returns a new [LoginPhaseTwoResult] instance.
   LoginPhaseTwoResult({
-    this.aid,
     this.email,
     this.error = false,
     this.errorAccountLocked = false,
@@ -21,17 +20,9 @@ class LoginPhaseTwoResult {
     this.errorAppAttestationDeviceIntegrity = false,
     this.errorAppAttestationFailed = false,
     this.errorInvalidVerifyAppAttestationToken = false,
+    this.errorPlayIntegrityLimitReached = false,
     this.tokens,
   });
-
-  /// Account ID of current account. If `None`, the client is unsupported.
-  ///
-  /// Please note: This property should have been non-nullable! Since the specification file
-  /// does not include a default value (using the "default:" property), however, the generated
-  /// source code must fall back to having a nullable type.
-  /// Consider adding a "default:" property in the specification file to hide this note.
-  ///
-  AccountId? aid;
 
   /// Current email of current account. If `None`, if email address is not set or the client version is unsupported.
   ///
@@ -54,6 +45,9 @@ class LoginPhaseTwoResult {
 
   bool errorInvalidVerifyAppAttestationToken;
 
+  /// The daily Play Integrity API verification limit was reached. Limits reset when scheduled tasks will run, so it is safe to show \"try again after 24 hours\" text to user.
+  bool errorPlayIntegrityLimitReached;
+
   /// If `None`, the client is unsupported.
   ///
   /// Please note: This property should have been non-nullable! Since the specification file
@@ -65,7 +59,6 @@ class LoginPhaseTwoResult {
 
   @override
   bool operator ==(Object other) => identical(this, other) || other is LoginPhaseTwoResult &&
-    other.aid == aid &&
     other.email == email &&
     other.error == error &&
     other.errorAccountLocked == errorAccountLocked &&
@@ -73,12 +66,12 @@ class LoginPhaseTwoResult {
     other.errorAppAttestationDeviceIntegrity == errorAppAttestationDeviceIntegrity &&
     other.errorAppAttestationFailed == errorAppAttestationFailed &&
     other.errorInvalidVerifyAppAttestationToken == errorInvalidVerifyAppAttestationToken &&
+    other.errorPlayIntegrityLimitReached == errorPlayIntegrityLimitReached &&
     other.tokens == tokens;
 
   @override
   int get hashCode =>
     // ignore: unnecessary_parenthesis
-    (aid == null ? 0 : aid!.hashCode) +
     (email == null ? 0 : email!.hashCode) +
     (error.hashCode) +
     (errorAccountLocked.hashCode) +
@@ -86,18 +79,14 @@ class LoginPhaseTwoResult {
     (errorAppAttestationDeviceIntegrity.hashCode) +
     (errorAppAttestationFailed.hashCode) +
     (errorInvalidVerifyAppAttestationToken.hashCode) +
+    (errorPlayIntegrityLimitReached.hashCode) +
     (tokens == null ? 0 : tokens!.hashCode);
 
   @override
-  String toString() => 'LoginPhaseTwoResult[aid=$aid, email=$email, error=$error, errorAccountLocked=$errorAccountLocked, errorAppAttestationAppIntegrity=$errorAppAttestationAppIntegrity, errorAppAttestationDeviceIntegrity=$errorAppAttestationDeviceIntegrity, errorAppAttestationFailed=$errorAppAttestationFailed, errorInvalidVerifyAppAttestationToken=$errorInvalidVerifyAppAttestationToken, tokens=$tokens]';
+  String toString() => 'LoginPhaseTwoResult[email=$email, error=$error, errorAccountLocked=$errorAccountLocked, errorAppAttestationAppIntegrity=$errorAppAttestationAppIntegrity, errorAppAttestationDeviceIntegrity=$errorAppAttestationDeviceIntegrity, errorAppAttestationFailed=$errorAppAttestationFailed, errorInvalidVerifyAppAttestationToken=$errorInvalidVerifyAppAttestationToken, errorPlayIntegrityLimitReached=$errorPlayIntegrityLimitReached, tokens=$tokens]';
 
   Map<String, dynamic> toJson() {
     final json = <String, dynamic>{};
-    if (this.aid != null) {
-      json[r'aid'] = this.aid;
-    } else {
-      json[r'aid'] = null;
-    }
     if (this.email != null) {
       json[r'email'] = this.email;
     } else {
@@ -109,6 +98,7 @@ class LoginPhaseTwoResult {
       json[r'error_app_attestation_device_integrity'] = this.errorAppAttestationDeviceIntegrity;
       json[r'error_app_attestation_failed'] = this.errorAppAttestationFailed;
       json[r'error_invalid_verify_app_attestation_token'] = this.errorInvalidVerifyAppAttestationToken;
+      json[r'error_play_integrity_limit_reached'] = this.errorPlayIntegrityLimitReached;
     if (this.tokens != null) {
       json[r'tokens'] = this.tokens;
     } else {
@@ -132,7 +122,6 @@ class LoginPhaseTwoResult {
       }());
 
       return LoginPhaseTwoResult(
-        aid: AccountId.fromJson(json[r'aid']),
         email: mapValueOfType<String>(json, r'email'),
         error: mapValueOfType<bool>(json, r'error') ?? false,
         errorAccountLocked: mapValueOfType<bool>(json, r'error_account_locked') ?? false,
@@ -140,6 +129,7 @@ class LoginPhaseTwoResult {
         errorAppAttestationDeviceIntegrity: mapValueOfType<bool>(json, r'error_app_attestation_device_integrity') ?? false,
         errorAppAttestationFailed: mapValueOfType<bool>(json, r'error_app_attestation_failed') ?? false,
         errorInvalidVerifyAppAttestationToken: mapValueOfType<bool>(json, r'error_invalid_verify_app_attestation_token') ?? false,
+        errorPlayIntegrityLimitReached: mapValueOfType<bool>(json, r'error_play_integrity_limit_reached') ?? false,
         tokens: AuthPair.fromJson(json[r'tokens']),
       );
     }

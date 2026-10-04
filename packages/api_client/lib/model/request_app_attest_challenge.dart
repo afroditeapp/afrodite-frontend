@@ -13,25 +13,42 @@ part of openapi.api;
 class RequestAppAttestChallenge {
   /// Returns a new [RequestAppAttestChallenge] instance.
   RequestAppAttestChallenge({
+    this.appleAppAttestKeyId,
     required this.token,
   });
+
+  /// Base64-encoded Apple App Attest key identifier to check if the server already has the key stored. When set, the response contains [RequestAppAttestChallengeResult::apple_app_attest_key_exists].
+  ///
+  /// Please note: This property should have been non-nullable! Since the specification file
+  /// does not include a default value (using the "default:" property), however, the generated
+  /// source code must fall back to having a nullable type.
+  /// Consider adding a "default:" property in the specification file to hide this note.
+  ///
+  String? appleAppAttestKeyId;
 
   VerifyAppAttestationToken token;
 
   @override
   bool operator ==(Object other) => identical(this, other) || other is RequestAppAttestChallenge &&
+    other.appleAppAttestKeyId == appleAppAttestKeyId &&
     other.token == token;
 
   @override
   int get hashCode =>
     // ignore: unnecessary_parenthesis
+    (appleAppAttestKeyId == null ? 0 : appleAppAttestKeyId!.hashCode) +
     (token.hashCode);
 
   @override
-  String toString() => 'RequestAppAttestChallenge[token=$token]';
+  String toString() => 'RequestAppAttestChallenge[appleAppAttestKeyId=$appleAppAttestKeyId, token=$token]';
 
   Map<String, dynamic> toJson() {
     final json = <String, dynamic>{};
+    if (this.appleAppAttestKeyId != null) {
+      json[r'apple_app_attest_key_id'] = this.appleAppAttestKeyId;
+    } else {
+      json[r'apple_app_attest_key_id'] = null;
+    }
       json[r'token'] = this.token;
     return json;
   }
@@ -53,6 +70,7 @@ class RequestAppAttestChallenge {
       }());
 
       return RequestAppAttestChallenge(
+        appleAppAttestKeyId: mapValueOfType<String>(json, r'apple_app_attest_key_id'),
         token: VerifyAppAttestationToken.fromJson(json[r'token'])!,
       );
     }

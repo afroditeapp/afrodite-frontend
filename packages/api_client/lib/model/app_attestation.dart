@@ -13,8 +13,17 @@ part of openapi.api;
 class AppAttestation {
   /// Returns a new [AppAttestation] instance.
   AppAttestation({
+    this.appleAppAttest,
     this.playIntegrity,
   });
+
+  ///
+  /// Please note: This property should have been non-nullable! Since the specification file
+  /// does not include a default value (using the "default:" property), however, the generated
+  /// source code must fall back to having a nullable type.
+  /// Consider adding a "default:" property in the specification file to hide this note.
+  ///
+  AppleAppAttest? appleAppAttest;
 
   ///
   /// Please note: This property should have been non-nullable! Since the specification file
@@ -26,18 +35,25 @@ class AppAttestation {
 
   @override
   bool operator ==(Object other) => identical(this, other) || other is AppAttestation &&
+    other.appleAppAttest == appleAppAttest &&
     other.playIntegrity == playIntegrity;
 
   @override
   int get hashCode =>
     // ignore: unnecessary_parenthesis
+    (appleAppAttest == null ? 0 : appleAppAttest!.hashCode) +
     (playIntegrity == null ? 0 : playIntegrity!.hashCode);
 
   @override
-  String toString() => 'AppAttestation[playIntegrity=$playIntegrity]';
+  String toString() => 'AppAttestation[appleAppAttest=$appleAppAttest, playIntegrity=$playIntegrity]';
 
   Map<String, dynamic> toJson() {
     final json = <String, dynamic>{};
+    if (this.appleAppAttest != null) {
+      json[r'apple_app_attest'] = this.appleAppAttest;
+    } else {
+      json[r'apple_app_attest'] = null;
+    }
     if (this.playIntegrity != null) {
       json[r'play_integrity'] = this.playIntegrity;
     } else {
@@ -61,6 +77,7 @@ class AppAttestation {
       }());
 
       return AppAttestation(
+        appleAppAttest: AppleAppAttest.fromJson(json[r'apple_app_attest']),
         playIntegrity: PlayIntegrityAppAttestation.fromJson(json[r'play_integrity']),
       );
     }

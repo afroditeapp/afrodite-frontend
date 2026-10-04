@@ -13,6 +13,7 @@ part of openapi.api;
 class LoginPhaseOneResult {
   /// Returns a new [LoginPhaseOneResult] instance.
   LoginPhaseOneResult({
+    this.aid,
     this.error = false,
     this.errorEmailAlreadyUsed = false,
     this.errorInvalidEmailLoginToken = false,
@@ -24,6 +25,15 @@ class LoginPhaseOneResult {
     this.errorUnsupportedClient = false,
     this.verifyAppAttestationToken,
   });
+
+  /// Account ID of current account. If `None`, the client is unsupported.
+  ///
+  /// Please note: This property should have been non-nullable! Since the specification file
+  /// does not include a default value (using the "default:" property), however, the generated
+  /// source code must fall back to having a nullable type.
+  /// Consider adding a "default:" property in the specification file to hide this note.
+  ///
+  AccountId? aid;
 
   bool error;
 
@@ -55,6 +65,7 @@ class LoginPhaseOneResult {
 
   @override
   bool operator ==(Object other) => identical(this, other) || other is LoginPhaseOneResult &&
+    other.aid == aid &&
     other.error == error &&
     other.errorEmailAlreadyUsed == errorEmailAlreadyUsed &&
     other.errorInvalidEmailLoginToken == errorInvalidEmailLoginToken &&
@@ -69,6 +80,7 @@ class LoginPhaseOneResult {
   @override
   int get hashCode =>
     // ignore: unnecessary_parenthesis
+    (aid == null ? 0 : aid!.hashCode) +
     (error.hashCode) +
     (errorEmailAlreadyUsed.hashCode) +
     (errorInvalidEmailLoginToken.hashCode) +
@@ -81,10 +93,15 @@ class LoginPhaseOneResult {
     (verifyAppAttestationToken == null ? 0 : verifyAppAttestationToken!.hashCode);
 
   @override
-  String toString() => 'LoginPhaseOneResult[error=$error, errorEmailAlreadyUsed=$errorEmailAlreadyUsed, errorInvalidEmailLoginToken=$errorInvalidEmailLoginToken, errorLoginAllPlatformsDisabled=$errorLoginAllPlatformsDisabled, errorLoginPlatformDisabled=$errorLoginPlatformDisabled, errorRegistrationAllPlatformsDisabled=$errorRegistrationAllPlatformsDisabled, errorRegistrationPlatformDisabled=$errorRegistrationPlatformDisabled, errorSignInWithEmailUnverified=$errorSignInWithEmailUnverified, errorUnsupportedClient=$errorUnsupportedClient, verifyAppAttestationToken=$verifyAppAttestationToken]';
+  String toString() => 'LoginPhaseOneResult[aid=$aid, error=$error, errorEmailAlreadyUsed=$errorEmailAlreadyUsed, errorInvalidEmailLoginToken=$errorInvalidEmailLoginToken, errorLoginAllPlatformsDisabled=$errorLoginAllPlatformsDisabled, errorLoginPlatformDisabled=$errorLoginPlatformDisabled, errorRegistrationAllPlatformsDisabled=$errorRegistrationAllPlatformsDisabled, errorRegistrationPlatformDisabled=$errorRegistrationPlatformDisabled, errorSignInWithEmailUnverified=$errorSignInWithEmailUnverified, errorUnsupportedClient=$errorUnsupportedClient, verifyAppAttestationToken=$verifyAppAttestationToken]';
 
   Map<String, dynamic> toJson() {
     final json = <String, dynamic>{};
+    if (this.aid != null) {
+      json[r'aid'] = this.aid;
+    } else {
+      json[r'aid'] = null;
+    }
       json[r'error'] = this.error;
       json[r'error_email_already_used'] = this.errorEmailAlreadyUsed;
       json[r'error_invalid_email_login_token'] = this.errorInvalidEmailLoginToken;
@@ -117,6 +134,7 @@ class LoginPhaseOneResult {
       }());
 
       return LoginPhaseOneResult(
+        aid: AccountId.fromJson(json[r'aid']),
         error: mapValueOfType<bool>(json, r'error') ?? false,
         errorEmailAlreadyUsed: mapValueOfType<bool>(json, r'error_email_already_used') ?? false,
         errorInvalidEmailLoginToken: mapValueOfType<bool>(json, r'error_invalid_email_login_token') ?? false,

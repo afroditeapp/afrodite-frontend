@@ -301,6 +301,8 @@ class ApiClient {
           return AppAttestation.fromJson(value);
         case 'AppAttestationTypeNumber':
           return AppAttestationTypeNumberTypeTransformer().decode(value);
+        case 'AppleAppAttest':
+          return AppleAppAttest.fromJson(value);
         case 'AssociationConfig':
           return AssociationConfig.fromJson(value);
         case 'AssociationMember':

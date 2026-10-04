@@ -13,10 +13,20 @@ part of openapi.api;
 class RequestAppAttestChallengeResult {
   /// Returns a new [RequestAppAttestChallengeResult] instance.
   RequestAppAttestChallengeResult({
+    this.appleAppAttestKeyExists,
     this.challenge,
     this.error = false,
     this.errorInvalidVerifyAppAttestationToken = false,
   });
+
+  /// Whether the Apple App Attest key id from the request exists on the server. `None` when the request did not contain a key id.
+  ///
+  /// Please note: This property should have been non-nullable! Since the specification file
+  /// does not include a default value (using the "default:" property), however, the generated
+  /// source code must fall back to having a nullable type.
+  /// Consider adding a "default:" property in the specification file to hide this note.
+  ///
+  bool? appleAppAttestKeyExists;
 
   ///
   /// Please note: This property should have been non-nullable! Since the specification file
@@ -32,6 +42,7 @@ class RequestAppAttestChallengeResult {
 
   @override
   bool operator ==(Object other) => identical(this, other) || other is RequestAppAttestChallengeResult &&
+    other.appleAppAttestKeyExists == appleAppAttestKeyExists &&
     other.challenge == challenge &&
     other.error == error &&
     other.errorInvalidVerifyAppAttestationToken == errorInvalidVerifyAppAttestationToken;
@@ -39,15 +50,21 @@ class RequestAppAttestChallengeResult {
   @override
   int get hashCode =>
     // ignore: unnecessary_parenthesis
+    (appleAppAttestKeyExists == null ? 0 : appleAppAttestKeyExists!.hashCode) +
     (challenge == null ? 0 : challenge!.hashCode) +
     (error.hashCode) +
     (errorInvalidVerifyAppAttestationToken.hashCode);
 
   @override
-  String toString() => 'RequestAppAttestChallengeResult[challenge=$challenge, error=$error, errorInvalidVerifyAppAttestationToken=$errorInvalidVerifyAppAttestationToken]';
+  String toString() => 'RequestAppAttestChallengeResult[appleAppAttestKeyExists=$appleAppAttestKeyExists, challenge=$challenge, error=$error, errorInvalidVerifyAppAttestationToken=$errorInvalidVerifyAppAttestationToken]';
 
   Map<String, dynamic> toJson() {
     final json = <String, dynamic>{};
+    if (this.appleAppAttestKeyExists != null) {
+      json[r'apple_app_attest_key_exists'] = this.appleAppAttestKeyExists;
+    } else {
+      json[r'apple_app_attest_key_exists'] = null;
+    }
     if (this.challenge != null) {
       json[r'challenge'] = this.challenge;
     } else {
@@ -73,6 +90,7 @@ class RequestAppAttestChallengeResult {
       }());
 
       return RequestAppAttestChallengeResult(
+        appleAppAttestKeyExists: mapValueOfType<bool>(json, r'apple_app_attest_key_exists'),
         challenge: mapValueOfType<String>(json, r'challenge'),
         error: mapValueOfType<bool>(json, r'error') ?? false,
         errorInvalidVerifyAppAttestationToken: mapValueOfType<bool>(json, r'error_invalid_verify_app_attestation_token') ?? false,

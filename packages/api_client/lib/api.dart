@@ -99,6 +99,7 @@ part 'model/api_usage_count.dart';
 part 'model/api_usage_statistics.dart';
 part 'model/app_attestation.dart';
 part 'model/app_attestation_type_number.dart';
+part 'model/apple_app_attest.dart';
 part 'model/association_config.dart';
 part 'model/association_member.dart';
 part 'model/association_members_page.dart';
