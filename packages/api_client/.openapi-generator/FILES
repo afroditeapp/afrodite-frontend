@@ -243,6 +243,8 @@ lib/model/latest_seen_message_info_list.dart
 lib/model/likes_config.dart
 lib/model/limited_action_status.dart
 lib/model/location.dart
+lib/model/login_phase_one_result.dart
+lib/model/login_phase_two_result.dart
 lib/model/login_result.dart
 lib/model/login_session_info.dart
 lib/model/maintenance_task.dart
@@ -397,6 +399,8 @@ lib/model/report_iterator_query.dart
 lib/model/report_processing_state.dart
 lib/model/report_queue_type.dart
 lib/model/report_type.dart
+lib/model/request_app_attest_challenge.dart
+lib/model/request_app_attest_challenge_result.dart
 lib/model/request_email_login_token.dart
 lib/model/request_email_login_token_result.dart
 lib/model/reset_news_iterator_result.dart
@@ -458,3 +462,5 @@ lib/model/update_profile_text_report.dart
 lib/model/update_report_result.dart
 lib/model/vapid_public_key.dart
 lib/model/verification_method.dart
+lib/model/verify_app_attestation_login.dart
+lib/model/verify_app_attestation_token.dart

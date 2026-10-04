@@ -114,6 +114,8 @@ String signInErrorToString(CommonSignInError error) {
       return R.strings.login_screen_app_attestation_device_integrity_error;
     case CseAppAttestationFailed():
       return R.strings.login_screen_app_attestation_failed;
+    case CseInvalidVerifyAppAttestationToken():
+      return R.strings.login_screen_invalid_verify_app_attestation_token;
     case CseInvalidEmailLoginToken():
       return R.strings.login_screen_invalid_email_login_token;
     case CseCreatingConnectingWebSocketFailed():

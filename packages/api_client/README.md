@@ -98,12 +98,14 @@ Class | Method | HTTP request | Description
 *AccountApi* | [**postInitEmailChange**](doc//AccountApi.md#postinitemailchange) | **POST** /account_api/init_email_change | Initiate email change process by providing a new email address.
 *AccountApi* | [**postInitialEmail**](doc//AccountApi.md#postinitialemail) | **POST** /account_api/initial_email | Set initial email address for bots and accounts owned by demo account when initial setup is ongoing.
 *AccountApi* | [**postLogout**](doc//AccountApi.md#postlogout) | **POST** /account_api/logout | 
+*AccountApi* | [**postRequestAppAttestChallenge**](doc//AccountApi.md#postrequestappattestchallenge) | **POST** /account_api/request_app_attest_challenge | Request a random string for app attestation token.
 *AccountApi* | [**postRequestEmailLoginToken**](doc//AccountApi.md#postrequestemaillogintoken) | **POST** /account_api/request_email_login_token | Request email login token to be sent via email.
 *AccountApi* | [**postResetNewsPaging**](doc//AccountApi.md#postresetnewspaging) | **POST** /account_api/reset_news_paging | 
 *AccountApi* | [**postSendVerifyEmailMessage**](doc//AccountApi.md#postsendverifyemailmessage) | **POST** /account_api/send_verify_email_message | 
 *AccountApi* | [**postSetAccountDeletionRequestState**](doc//AccountApi.md#postsetaccountdeletionrequeststate) | **POST** /account_api/set_account_deletion_request_state/{aid} | Request account deletion or cancel the deletion
 *AccountApi* | [**postSetEmailLoginEnabled**](doc//AccountApi.md#postsetemailloginenabled) | **POST** /account_api/set_email_login_enabled | Enable or disable email login for an account.
 *AccountApi* | [**postSignInWithLogin**](doc//AccountApi.md#postsigninwithlogin) | **POST** /account_api/sign_in_with_login | Start new session with sign in with Apple or Google.
+*AccountApi* | [**postVerifyAppAttestation**](doc//AccountApi.md#postverifyappattestation) | **POST** /account_api/verify_app_attestation | Complete a pending login by verifying app attestation.
 *AccountApi* | [**postVerifyEmail**](doc//AccountApi.md#postverifyemail) | **POST** /verify_email | Verify email address using the token from the form submission.
 *AccountApi* | [**postVerifyNewEmail**](doc//AccountApi.md#postverifynewemail) | **POST** /verify_new_email | Verify new email address using the token from the form submission.
 *AccountApi* | [**putSettingProfileVisibility**](doc//AccountApi.md#putsettingprofilevisibility) | **PUT** /account_api/settings/profile_visibility | Update current profile visibility value.
@@ -531,6 +533,8 @@ Class | Method | HTTP request | Description
  - [LikesConfig](doc//LikesConfig.md)
  - [LimitedActionStatus](doc//LimitedActionStatus.md)
  - [Location](doc//Location.md)
+ - [LoginPhaseOneResult](doc//LoginPhaseOneResult.md)
+ - [LoginPhaseTwoResult](doc//LoginPhaseTwoResult.md)
  - [LoginResult](doc//LoginResult.md)
  - [LoginSessionInfo](doc//LoginSessionInfo.md)
  - [MaintenanceTask](doc//MaintenanceTask.md)
@@ -685,6 +689,8 @@ Class | Method | HTTP request | Description
  - [ReportProcessingState](doc//ReportProcessingState.md)
  - [ReportQueueType](doc//ReportQueueType.md)
  - [ReportType](doc//ReportType.md)
+ - [RequestAppAttestChallenge](doc//RequestAppAttestChallenge.md)
+ - [RequestAppAttestChallengeResult](doc//RequestAppAttestChallengeResult.md)
  - [RequestEmailLoginToken](doc//RequestEmailLoginToken.md)
  - [RequestEmailLoginTokenResult](doc//RequestEmailLoginTokenResult.md)
  - [ResetNewsIteratorResult](doc//ResetNewsIteratorResult.md)
@@ -746,6 +752,8 @@ Class | Method | HTTP request | Description
  - [UpdateReportResult](doc//UpdateReportResult.md)
  - [VapidPublicKey](doc//VapidPublicKey.md)
  - [VerificationMethod](doc//VerificationMethod.md)
+ - [VerifyAppAttestationLogin](doc//VerifyAppAttestationLogin.md)
+ - [VerifyAppAttestationToken](doc//VerifyAppAttestationToken.md)
 
 
 ## Documentation For Authorization

@@ -131,7 +131,7 @@ class ProfileAdminApi {
 
   /// Get profile age and name
   ///
-  /// # Access  Admin bot required permissions: - Permission [model::Permissions::admin_verify_account]  Client required permissions: - Permission [model::Permissions::admin_edit_profile_name]  Required by both admin bot and client: - Permission [model::Permissions::admin_edit_profile_age_range_verified_value] - Permission [model::Permissions::admin_edit_profile_name_verified_value]
+  /// # Access  Admin bot related permissions: - Permission [model::Permissions::admin_verify_account]  Client related permissions: - Permission [model::Permissions::admin_edit_profile_name]  Both admin bot and client related permissions: - Permission [model::Permissions::admin_edit_profile_age_range_verified_value] - Permission [model::Permissions::admin_edit_profile_name_verified_value]
   ///
   /// Note: This method returns the HTTP [Response].
   ///
@@ -167,7 +167,7 @@ class ProfileAdminApi {
 
   /// Get profile age and name
   ///
-  /// # Access  Admin bot required permissions: - Permission [model::Permissions::admin_verify_account]  Client required permissions: - Permission [model::Permissions::admin_edit_profile_name]  Required by both admin bot and client: - Permission [model::Permissions::admin_edit_profile_age_range_verified_value] - Permission [model::Permissions::admin_edit_profile_name_verified_value]
+  /// # Access  Admin bot related permissions: - Permission [model::Permissions::admin_verify_account]  Client related permissions: - Permission [model::Permissions::admin_edit_profile_name]  Both admin bot and client related permissions: - Permission [model::Permissions::admin_edit_profile_age_range_verified_value] - Permission [model::Permissions::admin_edit_profile_name_verified_value]
   ///
   /// Parameters:
   ///

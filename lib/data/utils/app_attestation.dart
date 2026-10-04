@@ -32,7 +32,10 @@ abstract class AppAttestationManagerCmd<T> {
 }
 
 class GetPlayIntegrityAppAttestation
-    extends AppAttestationManagerCmd<Result<PlayIntegrityAppAttestation, PlayIntegrityError>> {}
+    extends AppAttestationManagerCmd<Result<PlayIntegrityAppAttestation, PlayIntegrityError>> {
+  final String requestHash;
+  GetPlayIntegrityAppAttestation(this.requestHash);
+}
 
 class AppAttestationManager extends AppSingleton {
   AppAttestationManager._private();
@@ -57,13 +60,16 @@ class AppAttestationManager extends AppSingleton {
         .asyncMap((cmd) async {
           switch (cmd) {
             case GetPlayIntegrityAppAttestation():
-              cmd.completed.add(await _getPlayIntegrityAppAttestation());
+              cmd.completed.add(
+                await _getPlayIntegrityAppAttestation(requestHash: cmd.requestHash),
+              );
           }
         })
         .listen(null);
   }
 
   Future<Result<PlayIntegrityAppAttestation, PlayIntegrityError>> _getPlayIntegrityAppAttestation({
+    required String requestHash,
     bool retry = false,
   }) async {
     if (retry) {
@@ -81,13 +87,13 @@ class AppAttestationManager extends AppSingleton {
       if (!_playIntegrityTokenProviderPrepared) {
         await AppAttest.preparePlayIntegrityTokenProvider(cloudProjectNumber: cloudProjectNumber);
       }
-      final token = await AppAttest.requestStandardPlayIntegrityToken(requestHash: "-");
+      final token = await AppAttest.requestStandardPlayIntegrityToken(requestHash: requestHash);
       return Ok(PlayIntegrityAppAttestation(token: token));
     } on PlatformException catch (e) {
       _log.error("Play Integrity error: ${e.code}");
       if (e.code == "INTEGRITY_TOKEN_PROVIDER_INVALID" && !retry) {
         _playIntegrityTokenProviderPrepared = false;
-        return await _getPlayIntegrityAppAttestation(retry: true);
+        return await _getPlayIntegrityAppAttestation(requestHash: requestHash, retry: true);
       } else {
         return Err(PlayIntegrityErrorString(e.code));
       }
@@ -97,9 +103,10 @@ class AppAttestationManager extends AppSingleton {
     }
   }
 
-  Future<Result<PlayIntegrityAppAttestation, PlayIntegrityError>>
-  getPlayIntegrityAppAttestation() async {
-    final cmd = GetPlayIntegrityAppAttestation();
+  Future<Result<PlayIntegrityAppAttestation, PlayIntegrityError>> getPlayIntegrityAppAttestation({
+    required String requestHash,
+  }) async {
+    final cmd = GetPlayIntegrityAppAttestation(requestHash);
     _cmds.add(cmd);
     return await cmd.waitCompletionAndDispose();
   }

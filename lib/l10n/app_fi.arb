@@ -397,6 +397,7 @@
   "login_screen_demo_account_username": "Käyttäjätunnus",
   "login_screen_email_already_used": "Sähköpostiosoite on jo toisen tilin käytössä",
   "login_screen_invalid_email_login_token": "Virheellinen sähköpostikirjautumiskoodi",
+  "login_screen_invalid_verify_app_attestation_token": "Kirjautuminen vanhentui. Yritä uudelleen.",
   "login_screen_ios_pwa_install_description": "Käyttääksesi tätä sovellusta iOS:llä, lisää se Koti-valikkoon:",
   "login_screen_ios_pwa_install_step1": "1. Napauta \"Jaa\"-painiketta",
   "login_screen_ios_pwa_install_step1_ios26": "1. Napauta \"Jaa\" tai avaa kolmen pisteen valikko löytääksesi sen",

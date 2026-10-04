@@ -16,7 +16,7 @@ class NewsItem {
     this.aidCreator,
     this.aidEditor,
     required this.body,
-    this.editUnixTime,
+    this.editTime,
     required this.locale,
     this.time,
     required this.title,
@@ -43,14 +43,13 @@ class NewsItem {
 
   String body;
 
-  /// Option<i64> is a workaround for Dart OpenApi generator version 7.9.0
   ///
   /// Please note: This property should have been non-nullable! Since the specification file
   /// does not include a default value (using the "default:" property), however, the generated
   /// source code must fall back to having a nullable type.
   /// Consider adding a "default:" property in the specification file to hide this note.
   ///
-  int? editUnixTime;
+  UnixTime? editTime;
 
   String locale;
 
@@ -79,7 +78,7 @@ class NewsItem {
     other.aidCreator == aidCreator &&
     other.aidEditor == aidEditor &&
     other.body == body &&
-    other.editUnixTime == editUnixTime &&
+    other.editTime == editTime &&
     other.locale == locale &&
     other.time == time &&
     other.title == title &&
@@ -91,14 +90,14 @@ class NewsItem {
     (aidCreator == null ? 0 : aidCreator!.hashCode) +
     (aidEditor == null ? 0 : aidEditor!.hashCode) +
     (body.hashCode) +
-    (editUnixTime == null ? 0 : editUnixTime!.hashCode) +
+    (editTime == null ? 0 : editTime!.hashCode) +
     (locale.hashCode) +
     (time == null ? 0 : time!.hashCode) +
     (title.hashCode) +
     (version == null ? 0 : version!.hashCode);
 
   @override
-  String toString() => 'NewsItem[aidCreator=$aidCreator, aidEditor=$aidEditor, body=$body, editUnixTime=$editUnixTime, locale=$locale, time=$time, title=$title, version=$version]';
+  String toString() => 'NewsItem[aidCreator=$aidCreator, aidEditor=$aidEditor, body=$body, editTime=$editTime, locale=$locale, time=$time, title=$title, version=$version]';
 
   Map<String, dynamic> toJson() {
     final json = <String, dynamic>{};
@@ -113,10 +112,10 @@ class NewsItem {
       json[r'aid_editor'] = null;
     }
       json[r'body'] = this.body;
-    if (this.editUnixTime != null) {
-      json[r'edit_unix_time'] = this.editUnixTime;
+    if (this.editTime != null) {
+      json[r'edit_time'] = this.editTime;
     } else {
-      json[r'edit_unix_time'] = null;
+      json[r'edit_time'] = null;
     }
       json[r'locale'] = this.locale;
     if (this.time != null) {
@@ -157,7 +156,7 @@ class NewsItem {
         aidCreator: AccountId.fromJson(json[r'aid_creator']),
         aidEditor: AccountId.fromJson(json[r'aid_editor']),
         body: mapValueOfType<String>(json, r'body')!,
-        editUnixTime: mapValueOfType<int>(json, r'edit_unix_time'),
+        editTime: UnixTime.fromJson(json[r'edit_time']),
         locale: mapValueOfType<String>(json, r'locale')!,
         time: UnixTime.fromJson(json[r'time']),
         title: mapValueOfType<String>(json, r'title')!,

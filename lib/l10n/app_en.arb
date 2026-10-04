@@ -1784,6 +1784,10 @@
   "@login_screen_invalid_email_login_token": {
     "description": "Snackbar text for invalid email login token error"
   },
+  "login_screen_invalid_verify_app_attestation_token": "Login expired. Please try again.",
+  "@login_screen_invalid_verify_app_attestation_token": {
+    "description": "Snackbar text for invalid verify app attestation token"
+  },
   "login_screen_ios_pwa_install_description": "To use this app on iOS, please add it to your home screen:",
   "@login_screen_ios_pwa_install_description": {
     "description": "Description text for iOS PWA installation guide"

@@ -154,9 +154,9 @@ class ViewNewsScreenState extends State<ViewNewsScreen> {
       );
       details = context.strings.view_news_screen_published(latestPublicationTimeString);
     }
-    final editTime = item.editUnixTime;
+    final editTime = item.editTime;
     if (editTime != null) {
-      final editTimeText = timeString(UnixTime(ut: editTime).toUtcDateTime(), localeString);
+      final editTimeText = timeString(editTime.toUtcDateTime(), localeString);
       details += "\n${context.strings.view_news_screen_edited(editTimeText)}";
     }
     return SingleChildScrollView(

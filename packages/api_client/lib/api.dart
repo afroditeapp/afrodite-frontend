@@ -261,6 +261,8 @@ part 'model/latest_seen_message_info_list.dart';
 part 'model/likes_config.dart';
 part 'model/limited_action_status.dart';
 part 'model/location.dart';
+part 'model/login_phase_one_result.dart';
+part 'model/login_phase_two_result.dart';
 part 'model/login_result.dart';
 part 'model/login_session_info.dart';
 part 'model/maintenance_task.dart';
@@ -415,6 +417,8 @@ part 'model/report_iterator_query.dart';
 part 'model/report_processing_state.dart';
 part 'model/report_queue_type.dart';
 part 'model/report_type.dart';
+part 'model/request_app_attest_challenge.dart';
+part 'model/request_app_attest_challenge_result.dart';
 part 'model/request_email_login_token.dart';
 part 'model/request_email_login_token_result.dart';
 part 'model/reset_news_iterator_result.dart';
@@ -476,6 +480,8 @@ part 'model/update_profile_text_report.dart';
 part 'model/update_report_result.dart';
 part 'model/vapid_public_key.dart';
 part 'model/verification_method.dart';
+part 'model/verify_app_attestation_login.dart';
+part 'model/verify_app_attestation_token.dart';
 
 
 /// An [ApiClient] instance that uses the default values obtained from

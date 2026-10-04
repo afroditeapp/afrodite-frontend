@@ -127,7 +127,7 @@ class DemoAccountManager {
     );
   }
 
-  Future<Result<LoginResult, DemoAccountError>> demoAccountRegisterIfNeededAndLogin({
+  Future<Result<LoginPhaseOneResult, DemoAccountError>> demoAccountRegisterIfNeededAndLogin({
     required AccountId? id,
     required ApiManager apiNoConnection,
   }) async {
@@ -157,11 +157,11 @@ class DemoAccountManager {
         );
   }
 
-  Future<Result<LoginResult, DemoAccountError>> _demoAccountLoginToAccount(
+  Future<Result<LoginPhaseOneResult, DemoAccountError>> _demoAccountLoginToAccount(
     AccountId id, {
     required ApiManager apiNoConnection,
   }) async {
-    final clientInfo = await AppVersionManager.getInstance().clientInfoWithAppAttestation();
+    final clientInfo = await AppVersionManager.getInstance().clientInfo();
     return await _getCurrentToken().andThen(
       (t) => apiNoConnection
           .accountWrapper()

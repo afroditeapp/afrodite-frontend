@@ -1,13 +1,16 @@
 import 'dart:async';
+import 'dart:io';
 
 import 'package:app/api/manual_maintenance_info_check.dart';
 import 'package:app/data/app_version.dart';
+import 'package:app/data/utils/app_attestation.dart';
 import 'package:app/data/utils/demo_account_manager.dart';
 import 'package:app/data/utils/login_repository_types.dart';
 import 'package:app/data/utils/repository_instances.dart';
 import 'package:app/data/utils/sign_in_with_apple.dart';
 import 'package:app/data/utils/sign_in_with_google.dart';
 import 'package:database/database.dart';
+import 'package:flutter/foundation.dart';
 import 'package:logging/logging.dart';
 import 'package:openapi/api.dart';
 import 'package:app/api/server_connection_manager.dart';
@@ -15,6 +18,8 @@ import 'package:app/config.dart';
 import 'package:app/data/account_repository.dart';
 import 'package:app/database/account_database_manager.dart';
 import 'package:app/database/common_database_manager.dart';
+import 'package:app/localizations.dart';
+import 'package:app/ui_utils/snack_bar.dart';
 import 'package:app/utils/result.dart';
 import 'package:rxdart/rxdart.dart';
 import 'package:utils/utils.dart';
@@ -273,7 +278,7 @@ class LoginRepository extends AppSingleton {
               );
               switch (result) {
                 case Ok():
-                  switch (await _handleLoginResult(result.v)) {
+                  switch (await _handleLoginPhaseOneResult(result.v)) {
                     case Ok():
                       r = Ok(());
                     case Err(:final e):
@@ -334,7 +339,7 @@ class LoginRepository extends AppSingleton {
     if (login == null) {
       return Err(SignInWithSignInError(await _checkServerMaintenanceInfo()));
     }
-    return await _handleLoginResult(login).mapErr((e) {
+    return await _handleLoginPhaseOneResult(login).mapErr((e) {
       return SignInWithSignInError(e);
     });
   }
@@ -410,7 +415,7 @@ class LoginRepository extends AppSingleton {
   }
 
   Future<Result<(), CommonSignInError>> _handleEmailLoginWithToken(EmailLoginWithToken cmd) async {
-    final clientInfo = await AppVersionManager.getInstance().clientInfoWithAppAttestation();
+    final clientInfo = await AppVersionManager.getInstance().clientInfo();
     final result = await _apiNoConnection
         .account(
           (api) => api.postEmailLoginWithToken(
@@ -427,10 +432,12 @@ class LoginRepository extends AppSingleton {
       return Err(CseLoginApiRequestFailed());
     }
 
-    return await _handleLoginResult(result);
+    return await _handleLoginPhaseOneResult(result);
   }
 
-  Future<Result<(), CommonSignInError>> _handleLoginResult(LoginResult loginResult) async {
+  Future<Result<(), CommonSignInError>> _handleLoginPhaseOneResult(
+    LoginPhaseOneResult loginResult,
+  ) async {
     if (loginResult.errorUnsupportedClient) {
       return Err(CseUnsupportedClient());
     }
@@ -452,6 +459,107 @@ class LoginRepository extends AppSingleton {
     if (loginResult.errorEmailAlreadyUsed) {
       return Err(CseEmailAlreadyUsed());
     }
+    if (loginResult.errorInvalidEmailLoginToken) {
+      return Err(CseInvalidEmailLoginToken());
+    }
+    if (loginResult.error) {
+      return Err(CseOtherError());
+    }
+
+    final verifyAppAttestationToken = loginResult.verifyAppAttestationToken;
+    if (verifyAppAttestationToken == null) {
+      _log.error("LoginPhaseOneResult doesn't contain verify app attestation token");
+      return Err(CseOtherError());
+    }
+
+    return await _completeLoginWithAppAttestation(verifyAppAttestationToken);
+  }
+
+  Future<Result<(), CommonSignInError>> _completeLoginWithAppAttestation(
+    VerifyAppAttestationToken verifyAppAttestationToken,
+  ) async {
+    final appAttestationResult = await _getAppAttestationForLogin(verifyAppAttestationToken);
+    final AppAttestation? appAttestation;
+    switch (appAttestationResult) {
+      case Ok(:final v):
+        appAttestation = v;
+      case Err(:final e):
+        return Err(e);
+    }
+
+    final loginResult = await _apiNoConnection
+        .account(
+          (api) => api.postVerifyAppAttestation(
+            VerifyAppAttestationLogin(
+              token: verifyAppAttestationToken,
+              appAttestation: appAttestation,
+            ),
+          ),
+        )
+        .ok();
+
+    if (loginResult == null) {
+      return Err(CseLoginApiRequestFailed());
+    }
+
+    return await _handleLoginPhaseTwoResult(loginResult);
+  }
+
+  Future<Result<AppAttestation?, CommonSignInError>> _getAppAttestationForLogin(
+    VerifyAppAttestationToken verifyAppAttestationToken,
+  ) async {
+    if (kIsWeb || !Platform.isAndroid) {
+      return Ok(null);
+    }
+
+    final challengeResult = await _apiNoConnection
+        .account(
+          (api) => api.postRequestAppAttestChallenge(
+            RequestAppAttestChallenge(token: verifyAppAttestationToken),
+          ),
+        )
+        .ok();
+
+    if (challengeResult == null) {
+      return Err(CseLoginApiRequestFailed());
+    }
+    if (challengeResult.errorInvalidVerifyAppAttestationToken) {
+      return Err(CseInvalidVerifyAppAttestationToken());
+    }
+    if (challengeResult.error) {
+      return Err(CseOtherError());
+    }
+    final challenge = challengeResult.challenge;
+    if (challenge == null) {
+      _log.error("RequestAppAttestChallengeResult doesn't contain challenge");
+      return Err(CseOtherError());
+    }
+
+    final playIntegrity = await AppAttestationManager.getInstance().getPlayIntegrityAppAttestation(
+      requestHash: challenge,
+    );
+    switch (playIntegrity) {
+      case Ok(:final v):
+        return Ok(AppAttestation(playIntegrity: v));
+      case Err(:final e):
+        switch (e) {
+          case PlayIntegrityNotConfigured() || PlayIntegrityNotSupported():
+            return Ok(null);
+          case PlayIntegrityErrorString(:final message):
+            _log.error("Play Integrity error: $message");
+            final errorText = R.strings.snackbar_play_integrity_api_error(message);
+            showSnackBar(errorText);
+            // Give the user time to read the error. 4 seconds
+            // is the default snackbar displaying time.
+            await Future<void>.delayed(const Duration(seconds: 4));
+            return Ok(null);
+        }
+    }
+  }
+
+  Future<Result<(), CommonSignInError>> _handleLoginPhaseTwoResult(
+    LoginPhaseTwoResult loginResult,
+  ) async {
     if (loginResult.errorAccountLocked) {
       return Err(CseAccountLocked());
     }
@@ -464,8 +572,8 @@ class LoginRepository extends AppSingleton {
     if (loginResult.errorAppAttestationFailed) {
       return Err(CseAppAttestationFailed());
     }
-    if (loginResult.errorInvalidEmailLoginToken) {
-      return Err(CseInvalidEmailLoginToken());
+    if (loginResult.errorInvalidVerifyAppAttestationToken) {
+      return Err(CseInvalidVerifyAppAttestationToken());
     }
     if (loginResult.error) {
       return Err(CseOtherError());
@@ -473,7 +581,7 @@ class LoginRepository extends AppSingleton {
     final aid = loginResult.aid;
     final authPair = loginResult.tokens;
     if (aid == null || authPair == null) {
-      _log.error("LoginResult doesn't contain required info");
+      _log.error("LoginPhaseTwoResult doesn't contain required info");
       return Err(CseOtherError());
     }
 
@@ -613,7 +721,7 @@ class LoginRepository extends AppSingleton {
 
     final info = SignInWithLoginInfo(
       google: tokenInfo,
-      clientInfo: await AppVersionManager.getInstance().clientInfoWithAppAttestation(),
+      clientInfo: await AppVersionManager.getInstance().clientInfo(),
     );
     switch (await sendSignInWithLoginCmd(info, serverAddress)) {
       case Ok():
@@ -632,7 +740,7 @@ class LoginRepository extends AppSingleton {
         yield SignInWithGetTokenCompleted();
         final info = SignInWithLoginInfo(
           apple: r.v,
-          clientInfo: await AppVersionManager.getInstance().clientInfoWithAppAttestation(),
+          clientInfo: await AppVersionManager.getInstance().clientInfo(),
         );
         switch (await sendSignInWithLoginCmd(info, serverAddress)) {
           case Ok():

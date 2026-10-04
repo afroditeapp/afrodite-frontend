@@ -99,6 +99,8 @@ class CseAppAttestationDeviceIntegrity extends CommonSignInError {}
 
 class CseAppAttestationFailed extends CommonSignInError {}
 
+class CseInvalidVerifyAppAttestationToken extends CommonSignInError {}
+
 class CseRegistrationAllPlatformsDisabled extends CommonSignInError {}
 
 class CseRegistrationPlatformDisabled extends CommonSignInError {}

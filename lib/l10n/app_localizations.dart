@@ -2498,6 +2498,12 @@ abstract class AppLocalizations {
   /// **'Invalid email login code'**
   String get login_screen_invalid_email_login_token;
 
+  /// Snackbar text for invalid verify app attestation token
+  ///
+  /// In en, this message translates to:
+  /// **'Login expired. Please try again.'**
+  String get login_screen_invalid_verify_app_attestation_token;
+
   /// Description text for iOS PWA installation guide
   ///
   /// In en, this message translates to:

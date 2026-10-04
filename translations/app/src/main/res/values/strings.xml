@@ -268,6 +268,7 @@
     <string name="login_screen_sign_in_with_login_screen_not_open" description="Snackbar text shown when sign in with Google is attempted but the login screen is no longer open">Sign in was cancelled because the login screen is no longer open. Please try again.</string>
     <string name="login_screen_login_api_request_failed" description="Snackbar text for login API request failed">Login request failed. Please try again later.</string>
     <string name="login_screen_invalid_email_login_token" description="Snackbar text for invalid email login token error">Invalid email login code</string>
+    <string name="login_screen_invalid_verify_app_attestation_token" description="Snackbar text for invalid verify app attestation token">Login expired. Please try again.</string>
     <string name="login_screen_app_attestation_app_integrity_error" description="Snackbar text for app integrity check failed">App integrity check failed</string>
     <string name="login_screen_app_attestation_device_integrity_error" description="Snackbar text for device integrity check failed">Device integrity check failed</string>
     <string name="login_screen_app_attestation_failed" description="Snackbar text for app attestation failed">App verification failed. Please try again later.</string>

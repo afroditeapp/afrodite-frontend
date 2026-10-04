@@ -1385,6 +1385,10 @@ class AppLocalizationsFi extends AppLocalizations {
   String get login_screen_invalid_email_login_token => 'Virheellinen sähköpostikirjautumiskoodi';
 
   @override
+  String get login_screen_invalid_verify_app_attestation_token =>
+      'Kirjautuminen vanhentui. Yritä uudelleen.';
+
+  @override
   String get login_screen_ios_pwa_install_description =>
       'Käyttääksesi tätä sovellusta iOS:llä, lisää se Koti-valikkoon:';
 

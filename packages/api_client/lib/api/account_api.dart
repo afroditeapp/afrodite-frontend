@@ -484,7 +484,7 @@ class AccountApi {
 
   /// Get news item content using specific locale and fallback to locale \"en\" if news translation is not found.
   ///
-  /// If specific locale is not found when [RequireNewsLocale::require_locale] is `true` then [GetNewsItemResult::item] is `None`.
+  /// If specific locale is not found when [RequireNewsLocale::require_locale] is `true` then [GetNewsItemResult::item] is `None`.  If news item is private and account doesn't have any admin news permissions then [GetNewsItemResult::item] is `None`.
   ///
   /// Note: This method returns the HTTP [Response].
   ///
@@ -529,7 +529,7 @@ class AccountApi {
 
   /// Get news item content using specific locale and fallback to locale \"en\" if news translation is not found.
   ///
-  /// If specific locale is not found when [RequireNewsLocale::require_locale] is `true` then [GetNewsItemResult::item] is `None`.
+  /// If specific locale is not found when [RequireNewsLocale::require_locale] is `true` then [GetNewsItemResult::item] is `None`.  If news item is private and account doesn't have any admin news permissions then [GetNewsItemResult::item] is `None`.
   ///
   /// Parameters:
   ///
@@ -1152,7 +1152,7 @@ class AccountApi {
   /// Parameters:
   ///
   /// * [DemoAccountLoginToAccount] demoAccountLoginToAccount (required):
-  Future<LoginResult?> postDemoAccountLoginToAccount(DemoAccountLoginToAccount demoAccountLoginToAccount, { Future<void>? abortTrigger, }) async {
+  Future<LoginPhaseOneResult?> postDemoAccountLoginToAccount(DemoAccountLoginToAccount demoAccountLoginToAccount, { Future<void>? abortTrigger, }) async {
     final response = await postDemoAccountLoginToAccountWithHttpInfo(demoAccountLoginToAccount, abortTrigger: abortTrigger,);
     if (response.statusCode >= HttpStatus.badRequest) {
       throw ApiException(response.statusCode, await _decodeBodyBytes(response));
@@ -1161,7 +1161,7 @@ class AccountApi {
     // At the time of writing this, `dart:convert` will throw an "Unexpected end of input"
     // FormatException when trying to decode an empty string.
     if (response.body.isNotEmpty && response.statusCode != HttpStatus.noContent) {
-      return await apiClient.deserializeAsync(await _decodeBodyBytes(response), 'LoginResult',) as LoginResult;
+      return await apiClient.deserializeAsync(await _decodeBodyBytes(response), 'LoginPhaseOneResult',) as LoginPhaseOneResult;
     
     }
     return null;
@@ -1297,7 +1297,7 @@ class AccountApi {
   /// Parameters:
   ///
   /// * [EmailLogin] emailLogin (required):
-  Future<LoginResult?> postEmailLoginWithToken(EmailLogin emailLogin, { Future<void>? abortTrigger, }) async {
+  Future<LoginPhaseOneResult?> postEmailLoginWithToken(EmailLogin emailLogin, { Future<void>? abortTrigger, }) async {
     final response = await postEmailLoginWithTokenWithHttpInfo(emailLogin, abortTrigger: abortTrigger,);
     if (response.statusCode >= HttpStatus.badRequest) {
       throw ApiException(response.statusCode, await _decodeBodyBytes(response));
@@ -1306,7 +1306,7 @@ class AccountApi {
     // At the time of writing this, `dart:convert` will throw an "Unexpected end of input"
     // FormatException when trying to decode an empty string.
     if (response.body.isNotEmpty && response.statusCode != HttpStatus.noContent) {
-      return await apiClient.deserializeAsync(await _decodeBodyBytes(response), 'LoginResult',) as LoginResult;
+      return await apiClient.deserializeAsync(await _decodeBodyBytes(response), 'LoginPhaseOneResult',) as LoginPhaseOneResult;
     
     }
     return null;
@@ -1695,6 +1695,63 @@ class AccountApi {
     }
   }
 
+  /// Request a random string for app attestation token.
+  ///
+  /// The client must call this after login phase one to obtain a challenge and then put it into the `requestHash` field of the Play Integrity API verdict token before presenting it to `post_verify_app_attestation`.
+  ///
+  /// Note: This method returns the HTTP [Response].
+  ///
+  /// Parameters:
+  ///
+  /// * [RequestAppAttestChallenge] requestAppAttestChallenge (required):
+  Future<Response> postRequestAppAttestChallengeWithHttpInfo(RequestAppAttestChallenge requestAppAttestChallenge, { Future<void>? abortTrigger, }) async {
+    // ignore: prefer_const_declarations
+    final path = r'/account_api/request_app_attest_challenge';
+
+    // ignore: prefer_final_locals
+    Object? postBody = requestAppAttestChallenge;
+
+    final queryParams = <QueryParam>[];
+    final headerParams = <String, String>{};
+    final formParams = <String, String>{};
+
+    const contentTypes = <String>['application/json'];
+
+
+    return apiClient.invokeAPI(
+      path,
+      'POST',
+      queryParams,
+      postBody,
+      headerParams,
+      formParams,
+      contentTypes.isEmpty ? null : contentTypes.first,
+      abortTrigger: abortTrigger,
+    );
+  }
+
+  /// Request a random string for app attestation token.
+  ///
+  /// The client must call this after login phase one to obtain a challenge and then put it into the `requestHash` field of the Play Integrity API verdict token before presenting it to `post_verify_app_attestation`.
+  ///
+  /// Parameters:
+  ///
+  /// * [RequestAppAttestChallenge] requestAppAttestChallenge (required):
+  Future<RequestAppAttestChallengeResult?> postRequestAppAttestChallenge(RequestAppAttestChallenge requestAppAttestChallenge, { Future<void>? abortTrigger, }) async {
+    final response = await postRequestAppAttestChallengeWithHttpInfo(requestAppAttestChallenge, abortTrigger: abortTrigger,);
+    if (response.statusCode >= HttpStatus.badRequest) {
+      throw ApiException(response.statusCode, await _decodeBodyBytes(response));
+    }
+    // When a remote server returns no body with a status of 204, we shall not decode it.
+    // At the time of writing this, `dart:convert` will throw an "Unexpected end of input"
+    // FormatException when trying to decode an empty string.
+    if (response.body.isNotEmpty && response.statusCode != HttpStatus.noContent) {
+      return await apiClient.deserializeAsync(await _decodeBodyBytes(response), 'RequestAppAttestChallengeResult',) as RequestAppAttestChallengeResult;
+    
+    }
+    return null;
+  }
+
   /// Request email login token to be sent via email.
   ///
   /// The route always takes at least 5 seconds to complete to prevent timing attacks that could be used to enumerate existing email addresses.  When `login_only` is `false` (email registration can happen), the email address is validated with an email address validator. If the email address is not supported for registration, the request is rejected with `error_email_registration_unsupported_email`.
@@ -1981,7 +2038,7 @@ class AccountApi {
   /// Parameters:
   ///
   /// * [SignInWithLoginInfo] signInWithLoginInfo (required):
-  Future<LoginResult?> postSignInWithLogin(SignInWithLoginInfo signInWithLoginInfo, { Future<void>? abortTrigger, }) async {
+  Future<LoginPhaseOneResult?> postSignInWithLogin(SignInWithLoginInfo signInWithLoginInfo, { Future<void>? abortTrigger, }) async {
     final response = await postSignInWithLoginWithHttpInfo(signInWithLoginInfo, abortTrigger: abortTrigger,);
     if (response.statusCode >= HttpStatus.badRequest) {
       throw ApiException(response.statusCode, await _decodeBodyBytes(response));
@@ -1990,7 +2047,64 @@ class AccountApi {
     // At the time of writing this, `dart:convert` will throw an "Unexpected end of input"
     // FormatException when trying to decode an empty string.
     if (response.body.isNotEmpty && response.statusCode != HttpStatus.noContent) {
-      return await apiClient.deserializeAsync(await _decodeBodyBytes(response), 'LoginResult',) as LoginResult;
+      return await apiClient.deserializeAsync(await _decodeBodyBytes(response), 'LoginPhaseOneResult',) as LoginPhaseOneResult;
+    
+    }
+    return null;
+  }
+
+  /// Complete a pending login by verifying app attestation.
+  ///
+  /// The login routes (`post_sign_in_with_login`, `post_email_login_with_token`, `post_demo_account_login_to_account`) return a short-lived `verify_app_attestation_token` instead of logging the account in directly. This route consumes that token and completes the login only if the app attestation passes.
+  ///
+  /// Note: This method returns the HTTP [Response].
+  ///
+  /// Parameters:
+  ///
+  /// * [VerifyAppAttestationLogin] verifyAppAttestationLogin (required):
+  Future<Response> postVerifyAppAttestationWithHttpInfo(VerifyAppAttestationLogin verifyAppAttestationLogin, { Future<void>? abortTrigger, }) async {
+    // ignore: prefer_const_declarations
+    final path = r'/account_api/verify_app_attestation';
+
+    // ignore: prefer_final_locals
+    Object? postBody = verifyAppAttestationLogin;
+
+    final queryParams = <QueryParam>[];
+    final headerParams = <String, String>{};
+    final formParams = <String, String>{};
+
+    const contentTypes = <String>['application/json'];
+
+
+    return apiClient.invokeAPI(
+      path,
+      'POST',
+      queryParams,
+      postBody,
+      headerParams,
+      formParams,
+      contentTypes.isEmpty ? null : contentTypes.first,
+      abortTrigger: abortTrigger,
+    );
+  }
+
+  /// Complete a pending login by verifying app attestation.
+  ///
+  /// The login routes (`post_sign_in_with_login`, `post_email_login_with_token`, `post_demo_account_login_to_account`) return a short-lived `verify_app_attestation_token` instead of logging the account in directly. This route consumes that token and completes the login only if the app attestation passes.
+  ///
+  /// Parameters:
+  ///
+  /// * [VerifyAppAttestationLogin] verifyAppAttestationLogin (required):
+  Future<LoginPhaseTwoResult?> postVerifyAppAttestation(VerifyAppAttestationLogin verifyAppAttestationLogin, { Future<void>? abortTrigger, }) async {
+    final response = await postVerifyAppAttestationWithHttpInfo(verifyAppAttestationLogin, abortTrigger: abortTrigger,);
+    if (response.statusCode >= HttpStatus.badRequest) {
+      throw ApiException(response.statusCode, await _decodeBodyBytes(response));
+    }
+    // When a remote server returns no body with a status of 204, we shall not decode it.
+    // At the time of writing this, `dart:convert` will throw an "Unexpected end of input"
+    // FormatException when trying to decode an empty string.
+    if (response.body.isNotEmpty && response.statusCode != HttpStatus.noContent) {
+      return await apiClient.deserializeAsync(await _decodeBodyBytes(response), 'LoginPhaseTwoResult',) as LoginPhaseTwoResult;
     
     }
     return null;

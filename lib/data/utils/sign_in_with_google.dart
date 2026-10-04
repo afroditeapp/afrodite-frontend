@@ -88,7 +88,7 @@ class SignInWithGoogleManager {
 
             final info = SignInWithLoginInfo(
               google: SignInWithGoogleInfo(nonce: _nonceBase64Url, token: token),
-              clientInfo: await AppVersionManager.getInstance().clientInfoWithAppAttestation(),
+              clientInfo: await AppVersionManager.getInstance().clientInfo(),
             );
             final login = LoginRepository.getInstance();
             final currentServerAddress = await login.accountServerAddress.first;

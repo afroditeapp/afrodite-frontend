@@ -1377,6 +1377,10 @@ class AppLocalizationsEn extends AppLocalizations {
   String get login_screen_invalid_email_login_token => 'Invalid email login code';
 
   @override
+  String get login_screen_invalid_verify_app_attestation_token =>
+      'Login expired. Please try again.';
+
+  @override
   String get login_screen_ios_pwa_install_description =>
       'To use this app on iOS, please add it to your home screen:';
 

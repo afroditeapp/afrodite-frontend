@@ -10,13 +10,17 @@
 
 part of openapi.api;
 
-class LoginResult {
-  /// Returns a new [LoginResult] instance.
-  LoginResult({
+class LoginPhaseTwoResult {
+  /// Returns a new [LoginPhaseTwoResult] instance.
+  LoginPhaseTwoResult({
     this.aid,
     this.email,
     this.error = false,
     this.errorAccountLocked = false,
+    this.errorAppAttestationAppIntegrity = false,
+    this.errorAppAttestationDeviceIntegrity = false,
+    this.errorAppAttestationFailed = false,
+    this.errorInvalidVerifyAppAttestationToken = false,
     this.tokens,
   });
 
@@ -42,6 +46,14 @@ class LoginResult {
 
   bool errorAccountLocked;
 
+  bool errorAppAttestationAppIntegrity;
+
+  bool errorAppAttestationDeviceIntegrity;
+
+  bool errorAppAttestationFailed;
+
+  bool errorInvalidVerifyAppAttestationToken;
+
   /// If `None`, the client is unsupported.
   ///
   /// Please note: This property should have been non-nullable! Since the specification file
@@ -52,11 +64,15 @@ class LoginResult {
   AuthPair? tokens;
 
   @override
-  bool operator ==(Object other) => identical(this, other) || other is LoginResult &&
+  bool operator ==(Object other) => identical(this, other) || other is LoginPhaseTwoResult &&
     other.aid == aid &&
     other.email == email &&
     other.error == error &&
     other.errorAccountLocked == errorAccountLocked &&
+    other.errorAppAttestationAppIntegrity == errorAppAttestationAppIntegrity &&
+    other.errorAppAttestationDeviceIntegrity == errorAppAttestationDeviceIntegrity &&
+    other.errorAppAttestationFailed == errorAppAttestationFailed &&
+    other.errorInvalidVerifyAppAttestationToken == errorInvalidVerifyAppAttestationToken &&
     other.tokens == tokens;
 
   @override
@@ -66,10 +82,14 @@ class LoginResult {
     (email == null ? 0 : email!.hashCode) +
     (error.hashCode) +
     (errorAccountLocked.hashCode) +
+    (errorAppAttestationAppIntegrity.hashCode) +
+    (errorAppAttestationDeviceIntegrity.hashCode) +
+    (errorAppAttestationFailed.hashCode) +
+    (errorInvalidVerifyAppAttestationToken.hashCode) +
     (tokens == null ? 0 : tokens!.hashCode);
 
   @override
-  String toString() => 'LoginResult[aid=$aid, email=$email, error=$error, errorAccountLocked=$errorAccountLocked, tokens=$tokens]';
+  String toString() => 'LoginPhaseTwoResult[aid=$aid, email=$email, error=$error, errorAccountLocked=$errorAccountLocked, errorAppAttestationAppIntegrity=$errorAppAttestationAppIntegrity, errorAppAttestationDeviceIntegrity=$errorAppAttestationDeviceIntegrity, errorAppAttestationFailed=$errorAppAttestationFailed, errorInvalidVerifyAppAttestationToken=$errorInvalidVerifyAppAttestationToken, tokens=$tokens]';
 
   Map<String, dynamic> toJson() {
     final json = <String, dynamic>{};
@@ -85,6 +105,10 @@ class LoginResult {
     }
       json[r'error'] = this.error;
       json[r'error_account_locked'] = this.errorAccountLocked;
+      json[r'error_app_attestation_app_integrity'] = this.errorAppAttestationAppIntegrity;
+      json[r'error_app_attestation_device_integrity'] = this.errorAppAttestationDeviceIntegrity;
+      json[r'error_app_attestation_failed'] = this.errorAppAttestationFailed;
+      json[r'error_invalid_verify_app_attestation_token'] = this.errorInvalidVerifyAppAttestationToken;
     if (this.tokens != null) {
       json[r'tokens'] = this.tokens;
     } else {
@@ -93,10 +117,10 @@ class LoginResult {
     return json;
   }
 
-  /// Returns a new [LoginResult] instance and imports its values from
+  /// Returns a new [LoginPhaseTwoResult] instance and imports its values from
   /// [value] if it's a [Map], null otherwise.
   // ignore: prefer_constructors_over_static_methods
-  static LoginResult? fromJson(dynamic value) {
+  static LoginPhaseTwoResult? fromJson(dynamic value) {
     if (value is Map) {
       final json = value.cast<String, dynamic>();
 
@@ -107,22 +131,26 @@ class LoginResult {
         return true;
       }());
 
-      return LoginResult(
+      return LoginPhaseTwoResult(
         aid: AccountId.fromJson(json[r'aid']),
         email: mapValueOfType<String>(json, r'email'),
         error: mapValueOfType<bool>(json, r'error') ?? false,
         errorAccountLocked: mapValueOfType<bool>(json, r'error_account_locked') ?? false,
+        errorAppAttestationAppIntegrity: mapValueOfType<bool>(json, r'error_app_attestation_app_integrity') ?? false,
+        errorAppAttestationDeviceIntegrity: mapValueOfType<bool>(json, r'error_app_attestation_device_integrity') ?? false,
+        errorAppAttestationFailed: mapValueOfType<bool>(json, r'error_app_attestation_failed') ?? false,
+        errorInvalidVerifyAppAttestationToken: mapValueOfType<bool>(json, r'error_invalid_verify_app_attestation_token') ?? false,
         tokens: AuthPair.fromJson(json[r'tokens']),
       );
     }
     return null;
   }
 
-  static List<LoginResult> listFromJson(dynamic json, {bool growable = false,}) {
-    final result = <LoginResult>[];
+  static List<LoginPhaseTwoResult> listFromJson(dynamic json, {bool growable = false,}) {
+    final result = <LoginPhaseTwoResult>[];
     if (json is List && json.isNotEmpty) {
       for (final row in json) {
-        final value = LoginResult.fromJson(row);
+        final value = LoginPhaseTwoResult.fromJson(row);
         if (value != null) {
           result.add(value);
         }
@@ -131,12 +159,12 @@ class LoginResult {
     return result.toList(growable: growable);
   }
 
-  static Map<String, LoginResult> mapFromJson(dynamic json) {
-    final map = <String, LoginResult>{};
+  static Map<String, LoginPhaseTwoResult> mapFromJson(dynamic json) {
+    final map = <String, LoginPhaseTwoResult>{};
     if (json is Map && json.isNotEmpty) {
       json = json.cast<String, dynamic>(); // ignore: parameter_assignments
       for (final entry in json.entries) {
-        final value = LoginResult.fromJson(entry.value);
+        final value = LoginPhaseTwoResult.fromJson(entry.value);
         if (value != null) {
           map[entry.key] = value;
         }
@@ -145,14 +173,14 @@ class LoginResult {
     return map;
   }
 
-  // maps a json object with a list of LoginResult-objects as value to a dart map
-  static Map<String, List<LoginResult>> mapListFromJson(dynamic json, {bool growable = false,}) {
-    final map = <String, List<LoginResult>>{};
+  // maps a json object with a list of LoginPhaseTwoResult-objects as value to a dart map
+  static Map<String, List<LoginPhaseTwoResult>> mapListFromJson(dynamic json, {bool growable = false,}) {
+    final map = <String, List<LoginPhaseTwoResult>>{};
     if (json is Map && json.isNotEmpty) {
       // ignore: parameter_assignments
       json = json.cast<String, dynamic>();
       for (final entry in json.entries) {
-        map[entry.key] = LoginResult.listFromJson(entry.value, growable: growable,);
+        map[entry.key] = LoginPhaseTwoResult.listFromJson(entry.value, growable: growable,);
       }
     }
     return map;
