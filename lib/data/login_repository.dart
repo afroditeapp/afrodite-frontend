@@ -482,10 +482,10 @@ class LoginRepository extends AppSingleton {
   }
 
   Future<Result<(), CommonSignInError>> _completeLoginWithAppAttestation(
-    VerifyAppAttestationToken verifyAppAttestationToken,
+    LoginPhaseTwoToken loginPhaseTwoToken,
     AccountId aid,
   ) async {
-    final appAttestationResult = await _getAppAttestationForLogin(verifyAppAttestationToken, aid);
+    final appAttestationResult = await _getAppAttestationForLogin(loginPhaseTwoToken, aid);
     final AppAttestation? appAttestation;
     switch (appAttestationResult) {
       case Ok(:final v):
@@ -497,10 +497,7 @@ class LoginRepository extends AppSingleton {
     final loginResult = await _apiNoConnection
         .account(
           (api) => api.postVerifyAppAttestation(
-            VerifyAppAttestationLogin(
-              token: verifyAppAttestationToken,
-              appAttestation: appAttestation,
-            ),
+            VerifyAppAttestationLogin(token: loginPhaseTwoToken, appAttestation: appAttestation),
           ),
         )
         .ok();
@@ -513,7 +510,7 @@ class LoginRepository extends AppSingleton {
   }
 
   Future<Result<AppAttestation?, CommonSignInError>> _getAppAttestationForLogin(
-    VerifyAppAttestationToken verifyAppAttestationToken,
+    LoginPhaseTwoToken loginPhaseTwoToken,
     AccountId aid,
   ) async {
     if (kIsWeb) {
@@ -545,7 +542,7 @@ class LoginRepository extends AppSingleton {
             (api) => api.postRequestAppAttestChallenge(
               RequestAppAttestChallenge(
                 appleAppAttestKeyId: appleAppAttestKeyId,
-                token: verifyAppAttestationToken,
+                token: loginPhaseTwoToken,
               ),
             ),
           )

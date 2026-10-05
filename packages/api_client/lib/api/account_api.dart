@@ -1697,7 +1697,7 @@ class AccountApi {
 
   /// Request a random string for app attestation token.
   ///
-  /// The client must call this after login phase one to obtain a challenge and then bind it to the app attestation before presenting it to `post_verify_app_attestation`. The challenge is used as the Play Integrity API `requestHash` and as the Apple App Attest `clientDataHash` input.
+  /// The client must call this after login phase one to obtain a challenge and then bind it to the app attestation before presenting it to [post_verify_app_attestation]. The challenge is used as the Play Integrity API `requestHash` and as the Apple App Attest `clientDataHash` input.
   ///
   /// Note: This method returns the HTTP [Response].
   ///
@@ -1732,7 +1732,7 @@ class AccountApi {
 
   /// Request a random string for app attestation token.
   ///
-  /// The client must call this after login phase one to obtain a challenge and then bind it to the app attestation before presenting it to `post_verify_app_attestation`. The challenge is used as the Play Integrity API `requestHash` and as the Apple App Attest `clientDataHash` input.
+  /// The client must call this after login phase one to obtain a challenge and then bind it to the app attestation before presenting it to [post_verify_app_attestation]. The challenge is used as the Play Integrity API `requestHash` and as the Apple App Attest `clientDataHash` input.
   ///
   /// Parameters:
   ///

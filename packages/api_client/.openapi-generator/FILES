@@ -246,6 +246,7 @@ lib/model/limited_action_status.dart
 lib/model/location.dart
 lib/model/login_phase_one_result.dart
 lib/model/login_phase_two_result.dart
+lib/model/login_phase_two_token.dart
 lib/model/login_result.dart
 lib/model/login_session_info.dart
 lib/model/maintenance_task.dart
@@ -464,4 +465,3 @@ lib/model/update_report_result.dart
 lib/model/vapid_public_key.dart
 lib/model/verification_method.dart
 lib/model/verify_app_attestation_login.dart
-lib/model/verify_app_attestation_token.dart

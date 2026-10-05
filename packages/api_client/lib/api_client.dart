@@ -631,6 +631,8 @@ class ApiClient {
           return LoginPhaseOneResult.fromJson(value);
         case 'LoginPhaseTwoResult':
           return LoginPhaseTwoResult.fromJson(value);
+        case 'LoginPhaseTwoToken':
+          return LoginPhaseTwoToken.fromJson(value);
         case 'LoginResult':
           return LoginResult.fromJson(value);
         case 'LoginSessionInfo':
@@ -1067,8 +1069,6 @@ class ApiClient {
           return VerificationMethodTypeTransformer().decode(value);
         case 'VerifyAppAttestationLogin':
           return VerifyAppAttestationLogin.fromJson(value);
-        case 'VerifyAppAttestationToken':
-          return VerifyAppAttestationToken.fromJson(value);
         default:
           dynamic match;
           if (value is List && (match = _regList.firstMatch(targetType)?.group(1)) != null) {

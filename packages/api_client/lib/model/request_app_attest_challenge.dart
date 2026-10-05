@@ -14,6 +14,7 @@ class RequestAppAttestChallenge {
   /// Returns a new [RequestAppAttestChallenge] instance.
   RequestAppAttestChallenge({
     this.appleAppAttestKeyId,
+    this.requestChallenge,
     required this.token,
   });
 
@@ -26,21 +27,32 @@ class RequestAppAttestChallenge {
   ///
   String? appleAppAttestKeyId;
 
-  VerifyAppAttestationToken token;
+  /// Request previous challenge to be reused. If current challenge on server doesn't match, the response contains a new challenge.  Apple App Attest requires using the same key id and challenge when retrying attestation after server unavailable error.
+  ///
+  /// Please note: This property should have been non-nullable! Since the specification file
+  /// does not include a default value (using the "default:" property), however, the generated
+  /// source code must fall back to having a nullable type.
+  /// Consider adding a "default:" property in the specification file to hide this note.
+  ///
+  String? requestChallenge;
+
+  LoginPhaseTwoToken token;
 
   @override
   bool operator ==(Object other) => identical(this, other) || other is RequestAppAttestChallenge &&
     other.appleAppAttestKeyId == appleAppAttestKeyId &&
+    other.requestChallenge == requestChallenge &&
     other.token == token;
 
   @override
   int get hashCode =>
     // ignore: unnecessary_parenthesis
     (appleAppAttestKeyId == null ? 0 : appleAppAttestKeyId!.hashCode) +
+    (requestChallenge == null ? 0 : requestChallenge!.hashCode) +
     (token.hashCode);
 
   @override
-  String toString() => 'RequestAppAttestChallenge[appleAppAttestKeyId=$appleAppAttestKeyId, token=$token]';
+  String toString() => 'RequestAppAttestChallenge[appleAppAttestKeyId=$appleAppAttestKeyId, requestChallenge=$requestChallenge, token=$token]';
 
   Map<String, dynamic> toJson() {
     final json = <String, dynamic>{};
@@ -48,6 +60,11 @@ class RequestAppAttestChallenge {
       json[r'apple_app_attest_key_id'] = this.appleAppAttestKeyId;
     } else {
       json[r'apple_app_attest_key_id'] = null;
+    }
+    if (this.requestChallenge != null) {
+      json[r'request_challenge'] = this.requestChallenge;
+    } else {
+      json[r'request_challenge'] = null;
     }
       json[r'token'] = this.token;
     return json;
@@ -71,7 +88,8 @@ class RequestAppAttestChallenge {
 
       return RequestAppAttestChallenge(
         appleAppAttestKeyId: mapValueOfType<String>(json, r'apple_app_attest_key_id'),
-        token: VerifyAppAttestationToken.fromJson(json[r'token'])!,
+        requestChallenge: mapValueOfType<String>(json, r'request_challenge'),
+        token: LoginPhaseTwoToken.fromJson(json[r'token'])!,
       );
     }
     return null;

@@ -536,6 +536,7 @@ Class | Method | HTTP request | Description
  - [Location](doc//Location.md)
  - [LoginPhaseOneResult](doc//LoginPhaseOneResult.md)
  - [LoginPhaseTwoResult](doc//LoginPhaseTwoResult.md)
+ - [LoginPhaseTwoToken](doc//LoginPhaseTwoToken.md)
  - [LoginResult](doc//LoginResult.md)
  - [LoginSessionInfo](doc//LoginSessionInfo.md)
  - [MaintenanceTask](doc//MaintenanceTask.md)
@@ -754,7 +755,6 @@ Class | Method | HTTP request | Description
  - [VapidPublicKey](doc//VapidPublicKey.md)
  - [VerificationMethod](doc//VerificationMethod.md)
  - [VerifyAppAttestationLogin](doc//VerifyAppAttestationLogin.md)
- - [VerifyAppAttestationToken](doc//VerifyAppAttestationToken.md)
 
 
 ## Documentation For Authorization

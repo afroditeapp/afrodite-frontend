@@ -61,7 +61,7 @@ class LoginPhaseOneResult {
   /// source code must fall back to having a nullable type.
   /// Consider adding a "default:" property in the specification file to hide this note.
   ///
-  VerifyAppAttestationToken? verifyAppAttestationToken;
+  LoginPhaseTwoToken? verifyAppAttestationToken;
 
   @override
   bool operator ==(Object other) => identical(this, other) || other is LoginPhaseOneResult &&
@@ -144,7 +144,7 @@ class LoginPhaseOneResult {
         errorRegistrationPlatformDisabled: mapValueOfType<bool>(json, r'error_registration_platform_disabled') ?? false,
         errorSignInWithEmailUnverified: mapValueOfType<bool>(json, r'error_sign_in_with_email_unverified') ?? false,
         errorUnsupportedClient: mapValueOfType<bool>(json, r'error_unsupported_client') ?? false,
-        verifyAppAttestationToken: VerifyAppAttestationToken.fromJson(json[r'verify_app_attestation_token']),
+        verifyAppAttestationToken: LoginPhaseTwoToken.fromJson(json[r'verify_app_attestation_token']),
       );
     }
     return null;

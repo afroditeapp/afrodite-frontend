@@ -25,7 +25,7 @@ class VerifyAppAttestationLogin {
   ///
   AppAttestation? appAttestation;
 
-  VerifyAppAttestationToken token;
+  LoginPhaseTwoToken token;
 
   @override
   bool operator ==(Object other) => identical(this, other) || other is VerifyAppAttestationLogin &&
@@ -70,7 +70,7 @@ class VerifyAppAttestationLogin {
 
       return VerifyAppAttestationLogin(
         appAttestation: AppAttestation.fromJson(json[r'app_attestation']),
-        token: VerifyAppAttestationToken.fromJson(json[r'token'])!,
+        token: LoginPhaseTwoToken.fromJson(json[r'token'])!,
       );
     }
     return null;

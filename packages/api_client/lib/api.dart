@@ -264,6 +264,7 @@ part 'model/limited_action_status.dart';
 part 'model/location.dart';
 part 'model/login_phase_one_result.dart';
 part 'model/login_phase_two_result.dart';
+part 'model/login_phase_two_token.dart';
 part 'model/login_result.dart';
 part 'model/login_session_info.dart';
 part 'model/maintenance_task.dart';
@@ -482,7 +483,6 @@ part 'model/update_report_result.dart';
 part 'model/vapid_public_key.dart';
 part 'model/verification_method.dart';
 part 'model/verify_app_attestation_login.dart';
-part 'model/verify_app_attestation_token.dart';
 
 
 /// An [ApiClient] instance that uses the default values obtained from
