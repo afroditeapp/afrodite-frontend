@@ -519,6 +519,7 @@ class LoginRepository extends AppSingleton {
 
     AccountDatabaseManager? accountDb;
     String? appleAppAttestKeyId;
+    String? requestChallenge;
     if (Platform.isIOS) {
       try {
         accountDb = await CommonDatabaseManager.getInstance().getAccountDatabaseManager(aid);
@@ -529,6 +530,8 @@ class LoginRepository extends AppSingleton {
         if (key?.attestationPending ?? false) {
           // Allow client to try creating attestation using previous keypair
           appleAppAttestKeyId = null;
+          // Try to reuse the challenge the previous attestation was attempted with
+          requestChallenge = key?.challenge;
         }
       } catch (e) {
         _log.error("Opening account database for Apple App Attest failed: $e");
@@ -542,6 +545,7 @@ class LoginRepository extends AppSingleton {
             (api) => api.postRequestAppAttestChallenge(
               RequestAppAttestChallenge(
                 appleAppAttestKeyId: appleAppAttestKeyId,
+                requestChallenge: requestChallenge,
                 token: loginPhaseTwoToken,
               ),
             ),
@@ -567,7 +571,7 @@ class LoginRepository extends AppSingleton {
         if (appleAppAttestKeyId != null && challengeResult.appleAppAttestKeyExists == false) {
           _log.info("Apple App Attest key doesn't exist on server, clearing stored key");
           final r = await accountDb!.accountAction(
-            (db) => db.appleAppAttest.updateAppleAppAttestKey(null),
+            (db) => db.appleAppAttest.resetAppleAppAttestKey(),
           );
           if (r.isErr()) {
             _log.error("Clearing Apple App Attest key failed");

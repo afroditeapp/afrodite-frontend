@@ -17,9 +17,10 @@ class DaoReadAppleAppAttest extends DatabaseAccessor<AccountDatabase>
       appleAppAttestKey,
     )..where((t) => t.id.equals(SingleRowTable.ID.value))).getSingleOrNull();
     final keyId = row?.keyId;
-    if (keyId == null) {
+    final challenge = row?.challenge;
+    if (keyId == null || challenge == null) {
       return null;
     }
-    return AppleAppAttestKeyState(keyId, row?.attestationPending ?? false);
+    return AppleAppAttestKeyState(keyId, challenge, row?.attestationPending ?? false);
   }
 }

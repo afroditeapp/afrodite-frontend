@@ -11,25 +11,40 @@ class DaoWriteAppleAppAttest extends DatabaseAccessor<AccountDatabase>
     with _$DaoWriteAppleAppAttestMixin {
   DaoWriteAppleAppAttest(super.db);
 
-  /// Stores the Apple App Attest key identifier. Set [keyId] to null to clear
-  /// the key.
+  /// Stores the Apple App Attest key identifier and the [challenge] used to
+  /// attest it.
   ///
   /// Sets attestationPending to false.
-  Future<void> updateAppleAppAttestKey(String? keyId) async {
+  Future<void> saveAppleAppAttestKey({required String keyId, required String challenge}) async {
     await into(appleAppAttestKey).insertOnConflictUpdate(
       AppleAppAttestKeyCompanion.insert(
         id: SingleRowTable.ID,
         keyId: Value(keyId),
+        challenge: Value(challenge),
         attestationPending: Value(false),
       ),
     );
   }
 
-  Future<void> updateAttestationPending(bool attestationPending) async {
+  /// Remove key ID and challenge. Set attestationPending to false.
+  Future<void> resetAppleAppAttestKey() async {
     await into(appleAppAttestKey).insertOnConflictUpdate(
       AppleAppAttestKeyCompanion.insert(
         id: SingleRowTable.ID,
-        attestationPending: Value(attestationPending),
+        keyId: Value(null),
+        challenge: Value(null),
+        attestationPending: Value(false),
+      ),
+    );
+  }
+
+  Future<void> markAttestationPending({required String keyId, required String challenge}) async {
+    await into(appleAppAttestKey).insertOnConflictUpdate(
+      AppleAppAttestKeyCompanion.insert(
+        id: SingleRowTable.ID,
+        keyId: Value(keyId),
+        challenge: Value(challenge),
+        attestationPending: Value(true),
       ),
     );
   }

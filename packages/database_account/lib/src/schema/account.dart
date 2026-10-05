@@ -54,5 +54,6 @@ class LoginSessionTokens extends SingleRowTable {
 /// service was temporarily unavailable.
 class AppleAppAttestKey extends SingleRowTable {
   TextColumn get keyId => text().nullable()();
+  TextColumn get challenge => text().nullable()();
   BoolColumn get attestationPending => boolean().clientDefault(() => false)();
 }

@@ -11941,6 +11941,17 @@ class $AppleAppAttestKeyTable extends schema.AppleAppAttestKey
     type: DriftSqlType.string,
     requiredDuringInsert: false,
   );
+  static const VerificationMeta _challengeMeta = const VerificationMeta(
+    'challenge',
+  );
+  @override
+  late final GeneratedColumn<String> challenge = GeneratedColumn<String>(
+    'challenge',
+    aliasedName,
+    true,
+    type: DriftSqlType.string,
+    requiredDuringInsert: false,
+  );
   static const VerificationMeta _attestationPendingMeta =
       const VerificationMeta('attestationPending');
   @override
@@ -11956,7 +11967,12 @@ class $AppleAppAttestKeyTable extends schema.AppleAppAttestKey
     clientDefault: () => false,
   );
   @override
-  List<GeneratedColumn> get $columns => [id, keyId, attestationPending];
+  List<GeneratedColumn> get $columns => [
+    id,
+    keyId,
+    challenge,
+    attestationPending,
+  ];
   @override
   String get aliasedName => _alias ?? actualTableName;
   @override
@@ -11976,6 +11992,12 @@ class $AppleAppAttestKeyTable extends schema.AppleAppAttestKey
       context.handle(
         _keyIdMeta,
         keyId.isAcceptableOrUnknown(data['key_id']!, _keyIdMeta),
+      );
+    }
+    if (data.containsKey('challenge')) {
+      context.handle(
+        _challengeMeta,
+        challenge.isAcceptableOrUnknown(data['challenge']!, _challengeMeta),
       );
     }
     if (data.containsKey('attestation_pending')) {
@@ -12004,6 +12026,10 @@ class $AppleAppAttestKeyTable extends schema.AppleAppAttestKey
         DriftSqlType.string,
         data['${effectivePrefix}key_id'],
       ),
+      challenge: attachedDatabase.typeMapping.read(
+        DriftSqlType.string,
+        data['${effectivePrefix}challenge'],
+      ),
       attestationPending: attachedDatabase.typeMapping.read(
         DriftSqlType.bool,
         data['${effectivePrefix}attestation_pending'],
@@ -12021,10 +12047,12 @@ class AppleAppAttestKeyData extends DataClass
     implements Insertable<AppleAppAttestKeyData> {
   final int id;
   final String? keyId;
+  final String? challenge;
   final bool attestationPending;
   const AppleAppAttestKeyData({
     required this.id,
     this.keyId,
+    this.challenge,
     required this.attestationPending,
   });
   @override
@@ -12033,6 +12061,9 @@ class AppleAppAttestKeyData extends DataClass
     map['id'] = Variable<int>(id);
     if (!nullToAbsent || keyId != null) {
       map['key_id'] = Variable<String>(keyId);
+    }
+    if (!nullToAbsent || challenge != null) {
+      map['challenge'] = Variable<String>(challenge);
     }
     map['attestation_pending'] = Variable<bool>(attestationPending);
     return map;
@@ -12044,6 +12075,9 @@ class AppleAppAttestKeyData extends DataClass
       keyId: keyId == null && nullToAbsent
           ? const Value.absent()
           : Value(keyId),
+      challenge: challenge == null && nullToAbsent
+          ? const Value.absent()
+          : Value(challenge),
       attestationPending: Value(attestationPending),
     );
   }
@@ -12056,6 +12090,7 @@ class AppleAppAttestKeyData extends DataClass
     return AppleAppAttestKeyData(
       id: serializer.fromJson<int>(json['id']),
       keyId: serializer.fromJson<String?>(json['keyId']),
+      challenge: serializer.fromJson<String?>(json['challenge']),
       attestationPending: serializer.fromJson<bool>(json['attestationPending']),
     );
   }
@@ -12065,6 +12100,7 @@ class AppleAppAttestKeyData extends DataClass
     return <String, dynamic>{
       'id': serializer.toJson<int>(id),
       'keyId': serializer.toJson<String?>(keyId),
+      'challenge': serializer.toJson<String?>(challenge),
       'attestationPending': serializer.toJson<bool>(attestationPending),
     };
   }
@@ -12072,16 +12108,19 @@ class AppleAppAttestKeyData extends DataClass
   AppleAppAttestKeyData copyWith({
     int? id,
     Value<String?> keyId = const Value.absent(),
+    Value<String?> challenge = const Value.absent(),
     bool? attestationPending,
   }) => AppleAppAttestKeyData(
     id: id ?? this.id,
     keyId: keyId.present ? keyId.value : this.keyId,
+    challenge: challenge.present ? challenge.value : this.challenge,
     attestationPending: attestationPending ?? this.attestationPending,
   );
   AppleAppAttestKeyData copyWithCompanion(AppleAppAttestKeyCompanion data) {
     return AppleAppAttestKeyData(
       id: data.id.present ? data.id.value : this.id,
       keyId: data.keyId.present ? data.keyId.value : this.keyId,
+      challenge: data.challenge.present ? data.challenge.value : this.challenge,
       attestationPending: data.attestationPending.present
           ? data.attestationPending.value
           : this.attestationPending,
@@ -12093,19 +12132,21 @@ class AppleAppAttestKeyData extends DataClass
     return (StringBuffer('AppleAppAttestKeyData(')
           ..write('id: $id, ')
           ..write('keyId: $keyId, ')
+          ..write('challenge: $challenge, ')
           ..write('attestationPending: $attestationPending')
           ..write(')'))
         .toString();
   }
 
   @override
-  int get hashCode => Object.hash(id, keyId, attestationPending);
+  int get hashCode => Object.hash(id, keyId, challenge, attestationPending);
   @override
   bool operator ==(Object other) =>
       identical(this, other) ||
       (other is AppleAppAttestKeyData &&
           other.id == this.id &&
           other.keyId == this.keyId &&
+          other.challenge == this.challenge &&
           other.attestationPending == this.attestationPending);
 }
 
@@ -12113,25 +12154,30 @@ class AppleAppAttestKeyCompanion
     extends UpdateCompanion<AppleAppAttestKeyData> {
   final Value<int> id;
   final Value<String?> keyId;
+  final Value<String?> challenge;
   final Value<bool> attestationPending;
   const AppleAppAttestKeyCompanion({
     this.id = const Value.absent(),
     this.keyId = const Value.absent(),
+    this.challenge = const Value.absent(),
     this.attestationPending = const Value.absent(),
   });
   AppleAppAttestKeyCompanion.insert({
     this.id = const Value.absent(),
     this.keyId = const Value.absent(),
+    this.challenge = const Value.absent(),
     this.attestationPending = const Value.absent(),
   });
   static Insertable<AppleAppAttestKeyData> custom({
     Expression<int>? id,
     Expression<String>? keyId,
+    Expression<String>? challenge,
     Expression<bool>? attestationPending,
   }) {
     return RawValuesInsertable({
       if (id != null) 'id': id,
       if (keyId != null) 'key_id': keyId,
+      if (challenge != null) 'challenge': challenge,
       if (attestationPending != null) 'attestation_pending': attestationPending,
     });
   }
@@ -12139,11 +12185,13 @@ class AppleAppAttestKeyCompanion
   AppleAppAttestKeyCompanion copyWith({
     Value<int>? id,
     Value<String?>? keyId,
+    Value<String?>? challenge,
     Value<bool>? attestationPending,
   }) {
     return AppleAppAttestKeyCompanion(
       id: id ?? this.id,
       keyId: keyId ?? this.keyId,
+      challenge: challenge ?? this.challenge,
       attestationPending: attestationPending ?? this.attestationPending,
     );
   }
@@ -12157,6 +12205,9 @@ class AppleAppAttestKeyCompanion
     if (keyId.present) {
       map['key_id'] = Variable<String>(keyId.value);
     }
+    if (challenge.present) {
+      map['challenge'] = Variable<String>(challenge.value);
+    }
     if (attestationPending.present) {
       map['attestation_pending'] = Variable<bool>(attestationPending.value);
     }
@@ -12168,6 +12219,7 @@ class AppleAppAttestKeyCompanion
     return (StringBuffer('AppleAppAttestKeyCompanion(')
           ..write('id: $id, ')
           ..write('keyId: $keyId, ')
+          ..write('challenge: $challenge, ')
           ..write('attestationPending: $attestationPending')
           ..write(')'))
         .toString();

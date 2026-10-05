@@ -145,21 +145,34 @@ class AppAttestationManager extends AppSingleton {
       }
 
       final storedKey = await db.accountData((db) => db.appleAppAttest.getAppleAppAttestKey()).ok();
+      String? selectedKey;
 
       try {
         if (storedKey == null) {
           final newKeyId = await AppAttest.generateKey();
+          selectedKey = newKeyId;
           return await _attestAppleAppAttestKey(db, newKeyId, challenge);
         }
 
         if (storedKey.attestationPending) {
+          selectedKey = storedKey.keyId;
           return await _attestAppleAppAttestKey(db, storedKey.keyId, challenge);
         }
       } on PlatformException catch (e) {
-        if (_isServerUnavailableError(e)) {
-          // TODO: Try to use the same challenge
+        _log.info("Key attestation related error occurred");
+        final keyId = selectedKey;
+        if (_isServerUnavailableError(e) && keyId != null) {
           _log.info("Apple App Attest server unavailable, retry next time");
-          await db.accountAction((db) => db.appleAppAttest.updateAttestationPending(true));
+          await db.accountAction(
+            (db) => db.appleAppAttest.markAttestationPending(keyId: keyId, challenge: challenge),
+          );
+        } else if (_isInvalidKeyError(e)) {
+          _log.info("Apple App Attest key is invalid");
+          await db.accountAction((db) => db.appleAppAttest.resetAppleAppAttestKey());
+          if (!retry) {
+            _log.info("Retrying");
+            return await _getAppleAppAttestation(challenge: challenge, db: db, retry: true);
+          }
         }
         rethrow;
       }
@@ -173,10 +186,14 @@ class AppAttestationManager extends AppSingleton {
         );
         return Ok(AppleAppAttest(keyId: assertion.keyId, assertion: assertion.assertionObject));
       } on PlatformException catch (e) {
-        if (_isInvalidKeyError(e) && !retry) {
-          _log.info("Apple App Attest key is invalid, generating a new one");
-          await db.accountAction((db) => db.appleAppAttest.updateAppleAppAttestKey(null));
-          return await _getAppleAppAttestation(challenge: challenge, db: db, retry: true);
+        _log.info("Assertion related error occurred");
+        if (_isInvalidKeyError(e)) {
+          _log.info("Apple App Attest key is invalid");
+          await db.accountAction((db) => db.appleAppAttest.resetAppleAppAttestKey());
+          if (!retry) {
+            _log.info("Retrying");
+            return await _getAppleAppAttestation(challenge: challenge, db: db, retry: true);
+          }
         }
         rethrow;
       }
@@ -195,7 +212,9 @@ class AppAttestationManager extends AppSingleton {
     String challenge,
   ) async {
     final attestation = await AppAttest.attestKey(keyId: keyId, challenge: challenge);
-    await db.accountAction((db) => db.appleAppAttest.updateAppleAppAttestKey(keyId));
+    await db.accountAction(
+      (db) => db.appleAppAttest.saveAppleAppAttestKey(keyId: keyId, challenge: challenge),
+    );
     return Ok(AppleAppAttest(keyId: attestation.keyId, attestation: attestation.attestationObject));
   }
 
