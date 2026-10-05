@@ -520,45 +520,81 @@ class LoginRepository extends AppSingleton {
       return Ok(null);
     }
 
-    final challengeResult = await _apiNoConnection
-        .account(
-          (api) => api.postRequestAppAttestChallenge(
-            RequestAppAttestChallenge(token: verifyAppAttestationToken),
-          ),
-        )
-        .ok();
-
-    if (challengeResult == null) {
-      return Err(CseLoginApiRequestFailed());
-    }
-    if (challengeResult.errorInvalidVerifyAppAttestationToken) {
-      return Err(CseInvalidVerifyAppAttestationToken());
-    }
-    if (challengeResult.error) {
-      return Err(CseOtherError());
-    }
-    final challenge = challengeResult.challenge;
-    if (challenge == null) {
-      _log.error("RequestAppAttestChallengeResult doesn't contain challenge");
-      return Err(CseOtherError());
-    }
-
+    AccountDatabaseManager? accountDb;
+    String? appleAppAttestKeyId;
     if (Platform.isIOS) {
-      return await _getAppleAppAttestationForLogin(challenge, aid);
+      try {
+        accountDb = await CommonDatabaseManager.getInstance().getAccountDatabaseManager(aid);
+        appleAppAttestKeyId = await accountDb
+            .accountData((db) => db.appleAppAttest.getAppleAppAttestKey())
+            .ok();
+      } catch (e) {
+        _log.error("Opening account database for Apple App Attest failed: $e");
+        return Err(CseOtherError());
+      }
     }
-    if (Platform.isAndroid) {
-      return await _getPlayIntegrityAppAttestationForLogin(challenge);
+
+    try {
+      final challengeResult = await _apiNoConnection
+          .account(
+            (api) => api.postRequestAppAttestChallenge(
+              RequestAppAttestChallenge(
+                appleAppAttestKeyId: appleAppAttestKeyId,
+                token: verifyAppAttestationToken,
+              ),
+            ),
+          )
+          .ok();
+
+      if (challengeResult == null) {
+        return Err(CseLoginApiRequestFailed());
+      }
+      if (challengeResult.errorInvalidVerifyAppAttestationToken) {
+        return Err(CseInvalidVerifyAppAttestationToken());
+      }
+      if (challengeResult.error) {
+        return Err(CseOtherError());
+      }
+      final challenge = challengeResult.challenge;
+      if (challenge == null) {
+        _log.error("RequestAppAttestChallengeResult doesn't contain challenge");
+        return Err(CseOtherError());
+      }
+
+      if (Platform.isIOS) {
+        if (appleAppAttestKeyId != null && challengeResult.appleAppAttestKeyExists == false) {
+          _log.info("Apple App Attest key doesn't exist on server, clearing stored key");
+          final r = await accountDb!.accountAction(
+            (db) => db.appleAppAttest.updateAppleAppAttestKey(null),
+          );
+          if (r.isErr()) {
+            _log.error("Clearing Apple App Attest key failed");
+          }
+        }
+        return await _getAppleAppAttestationForLogin(challenge, accountDb!);
+      }
+      if (Platform.isAndroid) {
+        return await _getPlayIntegrityAppAttestationForLogin(challenge);
+      }
+      return Ok(null);
+    } finally {
+      if (accountDb != null) {
+        try {
+          await accountDb.close().timeout(const Duration(seconds: 2));
+        } on TimeoutException {
+          _log.error("Closing account DB timed out");
+        }
+      }
     }
-    return Ok(null);
   }
 
   Future<Result<AppAttestation?, CommonSignInError>> _getAppleAppAttestationForLogin(
     String challenge,
-    AccountId aid,
+    AccountDatabaseManager db,
   ) async {
     final appleAppAttest = await AppAttestationManager.getInstance().getAppleAppAttestation(
       challenge: challenge,
-      accountId: aid,
+      db: db,
     );
     switch (appleAppAttest) {
       case Ok(:final v):
