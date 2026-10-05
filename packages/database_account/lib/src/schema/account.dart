@@ -44,3 +44,10 @@ class LoginSessionTokens extends SingleRowTable {
   TextColumn get accessToken =>
       text().map(NullAwareTypeConverter.wrap(AccessTokenConverter())).nullable()();
 }
+
+/// Apple App Attest key which is bound to the account.
+///
+/// [keyId] is the key identifier returned by `DCAppAttestService.generateKey`.
+class AppleAppAttestKey extends SingleRowTable {
+  TextColumn get keyId => text().nullable()();
+}

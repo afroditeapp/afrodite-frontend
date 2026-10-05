@@ -11913,6 +11913,210 @@ class LoginSessionTokensCompanion extends UpdateCompanion<LoginSessionToken> {
   }
 }
 
+class $AppleAppAttestKeyTable extends schema.AppleAppAttestKey
+    with TableInfo<$AppleAppAttestKeyTable, AppleAppAttestKeyData> {
+  @override
+  final GeneratedDatabase attachedDatabase;
+  final String? _alias;
+  $AppleAppAttestKeyTable(this.attachedDatabase, [this._alias]);
+  static const VerificationMeta _idMeta = const VerificationMeta('id');
+  @override
+  late final GeneratedColumn<int> id = GeneratedColumn<int>(
+    'id',
+    aliasedName,
+    false,
+    hasAutoIncrement: true,
+    type: DriftSqlType.int,
+    requiredDuringInsert: false,
+    defaultConstraints: GeneratedColumn.constraintIsAlways(
+      'PRIMARY KEY AUTOINCREMENT',
+    ),
+  );
+  static const VerificationMeta _keyIdMeta = const VerificationMeta('keyId');
+  @override
+  late final GeneratedColumn<String> keyId = GeneratedColumn<String>(
+    'key_id',
+    aliasedName,
+    true,
+    type: DriftSqlType.string,
+    requiredDuringInsert: false,
+  );
+  @override
+  List<GeneratedColumn> get $columns => [id, keyId];
+  @override
+  String get aliasedName => _alias ?? actualTableName;
+  @override
+  String get actualTableName => $name;
+  static const String $name = 'apple_app_attest_key';
+  @override
+  VerificationContext validateIntegrity(
+    Insertable<AppleAppAttestKeyData> instance, {
+    bool isInserting = false,
+  }) {
+    final context = VerificationContext();
+    final data = instance.toColumns(true);
+    if (data.containsKey('id')) {
+      context.handle(_idMeta, id.isAcceptableOrUnknown(data['id']!, _idMeta));
+    }
+    if (data.containsKey('key_id')) {
+      context.handle(
+        _keyIdMeta,
+        keyId.isAcceptableOrUnknown(data['key_id']!, _keyIdMeta),
+      );
+    }
+    return context;
+  }
+
+  @override
+  Set<GeneratedColumn> get $primaryKey => {id};
+  @override
+  AppleAppAttestKeyData map(Map<String, dynamic> data, {String? tablePrefix}) {
+    final effectivePrefix = tablePrefix != null ? '$tablePrefix.' : '';
+    return AppleAppAttestKeyData(
+      id: attachedDatabase.typeMapping.read(
+        DriftSqlType.int,
+        data['${effectivePrefix}id'],
+      )!,
+      keyId: attachedDatabase.typeMapping.read(
+        DriftSqlType.string,
+        data['${effectivePrefix}key_id'],
+      ),
+    );
+  }
+
+  @override
+  $AppleAppAttestKeyTable createAlias(String alias) {
+    return $AppleAppAttestKeyTable(attachedDatabase, alias);
+  }
+}
+
+class AppleAppAttestKeyData extends DataClass
+    implements Insertable<AppleAppAttestKeyData> {
+  final int id;
+  final String? keyId;
+  const AppleAppAttestKeyData({required this.id, this.keyId});
+  @override
+  Map<String, Expression> toColumns(bool nullToAbsent) {
+    final map = <String, Expression>{};
+    map['id'] = Variable<int>(id);
+    if (!nullToAbsent || keyId != null) {
+      map['key_id'] = Variable<String>(keyId);
+    }
+    return map;
+  }
+
+  AppleAppAttestKeyCompanion toCompanion(bool nullToAbsent) {
+    return AppleAppAttestKeyCompanion(
+      id: Value(id),
+      keyId: keyId == null && nullToAbsent
+          ? const Value.absent()
+          : Value(keyId),
+    );
+  }
+
+  factory AppleAppAttestKeyData.fromJson(
+    Map<String, dynamic> json, {
+    ValueSerializer? serializer,
+  }) {
+    serializer ??= driftRuntimeOptions.defaultSerializer;
+    return AppleAppAttestKeyData(
+      id: serializer.fromJson<int>(json['id']),
+      keyId: serializer.fromJson<String?>(json['keyId']),
+    );
+  }
+  @override
+  Map<String, dynamic> toJson({ValueSerializer? serializer}) {
+    serializer ??= driftRuntimeOptions.defaultSerializer;
+    return <String, dynamic>{
+      'id': serializer.toJson<int>(id),
+      'keyId': serializer.toJson<String?>(keyId),
+    };
+  }
+
+  AppleAppAttestKeyData copyWith({
+    int? id,
+    Value<String?> keyId = const Value.absent(),
+  }) => AppleAppAttestKeyData(
+    id: id ?? this.id,
+    keyId: keyId.present ? keyId.value : this.keyId,
+  );
+  AppleAppAttestKeyData copyWithCompanion(AppleAppAttestKeyCompanion data) {
+    return AppleAppAttestKeyData(
+      id: data.id.present ? data.id.value : this.id,
+      keyId: data.keyId.present ? data.keyId.value : this.keyId,
+    );
+  }
+
+  @override
+  String toString() {
+    return (StringBuffer('AppleAppAttestKeyData(')
+          ..write('id: $id, ')
+          ..write('keyId: $keyId')
+          ..write(')'))
+        .toString();
+  }
+
+  @override
+  int get hashCode => Object.hash(id, keyId);
+  @override
+  bool operator ==(Object other) =>
+      identical(this, other) ||
+      (other is AppleAppAttestKeyData &&
+          other.id == this.id &&
+          other.keyId == this.keyId);
+}
+
+class AppleAppAttestKeyCompanion
+    extends UpdateCompanion<AppleAppAttestKeyData> {
+  final Value<int> id;
+  final Value<String?> keyId;
+  const AppleAppAttestKeyCompanion({
+    this.id = const Value.absent(),
+    this.keyId = const Value.absent(),
+  });
+  AppleAppAttestKeyCompanion.insert({
+    this.id = const Value.absent(),
+    this.keyId = const Value.absent(),
+  });
+  static Insertable<AppleAppAttestKeyData> custom({
+    Expression<int>? id,
+    Expression<String>? keyId,
+  }) {
+    return RawValuesInsertable({
+      if (id != null) 'id': id,
+      if (keyId != null) 'key_id': keyId,
+    });
+  }
+
+  AppleAppAttestKeyCompanion copyWith({Value<int>? id, Value<String?>? keyId}) {
+    return AppleAppAttestKeyCompanion(
+      id: id ?? this.id,
+      keyId: keyId ?? this.keyId,
+    );
+  }
+
+  @override
+  Map<String, Expression> toColumns(bool nullToAbsent) {
+    final map = <String, Expression>{};
+    if (id.present) {
+      map['id'] = Variable<int>(id.value);
+    }
+    if (keyId.present) {
+      map['key_id'] = Variable<String>(keyId.value);
+    }
+    return map;
+  }
+
+  @override
+  String toString() {
+    return (StringBuffer('AppleAppAttestKeyCompanion(')
+          ..write('id: $id, ')
+          ..write('keyId: $keyId')
+          ..write(')'))
+        .toString();
+  }
+}
+
 class $MyMediaContentTable extends schema.MyMediaContent
     with TableInfo<$MyMediaContentTable, MyMediaContentData> {
   @override
@@ -21654,6 +21858,8 @@ abstract class _$AccountDatabase extends GeneratedDatabase {
   late final $DbOwnerTable dbOwner = $DbOwnerTable(this);
   late final $LoginSessionTokensTable loginSessionTokens =
       $LoginSessionTokensTable(this);
+  late final $AppleAppAttestKeyTable appleAppAttestKey =
+      $AppleAppAttestKeyTable(this);
   late final $MyMediaContentTable myMediaContent = $MyMediaContentTable(this);
   late final $ProfileContentTable profileContent = $ProfileContentTable(this);
   late final $MyProfileTable myProfile = $MyProfileTable(this);
@@ -21714,6 +21920,8 @@ abstract class _$AccountDatabase extends GeneratedDatabase {
   late final DaoReadLoginSession daoReadLoginSession = DaoReadLoginSession(
     this as AccountDatabase,
   );
+  late final DaoReadAppleAppAttest daoReadAppleAppAttest =
+      DaoReadAppleAppAttest(this as AccountDatabase);
   late final DaoReadMedia daoReadMedia = DaoReadMedia(this as AccountDatabase);
   late final DaoReadMyMedia daoReadMyMedia = DaoReadMyMedia(
     this as AccountDatabase,
@@ -21762,6 +21970,8 @@ abstract class _$AccountDatabase extends GeneratedDatabase {
   late final DaoWriteLoginSession daoWriteLoginSession = DaoWriteLoginSession(
     this as AccountDatabase,
   );
+  late final DaoWriteAppleAppAttest daoWriteAppleAppAttest =
+      DaoWriteAppleAppAttest(this as AccountDatabase);
   late final DaoWriteMedia daoWriteMedia = DaoWriteMedia(
     this as AccountDatabase,
   );
@@ -21835,6 +22045,7 @@ abstract class _$AccountDatabase extends GeneratedDatabase {
     ageVerified,
     dbOwner,
     loginSessionTokens,
+    appleAppAttestKey,
     myMediaContent,
     profileContent,
     myProfile,

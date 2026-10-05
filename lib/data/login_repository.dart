@@ -485,7 +485,7 @@ class LoginRepository extends AppSingleton {
     VerifyAppAttestationToken verifyAppAttestationToken,
     AccountId aid,
   ) async {
-    final appAttestationResult = await _getAppAttestationForLogin(verifyAppAttestationToken);
+    final appAttestationResult = await _getAppAttestationForLogin(verifyAppAttestationToken, aid);
     final AppAttestation? appAttestation;
     switch (appAttestationResult) {
       case Ok(:final v):
@@ -514,8 +514,9 @@ class LoginRepository extends AppSingleton {
 
   Future<Result<AppAttestation?, CommonSignInError>> _getAppAttestationForLogin(
     VerifyAppAttestationToken verifyAppAttestationToken,
+    AccountId aid,
   ) async {
-    if (kIsWeb || !Platform.isAndroid) {
+    if (kIsWeb) {
       return Ok(null);
     }
 
@@ -542,6 +543,45 @@ class LoginRepository extends AppSingleton {
       return Err(CseOtherError());
     }
 
+    if (Platform.isIOS) {
+      return await _getAppleAppAttestationForLogin(challenge, aid);
+    }
+    if (Platform.isAndroid) {
+      return await _getPlayIntegrityAppAttestationForLogin(challenge);
+    }
+    return Ok(null);
+  }
+
+  Future<Result<AppAttestation?, CommonSignInError>> _getAppleAppAttestationForLogin(
+    String challenge,
+    AccountId aid,
+  ) async {
+    final appleAppAttest = await AppAttestationManager.getInstance().getAppleAppAttestation(
+      challenge: challenge,
+      accountId: aid,
+    );
+    switch (appleAppAttest) {
+      case Ok(:final v):
+        return Ok(AppAttestation(appleAppAttest: v));
+      case Err(:final e):
+        switch (e) {
+          case AppleAppAttestNotSupported():
+            return Ok(null);
+          case AppleAppAttestErrorString(:final message):
+            _log.error("Apple App Attest error: $message");
+            final errorText = R.strings.snackbar_play_integrity_api_error(message);
+            showSnackBar(errorText);
+            // Give the user time to read the error. 4 seconds
+            // is the default snackbar displaying time.
+            await Future<void>.delayed(const Duration(seconds: 4));
+            return Ok(null);
+        }
+    }
+  }
+
+  Future<Result<AppAttestation?, CommonSignInError>> _getPlayIntegrityAppAttestationForLogin(
+    String challenge,
+  ) async {
     final playIntegrity = await AppAttestationManager.getInstance().getPlayIntegrityAppAttestation(
       requestHash: challenge,
     );

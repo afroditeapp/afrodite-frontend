@@ -1,4 +1,5 @@
 import 'package:database_account/src/read/account/account.dart';
+import 'package:database_account/src/read/account/apple_app_attest.dart';
 import 'package:database_account/src/read/app/app_notification_settings.dart';
 import 'package:database_account/src/read/chat/backup.dart';
 import 'package:database_account/src/read/chat/conversation_list.dart';
@@ -19,6 +20,7 @@ import 'package:database_account/src/read/profile/privacy.dart';
 import 'package:database_account/src/read/profile/profile.dart';
 import 'package:database_account/src/read/profile/search.dart';
 import 'package:database_account/src/write/account/account.dart';
+import 'package:database_account/src/write/account/apple_app_attest.dart';
 import 'package:database_account/src/write/app/app_notification_settings.dart';
 import 'package:database_account/src/write/chat/backup.dart';
 import 'package:database_account/src/write/chat/conversation_list.dart';
@@ -91,6 +93,7 @@ part 'database.g.dart';
     schema.AgeVerified,
     schema.DbOwner,
     schema.LoginSessionTokens,
+    schema.AppleAppAttestKey,
     // Media
     schema.MyMediaContent,
     schema.ProfileContent,
@@ -132,6 +135,7 @@ part 'database.g.dart';
     // Account
     DaoReadAccount,
     DaoReadLoginSession,
+    DaoReadAppleAppAttest,
     // Media
     DaoReadMedia,
     DaoReadMyMedia,
@@ -161,6 +165,7 @@ part 'database.g.dart';
     // Account
     DaoWriteAccount,
     DaoWriteLoginSession,
+    DaoWriteAppleAppAttest,
     // Media
     DaoWriteMedia,
     DaoWriteMyMedia,
@@ -202,6 +207,7 @@ class AccountDatabaseRead {
   // Account
   DaoReadAccount get account => db.daoReadAccount;
   DaoReadLoginSession get loginSession => db.daoReadLoginSession;
+  DaoReadAppleAppAttest get appleAppAttest => db.daoReadAppleAppAttest;
   // Media
   DaoReadMedia get media => db.daoReadMedia;
   DaoReadMyMedia get myMedia => db.daoReadMyMedia;
@@ -232,6 +238,7 @@ class AccountDatabaseWrite {
   DaoWriteConfig get config => db.daoWriteConfig;
   // Account
   DaoWriteAccount get account => db.daoWriteAccount;
+  DaoWriteAppleAppAttest get appleAppAttest => db.daoWriteAppleAppAttest;
   DaoWriteLoginSession get loginSession => db.daoWriteLoginSession;
   // Media
   DaoWriteMedia get media => db.daoWriteMedia;

@@ -1,4 +1,8 @@
+import 'dart:async';
+
 import 'package:app/config_services.dart';
+import 'package:app/database/account_database_manager.dart';
+import 'package:app/database/common_database_manager.dart';
 import 'package:app/utils/result.dart';
 import 'package:app_attest/app_attest.dart';
 import 'package:flutter/services.dart';
@@ -20,6 +24,15 @@ class PlayIntegrityErrorString extends PlayIntegrityError {
   PlayIntegrityErrorString(this.message);
 }
 
+sealed class AppleAppAttestError {}
+
+class AppleAppAttestNotSupported extends AppleAppAttestError {}
+
+class AppleAppAttestErrorString extends AppleAppAttestError {
+  final String message;
+  AppleAppAttestErrorString(this.message);
+}
+
 abstract class AppAttestationManagerCmd<T> {
   final BehaviorSubject<T?> completed = BehaviorSubject.seeded(null);
 
@@ -35,6 +48,13 @@ class GetPlayIntegrityAppAttestation
     extends AppAttestationManagerCmd<Result<PlayIntegrityAppAttestation, PlayIntegrityError>> {
   final String requestHash;
   GetPlayIntegrityAppAttestation(this.requestHash);
+}
+
+class GetAppleAppAttestation
+    extends AppAttestationManagerCmd<Result<AppleAppAttest, AppleAppAttestError>> {
+  final String challenge;
+  final AccountId accountId;
+  GetAppleAppAttestation(this.challenge, this.accountId);
 }
 
 class AppAttestationManager extends AppSingleton {
@@ -62,6 +82,10 @@ class AppAttestationManager extends AppSingleton {
             case GetPlayIntegrityAppAttestation():
               cmd.completed.add(
                 await _getPlayIntegrityAppAttestation(requestHash: cmd.requestHash),
+              );
+            case GetAppleAppAttestation():
+              cmd.completed.add(
+                await _getAppleAppAttestation(challenge: cmd.challenge, accountId: cmd.accountId),
               );
           }
         })
@@ -107,6 +131,98 @@ class AppAttestationManager extends AppSingleton {
     required String requestHash,
   }) async {
     final cmd = GetPlayIntegrityAppAttestation(requestHash);
+    _cmds.add(cmd);
+    return await cmd.waitCompletionAndDispose();
+  }
+
+  Future<Result<AppleAppAttest, AppleAppAttestError>> _getAppleAppAttestation({
+    required String challenge,
+    required AccountId accountId,
+    bool retry = false,
+  }) async {
+    final db = await CommonDatabaseManager.getInstance().getAccountDatabaseManager(accountId);
+    try {
+      if (!await AppAttest.isSupported()) {
+        return Err(AppleAppAttestNotSupported());
+      }
+
+      final keyId = await db.accountData((db) => db.appleAppAttest.getAppleAppAttestKey()).ok();
+
+      if (keyId == null) {
+        return await _attestNewAppleAppAttestKey(db, challenge);
+      }
+
+      // The key has already been attested, so prove it is still valid with an
+      // assertion.
+      try {
+        final assertion = await AppAttest.generateAssertion(keyId: keyId, challenge: challenge);
+        return Ok(AppleAppAttest(keyId: assertion.keyId, assertion: assertion.assertionObject));
+      } on PlatformException catch (e) {
+        if (_isInvalidKeyError(e) && !retry) {
+          _log.info("Apple App Attest key is invalid, generating a new one");
+          await db.accountAction((db) => db.appleAppAttest.updateAppleAppAttestKey(null));
+          return await _getAppleAppAttestation(
+            challenge: challenge,
+            accountId: accountId,
+            retry: true,
+          );
+        }
+        rethrow;
+      }
+    } on PlatformException catch (e) {
+      _log.error("Apple App Attest error: ${e.code} ${e.message}");
+      return Err(AppleAppAttestErrorString(e.code));
+    } catch (e) {
+      _log.error("Unknown Apple App Attest error: $e");
+      return Err(AppleAppAttestErrorString("Unknown error"));
+    } finally {
+      await _closeAccountDb(db);
+    }
+  }
+
+  Future<Result<AppleAppAttest, AppleAppAttestError>> _attestNewAppleAppAttestKey(
+    AccountDatabaseManager db,
+    String challenge,
+  ) async {
+    final newKeyId = await AppAttest.generateKey();
+    final attestation = await AppAttest.attestKey(keyId: newKeyId, challenge: challenge);
+    await db.accountAction((db) => db.appleAppAttest.updateAppleAppAttestKey(newKeyId));
+    return Ok(AppleAppAttest(keyId: attestation.keyId, attestation: attestation.attestationObject));
+  }
+
+  /// Returns true if stored key is invalid and must be regenerated.
+  bool _isInvalidKeyError(PlatformException e) {
+    if (e.code != "GENERATE_ASSERTION_FAILED" && e.code != "ATTEST_KEY_FAILED") {
+      return false;
+    }
+    final details = e.details;
+    if (details is! Map) {
+      return false;
+    }
+
+    // Domain of Apple's DeviceCheck (App Attest) errors, `DCErrorDomain`.
+    const dcErrorDomain = "com.apple.devicecheck.error";
+
+    // Apple's `DCErrorInvalidKey`, returned when a key is invalid or has been
+    // revoked and must be regenerated.
+    const dcErrorInvalidKey = 3;
+
+    return details["domain"] == dcErrorDomain && details["code"] == dcErrorInvalidKey;
+  }
+
+  Future<void> _closeAccountDb(AccountDatabaseManager db) async {
+    try {
+      await db.close().timeout(const Duration(seconds: 2));
+    } on TimeoutException {
+      _log.error("Closing account DB timed out");
+    }
+  }
+
+  Future<Result<AppleAppAttest, AppleAppAttestError>> getAppleAppAttestation({
+    required String challenge,
+    required AccountId accountId,
+  }) async {
+    final cmd = GetAppleAppAttestation(challenge, accountId);
     _cmds.add(cmd);
     return await cmd.waitCompletionAndDispose();
   }

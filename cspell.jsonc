@@ -81,6 +81,7 @@
     "magick",
     "hexcolor",
     "codesign",
-    "xcarchive"
+    "xcarchive",
+    "devicecheck"
   ]
 }
