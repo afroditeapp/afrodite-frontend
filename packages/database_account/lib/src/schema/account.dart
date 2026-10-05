@@ -48,6 +48,11 @@ class LoginSessionTokens extends SingleRowTable {
 /// Apple App Attest key which is bound to the account.
 ///
 /// [keyId] is the key identifier returned by `DCAppAttestService.generateKey`.
+///
+/// [attestationPending] is true when [keyId] is not yet
+/// successfully attested, for example because Apple's App Attest
+/// service was temporarily unavailable.
 class AppleAppAttestKey extends SingleRowTable {
   TextColumn get keyId => text().nullable()();
+  BoolColumn get attestationPending => boolean().clientDefault(() => false)();
 }

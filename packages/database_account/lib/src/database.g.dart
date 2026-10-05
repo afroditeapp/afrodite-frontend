@@ -11941,8 +11941,22 @@ class $AppleAppAttestKeyTable extends schema.AppleAppAttestKey
     type: DriftSqlType.string,
     requiredDuringInsert: false,
   );
+  static const VerificationMeta _attestationPendingMeta =
+      const VerificationMeta('attestationPending');
   @override
-  List<GeneratedColumn> get $columns => [id, keyId];
+  late final GeneratedColumn<bool> attestationPending = GeneratedColumn<bool>(
+    'attestation_pending',
+    aliasedName,
+    false,
+    type: DriftSqlType.bool,
+    requiredDuringInsert: false,
+    defaultConstraints: GeneratedColumn.constraintIsAlways(
+      'CHECK ("attestation_pending" IN (0, 1))',
+    ),
+    clientDefault: () => false,
+  );
+  @override
+  List<GeneratedColumn> get $columns => [id, keyId, attestationPending];
   @override
   String get aliasedName => _alias ?? actualTableName;
   @override
@@ -11964,6 +11978,15 @@ class $AppleAppAttestKeyTable extends schema.AppleAppAttestKey
         keyId.isAcceptableOrUnknown(data['key_id']!, _keyIdMeta),
       );
     }
+    if (data.containsKey('attestation_pending')) {
+      context.handle(
+        _attestationPendingMeta,
+        attestationPending.isAcceptableOrUnknown(
+          data['attestation_pending']!,
+          _attestationPendingMeta,
+        ),
+      );
+    }
     return context;
   }
 
@@ -11981,6 +12004,10 @@ class $AppleAppAttestKeyTable extends schema.AppleAppAttestKey
         DriftSqlType.string,
         data['${effectivePrefix}key_id'],
       ),
+      attestationPending: attachedDatabase.typeMapping.read(
+        DriftSqlType.bool,
+        data['${effectivePrefix}attestation_pending'],
+      )!,
     );
   }
 
@@ -11994,7 +12021,12 @@ class AppleAppAttestKeyData extends DataClass
     implements Insertable<AppleAppAttestKeyData> {
   final int id;
   final String? keyId;
-  const AppleAppAttestKeyData({required this.id, this.keyId});
+  final bool attestationPending;
+  const AppleAppAttestKeyData({
+    required this.id,
+    this.keyId,
+    required this.attestationPending,
+  });
   @override
   Map<String, Expression> toColumns(bool nullToAbsent) {
     final map = <String, Expression>{};
@@ -12002,6 +12034,7 @@ class AppleAppAttestKeyData extends DataClass
     if (!nullToAbsent || keyId != null) {
       map['key_id'] = Variable<String>(keyId);
     }
+    map['attestation_pending'] = Variable<bool>(attestationPending);
     return map;
   }
 
@@ -12011,6 +12044,7 @@ class AppleAppAttestKeyData extends DataClass
       keyId: keyId == null && nullToAbsent
           ? const Value.absent()
           : Value(keyId),
+      attestationPending: Value(attestationPending),
     );
   }
 
@@ -12022,6 +12056,7 @@ class AppleAppAttestKeyData extends DataClass
     return AppleAppAttestKeyData(
       id: serializer.fromJson<int>(json['id']),
       keyId: serializer.fromJson<String?>(json['keyId']),
+      attestationPending: serializer.fromJson<bool>(json['attestationPending']),
     );
   }
   @override
@@ -12030,20 +12065,26 @@ class AppleAppAttestKeyData extends DataClass
     return <String, dynamic>{
       'id': serializer.toJson<int>(id),
       'keyId': serializer.toJson<String?>(keyId),
+      'attestationPending': serializer.toJson<bool>(attestationPending),
     };
   }
 
   AppleAppAttestKeyData copyWith({
     int? id,
     Value<String?> keyId = const Value.absent(),
+    bool? attestationPending,
   }) => AppleAppAttestKeyData(
     id: id ?? this.id,
     keyId: keyId.present ? keyId.value : this.keyId,
+    attestationPending: attestationPending ?? this.attestationPending,
   );
   AppleAppAttestKeyData copyWithCompanion(AppleAppAttestKeyCompanion data) {
     return AppleAppAttestKeyData(
       id: data.id.present ? data.id.value : this.id,
       keyId: data.keyId.present ? data.keyId.value : this.keyId,
+      attestationPending: data.attestationPending.present
+          ? data.attestationPending.value
+          : this.attestationPending,
     );
   }
 
@@ -12051,47 +12092,59 @@ class AppleAppAttestKeyData extends DataClass
   String toString() {
     return (StringBuffer('AppleAppAttestKeyData(')
           ..write('id: $id, ')
-          ..write('keyId: $keyId')
+          ..write('keyId: $keyId, ')
+          ..write('attestationPending: $attestationPending')
           ..write(')'))
         .toString();
   }
 
   @override
-  int get hashCode => Object.hash(id, keyId);
+  int get hashCode => Object.hash(id, keyId, attestationPending);
   @override
   bool operator ==(Object other) =>
       identical(this, other) ||
       (other is AppleAppAttestKeyData &&
           other.id == this.id &&
-          other.keyId == this.keyId);
+          other.keyId == this.keyId &&
+          other.attestationPending == this.attestationPending);
 }
 
 class AppleAppAttestKeyCompanion
     extends UpdateCompanion<AppleAppAttestKeyData> {
   final Value<int> id;
   final Value<String?> keyId;
+  final Value<bool> attestationPending;
   const AppleAppAttestKeyCompanion({
     this.id = const Value.absent(),
     this.keyId = const Value.absent(),
+    this.attestationPending = const Value.absent(),
   });
   AppleAppAttestKeyCompanion.insert({
     this.id = const Value.absent(),
     this.keyId = const Value.absent(),
+    this.attestationPending = const Value.absent(),
   });
   static Insertable<AppleAppAttestKeyData> custom({
     Expression<int>? id,
     Expression<String>? keyId,
+    Expression<bool>? attestationPending,
   }) {
     return RawValuesInsertable({
       if (id != null) 'id': id,
       if (keyId != null) 'key_id': keyId,
+      if (attestationPending != null) 'attestation_pending': attestationPending,
     });
   }
 
-  AppleAppAttestKeyCompanion copyWith({Value<int>? id, Value<String?>? keyId}) {
+  AppleAppAttestKeyCompanion copyWith({
+    Value<int>? id,
+    Value<String?>? keyId,
+    Value<bool>? attestationPending,
+  }) {
     return AppleAppAttestKeyCompanion(
       id: id ?? this.id,
       keyId: keyId ?? this.keyId,
+      attestationPending: attestationPending ?? this.attestationPending,
     );
   }
 
@@ -12104,6 +12157,9 @@ class AppleAppAttestKeyCompanion
     if (keyId.present) {
       map['key_id'] = Variable<String>(keyId.value);
     }
+    if (attestationPending.present) {
+      map['attestation_pending'] = Variable<bool>(attestationPending.value);
+    }
     return map;
   }
 
@@ -12111,7 +12167,8 @@ class AppleAppAttestKeyCompanion
   String toString() {
     return (StringBuffer('AppleAppAttestKeyCompanion(')
           ..write('id: $id, ')
-          ..write('keyId: $keyId')
+          ..write('keyId: $keyId, ')
+          ..write('attestationPending: $attestationPending')
           ..write(')'))
         .toString();
   }

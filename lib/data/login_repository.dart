@@ -525,9 +525,14 @@ class LoginRepository extends AppSingleton {
     if (Platform.isIOS) {
       try {
         accountDb = await CommonDatabaseManager.getInstance().getAccountDatabaseManager(aid);
-        appleAppAttestKeyId = await accountDb
+        final key = await accountDb
             .accountData((db) => db.appleAppAttest.getAppleAppAttestKey())
             .ok();
+        appleAppAttestKeyId = key?.keyId;
+        if (key?.attestationPending ?? false) {
+          // Allow client to try creating attestation using previous keypair
+          appleAppAttestKeyId = null;
+        }
       } catch (e) {
         _log.error("Opening account database for Apple App Attest failed: $e");
         return Err(CseOtherError());

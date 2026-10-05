@@ -1,4 +1,5 @@
 import 'package:database_account/src/database.dart';
+import 'package:database_model/database_model.dart';
 import 'package:database_utils/database_utils.dart';
 import 'package:drift/drift.dart';
 
@@ -11,12 +12,14 @@ class DaoReadAppleAppAttest extends DatabaseAccessor<AccountDatabase>
     with _$DaoReadAppleAppAttestMixin {
   DaoReadAppleAppAttest(super.db);
 
-  /// Returns the stored Apple App Attest key identifier, or null if no key has
-  /// been stored.
-  Future<String?> getAppleAppAttestKey() async {
+  Future<AppleAppAttestKeyState?> getAppleAppAttestKey() async {
     final row = await (select(
       appleAppAttestKey,
     )..where((t) => t.id.equals(SingleRowTable.ID.value))).getSingleOrNull();
-    return row?.keyId;
+    final keyId = row?.keyId;
+    if (keyId == null) {
+      return null;
+    }
+    return AppleAppAttestKeyState(keyId, row?.attestationPending ?? false);
   }
 }

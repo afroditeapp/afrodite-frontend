@@ -5,6 +5,19 @@ class LocalAccountId {
   LocalAccountId(this.id);
 }
 
+/// Apple App Attest key stored for the local account.
+class AppleAppAttestKeyState {
+  /// Key identifier returned by `DCAppAttestService.generateKey`.
+  final String keyId;
+
+  /// True when [keyId] is not yet successfully attested,
+  /// for example because Apple's App Attest service was temporarily
+  /// unavailable.
+  final bool attestationPending;
+
+  AppleAppAttestKeyState(this.keyId, this.attestationPending);
+}
+
 enum AccountState { initialSetup, normal, banned, pendingDeletion }
 
 extension AccountStateContainerToAccountState on AccountStateContainer {

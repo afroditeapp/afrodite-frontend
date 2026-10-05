@@ -144,16 +144,33 @@ class AppAttestationManager extends AppSingleton {
         return Err(AppleAppAttestNotSupported());
       }
 
-      final keyId = await db.accountData((db) => db.appleAppAttest.getAppleAppAttestKey()).ok();
+      final storedKey = await db.accountData((db) => db.appleAppAttest.getAppleAppAttestKey()).ok();
 
-      if (keyId == null) {
-        return await _attestNewAppleAppAttestKey(db, challenge);
+      try {
+        if (storedKey == null) {
+          final newKeyId = await AppAttest.generateKey();
+          return await _attestAppleAppAttestKey(db, newKeyId, challenge);
+        }
+
+        if (storedKey.attestationPending) {
+          return await _attestAppleAppAttestKey(db, storedKey.keyId, challenge);
+        }
+      } on PlatformException catch (e) {
+        if (_isServerUnavailableError(e)) {
+          // TODO: Try to use the same challenge
+          _log.info("Apple App Attest server unavailable, retry next time");
+          await db.accountAction((db) => db.appleAppAttest.updateAttestationPending(true));
+        }
+        rethrow;
       }
 
       // The key has already been attested, so prove it is still valid with an
       // assertion.
       try {
-        final assertion = await AppAttest.generateAssertion(keyId: keyId, challenge: challenge);
+        final assertion = await AppAttest.generateAssertion(
+          keyId: storedKey.keyId,
+          challenge: challenge,
+        );
         return Ok(AppleAppAttest(keyId: assertion.keyId, assertion: assertion.assertionObject));
       } on PlatformException catch (e) {
         if (_isInvalidKeyError(e) && !retry) {
@@ -172,13 +189,13 @@ class AppAttestationManager extends AppSingleton {
     }
   }
 
-  Future<Result<AppleAppAttest, AppleAppAttestError>> _attestNewAppleAppAttestKey(
+  Future<Result<AppleAppAttest, AppleAppAttestError>> _attestAppleAppAttestKey(
     AccountDatabaseManager db,
+    String keyId,
     String challenge,
   ) async {
-    final newKeyId = await AppAttest.generateKey();
-    final attestation = await AppAttest.attestKey(keyId: newKeyId, challenge: challenge);
-    await db.accountAction((db) => db.appleAppAttest.updateAppleAppAttestKey(newKeyId));
+    final attestation = await AppAttest.attestKey(keyId: keyId, challenge: challenge);
+    await db.accountAction((db) => db.appleAppAttest.updateAppleAppAttestKey(keyId));
     return Ok(AppleAppAttest(keyId: attestation.keyId, attestation: attestation.attestationObject));
   }
 
@@ -200,6 +217,27 @@ class AppAttestationManager extends AppSingleton {
     const dcErrorInvalidKey = 3;
 
     return details["domain"] == dcErrorDomain && details["code"] == dcErrorInvalidKey;
+  }
+
+  /// Returns true if Apple's App Attest service was temporarily unavailable and
+  /// the attestation should be retried later with the same key and challenge.
+  bool _isServerUnavailableError(PlatformException e) {
+    if (e.code != "ATTEST_KEY_FAILED") {
+      return false;
+    }
+    final details = e.details;
+    if (details is! Map) {
+      return false;
+    }
+
+    // Domain of Apple's DeviceCheck (App Attest) errors, `DCErrorDomain`.
+    const dcErrorDomain = "com.apple.devicecheck.error";
+
+    // Apple's `DCErrorServerUnavailable`, returned when the framework isn't able
+    // to contact the App Attest service during an attestation.
+    const dcErrorServerUnavailable = 4;
+
+    return details["domain"] == dcErrorDomain && details["code"] == dcErrorServerUnavailable;
   }
 
   Future<Result<AppleAppAttest, AppleAppAttestError>> getAppleAppAttestation({

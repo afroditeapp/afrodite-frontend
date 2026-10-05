@@ -13,9 +13,24 @@ class DaoWriteAppleAppAttest extends DatabaseAccessor<AccountDatabase>
 
   /// Stores the Apple App Attest key identifier. Set [keyId] to null to clear
   /// the key.
+  ///
+  /// Sets attestationPending to false.
   Future<void> updateAppleAppAttestKey(String? keyId) async {
     await into(appleAppAttestKey).insertOnConflictUpdate(
-      AppleAppAttestKeyCompanion.insert(id: SingleRowTable.ID, keyId: Value(keyId)),
+      AppleAppAttestKeyCompanion.insert(
+        id: SingleRowTable.ID,
+        keyId: Value(keyId),
+        attestationPending: Value(false),
+      ),
+    );
+  }
+
+  Future<void> updateAttestationPending(bool attestationPending) async {
+    await into(appleAppAttestKey).insertOnConflictUpdate(
+      AppleAppAttestKeyCompanion.insert(
+        id: SingleRowTable.ID,
+        attestationPending: Value(attestationPending),
+      ),
     );
   }
 }
