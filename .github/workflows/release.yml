@@ -9,8 +9,39 @@ on:
       - "*v*.*.*"
 
 jobs:
-  release:
-    name: Release
+  release-android:
+    name: Release Android
+    runs-on: ubuntu-24.04
+    steps:
+      - name: Checkout code
+        uses: actions/checkout@v4
+
+      - name: Set up Flutter
+        uses: subosito/flutter-action@1a449444c387b1966244ae4d4f8c696479add0b2 # v2.23.0
+        with:
+          flutter-version: '3.47.4'
+          channel: 'stable'
+
+      - name: Build Android release
+        run: |
+          unset ANDROID_NDK ANDROID_NDK_HOME ANDROID_NDK_LATEST_HOME ANDROID_NDK_ROOT
+          make build-android-release-aab
+
+      - name: Create release assets
+        run: |
+          mkdir -p target/assets
+          mv build/app/outputs/bundle/release/app-release.aab "target/assets/android-release-$GITHUB_REF_NAME.aab"
+
+      - name: Upload assets
+        uses: softprops/action-gh-release@c95fe1489396fe8a9eb87c0abf8aa5b2ef267fda # v2.2.1
+        if: startsWith(github.ref, 'refs/tags/')
+        with:
+          fail_on_unmatched_files: true
+          files: |
+            target/assets/*.aab
+
+  release-web:
+    name: Release Web
     runs-on: ubuntu-24.04
     steps:
       - name: Checkout code
@@ -44,11 +75,6 @@ jobs:
         run: |
           make build-rust-utils-for-web
 
-      - name: Build Android release
-        run: |
-          unset ANDROID_NDK ANDROID_NDK_HOME ANDROID_NDK_LATEST_HOME ANDROID_NDK_ROOT
-          make build-android-release-aab
-
       - name: Build web release
         run: |
           make build-web-release
@@ -56,7 +82,6 @@ jobs:
       - name: Create release assets
         run: |
           mkdir -p target/assets
-          mv build/app/outputs/bundle/release/app-release.aab "target/assets/android-release-$GITHUB_REF_NAME.aab"
           mv build/web-release.tar.gz "target/assets/web-release-$GITHUB_REF_NAME.tar.gz"
 
       - name: Upload assets
@@ -65,5 +90,4 @@ jobs:
         with:
           fail_on_unmatched_files: true
           files: |
-            target/assets/*.aab
             target/assets/*.tar.gz
