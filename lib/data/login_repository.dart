@@ -335,6 +335,7 @@ class LoginRepository extends AppSingleton {
   }
 
   Future<Result<(), SignInWithEvent>> _handleSignInWithLoginInfo(SignInWithLoginInfo info) async {
+    info.language ??= ClientLanguage(l: R.language);
     final login = await _apiNoConnection.account((api) => api.postSignInWithLogin(info)).ok();
     if (login == null) {
       return Err(SignInWithSignInError(await _checkServerMaintenanceInfo()));
@@ -351,10 +352,6 @@ class LoginRepository extends AppSingleton {
       return Err(ElrteErrorOccurred());
     }
 
-    final clientLocale = await CommonDatabaseManager.getInstance().commonStreamSingle(
-      (db) => db.app.watchCurrentLocale(),
-    );
-
     final result = await _apiNoConnection
         .account(
           (api) => api.postRequestEmailLoginToken(
@@ -362,9 +359,7 @@ class LoginRepository extends AppSingleton {
               clientType: AppVersionManager.getInstance().clientType,
               email: cmd.email,
               loginOnly: cmd.loginOnly,
-              language: clientLocale != null
-                  ? ClientLanguage(l: clientLocale.split('_').first)
-                  : null,
+              language: ClientLanguage(l: R.language),
             ),
           ),
         )
@@ -423,6 +418,7 @@ class LoginRepository extends AppSingleton {
               clientToken: EmailLoginToken(token: cmd.clientToken),
               emailToken: EmailLoginToken(token: cmd.emailToken),
               clientInfo: clientInfo,
+              language: ClientLanguage(l: R.language),
             ),
           ),
         )

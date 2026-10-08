@@ -32,4 +32,9 @@ extension LocalizationsExtension on BuildContext {
 /// can invalidate for example because navigating to another screen.
 class R {
   static AppLocalizations get strings => loadedLocalizations();
+
+  /// Language code of the currently used locale, e.g. "en".
+  ///
+  /// Suitable for API requests which expect a language code.
+  static String get language => strings.localeName.split('_').first;
 }
