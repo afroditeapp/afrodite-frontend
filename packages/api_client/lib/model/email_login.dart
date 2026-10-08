@@ -16,6 +16,7 @@ class EmailLogin {
     required this.clientInfo,
     required this.clientToken,
     required this.emailToken,
+    this.language,
   });
 
   ClientInfo clientInfo;
@@ -24,27 +25,43 @@ class EmailLogin {
 
   EmailLoginToken emailToken;
 
+  /// Save language when a new account is created.
+  ///
+  /// Please note: This property should have been non-nullable! Since the specification file
+  /// does not include a default value (using the "default:" property), however, the generated
+  /// source code must fall back to having a nullable type.
+  /// Consider adding a "default:" property in the specification file to hide this note.
+  ///
+  ClientLanguage? language;
+
   @override
   bool operator ==(Object other) => identical(this, other) || other is EmailLogin &&
     other.clientInfo == clientInfo &&
     other.clientToken == clientToken &&
-    other.emailToken == emailToken;
+    other.emailToken == emailToken &&
+    other.language == language;
 
   @override
   int get hashCode =>
     // ignore: unnecessary_parenthesis
     (clientInfo.hashCode) +
     (clientToken.hashCode) +
-    (emailToken.hashCode);
+    (emailToken.hashCode) +
+    (language == null ? 0 : language!.hashCode);
 
   @override
-  String toString() => 'EmailLogin[clientInfo=$clientInfo, clientToken=$clientToken, emailToken=$emailToken]';
+  String toString() => 'EmailLogin[clientInfo=$clientInfo, clientToken=$clientToken, emailToken=$emailToken, language=$language]';
 
   Map<String, dynamic> toJson() {
     final json = <String, dynamic>{};
       json[r'client_info'] = this.clientInfo;
       json[r'client_token'] = this.clientToken;
       json[r'email_token'] = this.emailToken;
+    if (this.language != null) {
+      json[r'language'] = this.language;
+    } else {
+      json[r'language'] = null;
+    }
     return json;
   }
 
@@ -72,6 +89,7 @@ class EmailLogin {
         clientInfo: ClientInfo.fromJson(json[r'client_info'])!,
         clientToken: EmailLoginToken.fromJson(json[r'client_token'])!,
         emailToken: EmailLoginToken.fromJson(json[r'email_token'])!,
+        language: ClientLanguage.fromJson(json[r'language']),
       );
     }
     return null;

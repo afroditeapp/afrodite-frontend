@@ -16,6 +16,7 @@ class SignInWithLoginInfo {
     this.apple,
     required this.clientInfo,
     this.google,
+    this.language,
   });
 
   ///
@@ -36,21 +37,32 @@ class SignInWithLoginInfo {
   ///
   SignInWithGoogleInfo? google;
 
+  /// Save language when a new account is created.
+  ///
+  /// Please note: This property should have been non-nullable! Since the specification file
+  /// does not include a default value (using the "default:" property), however, the generated
+  /// source code must fall back to having a nullable type.
+  /// Consider adding a "default:" property in the specification file to hide this note.
+  ///
+  ClientLanguage? language;
+
   @override
   bool operator ==(Object other) => identical(this, other) || other is SignInWithLoginInfo &&
     other.apple == apple &&
     other.clientInfo == clientInfo &&
-    other.google == google;
+    other.google == google &&
+    other.language == language;
 
   @override
   int get hashCode =>
     // ignore: unnecessary_parenthesis
     (apple == null ? 0 : apple!.hashCode) +
     (clientInfo.hashCode) +
-    (google == null ? 0 : google!.hashCode);
+    (google == null ? 0 : google!.hashCode) +
+    (language == null ? 0 : language!.hashCode);
 
   @override
-  String toString() => 'SignInWithLoginInfo[apple=$apple, clientInfo=$clientInfo, google=$google]';
+  String toString() => 'SignInWithLoginInfo[apple=$apple, clientInfo=$clientInfo, google=$google, language=$language]';
 
   Map<String, dynamic> toJson() {
     final json = <String, dynamic>{};
@@ -64,6 +76,11 @@ class SignInWithLoginInfo {
       json[r'google'] = this.google;
     } else {
       json[r'google'] = null;
+    }
+    if (this.language != null) {
+      json[r'language'] = this.language;
+    } else {
+      json[r'language'] = null;
     }
     return json;
   }
@@ -88,6 +105,7 @@ class SignInWithLoginInfo {
         apple: SignInWithAppleInfo.fromJson(json[r'apple']),
         clientInfo: ClientInfo.fromJson(json[r'client_info'])!,
         google: SignInWithGoogleInfo.fromJson(json[r'google']),
+        language: ClientLanguage.fromJson(json[r'language']),
       );
     }
     return null;
