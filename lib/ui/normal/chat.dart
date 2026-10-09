@@ -11,6 +11,7 @@ import 'package:app/ui_utils/time.dart' as ui_time;
 import 'package:app/utils/result.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
+import 'package:infinite_scroll_pagination/infinite_scroll_pagination.dart';
 import 'package:logging/logging.dart';
 import 'package:openapi/api.dart';
 import 'package:database/database.dart';
@@ -212,13 +213,30 @@ class _ConversationListState extends State<ConversationList> {
   Widget listAndEmptyListText(BuildContext context, List<AccountId> accounts) {
     return Stack(
       children: [
+        // Keep the list always in the widget tree so that animations work
         list(context, accounts),
-        if (accounts.isEmpty)
-          ListReplacementMessage(
+        if (accounts.isEmpty) emptyStateGridView(context),
+      ],
+    );
+  }
+
+  /// Show empty state texts at the same vertical position as LikeView
+  Widget emptyStateGridView(BuildContext context) {
+    return PagedGridView<int, AccountId>(
+      state: PagingState(pages: const [[]], keys: const [0]),
+      fetchNextPage: () {},
+      physics: const NeverScrollableScrollPhysics(),
+      padding: EdgeInsets.symmetric(horizontal: 0, vertical: 4),
+      builderDelegate: PagedChildBuilderDelegate<AccountId>(
+        itemBuilder: (context, item, index) => const SizedBox.shrink(),
+        noItemsFoundIndicatorBuilder: (context) {
+          return ListReplacementMessage(
             title: context.strings.chat_list_screen_no_chats_found,
             body: context.strings.chat_list_screen_no_chats_found_description,
-          ),
-      ],
+          );
+        },
+      ),
+      gridDelegate: SliverGridDelegateWithFixedCrossAxisCount(crossAxisCount: 1),
     );
   }
 
