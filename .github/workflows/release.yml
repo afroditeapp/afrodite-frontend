@@ -13,6 +13,20 @@ jobs:
     name: Release Android
     runs-on: ubuntu-24.04
     steps:
+      - name: Free up disk space
+        run: |
+          echo "=== Disk space before ==="
+          df -h /
+          echo
+          echo "=== Swap file ==="
+          ls -lh /swapfile || true
+          sudo swapoff /swapfile || true
+          sudo rm -f /swapfile
+          echo "=== Swap file removed ==="
+          echo
+          echo "=== Disk space after ==="
+          df -h /
+
       - name: Checkout code
         uses: actions/checkout@v4
 
