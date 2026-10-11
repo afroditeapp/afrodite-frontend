@@ -82,6 +82,7 @@
     "hexcolor",
     "codesign",
     "xcarchive",
-    "devicecheck"
+    "devicecheck",
+    "ghcup"
   ]
 }

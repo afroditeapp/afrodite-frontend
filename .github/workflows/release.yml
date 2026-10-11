@@ -18,12 +18,18 @@ jobs:
           echo "=== Disk space before ==="
           df -h /
           echo
-          echo "=== Swap file ==="
-          ls -lh /swapfile || true
-          sudo swapoff /swapfile || true
-          sudo rm -f /swapfile
-          echo "=== Swap file removed ==="
+
+          echo "=== Directory existence check ==="
+          for dir in /usr/share/dotnet /usr/share/swift /usr/local/.ghcup; do
+            if [ -d "$dir" ]; then echo "$dir exists"; else echo "$dir does not exist"; fi
+          done
           echo
+
+          echo "=== Removing .NET, Swift and Haskell ==="
+          sudo rm -rf /usr/share/dotnet /usr/share/swift /usr/local/.ghcup
+          echo "=== Removed ==="
+          echo
+
           echo "=== Disk space after ==="
           df -h /
 
