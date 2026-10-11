@@ -262,6 +262,7 @@ class ServerConnectionManager extends ApiManager
       ),
       connectionStates: _state,
       sendMessageToServer: sendMessageToServer,
+      restartConnection: restartIfRestartNotOngoing,
     );
     webSocketApiRequestManager.init();
     _reconnectionTimer = ReconnectionTimer(

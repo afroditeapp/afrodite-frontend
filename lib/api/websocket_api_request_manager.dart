@@ -72,6 +72,7 @@ class WebSocketApiRequestManager {
   final Stream<ServerMessage> _serverMessages;
   final ValueStream<ServerConnectionManagerState> _connectionStates;
   final Future<void> Function(ClientMessage message) _sendMessageToServer;
+  final Future<void> Function() _restartConnection;
 
   final PublishSubject<WebSocketApiRequestCmd<Object>> _cmds = PublishSubject();
   StreamSubscription<void>? _cmdsSubscription;
@@ -83,6 +84,7 @@ class WebSocketApiRequestManager {
     required this._serverMessages,
     required this._connectionStates,
     required this._sendMessageToServer,
+    required this._restartConnection,
   });
 
   void init() {
@@ -288,9 +290,20 @@ class WebSocketApiRequestManager {
     return parser(event);
   }
 
+  /// When true, user sees connection status bar with "Try again" button
+  bool get _isReconnectStopped {
+    final state = _connectionStates.value;
+    return state is NoServerConnection && state.showRetryActionBanner;
+  }
+
   Future<bool> _waitForConnected() async {
     if (_isConnected) {
       return true;
+    }
+
+    if (_isReconnectStopped) {
+      _log.info("Automatic reconnecting stopped, restarting connection");
+      unawaited(_restartConnection());
     }
 
     try {
