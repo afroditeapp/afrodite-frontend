@@ -47,7 +47,9 @@ class OnlineIterator extends IteratorType {
   @override
   Future<Result<List<ProfileEntry>, ()>> nextList() async {
     if (_resetServerIterator) {
-      await connectionManager.tryWaitUntilConnected();
+      if (!io.usesWebSocket) {
+        await connectionManager.tryWaitUntilConnected();
+      }
 
       switch (await io.resetServerPaging()) {
         case Ok():
@@ -82,7 +84,9 @@ class OnlineIterator extends IteratorType {
 
     final List<ProfileEntry> list = List.empty(growable: true);
     while (true) {
-      await connectionManager.tryWaitUntilConnected();
+      if (!io.usesWebSocket) {
+        await connectionManager.tryWaitUntilConnected();
+      }
 
       switch (await io.nextServerPage()) {
         case Ok(value: final profiles):
@@ -145,6 +149,10 @@ abstract class OnlineIteratorIo {
   void resetDatabaseIterator();
   void setDatabaseIteratorToNull();
 
+  /// True when server requests are sent through the WebSocket API and
+  /// connection waiting is handled internally by WebSocketApiRequestManager.
+  bool get usesWebSocket;
+
   Future<Result<(), ()>> resetServerPaging();
   Future<bool> loadIteratorSessionIdFromDbAndReturnTrueIfItExists();
 
@@ -163,6 +171,9 @@ class ProfileListOnlineIteratorIo extends OnlineIteratorIo {
   ProfileIteratorSessionId? currentSessionId;
 
   ProfileListOnlineIteratorIo(this.db, this.connectionManager);
+
+  @override
+  bool get usesWebSocket => true;
 
   @override
   IteratorType? get databaseIterator => iteratorValue;
@@ -254,6 +265,9 @@ class ReceivedLikesOnlineIteratorIo extends OnlineIteratorIo {
   ReceivedLikesIteratorState? currentState;
 
   ReceivedLikesOnlineIteratorIo(this.db, this.api);
+
+  @override
+  bool get usesWebSocket => false;
 
   @override
   IteratorType? get databaseIterator => iteratorValue;
@@ -360,6 +374,9 @@ class MatchesOnlineIteratorIo extends OnlineIteratorIo {
   MatchesOnlineIteratorIo(this.db, this.api);
 
   @override
+  bool get usesWebSocket => false;
+
+  @override
   IteratorType? get databaseIterator => null;
 
   @override
@@ -414,6 +431,9 @@ class AutomaticProfileSearchOnlineIteratorIo extends OnlineIteratorIo {
   AutomaticProfileSearchIteratorSessionId? currentSessionId;
 
   AutomaticProfileSearchOnlineIteratorIo(this.db, this.connectionManager);
+
+  @override
+  bool get usesWebSocket => true;
 
   @override
   IteratorType? get databaseIterator => null;
