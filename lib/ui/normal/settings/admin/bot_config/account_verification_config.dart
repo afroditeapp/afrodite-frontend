@@ -1,4 +1,5 @@
 import 'package:app/model/freezed/logic/main/navigator_state.dart';
+import 'package:app/ui/normal/settings/admin/bot_config/utils.dart';
 import 'package:app/ui_utils/padding.dart';
 import 'package:flutter/material.dart';
 import 'package:openapi/api.dart';
@@ -110,6 +111,13 @@ class _EditAccountVerificationConfigScreenState extends State<EditAccountVerific
             },
           ),
         ),
+        hPad(
+          concurrencyTextField(
+            value: securityContent.concurrency,
+            formKey: _formKey,
+            onChanged: (v) => setState(() => securityContent.concurrency = v),
+          ),
+        ),
         const Divider(),
         hPad(Text("LLM", style: Theme.of(context).textTheme.titleSmall)),
         SwitchListTile(
@@ -144,6 +152,13 @@ class _EditAccountVerificationConfigScreenState extends State<EditAccountVerific
                     setState(() => llm.systemText = v);
                     _formKey.currentState?.validate();
                   },
+                ),
+                ListTile(
+                  title: const Text("Reasoning effort"),
+                  trailing: reasoningEffortDropdown(
+                    value: llm.reasoningEffort,
+                    onChanged: (v) => setState(() => llm.reasoningEffort = v),
+                  ),
                 ),
               ],
             ),

@@ -1,4 +1,5 @@
 import 'package:app/model/freezed/logic/main/navigator_state.dart';
+import 'package:app/ui/normal/settings/admin/bot_config/utils.dart';
 import 'package:app/ui_utils/padding.dart';
 import 'package:flutter/material.dart';
 import 'package:openapi/api.dart';
@@ -22,6 +23,7 @@ class EditProfileStringModerationConfigScreen extends StatefulWidget {
 class _EditProfileStringModerationConfigScreenState
     extends State<EditProfileStringModerationConfigScreen> {
   late bool _acceptSingleVisibleCharacter;
+  late int? _concurrency;
   late ModerationAction _defaultAction;
   late AdminBotStringModerationLlmConfig _llm;
   late bool _llmEnabled;
@@ -31,6 +33,7 @@ class _EditProfileStringModerationConfigScreenState
   void initState() {
     super.initState();
     _acceptSingleVisibleCharacter = widget.initialConfig.acceptSingleVisibleCharacter;
+    _concurrency = widget.initialConfig.concurrency;
     _defaultAction = widget.initialConfig.defaultAction;
     _llm = widget.initialConfig.llm;
     _llmEnabled = widget.initialConfig.llmEnabled;
@@ -46,6 +49,7 @@ class _EditProfileStringModerationConfigScreenState
           context,
           AdminBotProfileStringModerationConfig(
             acceptSingleVisibleCharacter: _acceptSingleVisibleCharacter,
+            concurrency: _concurrency,
             defaultAction: _defaultAction,
             llm: _llm,
             llmEnabled: _llmEnabled,
@@ -82,6 +86,13 @@ class _EditProfileStringModerationConfigScreenState
                   onChanged: (v) {
                     if (v != null) setState(() => _defaultAction = v);
                   },
+                ),
+              ),
+              hPad(
+                concurrencyTextField(
+                  value: _concurrency,
+                  formKey: _formKey,
+                  onChanged: (v) => setState(() => _concurrency = v),
                 ),
               ),
               const Divider(),
@@ -135,6 +146,13 @@ class _EditProfileStringModerationConfigScreenState
             setState(() => _llm.userTextTemplate = v);
             _formKey.currentState?.validate();
           },
+        ),
+        ListTile(
+          title: const Text("Reasoning effort"),
+          trailing: reasoningEffortDropdown(
+            value: _llm.reasoningEffort,
+            onChanged: (v) => setState(() => _llm.reasoningEffort = v),
+          ),
         ),
         SwitchListTile(
           title: const Text("Move rejected to human"),

@@ -3,6 +3,8 @@ import 'package:app/model/freezed/logic/main/navigator_state.dart';
 import 'package:app/ui/normal/settings/admin/bot_config/report_processing_messages_config.dart';
 import 'package:app/ui/normal/settings/admin/bot_config/report_processing_profile_content_config.dart';
 import 'package:app/ui/normal/settings/admin/bot_config/report_processing_profile_string_config.dart';
+import 'package:app/ui/normal/settings/admin/bot_config/utils.dart';
+import 'package:app/ui_utils/padding.dart';
 import 'package:flutter/material.dart';
 import 'package:openapi/api.dart';
 
@@ -22,6 +24,7 @@ class EditReportProcessingConfigScreen extends StatefulWidget {
 
 class _EditReportProcessingConfigScreenState extends State<EditReportProcessingConfigScreen> {
   late AdminBotReportProcessingConfig _config;
+  final _formKey = GlobalKey<FormState>();
 
   @override
   void initState() {
@@ -44,64 +47,76 @@ class _EditReportProcessingConfigScreenState extends State<EditReportProcessingC
   Widget _scaffold(BuildContext context) {
     return Scaffold(
       appBar: AppBar(title: const Text("Report Processing Config")),
-      body: ListView(
-        children: [
-          ListTile(
-            title: const Text("Messages"),
-            trailing: const Icon(Icons.chevron_right),
-            onTap: () async {
-              final result = await MyNavigator.pushLimited(
-                context,
-                EditReportProcessingMessagesConfigPage(_config.messages),
-              );
-              if (result != null) {
-                setState(() => _config.messages = result);
-              }
-            },
-          ),
-          const Divider(),
-          ListTile(
-            title: const Text("Profile Content"),
-            trailing: const Icon(Icons.chevron_right),
-            onTap: () async {
-              final result = await MyNavigator.pushLimited(
-                context,
-                EditReportProcessingProfileContentConfigPage(_config.profileContent),
-              );
-              if (result != null) {
-                setState(() => _config.profileContent = result);
-              }
-            },
-          ),
-          const Divider(),
-          ListTile(
-            title: const Text("Profile Name"),
-            trailing: const Icon(Icons.chevron_right),
-            onTap: () async {
-              final result = await MyNavigator.pushLimited(
-                context,
-                EditReportProcessingProfileStringConfigPage(_config.profileName),
-              );
-              if (result != null) {
-                setState(() => _config.profileName = result);
-              }
-            },
-          ),
-          const Divider(),
-          ListTile(
-            title: const Text("Profile Text"),
-            trailing: const Icon(Icons.chevron_right),
-            onTap: () async {
-              final result = await MyNavigator.pushLimited(
-                context,
-                EditReportProcessingProfileStringConfigPage(_config.profileText),
-              );
-              if (result != null) {
-                setState(() => _config.profileText = result);
-              }
-            },
-          ),
-        ],
+      body: Form(
+        key: _formKey,
+        autovalidateMode: AutovalidateMode.onUserInteraction,
+        child: ListView(
+          children: [
+            hPad(
+              concurrencyTextField(
+                value: _config.concurrency,
+                formKey: _formKey,
+                onChanged: (v) => setState(() => _config.concurrency = v),
+              ),
+            ),
+            const Divider(),
+            ListTile(
+              title: const Text("Messages"),
+              trailing: const Icon(Icons.chevron_right),
+              onTap: () async {
+                final result = await MyNavigator.pushLimited(
+                  context,
+                  EditReportProcessingMessagesConfigPage(_config.messages),
+                );
+                if (result != null) {
+                  setState(() => _config.messages = result);
+                }
+              },
+            ),
+            const Divider(),
+            ListTile(
+              title: const Text("Profile Content"),
+              trailing: const Icon(Icons.chevron_right),
+              onTap: () async {
+                final result = await MyNavigator.pushLimited(
+                  context,
+                  EditReportProcessingProfileContentConfigPage(_config.profileContent),
+                );
+                if (result != null) {
+                  setState(() => _config.profileContent = result);
+                }
+              },
+            ),
+            const Divider(),
+            ListTile(
+              title: const Text("Profile Name"),
+              trailing: const Icon(Icons.chevron_right),
+              onTap: () async {
+                final result = await MyNavigator.pushLimited(
+                  context,
+                  EditReportProcessingProfileStringConfigPage(_config.profileName),
+                );
+                if (result != null) {
+                  setState(() => _config.profileName = result);
+                }
+              },
+            ),
+            const Divider(),
+            ListTile(
+              title: const Text("Profile Text"),
+              trailing: const Icon(Icons.chevron_right),
+              onTap: () async {
+                final result = await MyNavigator.pushLimited(
+                  context,
+                  EditReportProcessingProfileStringConfigPage(_config.profileText),
+                );
+                if (result != null) {
+                  setState(() => _config.profileText = result);
+                }
+              },
+            ),
+          ],
+        ),
       ),
     );
   }

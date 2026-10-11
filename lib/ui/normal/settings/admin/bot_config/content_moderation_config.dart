@@ -1,6 +1,7 @@
 import 'package:app/logic/app/navigator_state.dart';
 import 'package:app/model/freezed/logic/main/navigator_state.dart';
 import 'package:app/ui/normal/settings/admin/bot_config/nsfw_detection_config.dart';
+import 'package:app/ui/normal/settings/admin/bot_config/utils.dart';
 import 'package:app/ui_utils/padding.dart';
 import 'package:flutter/material.dart';
 import 'package:openapi/api.dart';
@@ -72,6 +73,13 @@ class _EditContentModerationConfigScreenState extends State<EditContentModeratio
                   onChanged: (v) {
                     if (v != null) setState(() => _config.defaultAction = v);
                   },
+                ),
+              ),
+              hPad(
+                concurrencyTextField(
+                  value: _config.concurrency,
+                  formKey: _formKey,
+                  onChanged: (v) => setState(() => _config.concurrency = v),
                 ),
               ),
               const Divider(),
@@ -172,6 +180,13 @@ class _EditContentModerationConfigScreenState extends State<EditContentModeratio
             setState(() => llm.systemText = v);
             _formKey.currentState?.validate();
           },
+        ),
+        ListTile(
+          title: const Text("Reasoning effort"),
+          trailing: reasoningEffortDropdown(
+            value: llm.reasoningEffort,
+            onChanged: (v) => setState(() => llm.reasoningEffort = v),
+          ),
         ),
         SwitchListTile(
           title: const Text("Ignore NSFW"),

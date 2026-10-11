@@ -150,6 +150,13 @@ class _EditReportProcessingProfileStringConfigScreenState
             _formKey.currentState?.validate();
           },
         ),
+        ListTile(
+          title: const Text("Reasoning effort"),
+          trailing: reasoningEffortDropdown(
+            value: _config.llm.reasoningEffort,
+            onChanged: (v) => setState(() => _config.llm.reasoningEffort = v),
+          ),
+        ),
         const Divider(),
         _expectedResponsesEditor(_config.llm.automaticBanningExpectedResponses),
       ],

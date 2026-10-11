@@ -1,4 +1,5 @@
 import 'package:app/model/freezed/logic/main/navigator_state.dart';
+import 'package:app/ui/normal/settings/admin/bot_config/utils.dart';
 import 'package:app/ui_utils/padding.dart';
 import 'package:flutter/material.dart';
 import 'package:openapi/api.dart';
@@ -19,6 +20,7 @@ class EditFaceVerificationConfigScreen extends StatefulWidget {
 
 class _EditFaceVerificationConfigScreenState extends State<EditFaceVerificationConfigScreen> {
   late AcceptOrReject _defaultAction;
+  late int? _concurrency;
   late AdminBotFaceVerificationLlmConfig _llm;
   late bool _llmEnabled;
   final _formKey = GlobalKey<FormState>();
@@ -27,6 +29,7 @@ class _EditFaceVerificationConfigScreenState extends State<EditFaceVerificationC
   void initState() {
     super.initState();
     _defaultAction = widget.initialConfig.defaultAction;
+    _concurrency = widget.initialConfig.concurrency;
     _llm = widget.initialConfig.llm;
     _llmEnabled = widget.initialConfig.llmEnabled;
   }
@@ -40,6 +43,7 @@ class _EditFaceVerificationConfigScreenState extends State<EditFaceVerificationC
         widget.closer.close(
           context,
           AdminBotFaceVerificationConfig(
+            concurrency: _concurrency,
             defaultAction: _defaultAction,
             llm: _llm,
             llmEnabled: _llmEnabled,
@@ -71,6 +75,13 @@ class _EditFaceVerificationConfigScreenState extends State<EditFaceVerificationC
                   onChanged: (v) {
                     if (v != null) setState(() => _defaultAction = v);
                   },
+                ),
+              ),
+              hPad(
+                concurrencyTextField(
+                  value: _concurrency,
+                  formKey: _formKey,
+                  onChanged: (v) => setState(() => _concurrency = v),
                 ),
               ),
               const Divider(),
@@ -112,6 +123,13 @@ class _EditFaceVerificationConfigScreenState extends State<EditFaceVerificationC
             setState(() => _llm.systemText = v);
             _formKey.currentState?.validate();
           },
+        ),
+        ListTile(
+          title: const Text("Reasoning effort"),
+          trailing: reasoningEffortDropdown(
+            value: _llm.reasoningEffort,
+            onChanged: (v) => setState(() => _llm.reasoningEffort = v),
+          ),
         ),
       ],
     );

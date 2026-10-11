@@ -125,3 +125,55 @@ String? validateUserTextTemplate(String? value) {
   if (!value.contains("{text}")) return "Template must include {text}";
   return null;
 }
+
+/// Validates that a concurrency text field value is either empty (which means
+/// null) or a non-negative integer.
+String? validateConcurrency(String? value) {
+  if (value == null || value.trim().isEmpty) return null;
+  final parsed = int.tryParse(value.trim());
+  if (parsed == null) return "Must be an integer";
+  if (parsed < 0) return "Must be 0 or larger";
+  return null;
+}
+
+/// Dropdown for selecting a reasoning effort override. The "Not set" option
+/// maps to null, which means the bot config file value is used.
+Widget reasoningEffortDropdown({
+  required ReasoningEffortConfig? value,
+  required void Function(ReasoningEffortConfig?) onChanged,
+}) {
+  return DropdownButton<ReasoningEffortConfig?>(
+    value: value,
+    items: [
+      const DropdownMenuItem<ReasoningEffortConfig?>(value: null, child: Text("Not set")),
+      ...ReasoningEffortConfig.values
+          .where((e) => e != ReasoningEffortConfig.unknownDefaultOpenApi)
+          .map(
+            (e) => DropdownMenuItem<ReasoningEffortConfig?>(value: e, child: Text(e.toString())),
+          ),
+    ],
+    onChanged: onChanged,
+  );
+}
+
+/// Concurrency text field. Trimmed empty text means null.
+Widget concurrencyTextField({
+  required int? value,
+  required GlobalKey<FormState> formKey,
+  required void Function(int?) onChanged,
+}) {
+  return TextFormField(
+    initialValue: value?.toString() ?? "",
+    decoration: const InputDecoration(
+      labelText: "Concurrency",
+      helperText: "Leave empty to use bot config file value",
+    ),
+    keyboardType: TextInputType.number,
+    validator: validateConcurrency,
+    onChanged: (v) {
+      final trimmed = v.trim();
+      onChanged(trimmed.isEmpty ? null : int.tryParse(trimmed));
+      formKey.currentState?.validate();
+    },
+  );
+}
