@@ -671,6 +671,7 @@ Class | Method | HTTP request | Description
  - [PutSignInWithApple](doc//PutSignInWithApple.md)
  - [PutSignInWithGoogle](doc//PutSignInWithGoogle.md)
  - [PutSignInWithResult](doc//PutSignInWithResult.md)
+ - [ReasoningEffortConfig](doc//ReasoningEffortConfig.md)
  - [ReceivedLikeId](doc//ReceivedLikeId.md)
  - [ReceivedLikesIteratorState](doc//ReceivedLikesIteratorState.md)
  - [ReceivedLikesPage](doc//ReceivedLikesPage.md)

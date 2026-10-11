@@ -381,6 +381,7 @@ lib/model/put_content_to_content_slot_result.dart
 lib/model/put_sign_in_with_apple.dart
 lib/model/put_sign_in_with_google.dart
 lib/model/put_sign_in_with_result.dart
+lib/model/reasoning_effort_config.dart
 lib/model/received_like_id.dart
 lib/model/received_likes_iterator_state.dart
 lib/model/received_likes_page.dart

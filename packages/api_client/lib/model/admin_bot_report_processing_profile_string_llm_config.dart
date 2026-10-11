@@ -14,6 +14,7 @@ class AdminBotReportProcessingProfileStringLlmConfig {
   /// Returns a new [AdminBotReportProcessingProfileStringLlmConfig] instance.
   AdminBotReportProcessingProfileStringLlmConfig({
     required this.expectedResponse,
+    this.reasoningEffort,
     required this.systemText,
     required this.userTextTemplate,
     required this.automaticBanningExpectedResponses,
@@ -21,6 +22,15 @@ class AdminBotReportProcessingProfileStringLlmConfig {
 
   /// If LLM response starts with this text or the first line of the response contains this text, the content is moderated as accepted. The comparisons are case insensitive.
   String expectedResponse;
+
+  /// Overrides the reasoning effort value from the bot config file.
+  ///
+  /// Please note: This property should have been non-nullable! Since the specification file
+  /// does not include a default value (using the "default:" property), however, the generated
+  /// source code must fall back to having a nullable type.
+  /// Consider adding a "default:" property in the specification file to hide this note.
+  ///
+  ReasoningEffortConfig? reasoningEffort;
 
   String systemText;
 
@@ -32,6 +42,7 @@ class AdminBotReportProcessingProfileStringLlmConfig {
   @override
   bool operator ==(Object other) => identical(this, other) || other is AdminBotReportProcessingProfileStringLlmConfig &&
     other.expectedResponse == expectedResponse &&
+    other.reasoningEffort == reasoningEffort &&
     other.systemText == systemText &&
     other.userTextTemplate == userTextTemplate &&
     other.automaticBanningExpectedResponses == automaticBanningExpectedResponses;
@@ -40,16 +51,22 @@ class AdminBotReportProcessingProfileStringLlmConfig {
   int get hashCode =>
     // ignore: unnecessary_parenthesis
     (expectedResponse.hashCode) +
+    (reasoningEffort == null ? 0 : reasoningEffort!.hashCode) +
     (systemText.hashCode) +
     (userTextTemplate.hashCode) +
     (automaticBanningExpectedResponses.hashCode);
 
   @override
-  String toString() => 'AdminBotReportProcessingProfileStringLlmConfig[expectedResponse=$expectedResponse, systemText=$systemText, userTextTemplate=$userTextTemplate, automaticBanningExpectedResponses=$automaticBanningExpectedResponses]';
+  String toString() => 'AdminBotReportProcessingProfileStringLlmConfig[expectedResponse=$expectedResponse, reasoningEffort=$reasoningEffort, systemText=$systemText, userTextTemplate=$userTextTemplate, automaticBanningExpectedResponses=$automaticBanningExpectedResponses]';
 
   Map<String, dynamic> toJson() {
     final json = <String, dynamic>{};
       json[r'expected_response'] = this.expectedResponse;
+    if (this.reasoningEffort != null) {
+      json[r'reasoning_effort'] = this.reasoningEffort;
+    } else {
+      json[r'reasoning_effort'] = null;
+    }
       json[r'system_text'] = this.systemText;
       json[r'user_text_template'] = this.userTextTemplate;
       json[r'automatic_banning_expected_responses'] = this.automaticBanningExpectedResponses;
@@ -80,6 +97,7 @@ class AdminBotReportProcessingProfileStringLlmConfig {
 
       return AdminBotReportProcessingProfileStringLlmConfig(
         expectedResponse: mapValueOfType<String>(json, r'expected_response')!,
+        reasoningEffort: ReasoningEffortConfig.fromJson(json[r'reasoning_effort']),
         systemText: mapValueOfType<String>(json, r'system_text')!,
         userTextTemplate: mapValueOfType<String>(json, r'user_text_template')!,
         automaticBanningExpectedResponses: AutomaticBanningExpectedLlmResponsesConfig.fromJson(json[r'automatic_banning_expected_responses'])!,

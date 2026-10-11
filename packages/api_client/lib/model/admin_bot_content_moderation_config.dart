@@ -14,6 +14,7 @@ class AdminBotContentModerationConfig {
   /// Returns a new [AdminBotContentModerationConfig] instance.
   AdminBotContentModerationConfig({
     this.addedContent = false,
+    this.concurrency,
     required this.defaultAction,
     this.initialContent = false,
     required this.llmPrimary,
@@ -25,6 +26,17 @@ class AdminBotContentModerationConfig {
   });
 
   bool addedContent;
+
+  /// Overrides the concurrency value from the bot config file.
+  ///
+  /// Minimum value: 0
+  ///
+  /// Please note: This property should have been non-nullable! Since the specification file
+  /// does not include a default value (using the "default:" property), however, the generated
+  /// source code must fall back to having a nullable type.
+  /// Consider adding a "default:" property in the specification file to hide this note.
+  ///
+  int? concurrency;
 
   ModerationAction defaultAction;
 
@@ -48,6 +60,7 @@ class AdminBotContentModerationConfig {
   @override
   bool operator ==(Object other) => identical(this, other) || other is AdminBotContentModerationConfig &&
     other.addedContent == addedContent &&
+    other.concurrency == concurrency &&
     other.defaultAction == defaultAction &&
     other.initialContent == initialContent &&
     other.llmPrimary == llmPrimary &&
@@ -61,6 +74,7 @@ class AdminBotContentModerationConfig {
   int get hashCode =>
     // ignore: unnecessary_parenthesis
     (addedContent.hashCode) +
+    (concurrency == null ? 0 : concurrency!.hashCode) +
     (defaultAction.hashCode) +
     (initialContent.hashCode) +
     (llmPrimary.hashCode) +
@@ -71,11 +85,16 @@ class AdminBotContentModerationConfig {
     (nsfwDetectionEnabled.hashCode);
 
   @override
-  String toString() => 'AdminBotContentModerationConfig[addedContent=$addedContent, defaultAction=$defaultAction, initialContent=$initialContent, llmPrimary=$llmPrimary, llmPrimaryEnabled=$llmPrimaryEnabled, llmSecondary=$llmSecondary, llmSecondaryEnabled=$llmSecondaryEnabled, nsfwDetection=$nsfwDetection, nsfwDetectionEnabled=$nsfwDetectionEnabled]';
+  String toString() => 'AdminBotContentModerationConfig[addedContent=$addedContent, concurrency=$concurrency, defaultAction=$defaultAction, initialContent=$initialContent, llmPrimary=$llmPrimary, llmPrimaryEnabled=$llmPrimaryEnabled, llmSecondary=$llmSecondary, llmSecondaryEnabled=$llmSecondaryEnabled, nsfwDetection=$nsfwDetection, nsfwDetectionEnabled=$nsfwDetectionEnabled]';
 
   Map<String, dynamic> toJson() {
     final json = <String, dynamic>{};
       json[r'added_content'] = this.addedContent;
+    if (this.concurrency != null) {
+      json[r'concurrency'] = this.concurrency;
+    } else {
+      json[r'concurrency'] = null;
+    }
       json[r'default_action'] = this.defaultAction;
       json[r'initial_content'] = this.initialContent;
       json[r'llm_primary'] = this.llmPrimary;
@@ -111,6 +130,7 @@ class AdminBotContentModerationConfig {
 
       return AdminBotContentModerationConfig(
         addedContent: mapValueOfType<bool>(json, r'added_content') ?? false,
+        concurrency: mapValueOfType<int>(json, r'concurrency'),
         defaultAction: ModerationAction.fromJson(json[r'default_action'])!,
         initialContent: mapValueOfType<bool>(json, r'initial_content') ?? false,
         llmPrimary: AdminBotContentModerationLlmConfig.fromJson(json[r'llm_primary'])!,

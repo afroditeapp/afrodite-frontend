@@ -14,6 +14,7 @@ class AdminBotProfileStringModerationConfig {
   /// Returns a new [AdminBotProfileStringModerationConfig] instance.
   AdminBotProfileStringModerationConfig({
     this.acceptSingleVisibleCharacter = false,
+    this.concurrency,
     required this.defaultAction,
     required this.llm,
     this.llmEnabled = false,
@@ -21,6 +22,17 @@ class AdminBotProfileStringModerationConfig {
 
   /// Accept all texts which only have single visible character.
   bool acceptSingleVisibleCharacter;
+
+  /// Overrides the concurrency value from the bot config file.
+  ///
+  /// Minimum value: 0
+  ///
+  /// Please note: This property should have been non-nullable! Since the specification file
+  /// does not include a default value (using the "default:" property), however, the generated
+  /// source code must fall back to having a nullable type.
+  /// Consider adding a "default:" property in the specification file to hide this note.
+  ///
+  int? concurrency;
 
   ModerationAction defaultAction;
 
@@ -32,6 +44,7 @@ class AdminBotProfileStringModerationConfig {
   @override
   bool operator ==(Object other) => identical(this, other) || other is AdminBotProfileStringModerationConfig &&
     other.acceptSingleVisibleCharacter == acceptSingleVisibleCharacter &&
+    other.concurrency == concurrency &&
     other.defaultAction == defaultAction &&
     other.llm == llm &&
     other.llmEnabled == llmEnabled;
@@ -40,16 +53,22 @@ class AdminBotProfileStringModerationConfig {
   int get hashCode =>
     // ignore: unnecessary_parenthesis
     (acceptSingleVisibleCharacter.hashCode) +
+    (concurrency == null ? 0 : concurrency!.hashCode) +
     (defaultAction.hashCode) +
     (llm.hashCode) +
     (llmEnabled.hashCode);
 
   @override
-  String toString() => 'AdminBotProfileStringModerationConfig[acceptSingleVisibleCharacter=$acceptSingleVisibleCharacter, defaultAction=$defaultAction, llm=$llm, llmEnabled=$llmEnabled]';
+  String toString() => 'AdminBotProfileStringModerationConfig[acceptSingleVisibleCharacter=$acceptSingleVisibleCharacter, concurrency=$concurrency, defaultAction=$defaultAction, llm=$llm, llmEnabled=$llmEnabled]';
 
   Map<String, dynamic> toJson() {
     final json = <String, dynamic>{};
       json[r'accept_single_visible_character'] = this.acceptSingleVisibleCharacter;
+    if (this.concurrency != null) {
+      json[r'concurrency'] = this.concurrency;
+    } else {
+      json[r'concurrency'] = null;
+    }
       json[r'default_action'] = this.defaultAction;
       json[r'llm'] = this.llm;
       json[r'llm_enabled'] = this.llmEnabled;
@@ -76,6 +95,7 @@ class AdminBotProfileStringModerationConfig {
 
       return AdminBotProfileStringModerationConfig(
         acceptSingleVisibleCharacter: mapValueOfType<bool>(json, r'accept_single_visible_character') ?? false,
+        concurrency: mapValueOfType<int>(json, r'concurrency'),
         defaultAction: ModerationAction.fromJson(json[r'default_action'])!,
         llm: AdminBotStringModerationLlmConfig.fromJson(json[r'llm'])!,
         llmEnabled: mapValueOfType<bool>(json, r'llm_enabled') ?? false,

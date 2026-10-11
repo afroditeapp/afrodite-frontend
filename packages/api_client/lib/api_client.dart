@@ -901,6 +901,8 @@ class ApiClient {
           return PutSignInWithGoogle.fromJson(value);
         case 'PutSignInWithResult':
           return PutSignInWithResult.fromJson(value);
+        case 'ReasoningEffortConfig':
+          return ReasoningEffortConfigTypeTransformer().decode(value);
         case 'ReceivedLikeId':
           return ReceivedLikeId.fromJson(value);
         case 'ReceivedLikesIteratorState':

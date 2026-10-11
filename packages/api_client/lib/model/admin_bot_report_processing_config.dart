@@ -13,11 +13,23 @@ part of openapi.api;
 class AdminBotReportProcessingConfig {
   /// Returns a new [AdminBotReportProcessingConfig] instance.
   AdminBotReportProcessingConfig({
+    this.concurrency,
     required this.messages,
     required this.profileContent,
     required this.profileName,
     required this.profileText,
   });
+
+  /// Overrides the concurrency value from the bot config file.
+  ///
+  /// Minimum value: 0
+  ///
+  /// Please note: This property should have been non-nullable! Since the specification file
+  /// does not include a default value (using the "default:" property), however, the generated
+  /// source code must fall back to having a nullable type.
+  /// Consider adding a "default:" property in the specification file to hide this note.
+  ///
+  int? concurrency;
 
   AdminBotReportProcessingMessagesConfig messages;
 
@@ -29,6 +41,7 @@ class AdminBotReportProcessingConfig {
 
   @override
   bool operator ==(Object other) => identical(this, other) || other is AdminBotReportProcessingConfig &&
+    other.concurrency == concurrency &&
     other.messages == messages &&
     other.profileContent == profileContent &&
     other.profileName == profileName &&
@@ -37,16 +50,22 @@ class AdminBotReportProcessingConfig {
   @override
   int get hashCode =>
     // ignore: unnecessary_parenthesis
+    (concurrency == null ? 0 : concurrency!.hashCode) +
     (messages.hashCode) +
     (profileContent.hashCode) +
     (profileName.hashCode) +
     (profileText.hashCode);
 
   @override
-  String toString() => 'AdminBotReportProcessingConfig[messages=$messages, profileContent=$profileContent, profileName=$profileName, profileText=$profileText]';
+  String toString() => 'AdminBotReportProcessingConfig[concurrency=$concurrency, messages=$messages, profileContent=$profileContent, profileName=$profileName, profileText=$profileText]';
 
   Map<String, dynamic> toJson() {
     final json = <String, dynamic>{};
+    if (this.concurrency != null) {
+      json[r'concurrency'] = this.concurrency;
+    } else {
+      json[r'concurrency'] = null;
+    }
       json[r'messages'] = this.messages;
       json[r'profile_content'] = this.profileContent;
       json[r'profile_name'] = this.profileName;
@@ -77,6 +96,7 @@ class AdminBotReportProcessingConfig {
       }());
 
       return AdminBotReportProcessingConfig(
+        concurrency: mapValueOfType<int>(json, r'concurrency'),
         messages: AdminBotReportProcessingMessagesConfig.fromJson(json[r'messages'])!,
         profileContent: AdminBotReportProcessingProfileContentConfig.fromJson(json[r'profile_content'])!,
         profileName: AdminBotReportProcessingProfileStringConfig.fromJson(json[r'profile_name'])!,

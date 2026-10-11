@@ -14,6 +14,7 @@ class AdminBotContentModerationLlmConfig {
   /// Returns a new [AdminBotContentModerationLlmConfig] instance.
   AdminBotContentModerationLlmConfig({
     required this.expectedResponse,
+    this.reasoningEffort,
     required this.systemText,
     this.addLlmOutputToUserVisibleRejectionDetails = false,
     this.expectedNsfwResponse,
@@ -26,6 +27,15 @@ class AdminBotContentModerationLlmConfig {
 
   /// If LLM response starts with this text or the first line of the response contains this text, the content is moderated as accepted. The comparisons are case insensitive.
   String expectedResponse;
+
+  /// Overrides the reasoning effort value from the bot config file.
+  ///
+  /// Please note: This property should have been non-nullable! Since the specification file
+  /// does not include a default value (using the "default:" property), however, the generated
+  /// source code must fall back to having a nullable type.
+  /// Consider adding a "default:" property in the specification file to hide this note.
+  ///
+  ReasoningEffortConfig? reasoningEffort;
 
   String systemText;
 
@@ -49,6 +59,7 @@ class AdminBotContentModerationLlmConfig {
   @override
   bool operator ==(Object other) => identical(this, other) || other is AdminBotContentModerationLlmConfig &&
     other.expectedResponse == expectedResponse &&
+    other.reasoningEffort == reasoningEffort &&
     other.systemText == systemText &&
     other.addLlmOutputToUserVisibleRejectionDetails == addLlmOutputToUserVisibleRejectionDetails &&
     other.expectedNsfwResponse == expectedNsfwResponse &&
@@ -62,6 +73,7 @@ class AdminBotContentModerationLlmConfig {
   int get hashCode =>
     // ignore: unnecessary_parenthesis
     (expectedResponse.hashCode) +
+    (reasoningEffort == null ? 0 : reasoningEffort!.hashCode) +
     (systemText.hashCode) +
     (addLlmOutputToUserVisibleRejectionDetails.hashCode) +
     (expectedNsfwResponse == null ? 0 : expectedNsfwResponse!.hashCode) +
@@ -72,11 +84,16 @@ class AdminBotContentModerationLlmConfig {
     (moveRejectedToHumanModeration.hashCode);
 
   @override
-  String toString() => 'AdminBotContentModerationLlmConfig[expectedResponse=$expectedResponse, systemText=$systemText, addLlmOutputToUserVisibleRejectionDetails=$addLlmOutputToUserVisibleRejectionDetails, expectedNsfwResponse=$expectedNsfwResponse, ignoreNsfw=$ignoreNsfw, ignoreRejected=$ignoreRejected, moveAcceptedToHumanModeration=$moveAcceptedToHumanModeration, moveNsfwToHumanModeration=$moveNsfwToHumanModeration, moveRejectedToHumanModeration=$moveRejectedToHumanModeration]';
+  String toString() => 'AdminBotContentModerationLlmConfig[expectedResponse=$expectedResponse, reasoningEffort=$reasoningEffort, systemText=$systemText, addLlmOutputToUserVisibleRejectionDetails=$addLlmOutputToUserVisibleRejectionDetails, expectedNsfwResponse=$expectedNsfwResponse, ignoreNsfw=$ignoreNsfw, ignoreRejected=$ignoreRejected, moveAcceptedToHumanModeration=$moveAcceptedToHumanModeration, moveNsfwToHumanModeration=$moveNsfwToHumanModeration, moveRejectedToHumanModeration=$moveRejectedToHumanModeration]';
 
   Map<String, dynamic> toJson() {
     final json = <String, dynamic>{};
       json[r'expected_response'] = this.expectedResponse;
+    if (this.reasoningEffort != null) {
+      json[r'reasoning_effort'] = this.reasoningEffort;
+    } else {
+      json[r'reasoning_effort'] = null;
+    }
       json[r'system_text'] = this.systemText;
       json[r'add_llm_output_to_user_visible_rejection_details'] = this.addLlmOutputToUserVisibleRejectionDetails;
     if (this.expectedNsfwResponse != null) {
@@ -112,6 +129,7 @@ class AdminBotContentModerationLlmConfig {
 
       return AdminBotContentModerationLlmConfig(
         expectedResponse: mapValueOfType<String>(json, r'expected_response')!,
+        reasoningEffort: ReasoningEffortConfig.fromJson(json[r'reasoning_effort']),
         systemText: mapValueOfType<String>(json, r'system_text')!,
         addLlmOutputToUserVisibleRejectionDetails: mapValueOfType<bool>(json, r'add_llm_output_to_user_visible_rejection_details') ?? false,
         expectedNsfwResponse: mapValueOfType<String>(json, r'expected_nsfw_response'),

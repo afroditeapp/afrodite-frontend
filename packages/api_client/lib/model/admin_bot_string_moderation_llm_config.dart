@@ -16,6 +16,7 @@ class AdminBotStringModerationLlmConfig {
     this.addLlmOutputToUserVisibleRejectionDetails = false,
     required this.expectedResponse,
     this.moveRejectedToHumanModeration = false,
+    this.reasoningEffort,
     required this.systemText,
     required this.userTextTemplate,
   });
@@ -27,6 +28,15 @@ class AdminBotStringModerationLlmConfig {
 
   bool moveRejectedToHumanModeration;
 
+  /// Overrides the reasoning effort value from the bot config file.
+  ///
+  /// Please note: This property should have been non-nullable! Since the specification file
+  /// does not include a default value (using the "default:" property), however, the generated
+  /// source code must fall back to having a nullable type.
+  /// Consider adding a "default:" property in the specification file to hide this note.
+  ///
+  ReasoningEffortConfig? reasoningEffort;
+
   String systemText;
 
   /// Placeholder \"{text}\" is replaced with text which will be moderated.
@@ -37,6 +47,7 @@ class AdminBotStringModerationLlmConfig {
     other.addLlmOutputToUserVisibleRejectionDetails == addLlmOutputToUserVisibleRejectionDetails &&
     other.expectedResponse == expectedResponse &&
     other.moveRejectedToHumanModeration == moveRejectedToHumanModeration &&
+    other.reasoningEffort == reasoningEffort &&
     other.systemText == systemText &&
     other.userTextTemplate == userTextTemplate;
 
@@ -46,17 +57,23 @@ class AdminBotStringModerationLlmConfig {
     (addLlmOutputToUserVisibleRejectionDetails.hashCode) +
     (expectedResponse.hashCode) +
     (moveRejectedToHumanModeration.hashCode) +
+    (reasoningEffort == null ? 0 : reasoningEffort!.hashCode) +
     (systemText.hashCode) +
     (userTextTemplate.hashCode);
 
   @override
-  String toString() => 'AdminBotStringModerationLlmConfig[addLlmOutputToUserVisibleRejectionDetails=$addLlmOutputToUserVisibleRejectionDetails, expectedResponse=$expectedResponse, moveRejectedToHumanModeration=$moveRejectedToHumanModeration, systemText=$systemText, userTextTemplate=$userTextTemplate]';
+  String toString() => 'AdminBotStringModerationLlmConfig[addLlmOutputToUserVisibleRejectionDetails=$addLlmOutputToUserVisibleRejectionDetails, expectedResponse=$expectedResponse, moveRejectedToHumanModeration=$moveRejectedToHumanModeration, reasoningEffort=$reasoningEffort, systemText=$systemText, userTextTemplate=$userTextTemplate]';
 
   Map<String, dynamic> toJson() {
     final json = <String, dynamic>{};
       json[r'add_llm_output_to_user_visible_rejection_details'] = this.addLlmOutputToUserVisibleRejectionDetails;
       json[r'expected_response'] = this.expectedResponse;
       json[r'move_rejected_to_human_moderation'] = this.moveRejectedToHumanModeration;
+    if (this.reasoningEffort != null) {
+      json[r'reasoning_effort'] = this.reasoningEffort;
+    } else {
+      json[r'reasoning_effort'] = null;
+    }
       json[r'system_text'] = this.systemText;
       json[r'user_text_template'] = this.userTextTemplate;
     return json;
@@ -86,6 +103,7 @@ class AdminBotStringModerationLlmConfig {
         addLlmOutputToUserVisibleRejectionDetails: mapValueOfType<bool>(json, r'add_llm_output_to_user_visible_rejection_details') ?? false,
         expectedResponse: mapValueOfType<String>(json, r'expected_response')!,
         moveRejectedToHumanModeration: mapValueOfType<bool>(json, r'move_rejected_to_human_moderation') ?? false,
+        reasoningEffort: ReasoningEffortConfig.fromJson(json[r'reasoning_effort']),
         systemText: mapValueOfType<String>(json, r'system_text')!,
         userTextTemplate: mapValueOfType<String>(json, r'user_text_template')!,
       );

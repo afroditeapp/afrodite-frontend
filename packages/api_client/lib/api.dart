@@ -399,6 +399,7 @@ part 'model/put_content_to_content_slot_result.dart';
 part 'model/put_sign_in_with_apple.dart';
 part 'model/put_sign_in_with_google.dart';
 part 'model/put_sign_in_with_result.dart';
+part 'model/reasoning_effort_config.dart';
 part 'model/received_like_id.dart';
 part 'model/received_likes_iterator_state.dart';
 part 'model/received_likes_page.dart';

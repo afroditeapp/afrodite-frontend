@@ -160,6 +160,9 @@ String parameterToString(dynamic value) {
   if (value is ProfileVisibility) {
     return ProfileVisibilityTypeTransformer().encode(value).toString();
   }
+  if (value is ReasoningEffortConfig) {
+    return ReasoningEffortConfigTypeTransformer().encode(value).toString();
+  }
   if (value is ReportChatInfoInteractionState) {
     return ReportChatInfoInteractionStateTypeTransformer().encode(value).toString();
   }

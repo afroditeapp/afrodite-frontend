@@ -13,10 +13,22 @@ part of openapi.api;
 class AdminBotSecurityContentVerificationConfig {
   /// Returns a new [AdminBotSecurityContentVerificationConfig] instance.
   AdminBotSecurityContentVerificationConfig({
+    this.concurrency,
     required this.defaultAction,
     required this.llm,
     this.llmEnabled = false,
   });
+
+  /// Overrides the concurrency value from the bot config file.
+  ///
+  /// Minimum value: 0
+  ///
+  /// Please note: This property should have been non-nullable! Since the specification file
+  /// does not include a default value (using the "default:" property), however, the generated
+  /// source code must fall back to having a nullable type.
+  /// Consider adding a "default:" property in the specification file to hide this note.
+  ///
+  int? concurrency;
 
   AcceptOrReject defaultAction;
 
@@ -27,6 +39,7 @@ class AdminBotSecurityContentVerificationConfig {
 
   @override
   bool operator ==(Object other) => identical(this, other) || other is AdminBotSecurityContentVerificationConfig &&
+    other.concurrency == concurrency &&
     other.defaultAction == defaultAction &&
     other.llm == llm &&
     other.llmEnabled == llmEnabled;
@@ -34,15 +47,21 @@ class AdminBotSecurityContentVerificationConfig {
   @override
   int get hashCode =>
     // ignore: unnecessary_parenthesis
+    (concurrency == null ? 0 : concurrency!.hashCode) +
     (defaultAction.hashCode) +
     (llm.hashCode) +
     (llmEnabled.hashCode);
 
   @override
-  String toString() => 'AdminBotSecurityContentVerificationConfig[defaultAction=$defaultAction, llm=$llm, llmEnabled=$llmEnabled]';
+  String toString() => 'AdminBotSecurityContentVerificationConfig[concurrency=$concurrency, defaultAction=$defaultAction, llm=$llm, llmEnabled=$llmEnabled]';
 
   Map<String, dynamic> toJson() {
     final json = <String, dynamic>{};
+    if (this.concurrency != null) {
+      json[r'concurrency'] = this.concurrency;
+    } else {
+      json[r'concurrency'] = null;
+    }
       json[r'default_action'] = this.defaultAction;
       json[r'llm'] = this.llm;
       json[r'llm_enabled'] = this.llmEnabled;
@@ -68,6 +87,7 @@ class AdminBotSecurityContentVerificationConfig {
       }());
 
       return AdminBotSecurityContentVerificationConfig(
+        concurrency: mapValueOfType<int>(json, r'concurrency'),
         defaultAction: AcceptOrReject.fromJson(json[r'default_action'])!,
         llm: AdminBotSecurityContentVerificationLlmConfig.fromJson(json[r'llm'])!,
         llmEnabled: mapValueOfType<bool>(json, r'llm_enabled') ?? false,
