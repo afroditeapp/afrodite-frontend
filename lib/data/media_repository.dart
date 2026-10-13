@@ -12,6 +12,7 @@ import 'package:app/data/utils.dart';
 import 'package:app/database/account_database_manager.dart';
 import 'package:app/database/cache_database_manager.dart';
 import 'package:app/utils/result.dart';
+import 'package:rxdart/rxdart.dart';
 import 'package:utils/utils.dart';
 
 final _log = Logger("MediaRepository");
@@ -27,6 +28,11 @@ class MediaRepository extends DataRepositoryWithLifecycle {
 
   final ImageCacheData imageCache;
 
+  /// Emitted when a media content moderation notification
+  /// (accepted/rejected/deleted) is received.
+  final _allContentChanges = PublishSubject<void>();
+  Stream<void> get allContentChanges => _allContentChanges.stream;
+
   MediaRepository(
     this.account,
     this.db,
@@ -36,6 +42,14 @@ class MediaRepository extends DataRepositoryWithLifecycle {
   ) : api = connectionManager,
       imageCache = ImageCacheData(currentUser, cacheDb);
 
+  /// Notify listeners that media content may have changed so that
+  /// they can reload the full media content list.
+  void notifyAllContentChanged() {
+    if (!_allContentChanges.isClosed) {
+      _allContentChanges.add(null);
+    }
+  }
+
   @override
   Future<void> init() async {
     await imageCache.init();
@@ -43,7 +57,7 @@ class MediaRepository extends DataRepositoryWithLifecycle {
 
   @override
   Future<void> dispose() async {
-    // nothing to do
+    await _allContentChanges.close();
   }
 
   @override

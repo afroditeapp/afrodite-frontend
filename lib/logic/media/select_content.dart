@@ -1,3 +1,5 @@
+import "dart:async";
+
 import "package:app/api/server_connection_manager.dart";
 import "package:app/data/utils/repository_instances.dart";
 import "package:app/localizations.dart";
@@ -8,6 +10,7 @@ import "package:app/utils.dart";
 import "package:app/utils/immutable_list.dart";
 import "package:app/utils/result.dart";
 import "package:openapi/api.dart";
+import "package:rxdart/rxdart.dart";
 
 sealed class SelectContentEvent {}
 
@@ -26,11 +29,18 @@ class SelectContentBloc extends Bloc<SelectContentEvent, SelectContentData> with
   final ServerConnectionManager connectionManager;
   final AccountId currentUser;
 
+  StreamSubscription<void>? _allContentChangesSubscription;
+
   SelectContentBloc(RepositoryInstances r)
     : api = r.api,
       connectionManager = r.connectionManager,
       currentUser = r.accountId,
       super(SelectContentData()) {
+    _allContentChangesSubscription = r.media.allContentChanges
+        .debounceTime(Duration(seconds: 1))
+        .listen((_) {
+          add(ReloadAvailableContentSilently());
+        });
     on<ReloadAvailableContent>((data, emit) async {
       await runOnce(() async {
         await reload(emit, true);
@@ -77,5 +87,11 @@ class SelectContentBloc extends Bloc<SelectContentEvent, SelectContentData> with
         availableContent: allContentList,
       ),
     );
+  }
+
+  @override
+  Future<void> close() async {
+    await _allContentChangesSubscription?.cancel();
+    await super.close();
   }
 }

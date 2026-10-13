@@ -279,10 +279,13 @@ class AccountRepository extends DataRepositoryWithLifecycle {
         await NotificationNewsItemAvailable.getInstance().handleNewsCountUpdate(currentCount, db);
       case PendingAppNotificationType.mediaContentModerationAccepted:
         await NotificationMediaContentModerationCompleted.handleAccepted(db);
+        repositories.media.notifyAllContentChanged();
       case PendingAppNotificationType.mediaContentModerationRejected:
         await NotificationMediaContentModerationCompleted.handleRejected(db);
+        repositories.media.notifyAllContentChanged();
       case PendingAppNotificationType.mediaContentModerationDeleted:
         await NotificationMediaContentModerationCompleted.handleDeleted(db);
+        repositories.media.notifyAllContentChanged();
       case PendingAppNotificationType.profileNameModerationCompleted:
         if (notification.dataInteger == 0) {
           await NotificationProfileStringModerationCompleted.handleNameRejected(db);
