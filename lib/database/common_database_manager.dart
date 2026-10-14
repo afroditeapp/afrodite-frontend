@@ -1,15 +1,13 @@
 import 'dart:async';
 
-import 'package:database_provider/database_provider.dart';
+import 'package:database/database.dart';
 import 'package:drift/drift.dart';
 import 'package:drift/isolate.dart';
-import 'package:database/database.dart';
-import 'package:database_cache/database_cache.dart';
-import 'package:database_utils/database_utils.dart';
 import 'package:logging/logging.dart';
 import 'package:openapi/api.dart';
 import 'package:app/database/account_database_manager.dart';
 import 'package:app/database/cache_database_manager.dart';
+import 'package:app/database/db_reference_manager.dart';
 import 'package:app/data/app_version.dart';
 import 'package:app/utils/app_error.dart';
 import 'package:app/utils/result.dart';
@@ -26,8 +24,9 @@ class CommonDatabaseManager extends AppSingleton {
   }
 
   bool _initDone = false;
-  late final DbProvider _commonDatabaseProvider;
-  late final CommonDatabase _commonDatabase;
+  late final CommonDbReference _commonDbReference;
+
+  CommonDatabase get _commonDatabase => _commonDbReference.db;
 
   @override
   Future<void> init() async {
@@ -38,17 +37,9 @@ class CommonDatabaseManager extends AppSingleton {
 
     _log.info("Init started");
 
-    // CommonDatabaseManager handles one instance per database file, so disable
-    // warning. This should be safe to do as told by
-    // in: https://github.com/simolus3/drift/discussions/2596
-    driftRuntimeOptions.dontWarnAboutMultipleDatabases = true;
-
-    _commonDatabaseProvider = DbProvider(CommonDbFile());
-    _commonDatabase = CommonDatabase(_commonDatabaseProvider);
-    final ensureOpenResult = await _commonDatabaseProvider.getQueryExecutor().ensureOpen(
-      _commonDatabase,
-    );
-    _log.info("CommonDatabase ensureOpen result: $ensureOpenResult");
+    final dbReferenceManager = DbReferenceManager.getInstance();
+    await dbReferenceManager.init();
+    _commonDbReference = dbReferenceManager.commonDbReference;
     await commonAction(
       (db) => db.app.updateClientVersionInfo(AppVersionManager.getInstance().clientVersion),
     );
@@ -148,11 +139,8 @@ class CommonDatabaseManager extends AppSingleton {
 
   Future<AccountDatabaseManager> getAccountDatabaseManager(AccountId accountId) async {
     _log.info("AccountDatabase init");
-    final dbProvider = DbProvider(AccountDbFile(accountId.aid));
-    final db = AccountDatabase(dbProvider);
-    final ensureOpenResult = await dbProvider.getQueryExecutor().ensureOpen(db);
-    _log.info("AccountDatabase ensureOpen result: $ensureOpenResult");
-    final manager = AccountDatabaseManager(db);
+    final reference = await DbReferenceManager.getInstance().getAccountDbReference(accountId);
+    final manager = AccountDatabaseManager(reference);
     await manager.accountAction((db) => db.loginSession.setAccountIdIfNull(accountId));
     await manager.accountAction(
       (db) => db.app.updateClientVersionInfo(AppVersionManager.getInstance().clientVersion),
@@ -163,11 +151,8 @@ class CommonDatabaseManager extends AppSingleton {
 
   Future<CacheDatabaseManager> getCacheDatabaseManager(AccountId accountId) async {
     _log.info("CacheDatabase init");
-    final dbProvider = DbProvider(CacheDbFile(accountId.aid));
-    final db = CacheDatabase(dbProvider);
-    final ensureOpenResult = await dbProvider.getQueryExecutor().ensureOpen(db);
-    _log.info("CacheDatabase ensureOpen result: $ensureOpenResult");
-    final manager = CacheDatabaseManager(db);
+    final reference = await DbReferenceManager.getInstance().getCacheDbReference(accountId);
+    final manager = CacheDatabaseManager(reference);
     _log.info("CacheDatabase init completed");
     return manager;
   }

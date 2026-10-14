@@ -4,6 +4,7 @@ import 'package:drift/drift.dart';
 import 'package:drift/isolate.dart';
 import 'package:database/database.dart';
 import 'package:logging/logging.dart';
+import 'package:app/database/db_reference_manager.dart';
 import 'package:app/utils/app_error.dart';
 import 'package:app/utils/result.dart';
 import 'package:rxdart/rxdart.dart';
@@ -11,8 +12,10 @@ import 'package:rxdart/rxdart.dart';
 final _log = Logger("AccountDatabaseManager");
 
 class AccountDatabaseManager {
-  final AccountDatabase _db;
-  AccountDatabaseManager(AccountDatabase db) : _db = db;
+  final AccountDbReference _dbReference;
+  AccountDatabaseManager(AccountDbReference dbReference) : _dbReference = dbReference;
+
+  AccountDatabase get _db => _dbReference.db;
 
   // Access current account database
 
@@ -112,8 +115,10 @@ class AccountDatabaseManager {
     }
   }
 
+  /// Databases are kept open for the whole app lifetime to workaround
+  /// database open/close reliability bugs. Close is a no-op.
   Future<void> close() async {
-    await _db.close();
+    // empty
   }
 }
 
