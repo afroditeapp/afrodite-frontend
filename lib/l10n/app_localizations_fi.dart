@@ -534,6 +534,10 @@ class AppLocalizationsFi extends AppLocalizations {
   String get conversation_screen_join_video_call_dialog_title => 'Liity videopuheluun?';
 
   @override
+  String get conversation_screen_join_video_call_disclaimer =>
+      'Sovellus ei tallenna videopuheluita. Jos tarvitset todisteita viranomaisille, tallenna puhelu itse laitteesi näytön tallennuksella.';
+
+  @override
   String get conversation_screen_make_match_instruction =>
       'Lähetä viesti hyväksyäksesi keskustelupyynnön!';
 

@@ -974,6 +974,12 @@ abstract class AppLocalizations {
   /// **'Join video call?'**
   String get conversation_screen_join_video_call_dialog_title;
 
+  /// Disclaimer shown when joining a video call that the video call is not recorded by the app
+  ///
+  /// In en, this message translates to:
+  /// **'Video calls are not recorded by the app. If you need evidence for law enforcement, record the call yourself using your device\'s screen recording.'**
+  String get conversation_screen_join_video_call_disclaimer;
+
   /// Instruction text how to make a match
   ///
   /// In en, this message translates to:

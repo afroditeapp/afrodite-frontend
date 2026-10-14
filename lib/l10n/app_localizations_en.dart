@@ -531,6 +531,10 @@ class AppLocalizationsEn extends AppLocalizations {
   String get conversation_screen_join_video_call_dialog_title => 'Join video call?';
 
   @override
+  String get conversation_screen_join_video_call_disclaimer =>
+      'Video calls are not recorded by the app. If you need evidence for law enforcement, record the call yourself using your device\'s screen recording.';
+
+  @override
   String get conversation_screen_make_match_instruction =>
       'Send a message to accept the chat request!';
 

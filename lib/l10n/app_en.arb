@@ -687,6 +687,10 @@
   "@conversation_screen_join_video_call_dialog_title": {
     "description": "Title text for join video call confirm dialog"
   },
+  "conversation_screen_join_video_call_disclaimer": "Video calls are not recorded by the app. If you need evidence for law enforcement, record the call yourself using your device's screen recording.",
+  "@conversation_screen_join_video_call_disclaimer": {
+    "description": "Disclaimer shown when joining a video call that the video call is not recorded by the app"
+  },
   "conversation_screen_make_match_instruction": "Send a message to accept the chat request!",
   "@conversation_screen_make_match_instruction": {
     "description": "Instruction text how to make a match"

@@ -224,19 +224,19 @@ void joinVideoCall(BuildContext context, AccountId callee) async {
     showSnackBar(context.strings.generic_this_feature_is_disabled);
     return;
   }
-
-  if (kIsWeb) {
-    // This dialog is required to make sure that launchUrlString works
-    final r = await showConfirmDialog(
-      context,
-      context.strings.conversation_screen_join_video_call_dialog_title,
-      yesNoActions: true,
-    );
-    if (r == true && context.mounted) {
+  // This dialog is required on web to make sure that launchUrlString works
+  final r = await showConfirmDialog(
+    context,
+    context.strings.conversation_screen_join_video_call_dialog_title,
+    details: context.strings.conversation_screen_join_video_call_disclaimer,
+    yesNoActions: true,
+  );
+  if (r == true && context.mounted) {
+    if (kIsWeb) {
       await _openJitsiMeetToWebBrowser(context, jitsiMeetUrl);
+    } else {
+      await _openJitsiMeetOnAndroidOrIos(context, jitsiMeetUrl);
     }
-  } else {
-    await _openJitsiMeetOnAndroidOrIos(context, jitsiMeetUrl);
   }
 }
 
