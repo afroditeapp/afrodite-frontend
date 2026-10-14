@@ -57,6 +57,24 @@ extension CustomReportUiExtensions on CustomReport {
 
     return name;
   }
+
+  String? translatedDescription(BuildContext context) {
+    final locale = Localizations.localeOf(context);
+    final languages = translations
+        .where((element) => element.lang == locale.languageCode)
+        .firstOrNull;
+    if (languages == null) {
+      return description;
+    }
+
+    for (final t in languages.values) {
+      if (t.key == "${key}_description") {
+        return t.name;
+      }
+    }
+
+    return description;
+  }
 }
 
 extension ClientVersionUiExtensions on ClientVersion {

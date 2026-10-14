@@ -162,7 +162,7 @@ class _ReportScreenState extends State<ReportScreen> {
 
     if (profileEntry != null && profileEntry.name.isNotEmpty) {
       settings.add(
-        reportListTile(context.strings.report_screen_profile_name_action, () async {
+        reportListTile(context.strings.report_screen_profile_name_action, null, () async {
           final r = await showConfirmDialog(
             context,
             context.strings.report_screen_profile_name_dialog_title,
@@ -205,7 +205,7 @@ class _ReportScreenState extends State<ReportScreen> {
     final profileText = profileEntry?.profileText;
     if (profileEntry != null && profileText != null) {
       settings.add(
-        reportListTile(context.strings.report_screen_profile_text_action, () async {
+        reportListTile(context.strings.report_screen_profile_text_action, null, () async {
           final r = await showConfirmDialog(
             context,
             context.strings.report_screen_profile_text_dialog_title,
@@ -249,7 +249,7 @@ class _ReportScreenState extends State<ReportScreen> {
       final acceptedContent = profileEntry.content.where((v) => v.accepted);
       if (acceptedContent.isNotEmpty) {
         settings.add(
-          reportListTile(context.strings.report_screen_profile_image_action, () {
+          reportListTile(context.strings.report_screen_profile_image_action, null, () {
             MyNavigator.pushLimited(
               context,
               ReportProfileImagePage(profileEntry: profileEntry, isMatch: widget.isMatch),
@@ -261,7 +261,7 @@ class _ReportScreenState extends State<ReportScreen> {
 
     if (widget.messages.isNotEmpty) {
       settings.add(
-        reportListTile(context.strings.report_screen_chat_message_action, () {
+        reportListTile(context.strings.report_screen_chat_message_action, null, () {
           MyNavigator.pushLimited(
             context,
             ReportChatMessagePage(accountId: widget.accountId, messages: widget.messages),
@@ -278,8 +278,9 @@ class _ReportScreenState extends State<ReportScreen> {
 
     for (final report in availableReports) {
       final name = report.translatedName(context);
+      final description = report.translatedDescription(context);
       settings.add(
-        reportListTile(report.translatedName(context), () async {
+        reportListTile(report.translatedName(context), description, () async {
           final r = await showConfirmDialog(
             context,
             context.strings.generic_report_verb_question,
@@ -317,7 +318,11 @@ class _ReportScreenState extends State<ReportScreen> {
     return settings;
   }
 
-  Widget reportListTile(String text, void Function() action) {
-    return ListTile(onTap: action, title: Text(text));
+  Widget reportListTile(String text, String? description, void Function() action) {
+    return ListTile(
+      onTap: action,
+      title: Text(text),
+      subtitle: description == null ? null : Text(description),
+    );
   }
 }
