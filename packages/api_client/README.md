@@ -84,6 +84,7 @@ Class | Method | HTTP request | Description
 *AccountApi* | [**postCancelEmailChange**](doc//AccountApi.md#postcancelemailchange) | **POST** /account_api/cancel_email_change | Cancel email changing process
 *AccountApi* | [**postCompleteSetup**](doc//AccountApi.md#postcompletesetup) | **POST** /account_api/complete_setup | Complete initial setup.
 *AccountApi* | [**postCustomReportEmpty**](doc//AccountApi.md#postcustomreportempty) | **POST** /account_api/custom_report_empty | Send custom report without any content
+*AccountApi* | [**postCustomReportString**](doc//AccountApi.md#postcustomreportstring) | **POST** /account_api/custom_report_string | Send custom report with string content
 *AccountApi* | [**postDemoAccountAccessibleAccounts**](doc//AccountApi.md#postdemoaccountaccessibleaccounts) | **POST** /account_api/demo_account_accessible_accounts | Get demo account's available accounts.
 *AccountApi* | [**postDemoAccountLogin**](doc//AccountApi.md#postdemoaccountlogin) | **POST** /account_api/demo_account_login | Access demo account, which allows accessing all or specific accounts depending on the server configuration.
 *AccountApi* | [**postDemoAccountLoginToAccount**](doc//AccountApi.md#postdemoaccountlogintoaccount) | **POST** /account_api/demo_account_login_to_account | 
@@ -745,6 +746,7 @@ Class | Method | HTTP request | Description
  - [UpdateChatMessageReports](doc//UpdateChatMessageReports.md)
  - [UpdateCustomEmail](doc//UpdateCustomEmail.md)
  - [UpdateCustomReportEmpty](doc//UpdateCustomReportEmpty.md)
+ - [UpdateCustomReportString](doc//UpdateCustomReportString.md)
  - [UpdateNewsTranslation](doc//UpdateNewsTranslation.md)
  - [UpdateNewsTranslationResult](doc//UpdateNewsTranslationResult.md)
  - [UpdateProfileAttributesSchema](doc//UpdateProfileAttributesSchema.md)

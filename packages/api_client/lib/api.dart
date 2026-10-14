@@ -473,6 +473,7 @@ part 'model/update_association_membership_type.dart';
 part 'model/update_chat_message_reports.dart';
 part 'model/update_custom_email.dart';
 part 'model/update_custom_report_empty.dart';
+part 'model/update_custom_report_string.dart';
 part 'model/update_news_translation.dart';
 part 'model/update_news_translation_result.dart';
 part 'model/update_profile_attributes_schema.dart';

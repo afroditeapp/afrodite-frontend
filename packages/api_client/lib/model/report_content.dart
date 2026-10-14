@@ -14,6 +14,7 @@ class ReportContent {
   /// Returns a new [ReportContent] instance.
   ReportContent({
     this.chatMessage,
+    this.customReportString,
     this.profileContent,
     this.profileName,
     this.profileText,
@@ -26,6 +27,15 @@ class ReportContent {
   /// Consider adding a "default:" property in the specification file to hide this note.
   ///
   ChatMessageReport? chatMessage;
+
+  /// Custom report string content.  Max 200 grapheme clusters. The value is stored as UTF-8 bytes in the database, so the max byte count is 4 times the grapheme cluster count.
+  ///
+  /// Please note: This property should have been non-nullable! Since the specification file
+  /// does not include a default value (using the "default:" property), however, the generated
+  /// source code must fall back to having a nullable type.
+  /// Consider adding a "default:" property in the specification file to hide this note.
+  ///
+  String? customReportString;
 
   ///
   /// Please note: This property should have been non-nullable! Since the specification file
@@ -56,6 +66,7 @@ class ReportContent {
   @override
   bool operator ==(Object other) => identical(this, other) || other is ReportContent &&
     other.chatMessage == chatMessage &&
+    other.customReportString == customReportString &&
     other.profileContent == profileContent &&
     other.profileName == profileName &&
     other.profileText == profileText;
@@ -64,12 +75,13 @@ class ReportContent {
   int get hashCode =>
     // ignore: unnecessary_parenthesis
     (chatMessage == null ? 0 : chatMessage!.hashCode) +
+    (customReportString == null ? 0 : customReportString!.hashCode) +
     (profileContent == null ? 0 : profileContent!.hashCode) +
     (profileName == null ? 0 : profileName!.hashCode) +
     (profileText == null ? 0 : profileText!.hashCode);
 
   @override
-  String toString() => 'ReportContent[chatMessage=$chatMessage, profileContent=$profileContent, profileName=$profileName, profileText=$profileText]';
+  String toString() => 'ReportContent[chatMessage=$chatMessage, customReportString=$customReportString, profileContent=$profileContent, profileName=$profileName, profileText=$profileText]';
 
   Map<String, dynamic> toJson() {
     final json = <String, dynamic>{};
@@ -77,6 +89,11 @@ class ReportContent {
       json[r'chat_message'] = this.chatMessage;
     } else {
       json[r'chat_message'] = null;
+    }
+    if (this.customReportString != null) {
+      json[r'custom_report_string'] = this.customReportString;
+    } else {
+      json[r'custom_report_string'] = null;
     }
     if (this.profileContent != null) {
       json[r'profile_content'] = this.profileContent;
@@ -112,6 +129,7 @@ class ReportContent {
 
       return ReportContent(
         chatMessage: ChatMessageReport.fromJson(json[r'chat_message']),
+        customReportString: mapValueOfType<String>(json, r'custom_report_string'),
         profileContent: ContentId.fromJson(json[r'profile_content']),
         profileName: mapValueOfType<String>(json, r'profile_name'),
         profileText: mapValueOfType<String>(json, r'profile_text'),

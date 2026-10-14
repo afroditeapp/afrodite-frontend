@@ -13,6 +13,7 @@ part of openapi.api;
 
 enum CustomReportType {
   empty._(r'Empty'),
+  string._(r'String'),
   unknownDefaultOpenApi._(r'unknown_default_open_api'),
   ;
 
@@ -74,6 +75,7 @@ class CustomReportTypeTypeTransformer {
     if (data != null) {
       switch (data) {
         case r'Empty': return CustomReportType.empty;
+        case r'String': return CustomReportType.string;
         case r'unknown_default_open_api': return CustomReportType.unknownDefaultOpenApi;
         default:
           if (!allowNull) {

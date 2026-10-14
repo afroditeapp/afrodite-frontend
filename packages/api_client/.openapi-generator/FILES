@@ -455,6 +455,7 @@ lib/model/update_association_membership_type.dart
 lib/model/update_chat_message_reports.dart
 lib/model/update_custom_email.dart
 lib/model/update_custom_report_empty.dart
+lib/model/update_custom_report_string.dart
 lib/model/update_news_translation.dart
 lib/model/update_news_translation_result.dart
 lib/model/update_profile_attributes_schema.dart

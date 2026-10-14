@@ -13,6 +13,7 @@ part of openapi.api;
 class CustomReport {
   /// Returns a new [CustomReport] instance.
   CustomReport({
+    this.description,
     required this.id,
     required this.key,
     required this.name,
@@ -21,6 +22,15 @@ class CustomReport {
     this.translations = const [],
     this.visible = true,
   });
+
+  /// Default description for the report which client shows below the report name. The translation key for the description is `{key}_description`.
+  ///
+  /// Please note: This property should have been non-nullable! Since the specification file
+  /// does not include a default value (using the "default:" property), however, the generated
+  /// source code must fall back to having a nullable type.
+  /// Consider adding a "default:" property in the specification file to hide this note.
+  ///
+  String? description;
 
   /// Minimum value: 0
   int id;
@@ -43,6 +53,7 @@ class CustomReport {
 
   @override
   bool operator ==(Object other) => identical(this, other) || other is CustomReport &&
+    other.description == description &&
     other.id == id &&
     other.key == key &&
     other.name == name &&
@@ -54,6 +65,7 @@ class CustomReport {
   @override
   int get hashCode =>
     // ignore: unnecessary_parenthesis
+    (description == null ? 0 : description!.hashCode) +
     (id.hashCode) +
     (key.hashCode) +
     (name.hashCode) +
@@ -63,10 +75,15 @@ class CustomReport {
     (visible.hashCode);
 
   @override
-  String toString() => 'CustomReport[id=$id, key=$key, name=$name, orderNumber=$orderNumber, reportType=$reportType, translations=$translations, visible=$visible]';
+  String toString() => 'CustomReport[description=$description, id=$id, key=$key, name=$name, orderNumber=$orderNumber, reportType=$reportType, translations=$translations, visible=$visible]';
 
   Map<String, dynamic> toJson() {
     final json = <String, dynamic>{};
+    if (this.description != null) {
+      json[r'description'] = this.description;
+    } else {
+      json[r'description'] = null;
+    }
       json[r'id'] = this.id;
       json[r'key'] = this.key;
       json[r'name'] = this.name;
@@ -102,6 +119,7 @@ class CustomReport {
       }());
 
       return CustomReport(
+        description: mapValueOfType<String>(json, r'description'),
         id: mapValueOfType<int>(json, r'id')!,
         key: mapValueOfType<String>(json, r'key')!,
         name: mapValueOfType<String>(json, r'name')!,

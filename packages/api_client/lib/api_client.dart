@@ -1049,6 +1049,8 @@ class ApiClient {
           return UpdateCustomEmail.fromJson(value);
         case 'UpdateCustomReportEmpty':
           return UpdateCustomReportEmpty.fromJson(value);
+        case 'UpdateCustomReportString':
+          return UpdateCustomReportString.fromJson(value);
         case 'UpdateNewsTranslation':
           return UpdateNewsTranslation.fromJson(value);
         case 'UpdateNewsTranslationResult':

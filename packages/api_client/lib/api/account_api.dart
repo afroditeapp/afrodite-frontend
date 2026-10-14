@@ -1002,6 +1002,59 @@ class AccountApi {
     return null;
   }
 
+  /// Send custom report with string content
+  ///
+  /// Note: This method returns the HTTP [Response].
+  ///
+  /// Parameters:
+  ///
+  /// * [UpdateCustomReportString] updateCustomReportString (required):
+  Future<Response> postCustomReportStringWithHttpInfo(UpdateCustomReportString updateCustomReportString, { Future<void>? abortTrigger, }) async {
+    // ignore: prefer_const_declarations
+    final path = r'/account_api/custom_report_string';
+
+    // ignore: prefer_final_locals
+    Object? postBody = updateCustomReportString;
+
+    final queryParams = <QueryParam>[];
+    final headerParams = <String, String>{};
+    final formParams = <String, String>{};
+
+    const contentTypes = <String>['application/json'];
+
+
+    return apiClient.invokeAPI(
+      path,
+      'POST',
+      queryParams,
+      postBody,
+      headerParams,
+      formParams,
+      contentTypes.isEmpty ? null : contentTypes.first,
+      abortTrigger: abortTrigger,
+    );
+  }
+
+  /// Send custom report with string content
+  ///
+  /// Parameters:
+  ///
+  /// * [UpdateCustomReportString] updateCustomReportString (required):
+  Future<UpdateReportResult?> postCustomReportString(UpdateCustomReportString updateCustomReportString, { Future<void>? abortTrigger, }) async {
+    final response = await postCustomReportStringWithHttpInfo(updateCustomReportString, abortTrigger: abortTrigger,);
+    if (response.statusCode >= HttpStatus.badRequest) {
+      throw ApiException(response.statusCode, await _decodeBodyBytes(response));
+    }
+    // When a remote server returns no body with a status of 204, we shall not decode it.
+    // At the time of writing this, `dart:convert` will throw an "Unexpected end of input"
+    // FormatException when trying to decode an empty string.
+    if (response.body.isNotEmpty && response.statusCode != HttpStatus.noContent) {
+      return await apiClient.deserializeAsync(await _decodeBodyBytes(response), 'UpdateReportResult',) as UpdateReportResult;
+    
+    }
+    return null;
+  }
+
   /// Get demo account's available accounts.
   ///
   /// This path is using HTTP POST because there is JSON in the request body.
