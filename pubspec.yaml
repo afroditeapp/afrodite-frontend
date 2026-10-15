@@ -51,6 +51,7 @@ dependencies:
     sdk: flutter
 
   collection: ^1.19.1
+  characters: ^1.4.1
 
   # State management
   flutter_bloc: ^9.1.1

@@ -141,11 +141,11 @@ bool isValidEmail(String email) {
         // Check top level domain first
         for (final (i, part) in domainParts.reversed.indexed) {
           if (i == 0) {
-            topLevelDomainOk = part.runes.length >= 2;
+            topLevelDomainOk = part.characters.length >= 2;
           } else {
-            latestSubLevelDomainOk = part.runes.isNotEmpty;
+            latestSubLevelDomainOk = part.characters.isNotEmpty;
             if (allSubLevelDomainsOk) {
-              allSubLevelDomainsOk = part.runes.isNotEmpty;
+              allSubLevelDomainsOk = part.characters.isNotEmpty;
             }
           }
         }
@@ -154,7 +154,7 @@ bool isValidEmail(String email) {
         domainOk = false;
       }
     } else if (i == 1) {
-      localOk = part.runes.isNotEmpty;
+      localOk = part.characters.isNotEmpty;
     } else {
       break;
     }

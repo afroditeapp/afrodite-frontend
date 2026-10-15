@@ -2,6 +2,7 @@ import 'dart:math';
 
 import 'media.dart';
 
+import 'package:characters/characters.dart';
 import 'package:openapi/api.dart';
 import 'package:utils/utils.dart';
 
@@ -92,15 +93,16 @@ class ProfileEntry implements PublicContentProvider {
 }
 
 String hideOtherCharactersThanTheFirst(String value) {
-  final iterator = value.runes.iterator;
-  iterator.moveNext();
-  final onlyFirstCharacterVisible = "${iterator.currentAsString}…";
-  if (iterator.moveNext()) {
-    // String contains more than one character
-    return onlyFirstCharacterVisible;
-  } else {
+  final iterator = value.characters.iterator;
+  if (!iterator.moveNext()) {
     return value;
   }
+  final firstCharacter = iterator.current;
+  if (iterator.moveNext()) {
+    // String contains more than one character
+    return "$firstCharacter…";
+  }
+  return value;
 }
 
 class MyProfileEntry extends ProfileEntry implements MyContentProvider {
