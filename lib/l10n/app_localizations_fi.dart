@@ -2046,6 +2046,13 @@ class AppLocalizationsFi extends AppLocalizations {
       'Symmetristä viestinsalausavainta ei löytynyt';
 
   @override
+  String get report_custom_report_string_screen_discard_changes_dialog_title =>
+      'Hylätäänkö tallentamattomat muutokset?';
+
+  @override
+  String get report_custom_report_string_screen_text_field_label => 'Ilmoitusteksti';
+
+  @override
   String get report_profile_image_screen_confirm_dialog_title => 'Ilmoita profiilikuva?';
 
   @override

@@ -584,6 +584,8 @@
   "report_chat_message_screen_selection_status_none": "Valitse enintään 10 viestiä",
   "report_chat_message_screen_server_signed_message_not_found": "Palvelimen allekirjoittamaa viestiä ei löytynyt",
   "report_chat_message_screen_symmetric_message_encryption_key_not_found": "Symmetristä viestinsalausavainta ei löytynyt",
+  "report_custom_report_string_screen_discard_changes_dialog_title": "Hylätäänkö tallentamattomat muutokset?",
+  "report_custom_report_string_screen_text_field_label": "Ilmoitusteksti",
   "report_profile_image_screen_confirm_dialog_title": "Ilmoita profiilikuva?",
   "report_profile_image_screen_image_title": "Profiilikuva {p0}",
   "report_profile_image_screen_profile_image_changed_error": "Ilmoitus epäonnistui: profiilikuva on muuttunut",

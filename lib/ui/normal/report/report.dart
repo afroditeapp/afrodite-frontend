@@ -4,6 +4,7 @@ import 'package:app/logic/account/custom_reports_config.dart';
 import 'package:app/logic/app/navigator_state.dart';
 import 'package:app/model/freezed/logic/main/navigator_state.dart';
 import 'package:app/ui/normal/report/report_chat_message.dart';
+import 'package:app/ui/normal/report/report_custom_report_string.dart';
 import 'package:app/ui/normal/report/report_profile_image.dart';
 import 'package:app/ui_utils/extensions/api.dart';
 import 'package:app/ui_utils/dialog.dart';
@@ -270,49 +271,69 @@ class _ReportScreenState extends State<ReportScreen> {
       );
     }
 
-    final availableReports = [
-      ...config.reports.where((v) => v.reportType == CustomReportType.empty && v.visible),
-    ];
+    final availableReports = [...config.reports.where((v) => v.visible)];
 
     availableReports.sort((a, b) => a.orderNumber.compareTo(b.orderNumber));
 
     for (final report in availableReports) {
-      final name = report.translatedName(context);
-      final description = report.translatedDescription(context);
-      settings.add(
-        reportListTile(report.translatedName(context), description, () async {
-          final r = await showConfirmDialog(
-            context,
-            context.strings.generic_report_verb_question,
-            details: context.strings.report_screen_custom_report_boolean_dialog_description(name),
-            yesNoActions: true,
-          );
-          if (context.mounted && r == true) {
-            final result = await repositories.api
-                .account(
-                  (api) => api.postCustomReportEmpty(
-                    UpdateCustomReportEmpty(customReportId: report.id, target: widget.accountId),
-                  ),
-                )
-                .ok();
+      switch (report.reportType) {
+        case CustomReportType.empty:
+          final name = report.translatedName(context);
+          settings.add(
+            reportListTile(name, report.translatedDescription(context), () async {
+              final r = await showConfirmDialog(
+                context,
+                context.strings.generic_report_verb_question,
+                details: context.strings.report_screen_custom_report_boolean_dialog_description(
+                  name,
+                ),
+                yesNoActions: true,
+              );
+              if (context.mounted && r == true) {
+                final result = await repositories.api
+                    .account(
+                      (api) => api.postCustomReportEmpty(
+                        UpdateCustomReportEmpty(
+                          customReportId: report.id,
+                          target: widget.accountId,
+                        ),
+                      ),
+                    )
+                    .ok();
 
-            if (result == null) {
-              showSnackBar(R.strings.generic_error_occurred);
-            } else if (result.errorOutdatedReportContent) {
-              // Should not happen as the report value is a boolean.
-              showSnackBar(R.strings.generic_error);
-            } else if (result.errorTooManyReports) {
-              // Should not happen as the report is ignored when sending
-              // again the same boolean report with the same value.
-              showSnackBar(R.strings.report_screen_snackbar_too_many_reports_error);
-            } else if (result.error) {
-              showSnackBar(R.strings.generic_error_occurred);
-            } else {
-              showSnackBar(R.strings.report_screen_snackbar_report_successful);
-            }
-          }
-        }),
-      );
+                if (result == null) {
+                  showSnackBar(R.strings.generic_error_occurred);
+                } else if (result.errorOutdatedReportContent) {
+                  // Should not happen as the report value is a boolean.
+                  showSnackBar(R.strings.generic_error);
+                } else if (result.errorTooManyReports) {
+                  // Should not happen as the report is ignored when sending
+                  // again the same boolean report with the same value.
+                  showSnackBar(R.strings.report_screen_snackbar_too_many_reports_error);
+                } else if (result.error) {
+                  showSnackBar(R.strings.generic_error_occurred);
+                } else {
+                  showSnackBar(R.strings.report_screen_snackbar_report_successful);
+                }
+              }
+            }),
+          );
+        case CustomReportType.string:
+          settings.add(
+            reportListTile(
+              report.translatedName(context),
+              report.translatedDescription(context),
+              () {
+                MyNavigator.pushLimited(
+                  context,
+                  ReportCustomReportStringPage(accountId: widget.accountId, report: report),
+                );
+              },
+            ),
+          );
+        case CustomReportType.unknownDefaultOpenApi:
+          break;
+      }
     }
 
     return settings;

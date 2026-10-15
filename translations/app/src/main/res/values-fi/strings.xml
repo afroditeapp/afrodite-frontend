@@ -802,6 +802,10 @@
     <string name="report_screen_custom_report_boolean_dialog_description">Ilmoita käyttäjästä syyllä %s?</string>
     <string name="report_screen_false_reports_warning">Väärien ilmoitusten tekeminen voi johtaa tilin porttikieltoon</string>
 
+    <!-- Report custom report string screen -->
+    <string name="report_custom_report_string_screen_text_field_label">Ilmoitusteksti</string>
+    <string name="report_custom_report_string_screen_discard_changes_dialog_title">Hylätäänkö tallentamattomat muutokset?</string>
+
     <!-- Report profile image screen -->
     <string name="report_profile_image_screen_confirm_dialog_title">Ilmoita profiilikuva?</string>
     <string name="report_profile_image_screen_image_title">Profiilikuva %s</string>

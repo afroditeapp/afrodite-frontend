@@ -809,6 +809,10 @@
     <string name="report_screen_custom_report_boolean_dialog_description" description="Text for dialog for custom report boolean reporting">Report user for "%s"?</string>
     <string name="report_screen_false_reports_warning" description="Warning text about false reports leading to a ban">Submitting false reports might get your account banned</string>
 
+    <!-- Report custom report string screen -->
+    <string name="report_custom_report_string_screen_text_field_label" description="Label for text field for custom report string content">Report text</string>
+    <string name="report_custom_report_string_screen_discard_changes_dialog_title" description="Title for dialog for discarding unsaved custom report string content">Discard unsaved changes?</string>
+
     <!-- Report profile image screen -->
     <string name="report_profile_image_screen_confirm_dialog_title" description="Profile image reporting confirmation dialog title">Report profile image?</string>
     <string name="report_profile_image_screen_image_title" description="Profile image title for reporting screen">Profile image %s</string>

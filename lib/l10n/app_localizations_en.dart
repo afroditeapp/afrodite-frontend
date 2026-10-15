@@ -2031,6 +2031,13 @@ class AppLocalizationsEn extends AppLocalizations {
       'Symmetric message encryption key not found';
 
   @override
+  String get report_custom_report_string_screen_discard_changes_dialog_title =>
+      'Discard unsaved changes?';
+
+  @override
+  String get report_custom_report_string_screen_text_field_label => 'Report text';
+
+  @override
   String get report_profile_image_screen_confirm_dialog_title => 'Report profile image?';
 
   @override

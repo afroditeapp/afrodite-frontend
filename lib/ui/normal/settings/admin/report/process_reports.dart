@@ -264,13 +264,15 @@ C = custom report""";
         "M: $senderRecipientInfo, MN: ${chatMessage.messageNumber.mn}, $time$messageText",
       );
     } else if (customReport) {
+      final reportString = content.content.customReportString;
+      final reportContent = reportString != null ? "\n$reportString" : "";
       report = BlocBuilder<CustomReportsConfigBloc, CustomReportsConfig>(
         builder: (context, config) {
           final reportId = content.info.reportType.t - FIRST_CUSTOM_REPORT_TYPE_NUMBER;
           final customReportInfo = config.reports.getAtOrNull(reportId);
           if (customReportInfo != null) {
             final text = customReportInfo.translatedName(context);
-            return Text("C: $text");
+            return Text("C: $text$reportContent");
           } else {
             return const Text("Matching custom report type not found from config");
           }

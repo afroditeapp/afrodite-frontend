@@ -3624,6 +3624,18 @@ abstract class AppLocalizations {
   /// **'Symmetric message encryption key not found'**
   String get report_chat_message_screen_symmetric_message_encryption_key_not_found;
 
+  /// Title for dialog for discarding unsaved custom report string content
+  ///
+  /// In en, this message translates to:
+  /// **'Discard unsaved changes?'**
+  String get report_custom_report_string_screen_discard_changes_dialog_title;
+
+  /// Label for text field for custom report string content
+  ///
+  /// In en, this message translates to:
+  /// **'Report text'**
+  String get report_custom_report_string_screen_text_field_label;
+
   /// Profile image reporting confirmation dialog title
   ///
   /// In en, this message translates to:
