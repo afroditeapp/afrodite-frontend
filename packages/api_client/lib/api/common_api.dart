@@ -182,6 +182,51 @@ class CommonApi {
     }
   }
 
+  /// Get current data consent settings.
+  ///
+  /// Note: This method returns the HTTP [Response].
+  Future<Response> getDataConsentSettingsWithHttpInfo({ Future<void>? abortTrigger, }) async {
+    // ignore: prefer_const_declarations
+    final path = r'/common_api/data_consent_settings';
+
+    // ignore: prefer_final_locals
+    Object? postBody;
+
+    final queryParams = <QueryParam>[];
+    final headerParams = <String, String>{};
+    final formParams = <String, String>{};
+
+    const contentTypes = <String>[];
+
+
+    return apiClient.invokeAPI(
+      path,
+      'GET',
+      queryParams,
+      postBody,
+      headerParams,
+      formParams,
+      contentTypes.isEmpty ? null : contentTypes.first,
+      abortTrigger: abortTrigger,
+    );
+  }
+
+  /// Get current data consent settings.
+  Future<DataConsentSettings?> getDataConsentSettings({ Future<void>? abortTrigger, }) async {
+    final response = await getDataConsentSettingsWithHttpInfo(abortTrigger: abortTrigger,);
+    if (response.statusCode >= HttpStatus.badRequest) {
+      throw ApiException(response.statusCode, await _decodeBodyBytes(response));
+    }
+    // When a remote server returns no body with a status of 204, we shall not decode it.
+    // At the time of writing this, `dart:convert` will throw an "Unexpected end of input"
+    // FormatException when trying to decode an empty string.
+    if (response.body.isNotEmpty && response.statusCode != HttpStatus.noContent) {
+      return await apiClient.deserializeAsync(await _decodeBodyBytes(response), 'DataConsentSettings',) as DataConsentSettings;
+    
+    }
+    return null;
+  }
+
   /// Download current data export archive
   ///
   /// Requires data export state [DataExportStateType::Done].
@@ -593,6 +638,51 @@ class CommonApi {
   /// * [ClientLanguage] clientLanguage (required):
   Future<void> postClientLanguage(ClientLanguage clientLanguage, { Future<void>? abortTrigger, }) async {
     final response = await postClientLanguageWithHttpInfo(clientLanguage, abortTrigger: abortTrigger,);
+    if (response.statusCode >= HttpStatus.badRequest) {
+      throw ApiException(response.statusCode, await _decodeBodyBytes(response));
+    }
+  }
+
+  /// Update data consent settings.
+  ///
+  /// Note: This method returns the HTTP [Response].
+  ///
+  /// Parameters:
+  ///
+  /// * [DataConsentSettings] dataConsentSettings (required):
+  Future<Response> postDataConsentSettingsWithHttpInfo(DataConsentSettings dataConsentSettings, { Future<void>? abortTrigger, }) async {
+    // ignore: prefer_const_declarations
+    final path = r'/common_api/data_consent_settings';
+
+    // ignore: prefer_final_locals
+    Object? postBody = dataConsentSettings;
+
+    final queryParams = <QueryParam>[];
+    final headerParams = <String, String>{};
+    final formParams = <String, String>{};
+
+    const contentTypes = <String>['application/json'];
+
+
+    return apiClient.invokeAPI(
+      path,
+      'POST',
+      queryParams,
+      postBody,
+      headerParams,
+      formParams,
+      contentTypes.isEmpty ? null : contentTypes.first,
+      abortTrigger: abortTrigger,
+    );
+  }
+
+  /// Update data consent settings.
+  ///
+  /// Parameters:
+  ///
+  /// * [DataConsentSettings] dataConsentSettings (required):
+  Future<void> postDataConsentSettings(DataConsentSettings dataConsentSettings, { Future<void>? abortTrigger, }) async {
+    final response = await postDataConsentSettingsWithHttpInfo(dataConsentSettings, abortTrigger: abortTrigger,);
     if (response.statusCode >= HttpStatus.badRequest) {
       throw ApiException(response.statusCode, await _decodeBodyBytes(response));
     }

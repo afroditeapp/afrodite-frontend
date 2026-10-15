@@ -151,6 +151,7 @@ lib/model/custom_reports_order_mode.dart
 lib/model/daily_likes_config.dart
 lib/model/daily_likes_left.dart
 lib/model/daily_likes_left_sync_version.dart
+lib/model/data_consent_settings.dart
 lib/model/data_export_name.dart
 lib/model/data_export_state.dart
 lib/model/data_export_state_type.dart

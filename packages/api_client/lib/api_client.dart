@@ -441,6 +441,8 @@ class ApiClient {
           return DailyLikesLeft.fromJson(value);
         case 'DailyLikesLeftSyncVersion':
           return DailyLikesLeftSyncVersion.fromJson(value);
+        case 'DataConsentSettings':
+          return DataConsentSettings.fromJson(value);
         case 'DataExportName':
           return DataExportName.fromJson(value);
         case 'DataExportState':

@@ -196,6 +196,7 @@ Class | Method | HTTP request | Description
 *CommonApi* | [**getClientConfig**](doc//CommonApi.md#getclientconfig) | **GET** /common_api/client_config | 
 *CommonApi* | [**getClientLanguage**](doc//CommonApi.md#getclientlanguage) | **GET** /common_api/client_language | 
 *CommonApi* | [**getConnectWebsocket**](doc//CommonApi.md#getconnectwebsocket) | **GET** /common_api/connect | Connect to server using WebSocket after getting refresh and access tokens.
+*CommonApi* | [**getDataConsentSettings**](doc//CommonApi.md#getdataconsentsettings) | **GET** /common_api/data_consent_settings | Get current data consent settings.
 *CommonApi* | [**getDataExportArchive**](doc//CommonApi.md#getdataexportarchive) | **GET** /common_api/data_export_archive | Download current data export archive
 *CommonApi* | [**getDataExportState**](doc//CommonApi.md#getdataexportstate) | **GET** /common_api/data_export_state | 
 *CommonApi* | [**getManualServerMaintenanceInfoForAnotherServer**](doc//CommonApi.md#getmanualservermaintenanceinfoforanotherserver) | **GET** /common_api/manual_server_maintenance_info_for_another_server | Get manual server maintenance info for another server.
@@ -205,6 +206,7 @@ Class | Method | HTTP request | Description
 *CommonApi* | [**postAutomaticProfileSearchGetNextProfilePage**](doc//CommonApi.md#postautomaticprofilesearchgetnextprofilepage) | **POST** /common_api/automatic_profile_search/next | Post (updates iterator) to get next page of automatic profile search profile list.
 *CommonApi* | [**postAutomaticProfileSearchResetProfilePaging**](doc//CommonApi.md#postautomaticprofilesearchresetprofilepaging) | **POST** /common_api/automatic_profile_search/reset | Reset automatic profile search profile paging.
 *CommonApi* | [**postClientLanguage**](doc//CommonApi.md#postclientlanguage) | **POST** /common_api/client_language | 
+*CommonApi* | [**postDataConsentSettings**](doc//CommonApi.md#postdataconsentsettings) | **POST** /common_api/data_consent_settings | Update data consent settings.
 *CommonApi* | [**postDeletePendingAppNotifications**](doc//CommonApi.md#postdeletependingappnotifications) | **POST** /common_api/pending_app_notifications/delete | 
 *CommonApi* | [**postGetNextProfilePage**](doc//CommonApi.md#postgetnextprofilepage) | **POST** /common_api/profile/page/next | Post (updates iterator) to get next page of profile list.
 *CommonApi* | [**postResetProfilePaging**](doc//CommonApi.md#postresetprofilepaging) | **POST** /common_api/profile/page/reset | Reset profile paging.
@@ -442,6 +444,7 @@ Class | Method | HTTP request | Description
  - [DailyLikesConfig](doc//DailyLikesConfig.md)
  - [DailyLikesLeft](doc//DailyLikesLeft.md)
  - [DailyLikesLeftSyncVersion](doc//DailyLikesLeftSyncVersion.md)
+ - [DataConsentSettings](doc//DataConsentSettings.md)
  - [DataExportName](doc//DataExportName.md)
  - [DataExportState](doc//DataExportState.md)
  - [DataExportStateType](doc//DataExportStateType.md)

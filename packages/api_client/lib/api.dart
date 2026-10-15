@@ -169,6 +169,7 @@ part 'model/custom_reports_order_mode.dart';
 part 'model/daily_likes_config.dart';
 part 'model/daily_likes_left.dart';
 part 'model/daily_likes_left_sync_version.dart';
+part 'model/data_consent_settings.dart';
 part 'model/data_export_name.dart';
 part 'model/data_export_state.dart';
 part 'model/data_export_state_type.dart';
