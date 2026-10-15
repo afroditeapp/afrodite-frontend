@@ -641,6 +641,13 @@ class AppLocalizationsFi extends AppLocalizations {
   String get conversation_screen_open_details_action_subtitle => 'Sisältää valittavaa tekstiä';
 
   @override
+  String get conversation_screen_open_video_call_link_dialog_details =>
+      'Videopuhelulinkki on valmis avattavaksi';
+
+  @override
+  String get conversation_screen_open_video_call_link_dialog_title => 'Avaa videopuhelulinkki?';
+
+  @override
   String get conversation_screen_profile_blocked => 'Profiili estettiin';
 
   @override

@@ -824,6 +824,14 @@
   "@conversation_screen_open_details_action_subtitle": {
     "description": "Action subtitle for open details action"
   },
+  "conversation_screen_open_video_call_link_dialog_details": "Video call link is ready for opening",
+  "@conversation_screen_open_video_call_link_dialog_details": {
+    "description": "Details for open video call link confirm dialog on web"
+  },
+  "conversation_screen_open_video_call_link_dialog_title": "Open video call link?",
+  "@conversation_screen_open_video_call_link_dialog_title": {
+    "description": "Title for open video call link confirm dialog on web"
+  },
   "conversation_screen_profile_blocked": "Profile was blocked",
   "@conversation_screen_profile_blocked": {
     "description": "Snackbar text displayed when profile blocking is successful"

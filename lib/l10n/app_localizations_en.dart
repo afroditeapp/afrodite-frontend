@@ -638,6 +638,13 @@ class AppLocalizationsEn extends AppLocalizations {
   String get conversation_screen_open_details_action_subtitle => 'Contains selectable text';
 
   @override
+  String get conversation_screen_open_video_call_link_dialog_details =>
+      'Video call link is ready for opening';
+
+  @override
+  String get conversation_screen_open_video_call_link_dialog_title => 'Open video call link?';
+
+  @override
   String get conversation_screen_profile_blocked => 'Profile was blocked';
 
   @override

@@ -208,6 +208,17 @@ ${screenContext.strings.generic_state}: $stateText""";
 void joinVideoCall(BuildContext context, AccountId callee) async {
   final api = context.read<RepositoryInstances>().api;
 
+  // Show dialog to avoid unnecessary API calls
+  final r = await showConfirmDialog(
+    context,
+    context.strings.conversation_screen_join_video_call_dialog_title,
+    details: context.strings.conversation_screen_join_video_call_disclaimer,
+    yesNoActions: true,
+  );
+  if (r != true || !context.mounted) {
+    return;
+  }
+
   final videoCallingUrl = await api.chat((api) => api.postCreateVideoCallUrl(callee.aid)).ok();
 
   if (!context.mounted) {
@@ -224,19 +235,20 @@ void joinVideoCall(BuildContext context, AccountId callee) async {
     showSnackBar(context.strings.generic_this_feature_is_disabled);
     return;
   }
-  // This dialog is required on web to make sure that launchUrlString works
-  final r = await showConfirmDialog(
-    context,
-    context.strings.conversation_screen_join_video_call_dialog_title,
-    details: context.strings.conversation_screen_join_video_call_disclaimer,
-    yesNoActions: true,
-  );
-  if (r == true && context.mounted) {
-    if (kIsWeb) {
+  if (kIsWeb) {
+    // This dialog is required on web to make sure that launchUrlString works
+    // because browsers require a user gesture for opening links.
+    final r = await showConfirmDialog(
+      context,
+      context.strings.conversation_screen_open_video_call_link_dialog_title,
+      details: context.strings.conversation_screen_open_video_call_link_dialog_details,
+      yesNoActions: true,
+    );
+    if (r == true && context.mounted) {
       await _openJitsiMeetToWebBrowser(context, jitsiMeetUrl);
-    } else {
-      await _openJitsiMeetOnAndroidOrIos(context, jitsiMeetUrl);
     }
+  } else {
+    await _openJitsiMeetOnAndroidOrIos(context, jitsiMeetUrl);
   }
 }
 

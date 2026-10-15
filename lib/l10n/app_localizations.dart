@@ -1160,6 +1160,18 @@ abstract class AppLocalizations {
   /// **'Contains selectable text'**
   String get conversation_screen_open_details_action_subtitle;
 
+  /// Details for open video call link confirm dialog on web
+  ///
+  /// In en, this message translates to:
+  /// **'Video call link is ready for opening'**
+  String get conversation_screen_open_video_call_link_dialog_details;
+
+  /// Title for open video call link confirm dialog on web
+  ///
+  /// In en, this message translates to:
+  /// **'Open video call link?'**
+  String get conversation_screen_open_video_call_link_dialog_title;
+
   /// Snackbar text displayed when profile blocking is successful
   ///
   /// In en, this message translates to:
