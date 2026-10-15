@@ -1208,11 +1208,23 @@ abstract class AppLocalizations {
   /// **'Crop image'**
   String get crop_image_screen_title;
 
-  /// Snackbar text displayed when security selfie is changed
+  /// Title for AI face verification consent setting
   ///
   /// In en, this message translates to:
-  /// **'Security selfie updated'**
-  String get current_security_selfie_screen_security_selfie_changed;
+  /// **'AI face verification'**
+  String get current_security_selfie_screen_ai_face_verification;
+
+  /// Description for AI face verification consent setting when disabled
+  ///
+  /// In en, this message translates to:
+  /// **'You will not get automatic face picture verified mark to your profile'**
+  String get current_security_selfie_screen_ai_face_verification_description_disabled;
+
+  /// Description for AI face verification consent setting when enabled
+  ///
+  /// In en, this message translates to:
+  /// **'Allow AI to verify your face pictures using security selfie'**
+  String get current_security_selfie_screen_ai_face_verification_description_enabled;
 
   /// Snackbar text for API limit error
   ///
@@ -1585,6 +1597,12 @@ abstract class AppLocalizations {
   /// In en, this message translates to:
   /// **'Cancel?'**
   String get generic_cancel_question;
+
+  /// Generic changes saved text
+  ///
+  /// In en, this message translates to:
+  /// **'Changes saved'**
+  String get generic_changes_saved;
 
   /// Generic close text
   ///

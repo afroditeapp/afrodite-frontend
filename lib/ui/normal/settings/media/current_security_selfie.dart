@@ -2,20 +2,20 @@ import 'package:app/data/image_cache.dart';
 import 'package:app/data/utils/repository_instances.dart';
 import 'package:app/model/freezed/logic/main/navigator_state.dart';
 import 'package:app/ui/normal/settings/media/select_content.dart';
+import 'package:app/ui_utils/common_update_logic.dart';
+import 'package:app/ui_utils/consts/padding.dart';
 import 'package:app/ui_utils/extensions/api.dart';
 import 'package:app/ui_utils/dialog.dart';
 import 'package:app/ui_utils/moderation.dart';
 import 'package:app/ui_utils/padding.dart';
-import 'package:app/ui_utils/profile_pictures.dart';
 import 'package:app/ui_utils/snack_bar.dart';
-import 'package:database/database.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:openapi/api.dart';
 import 'package:app/localizations.dart';
 import 'package:app/logic/app/navigator_state.dart';
-import 'package:app/logic/media/content.dart';
-import 'package:app/model/freezed/logic/media/content.dart';
+import 'package:app/logic/media/security_selfie.dart';
+import 'package:app/model/freezed/logic/media/security_selfie.dart';
 import 'package:app/ui_utils/image.dart';
 import 'package:app/ui_utils/view_image_screen.dart';
 
@@ -24,139 +24,135 @@ const SECURITY_SELFIE_ICON = Icons.image_rounded;
 class CurrentSecuritySelfiePage extends MyScreenPage<()>
     with SimpleUrlParser<CurrentSecuritySelfiePage> {
   CurrentSecuritySelfiePage()
-    : super(builder: (closer) => CurrentSecuritySelfieScreen(closer: closer));
+    : super(builder: (closer) => CurrentSecuritySelfieScreenOpener(closer: closer));
 
   @override
   CurrentSecuritySelfiePage create() => CurrentSecuritySelfiePage();
 }
 
+class CurrentSecuritySelfieScreenOpener extends StatelessWidget {
+  final PageCloser<()> closer;
+  const CurrentSecuritySelfieScreenOpener({required this.closer, super.key});
+
+  @override
+  Widget build(BuildContext context) {
+    return CurrentSecuritySelfieScreen(
+      closer: closer,
+      securitySelfieBloc: context.read<SecuritySelfieBloc>(),
+      currentUser: context.read<RepositoryInstances>().accountId,
+    );
+  }
+}
+
 class CurrentSecuritySelfieScreen extends StatefulWidget {
   final PageCloser<()> closer;
-  const CurrentSecuritySelfieScreen({required this.closer, super.key});
+  final SecuritySelfieBloc securitySelfieBloc;
+  final AccountId currentUser;
+  const CurrentSecuritySelfieScreen({
+    required this.closer,
+    required this.securitySelfieBloc,
+    required this.currentUser,
+    super.key,
+  });
 
   @override
   State<CurrentSecuritySelfieScreen> createState() => _CurrentSecuritySelfieScreenState();
 }
 
 class _CurrentSecuritySelfieScreenState extends State<CurrentSecuritySelfieScreen> {
-  MyContent? currentImg;
-  AccountImageId? changedImg;
-  bool backNavigationStarted = false;
+  @override
+  void initState() {
+    super.initState();
+    widget.securitySelfieBloc.add(ResetEditedValues());
+    widget.securitySelfieBloc.add(RefreshDataConsentSettingsSilently());
+  }
 
   @override
   Widget build(BuildContext context) {
-    return BlocBuilder<ContentBloc, ContentData>(
+    return BlocBuilder<SecuritySelfieBloc, SecuritySelfieData>(
+      bloc: widget.securitySelfieBloc,
       builder: (context, contentState) {
-        if (!backNavigationStarted) {
-          currentImg = contentState.securityContent;
-        }
-
-        final currentSecuritySelfie = currentImg;
-        final editedSecuritySelfie = changedImg;
-
-        String infoText = "";
-        final ContentId? contentId;
-        final bool saveRequired;
-        if (editedSecuritySelfie != null &&
-            currentSecuritySelfie?.id != editedSecuritySelfie.contentId) {
-          if (!editedSecuritySelfie.faceDetected) {
-            infoText = context.strings.initial_setup_screen_security_selfie_face_not_detected;
-          }
-          contentId = editedSecuritySelfie.contentId;
-          saveRequired = true;
-        } else if (currentSecuritySelfie != null) {
-          infoText = addModerationStateRow(
-            context,
-            infoText,
-            currentSecuritySelfie.state.toUiString(context),
-          );
-          infoText = addRejectedCategoryRow(
-            context,
-            infoText,
-            currentSecuritySelfie.rejectedCategory?.value,
-          );
-          infoText = addRejectedDetailsRow(
-            context,
-            infoText,
-            currentSecuritySelfie.rejectedDetails?.value,
-          );
-          infoText = infoText.trim();
-          contentId = currentSecuritySelfie.id;
-          saveRequired = false;
-        } else {
-          contentId = null;
-          saveRequired = false;
-        }
-
-        return mainContent(context, contentId, infoText, saveRequired);
+        return mainContent(context, contentState);
       },
     );
   }
 
-  Widget mainContent(
-    BuildContext context,
-    ContentId? contentId,
-    String infoText,
-    bool saveRequired,
-  ) {
-    return PopScope(
-      canPop: !saveRequired,
-      onPopInvokedWithResult: (didPop, _) {
-        if (didPop) {
-          return;
-        }
-        showConfirmDialog(
-          context,
-          context.strings.generic_save_confirmation_title,
-          yesNoActions: true,
-        ).then((value) {
-          if (!context.mounted) {
+  Widget mainContent(BuildContext context, SecuritySelfieData contentState) {
+    final unsavedChanges = contentState.unsavedChanges();
+    return updateStateHandler<SecuritySelfieBloc, SecuritySelfieData>(
+      context: context,
+      pageKey: widget.closer.key,
+      child: PopScope(
+        canPop: !unsavedChanges,
+        onPopInvokedWithResult: (didPop, _) {
+          if (didPop) {
             return;
           }
-          if (value == true) {
-            validateAndSaveData(context);
-          } else if (value == false) {
-            widget.closer.close(context, ());
-          }
-        });
-      },
-      child: Scaffold(
-        appBar: AppBar(
-          title: Text(context.strings.generic_security_selfie),
-          actions: [editSecuritySelfieButton(context)],
+          showConfirmDialog(
+            context,
+            context.strings.generic_save_confirmation_title,
+            yesNoActions: true,
+          ).then((value) {
+            if (!context.mounted) {
+              return;
+            }
+            if (value == true) {
+              validateAndSaveData(context);
+            } else if (value == false) {
+              widget.closer.close(context, ());
+              widget.securitySelfieBloc.add(ResetEditedValues());
+            }
+          });
+        },
+        child: Scaffold(
+          appBar: AppBar(
+            title: Text(context.strings.generic_security_selfie),
+            actions: [editSecuritySelfieButton(context)],
+          ),
+          body: content(context, contentState),
+          floatingActionButton: unsavedChanges
+              ? FloatingActionButton(
+                  onPressed: () => validateAndSaveData(context),
+                  child: const Icon(Icons.check),
+                )
+              : null,
         ),
-        body: content(context, contentId, infoText),
-        floatingActionButton: saveRequired
-            ? FloatingActionButton(
-                onPressed: () => validateAndSaveData(context),
-                child: const Icon(Icons.check),
-              )
-            : null,
       ),
     );
   }
 
   void validateAndSaveData(BuildContext context) {
-    final editedContent = changedImg;
+    final editedContent = widget.securitySelfieBloc.state.valueSecurityContent(widget.currentUser);
 
-    if (editedContent == null) {
-      // Should not happen
-      widget.closer.close(context, ());
-      return;
-    }
-
-    if (!editedContent.faceDetected) {
+    if (editedContent != null && !editedContent.faceDetected) {
       showSnackBar(context.strings.initial_setup_screen_security_selfie_face_not_detected);
       return;
     }
 
-    widget.closer.close(context, ());
-    backNavigationStarted = true;
-    context.read<ContentBloc>().add(ChangeSecurityContent(editedContent.contentId));
+    widget.securitySelfieBloc.add(SaveSecurityContentScreenChanges());
   }
 
-  Widget content(BuildContext context, ContentId? contentId, String infoText) {
-    final currentUser = context.read<RepositoryInstances>().accountId;
+  Widget content(BuildContext context, SecuritySelfieData contentState) {
+    final selectedContent = contentState.valueSecurityContent(widget.currentUser);
+    String infoText = "";
+    final ContentId? contentId;
+    if (selectedContent != null && !selectedContent.faceDetected) {
+      infoText = context.strings.initial_setup_screen_security_selfie_face_not_detected;
+      contentId = selectedContent.contentId;
+    } else if (selectedContent != null) {
+      infoText = addModerationStateRow(
+        context,
+        infoText,
+        selectedContent.moderationState?.toUiString(context),
+      );
+      infoText = addRejectedCategoryRow(context, infoText, selectedContent.rejectedCategory?.value);
+      infoText = addRejectedDetailsRow(context, infoText, selectedContent.rejectedDetails?.value);
+      infoText = infoText.trim();
+      contentId = selectedContent.contentId;
+    } else {
+      contentId = null;
+    }
+
     return SingleChildScrollView(
       child: Row(
         children: [
@@ -164,12 +160,14 @@ class _CurrentSecuritySelfieScreenState extends State<CurrentSecuritySelfieScree
             child: Column(
               crossAxisAlignment: CrossAxisAlignment.center,
               children: [
-                const Padding(padding: EdgeInsets.only(top: 8)),
+                const Padding(padding: EdgeInsets.only(top: 16)),
                 if (contentId == null) Text(context.strings.generic_empty),
-                if (contentId != null) securitySelfieWidget(context, currentUser, contentId),
-                if (infoText.isNotEmpty) const Padding(padding: EdgeInsets.only(top: 8)),
+                if (contentId != null) securitySelfieWidget(context, contentId),
+                if (infoText.isNotEmpty) const Padding(padding: EdgeInsets.only(top: 16)),
                 if (infoText.isNotEmpty) hPad(Text(infoText)),
-                const Padding(padding: EdgeInsets.only(top: 8)),
+                const Padding(padding: EdgeInsets.only(top: 16)),
+                aiFaceVerificationSwitchTile(context, contentState.valueAllowFaceVerification()),
+                const Padding(padding: EdgeInsets.only(top: FLOATING_ACTION_BUTTON_EMPTY_AREA)),
               ],
             ),
           ),
@@ -186,9 +184,7 @@ class _CurrentSecuritySelfieScreenState extends State<CurrentSecuritySelfieScree
           page: SelectContentPage(identifyFaceImages: true, securitySelfieMode: true),
         );
         if (selectedImg != null && context.mounted) {
-          setState(() {
-            changedImg = selectedImg;
-          });
+          widget.securitySelfieBloc.add(EditSecurityContent(selectedImg));
         }
       },
       icon: const Icon(Icons.edit),
@@ -196,7 +192,27 @@ class _CurrentSecuritySelfieScreenState extends State<CurrentSecuritySelfieScree
     );
   }
 
-  Widget securitySelfieWidget(BuildContext context, AccountId accountId, ContentId securitySelfie) {
+  Widget aiFaceVerificationSwitchTile(BuildContext context, bool allowFaceVerification) {
+    return SwitchListTile(
+      title: Text(context.strings.current_security_selfie_screen_ai_face_verification),
+      subtitle: Text(
+        allowFaceVerification
+            ? context
+                  .strings
+                  .current_security_selfie_screen_ai_face_verification_description_enabled
+            : context
+                  .strings
+                  .current_security_selfie_screen_ai_face_verification_description_disabled,
+      ),
+      value: allowFaceVerification,
+      secondary: const Icon(Icons.verified_user_outlined),
+      onChanged: (value) {
+        widget.securitySelfieBloc.add(EditAllowFaceVerification(value));
+      },
+    );
+  }
+
+  Widget securitySelfieWidget(BuildContext context, ContentId securitySelfie) {
     const double IMG_WIDTH = 150;
     const double IMG_HEIGHT = 200;
     return SizedBox(
@@ -204,10 +220,11 @@ class _CurrentSecuritySelfieScreenState extends State<CurrentSecuritySelfieScree
       height: IMG_HEIGHT,
       child: Material(
         child: InkWell(
-          onTap: () => openViewImageScreenForAccountImage(context, accountId, securitySelfie),
+          onTap: () =>
+              openViewImageScreenForAccountImage(context, widget.currentUser, securitySelfie),
           child: accountImgWidgetInk(
             context,
-            accountId,
+            widget.currentUser,
             securitySelfie,
             cacheSize: ImageCacheSize.constantWidthAndHeight(context, IMG_WIDTH, IMG_HEIGHT),
           ),

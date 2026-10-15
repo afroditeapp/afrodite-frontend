@@ -668,7 +668,15 @@ class AppLocalizationsEn extends AppLocalizations {
   String get crop_image_screen_title => 'Crop image';
 
   @override
-  String get current_security_selfie_screen_security_selfie_changed => 'Security selfie updated';
+  String get current_security_selfie_screen_ai_face_verification => 'AI face verification';
+
+  @override
+  String get current_security_selfie_screen_ai_face_verification_description_disabled =>
+      'You will not get automatic face picture verified mark to your profile';
+
+  @override
+  String get current_security_selfie_screen_ai_face_verification_description_enabled =>
+      'Allow AI to verify your face pictures using security selfie';
 
   @override
   String get data_export_screen_api_limit_error => 'Daily limit reached. Try again after 24 hours.';
@@ -890,6 +898,9 @@ class AppLocalizationsEn extends AppLocalizations {
 
   @override
   String get generic_cancel_question => 'Cancel?';
+
+  @override
+  String get generic_changes_saved => 'Changes saved';
 
   @override
   String get generic_close => 'Close';

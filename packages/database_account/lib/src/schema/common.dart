@@ -78,6 +78,10 @@ class ClientLanguageOnServer extends SingleRowTable {
       text().map(const NullAwareTypeConverter.wrap(ClientLanguageConverter())).nullable()();
 }
 
+class DataConsentSettings extends SingleRowTable {
+  BoolColumn get allowFaceVerification => boolean().clientDefault(() => false)();
+}
+
 class NewReceivedLikesCount extends SingleRowTable {
   IntColumn get syncVersionReceivedLikes => integer().nullable()();
   IntColumn get newReceivedLikesCount => integer()

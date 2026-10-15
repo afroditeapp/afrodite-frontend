@@ -48,6 +48,7 @@ import 'package:app/logic/chat/new_received_likes_available_bloc.dart';
 import 'package:app/logic/chat/unread_conversations_bloc.dart';
 import 'package:app/logic/media/content.dart';
 import 'package:app/logic/media/image_processing.dart';
+import 'package:app/logic/media/security_selfie.dart';
 import 'package:app/logic/media/select_content.dart';
 import 'package:app/logic/profile/attributes.dart';
 import 'package:app/logic/profile/location.dart';
@@ -207,6 +208,7 @@ abstract class LoggedInRootScreen extends StatelessWidget {
 
         // Settings
         BlocProvider(create: (_) => SelectContentBloc(r)),
+        BlocProvider(create: (_) => SecuritySelfieBloc(r)),
         BlocProvider(create: (_) => PrivacySettingsBloc(r)),
         BlocProvider(create: (_) => ProfileVisibilityBloc(r)),
         BlocProvider(create: (_) => BlockedProfilesBloc(r)),

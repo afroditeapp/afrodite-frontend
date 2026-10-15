@@ -671,8 +671,16 @@ class AppLocalizationsFi extends AppLocalizations {
   String get crop_image_screen_title => 'Rajaa kuva';
 
   @override
-  String get current_security_selfie_screen_security_selfie_changed =>
-      'Moderointiselfie päivitetty';
+  String get current_security_selfie_screen_ai_face_verification =>
+      'Vahvista kaikki kuvasi tekoälyllä';
+
+  @override
+  String get current_security_selfie_screen_ai_face_verification_description_disabled =>
+      'Et saa profiiliisi automaattista merkintää vahvistetusta kasvokuvasta';
+
+  @override
+  String get current_security_selfie_screen_ai_face_verification_description_enabled =>
+      'Salli tekoälyn verrata kuviasi moderointiselfieen';
 
   @override
   String get data_export_screen_api_limit_error =>
@@ -898,6 +906,9 @@ class AppLocalizationsFi extends AppLocalizations {
 
   @override
   String get generic_cancel_question => 'Peruuta?';
+
+  @override
+  String get generic_changes_saved => 'Muutokset tallennettu';
 
   @override
   String get generic_close => 'Sulje';

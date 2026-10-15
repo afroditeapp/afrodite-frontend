@@ -43,6 +43,7 @@
     <string name="generic_not_found" description="Generic not found text">Not found</string>
     <string name="generic_action_completed" description="Generic action completed text">Action completed</string>
     <string name="generic_setting_saved" description="Generic setting saved text">Setting saved</string>
+    <string name="generic_changes_saved" description="Generic changes saved text">Changes saved</string>
     <string name="generic_login" description="Generic login text">Login</string>
     <string name="generic_sign_in" description="Generic sign in text">Sign in</string>
     <string name="generic_logout" description="Generic logout text">Logout</string>
@@ -640,7 +641,9 @@
     <string name="blocked_profiles_screen_no_blocked_profiles" description="Info text displayed when there is no blocked profiles">No blocked profiles</string>
 
     <!-- Current security selfie -->
-    <string name="current_security_selfie_screen_security_selfie_changed" description="Snackbar text displayed when security selfie is changed">Security selfie updated</string>
+    <string name="current_security_selfie_screen_ai_face_verification" description="Title for AI face verification consent setting">AI face verification</string>
+    <string name="current_security_selfie_screen_ai_face_verification_description_enabled" description="Description for AI face verification consent setting when enabled">Allow AI to verify your face pictures using security selfie</string>
+    <string name="current_security_selfie_screen_ai_face_verification_description_disabled" description="Description for AI face verification consent setting when disabled">You will not get automatic face picture verified mark to your profile</string>
 
     <!-- Profile location screen -->
     <string name="profile_location_screen_title" description="Title for profile location screen">Location</string>

@@ -82,6 +82,7 @@ part 'database.g.dart';
     schema.ProfileAttributesConfig,
     schema.ProfileAttributesConfigAttributes,
     schema.ClientLanguageOnServer,
+    schema.DataConsentSettings,
     schema.NewReceivedLikesCount,
     // Account
     schema.LocalAccountId,

@@ -116,12 +116,14 @@ class AccountRepository extends DataRepositoryWithLifecycle {
     await db.accountAction((db) => db.app.resetPushNotificationSyncVersion());
     await db.accountAction((db) => db.app.updateAccountSyncDone(false));
     await db.accountAction((db) => db.common.updateClientLanguageOnServer(null));
+    await db.accountAction((db) => db.common.resetDataConsentSettings());
   }
 
   @override
   Future<Result<(), ()>> onLoginDataSync() async {
     return await _reloadAccountNotificationSettings()
         .andThen((_) => _reloadClientLanguageOnServer())
+        .andThen((_) => reloadDataConsentSettings())
         .andThenEmptyErr((_) => db.accountAction((db) => db.app.updateAccountSyncDone(true)));
   }
 
@@ -391,6 +393,12 @@ class AccountRepository extends DataRepositoryWithLifecycle {
         .andThenEmptyErr(
           (v) => db.accountAction((db) => db.common.updateClientLanguageOnServer(v.l)),
         );
+  }
+
+  Future<Result<(), ()>> reloadDataConsentSettings() async {
+    return await api
+        .common((api) => api.getDataConsentSettings())
+        .andThenEmptyErr((v) => db.accountAction((db) => db.common.updateDataConsentSettings(v)));
   }
 
   Future<void> _updateClientLanguageIfNeeded() async {

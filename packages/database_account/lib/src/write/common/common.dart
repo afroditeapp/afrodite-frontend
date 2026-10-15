@@ -14,6 +14,7 @@ part 'common.g.dart';
     schema.SyncVersion,
     schema.ReceivedLikesIteratorState,
     schema.ClientLanguageOnServer,
+    schema.DataConsentSettings,
     schema.NewReceivedLikesCount,
   ],
 )
@@ -105,6 +106,24 @@ class DaoWriteCommon extends DatabaseAccessor<AccountDatabase> with _$DaoWriteCo
       ClientLanguageOnServerCompanion.insert(
         id: SingleRowTable.ID,
         clientLanguageOnServer: Value(value),
+      ),
+    );
+  }
+
+  Future<void> updateDataConsentSettings(api.DataConsentSettings value) async {
+    await into(dataConsentSettings).insertOnConflictUpdate(
+      DataConsentSettingsCompanion.insert(
+        id: SingleRowTable.ID,
+        allowFaceVerification: Value(value.allowFaceVerification),
+      ),
+    );
+  }
+
+  Future<void> resetDataConsentSettings() async {
+    await into(dataConsentSettings).insertOnConflictUpdate(
+      DataConsentSettingsCompanion.insert(
+        id: SingleRowTable.ID,
+        allowFaceVerification: Value(false),
       ),
     );
   }

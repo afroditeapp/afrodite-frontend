@@ -1,17 +1,10 @@
 import "dart:async";
 
 import "package:app/data/utils/repository_instances.dart";
-import "package:app/localizations.dart";
-import "package:app/ui_utils/snack_bar.dart";
-import "package:app/utils.dart";
-import "package:database/database.dart";
-import "package:flutter_bloc/flutter_bloc.dart";
-import "package:openapi/api.dart";
-import "package:app/api/server_connection_manager.dart";
-
-import "package:app/data/media_repository.dart";
 import "package:app/database/account_database_manager.dart";
 import "package:app/model/freezed/logic/media/content.dart";
+import "package:database/database.dart";
+import "package:flutter_bloc/flutter_bloc.dart";
 
 sealed class ContentEvent {}
 
@@ -25,46 +18,18 @@ class NewSecurityContent extends ContentEvent {
   NewSecurityContent(this.content);
 }
 
-class ChangeSecurityContent extends ContentEvent {
-  final ContentId content;
-  ChangeSecurityContent(this.content);
-}
-
-class ContentBloc extends Bloc<ContentEvent, ContentData> with ActionRunner {
+class ContentBloc extends Bloc<ContentEvent, ContentData> {
   final AccountDatabaseManager db;
-  final MediaRepository media;
-  final ServerConnectionManager connection;
-  final AccountId currentUser;
-  final ApiManager api;
 
   StreamSubscription<PrimaryProfileContent?>? _primaryContentSubscription;
   StreamSubscription<MyContent?>? _securityContentSubscription;
 
-  ContentBloc(RepositoryInstances r)
-    : db = r.accountDb,
-      media = r.media,
-      connection = r.connectionManager,
-      currentUser = r.accountId,
-      api = r.api,
-      super(ContentData()) {
+  ContentBloc(RepositoryInstances r) : db = r.accountDb, super(ContentData()) {
     on<NewPrimaryContent>((data, emit) {
       emit(state.copyWith(primaryContent: data.content, isLoadingPrimaryContent: false));
     });
     on<NewSecurityContent>((data, emit) {
       emit(state.copyWith(securityContent: data.content, isLoadingSecurityContent: false));
-    });
-    on<ChangeSecurityContent>((data, emit) async {
-      await runOnce(() async {
-        final changeResult = await api.mediaAction(
-          (api) => api.putSecurityContentInfo(data.content),
-        );
-        final updateResult = await media.reloadMyMediaContent();
-        if (changeResult.isErr() || updateResult.isErr()) {
-          showSnackBar(R.strings.generic_error_occurred);
-        } else {
-          showSnackBar(R.strings.current_security_selfie_screen_security_selfie_changed);
-        }
-      });
     });
 
     _primaryContentSubscription = db

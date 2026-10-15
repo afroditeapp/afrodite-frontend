@@ -866,9 +866,17 @@
   "@crop_image_screen_title": {
     "description": "Title for crop image screen"
   },
-  "current_security_selfie_screen_security_selfie_changed": "Security selfie updated",
-  "@current_security_selfie_screen_security_selfie_changed": {
-    "description": "Snackbar text displayed when security selfie is changed"
+  "current_security_selfie_screen_ai_face_verification": "AI face verification",
+  "@current_security_selfie_screen_ai_face_verification": {
+    "description": "Title for AI face verification consent setting"
+  },
+  "current_security_selfie_screen_ai_face_verification_description_disabled": "You will not get automatic face picture verified mark to your profile",
+  "@current_security_selfie_screen_ai_face_verification_description_disabled": {
+    "description": "Description for AI face verification consent setting when disabled"
+  },
+  "current_security_selfie_screen_ai_face_verification_description_enabled": "Allow AI to verify your face pictures using security selfie",
+  "@current_security_selfie_screen_ai_face_verification_description_enabled": {
+    "description": "Description for AI face verification consent setting when enabled"
   },
   "data_export_screen_api_limit_error": "Daily limit reached. Try again after 24 hours.",
   "@data_export_screen_api_limit_error": {
@@ -1165,6 +1173,10 @@
   "generic_cancel_question": "Cancel?",
   "@generic_cancel_question": {
     "description": "Generic cancel question"
+  },
+  "generic_changes_saved": "Changes saved",
+  "@generic_changes_saved": {
+    "description": "Generic changes saved text"
   },
   "generic_close": "Close",
   "@generic_close": {

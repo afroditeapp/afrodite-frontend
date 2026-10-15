@@ -14,6 +14,7 @@ part 'common.g.dart';
     schema.SyncVersion,
     schema.ReceivedLikesIteratorState,
     schema.ClientLanguageOnServer,
+    schema.DataConsentSettings,
     schema.NewReceivedLikesCount,
   ],
 )
@@ -93,5 +94,13 @@ class DaoReadCommon extends DatabaseAccessor<AccountDatabase> with _$DaoReadComm
     return (select(
       clientLanguageOnServer,
     )..where((t) => t.id.equals(SingleRowTable.ID.value))).map(extractColumn).watchSingleOrNull();
+  }
+
+  Stream<api.DataConsentSettings?> watchDataConsentSettings() {
+    return (select(dataConsentSettings)..where((t) => t.id.equals(SingleRowTable.ID.value))).map((
+      r,
+    ) {
+      return api.DataConsentSettings(allowFaceVerification: r.allowFaceVerification);
+    }).watchSingleOrNull();
   }
 }
