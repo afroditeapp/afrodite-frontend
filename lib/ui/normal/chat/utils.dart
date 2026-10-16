@@ -208,6 +208,17 @@ ${screenContext.strings.generic_state}: $stateText""";
 void joinVideoCall(BuildContext context, AccountId callee) async {
   final api = context.read<RepositoryInstances>().api;
 
+  if (await isInstallingJitsiMeetAppPossible() && !await isJitsiMeetAppInstalled()) {
+    if (context.mounted) {
+      openJitsiMeetAppInstallDialogOnAndroidOrIos(context);
+    }
+    return;
+  }
+
+  if (!context.mounted) {
+    return;
+  }
+
   // Show dialog to avoid unnecessary API calls
   final r = await showConfirmDialog(
     context,
