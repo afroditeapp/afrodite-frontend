@@ -1801,6 +1801,11 @@ class AppLocalizationsFi extends AppLocalizations {
       'Kasvokuva vahvistettu moderointiselfiellä';
 
   @override
+  String
+  get profile_filters_screen_profile_verification_status_filter_face_verified_requires_consent =>
+      'Vaatii kuvien tekoälyvahvistamisen sallimisen moderointiselfie-asetuksissa';
+
+  @override
   String get profile_filters_screen_profile_verification_status_filter_profile_age_range_verified =>
       'Ikä (vahvistettu kerran)';
 

@@ -513,6 +513,7 @@
     <string name="profile_filters_screen_unsigned_integer_filter_min_and_max_value_with_unit">%s-%s %s</string>
     <string name="profile_filters_screen_profile_verification_status_filter">Profiilin vahvistus</string>
     <string name="profile_filters_screen_profile_verification_status_filter_face_verified">Kasvokuva vahvistettu moderointiselfiellä</string>
+    <string name="profile_filters_screen_profile_verification_status_filter_face_verified_requires_consent">Vaatii kuvien tekoälyvahvistamisen sallimisen moderointiselfie-asetuksissa</string>
     <string name="profile_filters_screen_profile_verification_status_filter_profile_age_range_verified">Ikä (vahvistettu kerran)</string>
     <string name="profile_filters_screen_profile_verification_status_filter_profile_name_verified">Nimi</string>
     <string name="profile_filters_screen_updating_filters_failed">Suodattimien päivitys epäonnistui</string>

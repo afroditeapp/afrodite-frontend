@@ -2314,6 +2314,10 @@
   "@profile_filters_screen_profile_verification_status_filter_face_verified": {
     "description": "Option text for profile verification status filter face verified"
   },
+  "profile_filters_screen_profile_verification_status_filter_face_verified_requires_consent": "Requires allowing AI face verification in security selfie settings",
+  "@profile_filters_screen_profile_verification_status_filter_face_verified_requires_consent": {
+    "description": "Explanation shown when face verified filter cannot be selected because AI face verification consent is not given"
+  },
   "profile_filters_screen_profile_verification_status_filter_profile_age_range_verified": "Age (verified once)",
   "@profile_filters_screen_profile_verification_status_filter_profile_age_range_verified": {
     "description": "Option text for profile verification status filter profile age range verified"

@@ -3218,6 +3218,13 @@ abstract class AppLocalizations {
   /// **'Face picture verified with security selfie'**
   String get profile_filters_screen_profile_verification_status_filter_face_verified;
 
+  /// Explanation shown when face verified filter cannot be selected because AI face verification consent is not given
+  ///
+  /// In en, this message translates to:
+  /// **'Requires allowing AI face verification in security selfie settings'**
+  String
+  get profile_filters_screen_profile_verification_status_filter_face_verified_requires_consent;
+
   /// Option text for profile verification status filter profile age range verified
   ///
   /// In en, this message translates to:

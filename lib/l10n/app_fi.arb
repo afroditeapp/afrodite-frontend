@@ -517,6 +517,7 @@
   "profile_filters_screen_profile_verification_requires_verified_account": "Tämän suodattimen käyttö vaatii vahvistetun tilin",
   "profile_filters_screen_profile_verification_status_filter": "Profiilin vahvistus",
   "profile_filters_screen_profile_verification_status_filter_face_verified": "Kasvokuva vahvistettu moderointiselfiellä",
+  "profile_filters_screen_profile_verification_status_filter_face_verified_requires_consent": "Vaatii kuvien tekoälyvahvistamisen sallimisen moderointiselfie-asetuksissa",
   "profile_filters_screen_profile_verification_status_filter_profile_age_range_verified": "Ikä (vahvistettu kerran)",
   "profile_filters_screen_profile_verification_status_filter_profile_name_verified": "Nimi",
   "profile_filters_screen_title": "Profiilisuodattimet",

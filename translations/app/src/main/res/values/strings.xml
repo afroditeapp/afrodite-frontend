@@ -520,6 +520,7 @@
     <string name="profile_filters_screen_unsigned_integer_filter_min_and_max_value_with_unit" description="Value text for unsigned integer attribute filter when both min and max values are selected and the attribute has a unit">%s-%s %s</string>
     <string name="profile_filters_screen_profile_verification_status_filter" description="Title for profile verification status filter">Profile verification</string>
     <string name="profile_filters_screen_profile_verification_status_filter_face_verified" description="Option text for profile verification status filter face verified">Face picture verified with security selfie</string>
+    <string name="profile_filters_screen_profile_verification_status_filter_face_verified_requires_consent" description="Explanation shown when face verified filter cannot be selected because AI face verification consent is not given">Requires allowing AI face verification in security selfie settings</string>
     <string name="profile_filters_screen_profile_verification_status_filter_profile_age_range_verified" description="Option text for profile verification status filter profile age range verified">Age (verified once)</string>
     <string name="profile_filters_screen_profile_verification_status_filter_profile_name_verified" description="Option text for profile verification status filter profile name verified">Name</string>
     <string name="profile_filters_screen_updating_filters_failed" description="Snackbar text for notifying about failed profile filters update">Failed to update filters</string>

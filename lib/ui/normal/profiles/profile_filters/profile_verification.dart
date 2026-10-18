@@ -1,10 +1,12 @@
 import 'package:app/localizations.dart';
 import 'package:app/logic/account/client_features_config.dart';
 import 'package:app/logic/app/navigator_state.dart';
+import 'package:app/logic/media/security_selfie.dart';
 import 'package:app/logic/profile/my_profile.dart';
 import 'package:app/logic/profile/profile_filters.dart';
 import 'package:app/model/freezed/logic/account/client_features_config.dart';
 import 'package:app/model/freezed/logic/main/navigator_state.dart';
+import 'package:app/model/freezed/logic/media/security_selfie.dart';
 import 'package:app/model/freezed/logic/profile/my_profile.dart';
 import 'package:app/model/freezed/logic/profile/profile_filters.dart';
 import 'package:app/ui/normal/profiles/profile_filters/profile_verification_flags.dart';
@@ -245,28 +247,62 @@ class ProfileVerificationFilterScreen extends StatelessWidget {
       appBar: AppBar(
         title: Text(context.strings.profile_filters_screen_profile_verification_status_filter),
       ),
-      body: BlocBuilder<ProfileFiltersBloc, ProfileFiltersData>(
-        builder: (context, state) {
-          final currentValue = state.valueProfileVerificationStatusFilter()?.value ?? 0;
-          final options = profileVerificationStatusOptions(
-            context,
-            verification: verificationConfig,
-            selectedOptions: currentValue,
-          );
-          return ListView(
-            children: [
-              for (final option in options)
-                CheckboxListTile(
-                  title: Text(option.$2),
-                  value: (currentValue & option.$1) != 0,
-                  onChanged: (enabled) {
-                    setValue(context, toggleBit(currentValue, option.$1, enabled == true));
-                  },
-                ),
-            ],
+      body: BlocBuilder<SecuritySelfieBloc, SecuritySelfieData>(
+        builder: (context, securitySelfieState) {
+          final allowFaceVerification = securitySelfieState.valueAllowFaceVerification();
+          return BlocBuilder<ProfileFiltersBloc, ProfileFiltersData>(
+            builder: (context, state) {
+              final currentValue = state.valueProfileVerificationStatusFilter()?.value ?? 0;
+              final options = profileVerificationStatusOptions(
+                context,
+                verification: verificationConfig,
+                selectedOptions: currentValue,
+              );
+              return ListView(
+                children: [
+                  for (final option in options)
+                    _optionTile(
+                      context,
+                      option,
+                      currentValue: currentValue,
+                      allowFaceVerification: allowFaceVerification,
+                    ),
+                ],
+              );
+            },
           );
         },
       ),
+    );
+  }
+
+  Widget _optionTile(
+    BuildContext context,
+    (int, String) option, {
+    required int currentValue,
+    required bool allowFaceVerification,
+  }) {
+    final selected = (currentValue & option.$1) != 0;
+    final faceVerified = option.$1 == ProfileVerificationStatusFlags.faceVerified;
+    final consentMissing = faceVerified && !allowFaceVerification;
+    // Allow deselecting an already selected option even if consent is missing.
+    final disabled = consentMissing && !selected;
+
+    return CheckboxListTile(
+      title: Text(option.$2),
+      subtitle: consentMissing
+          ? Text(
+              context
+                  .strings
+                  .profile_filters_screen_profile_verification_status_filter_face_verified_requires_consent,
+            )
+          : null,
+      value: selected,
+      onChanged: disabled
+          ? null
+          : (enabled) {
+              setValue(context, toggleBit(currentValue, option.$1, enabled == true));
+            },
     );
   }
 

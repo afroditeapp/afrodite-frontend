@@ -1789,6 +1789,11 @@ class AppLocalizationsEn extends AppLocalizations {
       'Face picture verified with security selfie';
 
   @override
+  String
+  get profile_filters_screen_profile_verification_status_filter_face_verified_requires_consent =>
+      'Requires allowing AI face verification in security selfie settings';
+
+  @override
   String get profile_filters_screen_profile_verification_status_filter_profile_age_range_verified =>
       'Age (verified once)';
 
