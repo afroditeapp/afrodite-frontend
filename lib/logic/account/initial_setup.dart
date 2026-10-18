@@ -124,6 +124,11 @@ class SetProfileOnlineStatus extends InitialSetupEvent {
   SetProfileOnlineStatus(this.value);
 }
 
+class SetAllowFaceVerification extends InitialSetupEvent {
+  final bool value;
+  SetAllowFaceVerification(this.value);
+}
+
 class UpdateAttributeValue extends InitialSetupEvent {
   final ProfileAttributeValueUpdate update;
   UpdateAttributeValue(this.update);
@@ -267,14 +272,19 @@ class InitialSetupBloc extends Bloc<InitialSetupEvent, InitialSetupData>
           profileLocation: location,
           profileAttributes: profileAttributes,
           firstChatBackupCreated: progress.firstChatBackupCreated ?? false,
-          profileVisibilityEnabled:
-              progress.profileVisibilityEnabled ?? INITIAL_SETUP_PROFILE_VISIBILITY_ENABLED_DEFAULT,
-          profileLastSeenTimeEnabled:
-              progress.profileLastSeenTimeEnabled ??
-              INITIAL_SETUP_PROFILE_LAST_SEEN_TIME_ENABLED_DEFAULT,
-          profileOnlineStatusEnabled:
-              progress.profileOnlineStatusEnabled ??
-              INITIAL_SETUP_PROFILE_ONLINE_STATUS_ENABLED_DEFAULT,
+          allowFaceVerification:
+              progress.allowFaceVerification ?? INITIAL_SETUP_ALLOW_FACE_VERIFICATION_DEFAULT,
+          profilePrivacy: InitialSetupDataProfilePrivacy(
+            profileVisibilityEnabled:
+                progress.profileVisibilityEnabled ??
+                INITIAL_SETUP_PROFILE_VISIBILITY_ENABLED_DEFAULT,
+            profileLastSeenTimeEnabled:
+                progress.profileLastSeenTimeEnabled ??
+                INITIAL_SETUP_PROFILE_LAST_SEEN_TIME_ENABLED_DEFAULT,
+            profileOnlineStatusEnabled:
+                progress.profileOnlineStatusEnabled ??
+                INITIAL_SETUP_PROFILE_ONLINE_STATUS_ENABLED_DEFAULT,
+          ),
           loadingComplete: true,
         ),
       );
@@ -401,6 +411,11 @@ class InitialSetupBloc extends Bloc<InitialSetupEvent, InitialSetupData>
     on<SetProfileOnlineStatus>((data, emit) async {
       await db.accountAction(
         (db) => db.progress.updateInitialSetupProfileOnlineStatusEnabled(data.value),
+      );
+    });
+    on<SetAllowFaceVerification>((data, emit) async {
+      await db.accountAction(
+        (db) => db.progress.updateInitialSetupAllowFaceVerification(data.value),
       );
     });
     on<UpdateAttributeValue>((data, emit) async {

@@ -129,6 +129,9 @@ class InitialSetupProgressEntry {
   final bool? profileLastSeenTimeEnabled;
   final bool? profileOnlineStatusEnabled;
 
+  // Data consent settings
+  final bool? allowFaceVerification;
+
   const InitialSetupProgressEntry({
     this.email,
     this.isAdult,
@@ -151,6 +154,7 @@ class InitialSetupProgressEntry {
     this.profileVisibilityEnabled,
     this.profileLastSeenTimeEnabled,
     this.profileOnlineStatusEnabled,
+    this.allowFaceVerification,
   });
 }
 

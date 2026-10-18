@@ -1,5 +1,6 @@
 import 'dart:typed_data';
 
+import 'package:app/database/account_database_manager.dart';
 import 'package:app/ui_utils/profile_pictures.dart';
 import 'package:database/database.dart';
 import 'package:http/http.dart';
@@ -15,8 +16,9 @@ final _log = Logger("InitialSetupUtils");
 
 class InitialSetupUtils {
   final ApiManager _api;
+  final AccountDatabaseManager _db;
 
-  InitialSetupUtils(this._api);
+  InitialSetupUtils(this._api, this._db);
 
   /// Returns null on success. Returns String if error.
   Future<WaitProcessingResult> _waitContentProcessing(int processingId) async {
@@ -202,19 +204,33 @@ class InitialSetupUtils {
 
     {
       final r = await _api.accountAction(
-        (api) =>
-            api.putSettingProfileVisibility(BooleanSetting(value: data.profileVisibilityEnabled)),
+        (api) => api.putSettingProfileVisibility(
+          BooleanSetting(value: data.profilePrivacy.profileVisibilityEnabled),
+        ),
       );
       if (r.isErr()) return errAndLog("Setting profile visibility failed");
     }
 
     {
       final privacySettings = ProfilePrivacySettings(
-        lastSeenTime: data.profileLastSeenTimeEnabled,
-        onlineStatus: data.profileOnlineStatusEnabled,
+        lastSeenTime: data.profilePrivacy.profileLastSeenTimeEnabled,
+        onlineStatus: data.profilePrivacy.profileOnlineStatusEnabled,
       );
       final r = await _api.profileAction((api) => api.postProfilePrivacySettings(privacySettings));
       if (r.isErr()) return errAndLog("Setting profile privacy settings failed");
+    }
+
+    {
+      final dataConsentSettings = DataConsentSettings(
+        allowFaceVerification: data.allowFaceVerification,
+      );
+      final r = await _api.commonAction((api) => api.postDataConsentSettings(dataConsentSettings));
+      if (r.isErr()) return errAndLog("Setting data consent settings failed");
+      await _db.accountAction(
+        (db) => db.common.updateDataConsentSettings(
+          DataConsentSettings(allowFaceVerification: data.allowFaceVerification),
+        ),
+      );
     }
 
     // Images

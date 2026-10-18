@@ -15,6 +15,7 @@ part 'initial_setup.freezed.dart';
 const bool INITIAL_SETUP_PROFILE_VISIBILITY_ENABLED_DEFAULT = true;
 const bool INITIAL_SETUP_PROFILE_LAST_SEEN_TIME_ENABLED_DEFAULT = true;
 const bool INITIAL_SETUP_PROFILE_ONLINE_STATUS_ENABLED_DEFAULT = true;
+const bool INITIAL_SETUP_ALLOW_FACE_VERIFICATION_DEFAULT = false;
 
 @freezed
 class InitialSetupData with _$InitialSetupData implements ProfilePicturesStateInterface {
@@ -34,9 +35,8 @@ class InitialSetupData with _$InitialSetupData implements ProfilePicturesStateIn
     LatLng? profileLocation,
     @Default(ProfileAttributesState([])) ProfileAttributesState profileAttributes,
     @Default(false) bool firstChatBackupCreated,
-    @Default(INITIAL_SETUP_PROFILE_VISIBILITY_ENABLED_DEFAULT) bool profileVisibilityEnabled,
-    @Default(INITIAL_SETUP_PROFILE_LAST_SEEN_TIME_ENABLED_DEFAULT) bool profileLastSeenTimeEnabled,
-    @Default(INITIAL_SETUP_PROFILE_ONLINE_STATUS_ENABLED_DEFAULT) bool profileOnlineStatusEnabled,
+    @Default(INITIAL_SETUP_ALLOW_FACE_VERIFICATION_DEFAULT) bool allowFaceVerification,
+    @Default(InitialSetupDataProfilePrivacy()) InitialSetupDataProfilePrivacy profilePrivacy,
     @Default(false) bool sendingInProgress,
     @Default(false) bool loadingComplete,
   }) = _InitialSetupData;
@@ -68,6 +68,15 @@ class InitialSetupData with _$InitialSetupData implements ProfilePicturesStateIn
 
     return availableSlots.firstOrNull;
   }
+}
+
+@freezed
+class InitialSetupDataProfilePrivacy with _$InitialSetupDataProfilePrivacy {
+  const factory InitialSetupDataProfilePrivacy({
+    @Default(INITIAL_SETUP_PROFILE_VISIBILITY_ENABLED_DEFAULT) bool profileVisibilityEnabled,
+    @Default(INITIAL_SETUP_PROFILE_LAST_SEEN_TIME_ENABLED_DEFAULT) bool profileLastSeenTimeEnabled,
+    @Default(INITIAL_SETUP_PROFILE_ONLINE_STATUS_ENABLED_DEFAULT) bool profileOnlineStatusEnabled,
+  }) = _InitialSetupDataProfilePrivacy;
 }
 
 enum Gender {

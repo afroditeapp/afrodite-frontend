@@ -193,19 +193,9 @@ class _CurrentSecuritySelfieScreenState extends State<CurrentSecuritySelfieScree
   }
 
   Widget aiFaceVerificationSwitchTile(BuildContext context, bool allowFaceVerification) {
-    return SwitchListTile(
-      title: Text(context.strings.current_security_selfie_screen_ai_face_verification),
-      subtitle: Text(
-        allowFaceVerification
-            ? context
-                  .strings
-                  .current_security_selfie_screen_ai_face_verification_description_enabled
-            : context
-                  .strings
-                  .current_security_selfie_screen_ai_face_verification_description_disabled,
-      ),
+    return createAiFaceVerificationSwitchTile(
+      context: context,
       value: allowFaceVerification,
-      secondary: const Icon(Icons.verified_user_outlined),
       onChanged: (value) {
         widget.securitySelfieBloc.add(EditAllowFaceVerification(value));
       },
@@ -232,4 +222,24 @@ class _CurrentSecuritySelfieScreenState extends State<CurrentSecuritySelfieScree
       ),
     );
   }
+}
+
+Widget createAiFaceVerificationSwitchTile({
+  required BuildContext context,
+  required bool value,
+  required ValueChanged<bool> onChanged,
+}) {
+  return SwitchListTile(
+    title: Text(context.strings.current_security_selfie_screen_ai_face_verification),
+    subtitle: Text(
+      value
+          ? context.strings.current_security_selfie_screen_ai_face_verification_description_enabled
+          : context
+                .strings
+                .current_security_selfie_screen_ai_face_verification_description_disabled,
+    ),
+    value: value,
+    secondary: const Icon(Icons.verified_user_outlined),
+    onChanged: onChanged,
+  );
 }

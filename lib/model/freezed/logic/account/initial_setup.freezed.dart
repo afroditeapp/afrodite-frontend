@@ -35,9 +35,8 @@ mixin _$InitialSetupData {
   LatLng? get profileLocation => throw _privateConstructorErrorInitialSetupData;
   ProfileAttributesState get profileAttributes => throw _privateConstructorErrorInitialSetupData;
   bool get firstChatBackupCreated => throw _privateConstructorErrorInitialSetupData;
-  bool get profileVisibilityEnabled => throw _privateConstructorErrorInitialSetupData;
-  bool get profileLastSeenTimeEnabled => throw _privateConstructorErrorInitialSetupData;
-  bool get profileOnlineStatusEnabled => throw _privateConstructorErrorInitialSetupData;
+  bool get allowFaceVerification => throw _privateConstructorErrorInitialSetupData;
+  InitialSetupDataProfilePrivacy get profilePrivacy => throw _privateConstructorErrorInitialSetupData;
   bool get sendingInProgress => throw _privateConstructorErrorInitialSetupData;
   bool get loadingComplete => throw _privateConstructorErrorInitialSetupData;
 
@@ -56,9 +55,8 @@ mixin _$InitialSetupData {
     LatLng? profileLocation,
     ProfileAttributesState? profileAttributes,
     bool? firstChatBackupCreated,
-    bool? profileVisibilityEnabled,
-    bool? profileLastSeenTimeEnabled,
-    bool? profileOnlineStatusEnabled,
+    bool? allowFaceVerification,
+    InitialSetupDataProfilePrivacy? profilePrivacy,
     bool? sendingInProgress,
     bool? loadingComplete,
   }) => throw _privateConstructorErrorInitialSetupData;
@@ -81,9 +79,8 @@ abstract class _InitialSetupData extends InitialSetupData {
     LatLng? profileLocation,
     ProfileAttributesState profileAttributes,
     bool firstChatBackupCreated,
-    bool profileVisibilityEnabled,
-    bool profileLastSeenTimeEnabled,
-    bool profileOnlineStatusEnabled,
+    bool allowFaceVerification,
+    InitialSetupDataProfilePrivacy profilePrivacy,
     bool sendingInProgress,
     bool loadingComplete,
   }) = _$InitialSetupDataImpl;
@@ -96,9 +93,8 @@ class _$InitialSetupDataImpl extends _InitialSetupData {
   static const bool _searchAgeRangeInitDoneDefaultValue = false;
   static const ProfileAttributesState _profileAttributesDefaultValue = ProfileAttributesState([]);
   static const bool _firstChatBackupCreatedDefaultValue = false;
-  static const bool _profileVisibilityEnabledDefaultValue = INITIAL_SETUP_PROFILE_VISIBILITY_ENABLED_DEFAULT;
-  static const bool _profileLastSeenTimeEnabledDefaultValue = INITIAL_SETUP_PROFILE_LAST_SEEN_TIME_ENABLED_DEFAULT;
-  static const bool _profileOnlineStatusEnabledDefaultValue = INITIAL_SETUP_PROFILE_ONLINE_STATUS_ENABLED_DEFAULT;
+  static const bool _allowFaceVerificationDefaultValue = INITIAL_SETUP_ALLOW_FACE_VERIFICATION_DEFAULT;
+  static const InitialSetupDataProfilePrivacy _profilePrivacyDefaultValue = InitialSetupDataProfilePrivacy();
   static const bool _sendingInProgressDefaultValue = false;
   static const bool _loadingCompleteDefaultValue = false;
 
@@ -117,9 +113,8 @@ class _$InitialSetupDataImpl extends _InitialSetupData {
     this.profileLocation,
     this.profileAttributes = _profileAttributesDefaultValue,
     this.firstChatBackupCreated = _firstChatBackupCreatedDefaultValue,
-    this.profileVisibilityEnabled = _profileVisibilityEnabledDefaultValue,
-    this.profileLastSeenTimeEnabled = _profileLastSeenTimeEnabledDefaultValue,
-    this.profileOnlineStatusEnabled = _profileOnlineStatusEnabledDefaultValue,
+    this.allowFaceVerification = _allowFaceVerificationDefaultValue,
+    this.profilePrivacy = _profilePrivacyDefaultValue,
     this.sendingInProgress = _sendingInProgressDefaultValue,
     this.loadingComplete = _loadingCompleteDefaultValue,
   }) : super._();
@@ -153,11 +148,9 @@ class _$InitialSetupDataImpl extends _InitialSetupData {
   @override
   final bool firstChatBackupCreated;
   @override
-  final bool profileVisibilityEnabled;
+  final bool allowFaceVerification;
   @override
-  final bool profileLastSeenTimeEnabled;
-  @override
-  final bool profileOnlineStatusEnabled;
+  final InitialSetupDataProfilePrivacy profilePrivacy;
   @override
   final bool sendingInProgress;
   @override
@@ -165,7 +158,7 @@ class _$InitialSetupDataImpl extends _InitialSetupData {
 
   @override
   String toString() {
-    return 'InitialSetupData(email: $email, isAdult: $isAdult, profileName: $profileName, profileAge: $profileAge, securitySelfie: $securitySelfie, profileImages: $profileImages, gender: $gender, genderSearchSetting: $genderSearchSetting, searchAgeRangeInitDone: $searchAgeRangeInitDone, searchAgeRangeMin: $searchAgeRangeMin, searchAgeRangeMax: $searchAgeRangeMax, profileLocation: $profileLocation, profileAttributes: $profileAttributes, firstChatBackupCreated: $firstChatBackupCreated, profileVisibilityEnabled: $profileVisibilityEnabled, profileLastSeenTimeEnabled: $profileLastSeenTimeEnabled, profileOnlineStatusEnabled: $profileOnlineStatusEnabled, sendingInProgress: $sendingInProgress, loadingComplete: $loadingComplete)';
+    return 'InitialSetupData(email: $email, isAdult: $isAdult, profileName: $profileName, profileAge: $profileAge, securitySelfie: $securitySelfie, profileImages: $profileImages, gender: $gender, genderSearchSetting: $genderSearchSetting, searchAgeRangeInitDone: $searchAgeRangeInitDone, searchAgeRangeMin: $searchAgeRangeMin, searchAgeRangeMax: $searchAgeRangeMax, profileLocation: $profileLocation, profileAttributes: $profileAttributes, firstChatBackupCreated: $firstChatBackupCreated, allowFaceVerification: $allowFaceVerification, profilePrivacy: $profilePrivacy, sendingInProgress: $sendingInProgress, loadingComplete: $loadingComplete)';
   }
 
   @override
@@ -201,12 +194,10 @@ class _$InitialSetupDataImpl extends _InitialSetupData {
           other.profileAttributes == profileAttributes) &&
         (identical(other.firstChatBackupCreated, firstChatBackupCreated) ||
           other.firstChatBackupCreated == firstChatBackupCreated) &&
-        (identical(other.profileVisibilityEnabled, profileVisibilityEnabled) ||
-          other.profileVisibilityEnabled == profileVisibilityEnabled) &&
-        (identical(other.profileLastSeenTimeEnabled, profileLastSeenTimeEnabled) ||
-          other.profileLastSeenTimeEnabled == profileLastSeenTimeEnabled) &&
-        (identical(other.profileOnlineStatusEnabled, profileOnlineStatusEnabled) ||
-          other.profileOnlineStatusEnabled == profileOnlineStatusEnabled) &&
+        (identical(other.allowFaceVerification, allowFaceVerification) ||
+          other.allowFaceVerification == allowFaceVerification) &&
+        (identical(other.profilePrivacy, profilePrivacy) ||
+          other.profilePrivacy == profilePrivacy) &&
         (identical(other.sendingInProgress, sendingInProgress) ||
           other.sendingInProgress == sendingInProgress) &&
         (identical(other.loadingComplete, loadingComplete) ||
@@ -231,9 +222,8 @@ class _$InitialSetupDataImpl extends _InitialSetupData {
     profileLocation,
     profileAttributes,
     firstChatBackupCreated,
-    profileVisibilityEnabled,
-    profileLastSeenTimeEnabled,
-    profileOnlineStatusEnabled,
+    allowFaceVerification,
+    profilePrivacy,
     sendingInProgress,
     loadingComplete,
   );
@@ -254,9 +244,8 @@ class _$InitialSetupDataImpl extends _InitialSetupData {
     Object? profileLocation = _detectDefaultValueInCopyWith,
     Object? profileAttributes,
     Object? firstChatBackupCreated,
-    Object? profileVisibilityEnabled,
-    Object? profileLastSeenTimeEnabled,
-    Object? profileOnlineStatusEnabled,
+    Object? allowFaceVerification,
+    Object? profilePrivacy,
     Object? sendingInProgress,
     Object? loadingComplete,
   }) => _$InitialSetupDataImpl(
@@ -274,10 +263,93 @@ class _$InitialSetupDataImpl extends _InitialSetupData {
     profileLocation: (profileLocation == _detectDefaultValueInCopyWith ? this.profileLocation : profileLocation) as LatLng?,
     profileAttributes: (profileAttributes ?? this.profileAttributes) as ProfileAttributesState,
     firstChatBackupCreated: (firstChatBackupCreated ?? this.firstChatBackupCreated) as bool,
+    allowFaceVerification: (allowFaceVerification ?? this.allowFaceVerification) as bool,
+    profilePrivacy: (profilePrivacy ?? this.profilePrivacy) as InitialSetupDataProfilePrivacy,
+    sendingInProgress: (sendingInProgress ?? this.sendingInProgress) as bool,
+    loadingComplete: (loadingComplete ?? this.loadingComplete) as bool,
+  );
+}
+
+/// @nodoc
+final _privateConstructorErrorInitialSetupDataProfilePrivacy = UnsupportedError(
+    'Private constructor InitialSetupDataProfilePrivacy._() was called. Please call factory constructor instead.');
+
+/// @nodoc
+mixin _$InitialSetupDataProfilePrivacy {
+  bool get profileVisibilityEnabled => throw _privateConstructorErrorInitialSetupDataProfilePrivacy;
+  bool get profileLastSeenTimeEnabled => throw _privateConstructorErrorInitialSetupDataProfilePrivacy;
+  bool get profileOnlineStatusEnabled => throw _privateConstructorErrorInitialSetupDataProfilePrivacy;
+
+  InitialSetupDataProfilePrivacy copyWith({
+    bool? profileVisibilityEnabled,
+    bool? profileLastSeenTimeEnabled,
+    bool? profileOnlineStatusEnabled,
+  }) => throw _privateConstructorErrorInitialSetupDataProfilePrivacy;
+}
+
+/// @nodoc
+abstract class _InitialSetupDataProfilePrivacy implements InitialSetupDataProfilePrivacy {
+  const factory _InitialSetupDataProfilePrivacy({
+    bool profileVisibilityEnabled,
+    bool profileLastSeenTimeEnabled,
+    bool profileOnlineStatusEnabled,
+  }) = _$InitialSetupDataProfilePrivacyImpl;
+}
+
+/// @nodoc
+class _$InitialSetupDataProfilePrivacyImpl implements _InitialSetupDataProfilePrivacy {
+  static const bool _profileVisibilityEnabledDefaultValue = INITIAL_SETUP_PROFILE_VISIBILITY_ENABLED_DEFAULT;
+  static const bool _profileLastSeenTimeEnabledDefaultValue = INITIAL_SETUP_PROFILE_LAST_SEEN_TIME_ENABLED_DEFAULT;
+  static const bool _profileOnlineStatusEnabledDefaultValue = INITIAL_SETUP_PROFILE_ONLINE_STATUS_ENABLED_DEFAULT;
+
+  const _$InitialSetupDataProfilePrivacyImpl({
+    this.profileVisibilityEnabled = _profileVisibilityEnabledDefaultValue,
+    this.profileLastSeenTimeEnabled = _profileLastSeenTimeEnabledDefaultValue,
+    this.profileOnlineStatusEnabled = _profileOnlineStatusEnabledDefaultValue,
+  });
+
+  @override
+  final bool profileVisibilityEnabled;
+  @override
+  final bool profileLastSeenTimeEnabled;
+  @override
+  final bool profileOnlineStatusEnabled;
+
+  @override
+  String toString() {
+    return 'InitialSetupDataProfilePrivacy(profileVisibilityEnabled: $profileVisibilityEnabled, profileLastSeenTimeEnabled: $profileLastSeenTimeEnabled, profileOnlineStatusEnabled: $profileOnlineStatusEnabled)';
+  }
+
+  @override
+  bool operator ==(Object other) {
+    return identical(this, other) ||
+      (other.runtimeType == runtimeType &&
+        other is _$InitialSetupDataProfilePrivacyImpl &&
+        (identical(other.profileVisibilityEnabled, profileVisibilityEnabled) ||
+          other.profileVisibilityEnabled == profileVisibilityEnabled) &&
+        (identical(other.profileLastSeenTimeEnabled, profileLastSeenTimeEnabled) ||
+          other.profileLastSeenTimeEnabled == profileLastSeenTimeEnabled) &&
+        (identical(other.profileOnlineStatusEnabled, profileOnlineStatusEnabled) ||
+          other.profileOnlineStatusEnabled == profileOnlineStatusEnabled)
+    );
+  }
+
+  @override
+  int get hashCode => Object.hash(
+    runtimeType,
+    profileVisibilityEnabled,
+    profileLastSeenTimeEnabled,
+    profileOnlineStatusEnabled,
+  );
+
+  @override
+  InitialSetupDataProfilePrivacy copyWith({
+    Object? profileVisibilityEnabled,
+    Object? profileLastSeenTimeEnabled,
+    Object? profileOnlineStatusEnabled,
+  }) => _$InitialSetupDataProfilePrivacyImpl(
     profileVisibilityEnabled: (profileVisibilityEnabled ?? this.profileVisibilityEnabled) as bool,
     profileLastSeenTimeEnabled: (profileLastSeenTimeEnabled ?? this.profileLastSeenTimeEnabled) as bool,
     profileOnlineStatusEnabled: (profileOnlineStatusEnabled ?? this.profileOnlineStatusEnabled) as bool,
-    sendingInProgress: (sendingInProgress ?? this.sendingInProgress) as bool,
-    loadingComplete: (loadingComplete ?? this.loadingComplete) as bool,
   );
 }

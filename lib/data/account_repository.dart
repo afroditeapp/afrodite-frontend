@@ -154,8 +154,10 @@ class AccountRepository extends DataRepositoryWithLifecycle {
     Uint8List securitySelfieBytes,
     Uint8List profileImageBytes,
   ) async {
-    final resultString = await InitialSetupUtils(api)
-        .doDeveloperInitialSetup(email, name, securitySelfieBytes, profileImageBytes);
+    final resultString = await InitialSetupUtils(
+      api,
+      db,
+    ).doDeveloperInitialSetup(email, name, securitySelfieBytes, profileImageBytes);
 
     if (resultString == null) {
       // Success
@@ -165,7 +167,7 @@ class AccountRepository extends DataRepositoryWithLifecycle {
   }
 
   Future<Result<(), ()>> doInitialSetup(InitialSetupData data) async {
-    final result = await InitialSetupUtils(api).doInitialSetup(data);
+    final result = await InitialSetupUtils(api, db).doInitialSetup(data);
     if (result.isOk()) {
       await repositories.onInitialSetupComplete();
     }

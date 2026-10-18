@@ -58,6 +58,7 @@ class DaoReadProgress extends DatabaseAccessor<AccountDatabase> with _$DaoReadPr
         profileVisibilityEnabled: r.profileVisibilityEnabled,
         profileLastSeenTimeEnabled: r.profileLastSeenTimeEnabled,
         profileOnlineStatusEnabled: r.profileOnlineStatusEnabled,
+        allowFaceVerification: r.allowFaceVerification,
       );
     });
   }

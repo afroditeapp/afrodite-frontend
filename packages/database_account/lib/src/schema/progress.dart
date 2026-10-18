@@ -51,6 +51,9 @@ class InitialSetupProgress extends SingleRowTable {
   BoolColumn get profileVisibilityEnabled => boolean().nullable()();
   BoolColumn get profileLastSeenTimeEnabled => boolean().nullable()();
   BoolColumn get profileOnlineStatusEnabled => boolean().nullable()();
+
+  // Data consent settings
+  BoolColumn get allowFaceVerification => boolean().nullable()();
 }
 
 class EditProfileProgress extends SingleRowTable {

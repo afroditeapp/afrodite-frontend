@@ -69,21 +69,21 @@ class _ProfilePrivacySettingsContent extends StatelessWidget {
               const SizedBox(height: 8),
               profileVisibilitySwitchTile(
                 context: context,
-                value: state.profileVisibilityEnabled,
+                value: state.profilePrivacy.profileVisibilityEnabled,
                 onChanged: (value) {
                   context.read<InitialSetupBloc>().add(SetProfileVisibility(value));
                 },
               ),
               lastSeenTimeSwitchTile(
                 context: context,
-                value: state.profileLastSeenTimeEnabled,
+                value: state.profilePrivacy.profileLastSeenTimeEnabled,
                 onChanged: (value) {
                   context.read<InitialSetupBloc>().add(SetProfileLastSeenTime(value));
                 },
               ),
               onlineStatusSwitchTile(
                 context: context,
-                value: state.profileOnlineStatusEnabled,
+                value: state.profilePrivacy.profileOnlineStatusEnabled,
                 onChanged: (value) {
                   context.read<InitialSetupBloc>().add(SetProfileOnlineStatus(value));
                 },

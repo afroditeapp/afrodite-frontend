@@ -154,6 +154,15 @@ class DaoWriteProgress extends DatabaseAccessor<AccountDatabase> with _$DaoWrite
     );
   }
 
+  Future<void> updateInitialSetupAllowFaceVerification(bool? value) async {
+    await into(initialSetupProgress).insertOnConflictUpdate(
+      InitialSetupProgressCompanion.insert(
+        id: SingleRowTable.ID,
+        allowFaceVerification: Value(value),
+      ),
+    );
+  }
+
   Future<void> clearInitialSetupProgress() async {
     await (delete(initialSetupProgress)..where((t) => t.id.equals(SingleRowTable.ID.value))).go();
   }

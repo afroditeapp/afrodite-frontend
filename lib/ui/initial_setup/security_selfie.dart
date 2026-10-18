@@ -14,6 +14,7 @@ import "package:app/logic/media/image_processing.dart";
 import "package:app/model/freezed/logic/account/initial_setup.dart";
 import "package:app/model/freezed/logic/media/image_processing.dart";
 import "package:app/ui/initial_setup/navigation.dart";
+import "package:app/ui/normal/settings/media/current_security_selfie.dart";
 import "package:app/ui_utils/consts/padding.dart";
 import "package:app/ui_utils/image.dart";
 import "package:app/ui_utils/image_processing.dart";
@@ -109,6 +110,7 @@ class _AskSecuritySelfieState extends State<AskSecuritySelfie> {
         ),
         const Padding(padding: EdgeInsets.all(8.0)),
         noFaceDetectedError(context),
+        aiFaceVerificationSwitchTile(context),
 
         // Zero sized widgets
         ...imageProcessingUiWidgets<SecuritySelfieImageProcessingBloc>(
@@ -191,6 +193,20 @@ class _AskSecuritySelfieState extends State<AskSecuritySelfie> {
     );
   }
 
+  Widget aiFaceVerificationSwitchTile(BuildContext context) {
+    return BlocBuilder<InitialSetupBloc, InitialSetupData>(
+      builder: (context, state) {
+        return createAiFaceVerificationSwitchTile(
+          context: context,
+          value: state.allowFaceVerification,
+          onChanged: (value) {
+            context.read<InitialSetupBloc>().add(SetAllowFaceVerification(value));
+          },
+        );
+      },
+    );
+  }
+
   Widget noFaceDetectedError(BuildContext context) {
     return BlocBuilder<InitialSetupBloc, InitialSetupData>(
       builder: (context, state) {
@@ -217,6 +233,7 @@ class _AskSecuritySelfieState extends State<AskSecuritySelfie> {
               ),
               const Padding(padding: EdgeInsets.all(8.0)),
               normalCameraButton(),
+              const Padding(padding: EdgeInsets.only(top: 8.0)),
             ],
           );
         } else {

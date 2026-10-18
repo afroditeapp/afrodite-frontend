@@ -1491,6 +1491,20 @@ class $InitialSetupProgressTable extends schema.InitialSetupProgress
           'CHECK ("profile_online_status_enabled" IN (0, 1))',
         ),
       );
+  static const VerificationMeta _allowFaceVerificationMeta =
+      const VerificationMeta('allowFaceVerification');
+  @override
+  late final GeneratedColumn<bool> allowFaceVerification =
+      GeneratedColumn<bool>(
+        'allow_face_verification',
+        aliasedName,
+        true,
+        type: DriftSqlType.bool,
+        requiredDuringInsert: false,
+        defaultConstraints: GeneratedColumn.constraintIsAlways(
+          'CHECK ("allow_face_verification" IN (0, 1))',
+        ),
+      );
   @override
   List<GeneratedColumn> get $columns => [
     id,
@@ -1516,6 +1530,7 @@ class $InitialSetupProgressTable extends schema.InitialSetupProgress
     profileVisibilityEnabled,
     profileLastSeenTimeEnabled,
     profileOnlineStatusEnabled,
+    allowFaceVerification,
   ];
   @override
   String get aliasedName => _alias ?? actualTableName;
@@ -1694,6 +1709,15 @@ class $InitialSetupProgressTable extends schema.InitialSetupProgress
         ),
       );
     }
+    if (data.containsKey('allow_face_verification')) {
+      context.handle(
+        _allowFaceVerificationMeta,
+        allowFaceVerification.isAcceptableOrUnknown(
+          data['allow_face_verification']!,
+          _allowFaceVerificationMeta,
+        ),
+      );
+    }
     return context;
   }
 
@@ -1805,6 +1829,10 @@ class $InitialSetupProgressTable extends schema.InitialSetupProgress
         DriftSqlType.bool,
         data['${effectivePrefix}profile_online_status_enabled'],
       ),
+      allowFaceVerification: attachedDatabase.typeMapping.read(
+        DriftSqlType.bool,
+        data['${effectivePrefix}allow_face_verification'],
+      ),
     );
   }
 
@@ -1852,6 +1880,7 @@ class InitialSetupProgressData extends DataClass
   final bool? profileVisibilityEnabled;
   final bool? profileLastSeenTimeEnabled;
   final bool? profileOnlineStatusEnabled;
+  final bool? allowFaceVerification;
   const InitialSetupProgressData({
     required this.id,
     this.currentPage,
@@ -1876,6 +1905,7 @@ class InitialSetupProgressData extends DataClass
     this.profileVisibilityEnabled,
     this.profileLastSeenTimeEnabled,
     this.profileOnlineStatusEnabled,
+    this.allowFaceVerification,
   });
   @override
   Map<String, Expression> toColumns(bool nullToAbsent) {
@@ -1967,6 +1997,9 @@ class InitialSetupProgressData extends DataClass
         profileOnlineStatusEnabled,
       );
     }
+    if (!nullToAbsent || allowFaceVerification != null) {
+      map['allow_face_verification'] = Variable<bool>(allowFaceVerification);
+    }
     return map;
   }
 
@@ -2042,6 +2075,9 @@ class InitialSetupProgressData extends DataClass
           profileOnlineStatusEnabled == null && nullToAbsent
           ? const Value.absent()
           : Value(profileOnlineStatusEnabled),
+      allowFaceVerification: allowFaceVerification == null && nullToAbsent
+          ? const Value.absent()
+          : Value(allowFaceVerification),
     );
   }
 
@@ -2097,6 +2133,9 @@ class InitialSetupProgressData extends DataClass
       profileOnlineStatusEnabled: serializer.fromJson<bool?>(
         json['profileOnlineStatusEnabled'],
       ),
+      allowFaceVerification: serializer.fromJson<bool?>(
+        json['allowFaceVerification'],
+      ),
     );
   }
   @override
@@ -2147,6 +2186,7 @@ class InitialSetupProgressData extends DataClass
       'profileOnlineStatusEnabled': serializer.toJson<bool?>(
         profileOnlineStatusEnabled,
       ),
+      'allowFaceVerification': serializer.toJson<bool?>(allowFaceVerification),
     };
   }
 
@@ -2176,6 +2216,7 @@ class InitialSetupProgressData extends DataClass
     Value<bool?> profileVisibilityEnabled = const Value.absent(),
     Value<bool?> profileLastSeenTimeEnabled = const Value.absent(),
     Value<bool?> profileOnlineStatusEnabled = const Value.absent(),
+    Value<bool?> allowFaceVerification = const Value.absent(),
   }) => InitialSetupProgressData(
     id: id ?? this.id,
     currentPage: currentPage.present ? currentPage.value : this.currentPage,
@@ -2228,6 +2269,9 @@ class InitialSetupProgressData extends DataClass
     profileOnlineStatusEnabled: profileOnlineStatusEnabled.present
         ? profileOnlineStatusEnabled.value
         : this.profileOnlineStatusEnabled,
+    allowFaceVerification: allowFaceVerification.present
+        ? allowFaceVerification.value
+        : this.allowFaceVerification,
   );
   InitialSetupProgressData copyWithCompanion(
     InitialSetupProgressCompanion data,
@@ -2290,6 +2334,9 @@ class InitialSetupProgressData extends DataClass
       profileOnlineStatusEnabled: data.profileOnlineStatusEnabled.present
           ? data.profileOnlineStatusEnabled.value
           : this.profileOnlineStatusEnabled,
+      allowFaceVerification: data.allowFaceVerification.present
+          ? data.allowFaceVerification.value
+          : this.allowFaceVerification,
     );
   }
 
@@ -2318,7 +2365,8 @@ class InitialSetupProgressData extends DataClass
           ..write('firstChatBackupCreated: $firstChatBackupCreated, ')
           ..write('profileVisibilityEnabled: $profileVisibilityEnabled, ')
           ..write('profileLastSeenTimeEnabled: $profileLastSeenTimeEnabled, ')
-          ..write('profileOnlineStatusEnabled: $profileOnlineStatusEnabled')
+          ..write('profileOnlineStatusEnabled: $profileOnlineStatusEnabled, ')
+          ..write('allowFaceVerification: $allowFaceVerification')
           ..write(')'))
         .toString();
   }
@@ -2348,6 +2396,7 @@ class InitialSetupProgressData extends DataClass
     profileVisibilityEnabled,
     profileLastSeenTimeEnabled,
     profileOnlineStatusEnabled,
+    allowFaceVerification,
   ]);
   @override
   bool operator ==(Object other) =>
@@ -2375,7 +2424,8 @@ class InitialSetupProgressData extends DataClass
           other.firstChatBackupCreated == this.firstChatBackupCreated &&
           other.profileVisibilityEnabled == this.profileVisibilityEnabled &&
           other.profileLastSeenTimeEnabled == this.profileLastSeenTimeEnabled &&
-          other.profileOnlineStatusEnabled == this.profileOnlineStatusEnabled);
+          other.profileOnlineStatusEnabled == this.profileOnlineStatusEnabled &&
+          other.allowFaceVerification == this.allowFaceVerification);
 }
 
 class InitialSetupProgressCompanion
@@ -2403,6 +2453,7 @@ class InitialSetupProgressCompanion
   final Value<bool?> profileVisibilityEnabled;
   final Value<bool?> profileLastSeenTimeEnabled;
   final Value<bool?> profileOnlineStatusEnabled;
+  final Value<bool?> allowFaceVerification;
   const InitialSetupProgressCompanion({
     this.id = const Value.absent(),
     this.currentPage = const Value.absent(),
@@ -2427,6 +2478,7 @@ class InitialSetupProgressCompanion
     this.profileVisibilityEnabled = const Value.absent(),
     this.profileLastSeenTimeEnabled = const Value.absent(),
     this.profileOnlineStatusEnabled = const Value.absent(),
+    this.allowFaceVerification = const Value.absent(),
   });
   InitialSetupProgressCompanion.insert({
     this.id = const Value.absent(),
@@ -2452,6 +2504,7 @@ class InitialSetupProgressCompanion
     this.profileVisibilityEnabled = const Value.absent(),
     this.profileLastSeenTimeEnabled = const Value.absent(),
     this.profileOnlineStatusEnabled = const Value.absent(),
+    this.allowFaceVerification = const Value.absent(),
   });
   static Insertable<InitialSetupProgressData> custom({
     Expression<int>? id,
@@ -2477,6 +2530,7 @@ class InitialSetupProgressCompanion
     Expression<bool>? profileVisibilityEnabled,
     Expression<bool>? profileLastSeenTimeEnabled,
     Expression<bool>? profileOnlineStatusEnabled,
+    Expression<bool>? allowFaceVerification,
   }) {
     return RawValuesInsertable({
       if (id != null) 'id': id,
@@ -2512,6 +2566,8 @@ class InitialSetupProgressCompanion
         'profile_last_seen_time_enabled': profileLastSeenTimeEnabled,
       if (profileOnlineStatusEnabled != null)
         'profile_online_status_enabled': profileOnlineStatusEnabled,
+      if (allowFaceVerification != null)
+        'allow_face_verification': allowFaceVerification,
     });
   }
 
@@ -2539,6 +2595,7 @@ class InitialSetupProgressCompanion
     Value<bool?>? profileVisibilityEnabled,
     Value<bool?>? profileLastSeenTimeEnabled,
     Value<bool?>? profileOnlineStatusEnabled,
+    Value<bool?>? allowFaceVerification,
   }) {
     return InitialSetupProgressCompanion(
       id: id ?? this.id,
@@ -2573,6 +2630,8 @@ class InitialSetupProgressCompanion
           profileLastSeenTimeEnabled ?? this.profileLastSeenTimeEnabled,
       profileOnlineStatusEnabled:
           profileOnlineStatusEnabled ?? this.profileOnlineStatusEnabled,
+      allowFaceVerification:
+          allowFaceVerification ?? this.allowFaceVerification,
     );
   }
 
@@ -2672,6 +2731,11 @@ class InitialSetupProgressCompanion
         profileOnlineStatusEnabled.value,
       );
     }
+    if (allowFaceVerification.present) {
+      map['allow_face_verification'] = Variable<bool>(
+        allowFaceVerification.value,
+      );
+    }
     return map;
   }
 
@@ -2700,7 +2764,8 @@ class InitialSetupProgressCompanion
           ..write('firstChatBackupCreated: $firstChatBackupCreated, ')
           ..write('profileVisibilityEnabled: $profileVisibilityEnabled, ')
           ..write('profileLastSeenTimeEnabled: $profileLastSeenTimeEnabled, ')
-          ..write('profileOnlineStatusEnabled: $profileOnlineStatusEnabled')
+          ..write('profileOnlineStatusEnabled: $profileOnlineStatusEnabled, ')
+          ..write('allowFaceVerification: $allowFaceVerification')
           ..write(')'))
         .toString();
   }
