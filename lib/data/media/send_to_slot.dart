@@ -129,8 +129,10 @@ class SendImageToSlotTask {
       token.cancel();
       return;
     }
+    PutContentToContentSlotResult? result;
     switch (r) {
       case Ok(:final v):
+        result = v;
         if (v.error) {
           yield SendToSlotError(contentProcessingOngoing: v.errorContentProcessingOngoing);
           token.cancel();
@@ -143,6 +145,25 @@ class SendImageToSlotTask {
     }
 
     yield UploadCompleted();
+
+    final initialState = result.processingState;
+    if (initialState != null) {
+      final current = latestStates.value;
+      final existing = current[processingId];
+      if (existing == null) {
+        current[processingId] = initialState;
+        latestStates.add(current);
+
+        final SendToSlotEvent converted = _convertState(initialState);
+        yield converted;
+        if (converted is ProcessingCompleted || converted is SendToSlotError) {
+          token.cancel();
+          return;
+        }
+      } else {
+        // WebSocket event has already been received
+      }
+    }
 
     while (true) {
       if (token.isCancelled) {
