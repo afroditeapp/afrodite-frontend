@@ -122,12 +122,16 @@ class SecuritySelfieBloc extends Bloc<SecuritySelfieEvent, SecuritySelfieData> w
 
         final allowFaceVerification = s.edited.allowFaceVerification;
         if (allowFaceVerification != null && !failureDetected) {
-          final settings = DataConsentSettings(allowFaceVerification: allowFaceVerification);
+          final settings = UpdateDataConsentSettings(allowFaceVerification: allowFaceVerification);
           final changeResult = await api.commonAction(
             (api) => api.postDataConsentSettings(settings),
           );
           if (changeResult.isOk()) {
-            await db.accountAction((db) => db.common.updateDataConsentSettings(settings));
+            await db.accountAction(
+              (db) => db.common.updateDataConsentSettings(
+                DataConsentSettings(allowFaceVerification: allowFaceVerification),
+              ),
+            );
           } else {
             failureDetected = true;
             await account.reloadDataConsentSettings();

@@ -629,6 +629,8 @@ class ApiClient {
           return LimitedActionStatusTypeTransformer().decode(value);
         case 'Location':
           return Location.fromJson(value);
+        case 'LoginMethod':
+          return LoginMethodTypeTransformer().decode(value);
         case 'LoginPhaseOneResult':
           return LoginPhaseOneResult.fromJson(value);
         case 'LoginPhaseTwoResult':
@@ -761,6 +763,8 @@ class ApiClient {
           return Permissions.fromJson(value);
         case 'PlayIntegrityAppAttestation':
           return PlayIntegrityAppAttestation.fromJson(value);
+        case 'PortNumber':
+          return PortNumber.fromJson(value);
         case 'PostAccountVerificationQueueItemResult':
           return PostAccountVerificationQueueItemResult.fromJson(value);
         case 'PostAccountVerificationQueueRemoveNextItem':
@@ -1053,6 +1057,8 @@ class ApiClient {
           return UpdateCustomReportEmpty.fromJson(value);
         case 'UpdateCustomReportString':
           return UpdateCustomReportString.fromJson(value);
+        case 'UpdateDataConsentSettings':
+          return UpdateDataConsentSettings.fromJson(value);
         case 'UpdateNewsTranslation':
           return UpdateNewsTranslation.fromJson(value);
         case 'UpdateNewsTranslationResult':

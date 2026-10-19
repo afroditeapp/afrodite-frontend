@@ -17,7 +17,11 @@ class LoginSessionInfo {
     this.appAttestationDeviceIntegrity,
     this.appAttestationFailed,
     this.appAttestationTypeNumber,
+    required this.clientIp,
     this.clientPlatform,
+    this.clientPort,
+    required this.loginMethod,
+    required this.startUnixTime,
   });
 
   bool? appAttestationAppIntegrity;
@@ -28,7 +32,17 @@ class LoginSessionInfo {
 
   AppAttestationTypeNumber? appAttestationTypeNumber;
 
+  /// Client's IP address from the latest login.
+  String clientIp;
+
   ClientType? clientPlatform;
+
+  PortNumber? clientPort;
+
+  LoginMethod loginMethod;
+
+  /// Login session start time.
+  UnixTime startUnixTime;
 
   @override
   bool operator ==(Object other) => identical(this, other) || other is LoginSessionInfo &&
@@ -36,7 +50,11 @@ class LoginSessionInfo {
     other.appAttestationDeviceIntegrity == appAttestationDeviceIntegrity &&
     other.appAttestationFailed == appAttestationFailed &&
     other.appAttestationTypeNumber == appAttestationTypeNumber &&
-    other.clientPlatform == clientPlatform;
+    other.clientIp == clientIp &&
+    other.clientPlatform == clientPlatform &&
+    other.clientPort == clientPort &&
+    other.loginMethod == loginMethod &&
+    other.startUnixTime == startUnixTime;
 
   @override
   int get hashCode =>
@@ -45,10 +63,14 @@ class LoginSessionInfo {
     (appAttestationDeviceIntegrity == null ? 0 : appAttestationDeviceIntegrity!.hashCode) +
     (appAttestationFailed == null ? 0 : appAttestationFailed!.hashCode) +
     (appAttestationTypeNumber == null ? 0 : appAttestationTypeNumber!.hashCode) +
-    (clientPlatform == null ? 0 : clientPlatform!.hashCode);
+    (clientIp.hashCode) +
+    (clientPlatform == null ? 0 : clientPlatform!.hashCode) +
+    (clientPort == null ? 0 : clientPort!.hashCode) +
+    (loginMethod.hashCode) +
+    (startUnixTime.hashCode);
 
   @override
-  String toString() => 'LoginSessionInfo[appAttestationAppIntegrity=$appAttestationAppIntegrity, appAttestationDeviceIntegrity=$appAttestationDeviceIntegrity, appAttestationFailed=$appAttestationFailed, appAttestationTypeNumber=$appAttestationTypeNumber, clientPlatform=$clientPlatform]';
+  String toString() => 'LoginSessionInfo[appAttestationAppIntegrity=$appAttestationAppIntegrity, appAttestationDeviceIntegrity=$appAttestationDeviceIntegrity, appAttestationFailed=$appAttestationFailed, appAttestationTypeNumber=$appAttestationTypeNumber, clientIp=$clientIp, clientPlatform=$clientPlatform, clientPort=$clientPort, loginMethod=$loginMethod, startUnixTime=$startUnixTime]';
 
   Map<String, dynamic> toJson() {
     final json = <String, dynamic>{};
@@ -72,11 +94,19 @@ class LoginSessionInfo {
     } else {
       json[r'app_attestation_type_number'] = null;
     }
+      json[r'client_ip'] = this.clientIp;
     if (this.clientPlatform != null) {
       json[r'client_platform'] = this.clientPlatform;
     } else {
       json[r'client_platform'] = null;
     }
+    if (this.clientPort != null) {
+      json[r'client_port'] = this.clientPort;
+    } else {
+      json[r'client_port'] = null;
+    }
+      json[r'login_method'] = this.loginMethod;
+      json[r'start_unix_time'] = this.startUnixTime;
     return json;
   }
 
@@ -91,6 +121,12 @@ class LoginSessionInfo {
       // Note 1: the values aren't checked for validity beyond being non-null.
       // Note 2: this code is stripped in release mode!
       assert(() {
+        assert(json.containsKey(r'client_ip'), 'Required key "LoginSessionInfo[client_ip]" is missing from JSON.');
+        assert(json[r'client_ip'] != null, 'Required key "LoginSessionInfo[client_ip]" has a null value in JSON.');
+        assert(json.containsKey(r'login_method'), 'Required key "LoginSessionInfo[login_method]" is missing from JSON.');
+        assert(json[r'login_method'] != null, 'Required key "LoginSessionInfo[login_method]" has a null value in JSON.');
+        assert(json.containsKey(r'start_unix_time'), 'Required key "LoginSessionInfo[start_unix_time]" is missing from JSON.');
+        assert(json[r'start_unix_time'] != null, 'Required key "LoginSessionInfo[start_unix_time]" has a null value in JSON.');
         return true;
       }());
 
@@ -99,7 +135,11 @@ class LoginSessionInfo {
         appAttestationDeviceIntegrity: mapValueOfType<bool>(json, r'app_attestation_device_integrity'),
         appAttestationFailed: mapValueOfType<bool>(json, r'app_attestation_failed'),
         appAttestationTypeNumber: AppAttestationTypeNumber.fromJson(json[r'app_attestation_type_number']),
+        clientIp: mapValueOfType<String>(json, r'client_ip')!,
         clientPlatform: ClientType.fromJson(json[r'client_platform']),
+        clientPort: PortNumber.fromJson(json[r'client_port']),
+        loginMethod: LoginMethod.fromJson(json[r'login_method'])!,
+        startUnixTime: UnixTime.fromJson(json[r'start_unix_time'])!,
       );
     }
     return null;
@@ -147,6 +187,9 @@ class LoginSessionInfo {
 
   /// The list of required keys that must be present in a JSON.
   static const requiredKeys = <String>{
+    'client_ip',
+    'login_method',
+    'start_unix_time',
   };
 }
 

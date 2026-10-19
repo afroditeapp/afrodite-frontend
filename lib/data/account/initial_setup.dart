@@ -221,7 +221,7 @@ class InitialSetupUtils {
     }
 
     {
-      final dataConsentSettings = DataConsentSettings(
+      final dataConsentSettings = UpdateDataConsentSettings(
         allowFaceVerification: data.allowFaceVerification,
       );
       final r = await _api.commonAction((api) => api.postDataConsentSettings(dataConsentSettings));

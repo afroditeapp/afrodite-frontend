@@ -118,6 +118,7 @@ Class | Method | HTTP request | Description
 *AccountAdminApi* | [**getAccountIdFromEmail**](doc//AccountAdminApi.md#getaccountidfromemail) | **GET** /account_api/get_account_id_from_email/{email} | Get account ID from email
 *AccountAdminApi* | [**getAccountLockedState**](doc//AccountAdminApi.md#getaccountlockedstate) | **GET** /account_api/get_account_locked_state/{aid} | Get account locked state
 *AccountAdminApi* | [**getAccountLoginSessionInfo**](doc//AccountAdminApi.md#getaccountloginsessioninfo) | **GET** /account_api/get_account_login_session_info/{aid} | Get login session info for specific account.
+*AccountAdminApi* | [**getAccountSignInWithStateAdmin**](doc//AccountAdminApi.md#getaccountsigninwithstateadmin) | **GET** /account_api/get_account_sign_in_with_state_admin/{aid} | Get sign in with Apple and Google state for specific account.
 *AccountAdminApi* | [**getAccountStateAdmin**](doc//AccountAdminApi.md#getaccountstateadmin) | **GET** /account_api/get_account_state_admin/{aid} | Get [model::Account] for specific account.
 *AccountAdminApi* | [**getAccountVerificationQueueNextItem**](doc//AccountAdminApi.md#getaccountverificationqueuenextitem) | **GET** /account_api/account_verification_queue_next_item | Get next item in account verification queue.
 *AccountAdminApi* | [**getAllAdmins**](doc//AccountAdminApi.md#getalladmins) | **GET** /account_api/get_all_admins | Get all admins
@@ -206,7 +207,7 @@ Class | Method | HTTP request | Description
 *CommonApi* | [**postAutomaticProfileSearchGetNextProfilePage**](doc//CommonApi.md#postautomaticprofilesearchgetnextprofilepage) | **POST** /common_api/automatic_profile_search/next | Post (updates iterator) to get next page of automatic profile search profile list.
 *CommonApi* | [**postAutomaticProfileSearchResetProfilePaging**](doc//CommonApi.md#postautomaticprofilesearchresetprofilepaging) | **POST** /common_api/automatic_profile_search/reset | Reset automatic profile search profile paging.
 *CommonApi* | [**postClientLanguage**](doc//CommonApi.md#postclientlanguage) | **POST** /common_api/client_language | 
-*CommonApi* | [**postDataConsentSettings**](doc//CommonApi.md#postdataconsentsettings) | **POST** /common_api/data_consent_settings | Update data consent settings.
+*CommonApi* | [**postDataConsentSettings**](doc//CommonApi.md#postdataconsentsettings) | **POST** /common_api/data_consent_settings | Update specific data consent setting fields.
 *CommonApi* | [**postDeletePendingAppNotifications**](doc//CommonApi.md#postdeletependingappnotifications) | **POST** /common_api/pending_app_notifications/delete | 
 *CommonApi* | [**postGetNextProfilePage**](doc//CommonApi.md#postgetnextprofilepage) | **POST** /common_api/profile/page/next | Post (updates iterator) to get next page of profile list.
 *CommonApi* | [**postResetProfilePaging**](doc//CommonApi.md#postresetprofilepaging) | **POST** /common_api/profile/page/reset | Reset profile paging.
@@ -538,6 +539,7 @@ Class | Method | HTTP request | Description
  - [LikesConfig](doc//LikesConfig.md)
  - [LimitedActionStatus](doc//LimitedActionStatus.md)
  - [Location](doc//Location.md)
+ - [LoginMethod](doc//LoginMethod.md)
  - [LoginPhaseOneResult](doc//LoginPhaseOneResult.md)
  - [LoginPhaseTwoResult](doc//LoginPhaseTwoResult.md)
  - [LoginPhaseTwoToken](doc//LoginPhaseTwoToken.md)
@@ -604,6 +606,7 @@ Class | Method | HTTP request | Description
  - [PerfMetricValues](doc//PerfMetricValues.md)
  - [Permissions](doc//Permissions.md)
  - [PlayIntegrityAppAttestation](doc//PlayIntegrityAppAttestation.md)
+ - [PortNumber](doc//PortNumber.md)
  - [PostAccountVerificationQueueItemResult](doc//PostAccountVerificationQueueItemResult.md)
  - [PostAccountVerificationQueueRemoveNextItem](doc//PostAccountVerificationQueueRemoveNextItem.md)
  - [PostAgeVerification](doc//PostAgeVerification.md)
@@ -750,6 +753,7 @@ Class | Method | HTTP request | Description
  - [UpdateCustomEmail](doc//UpdateCustomEmail.md)
  - [UpdateCustomReportEmpty](doc//UpdateCustomReportEmpty.md)
  - [UpdateCustomReportString](doc//UpdateCustomReportString.md)
+ - [UpdateDataConsentSettings](doc//UpdateDataConsentSettings.md)
  - [UpdateNewsTranslation](doc//UpdateNewsTranslation.md)
  - [UpdateNewsTranslationResult](doc//UpdateNewsTranslationResult.md)
  - [UpdateProfileAttributesSchema](doc//UpdateProfileAttributesSchema.md)

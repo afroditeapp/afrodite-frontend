@@ -124,6 +124,9 @@ String parameterToString(dynamic value) {
   if (value is LimitedActionStatus) {
     return LimitedActionStatusTypeTransformer().encode(value).toString();
   }
+  if (value is LoginMethod) {
+    return LoginMethodTypeTransformer().encode(value).toString();
+  }
   if (value is MediaContentModerationQueueType) {
     return MediaContentModerationQueueTypeTypeTransformer().encode(value).toString();
   }

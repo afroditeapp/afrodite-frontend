@@ -277,6 +277,64 @@ class AccountAdminApi {
     return null;
   }
 
+  /// Get sign in with Apple and Google state for specific account.
+  ///
+  /// # Access  Permission [model::Permissions::admin_view_login] is required.
+  ///
+  /// Note: This method returns the HTTP [Response].
+  ///
+  /// Parameters:
+  ///
+  /// * [String] aid (required):
+  Future<Response> getAccountSignInWithStateAdminWithHttpInfo(String aid, { Future<void>? abortTrigger, }) async {
+    // ignore: prefer_const_declarations
+    final path = r'/account_api/get_account_sign_in_with_state_admin/{aid}'
+      .replaceAll('{aid}', aid);
+
+    // ignore: prefer_final_locals
+    Object? postBody;
+
+    final queryParams = <QueryParam>[];
+    final headerParams = <String, String>{};
+    final formParams = <String, String>{};
+
+    const contentTypes = <String>[];
+
+
+    return apiClient.invokeAPI(
+      path,
+      'GET',
+      queryParams,
+      postBody,
+      headerParams,
+      formParams,
+      contentTypes.isEmpty ? null : contentTypes.first,
+      abortTrigger: abortTrigger,
+    );
+  }
+
+  /// Get sign in with Apple and Google state for specific account.
+  ///
+  /// # Access  Permission [model::Permissions::admin_view_login] is required.
+  ///
+  /// Parameters:
+  ///
+  /// * [String] aid (required):
+  Future<SignInWithState?> getAccountSignInWithStateAdmin(String aid, { Future<void>? abortTrigger, }) async {
+    final response = await getAccountSignInWithStateAdminWithHttpInfo(aid, abortTrigger: abortTrigger,);
+    if (response.statusCode >= HttpStatus.badRequest) {
+      throw ApiException(response.statusCode, await _decodeBodyBytes(response));
+    }
+    // When a remote server returns no body with a status of 204, we shall not decode it.
+    // At the time of writing this, `dart:convert` will throw an "Unexpected end of input"
+    // FormatException when trying to decode an empty string.
+    if (response.body.isNotEmpty && response.statusCode != HttpStatus.noContent) {
+      return await apiClient.deserializeAsync(await _decodeBodyBytes(response), 'SignInWithState',) as SignInWithState;
+    
+    }
+    return null;
+  }
+
   /// Get [model::Account] for specific account.
   ///
   /// # Access  Permission [model::Permissions::admin_view_account_state] is required.

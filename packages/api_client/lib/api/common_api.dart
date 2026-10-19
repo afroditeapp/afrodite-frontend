@@ -643,19 +643,19 @@ class CommonApi {
     }
   }
 
-  /// Update data consent settings.
+  /// Update specific data consent setting fields.
   ///
   /// Note: This method returns the HTTP [Response].
   ///
   /// Parameters:
   ///
-  /// * [DataConsentSettings] dataConsentSettings (required):
-  Future<Response> postDataConsentSettingsWithHttpInfo(DataConsentSettings dataConsentSettings, { Future<void>? abortTrigger, }) async {
+  /// * [UpdateDataConsentSettings] updateDataConsentSettings (required):
+  Future<Response> postDataConsentSettingsWithHttpInfo(UpdateDataConsentSettings updateDataConsentSettings, { Future<void>? abortTrigger, }) async {
     // ignore: prefer_const_declarations
     final path = r'/common_api/data_consent_settings';
 
     // ignore: prefer_final_locals
-    Object? postBody = dataConsentSettings;
+    Object? postBody = updateDataConsentSettings;
 
     final queryParams = <QueryParam>[];
     final headerParams = <String, String>{};
@@ -676,13 +676,13 @@ class CommonApi {
     );
   }
 
-  /// Update data consent settings.
+  /// Update specific data consent setting fields.
   ///
   /// Parameters:
   ///
-  /// * [DataConsentSettings] dataConsentSettings (required):
-  Future<void> postDataConsentSettings(DataConsentSettings dataConsentSettings, { Future<void>? abortTrigger, }) async {
-    final response = await postDataConsentSettingsWithHttpInfo(dataConsentSettings, abortTrigger: abortTrigger,);
+  /// * [UpdateDataConsentSettings] updateDataConsentSettings (required):
+  Future<void> postDataConsentSettings(UpdateDataConsentSettings updateDataConsentSettings, { Future<void>? abortTrigger, }) async {
+    final response = await postDataConsentSettingsWithHttpInfo(updateDataConsentSettings, abortTrigger: abortTrigger,);
     if (response.statusCode >= HttpStatus.badRequest) {
       throw ApiException(response.statusCode, await _decodeBodyBytes(response));
     }
