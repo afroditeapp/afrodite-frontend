@@ -15,30 +15,46 @@ class PutContentToContentSlotResult {
   PutContentToContentSlotResult({
     this.error = false,
     this.errorContentProcessingOngoing = false,
+    this.processingState,
   });
 
   bool error;
 
   bool errorContentProcessingOngoing;
 
+  ///
+  /// Please note: This property should have been non-nullable! Since the specification file
+  /// does not include a default value (using the "default:" property), however, the generated
+  /// source code must fall back to having a nullable type.
+  /// Consider adding a "default:" property in the specification file to hide this note.
+  ///
+  ContentProcessingState? processingState;
+
   @override
   bool operator ==(Object other) => identical(this, other) || other is PutContentToContentSlotResult &&
     other.error == error &&
-    other.errorContentProcessingOngoing == errorContentProcessingOngoing;
+    other.errorContentProcessingOngoing == errorContentProcessingOngoing &&
+    other.processingState == processingState;
 
   @override
   int get hashCode =>
     // ignore: unnecessary_parenthesis
     (error.hashCode) +
-    (errorContentProcessingOngoing.hashCode);
+    (errorContentProcessingOngoing.hashCode) +
+    (processingState == null ? 0 : processingState!.hashCode);
 
   @override
-  String toString() => 'PutContentToContentSlotResult[error=$error, errorContentProcessingOngoing=$errorContentProcessingOngoing]';
+  String toString() => 'PutContentToContentSlotResult[error=$error, errorContentProcessingOngoing=$errorContentProcessingOngoing, processingState=$processingState]';
 
   Map<String, dynamic> toJson() {
     final json = <String, dynamic>{};
       json[r'error'] = this.error;
       json[r'error_content_processing_ongoing'] = this.errorContentProcessingOngoing;
+    if (this.processingState != null) {
+      json[r'processing_state'] = this.processingState;
+    } else {
+      json[r'processing_state'] = null;
+    }
     return json;
   }
 
@@ -59,6 +75,7 @@ class PutContentToContentSlotResult {
       return PutContentToContentSlotResult(
         error: mapValueOfType<bool>(json, r'error') ?? false,
         errorContentProcessingOngoing: mapValueOfType<bool>(json, r'error_content_processing_ongoing') ?? false,
+        processingState: ContentProcessingState.fromJson(json[r'processing_state']),
       );
     }
     return null;
