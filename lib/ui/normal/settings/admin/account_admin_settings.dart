@@ -25,6 +25,7 @@ import 'package:app/ui/normal/settings/admin/account_admin/view_ip_address_usage
 import 'package:app/ui/normal/settings/admin/account_admin/view_reports.dart';
 import 'package:app/ui/normal/settings/admin/association_membership_registry_detail.dart';
 import 'package:app/ui/normal/settings/data_export.dart';
+import 'package:app/ui_utils/consts/padding.dart';
 import 'package:app/ui_utils/padding.dart';
 import 'package:app/ui_utils/snack_bar.dart';
 import 'package:app/utils/result.dart';
@@ -137,6 +138,7 @@ class _AccountAdminSettingsScreenState extends State<AccountAdminSettingsScreen>
               ),
               const Padding(padding: EdgeInsets.all(8.0)),
               ...settingsWidgets(context, AccountAdminSettingsPermissions(state.permissions)),
+              const Padding(padding: EdgeInsets.only(top: LIST_END_EMPTY_AREA)),
             ],
           ),
         );
