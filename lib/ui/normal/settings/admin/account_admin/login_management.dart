@@ -32,6 +32,7 @@ class LoginManagementScreen extends StatefulWidget {
 class _LoginManagementScreenState extends State<LoginManagementScreen> {
   AccountLockedState? lockedState;
   GetAccountLoginSessionInfo? loginSessionInfo;
+  SignInWithState? signInWithState;
   bool isLoading = true;
   bool isError = false;
 
@@ -42,12 +43,15 @@ class _LoginManagementScreenState extends State<LoginManagementScreen> {
     final sessionInfoResult = await widget.api
         .accountAdmin((api) => api.getAccountLoginSessionInfo(widget.accountId.aid))
         .ok();
+    final signInWithStateResult = await widget.api
+        .accountAdmin((api) => api.getAccountSignInWithStateAdmin(widget.accountId.aid))
+        .ok();
 
     if (!context.mounted) {
       return;
     }
 
-    if (lockedStateResult == null || sessionInfoResult == null) {
+    if (lockedStateResult == null || sessionInfoResult == null || signInWithStateResult == null) {
       showSnackBar(R.strings.generic_error);
       setState(() {
         isLoading = false;
@@ -58,6 +62,7 @@ class _LoginManagementScreenState extends State<LoginManagementScreen> {
         isLoading = false;
         lockedState = lockedStateResult;
         loginSessionInfo = sessionInfoResult;
+        signInWithState = signInWithStateResult;
       });
     }
   }
@@ -147,6 +152,18 @@ class _LoginManagementScreenState extends State<LoginManagementScreen> {
                 "${info.appAttestationTypeNumber?.toString() ?? "Unknown"}",
               ),
             ),
+          ],
+          const Padding(padding: EdgeInsets.all(8.0)),
+          const Divider(),
+          const Padding(padding: EdgeInsets.all(8.0)),
+          hPad(
+            Text("Sign in with Apple and Google", style: Theme.of(context).textTheme.titleSmall),
+          ),
+          if (signInWithState == null)
+            hPad(const Text("No sign in with state available"))
+          else ...[
+            hPad(Text("Apple: ${signInWithState!.apple}")),
+            hPad(Text("Google: ${signInWithState!.google}")),
           ],
           const Padding(padding: EdgeInsets.all(8.0)),
         ],
