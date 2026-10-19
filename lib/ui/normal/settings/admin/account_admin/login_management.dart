@@ -5,7 +5,10 @@ import 'package:app/logic/account/account.dart';
 import 'package:app/model/freezed/logic/account/account.dart';
 import 'package:app/model/freezed/logic/main/navigator_state.dart';
 import 'package:app/ui_utils/dialog.dart';
+import 'package:app/ui_utils/extensions/locale.dart';
 import 'package:app/ui_utils/padding.dart';
+import 'package:app/ui_utils/time.dart';
+import 'package:app/utils/api.dart';
 import 'package:app/utils/result.dart';
 import 'package:flutter/material.dart';
 import 'package:app/ui_utils/snack_bar.dart';
@@ -90,6 +93,7 @@ class _LoginManagementScreenState extends State<LoginManagementScreen> {
   Widget showData(BuildContext context, AccountLockedState state, Permissions myPermissions) {
     final canEdit = myPermissions.adminEditLogin;
     final info = loginSessionInfo?.info;
+    final localeString = Localizations.localeOf(context).localeString();
     return SingleChildScrollView(
       child: Column(
         crossAxisAlignment: CrossAxisAlignment.start,
@@ -119,13 +123,21 @@ class _LoginManagementScreenState extends State<LoginManagementScreen> {
           const Padding(padding: EdgeInsets.all(8.0)),
           const Divider(),
           const Padding(padding: EdgeInsets.all(8.0)),
-          hPad(Text("Client platform", style: Theme.of(context).textTheme.titleSmall)),
-          hPad(Text(info?.clientPlatform?.toString() ?? "Unknown")),
-          const Padding(padding: EdgeInsets.all(8.0)),
-          hPad(Text("App attestation", style: Theme.of(context).textTheme.titleSmall)),
+          hPad(Text("Login session info", style: Theme.of(context).textTheme.titleSmall)),
           if (info == null)
             hPad(const Text("No login session info available"))
           else ...[
+            hPad(Text("Client platform: ${info.clientPlatform?.toString() ?? "Unknown"}")),
+            hPad(Text("Client IP: ${info.clientIp}")),
+            hPad(Text("Client port: ${info.clientPort?.port.toString() ?? "Unknown"}")),
+            hPad(Text("Login method: ${info.loginMethod}")),
+            hPad(
+              Text(
+                "Session start: ${fullTimeString(info.startUnixTime.toUtcDateTime(), localeString)}",
+              ),
+            ),
+            const Padding(padding: EdgeInsets.all(8.0)),
+            hPad(Text("App attestation", style: Theme.of(context).textTheme.titleSmall)),
             hPad(Text("App integrity: ${info.appAttestationAppIntegrity}")),
             hPad(Text("Device integrity: ${info.appAttestationDeviceIntegrity}")),
             hPad(Text("App attestation failed: ${info.appAttestationFailed}")),
