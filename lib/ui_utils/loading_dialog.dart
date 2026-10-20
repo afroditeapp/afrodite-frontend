@@ -36,46 +36,31 @@ class _ProgressDialogOpenerState<B extends StateStreamable<S>, S>
           widget.dialogVisibilityGetter(previous) != widget.dialogVisibilityGetter(current),
       builder: (context, state) {
         if (widget.dialogVisibilityGetter(state)) {
-          openDialog(context, state);
+          _showLoadingDialog<B, S>(context, widget, widget.dialogVisibilityGetter);
         }
         return const SizedBox.shrink();
       },
     );
   }
-
-  void openDialog(BuildContext context, S state) async {
-    final Widget w;
-    final text = widget.loadingText;
-    final b = widget.stateInfoBuilder;
-    if (text != null) {
-      w = Text(text);
-    } else if (b != null) {
-      w = b(context, state);
-    } else {
-      w = const SizedBox.shrink();
-    }
-
-    _showLoadingDialog<B, S>(context, w, widget.dialogVisibilityGetter);
-  }
 }
 
 void _showLoadingDialog<B extends StateStreamable<S>, S>(
   BuildContext context,
-  Widget loadingInfo,
+  ProgressDialogOpener<B, S> widget,
   bool Function(S) dialogVisibilityGetter,
 ) {
   MyNavigator.showDialog<()>(
     context: context,
     page: LoadingDialogPage(
       builder: (context, closer) {
-        return _loadingDialogContent<B, S>(loadingInfo, closer, dialogVisibilityGetter, context);
+        return _loadingDialogContent<B, S>(widget, closer, dialogVisibilityGetter, context);
       },
     ),
   );
 }
 
 Widget _loadingDialogContent<B extends StateStreamable<S>, S>(
-  Widget loadingInfo,
+  ProgressDialogOpener<B, S> widget,
   PageCloser<()> closer,
   bool Function(S) dialogVisibilityGetter,
   BuildContext context,
@@ -87,11 +72,7 @@ Widget _loadingDialogContent<B extends StateStreamable<S>, S>(
         mainAxisAlignment: MainAxisAlignment.center,
         children: [
           commonLoadingDialogIndicator(),
-          loadingInfo,
-          // Use BlocBuilder (instead of BlocListener) as it gets the initial state as well.
           BlocBuilder<B, S>(
-            buildWhen: (previous, current) =>
-                dialogVisibilityGetter(previous) != dialogVisibilityGetter(current),
             builder: (context, state) {
               if (!dialogVisibilityGetter(state)) {
                 Future.delayed(Duration.zero, () {
@@ -100,7 +81,15 @@ Widget _loadingDialogContent<B extends StateStreamable<S>, S>(
                   }
                 });
               }
-              return const SizedBox.shrink();
+              final text = widget.loadingText;
+              final b = widget.stateInfoBuilder;
+              if (text != null) {
+                return Text(text);
+              } else if (b != null) {
+                return b(context, state);
+              } else {
+                return const SizedBox.shrink();
+              }
             },
           ),
         ],
