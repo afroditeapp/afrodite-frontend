@@ -1,6 +1,7 @@
 import "dart:async";
 import "dart:io";
 import "dart:typed_data";
+import "dart:ui" show Color;
 
 import "package:app/api/server_connection_manager.dart";
 import "package:app/data/utils/repository_instances.dart";
@@ -9,6 +10,7 @@ import "package:app/logic/media/profile_pictures_interface.dart";
 import "package:app/ui_utils/crop_image_screen.dart";
 import "package:app/ui_utils/profile_pictures.dart";
 import "package:app/utils/age.dart";
+import "package:app/utils/image.dart";
 import "package:app/utils/result.dart";
 import "package:collection/collection.dart";
 import "package:database/database.dart";
@@ -16,7 +18,6 @@ import "package:flutter_bloc/flutter_bloc.dart";
 import "package:latlong2/latlong.dart";
 import "package:logging/logging.dart";
 import "package:openapi/api.dart";
-import 'package:image/image.dart' as img;
 import 'package:utils/utils.dart';
 
 import "package:app/data/account_repository.dart";
@@ -443,21 +444,9 @@ class InitialSetupBloc extends Bloc<InitialSetupEvent, InitialSetupData>
       await runOnce(() async {
         emit(state.copyWith(sendingInProgress: true));
 
-        final securitySelfie = await createImage("debug_security_selfie.jpg", (pixel) {
-          pixel
-            ..r = 0
-            ..g = 145
-            ..b = 255
-            ..a = 255;
-        });
+        final securitySelfie = await _createImage(const Color.fromARGB(255, 0, 145, 255));
 
-        final profileImage = await createImage("debug_profile_image.jpg", (pixel) {
-          pixel
-            ..r = 255
-            ..g = 150
-            ..b = 0
-            ..a = 255;
-        });
+        final profileImage = await _createImage(const Color.fromARGB(255, 255, 150, 0));
 
         var error = await account.doDeveloperInitialSetup(
           "${currentUser.aid}@example.com",
@@ -592,14 +581,8 @@ class InitialSetupBloc extends Bloc<InitialSetupEvent, InitialSetupData>
   }
 }
 
-Future<Uint8List> createImage(String fileName, void Function(img.Pixel) pixelModifier) async {
-  final imageBuffer = img.Image(width: 512, height: 512);
-
-  for (var pixel in imageBuffer) {
-    pixelModifier(pixel);
-  }
-
-  return img.encodeJpg(imageBuffer);
+Future<Uint8List> _createImage(Color color) {
+  return createSolidColorPng(color, width: 512, height: 512);
 }
 
 Gender? _parseGender(String value) {

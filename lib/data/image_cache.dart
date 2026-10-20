@@ -22,8 +22,8 @@ import 'package:app/logic/account/client_features_config.dart';
 import 'package:app/ui/normal/settings/location.dart';
 import 'package:utils/utils.dart';
 
-import 'package:image/image.dart' as img;
 import 'package:app/model/freezed/utils/account_img_key.dart';
+import 'package:app/utils/image.dart';
 import 'package:app/ui_utils/snack_bar.dart';
 import 'package:app/localizations.dart';
 
@@ -172,7 +172,7 @@ class ImageCacheData {
         case MapTileSuccess(:final pngData):
           return pngData;
         case MapTileNotAvailable():
-          return _cachedEmptyMapTile();
+          return await _cachedEmptyMapTile();
         case MapTileError():
           return null;
         case MapTileNotModified(:final data):
@@ -208,7 +208,7 @@ class ImageCacheData {
           return pngData;
         }
       case MapTileNotAvailable():
-        return _cachedEmptyMapTile();
+        return await _cachedEmptyMapTile();
       case MapTileError():
         return fileInfo?.data;
     }
@@ -221,24 +221,8 @@ String createMapTileKey(int z, int x, int y, int version) {
 
 Uint8List? _emptyMapTilePng;
 
-Uint8List _cachedEmptyMapTile() {
-  final data = _emptyMapTilePng ?? _emptyMapTilePngBytes();
-  _emptyMapTilePng = data;
-  return data;
-}
-
-Uint8List _emptyMapTilePngBytes() {
-  final imageBuffer = img.Image(width: 1, height: 1);
-
-  for (var pixel in imageBuffer) {
-    pixel
-      ..r = MAP_BACKGROUND_COLOR.r
-      ..g = MAP_BACKGROUND_COLOR.g
-      ..b = MAP_BACKGROUND_COLOR.b
-      ..a = 255;
-  }
-
-  return img.encodePng(imageBuffer);
+Future<Uint8List> _cachedEmptyMapTile() async {
+  return _emptyMapTilePng ??= await createSolidColorPng(MAP_BACKGROUND_COLOR.toColor());
 }
 
 class AccountImageProvider extends ImageProvider<AccountImgKey> {
