@@ -42,6 +42,13 @@ pub enum MessageEncryptionError {
     // Get message content
     GetMessageContentMessageParse = 60,
     GetMessageContentAsDataVec = 61,
+    // Image processing
+    ImageInputReadingFailed = 70,
+    ImageExifReadingFailed = 71,
+    ImageDecodeFailed = 72,
+    ImageInputTooLarge = 73,
+    ImageTooSmall = 74,
+    ImageEncodeFailed = 75,
 }
 
 impl From<MessageEncryptionError> for isize {

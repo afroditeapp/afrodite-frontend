@@ -79,6 +79,12 @@ external BinaryDataResult get_message_content(
   int pgp_message_len,
 );
 
+/// Process an image.
+///
+/// The result must be freed using free_binary_data_result.
+@ffi.Native<BinaryDataResult Function(ffi.Pointer<ffi.Uint8>, ffi.IntPtr, ffi.Uint32)>(isLeaf: true)
+external BinaryDataResult process_image(ffi.Pointer<ffi.Uint8> input, int input_len, int flags);
+
 /// Message encryption API
 final class BinaryData extends ffi.Struct {
   /// Null if failure

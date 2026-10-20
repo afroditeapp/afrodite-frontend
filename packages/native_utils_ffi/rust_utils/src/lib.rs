@@ -5,4 +5,5 @@
 #![allow(clippy::missing_safety_doc)]
 
 mod ffi;
+mod image_processing;
 mod message;

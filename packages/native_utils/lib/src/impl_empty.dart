@@ -25,3 +25,9 @@ Future<(DecryptResult?, int)> decryptMessage(
 /// When getting message content fails, null is returned
 Future<(Uint8List?, int)> getMessageContent(Uint8List pgpMessage) =>
     throw UnsupportedError("Not implemented");
+
+// Image processing API
+
+/// If processing fails, null is returned
+Future<(ProcessedImage?, ProcessImageError)> processImage(Uint8List input, int flags) =>
+    throw UnsupportedError("Not implemented");

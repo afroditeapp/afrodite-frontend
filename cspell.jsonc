@@ -83,6 +83,9 @@
     "codesign",
     "xcarchive",
     "devicecheck",
-    "ghcup"
+    "ghcup",
+    "exif",
+    "fliph",
+    "bindgen"
   ]
 }

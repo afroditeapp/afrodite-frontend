@@ -79,3 +79,14 @@ FFI_PLUGIN_EXPORT struct BinaryDataResult get_message_content(
   const uint8_t* pgp_message,
   intptr_t pgp_message_len
 );
+
+// Image processing API
+
+// Process an image.
+//
+// The result must be freed using free_binary_data_result.
+FFI_PLUGIN_EXPORT struct BinaryDataResult process_image(
+  const uint8_t* input,
+  intptr_t input_len,
+  uint32_t flags
+);
