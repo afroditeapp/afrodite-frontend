@@ -2,7 +2,7 @@
 use pgp::{composed::Message};
 use wasm_bindgen::prelude::wasm_bindgen;
 
-use super::NativeUtilsError;
+use crate::error::NativeUtilsError;
 
 #[wasm_bindgen]
 pub fn get_message_content_rust(

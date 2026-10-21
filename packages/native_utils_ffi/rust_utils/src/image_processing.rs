@@ -5,7 +5,7 @@ use std::io::Cursor;
 use image::{DynamicImage, ImageDecoder, ImageReader};
 use wasm_bindgen::prelude::wasm_bindgen;
 
-use crate::message::NativeUtilsError;
+use crate::error::NativeUtilsError;
 
 /// Center crop the image to 4:3 aspect ratio.
 pub const PROCESS_CROP_43: u32 = 1;

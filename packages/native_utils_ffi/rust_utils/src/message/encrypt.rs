@@ -4,7 +4,7 @@ use pgp::{
 use rand::rngs::OsRng;
 use wasm_bindgen::prelude::wasm_bindgen;
 
-use super::NativeUtilsError;
+use crate::error::NativeUtilsError;
 
 #[wasm_bindgen(getter_with_clone)]
 pub struct EncryptingOutput {

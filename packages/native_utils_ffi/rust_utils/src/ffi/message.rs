@@ -1,6 +1,7 @@
 use std::{ffi::{c_char, CStr}, ptr::null};
 
-use crate::message::{content, decrypt::{self, DecryptingOutput}, encrypt::{self, EncryptingOutput}, key::{self, KeyPairBytes}, NativeUtilsError};
+use crate::message::{content, decrypt::{self, DecryptingOutput}, encrypt::{self, EncryptingOutput}, key::{self, KeyPairBytes}};
+use crate::error::NativeUtilsError;
 
 use super::API_OK;
 

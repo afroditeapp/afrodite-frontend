@@ -1,0 +1,51 @@
+use wasm_bindgen::prelude::wasm_bindgen;
+
+#[wasm_bindgen]
+#[derive(Debug, Clone, Copy, PartialEq)]
+#[repr(u8)]
+pub enum NativeUtilsError {
+    // Generate keys
+    GenerateKeysPrivateKeyParams = 1,
+    GenerateKeysPrivateKeySubKeyParams = 2,
+    GenerateKeysPrivateKeyGenerate = 3,
+    GenerateKeysPrivateKeyToBytes = 4,
+    GenerateKeysPublicKeyToBytes = 5,
+    // Encrypt data
+    EncryptDataPrivateKeyParse = 20,
+    EncryptDataPublicKeyParse = 21,
+    EncryptDataEncrypt = 22,
+    EncryptDataToWriter = 23,
+    EncryptDataPublicSubkeyMissing = 24,
+    // Binary data
+    BinaryDataLenTooLarge = 30,
+    BinaryDataCapacityTooLarge = 31,
+    // Decrypt data
+    DecryptDataPrivateKeyParse = 40,
+    DecryptDataPublicKeyParse = 41,
+    DecryptDataMessageParse = 42,
+    DecryptDataVerify = 43,
+    DecryptDataDecrypt = 44,
+    DecryptDataAsDataVec = 45,
+    DecryptDataUnsupportedSessionKey = 46,
+    DecryptDataSessionKeyDecryptionError1 = 47,
+    DecryptDataSessionKeyDecryptionError2 = 48,
+    DecryptDataMessageUnsupported = 49,
+    DecryptDataUnsupportedSessionKeyVersion = 50,
+    DecryptDataUnsupportedPrivateKey = 51,
+    // Get message content
+    GetMessageContentMessageParse = 60,
+    GetMessageContentAsDataVec = 61,
+    // Image processing
+    ImageInputReadingFailed = 70,
+    ImageExifReadingFailed = 71,
+    ImageDecodeFailed = 72,
+    ImageInputTooLarge = 73,
+    ImageTooSmall = 74,
+    ImageEncodeFailed = 75,
+}
+
+impl From<NativeUtilsError> for isize {
+    fn from(value: NativeUtilsError) -> Self {
+        value as isize
+    }
+}

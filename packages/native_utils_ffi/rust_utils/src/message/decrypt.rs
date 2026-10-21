@@ -2,7 +2,7 @@
 use pgp::{composed::{Deserializable, Esk, Message, PlainSessionKey, SignedPublicKey, SignedSecretKey}, packet::PublicKeyEncryptedSessionKey, types::{DecryptionKey, EskType, Password}};
 use wasm_bindgen::prelude::wasm_bindgen;
 
-use super::NativeUtilsError;
+use crate::error::NativeUtilsError;
 
 #[wasm_bindgen(getter_with_clone)]
 pub struct DecryptingOutput {
