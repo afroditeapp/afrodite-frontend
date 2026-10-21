@@ -101,7 +101,6 @@ final class BinaryDataResult2 extends ffi.Struct {
   @ffi.IntPtr()
   external int result;
 
-  /// Null if failure
   external BinaryData first_data;
 
   external BinaryData second_data;

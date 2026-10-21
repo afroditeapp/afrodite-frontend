@@ -17,7 +17,6 @@ struct BinaryData {
 
 struct BinaryDataResult2 {
   intptr_t result;
-  // Null if failure
   struct BinaryData first_data;
   struct BinaryData second_data;
 };
