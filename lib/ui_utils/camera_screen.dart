@@ -13,8 +13,7 @@ import "package:app/ui_utils/dialog.dart";
 import "package:app/ui_utils/snack_bar.dart";
 import 'package:utils/utils.dart';
 import "package:app/utils/camera.dart";
-
-import 'package:image/image.dart' as img;
+import 'package:native_utils/native_utils.dart';
 
 final _log = Logger("CameraScreen");
 
@@ -304,7 +303,7 @@ class _CameraScreenState extends State<CameraScreen> with WidgetsBindingObserver
       return null;
     }
 
-    final processedImgBytes = await processImage(file);
+    final processedImgBytes = await processCapturedImage(file);
     if (processedImgBytes == null) {
       if (mounted) {
         showSnackBar(R.strings.camera_screen_take_photo_error);
@@ -313,29 +312,26 @@ class _CameraScreenState extends State<CameraScreen> with WidgetsBindingObserver
     return processedImgBytes;
   }
 
-  Future<Uint8List?> processImage(XFile file) async {
+  Future<Uint8List?> processCapturedImage(XFile file) async {
     try {
-      final decodedImg = img.decodeJpg(await file.readAsBytes());
-      if (decodedImg == null) {
+      final bytes = await file.readAsBytes();
+
+      var flags = PROCESS_CROP_43;
+      if (!kIsWeb) {
+        flags |= PROCESS_FLIP_HORIZONTAL;
+      }
+
+      final (result, error) = await processImage(bytes, flags);
+      if (result == null) {
+        _log.error("Image processing error: $error");
         return null;
       }
-      logImageSize(decodedImg, "decodedImg");
 
-      final orientationBakedImage = img.bakeOrientation(decodedImg);
-      logImageSize(orientationBakedImage, "orientationBakedImage");
-
-      final croppedImage = cropToAspectRatio43(orientationBakedImage);
-      logImageSize(croppedImage, "croppedImage");
-
-      final finalImg = kIsWeb
-          ? croppedImage
-          : img.copyFlip(croppedImage, direction: img.FlipDirection.horizontal);
-
-      final finalImgBytes = img.encodeJpg(finalImg);
+      final finalImgBytes = result.bytes;
       logFinalImageFileSize(finalImgBytes.length);
       return finalImgBytes;
-    } on img.ImageException catch (e) {
-      _log.error("Image processing error");
+    } catch (e) {
+      _log.error("Image processing error: file reading failed");
       _log.fine(e);
       return null;
     }
@@ -345,37 +341,6 @@ class _CameraScreenState extends State<CameraScreen> with WidgetsBindingObserver
 void logFinalImageFileSize(int byteCount) {
   final kb = byteCount / 1024;
   _log.fine("Image size: $kb KB");
-}
-
-void logImageSize(img.Image imgData, String info) {
-  _log.fine("$info size: ${imgData.width}x${imgData.height}");
-}
-
-img.Image cropToAspectRatio43(img.Image imgData) {
-  final newHeight = 4 / 3 * imgData.width;
-  if (newHeight > imgData.height) {
-    // Height not large enough - use available height as max value
-    final newWidth = 3 / 4 * imgData.height;
-    _log.fine("newWidth: $newWidth");
-    final xOffset = (imgData.width.toDouble() - newWidth) / 2.0;
-    return img.copyCrop(
-      imgData,
-      x: xOffset.toInt(),
-      y: 0,
-      width: newWidth.toInt(),
-      height: imgData.height,
-    );
-  } else {
-    _log.fine("newHeight: $newHeight");
-    final yOffset = (imgData.height.toDouble() - newHeight) / 2.0;
-    return img.copyCrop(
-      imgData,
-      x: 0,
-      y: yOffset.toInt(),
-      width: imgData.width,
-      height: newHeight.toInt(),
-    );
-  }
 }
 
 class ShutterController {

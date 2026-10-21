@@ -8,6 +8,7 @@ import "package:app/data/account_repository.dart";
 import "package:app/data/media_repository.dart";
 import "package:app/data/media/send_to_slot.dart";
 import "package:app/model/freezed/logic/media/image_processing.dart";
+import "package:native_utils/native_utils.dart";
 
 sealed class ImageProcessingEvent {}
 
@@ -54,10 +55,22 @@ class ImageProcessingBloc extends Bloc<ImageProcessingEvent, ImageProcessingData
     on<SendImageToSlot>((data, emit) async {
       emit(state.copyWith(processingState: SendingInProgress(DataUploadInProgress())));
 
+      Uint8List imgBytes = data.imgBytes;
+      if (!data.secureCapture) {
+        // Secure capture images come from the camera screen, which has
+        // already processed them.
+        final (result, error) = await processImage(data.imgBytes, 0);
+        if (result == null) {
+          emit(state.copyWith(processingState: _sendingFailedFromProcessImageError(error)));
+          return;
+        }
+        imgBytes = result.bytes;
+      }
+
       final currentUser = media.currentUser;
 
       await for (final e in media.sendImageToSlot(
-        data.imgBytes,
+        imgBytes,
         data.slot,
         secureCapture: data.secureCapture,
       )) {
@@ -112,6 +125,17 @@ class ImageProcessingBloc extends Bloc<ImageProcessingEvent, ImageProcessingData
     });
   }
 }
+
+SendingFailed _sendingFailedFromProcessImageError(ProcessImageError error) => switch (error) {
+  ProcessImageError.inputTooLarge => SendingFailed(imageFileSizeTooLarge: true),
+  ProcessImageError.imageTooSmall => SendingFailed(imageTooSmall: true),
+  ProcessImageError.ok ||
+  ProcessImageError.unknown ||
+  ProcessImageError.inputReadingFailed ||
+  ProcessImageError.exifReadingFailed ||
+  ProcessImageError.decodeFailed ||
+  ProcessImageError.encodeFailed => SendingFailed(invalidImage: true),
+};
 
 class SecuritySelfieImageProcessingBloc extends ImageProcessingBloc {
   SecuritySelfieImageProcessingBloc(super.r);

@@ -671,7 +671,9 @@ void openSelectPictureDialog(
                 );
                 if (image != null) {
                   final imageBytes = await image.readAsBytes();
-                  imageProcessingBloc.add(ConfirmImage(imageBytes, serverSlotIndex));
+                  if (validateImage(imageBytes)) {
+                    imageProcessingBloc.add(ConfirmImage(imageBytes, serverSlotIndex));
+                  }
                 }
               } catch (e) {
                 _log.error("Taking image failed");

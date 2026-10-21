@@ -40,10 +40,16 @@ class SendingFailed extends ProcessingState {
   final bool nsfwDetected;
   final bool imageDataUploadTimeout;
   final bool contentProcessingOngoing;
+  final bool imageFileSizeTooLarge;
+  final bool imageTooSmall;
+  final bool invalidImage;
   SendingFailed({
     this.nsfwDetected = false,
     this.imageDataUploadTimeout = false,
     this.contentProcessingOngoing = false,
+    this.imageFileSizeTooLarge = false,
+    this.imageTooSmall = false,
+    this.invalidImage = false,
   });
 }
 
