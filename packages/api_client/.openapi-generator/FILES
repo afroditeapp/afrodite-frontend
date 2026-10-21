@@ -80,6 +80,7 @@ lib/model/age_verification_platforms.dart
 lib/model/api_usage_count.dart
 lib/model/api_usage_statistics.dart
 lib/model/app_attestation.dart
+lib/model/app_attestation_requirements.dart
 lib/model/app_attestation_type_number.dart
 lib/model/apple_app_attest.dart
 lib/model/association_config.dart

@@ -299,6 +299,8 @@ class ApiClient {
           return ApiUsageStatistics.fromJson(value);
         case 'AppAttestation':
           return AppAttestation.fromJson(value);
+        case 'AppAttestationRequirements':
+          return AppAttestationRequirements.fromJson(value);
         case 'AppAttestationTypeNumber':
           return AppAttestationTypeNumberTypeTransformer().decode(value);
         case 'AppleAppAttest':
