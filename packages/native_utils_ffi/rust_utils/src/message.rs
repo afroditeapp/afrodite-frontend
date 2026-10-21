@@ -10,7 +10,7 @@ pub mod content;
 #[wasm_bindgen]
 #[derive(Debug, Clone, Copy, PartialEq)]
 #[repr(u8)]
-pub enum MessageEncryptionError {
+pub enum NativeUtilsError {
     // Generate keys
     GenerateKeysPrivateKeyParams = 1,
     GenerateKeysPrivateKeySubKeyParams = 2,
@@ -51,8 +51,8 @@ pub enum MessageEncryptionError {
     ImageEncodeFailed = 75,
 }
 
-impl From<MessageEncryptionError> for isize {
-    fn from(value: MessageEncryptionError) -> Self {
+impl From<NativeUtilsError> for isize {
+    fn from(value: NativeUtilsError) -> Self {
         value as isize
     }
 }

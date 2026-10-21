@@ -4,7 +4,7 @@ use pgp::{
 use rand::rngs::OsRng;
 use wasm_bindgen::prelude::wasm_bindgen;
 
-use super::MessageEncryptionError;
+use super::NativeUtilsError;
 
 #[wasm_bindgen(getter_with_clone)]
 pub struct EncryptingOutput {
@@ -18,7 +18,7 @@ pub fn encrypt_data_rust(
     sender_private_key: &[u8],
     recipient_public_key: &[u8],
     data: Vec<u8>,
-) -> Result<EncryptingOutput, MessageEncryptionError> {
+) -> Result<EncryptingOutput, NativeUtilsError> {
     encrypt_data_internal(sender_private_key, recipient_public_key, data)
 }
 
@@ -27,15 +27,15 @@ pub(crate) fn encrypt_data_internal(
     sender_private_key: &[u8],
     recipient_public_key: &[u8],
     data: impl Into<Bytes>,
-) -> Result<EncryptingOutput, MessageEncryptionError> {
+) -> Result<EncryptingOutput, NativeUtilsError> {
     let my_private_key = SignedSecretKey::from_bytes(sender_private_key)
-        .map_err(|_| MessageEncryptionError::EncryptDataPrivateKeyParse)?;
+        .map_err(|_| NativeUtilsError::EncryptDataPrivateKeyParse)?;
     let other_person_public_key = SignedPublicKey::from_bytes(recipient_public_key)
-        .map_err(|_| MessageEncryptionError::EncryptDataPublicKeyParse)?;
+        .map_err(|_| NativeUtilsError::EncryptDataPublicKeyParse)?;
 
     let encryption_public_subkey = other_person_public_key.public_subkeys
         .first()
-        .ok_or(MessageEncryptionError::EncryptDataPublicSubkeyMissing)?;
+        .ok_or(NativeUtilsError::EncryptDataPublicSubkeyMissing)?;
     // let data = Into::<Bytes>::into(data);
     let mut builder = MessageBuilder::from_bytes("", data);
     // Compression is not done for now as this library does not
@@ -57,14 +57,14 @@ pub(crate) fn encrypt_data_internal(
     );
     builder
         .encrypt_to_key(OsRng, encryption_public_subkey)
-        .map_err(|_| MessageEncryptionError::EncryptDataEncrypt)?;
+        .map_err(|_| NativeUtilsError::EncryptDataEncrypt)?;
 
     let session_key = builder.session_key().as_ref().to_vec();
     let mut message = vec![];
 
     builder
         .to_writer(OsRng, &mut message)
-        .map_err(|_| MessageEncryptionError::EncryptDataToWriter)?;
+        .map_err(|_| NativeUtilsError::EncryptDataToWriter)?;
 
     Ok(EncryptingOutput{ message, session_key })
 }

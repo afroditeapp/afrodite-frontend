@@ -6,7 +6,7 @@ use rand::rngs::OsRng;
 use smallvec::smallvec;
 use wasm_bindgen::prelude::wasm_bindgen;
 
-use super::MessageEncryptionError;
+use super::NativeUtilsError;
 
 #[wasm_bindgen(getter_with_clone)]
 pub struct KeyPairBytes {
@@ -17,7 +17,7 @@ pub struct KeyPairBytes {
 #[wasm_bindgen]
 pub fn generate_message_keys_rust(
     account_id: String,
-) -> Result<KeyPairBytes, MessageEncryptionError>  {
+) -> Result<KeyPairBytes, NativeUtilsError>  {
     let params = SecretKeyParamsBuilder::default()
         .key_type(KeyType::Ed25519)
         .can_encrypt(EncryptionCaps::None)
@@ -38,21 +38,21 @@ pub fn generate_message_keys_rust(
                 .can_encrypt(EncryptionCaps::Communication)
                 .can_sign(false)
                 .build()
-                .map_err(|_| MessageEncryptionError::GenerateKeysPrivateKeySubKeyParams)?
+                .map_err(|_| NativeUtilsError::GenerateKeysPrivateKeySubKeyParams)?
         )
         .build()
-        .map_err(|_| MessageEncryptionError::GenerateKeysPrivateKeyParams)?;
+        .map_err(|_| NativeUtilsError::GenerateKeysPrivateKeyParams)?;
     let private_key = params
         .generate(OsRng)
-        .map_err(|_| MessageEncryptionError::GenerateKeysPrivateKeyGenerate)?;
+        .map_err(|_| NativeUtilsError::GenerateKeysPrivateKeyGenerate)?;
     let private_key_bytes = private_key
         .to_bytes()
-        .map_err(|_| MessageEncryptionError::GenerateKeysPrivateKeyToBytes)?;
+        .map_err(|_| NativeUtilsError::GenerateKeysPrivateKeyToBytes)?;
 
     let public_key_bytes = private_key
         .to_public_key()
         .to_bytes()
-        .map_err(|_| MessageEncryptionError::GenerateKeysPublicKeyToBytes)?;
+        .map_err(|_| NativeUtilsError::GenerateKeysPublicKeyToBytes)?;
 
     Ok(
         KeyPairBytes {

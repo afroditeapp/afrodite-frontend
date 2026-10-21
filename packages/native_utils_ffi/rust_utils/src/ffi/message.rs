@@ -1,6 +1,6 @@
 use std::{ffi::{c_char, CStr}, ptr::null};
 
-use crate::message::{content, decrypt::{self, DecryptingOutput}, encrypt::{self, EncryptingOutput}, key::{self, KeyPairBytes}, MessageEncryptionError};
+use crate::message::{content, decrypt::{self, DecryptingOutput}, encrypt::{self, EncryptingOutput}, key::{self, KeyPairBytes}, NativeUtilsError};
 
 use super::API_OK;
 
@@ -12,7 +12,7 @@ pub struct BinaryDataResult2 {
 }
 
 impl BinaryDataResult2 {
-    pub fn error(e: MessageEncryptionError) -> Self {
+    pub fn error(e: NativeUtilsError) -> Self {
         Self {
             result: e.into(),
             first_data: BinaryData::error(),
@@ -104,12 +104,12 @@ struct BinaryDataBuilder {
 }
 
 impl BinaryDataBuilder {
-    fn new(data: Vec<u8>) -> Result<Self, MessageEncryptionError> {
+    fn new(data: Vec<u8>) -> Result<Self, NativeUtilsError> {
         let len: isize = data.len().try_into()
-            .map_err(|_| MessageEncryptionError::BinaryDataLenTooLarge)?;
+            .map_err(|_| NativeUtilsError::BinaryDataLenTooLarge)?;
 
         let capacity: isize = data.capacity().try_into()
-            .map_err(|_| MessageEncryptionError::BinaryDataCapacityTooLarge)?;
+            .map_err(|_| NativeUtilsError::BinaryDataCapacityTooLarge)?;
 
         Ok(Self {
             data,
@@ -138,7 +138,7 @@ pub struct BinaryDataResult {
 }
 
 impl BinaryDataResult {
-    pub fn error(e: MessageEncryptionError) -> Self {
+    pub fn error(e: NativeUtilsError) -> Self {
         Self {
             result: e.into(),
             data: BinaryData::error(),

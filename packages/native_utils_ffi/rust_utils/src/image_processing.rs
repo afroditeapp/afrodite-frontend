@@ -5,7 +5,7 @@ use std::io::Cursor;
 use image::{DynamicImage, ImageDecoder, ImageReader};
 use wasm_bindgen::prelude::wasm_bindgen;
 
-use crate::message::MessageEncryptionError;
+use crate::message::NativeUtilsError;
 
 /// Center crop the image to 4:3 aspect ratio.
 pub const PROCESS_CROP_43: u32 = 1;
@@ -26,7 +26,7 @@ pub struct ProcessImageOutput {
 pub fn process_image_rust(
     input: &[u8],
     flags: u32,
-) -> Result<ProcessImageOutput, MessageEncryptionError> {
+) -> Result<ProcessImageOutput, NativeUtilsError> {
     Ok(ProcessImageOutput { data: process_image_internal(input, flags)? })
 }
 
@@ -34,24 +34,24 @@ pub fn process_image_rust(
 pub fn process_image_internal(
     input: &[u8],
     flags: u32,
-) -> Result<Vec<u8>, MessageEncryptionError> {
+) -> Result<Vec<u8>, NativeUtilsError> {
     if input.len() > MAX_INPUT_BYTES {
-        return Err(MessageEncryptionError::ImageInputTooLarge);
+        return Err(NativeUtilsError::ImageInputTooLarge);
     }
 
     let mut decoder = ImageReader::new(Cursor::new(input))
         .with_guessed_format()
-        .map_err(|_| MessageEncryptionError::ImageInputReadingFailed)?
+        .map_err(|_| NativeUtilsError::ImageInputReadingFailed)?
         .into_decoder()
-        .map_err(|_| MessageEncryptionError::ImageInputReadingFailed)?;
+        .map_err(|_| NativeUtilsError::ImageInputReadingFailed)?;
     let orientation = decoder
         .orientation()
-        .map_err(|_| MessageEncryptionError::ImageExifReadingFailed)?;
+        .map_err(|_| NativeUtilsError::ImageExifReadingFailed)?;
     let mut img = DynamicImage::from_decoder(decoder)
-        .map_err(|_| MessageEncryptionError::ImageDecodeFailed)?;
+        .map_err(|_| NativeUtilsError::ImageDecodeFailed)?;
 
     if img.width() < MIN_WIDTH || img.height() < MIN_HEIGHT {
-        return Err(MessageEncryptionError::ImageTooSmall);
+        return Err(NativeUtilsError::ImageTooSmall);
     }
 
     img.apply_orientation(orientation);
@@ -71,7 +71,7 @@ pub fn process_image_internal(
     let mut jpeg_data = Cursor::new(Vec::new());
     let encoder = image::codecs::jpeg::JpegEncoder::new_with_quality(&mut jpeg_data, JPEG_QUALITY);
     img.write_with_encoder(encoder)
-        .map_err(|_| MessageEncryptionError::ImageEncodeFailed)?;
+        .map_err(|_| NativeUtilsError::ImageEncodeFailed)?;
 
     Ok(jpeg_data.into_inner())
 }
@@ -131,20 +131,20 @@ mod tests {
     fn process_image_too_small() {
         let input = create_test_jpeg(100, 100);
         let result = process_image_internal(&input, 0);
-        assert_eq!(result.unwrap_err(), MessageEncryptionError::ImageTooSmall);
+        assert_eq!(result.unwrap_err(), NativeUtilsError::ImageTooSmall);
     }
 
     #[test]
     fn process_image_invalid_input() {
         let result = process_image_internal(&[0, 1, 2, 3], 0);
-        assert_eq!(result.unwrap_err(), MessageEncryptionError::ImageInputReadingFailed);
+        assert_eq!(result.unwrap_err(), NativeUtilsError::ImageInputReadingFailed);
     }
 
     #[test]
     fn process_image_input_too_large() {
         let input = vec![0u8; MAX_INPUT_BYTES + 1];
         let result = process_image_internal(&input, 0);
-        assert_eq!(result.unwrap_err(), MessageEncryptionError::ImageInputTooLarge);
+        assert_eq!(result.unwrap_err(), NativeUtilsError::ImageInputTooLarge);
     }
 
     #[test]

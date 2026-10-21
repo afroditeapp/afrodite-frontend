@@ -11,7 +11,7 @@ class ProcessedImage {
   ProcessedImage({required this.bytes});
 }
 
-/// Error codes must match MessageEncryptionError enum in the Rust code.
+/// Error codes must match NativeUtilsError enum in the Rust code.
 enum ProcessImageError {
   ok(0),
 
