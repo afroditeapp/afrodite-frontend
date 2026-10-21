@@ -16,6 +16,8 @@ const MIN_WIDTH: u32 = 480;
 const MIN_HEIGHT: u32 = 480;
 const MAX_INPUT_BYTES: usize = 10 * 1024 * 1024;
 const JPEG_QUALITY: u8 = 100;
+const MAX_WIDTH: u32 = 1280;
+const MAX_HEIGHT: u32 = 1280;
 
 #[wasm_bindgen(getter_with_clone)]
 pub struct ProcessImageOutput {
@@ -64,6 +66,12 @@ pub fn process_image_internal(
 
     let img = if flags & PROCESS_FLIP_HORIZONTAL != 0 {
         img.fliph()
+    } else {
+        img
+    };
+
+    let img = if img.width() > MAX_WIDTH || img.height() > MAX_HEIGHT {
+        img.resize(MAX_WIDTH, MAX_HEIGHT, image::imageops::FilterType::Lanczos3)
     } else {
         img
     };
@@ -145,6 +153,33 @@ mod tests {
         let input = vec![0u8; MAX_INPUT_BYTES + 1];
         let result = process_image_internal(&input, 0);
         assert_eq!(result.unwrap_err(), NativeUtilsError::ImageInputTooLarge);
+    }
+
+    #[test]
+    fn process_image_downscale() {
+        let input = create_test_jpeg(2000, 1500);
+        let output = process_image_internal(&input, 0).expect("processing should succeed");
+        assert!(!output.is_empty());
+        let decoded = ImageReader::new(Cursor::new(&output))
+            .with_guessed_format()
+            .expect("format should be guessed")
+            .decode()
+            .expect("output should decode");
+        assert!(decoded.width() <= MAX_WIDTH);
+        assert!(decoded.height() <= MAX_HEIGHT);
+    }
+
+    #[test]
+    fn process_image_downscale_noop_when_small() {
+        let input = create_test_jpeg(1000, 1000);
+        let output = process_image_internal(&input, 0).expect("processing should succeed");
+        let decoded = ImageReader::new(Cursor::new(&output))
+            .with_guessed_format()
+            .expect("format should be guessed")
+            .decode()
+            .expect("output should decode");
+        assert_eq!(decoded.width(), 1000);
+        assert_eq!(decoded.height(), 1000);
     }
 
     #[test]
