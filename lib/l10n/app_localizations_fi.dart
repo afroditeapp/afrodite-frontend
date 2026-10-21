@@ -383,6 +383,11 @@ class AppLocalizationsFi extends AppLocalizations {
   String get camera_screen_take_photo_error => 'Kuvan ottaminen epäonnistui';
 
   @override
+  String camera_screen_take_photo_error_with_details(String p0) {
+    return 'Kuvan ottaminen epäonnistui: $p0';
+  }
+
+  @override
   String get chat_backup_connecting => 'Yhdistetään…';
 
   @override

@@ -716,6 +716,12 @@ abstract class AppLocalizations {
   /// **'Failed to take photo'**
   String get camera_screen_take_photo_error;
 
+  /// Snackbar error text displayed when taking photo fails, with error details
+  ///
+  /// In en, this message translates to:
+  /// **'Failed to take photo: {p0}'**
+  String camera_screen_take_photo_error_with_details(String p0);
+
   /// Status text when connecting to transfer API
   ///
   /// In en, this message translates to:

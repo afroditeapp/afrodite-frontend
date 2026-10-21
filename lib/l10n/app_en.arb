@@ -485,6 +485,15 @@
   "@camera_screen_take_photo_error": {
     "description": "Snackbar error text displayed when taking photo fails"
   },
+  "camera_screen_take_photo_error_with_details": "Failed to take photo: {p0}",
+  "@camera_screen_take_photo_error_with_details": {
+    "description": "Snackbar error text displayed when taking photo fails, with error details",
+    "placeholders": {
+      "p0": {
+        "type": "String"
+      }
+    }
+  },
   "chat_backup_connecting": "Connecting…",
   "@chat_backup_connecting": {
     "description": "Status text when connecting to transfer API"

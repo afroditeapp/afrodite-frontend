@@ -371,6 +371,7 @@
     <string name="camera_screen_camera_permission_error_check_settings">Kameran käyttöoikeus vaaditaan. Myönnä kameran käyttöoikeus järjestelmäasetuksista.</string>
     <string name="camera_screen_camera_access_restricted_error">Kameran käyttö on estetty tällä laitteella.</string>
     <string name="camera_screen_take_photo_error">Kuvan ottaminen epäonnistui</string>
+    <string name="camera_screen_take_photo_error_with_details">Kuvan ottaminen epäonnistui: %s</string>
 
     <!-- Map texts -->
     <string name="map_select_location_help_text">Napauta tai paina kohtaa kartalla asettaaksesi sijaintisi.</string>

@@ -378,6 +378,7 @@
     <string name="camera_screen_camera_permission_error_check_settings" description="Error text displayed when there is no camera permission and system settings must be used for granting the permission">Camera permission required. Please grant camera permission in system settings.</string>
     <string name="camera_screen_camera_access_restricted_error" description="Error text displayed when camera access is restricted">Camera access is restricted on this device.</string>
     <string name="camera_screen_take_photo_error" description="Snackbar error text displayed when taking photo fails">Failed to take photo</string>
+    <string name="camera_screen_take_photo_error_with_details" description="Snackbar error text displayed when taking photo fails, with error details">Failed to take photo: %s</string>
 
     <!-- Map texts -->
     <string name="map_select_location_help_text" description="Help text for selecting map location">Tap or hold on the map to choose a location.</string>

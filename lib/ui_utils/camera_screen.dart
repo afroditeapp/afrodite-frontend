@@ -303,13 +303,7 @@ class _CameraScreenState extends State<CameraScreen> with WidgetsBindingObserver
       return null;
     }
 
-    final processedImgBytes = await processCapturedImage(file);
-    if (processedImgBytes == null) {
-      if (mounted) {
-        showSnackBar(R.strings.camera_screen_take_photo_error);
-      }
-    }
-    return processedImgBytes;
+    return await processCapturedImage(file);
   }
 
   Future<Uint8List?> processCapturedImage(XFile file) async {
@@ -323,6 +317,9 @@ class _CameraScreenState extends State<CameraScreen> with WidgetsBindingObserver
 
       final (result, error) = await processImage(bytes, flags);
       if (result == null) {
+        if (mounted) {
+          showSnackBar(R.strings.camera_screen_take_photo_error_with_details("$error"));
+        }
         _log.error("Image processing error: $error");
         return null;
       }
@@ -331,6 +328,9 @@ class _CameraScreenState extends State<CameraScreen> with WidgetsBindingObserver
       logFinalImageFileSize(finalImgBytes.length);
       return finalImgBytes;
     } catch (e) {
+      if (mounted) {
+        showSnackBar(R.strings.camera_screen_take_photo_error_with_details("file reading failed"));
+      }
       _log.error("Image processing error: file reading failed");
       _log.fine(e);
       return null;

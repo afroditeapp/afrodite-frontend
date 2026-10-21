@@ -100,6 +100,7 @@
   "camera_screen_camera_permission_error_try_again_or_check_settings": "Kameran käyttöoikeus vaaditaan. Yritä uudelleen. Saatat joutua myöntämään luvan järjestelmäasetuksista.",
   "camera_screen_no_front_camera_error": "Etukameraa ei löytynyt",
   "camera_screen_take_photo_error": "Kuvan ottaminen epäonnistui",
+  "camera_screen_take_photo_error_with_details": "Kuvan ottaminen epäonnistui: {p0}",
   "chat_backup_connecting": "Yhdistetään…",
   "chat_backup_data_stream_unsupported": "Ei tuettu tietovirta",
   "chat_backup_database_not_found": "Keskustelutietoja ei löytynyt tälle tilille",
