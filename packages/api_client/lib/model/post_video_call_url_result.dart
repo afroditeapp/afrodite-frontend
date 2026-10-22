@@ -14,6 +14,7 @@ class PostVideoCallUrlResult {
   /// Returns a new [PostVideoCallUrlResult] instance.
   PostVideoCallUrlResult({
     this.jitsiMeet,
+    this.remainingVideoCallUrls,
   });
 
   ///
@@ -24,17 +25,30 @@ class PostVideoCallUrlResult {
   ///
   JitsiMeetUrl? jitsiMeet;
 
+  /// Remaining daily video call URL creation count. The value will be returned only if there is 5 or less URL creations left.
+  ///
+  /// Minimum value: 0
+  ///
+  /// Please note: This property should have been non-nullable! Since the specification file
+  /// does not include a default value (using the "default:" property), however, the generated
+  /// source code must fall back to having a nullable type.
+  /// Consider adding a "default:" property in the specification file to hide this note.
+  ///
+  int? remainingVideoCallUrls;
+
   @override
   bool operator ==(Object other) => identical(this, other) || other is PostVideoCallUrlResult &&
-    other.jitsiMeet == jitsiMeet;
+    other.jitsiMeet == jitsiMeet &&
+    other.remainingVideoCallUrls == remainingVideoCallUrls;
 
   @override
   int get hashCode =>
     // ignore: unnecessary_parenthesis
-    (jitsiMeet == null ? 0 : jitsiMeet!.hashCode);
+    (jitsiMeet == null ? 0 : jitsiMeet!.hashCode) +
+    (remainingVideoCallUrls == null ? 0 : remainingVideoCallUrls!.hashCode);
 
   @override
-  String toString() => 'PostVideoCallUrlResult[jitsiMeet=$jitsiMeet]';
+  String toString() => 'PostVideoCallUrlResult[jitsiMeet=$jitsiMeet, remainingVideoCallUrls=$remainingVideoCallUrls]';
 
   Map<String, dynamic> toJson() {
     final json = <String, dynamic>{};
@@ -42,6 +56,11 @@ class PostVideoCallUrlResult {
       json[r'jitsi_meet'] = this.jitsiMeet;
     } else {
       json[r'jitsi_meet'] = null;
+    }
+    if (this.remainingVideoCallUrls != null) {
+      json[r'remaining_video_call_urls'] = this.remainingVideoCallUrls;
+    } else {
+      json[r'remaining_video_call_urls'] = null;
     }
     return json;
   }
@@ -62,6 +81,7 @@ class PostVideoCallUrlResult {
 
       return PostVideoCallUrlResult(
         jitsiMeet: JitsiMeetUrl.fromJson(json[r'jitsi_meet']),
+        remainingVideoCallUrls: mapValueOfType<int>(json, r'remaining_video_call_urls'),
       );
     }
     return null;
