@@ -134,6 +134,9 @@ class _DynamicServerConfigScreenState extends State<DynamicServerConfigScreen> {
     final loginPlatforms = _config?.accountLoginPlatforms;
     final registrationPlatforms = _config?.accountRegistrationPlatforms;
     final emailRegistrationPlatforms = _config?.emailRegistrationPlatforms;
+    final loginAttestation = _config?.accountLoginAppAttestation;
+    final registrationAttestation = _config?.accountRegistrationAppAttestation;
+    final emailRegistrationAttestation = _config?.emailRegistrationAppAttestation;
     return Column(
       crossAxisAlignment: CrossAxisAlignment.start,
       children: [
@@ -156,6 +159,29 @@ class _DynamicServerConfigScreenState extends State<DynamicServerConfigScreen> {
           onWebChanged: (value) => setState(() {
             if (loginPlatforms != null) {
               loginPlatforms.web = value;
+            }
+          }),
+        ),
+        const Divider(),
+        _AppAttestationSwitches(
+          title: "Account Login App Attestation",
+          subtitle: "Require app attestation for account login.",
+          androidAppIntegrity: loginAttestation?.androidAppIntegrity ?? false,
+          androidDeviceIntegrity: loginAttestation?.androidDeviceIntegrity ?? false,
+          iosValidToken: loginAttestation?.iosValidToken ?? false,
+          onAndroidAppIntegrityChanged: (value) => setState(() {
+            if (loginAttestation != null) {
+              loginAttestation.androidAppIntegrity = value;
+            }
+          }),
+          onAndroidDeviceIntegrityChanged: (value) => setState(() {
+            if (loginAttestation != null) {
+              loginAttestation.androidDeviceIntegrity = value;
+            }
+          }),
+          onIosValidTokenChanged: (value) => setState(() {
+            if (loginAttestation != null) {
+              loginAttestation.iosValidToken = value;
             }
           }),
         ),
@@ -183,6 +209,29 @@ class _DynamicServerConfigScreenState extends State<DynamicServerConfigScreen> {
           }),
         ),
         const Divider(),
+        _AppAttestationSwitches(
+          title: "Account Registration App Attestation",
+          subtitle: "Require app attestation for account registration.",
+          androidAppIntegrity: registrationAttestation?.androidAppIntegrity ?? false,
+          androidDeviceIntegrity: registrationAttestation?.androidDeviceIntegrity ?? false,
+          iosValidToken: registrationAttestation?.iosValidToken ?? false,
+          onAndroidAppIntegrityChanged: (value) => setState(() {
+            if (registrationAttestation != null) {
+              registrationAttestation.androidAppIntegrity = value;
+            }
+          }),
+          onAndroidDeviceIntegrityChanged: (value) => setState(() {
+            if (registrationAttestation != null) {
+              registrationAttestation.androidDeviceIntegrity = value;
+            }
+          }),
+          onIosValidTokenChanged: (value) => setState(() {
+            if (registrationAttestation != null) {
+              registrationAttestation.iosValidToken = value;
+            }
+          }),
+        ),
+        const Divider(),
         _PlatformSwitches(
           title: "Email Registration Platforms",
           subtitle: "Enable or disable email registration by platform.",
@@ -202,6 +251,29 @@ class _DynamicServerConfigScreenState extends State<DynamicServerConfigScreen> {
           onWebChanged: (value) => setState(() {
             if (emailRegistrationPlatforms != null) {
               emailRegistrationPlatforms.web = value;
+            }
+          }),
+        ),
+        const Divider(),
+        _AppAttestationSwitches(
+          title: "Email Registration App Attestation",
+          subtitle: "Require app attestation for email registration.",
+          androidAppIntegrity: emailRegistrationAttestation?.androidAppIntegrity ?? false,
+          androidDeviceIntegrity: emailRegistrationAttestation?.androidDeviceIntegrity ?? false,
+          iosValidToken: emailRegistrationAttestation?.iosValidToken ?? false,
+          onAndroidAppIntegrityChanged: (value) => setState(() {
+            if (emailRegistrationAttestation != null) {
+              emailRegistrationAttestation.androidAppIntegrity = value;
+            }
+          }),
+          onAndroidDeviceIntegrityChanged: (value) => setState(() {
+            if (emailRegistrationAttestation != null) {
+              emailRegistrationAttestation.androidDeviceIntegrity = value;
+            }
+          }),
+          onIosValidTokenChanged: (value) => setState(() {
+            if (emailRegistrationAttestation != null) {
+              emailRegistrationAttestation.iosValidToken = value;
             }
           }),
         ),
@@ -332,6 +404,59 @@ class _PlatformSwitches extends StatelessWidget {
         SwitchListTile(title: const Text("Android"), value: android, onChanged: onAndroidChanged),
         SwitchListTile(title: const Text("iOS"), value: ios, onChanged: onIosChanged),
         SwitchListTile(title: const Text("Web"), value: web, onChanged: onWebChanged),
+      ],
+    );
+  }
+}
+
+class _AppAttestationSwitches extends StatelessWidget {
+  final String title;
+  final String subtitle;
+  final bool androidAppIntegrity;
+  final bool androidDeviceIntegrity;
+  final bool iosValidToken;
+  final ValueChanged<bool> onAndroidAppIntegrityChanged;
+  final ValueChanged<bool> onAndroidDeviceIntegrityChanged;
+  final ValueChanged<bool> onIosValidTokenChanged;
+
+  const _AppAttestationSwitches({
+    required this.title,
+    required this.subtitle,
+    required this.androidAppIntegrity,
+    required this.androidDeviceIntegrity,
+    required this.iosValidToken,
+    required this.onAndroidAppIntegrityChanged,
+    required this.onAndroidDeviceIntegrityChanged,
+    required this.onIosValidTokenChanged,
+  });
+
+  @override
+  Widget build(BuildContext context) {
+    return Column(
+      crossAxisAlignment: CrossAxisAlignment.start,
+      children: [
+        ListTile(
+          title: Text(title, style: Theme.of(context).textTheme.titleSmall),
+          subtitle: Text(subtitle),
+        ),
+        SwitchListTile(
+          title: const Text("Android App Integrity"),
+          subtitle: const Text("Require Play Integrity API app integrity verdict."),
+          value: androidAppIntegrity,
+          onChanged: onAndroidAppIntegrityChanged,
+        ),
+        SwitchListTile(
+          title: const Text("Android Device Integrity"),
+          subtitle: const Text("Require Play Integrity API device integrity verdict."),
+          value: androidDeviceIntegrity,
+          onChanged: onAndroidDeviceIntegrityChanged,
+        ),
+        SwitchListTile(
+          title: const Text("iOS Valid Token"),
+          subtitle: const Text("Require valid Apple App Attest token."),
+          value: iosValidToken,
+          onChanged: onIosValidTokenChanged,
+        ),
       ],
     );
   }
