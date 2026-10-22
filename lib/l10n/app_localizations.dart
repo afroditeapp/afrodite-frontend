@@ -1196,6 +1196,12 @@ abstract class AppLocalizations {
   /// **'Daily messages remaining: {p0}'**
   String conversation_screen_remaining_daily_messages(String p0);
 
+  /// Info text showing remaining daily video call creation count
+  ///
+  /// In en, this message translates to:
+  /// **'Video calls remaining for today: {p0}'**
+  String conversation_screen_remaining_video_calls(String p0);
+
   /// Action text for send video call invitation action
   ///
   /// In en, this message translates to:

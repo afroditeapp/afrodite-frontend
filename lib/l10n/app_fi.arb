@@ -180,6 +180,7 @@
   "conversation_screen_profile_blocked": "Profiili estettiin",
   "conversation_screen_remaining_conversation_messages": "Viestejä jäljellä tähän keskusteluun: {p0} (nollautuu toimituksen jälkeen)",
   "conversation_screen_remaining_daily_messages": "Päivittäisiä viestejä jäljellä: {p0}",
+  "conversation_screen_remaining_video_calls": "Videopuheluita jäljellä tänään: {p0}",
   "conversation_screen_send_video_call_invitation_action": "Lähetä videopuhelukutsu",
   "conversation_screen_send_video_call_invitation_dialog_title": "Lähetä videopuhelukutsu?",
   "crop_image_screen_title": "Rajaa kuva",

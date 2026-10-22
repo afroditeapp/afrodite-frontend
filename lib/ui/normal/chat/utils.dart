@@ -246,17 +246,39 @@ void joinVideoCall(BuildContext context, AccountId callee) async {
     showSnackBar(context.strings.generic_this_feature_is_disabled);
     return;
   }
+
+  final remainingVideoCallUrls = videoCallingUrl.remainingVideoCallUrls;
+  final remainingVideoCallUrlsText = remainingVideoCallUrls == null
+      ? null
+      : context.strings.conversation_screen_remaining_video_calls(
+          remainingVideoCallUrls.toString(),
+        );
+
   if (kIsWeb) {
     // This dialog is required on web to make sure that launchUrlString works
     // because browsers require a user gesture for opening links.
+    final text = context.strings.conversation_screen_open_video_call_link_dialog_details;
+    final details = remainingVideoCallUrlsText == null
+        ? text
+        : "$text\n\n$remainingVideoCallUrlsText";
     final r = await showConfirmDialog(
       context,
       context.strings.conversation_screen_open_video_call_link_dialog_title,
-      details: context.strings.conversation_screen_open_video_call_link_dialog_details,
+      details: details,
       yesNoActions: true,
     );
     if (r == true && context.mounted) {
       await _openJitsiMeetToWebBrowser(context, jitsiMeetUrl);
+    }
+  } else if (remainingVideoCallUrlsText != null) {
+    final r = await showConfirmDialog(
+      context,
+      context.strings.conversation_screen_open_video_call_link_dialog_title,
+      details: remainingVideoCallUrlsText,
+      yesNoActions: true,
+    );
+    if (r == true && context.mounted) {
+      await _openJitsiMeetOnAndroidOrIos(context, jitsiMeetUrl);
     }
   } else {
     await _openJitsiMeetOnAndroidOrIos(context, jitsiMeetUrl);

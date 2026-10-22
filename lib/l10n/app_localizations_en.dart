@@ -663,6 +663,11 @@ class AppLocalizationsEn extends AppLocalizations {
   }
 
   @override
+  String conversation_screen_remaining_video_calls(String p0) {
+    return 'Video calls remaining for today: $p0';
+  }
+
+  @override
   String get conversation_screen_send_video_call_invitation_action => 'Send video call invitation';
 
   @override

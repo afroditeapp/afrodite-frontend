@@ -604,6 +604,7 @@
     <string name="conversation_screen_join_video_call_disclaimer">Sovellus ei tallenna videopuheluita. Jos tarvitset todisteita viranomaisille, tallenna puhelu itse laitteesi näytön tallennuksella.</string>
     <string name="conversation_screen_open_video_call_link_dialog_title">Avaa videopuhelulinkki?</string>
     <string name="conversation_screen_open_video_call_link_dialog_details">Videopuhelulinkki on valmis avattavaksi</string>
+    <string name="conversation_screen_remaining_video_calls">Videopuheluita jäljellä tänään: %s</string>
     <string name="conversation_screen_open_details_action_subtitle">Sisältää valittavaa tekstiä</string>
     <string name="conversation_screen_install_jitsi_meet_dialog_title">Asenna Jitsi Meet?</string>
     <string name="conversation_screen_install_jitsi_meet_dialog_description_android">Videopuhelut vaativat Jitsi Meet -sovelluksen. Haluatko asentaa sen Google Play Kaupasta?</string>

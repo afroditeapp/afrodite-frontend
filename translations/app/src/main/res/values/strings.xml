@@ -611,6 +611,7 @@
     <string name="conversation_screen_join_video_call_disclaimer" description="Disclaimer shown when joining a video call that the video call is not recorded by the app">Video calls are not recorded by the app. If you need evidence for law enforcement, record the call yourself using your device\'s screen recording.</string>
     <string name="conversation_screen_open_video_call_link_dialog_title" description="Title for open video call link confirm dialog on web">Open video call link?</string>
     <string name="conversation_screen_open_video_call_link_dialog_details" description="Details for open video call link confirm dialog on web">Video call link is ready for opening</string>
+    <string name="conversation_screen_remaining_video_calls" description="Info text showing remaining daily video call creation count">Video calls remaining for today: %s</string>
     <string name="conversation_screen_open_details_action_subtitle" description="Action subtitle for open details action">Contains selectable text</string>
     <string name="conversation_screen_install_jitsi_meet_dialog_title" description="Title for install Jitsi Meet dialog">Install Jitsi Meet?</string>
     <string name="conversation_screen_install_jitsi_meet_dialog_description_android" description="Description text for install Jitsi Meet dialog when app is running on Android">Video calling requires the Jitsi Meet app. Would you like to install it from Google Play Store?</string>
