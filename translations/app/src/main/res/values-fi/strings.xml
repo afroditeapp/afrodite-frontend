@@ -316,7 +316,6 @@
 
     <!-- Initial setup -->
     <string name="initial_setup_screen_skip_dialog_title">Ohitetaanko profiilin määritys?</string>
-    <string name="initial_setup_screen_skip_dialog_description">Ohita profiilin määritys vain, jos sinulla on ylläpitäjän oikeudet palveluun.</string>
     <string name="initial_setup_screen_refresh_face_detected_values_action">Päivitä kasvojen tunnistuksen tila</string>
     <string name="initial_setup_screen_email_title">Sähköpostiosoitteeni on…</string>
     <string name="initial_setup_screen_email_hint_text">Syötä sähköpostiosoite</string>

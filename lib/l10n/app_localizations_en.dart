@@ -1343,10 +1343,6 @@ class AppLocalizationsEn extends AppLocalizations {
   String get initial_setup_screen_security_selfie_title => 'My security selfie is…';
 
   @override
-  String get initial_setup_screen_skip_dialog_description =>
-      'Skip profile setup only if you will have administrator rights on the service.';
-
-  @override
   String get initial_setup_screen_skip_dialog_title => 'Skip profile setup?';
 
   @override

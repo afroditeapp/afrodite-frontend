@@ -1746,10 +1746,6 @@
   "@initial_setup_screen_security_selfie_title": {
     "description": "Title for initial setup security selfie screen"
   },
-  "initial_setup_screen_skip_dialog_description": "Skip profile setup only if you will have administrator rights on the service.",
-  "@initial_setup_screen_skip_dialog_description": {
-    "description": "Description for skip initial setup confirm dialog"
-  },
   "initial_setup_screen_skip_dialog_title": "Skip profile setup?",
   "@initial_setup_screen_skip_dialog_title": {
     "description": "Title for skip initial setup confirm dialog"

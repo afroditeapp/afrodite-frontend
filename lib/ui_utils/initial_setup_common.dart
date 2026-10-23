@@ -79,7 +79,6 @@ Widget commonInitialSetupScreenContent({
                 final r = await showConfirmDialog(
                   context,
                   context.strings.initial_setup_screen_skip_dialog_title,
-                  details: context.strings.initial_setup_screen_skip_dialog_description,
                   yesNoActions: true,
                 );
                 if (r == true && context.mounted) {

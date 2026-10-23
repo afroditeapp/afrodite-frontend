@@ -385,7 +385,6 @@
   "initial_setup_screen_security_selfie_description": "Ota selfie etukamerallasi. Tätä selfietä käytetään profiilikuviesi vahvistamiseen ja se näkyy vain moderaattoreille, ellet lisää sitä profiiliisi myöhemmin.",
   "initial_setup_screen_security_selfie_face_not_detected": "Kasvoja ei havaittu. Yritä uudelleen selkeässä valaistuksessa tai ota yhteyttä tukeen.",
   "initial_setup_screen_security_selfie_title": "Moderointiselfieni on…",
-  "initial_setup_screen_skip_dialog_description": "Ohita profiilin määritys vain, jos sinulla on ylläpitäjän oikeudet palveluun.",
   "initial_setup_screen_skip_dialog_title": "Ohitetaanko profiilin määritys?",
   "likes_screen_like_loading_failed": "Keskustelupyyntöjen lataus epäonnistui",
   "likes_screen_new_likes_available": "Uusia keskustelupyyntöjä saatavilla",

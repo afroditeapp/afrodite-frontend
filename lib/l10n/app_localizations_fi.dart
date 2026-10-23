@@ -1350,10 +1350,6 @@ class AppLocalizationsFi extends AppLocalizations {
   String get initial_setup_screen_security_selfie_title => 'Moderointiselfieni on…';
 
   @override
-  String get initial_setup_screen_skip_dialog_description =>
-      'Ohita profiilin määritys vain, jos sinulla on ylläpitäjän oikeudet palveluun.';
-
-  @override
   String get initial_setup_screen_skip_dialog_title => 'Ohitetaanko profiilin määritys?';
 
   @override

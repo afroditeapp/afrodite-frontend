@@ -323,7 +323,6 @@
 
     <!-- Initial setup -->
     <string name="initial_setup_screen_skip_dialog_title" description="Title for skip initial setup confirm dialog">Skip profile setup?</string>
-    <string name="initial_setup_screen_skip_dialog_description" description="Description for skip initial setup confirm dialog">Skip profile setup only if you will have administrator rights on the service.</string>
     <string name="initial_setup_screen_refresh_face_detected_values_action" description="Title for refresh face detected values">Refresh face detection status</string>
     <string name="initial_setup_screen_email_title" description="Title for initial setup email address info">My email address is…</string>
     <string name="initial_setup_screen_email_hint_text" description="Hint text for inserting email address to text field">Enter email address</string>

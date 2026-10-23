@@ -2426,12 +2426,6 @@ abstract class AppLocalizations {
   /// **'My security selfie is…'**
   String get initial_setup_screen_security_selfie_title;
 
-  /// Description for skip initial setup confirm dialog
-  ///
-  /// In en, this message translates to:
-  /// **'Skip profile setup only if you will have administrator rights on the service.'**
-  String get initial_setup_screen_skip_dialog_description;
-
   /// Title for skip initial setup confirm dialog
   ///
   /// In en, this message translates to:
