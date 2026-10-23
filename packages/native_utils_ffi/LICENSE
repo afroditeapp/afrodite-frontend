@@ -2,7 +2,7 @@ Third Party Licenses
 
 Overview of licenses:
 
-MIT License (169)
+MIT License (171)
 
 BSD 3-Clause "New" or "Revised" License (5)
 
@@ -501,43 +501,6 @@ MIT License
 
 Used by:
 
-lazy_static 1.5.0 https://github.com/rust-lang-nursery/lazy-static.rs
-
-License:
-
-Copyright (c) 2010 The Rust Project Developers
-
-Permission is hereby granted, free of charge, to any
-person obtaining a copy of this software and associated
-documentation files (the "Software"), to deal in the
-Software without restriction, including without
-limitation the rights to use, copy, modify, merge,
-publish, distribute, sublicense, and/or sell copies of
-the Software, and to permit persons to whom the Software
-is furnished to do so, subject to the following
-conditions:
-
-The above copyright notice and this permission notice
-shall be included in all copies or substantial portions
-of the Software.
-
-THE SOFTWARE IS PROVIDED "AS IS", WITHOUT WARRANTY OF
-ANY KIND, EXPRESS OR IMPLIED, INCLUDING BUT NOT LIMITED
-TO THE WARRANTIES OF MERCHANTABILITY, FITNESS FOR A
-PARTICULAR PURPOSE AND NONINFRINGEMENT. IN NO EVENT
-SHALL THE AUTHORS OR COPYRIGHT HOLDERS BE LIABLE FOR ANY
-CLAIM, DAMAGES OR OTHER LIABILITY, WHETHER IN AN ACTION
-OF CONTRACT, TORT OR OTHERWISE, ARISING FROM, OUT OF OR
-IN CONNECTION WITH THE SOFTWARE OR THE USE OR OTHER
-DEALINGS IN THE SOFTWARE.
-
-
-============================================
-
-MIT License
-
-Used by:
-
 hex 0.4.3 https://github.com/KokaKiwi/rust-hex
 
 License:
@@ -570,17 +533,17 @@ MIT License
 
 Used by:
 
-cfg-if 1.0.4 https://github.com/rust-lang/cfg-if
+cfg-if 1.0.5 https://github.com/rust-lang/cfg-if
 
-js-sys 0.3.104 https://github.com/wasm-bindgen/wasm-bindgen/tree/master/crates/js-sys
+js-sys 0.3.106 https://github.com/wasm-bindgen/wasm-bindgen/tree/master/crates/js-sys
 
-wasm-bindgen-macro-support 0.2.127 https://github.com/wasm-bindgen/wasm-bindgen/tree/master/crates/macro-support
+wasm-bindgen-macro-support 0.2.129 https://github.com/wasm-bindgen/wasm-bindgen/tree/main/crates/macro-support
 
-wasm-bindgen-macro 0.2.127 https://github.com/wasm-bindgen/wasm-bindgen/tree/master/crates/macro
+wasm-bindgen-macro 0.2.129 https://github.com/wasm-bindgen/wasm-bindgen/tree/master/crates/macro
 
-wasm-bindgen-shared 0.2.127 https://github.com/wasm-bindgen/wasm-bindgen/tree/master/crates/shared
+wasm-bindgen-shared 0.2.129 https://github.com/wasm-bindgen/wasm-bindgen/tree/master/crates/shared
 
-wasm-bindgen 0.2.127 https://github.com/wasm-bindgen/wasm-bindgen
+wasm-bindgen 0.2.129 https://github.com/wasm-bindgen/wasm-bindgen
 
 License:
 
@@ -695,11 +658,11 @@ Used by:
 
 bitflags 2.13.2 https://github.com/bitflags/bitflags
 
-log 0.4.33 https://github.com/rust-lang/log
+log 0.4.34 https://github.com/rust-lang/log
 
 num-bigint-dig 0.8.6 https://github.com/dignifiedquire/num-bigint
 
-num-integer 0.1.46 https://github.com/rust-num/num-integer
+num-integer 0.1.47 https://github.com/rust-num/num-integer
 
 num-iter 0.1.46 https://github.com/rust-num/num-iter
 
@@ -772,7 +735,7 @@ MIT License
 
 Used by:
 
-flate2 1.1.9 https://github.com/rust-lang/flate2-rs
+flate2 1.1.10 https://github.com/rust-lang/flate2-rs
 
 License:
 
@@ -963,11 +926,11 @@ MIT License
 
 Used by:
 
-futures-core 0.3.33 https://github.com/rust-lang/futures-rs
+futures-core 0.3.34 https://github.com/rust-lang/futures-rs
 
-futures-task 0.3.33 https://github.com/rust-lang/futures-rs
+futures-task 0.3.34 https://github.com/rust-lang/futures-rs
 
-futures-util 0.3.33 https://github.com/rust-lang/futures-rs
+futures-util 0.3.34 https://github.com/rust-lang/futures-rs
 
 License:
 
@@ -1379,7 +1342,7 @@ MIT License
 
 Used by:
 
-smallvec 1.15.2 https://github.com/servo/rust-smallvec
+smallvec 1.16.3 https://github.com/servo/rust-smallvec
 
 License:
 
@@ -1692,7 +1655,7 @@ MIT License
 
 Used by:
 
-zeroize 1.9.0 https://github.com/RustCrypto/utils
+zeroize 1.9.1 https://github.com/RustCrypto/utils
 
 License:
 
@@ -2783,7 +2746,7 @@ MIT License
 
 Used by:
 
-libc 0.2.189 https://github.com/rust-lang/libc
+libc 0.2.191 https://github.com/rust-lang/libc
 
 License:
 
@@ -2820,7 +2783,7 @@ MIT License
 
 Used by:
 
-rand 0.8.7 https://github.com/rust-random/rand
+rand 0.8.8 https://github.com/rust-random/rand
 
 rand_chacha 0.3.1 https://github.com/rust-random/rand
 
@@ -2862,7 +2825,7 @@ MIT License
 
 Used by:
 
-zerocopy 0.8.56 https://github.com/google/zerocopy
+zerocopy 0.8.63 https://github.com/google/zerocopy
 
 License:
 
@@ -2970,7 +2933,7 @@ MIT License
 
 Used by:
 
-crc32fast 1.5.2 https://github.com/srijs/rust-crc32fast
+crc32fast 1.5.3 https://github.com/srijs/rust-crc32fast
 
 License:
 
@@ -3344,6 +3307,8 @@ Used by:
 
 miniz_oxide 0.8.9 https://github.com/Frommi/miniz_oxide/tree/master/miniz_oxide
 
+miniz_oxide 0.9.1 https://github.com/Frommi/miniz_oxide/tree/master/miniz_oxide
+
 License:
 
 MIT License
@@ -3380,6 +3345,8 @@ MIT License
 Used by:
 
 miniz_oxide 0.8.9 https://github.com/Frommi/miniz_oxide/tree/master/miniz_oxide
+
+miniz_oxide 0.9.1 https://github.com/Frommi/miniz_oxide/tree/master/miniz_oxide
 
 License:
 
@@ -3485,7 +3452,7 @@ MIT License
 
 Used by:
 
-pgp 0.20.0 https://github.com/rpgp/rpgp
+pgp 0.21.0 https://github.com/rpgp/rpgp
 
 rsa 0.9.10 https://github.com/RustCrypto/RSA
 
@@ -3529,6 +3496,8 @@ group 0.13.0 https://github.com/zkcrypto/group
 
 itoa 1.0.18 https://github.com/dtolnay/itoa
 
+lazy_static 1.5.1 https://github.com/rust-lang-nursery/lazy-static.rs
+
 num_enum 0.7.6 https://github.com/illicitonion/num_enum
 
 num_enum_derive 0.7.6 https://github.com/illicitonion/num_enum
@@ -3551,17 +3520,17 @@ serde 1.0.229 https://github.com/serde-rs/serde
 
 serde_core 1.0.229 https://github.com/serde-rs/serde
 
-serde_json 1.0.151 https://github.com/serde-rs/json
+serde_json 1.0.154 https://github.com/serde-rs/json
 
 syn 2.0.119 https://github.com/dtolnay/syn
 
-syn 3.0.3 https://github.com/dtolnay/syn
+syn 3.0.9 https://github.com/dtolnay/syn
 
-thiserror-impl 2.0.20 https://github.com/dtolnay/thiserror
+thiserror-impl 2.0.21 https://github.com/dtolnay/thiserror
 
-thiserror 2.0.20 https://github.com/dtolnay/thiserror
+thiserror 2.0.21 https://github.com/dtolnay/thiserror
 
-unicode-ident 1.0.24 https://github.com/dtolnay/unicode-ident
+unicode-ident 1.0.27 https://github.com/dtolnay/unicode-ident
 
 wasi 0.11.1+wasi-snapshot-preview1 https://github.com/bytecodealliance/wasi
 
@@ -3633,7 +3602,7 @@ Unicode License v3
 
 Used by:
 
-unicode-ident 1.0.24 https://github.com/dtolnay/unicode-ident
+unicode-ident 1.0.27 https://github.com/dtolnay/unicode-ident
 
 License:
 
@@ -3684,7 +3653,7 @@ zlib License
 
 Used by:
 
-zlib-rs 0.6.7 https://github.com/trifectatechfoundation/zlib-rs
+zlib-rs 0.6.8 https://github.com/trifectatechfoundation/zlib-rs
 
 License:
 
