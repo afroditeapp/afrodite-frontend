@@ -13,22 +13,13 @@ part of openapi.api;
 class DynamicServerConfig {
   /// Returns a new [DynamicServerConfig] instance.
   DynamicServerConfig({
-    this.accountLoginAppAttestation,
     this.accountLoginPlatforms,
-    this.accountRegistrationAppAttestation,
     this.accountRegistrationPlatforms,
-    this.emailRegistrationAppAttestation,
+    this.emailAppAttestation,
     this.emailRegistrationDomainLists,
     this.emailRegistrationPlatforms,
+    this.signInWithAppAttestation,
   });
-
-  ///
-  /// Please note: This property should have been non-nullable! Since the specification file
-  /// does not include a default value (using the "default:" property), however, the generated
-  /// source code must fall back to having a nullable type.
-  /// Consider adding a "default:" property in the specification file to hide this note.
-  ///
-  AppAttestationRequirements? accountLoginAppAttestation;
 
   ///
   /// Please note: This property should have been non-nullable! Since the specification file
@@ -44,23 +35,16 @@ class DynamicServerConfig {
   /// source code must fall back to having a nullable type.
   /// Consider adding a "default:" property in the specification file to hide this note.
   ///
-  AppAttestationRequirements? accountRegistrationAppAttestation;
-
-  ///
-  /// Please note: This property should have been non-nullable! Since the specification file
-  /// does not include a default value (using the "default:" property), however, the generated
-  /// source code must fall back to having a nullable type.
-  /// Consider adding a "default:" property in the specification file to hide this note.
-  ///
   AccountRegistrationPlatforms? accountRegistrationPlatforms;
 
+  /// App attestation requirements for email login and registration.
   ///
   /// Please note: This property should have been non-nullable! Since the specification file
   /// does not include a default value (using the "default:" property), however, the generated
   /// source code must fall back to having a nullable type.
   /// Consider adding a "default:" property in the specification file to hide this note.
   ///
-  AppAttestationRequirements? emailRegistrationAppAttestation;
+  AppAttestationRequirements? emailAppAttestation;
 
   ///
   /// Please note: This property should have been non-nullable! Since the specification file
@@ -78,56 +62,53 @@ class DynamicServerConfig {
   ///
   EmailRegistrationPlatforms? emailRegistrationPlatforms;
 
+  /// App attestation requirements for sign in with login and registration.
+  ///
+  /// Please note: This property should have been non-nullable! Since the specification file
+  /// does not include a default value (using the "default:" property), however, the generated
+  /// source code must fall back to having a nullable type.
+  /// Consider adding a "default:" property in the specification file to hide this note.
+  ///
+  AppAttestationRequirements? signInWithAppAttestation;
+
   @override
   bool operator ==(Object other) => identical(this, other) || other is DynamicServerConfig &&
-    other.accountLoginAppAttestation == accountLoginAppAttestation &&
     other.accountLoginPlatforms == accountLoginPlatforms &&
-    other.accountRegistrationAppAttestation == accountRegistrationAppAttestation &&
     other.accountRegistrationPlatforms == accountRegistrationPlatforms &&
-    other.emailRegistrationAppAttestation == emailRegistrationAppAttestation &&
+    other.emailAppAttestation == emailAppAttestation &&
     other.emailRegistrationDomainLists == emailRegistrationDomainLists &&
-    other.emailRegistrationPlatforms == emailRegistrationPlatforms;
+    other.emailRegistrationPlatforms == emailRegistrationPlatforms &&
+    other.signInWithAppAttestation == signInWithAppAttestation;
 
   @override
   int get hashCode =>
     // ignore: unnecessary_parenthesis
-    (accountLoginAppAttestation == null ? 0 : accountLoginAppAttestation!.hashCode) +
     (accountLoginPlatforms == null ? 0 : accountLoginPlatforms!.hashCode) +
-    (accountRegistrationAppAttestation == null ? 0 : accountRegistrationAppAttestation!.hashCode) +
     (accountRegistrationPlatforms == null ? 0 : accountRegistrationPlatforms!.hashCode) +
-    (emailRegistrationAppAttestation == null ? 0 : emailRegistrationAppAttestation!.hashCode) +
+    (emailAppAttestation == null ? 0 : emailAppAttestation!.hashCode) +
     (emailRegistrationDomainLists == null ? 0 : emailRegistrationDomainLists!.hashCode) +
-    (emailRegistrationPlatforms == null ? 0 : emailRegistrationPlatforms!.hashCode);
+    (emailRegistrationPlatforms == null ? 0 : emailRegistrationPlatforms!.hashCode) +
+    (signInWithAppAttestation == null ? 0 : signInWithAppAttestation!.hashCode);
 
   @override
-  String toString() => 'DynamicServerConfig[accountLoginAppAttestation=$accountLoginAppAttestation, accountLoginPlatforms=$accountLoginPlatforms, accountRegistrationAppAttestation=$accountRegistrationAppAttestation, accountRegistrationPlatforms=$accountRegistrationPlatforms, emailRegistrationAppAttestation=$emailRegistrationAppAttestation, emailRegistrationDomainLists=$emailRegistrationDomainLists, emailRegistrationPlatforms=$emailRegistrationPlatforms]';
+  String toString() => 'DynamicServerConfig[accountLoginPlatforms=$accountLoginPlatforms, accountRegistrationPlatforms=$accountRegistrationPlatforms, emailAppAttestation=$emailAppAttestation, emailRegistrationDomainLists=$emailRegistrationDomainLists, emailRegistrationPlatforms=$emailRegistrationPlatforms, signInWithAppAttestation=$signInWithAppAttestation]';
 
   Map<String, dynamic> toJson() {
     final json = <String, dynamic>{};
-    if (this.accountLoginAppAttestation != null) {
-      json[r'account_login_app_attestation'] = this.accountLoginAppAttestation;
-    } else {
-      json[r'account_login_app_attestation'] = null;
-    }
     if (this.accountLoginPlatforms != null) {
       json[r'account_login_platforms'] = this.accountLoginPlatforms;
     } else {
       json[r'account_login_platforms'] = null;
-    }
-    if (this.accountRegistrationAppAttestation != null) {
-      json[r'account_registration_app_attestation'] = this.accountRegistrationAppAttestation;
-    } else {
-      json[r'account_registration_app_attestation'] = null;
     }
     if (this.accountRegistrationPlatforms != null) {
       json[r'account_registration_platforms'] = this.accountRegistrationPlatforms;
     } else {
       json[r'account_registration_platforms'] = null;
     }
-    if (this.emailRegistrationAppAttestation != null) {
-      json[r'email_registration_app_attestation'] = this.emailRegistrationAppAttestation;
+    if (this.emailAppAttestation != null) {
+      json[r'email_app_attestation'] = this.emailAppAttestation;
     } else {
-      json[r'email_registration_app_attestation'] = null;
+      json[r'email_app_attestation'] = null;
     }
     if (this.emailRegistrationDomainLists != null) {
       json[r'email_registration_domain_lists'] = this.emailRegistrationDomainLists;
@@ -138,6 +119,11 @@ class DynamicServerConfig {
       json[r'email_registration_platforms'] = this.emailRegistrationPlatforms;
     } else {
       json[r'email_registration_platforms'] = null;
+    }
+    if (this.signInWithAppAttestation != null) {
+      json[r'sign_in_with_app_attestation'] = this.signInWithAppAttestation;
+    } else {
+      json[r'sign_in_with_app_attestation'] = null;
     }
     return json;
   }
@@ -157,13 +143,12 @@ class DynamicServerConfig {
       }());
 
       return DynamicServerConfig(
-        accountLoginAppAttestation: AppAttestationRequirements.fromJson(json[r'account_login_app_attestation']),
         accountLoginPlatforms: AccountLoginPlatforms.fromJson(json[r'account_login_platforms']),
-        accountRegistrationAppAttestation: AppAttestationRequirements.fromJson(json[r'account_registration_app_attestation']),
         accountRegistrationPlatforms: AccountRegistrationPlatforms.fromJson(json[r'account_registration_platforms']),
-        emailRegistrationAppAttestation: AppAttestationRequirements.fromJson(json[r'email_registration_app_attestation']),
+        emailAppAttestation: AppAttestationRequirements.fromJson(json[r'email_app_attestation']),
         emailRegistrationDomainLists: EmailRegistrationDomainLists.fromJson(json[r'email_registration_domain_lists']),
         emailRegistrationPlatforms: EmailRegistrationPlatforms.fromJson(json[r'email_registration_platforms']),
+        signInWithAppAttestation: AppAttestationRequirements.fromJson(json[r'sign_in_with_app_attestation']),
       );
     }
     return null;

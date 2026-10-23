@@ -134,9 +134,8 @@ class _DynamicServerConfigScreenState extends State<DynamicServerConfigScreen> {
     final loginPlatforms = _config?.accountLoginPlatforms;
     final registrationPlatforms = _config?.accountRegistrationPlatforms;
     final emailRegistrationPlatforms = _config?.emailRegistrationPlatforms;
-    final loginAttestation = _config?.accountLoginAppAttestation;
-    final registrationAttestation = _config?.accountRegistrationAppAttestation;
-    final emailRegistrationAttestation = _config?.emailRegistrationAppAttestation;
+    final emailAttestation = _config?.emailAppAttestation;
+    final signInWithAttestation = _config?.signInWithAppAttestation;
     return Column(
       crossAxisAlignment: CrossAxisAlignment.start,
       children: [
@@ -163,29 +162,6 @@ class _DynamicServerConfigScreenState extends State<DynamicServerConfigScreen> {
           }),
         ),
         const Divider(),
-        _AppAttestationSwitches(
-          title: "Account Login App Attestation",
-          subtitle: "Require app attestation for account login.",
-          androidAppIntegrity: loginAttestation?.androidAppIntegrity ?? false,
-          androidDeviceIntegrity: loginAttestation?.androidDeviceIntegrity ?? false,
-          iosValidToken: loginAttestation?.iosValidToken ?? false,
-          onAndroidAppIntegrityChanged: (value) => setState(() {
-            if (loginAttestation != null) {
-              loginAttestation.androidAppIntegrity = value;
-            }
-          }),
-          onAndroidDeviceIntegrityChanged: (value) => setState(() {
-            if (loginAttestation != null) {
-              loginAttestation.androidDeviceIntegrity = value;
-            }
-          }),
-          onIosValidTokenChanged: (value) => setState(() {
-            if (loginAttestation != null) {
-              loginAttestation.iosValidToken = value;
-            }
-          }),
-        ),
-        const Divider(),
         _PlatformSwitches(
           title: "Account Registration Platforms",
           subtitle: "Enable or disable account registration by platform.",
@@ -205,29 +181,6 @@ class _DynamicServerConfigScreenState extends State<DynamicServerConfigScreen> {
           onWebChanged: (value) => setState(() {
             if (registrationPlatforms != null) {
               registrationPlatforms.web = value;
-            }
-          }),
-        ),
-        const Divider(),
-        _AppAttestationSwitches(
-          title: "Account Registration App Attestation",
-          subtitle: "Require app attestation for account registration.",
-          androidAppIntegrity: registrationAttestation?.androidAppIntegrity ?? false,
-          androidDeviceIntegrity: registrationAttestation?.androidDeviceIntegrity ?? false,
-          iosValidToken: registrationAttestation?.iosValidToken ?? false,
-          onAndroidAppIntegrityChanged: (value) => setState(() {
-            if (registrationAttestation != null) {
-              registrationAttestation.androidAppIntegrity = value;
-            }
-          }),
-          onAndroidDeviceIntegrityChanged: (value) => setState(() {
-            if (registrationAttestation != null) {
-              registrationAttestation.androidDeviceIntegrity = value;
-            }
-          }),
-          onIosValidTokenChanged: (value) => setState(() {
-            if (registrationAttestation != null) {
-              registrationAttestation.iosValidToken = value;
             }
           }),
         ),
@@ -256,24 +209,47 @@ class _DynamicServerConfigScreenState extends State<DynamicServerConfigScreen> {
         ),
         const Divider(),
         _AppAttestationSwitches(
-          title: "Email Registration App Attestation",
-          subtitle: "Require app attestation for email registration.",
-          androidAppIntegrity: emailRegistrationAttestation?.androidAppIntegrity ?? false,
-          androidDeviceIntegrity: emailRegistrationAttestation?.androidDeviceIntegrity ?? false,
-          iosValidToken: emailRegistrationAttestation?.iosValidToken ?? false,
+          title: "Email App Attestation",
+          subtitle: "Require app attestation for email login and registration.",
+          androidAppIntegrity: emailAttestation?.androidAppIntegrity ?? false,
+          androidDeviceIntegrity: emailAttestation?.androidDeviceIntegrity ?? false,
+          iosValidToken: emailAttestation?.iosValidToken ?? false,
           onAndroidAppIntegrityChanged: (value) => setState(() {
-            if (emailRegistrationAttestation != null) {
-              emailRegistrationAttestation.androidAppIntegrity = value;
+            if (emailAttestation != null) {
+              emailAttestation.androidAppIntegrity = value;
             }
           }),
           onAndroidDeviceIntegrityChanged: (value) => setState(() {
-            if (emailRegistrationAttestation != null) {
-              emailRegistrationAttestation.androidDeviceIntegrity = value;
+            if (emailAttestation != null) {
+              emailAttestation.androidDeviceIntegrity = value;
             }
           }),
           onIosValidTokenChanged: (value) => setState(() {
-            if (emailRegistrationAttestation != null) {
-              emailRegistrationAttestation.iosValidToken = value;
+            if (emailAttestation != null) {
+              emailAttestation.iosValidToken = value;
+            }
+          }),
+        ),
+        const Divider(),
+        _AppAttestationSwitches(
+          title: "Sign In With App Attestation",
+          subtitle: "Require app attestation for sign in with login and registration.",
+          androidAppIntegrity: signInWithAttestation?.androidAppIntegrity ?? false,
+          androidDeviceIntegrity: signInWithAttestation?.androidDeviceIntegrity ?? false,
+          iosValidToken: signInWithAttestation?.iosValidToken ?? false,
+          onAndroidAppIntegrityChanged: (value) => setState(() {
+            if (signInWithAttestation != null) {
+              signInWithAttestation.androidAppIntegrity = value;
+            }
+          }),
+          onAndroidDeviceIntegrityChanged: (value) => setState(() {
+            if (signInWithAttestation != null) {
+              signInWithAttestation.androidDeviceIntegrity = value;
+            }
+          }),
+          onIosValidTokenChanged: (value) => setState(() {
+            if (signInWithAttestation != null) {
+              signInWithAttestation.iosValidToken = value;
             }
           }),
         ),
