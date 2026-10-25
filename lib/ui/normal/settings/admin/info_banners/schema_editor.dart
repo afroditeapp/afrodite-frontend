@@ -12,10 +12,10 @@ import 'package:app/ui/normal/settings/admin/info_banners/banner_editor.dart';
 import 'package:app/ui_utils/app_bar/menu_actions.dart';
 import 'package:app/ui_utils/dialog.dart';
 import 'package:app/ui_utils/snack_bar.dart';
+import 'package:app/utils/file_save/file_save.dart';
 import 'package:app/utils/result.dart';
 import 'package:file_selector/file_selector.dart';
 import 'package:flutter/material.dart';
-import 'package:flutter_file_saver/flutter_file_saver.dart';
 import 'package:intl/intl.dart';
 import 'package:openapi/api.dart';
 
@@ -287,7 +287,7 @@ class _InfoBannersSchemaScreenState extends State<InfoBannersSchemaScreen> {
     final fileName = "info_banners_$timestamp.json";
 
     try {
-      await FlutterFileSaver().writeFileAsBytes(fileName: fileName, bytes: bytes);
+      await saveFileAsBytes(fileName: fileName, bytes: bytes);
       if (mounted) {
         showSnackBar("Info banners exported!");
       }

@@ -1,9 +1,9 @@
 import "package:app/api/server_connection_manager.dart";
 import "package:app/data/utils/repository_instances.dart";
 import "package:app/model/freezed/logic/settings/data_export.dart";
+import "package:app/utils/file_save/file_save.dart";
 import "package:app/utils/result.dart";
 import "package:flutter_bloc/flutter_bloc.dart";
-import "package:flutter_file_saver/flutter_file_saver.dart";
 import "package:openapi/api.dart";
 import "package:app/localizations.dart";
 import "package:app/ui_utils/snack_bar.dart";
@@ -102,10 +102,7 @@ class DataExportBloc extends Bloc<DataExportEvent, DataExportData> with ActionRu
         emit(state.copyWith(isLoading: true));
 
         try {
-          await FlutterFileSaver().writeFileAsBytes(
-            fileName: data.data.name,
-            bytes: data.data.data,
-          );
+          await saveFileAsBytes(fileName: data.data.name, bytes: data.data.data);
         } catch (_) {
           emit(state.copyWith(isLoading: false));
           return;

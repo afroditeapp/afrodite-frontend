@@ -18,9 +18,9 @@ import 'package:app/utils/result.dart';
 import 'package:file_selector/file_selector.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
-import 'package:flutter_file_saver/flutter_file_saver.dart';
 import 'package:intl/intl.dart';
 import 'package:openapi/api.dart';
+import 'package:app/utils/file_save/file_save.dart';
 import 'package:app/logic/account/account.dart';
 import 'package:app/model/freezed/logic/account/account.dart';
 
@@ -167,7 +167,7 @@ class _ProfileAttributesSchemaScreenState extends State<ProfileAttributesSchemaS
     final fileName = "profile_attributes_schema_$timestamp.json";
 
     try {
-      await FlutterFileSaver().writeFileAsBytes(fileName: fileName, bytes: bytes);
+      await saveFileAsBytes(fileName: fileName, bytes: bytes);
       if (mounted) {
         showSnackBar("Schema exported!");
       }

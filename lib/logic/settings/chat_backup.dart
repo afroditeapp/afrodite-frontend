@@ -7,9 +7,9 @@ import "package:app/data/chat_repository.dart";
 import "package:app/data/utils/repository_instances.dart";
 import "package:app/database/account_database_manager.dart";
 import "package:app/model/freezed/logic/settings/chat_backup.dart";
+import "package:app/utils/file_save/file_save.dart";
 import "package:app/utils/result.dart";
 import "package:flutter_bloc/flutter_bloc.dart";
-import "package:flutter_file_saver/flutter_file_saver.dart";
 import "package:app/localizations.dart";
 import "package:app/ui_utils/snack_bar.dart";
 import "package:app/utils.dart";
@@ -124,7 +124,7 @@ class ChatBackupBloc extends Bloc<ChatBackupEvent, ChatBackupData> with ActionRu
             return;
           }
 
-          await FlutterFileSaver().writeFileAsBytes(fileName: backup.fileName, bytes: backup.bytes);
+          await saveFileAsBytes(fileName: backup.fileName, bytes: backup.bytes);
 
           final now = UtcDateTime.now();
           await r.accountDb.accountAction((db) => db.app.updateChatBackupLastBackupTime(now));
