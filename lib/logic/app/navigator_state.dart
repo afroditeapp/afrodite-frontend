@@ -28,6 +28,8 @@ class RemoveMultiplePages extends NavigatorStateEvent {
   RemoveMultiplePages(this.pageKeys);
 }
 
+class RemoveAllPagesExceptFirst extends NavigatorStateEvent {}
+
 class PushPage extends NavigatorStateEvent {
   final MyPage<Object> newPage;
   PushPage(this.newPage);
@@ -81,6 +83,16 @@ class NavigatorStateBloc extends Bloc<NavigatorStateEvent, NavigatorStateData> {
         } else {
           p.completer.complete(null);
         }
+      }
+      emit(state.copyWith(pages: UnmodifiableList(newPages)));
+    });
+    on<RemoveAllPagesExceptFirst>((data, emit) {
+      if (state.pages.length <= 1) {
+        return;
+      }
+      final newPages = <MyPage<Object>>[state.pages.first];
+      for (final p in state.pages.skip(1)) {
+        p.completer.complete(null);
       }
       emit(state.copyWith(pages: UnmodifiableList(newPages)));
     });
@@ -164,6 +176,11 @@ class NavigatorStateBloc extends Bloc<NavigatorStateEvent, NavigatorStateData> {
     add(RemoveMultiplePages(pageKeys));
   }
 
+  /// Remove all pages except the root page from the navigator stack.
+  void popToRoot() {
+    add(RemoveAllPagesExceptFirst());
+  }
+
   /// Returns true if there is more than one page in the navigator stack.
   bool canPop() {
     return state.pages.length > 1;
@@ -213,6 +230,11 @@ class NavigationStateBlocInstance extends AppSingletonNoInit {
   NavigatorStateData get navigationState =>
       _latestBloc.value?.state ?? NavigatorStateData.defaultValue();
 
+  /// Remove all pages except the root page from the navigator stack.
+  void popToRoot() {
+    _latestBloc.value?.popToRoot();
+  }
+
   void setLatestBloc(NavigatorStateBloc newBloc) {
     if (_latestBloc.value != newBloc) {
       _latestBloc.add(newBloc);
@@ -241,6 +263,11 @@ class MyNavigator {
 
   static void removeMultiplePages(BuildContext context, Iterable<PageKey> pageKeys) {
     context.read<NavigatorStateBloc>().removeMultiplePages(pageKeys);
+  }
+
+  /// Remove all pages except the root page from the navigator stack.
+  static void popToRoot(BuildContext context) {
+    context.read<NavigatorStateBloc>().popToRoot();
   }
 
   /// Returns true if there is more than one page in the navigator stack.

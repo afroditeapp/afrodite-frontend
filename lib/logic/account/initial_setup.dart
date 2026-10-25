@@ -6,6 +6,7 @@ import "dart:ui" show Color;
 import "package:app/api/server_connection_manager.dart";
 import "package:app/data/utils/repository_instances.dart";
 import "package:app/database/account_database_manager.dart";
+import "package:app/logic/app/navigator_state.dart";
 import "package:app/logic/media/profile_pictures_interface.dart";
 import "package:app/ui_utils/crop_image_screen.dart";
 import "package:app/ui_utils/profile_pictures.dart";
@@ -438,6 +439,19 @@ class InitialSetupBloc extends Bloc<InitialSetupEvent, InitialSetupData>
         }
 
         emit(state.copyWith(sendingInProgress: false));
+
+        if (result.isOk()) {
+          // If initial setup was skipped, initial setup pages are pushed
+          // to the normal screen navigation stack. Pop stack back to
+          // the root page.
+          final skipped = await db.accountStreamSingleOrDefault(
+            (db) => db.app.watchInitialSetupSkipped(),
+            false,
+          );
+          if (skipped) {
+            NavigationStateBlocInstance.getInstance().popToRoot();
+          }
+        }
       });
     });
     on<CreateDebugAdminAccount>((data, emit) async {
