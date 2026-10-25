@@ -218,9 +218,6 @@ class AppLocalizationsEn extends AppLocalizations {
       'Verification in progress';
 
   @override
-  String get admin_settings_title => 'Admin';
-
-  @override
   String get age_verification_required_screen_title => 'Age verification required';
 
   @override

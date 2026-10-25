@@ -428,12 +428,6 @@ abstract class AppLocalizations {
   /// **'Verification in progress'**
   String get account_verification_screen_verification_in_progress_title;
 
-  /// Title for admin settings screen
-  ///
-  /// In en, this message translates to:
-  /// **'Admin'**
-  String get admin_settings_title;
-
   /// Title for age verification required screen
   ///
   /// In en, this message translates to:

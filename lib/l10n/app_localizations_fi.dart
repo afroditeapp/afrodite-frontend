@@ -220,9 +220,6 @@ class AppLocalizationsFi extends AppLocalizations {
   String get account_verification_screen_verification_in_progress_title => 'Vahvistus käynnissä';
 
   @override
-  String get admin_settings_title => 'Ylläpito';
-
-  @override
   String get age_verification_required_screen_title => 'Iän vahvistus vaaditaan';
 
   @override

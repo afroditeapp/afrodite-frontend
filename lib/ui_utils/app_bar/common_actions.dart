@@ -69,7 +69,7 @@ Widget loggedInBasicScreenActionsMenu(BuildContext context) {
   return menuActions([
     if (FEATURE_ADMIN && AdminSettingsPermissions(permissions).somePermissionEnabled())
       MenuItemButton(
-        child: Text(context.strings.admin_settings_title),
+        child: const Text('Admin'),
         onPressed: () => MyNavigator.push(context, AdminSettingsPage()),
       ),
     MenuItemButton(

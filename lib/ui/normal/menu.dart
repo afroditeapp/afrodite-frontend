@@ -188,7 +188,7 @@ class _MenuViewState extends State<MenuView> {
       settings.add(
         Setting.createSetting(
           Icons.admin_panel_settings,
-          context.strings.admin_settings_title,
+          'Admin',
           () => MyNavigator.push(context, AdminSettingsPage()),
         ),
       );

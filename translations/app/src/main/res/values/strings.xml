@@ -831,11 +831,6 @@
     <string name="report_chat_message_screen_selection_status_none" description="Status text when no messages are selected for reporting">Select up to 10 messages</string>
     <string name="report_chat_message_screen_selection_status_count" description="Status text showing how many messages are selected for reporting. %s is the count and max count">%s/%s messages selected</string>
 
-    <!-- Admin features -->
-
-    <!-- Admin screen -->
-    <string name="admin_settings_title" description="Title for admin settings screen">Admin</string>
-
     <!-- Receive chat backup screen -->
     <string name="receive_chat_backup_screen_title" description="Title for receive chat backup screen">Receive chat backup</string>
     <string name="receive_chat_backup_waiting_for_source" description="Status text when waiting for source device">Waiting for other device…</string>

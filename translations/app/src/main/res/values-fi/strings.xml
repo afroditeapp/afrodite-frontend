@@ -824,11 +824,6 @@
     <string name="report_chat_message_screen_selection_status_none">Valitse enintään 10 viestiä</string>
     <string name="report_chat_message_screen_selection_status_count">%s/%s viestiä valittu</string>
 
-    <!-- Admin features -->
-
-    <!-- Admin screen -->
-    <string name="admin_settings_title">Ylläpito</string>
-
     <!-- Receive chat backup screen -->
     <string name="receive_chat_backup_screen_title">Vastaanota keskusteluvarmuuskopio</string>
     <string name="receive_chat_backup_waiting_for_source">Odotetaan toista laitetta…</string>

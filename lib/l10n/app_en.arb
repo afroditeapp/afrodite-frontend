@@ -273,10 +273,6 @@
   "@account_verification_screen_verification_in_progress_title": {
     "description": "Title shown for account verification in progress section"
   },
-  "admin_settings_title": "Admin",
-  "@admin_settings_title": {
-    "description": "Title for admin settings screen"
-  },
   "age_verification_required_screen_title": "Age verification required",
   "@age_verification_required_screen_title": {
     "description": "Title for age verification required screen"
