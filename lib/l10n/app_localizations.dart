@@ -983,7 +983,7 @@ abstract class AppLocalizations {
   /// Instruction text how to make a match
   ///
   /// In en, this message translates to:
-  /// **'Send a message to accept the chat request!'**
+  /// **'Send a message to accept the chat request'**
   String get conversation_screen_make_match_instruction;
 
   /// Title text for message ID value

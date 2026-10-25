@@ -565,7 +565,7 @@
     <!-- Conversation screen -->
     <string name="conversation_screen_profile_blocked">Profiili estettiin</string>
     <string name="conversation_screen_message_list_empty">Ei viestejä vielä</string>
-    <string name="conversation_screen_make_match_instruction">Lähetä viesti hyväksyäksesi keskustelupyynnön!</string>
+    <string name="conversation_screen_make_match_instruction">Hyväksy keskustelupyyntö lähettämällä viesti</string>
     <string name="conversation_screen_chat_box_placeholder_text">Kirjoita viesti…</string>
     <string name="conversation_screen_message_too_long">Viesti on liian pitkä</string>
     <string name="conversation_screen_message_too_many_pending_messages">Liian monta toimittamatonta viestiä</string>

@@ -538,7 +538,7 @@ class AppLocalizationsEn extends AppLocalizations {
 
   @override
   String get conversation_screen_make_match_instruction =>
-      'Send a message to accept the chat request!';
+      'Send a message to accept the chat request';
 
   @override
   String get conversation_screen_message_details_message_id => 'Message ID';

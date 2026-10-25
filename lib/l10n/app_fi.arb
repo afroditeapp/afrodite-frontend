@@ -144,7 +144,7 @@
   "conversation_screen_join_video_call_button": "Liity videopuheluun",
   "conversation_screen_join_video_call_dialog_title": "Liity videopuheluun?",
   "conversation_screen_join_video_call_disclaimer": "Sovellus ei tallenna videopuheluita. Jos tarvitset todisteita viranomaisille, tallenna puhelu itse laitteesi näytön tallennuksella.",
-  "conversation_screen_make_match_instruction": "Lähetä viesti hyväksyäksesi keskustelupyynnön!",
+  "conversation_screen_make_match_instruction": "Hyväksy keskustelupyyntö lähettämällä viesti",
   "conversation_screen_message_details_message_id": "Viestitunniste",
   "conversation_screen_message_details_message_number": "Viestin numero",
   "conversation_screen_message_error_is_actually_sent_successfully": "Tämä viesti onkin jo lähetetty onnistuneesti",

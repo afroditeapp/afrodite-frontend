@@ -541,7 +541,7 @@ class AppLocalizationsFi extends AppLocalizations {
 
   @override
   String get conversation_screen_make_match_instruction =>
-      'Lähetä viesti hyväksyäksesi keskustelupyynnön!';
+      'Hyväksy keskustelupyyntö lähettämällä viesti';
 
   @override
   String get conversation_screen_message_details_message_id => 'Viestitunniste';
