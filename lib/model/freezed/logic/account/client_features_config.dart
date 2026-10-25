@@ -1,3 +1,4 @@
+import "package:app/config_features.dart";
 import "package:app/ui_utils/extensions/api.dart";
 import "package:app/utils/list.dart";
 import "package:flutter/widgets.dart";
@@ -78,9 +79,9 @@ class ClientFeaturesConfigData with _$ClientFeaturesConfigData {
     final scopes = config.accountVerification?.scopes;
     return VerificationConfig(
       face: config.features?.faceVerification ?? false,
-      securityContent: scopes.securityContentEnabled,
-      profileAgeRange: scopes.profileAgeRangeEnabled,
-      profileName: scopes.profileNameEnabled,
+      securityContent: FEATURE_ACCOUNT_VERIFICATION && scopes.securityContentEnabled,
+      profileAgeRange: FEATURE_ACCOUNT_VERIFICATION && scopes.profileAgeRangeEnabled,
+      profileName: FEATURE_ACCOUNT_VERIFICATION && scopes.profileNameEnabled,
     );
   }
 }

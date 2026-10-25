@@ -1,3 +1,4 @@
+import 'package:app/config_features.dart';
 import 'package:app/ui_utils/extensions/api.dart';
 import 'package:openapi/api.dart';
 
@@ -23,7 +24,7 @@ bool shouldShowAccountVerificationRequiredLimit({
   required AccountVerificationMethodsConfig? methods,
   required int myProfileVerificationStatus,
 }) {
-  if (methods.allDisabled) {
+  if (!FEATURE_ACCOUNT_VERIFICATION || methods.allDisabled) {
     return false;
   }
 

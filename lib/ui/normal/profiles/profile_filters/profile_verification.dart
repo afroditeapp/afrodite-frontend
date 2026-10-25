@@ -1,3 +1,4 @@
+import 'package:app/config_features.dart';
 import 'package:app/localizations.dart';
 import 'package:app/logic/account/client_features_config.dart';
 import 'package:app/logic/app/navigator_state.dart';
@@ -23,7 +24,11 @@ const _PROFILE_VERIFICATION_STATUS_ICON = MaterialAttributeIcon(Icons.verified_u
 
 MaterialAttributeIcon profileVerificationStatusIcon() => _PROFILE_VERIFICATION_STATUS_ICON;
 
-typedef _ProfileVerificationStatusOption = ((int, String), bool Function(VerificationConfig));
+/// Values:
+/// 1. (flag int, UI text)
+/// 2. Visibility based on static config
+/// 3. Visibility based on VerificationConfig (only unselected values)
+typedef _ProfileVerificationStatusOption = ((int, String), bool, bool Function(VerificationConfig));
 
 List<(int, String)> profileVerificationStatusOptions(
   BuildContext context, {
@@ -39,6 +44,7 @@ List<(int, String)> profileVerificationStatusOptions(
         ProfileVerificationStatusFlags.faceVerified,
         context.strings.profile_filters_screen_profile_verification_status_filter_face_verified,
       ),
+      true,
       (verification) => verification.face,
     ),
     (
@@ -46,6 +52,7 @@ List<(int, String)> profileVerificationStatusOptions(
         ProfileVerificationStatusFlags.securityContentVerified,
         context.strings.generic_security_selfie,
       ),
+      FEATURE_ACCOUNT_VERIFICATION,
       (verification) => verification.securityContent,
     ),
     (
@@ -55,6 +62,7 @@ List<(int, String)> profileVerificationStatusOptions(
             .strings
             .profile_filters_screen_profile_verification_status_filter_profile_age_range_verified,
       ),
+      FEATURE_ACCOUNT_VERIFICATION,
       (verification) => verification.profileAgeRange,
     ),
     (
@@ -64,12 +72,15 @@ List<(int, String)> profileVerificationStatusOptions(
             .strings
             .profile_filters_screen_profile_verification_status_filter_profile_name_verified,
       ),
+      FEATURE_ACCOUNT_VERIFICATION,
       (verification) => verification.profileName,
     ),
   ];
 
   return options
-      .where((option) => option.$2(verification) || (selectedOptions & option.$1.$1) != 0)
+      .where(
+        (option) => option.$2 && (option.$3(verification) || (selectedOptions & option.$1.$1) != 0),
+      )
       .map((option) => option.$1)
       .toList();
 }

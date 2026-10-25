@@ -8,4 +8,7 @@ const bool FEATURE_ASSOCIATION_MEMBERSHIP = kIsWeb;
 /// Enable user facing UI for age verification
 const bool FEATURE_AGE_VERIFICATION = kIsWeb;
 
+/// Enable user facing UI for account verification
+const bool FEATURE_ACCOUNT_VERIFICATION = kIsWeb;
+
 const bool FEATURE_DEBUG_SETTINGS = !kReleaseMode;

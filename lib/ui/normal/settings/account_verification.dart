@@ -2,6 +2,7 @@ import 'dart:async';
 
 import 'package:app/api/server_connection_protocol/server.dart';
 import 'package:app/api/server_connection_manager.dart';
+import 'package:app/config_features.dart';
 import 'package:app/data/utils/repository_instances.dart';
 import 'package:app/localizations.dart';
 import 'package:app/logic/account/client_features_config.dart';
@@ -25,7 +26,8 @@ bool isAccessToAccountVerificationScreenPossible({
   required AccountVerificationMethodsConfig methods,
   required VerificationConfig verificationConfig,
 }) {
-  return !methods.allDisabled &&
+  return FEATURE_ACCOUNT_VERIFICATION &&
+      !methods.allDisabled &&
       (verificationConfig.securityContent ||
           verificationConfig.profileAgeRange ||
           verificationConfig.profileName);
