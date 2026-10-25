@@ -11,7 +11,6 @@ class ConversationData with _$ConversationData {
 
   factory ConversationData({
     required AccountId accountId,
-    @Default(true) bool isMatch,
     @Default(false) bool isBlocked,
     @Default(false) bool isMessageSendingInProgress,
     @Default(false) bool isMessageRemovingInProgress,

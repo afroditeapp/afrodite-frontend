@@ -75,6 +75,8 @@ Future<ConversationPage?> createConversationPage(
       await r.accountDb.accountData((db) => db.privacy.getChatPrivacySettings()).ok() ??
       ChatPrivacySettings(messageStateSeen: false, typingIndicator: false);
 
+  final isMatch = await r.chat.isInMatches(accountId);
+
   return ConversationPage(
     accountId,
     localAccountId,
@@ -83,6 +85,7 @@ Future<ConversationPage?> createConversationPage(
     messageIterator,
     chatPrivacySettings,
     quotationCache,
+    isMatch,
   );
 }
 
@@ -136,6 +139,7 @@ class ConversationPage extends MyScreenPage<()> {
   final MessageDatabaseIterator oldMessagesIterator;
   final ChatPrivacySettings chatPrivacySettings;
   final QuotationCache quotationCache;
+  final bool isMatch;
   ConversationPage(
     this.accountId,
     this.localAccountId,
@@ -144,6 +148,7 @@ class ConversationPage extends MyScreenPage<()> {
     this.oldMessagesIterator,
     this.chatPrivacySettings,
     this.quotationCache,
+    this.isMatch,
   ) : super(
         builder: (closer) {
           return BlocProvider(
@@ -160,6 +165,7 @@ class ConversationPage extends MyScreenPage<()> {
               oldMessagesIterator,
               chatPrivacySettings,
               quotationCache,
+              isMatch,
             ),
           );
         },
@@ -181,6 +187,7 @@ class ConversationScreen extends StatefulWidget {
   final MessageDatabaseIterator oldMessagesIterator;
   final ChatPrivacySettings chatPrivacySettings;
   final QuotationCache quotationCache;
+  final bool isMatch;
   const ConversationScreen(
     this.closer,
     this.accountId,
@@ -188,7 +195,8 @@ class ConversationScreen extends StatefulWidget {
     this.initialMessages,
     this.oldMessagesIterator,
     this.chatPrivacySettings,
-    this.quotationCache, {
+    this.quotationCache,
+    this.isMatch, {
     super.key,
   });
 
@@ -338,6 +346,7 @@ class ConversationScreenState extends State<ConversationScreen> {
             messageStateSeenEnabled:
                 widget.chatPrivacySettings.messageStateSeen &&
                 clientFeaturesChat?.messageStateSeen == true,
+            isMatch: widget.isMatch,
             localeString: Localizations.localeOf(context).localeString(),
           );
         }

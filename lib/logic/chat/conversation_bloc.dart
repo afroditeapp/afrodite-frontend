@@ -38,11 +38,6 @@ class HandleProfileChange extends ConversationEvent {
   HandleProfileChange(this.change);
 }
 
-class UpdateIsInMatches extends ConversationEvent {
-  final bool value;
-  UpdateIsInMatches(this.value);
-}
-
 class BlockProfile extends ConversationEvent {
   final AccountId accountId;
   BlockProfile(this.accountId);
@@ -69,7 +64,6 @@ class RetryPublicKeyDownload extends ConversationEvent {
 }
 
 abstract class ConversationDataProvider {
-  Stream<bool> isInMatchesStream(AccountId accountId);
   Future<bool> isInSentBlocks(AccountId accountId);
   Future<bool> sendBlockTo(AccountId accountId);
   Stream<MessageSendingEvent> sendMessageTo(AccountId accountId, Message message);
@@ -83,9 +77,6 @@ abstract class ConversationDataProvider {
 class DefaultConversationDataProvider extends ConversationDataProvider {
   final ChatRepository chat;
   DefaultConversationDataProvider(this.chat);
-
-  @override
-  Stream<bool> isInMatchesStream(AccountId accountId) => chat.isInMatchesStream(accountId);
 
   @override
   Future<bool> isInSentBlocks(AccountId accountId) => chat.isInSentBlocks(accountId);
@@ -132,7 +123,6 @@ class ConversationBloc extends Bloc<ConversationEvent, ConversationData> with Ac
   final ServerConnectionManager connectionManager;
 
   StreamSubscription<ProfileChange>? _profileChangeSubscription;
-  StreamSubscription<bool>? _isInMatchesSubscription;
 
   ConversationBloc(RepositoryInstances r, AccountId messageSenderAccountId, this.dataProvider)
     : currentUser = r.accountId,
@@ -165,9 +155,6 @@ class ConversationBloc extends Bloc<ConversationEvent, ConversationData> with Ac
         case ReloadMainProfileView() || ProfileFavoriteStatusChange():
           {}
       }
-    });
-    on<UpdateIsInMatches>((data, emit) {
-      emit(state.copyWith(isMatch: data.value));
     });
     on<BlockProfile>((data, emit) async {
       await runOnce(() async {
@@ -303,10 +290,6 @@ class ConversationBloc extends Bloc<ConversationEvent, ConversationData> with Ac
       add(HandleProfileChange(event));
     });
 
-    _isInMatchesSubscription = dataProvider.isInMatchesStream(state.accountId).listen((value) {
-      add(UpdateIsInMatches(value));
-    });
-
     add(InitEvent());
   }
 
@@ -361,7 +344,6 @@ class ConversationBloc extends Bloc<ConversationEvent, ConversationData> with Ac
   @override
   Future<void> close() async {
     await _profileChangeSubscription?.cancel();
-    await _isInMatchesSubscription?.cancel();
     return super.close();
   }
 }

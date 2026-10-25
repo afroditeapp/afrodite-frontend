@@ -14,7 +14,6 @@ final _privateConstructorErrorConversationData = UnsupportedError(
 /// @nodoc
 mixin _$ConversationData {
   AccountId get accountId => throw _privateConstructorErrorConversationData;
-  bool get isMatch => throw _privateConstructorErrorConversationData;
   bool get isBlocked => throw _privateConstructorErrorConversationData;
   bool get isMessageSendingInProgress => throw _privateConstructorErrorConversationData;
   bool get isMessageRemovingInProgress => throw _privateConstructorErrorConversationData;
@@ -24,7 +23,6 @@ mixin _$ConversationData {
 
   ConversationData copyWith({
     AccountId? accountId,
-    bool? isMatch,
     bool? isBlocked,
     bool? isMessageSendingInProgress,
     bool? isMessageRemovingInProgress,
@@ -38,7 +36,6 @@ mixin _$ConversationData {
 abstract class _ConversationData extends ConversationData {
   factory _ConversationData({
     required AccountId accountId,
-    bool isMatch,
     bool isBlocked,
     bool isMessageSendingInProgress,
     bool isMessageRemovingInProgress,
@@ -51,7 +48,6 @@ abstract class _ConversationData extends ConversationData {
 
 /// @nodoc
 class _$ConversationDataImpl extends _ConversationData with DiagnosticableTreeMixin {
-  static const bool _isMatchDefaultValue = true;
   static const bool _isBlockedDefaultValue = false;
   static const bool _isMessageSendingInProgressDefaultValue = false;
   static const bool _isMessageRemovingInProgressDefaultValue = false;
@@ -61,7 +57,6 @@ class _$ConversationDataImpl extends _ConversationData with DiagnosticableTreeMi
 
   _$ConversationDataImpl({
     required this.accountId,
-    this.isMatch = _isMatchDefaultValue,
     this.isBlocked = _isBlockedDefaultValue,
     this.isMessageSendingInProgress = _isMessageSendingInProgressDefaultValue,
     this.isMessageRemovingInProgress = _isMessageRemovingInProgressDefaultValue,
@@ -72,8 +67,6 @@ class _$ConversationDataImpl extends _ConversationData with DiagnosticableTreeMi
 
   @override
   final AccountId accountId;
-  @override
-  final bool isMatch;
   @override
   final bool isBlocked;
   @override
@@ -89,7 +82,7 @@ class _$ConversationDataImpl extends _ConversationData with DiagnosticableTreeMi
 
   @override
   String toString({DiagnosticLevel minLevel = DiagnosticLevel.info}) {
-    return 'ConversationData(accountId: $accountId, isMatch: $isMatch, isBlocked: $isBlocked, isMessageSendingInProgress: $isMessageSendingInProgress, isMessageRemovingInProgress: $isMessageRemovingInProgress, isMessageResendingInProgress: $isMessageResendingInProgress, isDeliveryFailedMessageResendingInProgress: $isDeliveryFailedMessageResendingInProgress, isRetryPublicKeyDownloadInProgress: $isRetryPublicKeyDownloadInProgress)';
+    return 'ConversationData(accountId: $accountId, isBlocked: $isBlocked, isMessageSendingInProgress: $isMessageSendingInProgress, isMessageRemovingInProgress: $isMessageRemovingInProgress, isMessageResendingInProgress: $isMessageResendingInProgress, isDeliveryFailedMessageResendingInProgress: $isDeliveryFailedMessageResendingInProgress, isRetryPublicKeyDownloadInProgress: $isRetryPublicKeyDownloadInProgress)';
   }
 
   @override
@@ -98,7 +91,6 @@ class _$ConversationDataImpl extends _ConversationData with DiagnosticableTreeMi
     properties
       ..add(DiagnosticsProperty('type', 'ConversationData'))
       ..add(DiagnosticsProperty('accountId', accountId))
-      ..add(DiagnosticsProperty('isMatch', isMatch))
       ..add(DiagnosticsProperty('isBlocked', isBlocked))
       ..add(DiagnosticsProperty('isMessageSendingInProgress', isMessageSendingInProgress))
       ..add(DiagnosticsProperty('isMessageRemovingInProgress', isMessageRemovingInProgress))
@@ -114,8 +106,6 @@ class _$ConversationDataImpl extends _ConversationData with DiagnosticableTreeMi
         other is _$ConversationDataImpl &&
         (identical(other.accountId, accountId) ||
           other.accountId == accountId) &&
-        (identical(other.isMatch, isMatch) ||
-          other.isMatch == isMatch) &&
         (identical(other.isBlocked, isBlocked) ||
           other.isBlocked == isBlocked) &&
         (identical(other.isMessageSendingInProgress, isMessageSendingInProgress) ||
@@ -135,7 +125,6 @@ class _$ConversationDataImpl extends _ConversationData with DiagnosticableTreeMi
   int get hashCode => Object.hash(
     runtimeType,
     accountId,
-    isMatch,
     isBlocked,
     isMessageSendingInProgress,
     isMessageRemovingInProgress,
@@ -147,7 +136,6 @@ class _$ConversationDataImpl extends _ConversationData with DiagnosticableTreeMi
   @override
   ConversationData copyWith({
     Object? accountId,
-    Object? isMatch,
     Object? isBlocked,
     Object? isMessageSendingInProgress,
     Object? isMessageRemovingInProgress,
@@ -156,7 +144,6 @@ class _$ConversationDataImpl extends _ConversationData with DiagnosticableTreeMi
     Object? isRetryPublicKeyDownloadInProgress,
   }) => _$ConversationDataImpl(
     accountId: (accountId ?? this.accountId) as AccountId,
-    isMatch: (isMatch ?? this.isMatch) as bool,
     isBlocked: (isBlocked ?? this.isBlocked) as bool,
     isMessageSendingInProgress: (isMessageSendingInProgress ?? this.isMessageSendingInProgress) as bool,
     isMessageRemovingInProgress: (isMessageRemovingInProgress ?? this.isMessageRemovingInProgress) as bool,

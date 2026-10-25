@@ -5,7 +5,6 @@ import 'package:app/data/utils/repository_instances.dart';
 import 'package:app/database/account_database_manager.dart';
 import 'package:app/localizations.dart';
 import 'package:app/logic/chat/conversation_bloc.dart';
-import 'package:app/model/freezed/logic/chat/conversation_bloc.dart';
 import 'package:app/ui/normal/chat/chat_list/animated_composer.dart';
 import 'package:app/ui/normal/chat/chat_list/chat_message.dart';
 import 'package:app/ui/normal/chat/chat_list/lazy_quotation.dart';
@@ -38,6 +37,7 @@ const int INITIAL_MESSAGES_THRESHOLD = 20;
 class ChatList extends StatefulWidget {
   final AccountId currentUser;
   final AccountId messageRecipient;
+  final bool isMatch;
   final ProfileEntry? profileEntry;
   final List<IteratorMessage> initialMessages;
   final MessageDatabaseIterator oldMessagesIterator;
@@ -55,6 +55,7 @@ class ChatList extends StatefulWidget {
     this.quotationCache, {
     required this.currentUser,
     required this.messageRecipient,
+    required this.isMatch,
     required this.db,
     required this.typingIndicatorManager,
     required this.typingIndicatorEnabled,
@@ -79,7 +80,6 @@ class _ChatListState extends State<ChatList> {
 
   bool _reversed = false;
   bool _endReached = false;
-  bool _showMakeMatchInstruction = false;
 
   @override
   void initState() {
@@ -529,28 +529,11 @@ class _ChatListState extends State<ChatList> {
               );
             },
         emptyChatListBuilder: (BuildContext ctx) {
-          return BlocBuilder<ConversationBloc, ConversationData>(
-            buildWhen: (previous, current) => previous.isMatch != current.isMatch,
-            builder: (context, state) {
-              if (!state.isMatch) {
-                WidgetsBinding.instance.addPostFrameCallback((_) {
-                  if (mounted) {
-                    setState(() {
-                      _showMakeMatchInstruction = true;
-                    });
-                  }
-                });
-              }
-              if (_showMakeMatchInstruction || !state.isMatch) {
-                return Center(
-                  child: Text(context.strings.conversation_screen_make_match_instruction),
-                );
-              }
-              return buildListReplacementMessageSimple(
-                context,
-                context.strings.conversation_screen_message_list_empty,
-              );
-            },
+          return buildListReplacementMessageSimple(
+            ctx,
+            widget.isMatch
+                ? ctx.strings.conversation_screen_message_list_empty
+                : ctx.strings.conversation_screen_make_match_instruction,
           );
         },
         composerBuilder: (BuildContext ctx) {
