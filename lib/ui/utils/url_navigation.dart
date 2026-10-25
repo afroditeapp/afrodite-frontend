@@ -168,7 +168,7 @@ List<UrlParser<MyScreenPage<Object>>> loggedInPages(RepositoryInstances r) => [
   AutomaticProfileSearchResultsPage(),
   SettingsPage(),
   if (FEATURE_ADMIN) AdminSettingsPage(),
-  DebugSettingsPage(r),
+  if (FEATURE_DEBUG_SETTINGS) DebugSettingsPage(r),
 
   // Settings
   AccountSettingsPage(),

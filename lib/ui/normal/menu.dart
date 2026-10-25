@@ -7,7 +7,6 @@ import 'package:app/model/freezed/logic/account/client_features_config.dart';
 import 'package:app/model/freezed/logic/profile/automatic_profile_search_badge.dart';
 import 'package:app/ui/normal/settings.dart';
 import 'package:app/ui/normal/settings/notifications/automatic_profile_search_results.dart';
-import 'package:flutter/foundation.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:app/logic/account/account.dart';
@@ -194,7 +193,7 @@ class _MenuViewState extends State<MenuView> {
       );
     }
 
-    if (!kReleaseMode) {
+    if (FEATURE_DEBUG_SETTINGS) {
       settings.add(
         Setting.createSetting(
           Icons.bug_report_rounded,
