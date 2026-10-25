@@ -228,6 +228,7 @@ part 'model/get_ip_country_statistics_settings.dart';
 part 'model/get_latest_public_key_id.dart';
 part 'model/get_media_content_face_verified_null_list.dart';
 part 'model/get_media_content_result.dart';
+part 'model/get_media_content_states.dart';
 part 'model/get_my_profile_result.dart';
 part 'model/get_news_item_result.dart';
 part 'model/get_private_public_key_info.dart';

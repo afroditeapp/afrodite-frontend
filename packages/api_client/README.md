@@ -253,6 +253,7 @@ Class | Method | HTTP request | Description
 *MediaApi* | [**getMapTile**](doc//MediaApi.md#getmaptile) | **GET** /media_api/map_tile/{z}/{x}/{y} | Get map tile PNG file.
 *MediaApi* | [**getMediaAppNotificationSettings**](doc//MediaApi.md#getmediaappnotificationsettings) | **GET** /media_api/get_media_app_notification_settings | 
 *MediaApi* | [**getMediaContentInfo**](doc//MediaApi.md#getmediacontentinfo) | **GET** /media_api/media_content_info | Get my profile and security content
+*MediaApi* | [**getMediaContentStates**](doc//MediaApi.md#getmediacontentstates) | **POST** /media_api/content_states | Get detailed info of the requested media content of the calling account.
 *MediaApi* | [**getProfileContentInfo**](doc//MediaApi.md#getprofilecontentinfo) | **GET** /media_api/profile_content_info/{aid} | Get current profile content for selected profile.
 *MediaApi* | [**getProfileContentInfoBinary**](doc//MediaApi.md#getprofilecontentinfobinary) | **GET** /media_api/profile_content_info_binary/{aid} | Get current profile content for selected profile as compact binary payload.
 *MediaApi* | [**postMediaAppNotificationSettings**](doc//MediaApi.md#postmediaappnotificationsettings) | **POST** /media_api/post_media_app_notification_settings | 
@@ -504,6 +505,7 @@ Class | Method | HTTP request | Description
  - [GetLatestPublicKeyId](doc//GetLatestPublicKeyId.md)
  - [GetMediaContentFaceVerifiedNullList](doc//GetMediaContentFaceVerifiedNullList.md)
  - [GetMediaContentResult](doc//GetMediaContentResult.md)
+ - [GetMediaContentStates](doc//GetMediaContentStates.md)
  - [GetMyProfileResult](doc//GetMyProfileResult.md)
  - [GetNewsItemResult](doc//GetNewsItemResult.md)
  - [GetPrivatePublicKeyInfo](doc//GetPrivatePublicKeyInfo.md)

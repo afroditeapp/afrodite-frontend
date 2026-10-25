@@ -417,6 +417,63 @@ class MediaApi {
     return null;
   }
 
+  /// Get detailed info of the requested media content of the calling account.
+  ///
+  /// Content IDs not belonging to the account are omitted from the response.  # Access  - Own account
+  ///
+  /// Note: This method returns the HTTP [Response].
+  ///
+  /// Parameters:
+  ///
+  /// * [List<ContentId>] contentId (required):
+  Future<Response> getMediaContentStatesWithHttpInfo(List<ContentId> contentId, { Future<void>? abortTrigger, }) async {
+    // ignore: prefer_const_declarations
+    final path = r'/media_api/content_states';
+
+    // ignore: prefer_final_locals
+    Object? postBody = contentId;
+
+    final queryParams = <QueryParam>[];
+    final headerParams = <String, String>{};
+    final formParams = <String, String>{};
+
+    const contentTypes = <String>['application/json'];
+
+
+    return apiClient.invokeAPI(
+      path,
+      'POST',
+      queryParams,
+      postBody,
+      headerParams,
+      formParams,
+      contentTypes.isEmpty ? null : contentTypes.first,
+      abortTrigger: abortTrigger,
+    );
+  }
+
+  /// Get detailed info of the requested media content of the calling account.
+  ///
+  /// Content IDs not belonging to the account are omitted from the response.  # Access  - Own account
+  ///
+  /// Parameters:
+  ///
+  /// * [List<ContentId>] contentId (required):
+  Future<GetMediaContentStates?> getMediaContentStates(List<ContentId> contentId, { Future<void>? abortTrigger, }) async {
+    final response = await getMediaContentStatesWithHttpInfo(contentId, abortTrigger: abortTrigger,);
+    if (response.statusCode >= HttpStatus.badRequest) {
+      throw ApiException(response.statusCode, await _decodeBodyBytes(response));
+    }
+    // When a remote server returns no body with a status of 204, we shall not decode it.
+    // At the time of writing this, `dart:convert` will throw an "Unexpected end of input"
+    // FormatException when trying to decode an empty string.
+    if (response.body.isNotEmpty && response.statusCode != HttpStatus.noContent) {
+      return await apiClient.deserializeAsync(await _decodeBodyBytes(response), 'GetMediaContentStates',) as GetMediaContentStates;
+    
+    }
+    return null;
+  }
+
   /// Get current profile content for selected profile.
   ///
   /// # Access  ## Own profile Unrestricted access.  ## Other profiles Normal account state required.  ## Private other profiles If the profile is a match, then the profile can be accessed if query parameter `is_match` is set to `true`.  If the profile is not a match, then permission `admin_view_all_profiles` is required.

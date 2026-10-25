@@ -559,6 +559,8 @@ class ApiClient {
           return GetMediaContentFaceVerifiedNullList.fromJson(value);
         case 'GetMediaContentResult':
           return GetMediaContentResult.fromJson(value);
+        case 'GetMediaContentStates':
+          return GetMediaContentStates.fromJson(value);
         case 'GetMyProfileResult':
           return GetMyProfileResult.fromJson(value);
         case 'GetNewsItemResult':
