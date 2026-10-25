@@ -1,3 +1,4 @@
+import 'package:app/config_features.dart';
 import 'package:app/data/utils/repository_instances.dart';
 import 'package:app/localizations.dart';
 import 'package:app/logic/account/custom_reports_config.dart';
@@ -278,6 +279,9 @@ class _ReportScreenState extends State<ReportScreen> {
     for (final report in availableReports) {
       switch (report.reportType) {
         case CustomReportType.empty:
+          if (!FEATURE_CUSTOM_REPORT_EMPTY) {
+            break;
+          }
           final name = report.translatedName(context);
           settings.add(
             reportListTile(name, report.translatedDescription(context), () async {
@@ -319,6 +323,9 @@ class _ReportScreenState extends State<ReportScreen> {
             }),
           );
         case CustomReportType.string:
+          if (!FEATURE_CUSTOM_REPORT_STRING) {
+            break;
+          }
           settings.add(
             reportListTile(
               report.translatedName(context),

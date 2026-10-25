@@ -11,4 +11,10 @@ const bool FEATURE_AGE_VERIFICATION = kIsWeb;
 /// Enable user facing UI for account verification
 const bool FEATURE_ACCOUNT_VERIFICATION = kIsWeb;
 
+/// Enable user facing UI for custom reports without content
+const bool FEATURE_CUSTOM_REPORT_EMPTY = kIsWeb;
+
+/// Enable user facing UI for custom reports with string content
+const bool FEATURE_CUSTOM_REPORT_STRING = true;
+
 const bool FEATURE_DEBUG_SETTINGS = !kReleaseMode;
