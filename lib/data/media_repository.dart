@@ -172,6 +172,18 @@ class MediaRepository extends DataRepositoryWithLifecycle {
   Future<Result<AccountContent, ()>> loadAllContent() =>
       api.media((api) => api.getAllAccountMediaContent(currentUser.aid)).emptyErr();
 
+  Future<Result<List<ContentInfoDetailed>, ()>> loadContentStates(
+    List<ContentId> contentIds,
+  ) async {
+    if (contentIds.isEmpty) {
+      return const Ok([]);
+    }
+    return await api
+        .media((api) => api.getMediaContentStates(contentIds))
+        .mapOk((v) => v.data)
+        .mapErr((_) => ());
+  }
+
   Future<Result<(), ()>> _reloadMediaNotificationSettings() async {
     return await api
         .media((api) => api.getMediaAppNotificationSettings())

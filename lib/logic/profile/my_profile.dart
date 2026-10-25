@@ -1,10 +1,12 @@
 import "dart:async";
 
 import "package:app/data/utils/repository_instances.dart";
+import "package:app/logic/app/navigator_state.dart";
 import "package:app/logic/media/profile_pictures_interface.dart";
 import "package:app/ui_utils/crop_image_screen.dart";
 import "package:app/ui_utils/profile_pictures.dart";
 import "package:app/utils/list.dart";
+import "package:bloc_concurrency/bloc_concurrency.dart";
 import "package:flutter/foundation.dart";
 import "package:flutter_bloc/flutter_bloc.dart";
 import "package:openapi/api.dart";
@@ -20,7 +22,10 @@ import "package:app/ui_utils/snack_bar.dart";
 import "package:app/utils.dart";
 import "package:app/utils/model.dart";
 import "package:app/utils/result.dart";
+import "package:app/ui/normal/settings/media/select_content.dart";
+import "package:app/ui/normal/settings/profile/edit_profile.dart";
 import "package:app/utils/time.dart";
+import "package:rxdart/rxdart.dart";
 
 sealed class MyProfileEvent {}
 
@@ -102,6 +107,10 @@ class MoveImageTo extends MyProfileEvent {
   MoveImageTo(this.src, this.dst);
 }
 
+/// Content moderation notification arrived. Refresh content
+/// not currently in my profile content.
+class RefreshContentStates extends MyProfileEvent {}
+
 class MyProfileBloc extends Bloc<MyProfileEvent, MyProfileData>
     with ActionRunner
     implements ProfilePicturesBlocInterface<MyProfileData> {
@@ -112,6 +121,9 @@ class MyProfileBloc extends Bloc<MyProfileEvent, MyProfileData>
 
   StreamSubscription<ProfileEntry?>? _profileSubscription;
   StreamSubscription<InitialAgeInfo?>? _initialAgeInfoSubscription;
+  StreamSubscription<void>? _allContentChangesSubscription;
+
+  bool _refreshAfterAddProcessedImage = false;
 
   MyProfileBloc(RepositoryInstances r)
     : account = r.account,
@@ -184,6 +196,10 @@ class MyProfileBloc extends Bloc<MyProfileEvent, MyProfileData>
       final pictures = state.valuePictures();
       pictures[data.profileImagesIndex] = data.img;
       _emitPictureChangesToEdited(emit, pictures);
+      if (_refreshAfterAddProcessedImage) {
+        _refreshAfterAddProcessedImage = false;
+        add(RefreshContentStates());
+      }
     });
     on<RemoveImage>((data, emit) async {
       final pictures = state.valuePictures();
@@ -373,10 +389,27 @@ class MyProfileBloc extends Bloc<MyProfileEvent, MyProfileData>
       );
     });
 
+    on<RefreshContentStates>((data, emit) async {
+      // Postpone the refresh if select content screen is open on top
+      // of the edit profile screen because SelectContentPage can return
+      // outdated content state.
+      if (_currentlySelectingNewContentToProfile()) {
+        _refreshAfterAddProcessedImage = true;
+        return;
+      }
+      _refreshAfterAddProcessedImage = false;
+      await _refreshContentStates(emit);
+    }, transformer: sequential());
+
     _profileSubscription = db
         .accountStream((db) => db.myProfile.getProfileEntryForMyProfile())
         .listen((event) {
           add(NewMyProfile(event));
+        });
+    _allContentChangesSubscription = media.allContentChanges
+        .debounceTime(Duration(seconds: 1))
+        .listen((_) {
+          add(RefreshContentStates());
         });
     _initialAgeInfoSubscription = db
         .accountStream((db) => db.myProfile.watchInitialAgeInfo())
@@ -418,6 +451,61 @@ class MyProfileBloc extends Bloc<MyProfileEvent, MyProfileData>
     );
   }
 
+  /// Edit profile screen is in the navigation stack and select
+  /// content screen is on top of it.
+  bool _currentlySelectingNewContentToProfile() {
+    final pages = NavigationStateBlocInstance.getInstance().navigationState.pages;
+    for (var i = pages.length - 1; i >= 0; i--) {
+      if (pages[i] is EditProfilePage) {
+        return pages.getAtOrNull(i + 1) is SelectContentPage;
+      }
+    }
+    return false;
+  }
+
+  /// Refresh moderation states of selected images which are not part
+  /// of the saved profile content.
+  Future<void> _refreshContentStates(Emitter<MyProfileData> emit) async {
+    final states = await media.loadContentStates(state.contentIdsToRefresh()).ok();
+    if (states == null || states.isEmpty) {
+      return;
+    }
+    final stateByContentId = {for (final s in states) s.cid: s};
+
+    // In case API request takes too long and the queried content doesn't
+    // need an update anymore.
+    final contentIdsToRefresh = state.contentIdsToRefresh().toSet();
+
+    bool changed = false;
+    final newPictures = [...state.valuePictures()];
+    for (final (i, pic) in newPictures.indexed) {
+      if (pic is! ImageSelected || !contentIdsToRefresh.contains(pic.id.contentId)) {
+        continue;
+      }
+      final s = stateByContentId[pic.id.contentId];
+      if (s == null) {
+        continue;
+      }
+      final newId = AccountImageId(
+        pic.id.accountId,
+        pic.id.contentId,
+        s.faceDetected,
+        s.state,
+        rejectedCategory: s.rejectedReasonCategory,
+        rejectedDetails: s.rejectedReasonDetails,
+      );
+      if (newId == pic.id) {
+        continue;
+      }
+      newPictures[i] = ImageSelected(newId, pic.slot, cropArea: pic.cropArea);
+      changed = true;
+    }
+
+    if (changed) {
+      _emitPictureChangesToEdited(emit, newPictures);
+    }
+  }
+
   void resetEditedValues(Emitter<MyProfileData> emit) {
     emit(state.copyWith(edited: EditedMyProfileData()));
   }
@@ -433,6 +521,7 @@ class MyProfileBloc extends Bloc<MyProfileEvent, MyProfileData>
   Future<void> close() async {
     await _profileSubscription?.cancel();
     await _initialAgeInfoSubscription?.cancel();
+    await _allContentChangesSubscription?.cancel();
     await super.close();
   }
 }

@@ -115,6 +115,22 @@ class MyProfileData
     final img0 = valuePictures()[0];
     return img0 is ImageSelected && img0.isFaceDetected();
   }
+
+  /// Content IDs which are selected in the profile edit state, but
+  /// are not part of the current saved profile content.
+  List<ContentId> contentIdsToRefresh() {
+    final p = profile;
+    if (p == null) return const [];
+
+    final savedContentIds = p.myContent.map((c) => c.id).toSet();
+    final contentIds = <ContentId>[];
+    for (final pic in valuePictures()) {
+      if (pic is ImageSelected && !savedContentIds.contains(pic.id.contentId)) {
+        contentIds.add(pic.id.contentId);
+      }
+    }
+    return contentIds;
+  }
 }
 
 @freezed
