@@ -1,4 +1,5 @@
 import 'package:app/api/server_connection_manager.dart';
+import 'package:app/config_features.dart';
 import 'package:app/data/utils/repository_instances.dart';
 import 'package:app/logic/app/navigator_state.dart';
 import 'package:app/model/freezed/logic/main/navigator_state.dart';
@@ -11,7 +12,7 @@ import 'package:openapi/api.dart';
 import 'package:app/utils/result.dart';
 
 bool isAccessToAgeVerificationScreenPossible({required AgeVerificationMethodsConfig methods}) {
-  return !methods.allDisabled;
+  return FEATURE_AGE_VERIFICATION && !methods.allDisabled;
 }
 
 void openAgeVerificationSettings(BuildContext context, AgeVerificationMethodsConfig methods) {

@@ -2,6 +2,7 @@ import "package:app/model/freezed/logic/main/navigator_state.dart";
 import "package:flutter/material.dart";
 import "package:flutter_bloc/flutter_bloc.dart";
 import "package:app/localizations.dart";
+import "package:app/config_features.dart";
 import "package:app/logic/account/client_features_config.dart";
 import "package:app/logic/account/initial_setup.dart";
 import "package:app/model/freezed/logic/account/client_features_config.dart";
@@ -55,6 +56,7 @@ class _AgeConfirmationScreenInternal extends StatelessWidget {
             final ageVerificationConfig = configState.config.ageVerification;
             final ageVerificationMethods = ageVerificationConfig?.methods;
             final verifyDuringInitialSetup =
+                FEATURE_AGE_VERIFICATION &&
                 ageVerificationConfig.verifyDuringInitialSetupOnCurrentPlatform;
 
             if (verifyDuringInitialSetup &&

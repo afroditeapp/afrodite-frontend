@@ -2,6 +2,7 @@ import "package:app/data/notification_manager.dart";
 import "package:app/data/push_notification_manager.dart";
 import "package:app/data/utils/repository_instances.dart";
 import "package:app/logic/app/global_init.dart";
+import "package:app/config_features.dart";
 import "package:app/logic/app/main_state_types.dart";
 import "package:app/logic/app/bottom_navigation_state.dart";
 import "package:app/model/freezed/logic/main/bottom_navigation_state.dart";
@@ -101,7 +102,9 @@ class MainStateBloc extends Bloc<MainStateEvent, MainState> {
                     AgeVerifiedExists(value: final isAgeVerified),
                     ClientFeaturesConfigExists(value: final config),
                   )
-                      when (config.ageVerification.isRequiredOnCurrentPlatform) && !isAgeVerified =>
+                      when FEATURE_AGE_VERIFICATION &&
+                          config.ageVerification.isRequiredOnCurrentPlatform &&
+                          !isAgeVerified =>
                     MsLoggedInBasicScreen(
                       ls.repositories,
                       LoggedInBasicScreen.ageVerificationRequired,
