@@ -10,6 +10,7 @@ import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:app/localizations.dart';
 import 'package:app/logic/login.dart';
 import 'package:app/ui_utils/dialog.dart';
+import 'package:app/config_features.dart';
 
 /// Common action that should be shown when the user is logged out from
 /// normal account.
@@ -66,7 +67,7 @@ MenuItemButton commonActionBlockProfile(BuildContext context, void Function() bl
 Widget loggedInBasicScreenActionsMenu(BuildContext context) {
   final permissions = context.read<AccountBloc>().state.permissions;
   return menuActions([
-    if (AdminSettingsPermissions(permissions).somePermissionEnabled())
+    if (FEATURE_ADMIN && AdminSettingsPermissions(permissions).somePermissionEnabled())
       MenuItemButton(
         child: Text(context.strings.admin_settings_title),
         onPressed: () => MyNavigator.push(context, AdminSettingsPage()),

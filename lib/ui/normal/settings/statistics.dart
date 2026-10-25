@@ -16,6 +16,7 @@ import 'package:app/utils/api.dart';
 import 'package:app/ui_utils/extensions/locale.dart';
 import 'package:app/ui_utils/time.dart';
 import 'package:utils/utils.dart';
+import 'package:app/config_features.dart';
 
 Future<void> openStatisticsScreen(BuildContext context) {
   return MyNavigator.push(context, StatisticsPage());
@@ -129,11 +130,8 @@ class StatisticsScreenState extends State<StatisticsScreen> {
       item.generationTime.toUtcDateTime(),
       Localizations.localeOf(context).localeString(),
     );
-    final adminSettingsAvailable = context
-        .read<AccountBloc>()
-        .state
-        .permissions
-        .adminProfileStatistics;
+    final adminSettingsAvailable =
+        FEATURE_ADMIN && context.read<AccountBloc>().state.permissions.adminProfileStatistics;
     return SingleChildScrollView(
       child: Padding(
         padding: const EdgeInsets.all(8.0),

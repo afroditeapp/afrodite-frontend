@@ -26,6 +26,7 @@ import 'package:app/ui/normal/settings/statistics.dart';
 import 'package:app/ui_utils/bottom_navigation.dart';
 import 'package:app/localizations.dart';
 import 'package:app/ui_utils/app_bar/common_actions.dart';
+import 'package:app/config_features.dart';
 import 'package:app/ui_utils/app_bar/menu_actions.dart';
 import 'package:app/ui_utils/info_banners.dart';
 import 'package:app/ui_utils/scroll_controller.dart';
@@ -183,7 +184,7 @@ class _MenuViewState extends State<MenuView> {
         ),
     ];
 
-    if (AdminSettingsPermissions(permissions).somePermissionEnabled()) {
+    if (FEATURE_ADMIN && AdminSettingsPermissions(permissions).somePermissionEnabled()) {
       settings.add(
         Setting.createSetting(
           Icons.admin_panel_settings,

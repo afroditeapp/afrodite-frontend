@@ -1,5 +1,6 @@
 import 'dart:convert';
 
+import 'package:app/config_features.dart';
 import 'package:app/data/general/notification/utils/notification_id.dart';
 import 'package:logging/logging.dart';
 import 'package:meta/meta.dart';
@@ -71,6 +72,9 @@ class NotificationPayload extends Immutable {
     } else if (notificationId == NotificationIdStatic.automaticProfileSearchCompleted.id) {
       action = NavigateToAutomaticProfileSearchResults();
     } else if (notificationId == NotificationIdStatic.adminNotification.id) {
+      if (!FEATURE_ADMIN) {
+        return null;
+      }
       action = NavigateToModeratorTasks();
     } else {
       _log.error("Unknown notification ID");

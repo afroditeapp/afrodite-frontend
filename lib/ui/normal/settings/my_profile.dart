@@ -1,3 +1,4 @@
+import 'package:app/config_features.dart';
 import 'package:app/data/image_cache.dart';
 import 'package:app/data/utils/repository_instances.dart';
 import 'package:app/logic/account/account.dart';
@@ -64,7 +65,7 @@ class MyProfileScreen extends StatelessWidget {
           BlocBuilder<AccountBloc, AccountBlocData>(
             builder: (_, state) {
               final p = AccountAdminSettingsPermissions(state.permissions);
-              if (p.somePermissionEnabled()) {
+              if (FEATURE_ADMIN && p.somePermissionEnabled()) {
                 return menuActions([
                   MenuItemButton(
                     onPressed: () => getAgeAndNameAndShowAdminSettings(

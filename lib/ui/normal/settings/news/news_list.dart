@@ -23,6 +23,7 @@ import 'package:app/utils/result.dart';
 import 'package:app/utils/api.dart';
 import 'package:app/ui_utils/extensions/locale.dart';
 import 'package:app/ui_utils/time.dart';
+import 'package:app/config_features.dart';
 
 Future<void> openNewsList(BuildContext context) {
   return MyNavigator.push(context, NewsListPage());
@@ -156,7 +157,7 @@ class NewsListScreenState extends State<NewsListScreen> {
         actions: [
           BlocBuilder<AccountBloc, AccountBlocData>(
             builder: (context, state) {
-              if (state.permissions.adminNewsCreate) {
+              if (FEATURE_ADMIN && state.permissions.adminNewsCreate) {
                 return IconButton(
                   onPressed: () async {
                     final r = await showConfirmDialog(

@@ -22,6 +22,7 @@ import 'package:app/utils/api.dart';
 import 'package:app/ui_utils/extensions/locale.dart';
 import 'package:app/ui_utils/time.dart';
 import 'package:url_launcher/url_launcher_string.dart';
+import 'package:app/config_features.dart';
 
 Future<void> openViewNewsScreen(BuildContext context, NewsId id, void Function() refreshNewsList) {
   return MyNavigator.push(context, ViewNewsPage(id));
@@ -96,9 +97,9 @@ class ViewNewsScreenState extends State<ViewNewsScreen> {
         actions: [
           BlocBuilder<AccountBloc, AccountBlocData>(
             builder: (context, state) {
-              if (state.permissions.adminNewsEditAll) {
+              if (FEATURE_ADMIN && state.permissions.adminNewsEditAll) {
                 return editNewsActionButton(context);
-              } else if (state.permissions.adminNewsCreate) {
+              } else if (FEATURE_ADMIN && state.permissions.adminNewsCreate) {
                 return BlocBuilder<ViewNewsBloc, ViewNewsData>(
                   builder: (context, newsState) {
                     final currentUser = context.read<RepositoryInstances>().accountId;

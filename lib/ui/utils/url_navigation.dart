@@ -1,3 +1,4 @@
+import 'package:app/config_features.dart';
 import 'package:app/data/utils/repository_instances.dart';
 import 'package:app/model/freezed/logic/main/navigator_state.dart';
 import 'package:app/ui/account_banned.dart';
@@ -166,7 +167,7 @@ List<UrlParser<MyScreenPage<Object>>> loggedInPages(RepositoryInstances r) => [
   StatisticsPage(),
   AutomaticProfileSearchResultsPage(),
   SettingsPage(),
-  AdminSettingsPage(),
+  if (FEATURE_ADMIN) AdminSettingsPage(),
   DebugSettingsPage(r),
 
   // Settings
