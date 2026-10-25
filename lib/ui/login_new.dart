@@ -1,3 +1,4 @@
+import "package:app/config_features.dart";
 import "package:app/data/utils/demo_account_manager.dart";
 import "package:app/logic/account/demo_account_login.dart";
 import "package:app/model/freezed/logic/account/demo_account_login.dart";
@@ -69,7 +70,7 @@ class LoginScreen extends StatelessWidget {
                 });
               },
             ),
-            if (kDebugMode || kProfileMode)
+            if (FEATURE_SERVER_SELECTION)
               MenuItemButton(
                 child: const Text("Old login"),
                 onPressed: () => MyNavigator.pushLimited(context, LoginPageOld()),
