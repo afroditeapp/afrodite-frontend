@@ -17,4 +17,4 @@ dependencies:
     path: "../native_utils_common"
 
 dev_dependencies:
-  ffigen: ^19.0.0
+  ffigen: ^23.0.0
