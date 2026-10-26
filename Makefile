@@ -71,7 +71,7 @@ update-app-icon:
 	./tools/generate_web_icons.sh
 
 update-native-utils-ffi-code:
-	cd packages/native_utils_ffi && dart run ffigen --config ffigen.yaml
+	cd packages/native_utils_ffi && dart run tool/ffigen.dart
 
 update-licenses-for-native-utils:
 	cd packages/native_utils_ffi/rust_utils && cargo about generate --threshold 1.0 --fail -o ../LICENSE about.hbs
