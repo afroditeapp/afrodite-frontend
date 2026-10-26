@@ -88,10 +88,10 @@ watch-freezed-code:
 remove-and-download-drift-web-dependencies:
 	rm -f web/drift_worker.js
 	rm -f web/sqlite3.wasm
-	cd web && curl "https://github.com/simolus3/drift/releases/download/drift-2.34.3/drift_worker.js" -L -o drift_worker.js
-	echo "4db0469de8ceabad8d5cd3d920614486ba587e100e39523f36f704a3aec5f26c  web/drift_worker.js" | shasum -a 256 -c || (rm -f web/drift_worker.js && exit 1)
-	cd web && curl "https://github.com/simolus3/sqlite3.dart/releases/download/sqlite3-3.5.1/sqlite3.wasm" -L -o sqlite3.wasm
-	echo "13d3f11d05b39ba0618a7115fb41640a5d48b6300f5d3f325f554b42bd6688a4  web/sqlite3.wasm" | shasum -a 256 -c || (rm -f web/sqlite3.wasm && exit 1)
+	cd web && curl "https://github.com/simolus3/drift/releases/download/drift-2.35.3/drift_worker.js" -L -o drift_worker.js
+	echo "a54b81412d4c4ab56653bb9e4c02912b0820bb37e2bba00722ddef4d78083d4a  web/drift_worker.js" | shasum -a 256 -c || (rm -f web/drift_worker.js && exit 1)
+	cd web && curl "https://github.com/simolus3/drift/releases/download/drift-2.35.3/sqlite3.wasm" -L -o sqlite3.wasm
+	echo "efd308be92a34f3aa15f289a37f213b0230fd80888a1364326ee29579d892d37  web/sqlite3.wasm" | shasum -a 256 -c || (rm -f web/sqlite3.wasm && exit 1)
 
 remove-and-download-native-push-web-dependencies:
 	rm -f web/native_push.js

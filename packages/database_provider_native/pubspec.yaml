@@ -18,8 +18,8 @@ dependencies:
   path_provider: ^2.1.6
   path: ^1.9.1
 
-  drift: ^2.34.3
-  sqlite3: ^3.5.1
+  drift: ^2.35.3
+  sqlite3: ^3.8.0
 
   database_utils:
     path: "../database_utils"
