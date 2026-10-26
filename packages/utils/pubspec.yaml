@@ -12,8 +12,6 @@ resolution: workspace
 
 # Add regular dependencies here.
 dependencies:
-  # path: ^1.8.0
-
   logging: ^1.3.0
 
 dev_dependencies:
