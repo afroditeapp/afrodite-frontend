@@ -12,7 +12,7 @@ resolution: workspace
 dependencies:
   logging: ^1.3.0
   drift: ^2.35.3
-  web: ^1.1.1
+  web: ^1.1.2
 
   database_utils:
     path: "../database_utils"
