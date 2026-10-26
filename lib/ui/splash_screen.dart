@@ -47,7 +47,12 @@ class _SplashScreenState extends State<SplashScreen> {
       stream: stream,
       builder: (context, state) {
         if (state.data == GlobalInitState.appIsAlreadyRunning) {
-          return Center(child: Text(context.strings.splash_screen_app_is_already_running));
+          return Center(
+            child: Padding(
+              padding: const EdgeInsets.symmetric(horizontal: 16.0),
+              child: Text(context.strings.splash_screen_app_is_already_running),
+            ),
+          );
         } else if (state.data == GlobalInitState.appVersionDowngradeDetected) {
           return Center(
             child: Padding(
