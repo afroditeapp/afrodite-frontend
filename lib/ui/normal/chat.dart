@@ -19,7 +19,9 @@ import 'package:app/logic/app/app_visibility_provider.dart';
 import 'package:app/logic/app/bottom_navigation_state.dart';
 import 'package:app/logic/app/navigator_state.dart';
 import 'package:app/logic/chat/conversation_list.dart';
+import 'package:app/logic/settings/ui_settings.dart';
 import 'package:app/model/freezed/logic/main/bottom_navigation_state.dart';
+import 'package:app/model/freezed/logic/settings/ui_settings.dart';
 import 'package:app/ui/normal/chat/conversation_page.dart';
 import 'package:app/ui/normal/chat/utils.dart';
 import 'package:app/ui/normal/chat/select_match.dart';
@@ -220,23 +222,29 @@ class _ConversationListState extends State<ConversationList> {
     );
   }
 
-  /// Show empty state texts at the same vertical position as LikeView
+  /// Show empty state texts at the same position as in LikeView
   Widget emptyStateGridView(BuildContext context) {
-    return PagedGridView<int, AccountId>(
-      state: PagingState(pages: const [[]], keys: const [0]),
-      fetchNextPage: () {},
-      physics: const NeverScrollableScrollPhysics(),
-      padding: EdgeInsets.symmetric(horizontal: 0, vertical: 4),
-      builderDelegate: PagedChildBuilderDelegate<AccountId>(
-        itemBuilder: (context, item, index) => const SizedBox.shrink(),
-        noItemsFoundIndicatorBuilder: (context) {
-          return ListReplacementMessage(
-            title: context.strings.chat_list_screen_no_chats_found,
-            body: context.strings.chat_list_screen_no_chats_found_description,
-          );
-        },
-      ),
-      gridDelegate: SliverGridDelegateWithFixedCrossAxisCount(crossAxisCount: 1),
+    return BlocBuilder<UiSettingsBloc, UiSettingsData>(
+      buildWhen: (previous, current) => previous.gridSettings != current.gridSettings,
+      builder: (context, uiSettings) {
+        final settings = uiSettings.gridSettings;
+        return PagedGridView<int, AccountId>(
+          state: PagingState(pages: const [[]], keys: const [0]),
+          fetchNextPage: () {},
+          physics: const NeverScrollableScrollPhysics(),
+          padding: EdgeInsets.symmetric(horizontal: settings.valueHorizontalPadding(), vertical: 4),
+          builderDelegate: PagedChildBuilderDelegate<AccountId>(
+            itemBuilder: (context, item, index) => const SizedBox.shrink(),
+            noItemsFoundIndicatorBuilder: (context) {
+              return ListReplacementMessage(
+                title: context.strings.chat_list_screen_no_chats_found,
+                body: context.strings.chat_list_screen_no_chats_found_description,
+              );
+            },
+          ),
+          gridDelegate: SliverGridDelegateWithFixedCrossAxisCount(crossAxisCount: 1),
+        );
+      },
     );
   }
 
