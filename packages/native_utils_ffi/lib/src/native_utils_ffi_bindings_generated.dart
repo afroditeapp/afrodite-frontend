@@ -8,19 +8,29 @@
 // ignore_for_file: type=lint
 import 'dart:ffi' as ffi;
 
-@ffi.Native<ffi.Void Function(BinaryDataResult2)>(isLeaf: true)
-external void free_binary_data_result_2(BinaryDataResult2 result);
-
-/// Generate a new message encryption keys.
+/// Decrypt message data.
 ///
-/// Run equivalent free function for the result.
+/// The result must be freed using free_binary_data_result.
 ///
-/// First result value is public key and second is private key.
-@ffi.Native<BinaryDataResult2 Function(ffi.Pointer<ffi.Char>)>(isLeaf: true)
-external BinaryDataResult2 generate_message_keys(ffi.Pointer<ffi.Char> account_id);
-
-@ffi.Native<ffi.Void Function(BinaryDataResult)>(isLeaf: true)
-external void free_binary_data_result(BinaryDataResult result);
+/// First result value is message data and second is session key.
+@ffi.Native<
+  BinaryDataResult2 Function(
+    ffi.Pointer<ffi.Uint8>,
+    ffi.IntPtr,
+    ffi.Pointer<ffi.Uint8>,
+    ffi.IntPtr,
+    ffi.Pointer<ffi.Uint8>,
+    ffi.IntPtr,
+  )
+>(isLeaf: true)
+external BinaryDataResult2 decrypt_message(
+  ffi.Pointer<ffi.Uint8> sender_public_key,
+  int sender_public_key_len,
+  ffi.Pointer<ffi.Uint8> recipient_private_key,
+  int recipient_private_key_len,
+  ffi.Pointer<ffi.Uint8> pgp_message,
+  int pgp_message_len,
+);
 
 /// Encrypt message data.
 ///
@@ -46,29 +56,19 @@ external BinaryDataResult2 encrypt_message(
   int data_len,
 );
 
-/// Decrypt message data.
+@ffi.Native<ffi.Void Function(BinaryDataResult)>(isLeaf: true)
+external void free_binary_data_result(BinaryDataResult result);
+
+@ffi.Native<ffi.Void Function(BinaryDataResult2)>(isLeaf: true)
+external void free_binary_data_result_2(BinaryDataResult2 result);
+
+/// Generate a new message encryption keys.
 ///
-/// The result must be freed using free_binary_data_result.
+/// Run equivalent free function for the result.
 ///
-/// First result value is message data and second is session key.
-@ffi.Native<
-  BinaryDataResult2 Function(
-    ffi.Pointer<ffi.Uint8>,
-    ffi.IntPtr,
-    ffi.Pointer<ffi.Uint8>,
-    ffi.IntPtr,
-    ffi.Pointer<ffi.Uint8>,
-    ffi.IntPtr,
-  )
->(isLeaf: true)
-external BinaryDataResult2 decrypt_message(
-  ffi.Pointer<ffi.Uint8> sender_public_key,
-  int sender_public_key_len,
-  ffi.Pointer<ffi.Uint8> recipient_private_key,
-  int recipient_private_key_len,
-  ffi.Pointer<ffi.Uint8> pgp_message,
-  int pgp_message_len,
-);
+/// First result value is public key and second is private key.
+@ffi.Native<BinaryDataResult2 Function(ffi.Pointer<ffi.Char>)>(isLeaf: true)
+external BinaryDataResult2 generate_message_keys(ffi.Pointer<ffi.Char> account_id);
 
 /// Get message content from PGP message if possible.
 ///
@@ -97,6 +97,13 @@ final class BinaryData extends ffi.Struct {
   external int capacity;
 }
 
+final class BinaryDataResult extends ffi.Struct {
+  @ffi.IntPtr()
+  external int result;
+
+  external BinaryData data;
+}
+
 final class BinaryDataResult2 extends ffi.Struct {
   @ffi.IntPtr()
   external int result;
@@ -104,11 +111,4 @@ final class BinaryDataResult2 extends ffi.Struct {
   external BinaryData first_data;
 
   external BinaryData second_data;
-}
-
-final class BinaryDataResult extends ffi.Struct {
-  @ffi.IntPtr()
-  external int result;
-
-  external BinaryData data;
 }
