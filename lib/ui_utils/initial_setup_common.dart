@@ -5,8 +5,10 @@ import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:app/config_features.dart';
 import 'package:app/localizations.dart';
+import 'package:app/logic/account/account_details.dart';
 import 'package:app/logic/account/initial_setup.dart';
 import 'package:app/model/freezed/logic/account/initial_setup.dart';
+import 'package:app/ui/normal/settings/data_export.dart';
 import 'package:app/logic/account/client_features_config.dart';
 import 'package:app/model/freezed/logic/account/client_features_config.dart';
 import 'package:app/logic/profile/attributes.dart';
@@ -72,6 +74,22 @@ Widget commonInitialSetupScreenContent({
             },
           ),
         menuActions([
+          MenuItemButton(
+            child: Text(context.strings.account_settings_screen_delete_account_action),
+            onPressed: () async {
+              final accepted = await showConfirmDialog(
+                context,
+                context.strings.account_settings_screen_delete_account_confirm_dialog_title,
+              );
+              if (context.mounted && accepted == true) {
+                context.read<AccountDetailsBloc>().add(MoveAccountToPendingDeletionState());
+              }
+            },
+          ),
+          MenuItemButton(
+            child: Text(context.strings.data_export_screen_title_export_type_user),
+            onPressed: () => openDataExportScreenMyData(context),
+          ),
           ...commonActionsWhenLoggedInAndAccountIsNotNormallyUsable(context),
           if (FEATURE_INITIAL_SETUP_SKIP && showSkipInitialSetupAction)
             MenuItemButton(
