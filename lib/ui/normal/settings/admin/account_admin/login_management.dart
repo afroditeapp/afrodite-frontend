@@ -129,6 +129,7 @@ class _LoginManagementScreenState extends State<LoginManagementScreen> {
           const Divider(),
           const Padding(padding: EdgeInsets.all(8.0)),
           hPad(Text("Login session info", style: Theme.of(context).textTheme.titleSmall)),
+          hPad(Text("Logged in: ${loginSessionInfo?.loggedIn ?? false}")),
           if (info == null)
             hPad(const Text("No login session info available"))
           else ...[
