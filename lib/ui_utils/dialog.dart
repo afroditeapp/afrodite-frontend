@@ -1,4 +1,5 @@
 import 'package:app/config.dart';
+import 'package:app/config_features.dart';
 import 'package:app/data/app_version.dart';
 import 'package:app/data/image_cache.dart';
 import 'package:app/model/freezed/logic/account/client_features_config.dart';
@@ -18,7 +19,9 @@ void showAppAboutDialog(BuildContext context, ClientFeaturesConfigData? config) 
 
   final publisher = context.strings.app_publisher;
   final commitId = GIT_COMMIT_ID;
-  final attributionText = config?.aboutDialogAttribution(context);
+  final attributionText = FEATURE_ABOUT_DIALOG_ATTRIBUTION
+      ? config?.aboutDialogAttribution(context)
+      : null;
 
   // About dialog uses root navigator as there is navigation related to
   // viewing licenses.

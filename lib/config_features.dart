@@ -20,5 +20,8 @@ const bool FEATURE_CUSTOM_REPORT_STRING = true;
 /// Enable skipping the initial setup
 const bool FEATURE_INITIAL_SETUP_SKIP = kIsWeb;
 
+/// Enable showing the attribution text in the about dialog
+const bool FEATURE_ABOUT_DIALOG_ATTRIBUTION = kIsWeb;
+
 const bool FEATURE_SERVER_SELECTION = !kReleaseMode;
 const bool FEATURE_DEBUG_SETTINGS = !kReleaseMode;
