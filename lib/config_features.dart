@@ -17,5 +17,8 @@ const bool FEATURE_CUSTOM_REPORT_EMPTY = kIsWeb;
 /// Enable user facing UI for custom reports with string content
 const bool FEATURE_CUSTOM_REPORT_STRING = true;
 
+/// Enable skipping the initial setup
+const bool FEATURE_INITIAL_SETUP_SKIP = kIsWeb;
+
 const bool FEATURE_SERVER_SELECTION = !kReleaseMode;
 const bool FEATURE_DEBUG_SETTINGS = !kReleaseMode;

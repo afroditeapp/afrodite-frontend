@@ -3,6 +3,7 @@ import 'package:app/ui_utils/dialog.dart';
 import 'package:flutter/foundation.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
+import 'package:app/config_features.dart';
 import 'package:app/localizations.dart';
 import 'package:app/logic/account/initial_setup.dart';
 import 'package:app/model/freezed/logic/account/initial_setup.dart';
@@ -72,7 +73,7 @@ Widget commonInitialSetupScreenContent({
           ),
         menuActions([
           ...commonActionsWhenLoggedInAndAccountIsNotNormallyUsable(context),
-          if (showSkipInitialSetupAction)
+          if (FEATURE_INITIAL_SETUP_SKIP && showSkipInitialSetupAction)
             MenuItemButton(
               child: Text(context.strings.generic_skip),
               onPressed: () async {
