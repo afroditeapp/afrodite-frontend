@@ -1049,6 +1049,9 @@ class AppLocalizationsEn extends AppLocalizations {
   String get generic_previous_action_in_progress => 'Previous action is still in progress';
 
   @override
+  String get generic_privacy_policy => 'Privacy policy';
+
+  @override
   String get generic_profile_loading_failed => 'Failed to load profile';
 
   @override
@@ -1116,6 +1119,9 @@ class AppLocalizationsEn extends AppLocalizations {
 
   @override
   String get generic_take_photo => 'Take photo';
+
+  @override
+  String get generic_terms_of_service => 'Terms of service';
 
   @override
   String get generic_text_field_age_hint_text => 'Enter an age between 18-99';

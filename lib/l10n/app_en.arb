@@ -1376,6 +1376,10 @@
   "@generic_previous_action_in_progress": {
     "description": "Generic previous action in progress text"
   },
+  "generic_privacy_policy": "Privacy policy",
+  "@generic_privacy_policy": {
+    "description": "Generic privacy policy text"
+  },
   "generic_profile_loading_failed": "Failed to load profile",
   "@generic_profile_loading_failed": {
     "description": "Error text displayed when profile loading fails"
@@ -1467,6 +1471,10 @@
   "generic_take_photo": "Take photo",
   "@generic_take_photo": {
     "description": "Generic take photo text"
+  },
+  "generic_terms_of_service": "Terms of service",
+  "@generic_terms_of_service": {
+    "description": "Generic terms of service text"
   },
   "generic_text_field_age_hint_text": "Enter an age between 18-99",
   "@generic_text_field_age_hint_text": {

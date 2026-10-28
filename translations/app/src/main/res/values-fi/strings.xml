@@ -41,6 +41,8 @@
     <string name="generic_sign_in">Kirjaudu sisään</string>
     <string name="generic_logout">Kirjaudu ulos</string>
     <string name="generic_logout_confirmation_title">Kirjaudu ulos?</string>
+    <string name="generic_terms_of_service">Käyttöehdot</string>
+    <string name="generic_privacy_policy">Tietosuojaseloste</string>
     <string name="generic_save_confirmation_title">Tallenna?</string>
     <string name="generic_error_occurred">Jokin meni pieleen</string>
     <string name="generic_previous_action_in_progress">Edellinen toiminto on vielä kesken</string>

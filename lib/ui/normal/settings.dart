@@ -25,6 +25,7 @@ import 'package:app/ui/normal/settings/privacy_settings.dart';
 import 'package:app/ui/normal/settings/notification_settings.dart';
 import 'package:app/ui/normal/settings/profile/search_settings.dart';
 import 'package:app/localizations.dart';
+import 'package:url_launcher/url_launcher_string.dart';
 import 'package:app/model/freezed/logic/settings/profile_visibility.dart';
 import 'package:app/ui_utils/common_update_logic.dart';
 import 'package:app/ui_utils/dialog.dart';
@@ -187,6 +188,22 @@ class _SettingsScreenState extends State<SettingsScreen> {
     ];
   }
 
+  Widget termsOfService(BuildContext context) {
+    return Setting.createSetting(
+      Icons.description,
+      context.strings.generic_terms_of_service,
+      () => launchUrlString(context.strings.url_app_tos_link),
+    ).toListTile();
+  }
+
+  Widget privacyPolicy(BuildContext context) {
+    return Setting.createSetting(
+      Icons.privacy_tip,
+      context.strings.generic_privacy_policy,
+      () => launchUrlString(context.strings.url_app_privacy_policy_link),
+    ).toListTile();
+  }
+
   List<Widget> generalSettings(BuildContext context) {
     return [
       if (!kIsWeb || (kIsWeb && webNotificationsSupported()))
@@ -211,6 +228,8 @@ class _SettingsScreenState extends State<SettingsScreen> {
           openProfileGridSettingsScreen(context);
         },
       ).toListTile(),
+      termsOfService(context),
+      privacyPolicy(context),
       Setting.createSetting(Icons.logout, context.strings.generic_logout, () {
         final inProgress = context.read<LoginBloc>().state.logoutInProgress;
         if (inProgress) {

@@ -1056,6 +1056,9 @@ class AppLocalizationsFi extends AppLocalizations {
   String get generic_previous_action_in_progress => 'Edellinen toiminto on vielä kesken';
 
   @override
+  String get generic_privacy_policy => 'Tietosuojaseloste';
+
+  @override
   String get generic_profile_loading_failed => 'Profiilin lataus epäonnistui';
 
   @override
@@ -1123,6 +1126,9 @@ class AppLocalizationsFi extends AppLocalizations {
 
   @override
   String get generic_take_photo => 'Ota kuva';
+
+  @override
+  String get generic_terms_of_service => 'Käyttöehdot';
 
   @override
   String get generic_text_field_age_hint_text => 'Syötä ikä väliltä 18-99';

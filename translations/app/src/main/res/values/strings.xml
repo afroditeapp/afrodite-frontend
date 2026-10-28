@@ -48,6 +48,8 @@
     <string name="generic_sign_in" description="Generic sign in text">Sign in</string>
     <string name="generic_logout" description="Generic logout text">Logout</string>
     <string name="generic_logout_confirmation_title" description="Generic logout confirmation title text">Logout?</string>
+    <string name="generic_terms_of_service" description="Generic terms of service text">Terms of service</string>
+    <string name="generic_privacy_policy" description="Generic privacy policy text">Privacy policy</string>
     <string name="generic_save_confirmation_title" description="Generic save confirmation title text">Save?</string>
     <string name="generic_error_occurred" description="Generic error occurred text">Something went wrong</string>
     <string name="generic_previous_action_in_progress" description="Generic previous action in progress text">Previous action is still in progress</string>

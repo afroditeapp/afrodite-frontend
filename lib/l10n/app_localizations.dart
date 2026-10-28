@@ -1886,6 +1886,12 @@ abstract class AppLocalizations {
   /// **'Previous action is still in progress'**
   String get generic_previous_action_in_progress;
 
+  /// Generic privacy policy text
+  ///
+  /// In en, this message translates to:
+  /// **'Privacy policy'**
+  String get generic_privacy_policy;
+
   /// Error text displayed when profile loading fails
   ///
   /// In en, this message translates to:
@@ -2023,6 +2029,12 @@ abstract class AppLocalizations {
   /// In en, this message translates to:
   /// **'Take photo'**
   String get generic_take_photo;
+
+  /// Generic terms of service text
+  ///
+  /// In en, this message translates to:
+  /// **'Terms of service'**
+  String get generic_terms_of_service;
 
   /// Text field hint text for age
   ///
