@@ -14,8 +14,10 @@ class GetAccountLoginSessionInfo {
   /// Returns a new [GetAccountLoginSessionInfo] instance.
   GetAccountLoginSessionInfo({
     this.info,
+    this.loggedIn = false,
   });
 
+  /// Login session info from current (when logged in) or previous (when logged out) login.
   ///
   /// Please note: This property should have been non-nullable! Since the specification file
   /// does not include a default value (using the "default:" property), however, the generated
@@ -24,17 +26,21 @@ class GetAccountLoginSessionInfo {
   ///
   LoginSessionInfo? info;
 
+  bool loggedIn;
+
   @override
   bool operator ==(Object other) => identical(this, other) || other is GetAccountLoginSessionInfo &&
-    other.info == info;
+    other.info == info &&
+    other.loggedIn == loggedIn;
 
   @override
   int get hashCode =>
     // ignore: unnecessary_parenthesis
-    (info == null ? 0 : info!.hashCode);
+    (info == null ? 0 : info!.hashCode) +
+    (loggedIn.hashCode);
 
   @override
-  String toString() => 'GetAccountLoginSessionInfo[info=$info]';
+  String toString() => 'GetAccountLoginSessionInfo[info=$info, loggedIn=$loggedIn]';
 
   Map<String, dynamic> toJson() {
     final json = <String, dynamic>{};
@@ -43,6 +49,7 @@ class GetAccountLoginSessionInfo {
     } else {
       json[r'info'] = null;
     }
+      json[r'logged_in'] = this.loggedIn;
     return json;
   }
 
@@ -62,6 +69,7 @@ class GetAccountLoginSessionInfo {
 
       return GetAccountLoginSessionInfo(
         info: LoginSessionInfo.fromJson(json[r'info']),
+        loggedIn: mapValueOfType<bool>(json, r'logged_in') ?? false,
       );
     }
     return null;
