@@ -5,6 +5,7 @@ import 'package:app/data/chat/message_database_iterator.dart';
 import 'package:app/data/chat/typing_indicator_manager.dart';
 import 'package:app/data/chat_repository.dart';
 import 'package:app/database/account_database_manager.dart';
+import 'package:app/logic/app/app_visibility_provider.dart';
 import 'package:app/logic/chat/conversation_bloc.dart';
 import 'package:app/ui/normal/chat/chat_list/message_adapter.dart';
 import 'package:database/database.dart';
@@ -199,7 +200,7 @@ class ChatListLogic {
   }
 
   Future<void> _markMessagesAsSeenIfNeeded(List<MessageEntry> entries) async {
-    if (!messageStateSeenEnabled) {
+    if (!messageStateSeenEnabled || !AppVisibilityProvider.getInstance().isForeground) {
       return;
     }
 

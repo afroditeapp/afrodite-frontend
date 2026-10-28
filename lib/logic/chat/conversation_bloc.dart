@@ -5,6 +5,7 @@ import "package:app/data/account_repository.dart";
 import "package:app/data/chat/message_manager/utils.dart";
 import "package:app/data/utils/repository_instances.dart";
 import "package:app/database/account_database_manager.dart";
+import "package:app/logic/app/app_visibility_provider.dart";
 import 'package:bloc_concurrency/bloc_concurrency.dart' show sequential;
 
 import "package:database/database.dart";
@@ -25,6 +26,8 @@ final _log = Logger("ConversationBloc");
 sealed class ConversationEvent {}
 
 class InitEvent extends ConversationEvent {}
+
+class MarkMessagesAsSeenRequested extends ConversationEvent {}
 
 class SendMessageTo extends ConversationEvent {
   final AccountId accountId;
@@ -123,6 +126,7 @@ class ConversationBloc extends Bloc<ConversationEvent, ConversationData> with Ac
   final ServerConnectionManager connectionManager;
 
   StreamSubscription<ProfileChange>? _profileChangeSubscription;
+  StreamSubscription<MarkMessagesAsSeenRequested>? _isForegroundSubscription;
 
   ConversationBloc(RepositoryInstances r, AccountId messageSenderAccountId, this.dataProvider)
     : currentUser = r.accountId,
@@ -140,7 +144,8 @@ class ConversationBloc extends Bloc<ConversationEvent, ConversationData> with Ac
 
       // Send check online status request when conversation is opened
       chat.checkOnlineStatusManager.handleCheckOnlineStatusRequest(state.accountId);
-
+    });
+    on<MarkMessagesAsSeenRequested>((data, emit) async {
       await markMessagesAsSeen();
     });
     on<HandleProfileChange>((data, emit) async {
@@ -290,6 +295,12 @@ class ConversationBloc extends Bloc<ConversationEvent, ConversationData> with Ac
       add(HandleProfileChange(event));
     });
 
+    _isForegroundSubscription = AppVisibilityProvider.getInstance().isForegroundStream
+        .distinct()
+        .where((isForeground) => isForeground)
+        .map((_) => MarkMessagesAsSeenRequested())
+        .listen(add);
+
     add(InitEvent());
   }
 
@@ -344,6 +355,7 @@ class ConversationBloc extends Bloc<ConversationEvent, ConversationData> with Ac
   @override
   Future<void> close() async {
     await _profileChangeSubscription?.cancel();
+    await _isForegroundSubscription?.cancel();
     return super.close();
   }
 }
