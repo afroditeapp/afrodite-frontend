@@ -175,6 +175,7 @@ class Permissions {
 
   bool adminViewPermissions;
 
+  /// NOTE: Not used currently
   bool adminViewProfileHistory;
 
   @override

@@ -144,7 +144,7 @@ Class | Method | HTTP request | Description
 *AccountAdminApi* | [**postSendCustomEmailToAllAccounts**](doc//AccountAdminApi.md#postsendcustomemailtoallaccounts) | **POST** /account_api/send_custom_email_to_all_accounts | 
 *AccountAdminApi* | [**postSetAccountLockedState**](doc//AccountAdminApi.md#postsetaccountlockedstate) | **POST** /account_api/set_account_locked_state/{aid} | Set account locked state
 *AccountAdminApi* | [**postSetBanState**](doc//AccountAdminApi.md#postsetbanstate) | **POST** /account_api/set_ban_state | Ban or unban account
-*AccountAdminApi* | [**postSetNewsPublicity**](doc//AccountAdminApi.md#postsetnewspublicity) | **DELETE** /account_api/set_news_publicity/{nid} | 
+*AccountAdminApi* | [**postSetNewsPublicity**](doc//AccountAdminApi.md#postsetnewspublicity) | **POST** /account_api/set_news_publicity/{nid} | 
 *AccountAdminApi* | [**postSetPermissions**](doc//AccountAdminApi.md#postsetpermissions) | **POST** /account_api/set_permissions/{aid} | Set permissions for account
 *AccountAdminApi* | [**postUpdateAssociationMembershipType**](doc//AccountAdminApi.md#postupdateassociationmembershiptype) | **POST** /account_api/update_association_membership_type | Change the membership type of an existing association membership.
 *AccountAdminApi* | [**postUpdateCustomEmail**](doc//AccountAdminApi.md#postupdatecustomemail) | **POST** /account_api/update_custom_email | Update a custom email message draft.

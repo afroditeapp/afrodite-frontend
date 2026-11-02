@@ -1600,7 +1600,7 @@ class AccountAdminApi {
     }
   }
 
-  /// Performs an HTTP 'DELETE /account_api/set_news_publicity/{nid}' operation and returns the [Response].
+  /// Performs an HTTP 'POST /account_api/set_news_publicity/{nid}' operation and returns the [Response].
   /// Parameters:
   ///
   /// * [int] nid (required):
@@ -1623,7 +1623,7 @@ class AccountAdminApi {
 
     return apiClient.invokeAPI(
       path,
-      'DELETE',
+      'POST',
       queryParams,
       postBody,
       headerParams,
