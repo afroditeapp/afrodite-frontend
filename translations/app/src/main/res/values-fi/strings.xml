@@ -639,8 +639,8 @@
 
     <!-- Current security selfie -->
     <string name="current_security_selfie_screen_ai_face_verification">Vahvista kaikki kuvasi tekoälyllä</string>
-    <string name="current_security_selfie_screen_ai_face_verification_description_enabled">Salli tekoälyn verrata kuviasi moderointiselfieen</string>
-    <string name="current_security_selfie_screen_ai_face_verification_description_disabled">Et saa profiiliisi automaattista merkintää vahvistetusta kasvokuvasta</string>
+    <string name="current_security_selfie_screen_ai_face_verification_description_enabled">Profiiliisi lisätään kasvokuva vahvistettu -merkintä, kun tekoäly on vahvistanut kasvokuvasi moderointiselfien avulla</string>
+    <string name="current_security_selfie_screen_ai_face_verification_description_disabled">Profiiliisi lisätään kasvokuva vahvistettu -merkintä, kun tekoäly on vahvistanut kasvokuvasi moderointiselfien avulla</string>
 
     <!-- Profile location screen -->
     <string name="profile_location_screen_title">Sijainti</string>

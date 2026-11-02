@@ -697,11 +697,11 @@ class AppLocalizationsFi extends AppLocalizations {
 
   @override
   String get current_security_selfie_screen_ai_face_verification_description_disabled =>
-      'Et saa profiiliisi automaattista merkintää vahvistetusta kasvokuvasta';
+      'Profiiliisi lisätään kasvokuva vahvistettu -merkintä, kun tekoäly on vahvistanut kasvokuvasi moderointiselfien avulla';
 
   @override
   String get current_security_selfie_screen_ai_face_verification_description_enabled =>
-      'Salli tekoälyn verrata kuviasi moderointiselfieen';
+      'Profiiliisi lisätään kasvokuva vahvistettu -merkintä, kun tekoäly on vahvistanut kasvokuvasi moderointiselfien avulla';
 
   @override
   String get data_export_screen_api_limit_error =>

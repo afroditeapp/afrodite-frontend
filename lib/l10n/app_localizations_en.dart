@@ -693,11 +693,11 @@ class AppLocalizationsEn extends AppLocalizations {
 
   @override
   String get current_security_selfie_screen_ai_face_verification_description_disabled =>
-      'You will not get automatic face picture verified mark to your profile';
+      'Face picture verified mark will be added to your profile after AI has verified your face pictures using security selfie';
 
   @override
   String get current_security_selfie_screen_ai_face_verification_description_enabled =>
-      'Allow AI to verify your face pictures using security selfie';
+      'Face picture verified mark will be added to your profile after AI has verified your face pictures using security selfie';
 
   @override
   String get data_export_screen_api_limit_error => 'Daily limit reached. Try again after 24 hours.';

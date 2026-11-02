@@ -1247,13 +1247,13 @@ abstract class AppLocalizations {
   /// Description for AI face verification consent setting when disabled
   ///
   /// In en, this message translates to:
-  /// **'You will not get automatic face picture verified mark to your profile'**
+  /// **'Face picture verified mark will be added to your profile after AI has verified your face pictures using security selfie'**
   String get current_security_selfie_screen_ai_face_verification_description_disabled;
 
   /// Description for AI face verification consent setting when enabled
   ///
   /// In en, this message translates to:
-  /// **'Allow AI to verify your face pictures using security selfie'**
+  /// **'Face picture verified mark will be added to your profile after AI has verified your face pictures using security selfie'**
   String get current_security_selfie_screen_ai_face_verification_description_enabled;
 
   /// Snackbar text for API limit error
