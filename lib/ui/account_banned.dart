@@ -110,6 +110,7 @@ class _AccountBannedScreenState extends State<AccountBannedScreen> {
     } else {
       final String? banReason = result.reasonDetails?.value;
       final String? banReasonCategory = _banReasonCategoryText(context, result.reasonCategory);
+      final String? banAdminType = result.adminType?.toUiString(context);
       final localTime = fullTimeString(
         bannedUntil.toUtcDateTime(),
         Localizations.localeOf(context).localeString(),
@@ -117,6 +118,9 @@ class _AccountBannedScreenState extends State<AccountBannedScreen> {
       widgets = [
         Text(context.strings.account_banned_screen_time_text(localTime)),
         const Padding(padding: EdgeInsets.only(top: 8)),
+        if (banAdminType != null)
+          Text(context.strings.account_banned_screen_admin_type(banAdminType)),
+        if (banAdminType != null) const Padding(padding: EdgeInsets.only(top: 8)),
         if (banReasonCategory != null) Text(banReasonCategory),
         if (banReasonCategory != null && banReason != null)
           const Padding(padding: EdgeInsets.only(top: 8)),

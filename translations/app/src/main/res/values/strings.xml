@@ -792,6 +792,12 @@
     <string name="account_banned_screen_ban_reason" description="Text for account ban reason">Reason: %s</string>
     <string name="account_banned_screen_ban_reason_category" description="Text for account ban reason category">Category: %s</string>
     <string name="account_banned_screen_time_text" description="Time when account unban process will begin">Ban deletion will begin at %s</string>
+    <string name="account_banned_screen_admin_type" description="Text for entity that gave the account ban">Banned by: %s</string>
+
+    <!-- Account ban admin type -->
+    <string name="account_ban_admin_type_human" description="Account ban was given by human admin">Admin</string>
+    <string name="account_ban_admin_type_bot" description="Account ban was given by admin bot">Admin bot</string>
+    <string name="account_ban_admin_type_server" description="Account ban was given by server">Server</string>
 
     <!-- Account ban reason category -->
     <string name="account_ban_reason_category_profile_name" description="Account ban reason category profile name">Profile name</string>

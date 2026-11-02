@@ -20,6 +20,15 @@ class AppLocalizationsFi extends AppLocalizations {
   }
 
   @override
+  String get account_ban_admin_type_bot => 'Ylläpitobotti';
+
+  @override
+  String get account_ban_admin_type_human => 'Ylläpitäjä';
+
+  @override
+  String get account_ban_admin_type_server => 'Palvelin';
+
+  @override
   String get account_ban_reason_category_chat_message => 'Chat-viesti';
 
   @override
@@ -33,6 +42,11 @@ class AppLocalizationsFi extends AppLocalizations {
 
   @override
   String get account_ban_reason_category_report_spam => 'Ilmoitusten roskapostitus';
+
+  @override
+  String account_banned_screen_admin_type(String p0) {
+    return 'Porttikiellon antaja: $p0';
+  }
 
   @override
   String account_banned_screen_ban_reason(String p0) {

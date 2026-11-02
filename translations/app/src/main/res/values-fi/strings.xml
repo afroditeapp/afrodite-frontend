@@ -785,6 +785,12 @@
     <string name="account_banned_screen_ban_reason">Syy: %s</string>
     <string name="account_banned_screen_ban_reason_category">Kategoria: %s</string>
     <string name="account_banned_screen_time_text">Porttikiellon poistoprosessi alkaa %s</string>
+    <string name="account_banned_screen_admin_type">Porttikiellon antaja: %s</string>
+
+    <!-- Account ban admin type -->
+    <string name="account_ban_admin_type_human">Ylläpitäjä</string>
+    <string name="account_ban_admin_type_bot">Ylläpitobotti</string>
+    <string name="account_ban_admin_type_server">Palvelin</string>
 
     <!-- Account ban reason category -->
     <string name="account_ban_reason_category_profile_name">Profiilinimi</string>

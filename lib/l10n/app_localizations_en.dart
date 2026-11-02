@@ -20,6 +20,15 @@ class AppLocalizationsEn extends AppLocalizations {
   }
 
   @override
+  String get account_ban_admin_type_bot => 'Admin bot';
+
+  @override
+  String get account_ban_admin_type_human => 'Admin';
+
+  @override
+  String get account_ban_admin_type_server => 'Server';
+
+  @override
   String get account_ban_reason_category_chat_message => 'Chat message';
 
   @override
@@ -33,6 +42,11 @@ class AppLocalizationsEn extends AppLocalizations {
 
   @override
   String get account_ban_reason_category_report_spam => 'Report spam';
+
+  @override
+  String account_banned_screen_admin_type(String p0) {
+    return 'Banned by: $p0';
+  }
 
   @override
   String account_banned_screen_ban_reason(String p0) {

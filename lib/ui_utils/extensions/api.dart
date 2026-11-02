@@ -142,6 +142,17 @@ extension AccountBanReasonCategoryUiExtensions on AccountBanReasonCategory {
   }
 }
 
+extension AccountBannedAdminTypeUiExtensions on AccountBannedAdminType {
+  String? toUiString(BuildContext context) {
+    return switch (this) {
+      AccountBannedAdminType.human => context.strings.account_ban_admin_type_human,
+      AccountBannedAdminType.bot => context.strings.account_ban_admin_type_bot,
+      AccountBannedAdminType.server => context.strings.account_ban_admin_type_server,
+      AccountBannedAdminType.unknownDefaultOpenApi => null,
+    };
+  }
+}
+
 extension StringResourceUiExtensions on StringResource {
   String toLocalizedText(BuildContext context) {
     final languageCode = Localizations.localeOf(context).languageCode;

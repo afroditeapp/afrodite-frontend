@@ -104,6 +104,24 @@ abstract class AppLocalizations {
   /// **'Version ID: {p0}'**
   String about_dialog_git_commit_id(String p0);
 
+  /// Account ban was given by admin bot
+  ///
+  /// In en, this message translates to:
+  /// **'Admin bot'**
+  String get account_ban_admin_type_bot;
+
+  /// Account ban was given by human admin
+  ///
+  /// In en, this message translates to:
+  /// **'Admin'**
+  String get account_ban_admin_type_human;
+
+  /// Account ban was given by server
+  ///
+  /// In en, this message translates to:
+  /// **'Server'**
+  String get account_ban_admin_type_server;
+
   /// Account ban reason category chat message
   ///
   /// In en, this message translates to:
@@ -133,6 +151,12 @@ abstract class AppLocalizations {
   /// In en, this message translates to:
   /// **'Report spam'**
   String get account_ban_reason_category_report_spam;
+
+  /// Text for entity that gave the account ban
+  ///
+  /// In en, this message translates to:
+  /// **'Banned by: {p0}'**
+  String account_banned_screen_admin_type(String p0);
 
   /// Text for account ban reason
   ///

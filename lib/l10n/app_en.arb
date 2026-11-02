@@ -17,6 +17,18 @@
       }
     }
   },
+  "account_ban_admin_type_bot": "Admin bot",
+  "@account_ban_admin_type_bot": {
+    "description": "Account ban was given by admin bot"
+  },
+  "account_ban_admin_type_human": "Admin",
+  "@account_ban_admin_type_human": {
+    "description": "Account ban was given by human admin"
+  },
+  "account_ban_admin_type_server": "Server",
+  "@account_ban_admin_type_server": {
+    "description": "Account ban was given by server"
+  },
   "account_ban_reason_category_chat_message": "Chat message",
   "@account_ban_reason_category_chat_message": {
     "description": "Account ban reason category chat message"
@@ -36,6 +48,15 @@
   "account_ban_reason_category_report_spam": "Report spam",
   "@account_ban_reason_category_report_spam": {
     "description": "Account ban reason category report spam"
+  },
+  "account_banned_screen_admin_type": "Banned by: {p0}",
+  "@account_banned_screen_admin_type": {
+    "description": "Text for entity that gave the account ban",
+    "placeholders": {
+      "p0": {
+        "type": "String"
+      }
+    }
   },
   "account_banned_screen_ban_reason": "Reason: {p0}",
   "@account_banned_screen_ban_reason": {
