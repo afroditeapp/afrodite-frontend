@@ -18,6 +18,7 @@ void main() {
       expect(validator.validate('user_name@example.com'), isNull);
       expect(validator.validate('user-name@example.com'), isNull);
       expect(validator.validate('user123@example.com'), isNull);
+      expect(validator.validate('user+tag@example.com'), isNull);
     });
 
     test('trims surrounding whitespace', () {
@@ -78,10 +79,6 @@ void main() {
     test('rejects invalid characters in the local part', () {
       expect(
         validator.validate('us!er@example.com'),
-        equals(EmailAddressValidationError.invalidCharacters),
-      );
-      expect(
-        validator.validate('user+tag@example.com'),
         equals(EmailAddressValidationError.invalidCharacters),
       );
     });

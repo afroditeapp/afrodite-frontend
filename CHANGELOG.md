@@ -4,6 +4,7 @@
 
 ### Changed
 
+- Allow '+' character in local part of email address
 - Reorganize admin tasks UI
 - Refresh admin task lists silently when returning from a task screen
 

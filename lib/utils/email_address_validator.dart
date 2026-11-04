@@ -35,9 +35,8 @@ class EmailAddressValidator {
     final localPart = parts[0];
     final domainPart = parts[1];
 
-    // Every character of the local part must be allowed. `+` is excluded as
-    // the backend does not support address aliases.
-    if (!RegExp(r'^[a-zA-Z0-9._-]+$').hasMatch(localPart)) {
+    // Every character of the local part must be allowed.
+    if (!RegExp(r'^[a-zA-Z0-9._+-]+$').hasMatch(localPart)) {
       return EmailAddressValidationError.invalidCharacters;
     }
 
