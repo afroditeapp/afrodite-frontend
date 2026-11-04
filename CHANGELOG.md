@@ -5,6 +5,7 @@
 ### Changed
 
 - Reorganize admin tasks UI
+- Refresh admin task lists silently when returning from a task screen
 
 ## [0.25.5] - 2026-11-02
 
