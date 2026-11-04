@@ -278,23 +278,40 @@ class _AdminBotProcessedContentTasksScreenState extends State<AdminBotProcessedC
   }
 
   Widget taskListWidget(BuildContext context, RequiredData data) {
-    return SingleChildScrollView(child: Column(children: [...tasks(context, data)]));
+    final widgets = <Widget>[];
+
+    void addCategory(String title, List<Setting> settings) {
+      if (settings.isEmpty) return;
+      widgets.add(settingsCategoryTitle(context, title));
+      widgets.addAll(settings.map((setting) => setting.toListTile()));
+    }
+
+    addCategory("Accepted", acceptedTasks(context, data));
+    addCategory("Rejected", rejectedTasks(context, data));
+
+    return SingleChildScrollView(
+      child: Column(crossAxisAlignment: CrossAxisAlignment.start, children: widgets),
+    );
   }
 
-  Iterable<Widget> tasks(BuildContext context, RequiredData data) {
-    List<Setting> settings = [
+  List<Setting> acceptedTasks(BuildContext context, RequiredData data) {
+    return [
       if (data.contentBotInitial) moderateImagesInitialBotAcceptedSetting(context),
-      if (data.contentBotInitialRejected) moderateImagesInitialBotRejectedSetting(context),
       if (data.contentBot) moderateImagesNormalBotAcceptedSetting(context),
-      if (data.contentBotRejected) moderateImagesNormalBotRejectedSetting(context),
       if (data.profileNamesBot) moderateProfileNamesBotAcceptedSetting(context),
-      if (data.profileNamesBotRejected) moderateProfileNamesBotRejectedSetting(context),
       if (data.profileTextsBot) moderateProfileTextsBotAcceptedSetting(context),
-      if (data.profileTextsBotRejected) moderateProfileTextsBotRejectedSetting(context),
       if (data.reportsBot) processReportsBotAcceptedSetting(context),
+    ];
+  }
+
+  List<Setting> rejectedTasks(BuildContext context, RequiredData data) {
+    return [
+      if (data.contentBotInitialRejected) moderateImagesInitialBotRejectedSetting(context),
+      if (data.contentBotRejected) moderateImagesNormalBotRejectedSetting(context),
+      if (data.profileNamesBotRejected) moderateProfileNamesBotRejectedSetting(context),
+      if (data.profileTextsBotRejected) moderateProfileTextsBotRejectedSetting(context),
       if (data.reportsBotRejected) processReportsBotRejectedSetting(context),
     ];
-    return settings.map((v) => v.toListTile());
   }
 }
 

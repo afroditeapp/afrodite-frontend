@@ -2,6 +2,10 @@
 
 ## [Unreleased]
 
+### Changed
+
+- Reorganize admin tasks UI
+
 ## [0.25.5] - 2026-11-02
 
 ### Added

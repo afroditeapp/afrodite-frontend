@@ -262,22 +262,39 @@ class _ModeratorTasksScreenState extends State<ModeratorTasksScreen> {
   }
 
   Widget taskListWidget(BuildContext context, RequiredData data) {
-    return SingleChildScrollView(child: Column(children: [...tasks(context, data)]));
+    final widgets = <Widget>[];
+
+    void addCategory(String title, List<Setting> settings) {
+      if (settings.isEmpty) return;
+      widgets.add(settingsCategoryTitle(context, title));
+      widgets.addAll(settings.map((setting) => setting.toListTile()));
+    }
+
+    addCategory("Bot", botTasks(context, data));
+    addCategory("Human", humanTasks(context, data));
+
+    return SingleChildScrollView(
+      child: Column(crossAxisAlignment: CrossAxisAlignment.start, children: widgets),
+    );
   }
 
-  Iterable<Widget> tasks(BuildContext context, RequiredData data) {
-    List<Setting> settings = [
+  List<Setting> botTasks(BuildContext context, RequiredData data) {
+    return [
       if (data.contentBotInitial) moderateImagesInitialBotSetting(context),
-      if (data.contentHumanInitial) moderateImagesInitialHumanSetting(context),
       if (data.contentBot) moderateImagesNormalBotSetting(context),
-      if (data.contentHuman) moderateImagesNormalHumanSetting(context),
       if (data.profileNamesBot) moderateProfileNamesBotSetting(context),
-      if (data.profileNamesHuman) moderateProfileNamesHumanSetting(context),
       if (data.profileTextsBot) moderateProfileTextsBotSetting(context),
+    ];
+  }
+
+  List<Setting> humanTasks(BuildContext context, RequiredData data) {
+    return [
+      if (data.contentHumanInitial) moderateImagesInitialHumanSetting(context),
+      if (data.contentHuman) moderateImagesNormalHumanSetting(context),
+      if (data.profileNamesHuman) moderateProfileNamesHumanSetting(context),
       if (data.profileTextsHuman) moderateProfileTextsHumanSetting(context),
       if (data.reports) processReportsSetting(context),
     ];
-    return settings.map((v) => v.toListTile());
   }
 }
 

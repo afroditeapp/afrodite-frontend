@@ -92,7 +92,11 @@ class AdminSettingsScreen extends StatelessWidget {
           widgets.addAll(settings.map((setting) => setting.toListTile()));
         }
 
-        addCategory("Moderation", moderationSettings(context, r, permissions));
+        addCategory("Tasks: All", moderationTasksSettings(context, r, permissions, showAll: true));
+        addCategory(
+          "Tasks: TODO",
+          moderationTasksSettings(context, r, permissions, showAll: false),
+        );
         addCategory("Server configuration", serverConfigSettings(context, r, permissions));
         addCategory("Metrics & accounts", metricsAndAccountsSettings(context, r, permissions));
         addCategory("Schema & content", schemaAndContentSettings(context, r, permissions));
@@ -108,24 +112,29 @@ class AdminSettingsScreen extends StatelessWidget {
     );
   }
 
-  List<Setting> moderationSettings(
+  List<Setting> moderationTasksSettings(
     BuildContext context,
     RepositoryInstances r,
-    AdminSettingsPermissions permissions,
-  ) {
+    AdminSettingsPermissions permissions, {
+    required bool showAll,
+  }) {
     final settings = <Setting>[];
     if (permissions.adminModerateMediaContent ||
         permissions.adminModerateProfileNames ||
         permissions.adminModerateProfileTexts ||
         permissions.adminProcessReports) {
-      settings.add(moderatorTasksTodoSetting(context, r));
-      settings.add(moderatorTasksAllSetting(context, r));
+      settings.add(
+        showAll ? moderatorTasksAllSetting(context, r) : moderatorTasksTodoSetting(context, r),
+      );
     }
     if (permissions.adminModerateMediaContent ||
         permissions.adminModerateProfileNames ||
         permissions.adminModerateProfileTexts) {
-      settings.add(adminBotProcessedContentTasksTodoSetting(context, r));
-      settings.add(adminBotProcessedContentTasksAllSetting(context, r));
+      settings.add(
+        showAll
+            ? adminBotProcessedContentTasksAllSetting(context, r)
+            : adminBotProcessedContentTasksTodoSetting(context, r),
+      );
     }
     return settings;
   }
