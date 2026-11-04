@@ -36,6 +36,38 @@ class AdminSettingsPage extends MyScreenPage<()> with SimpleUrlParser<AdminSetti
   AdminSettingsPage create() => AdminSettingsPage();
 }
 
+Setting moderatorTasksTodoSetting(BuildContext context, RepositoryInstances r) {
+  return Setting.createSetting(
+    Icons.task,
+    "Moderator tasks (todo)",
+    () => MyNavigator.push(context, ModeratorTasksPage(r)),
+  );
+}
+
+Setting moderatorTasksAllSetting(BuildContext context, RepositoryInstances r) {
+  return Setting.createSetting(
+    Icons.task,
+    "Moderator tasks (all)",
+    () => MyNavigator.push(context, ModeratorTasksPage(r, showAll: true)),
+  );
+}
+
+Setting adminBotProcessedContentTasksTodoSetting(BuildContext context, RepositoryInstances r) {
+  return Setting.createSetting(
+    Icons.task,
+    "Admin bot processed content tasks (todo)",
+    () => MyNavigator.push(context, AdminBotProcessedContentTasksPage(r)),
+  );
+}
+
+Setting adminBotProcessedContentTasksAllSetting(BuildContext context, RepositoryInstances r) {
+  return Setting.createSetting(
+    Icons.task,
+    "Admin bot processed content tasks (all)",
+    () => MyNavigator.push(context, AdminBotProcessedContentTasksPage(r, showAll: true)),
+  );
+}
+
 class AdminSettingsScreen extends StatelessWidget {
   const AdminSettingsScreen({super.key});
 
@@ -86,38 +118,14 @@ class AdminSettingsScreen extends StatelessWidget {
         permissions.adminModerateProfileNames ||
         permissions.adminModerateProfileTexts ||
         permissions.adminProcessReports) {
-      settings.add(
-        Setting.createSetting(
-          Icons.task,
-          "Moderator tasks (todo)",
-          () => MyNavigator.push(context, ModeratorTasksPage(r)),
-        ),
-      );
-      settings.add(
-        Setting.createSetting(
-          Icons.task,
-          "Moderator tasks (all)",
-          () => MyNavigator.push(context, ModeratorTasksPage(r, showAll: true)),
-        ),
-      );
+      settings.add(moderatorTasksTodoSetting(context, r));
+      settings.add(moderatorTasksAllSetting(context, r));
     }
     if (permissions.adminModerateMediaContent ||
         permissions.adminModerateProfileNames ||
         permissions.adminModerateProfileTexts) {
-      settings.add(
-        Setting.createSetting(
-          Icons.task,
-          "Admin bot processed content tasks (todo)",
-          () => MyNavigator.push(context, AdminBotProcessedContentTasksPage(r)),
-        ),
-      );
-      settings.add(
-        Setting.createSetting(
-          Icons.task,
-          "Admin bot processed content tasks (all)",
-          () => MyNavigator.push(context, AdminBotProcessedContentTasksPage(r, showAll: true)),
-        ),
-      );
+      settings.add(adminBotProcessedContentTasksTodoSetting(context, r));
+      settings.add(adminBotProcessedContentTasksAllSetting(context, r));
     }
     return settings;
   }

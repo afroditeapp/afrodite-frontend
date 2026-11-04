@@ -266,122 +266,155 @@ class _ModeratorTasksScreenState extends State<ModeratorTasksScreen> {
   }
 
   Iterable<Widget> tasks(BuildContext context, RequiredData data) {
-    final r = context.read<RepositoryInstances>();
     List<Setting> settings = [
-      if (data.contentBotInitial)
-        Setting.createSetting(
-          Icons.image,
-          "Moderate images (initial, bot)",
-          () => MyNavigator.pushLimited(
-            context,
-            ModerateImagesPage(
-              r,
-              moderationType: MediaContentModerationType.initial,
-              queueType: MediaContentModerationQueueType.waitingAdminBot,
-            ),
-          ),
-        ),
-      if (data.contentHumanInitial)
-        Setting.createSetting(
-          Icons.image,
-          "Moderate images (initial, human)",
-          () => MyNavigator.pushLimited(
-            context,
-            ModerateImagesPage(
-              r,
-              moderationType: MediaContentModerationType.initial,
-              queueType: MediaContentModerationQueueType.waitingAdmin,
-            ),
-          ),
-        ),
-      if (data.contentBot)
-        Setting.createSetting(
-          Icons.image,
-          "Moderate images (normal, bot)",
-          () => MyNavigator.pushLimited(
-            context,
-            ModerateImagesPage(
-              r,
-              moderationType: MediaContentModerationType.normal,
-              queueType: MediaContentModerationQueueType.waitingAdminBot,
-            ),
-          ),
-        ),
-      if (data.contentHuman)
-        Setting.createSetting(
-          Icons.image,
-          "Moderate images (normal, human)",
-          () => MyNavigator.pushLimited(
-            context,
-            ModerateImagesPage(
-              r,
-              moderationType: MediaContentModerationType.normal,
-              queueType: MediaContentModerationQueueType.waitingAdmin,
-            ),
-          ),
-        ),
-      if (data.profileNamesBot)
-        Setting.createSetting(
-          Icons.text_fields,
-          "Moderate profile names (bot)",
-          () => MyNavigator.pushLimited(
-            context,
-            ModerateProfileStringsPage(
-              r,
-              contentType: ProfileStringModerationContentType.profileName,
-              queueType: ProfileStringModerationQueueType.waitingAdminBot,
-            ),
-          ),
-        ),
-      if (data.profileNamesHuman)
-        Setting.createSetting(
-          Icons.text_fields,
-          "Moderate profile names (human)",
-          () => MyNavigator.pushLimited(
-            context,
-            ModerateProfileStringsPage(
-              r,
-              contentType: ProfileStringModerationContentType.profileName,
-              queueType: ProfileStringModerationQueueType.waitingAdmin,
-            ),
-          ),
-        ),
-      if (data.profileTextsBot)
-        Setting.createSetting(
-          Icons.text_fields,
-          "Moderate profile texts (bot)",
-          () => MyNavigator.pushLimited(
-            context,
-            ModerateProfileStringsPage(
-              r,
-              contentType: ProfileStringModerationContentType.profileText,
-              queueType: ProfileStringModerationQueueType.waitingAdminBot,
-            ),
-          ),
-        ),
-      if (data.profileTextsHuman)
-        Setting.createSetting(
-          Icons.text_fields,
-          "Moderate profile texts (human)",
-          () => MyNavigator.pushLimited(
-            context,
-            ModerateProfileStringsPage(
-              r,
-              contentType: ProfileStringModerationContentType.profileText,
-              queueType: ProfileStringModerationQueueType.waitingAdmin,
-            ),
-          ),
-        ),
-      if (data.reports)
-        Setting.createSetting(
-          Icons.report,
-          "Process reports",
-          () => MyNavigator.pushLimited(
-            context,
-            ProcessReportsPage(r, queueType: ReportQueueType.waiting),
-          ),
-        ),
+      if (data.contentBotInitial) moderateImagesInitialBotSetting(context),
+      if (data.contentHumanInitial) moderateImagesInitialHumanSetting(context),
+      if (data.contentBot) moderateImagesNormalBotSetting(context),
+      if (data.contentHuman) moderateImagesNormalHumanSetting(context),
+      if (data.profileNamesBot) moderateProfileNamesBotSetting(context),
+      if (data.profileNamesHuman) moderateProfileNamesHumanSetting(context),
+      if (data.profileTextsBot) moderateProfileTextsBotSetting(context),
+      if (data.profileTextsHuman) moderateProfileTextsHumanSetting(context),
+      if (data.reports) processReportsSetting(context),
     ];
     return settings.map((v) => v.toListTile());
   }
+}
+
+Setting moderateImagesInitialBotSetting(BuildContext context) {
+  final r = context.read<RepositoryInstances>();
+  return Setting.createSetting(
+    Icons.image,
+    "Moderate images (initial, bot)",
+    () => MyNavigator.pushLimited(
+      context,
+      ModerateImagesPage(
+        r,
+        moderationType: MediaContentModerationType.initial,
+        queueType: MediaContentModerationQueueType.waitingAdminBot,
+      ),
+    ),
+  );
+}
+
+Setting moderateImagesInitialHumanSetting(BuildContext context) {
+  final r = context.read<RepositoryInstances>();
+  return Setting.createSetting(
+    Icons.image,
+    "Moderate images (initial, human)",
+    () => MyNavigator.pushLimited(
+      context,
+      ModerateImagesPage(
+        r,
+        moderationType: MediaContentModerationType.initial,
+        queueType: MediaContentModerationQueueType.waitingAdmin,
+      ),
+    ),
+  );
+}
+
+Setting moderateImagesNormalBotSetting(BuildContext context) {
+  final r = context.read<RepositoryInstances>();
+  return Setting.createSetting(
+    Icons.image,
+    "Moderate images (normal, bot)",
+    () => MyNavigator.pushLimited(
+      context,
+      ModerateImagesPage(
+        r,
+        moderationType: MediaContentModerationType.normal,
+        queueType: MediaContentModerationQueueType.waitingAdminBot,
+      ),
+    ),
+  );
+}
+
+Setting moderateImagesNormalHumanSetting(BuildContext context) {
+  final r = context.read<RepositoryInstances>();
+  return Setting.createSetting(
+    Icons.image,
+    "Moderate images (normal, human)",
+    () => MyNavigator.pushLimited(
+      context,
+      ModerateImagesPage(
+        r,
+        moderationType: MediaContentModerationType.normal,
+        queueType: MediaContentModerationQueueType.waitingAdmin,
+      ),
+    ),
+  );
+}
+
+Setting moderateProfileNamesBotSetting(BuildContext context) {
+  final r = context.read<RepositoryInstances>();
+  return Setting.createSetting(
+    Icons.text_fields,
+    "Moderate profile names (bot)",
+    () => MyNavigator.pushLimited(
+      context,
+      ModerateProfileStringsPage(
+        r,
+        contentType: ProfileStringModerationContentType.profileName,
+        queueType: ProfileStringModerationQueueType.waitingAdminBot,
+      ),
+    ),
+  );
+}
+
+Setting moderateProfileNamesHumanSetting(BuildContext context) {
+  final r = context.read<RepositoryInstances>();
+  return Setting.createSetting(
+    Icons.text_fields,
+    "Moderate profile names (human)",
+    () => MyNavigator.pushLimited(
+      context,
+      ModerateProfileStringsPage(
+        r,
+        contentType: ProfileStringModerationContentType.profileName,
+        queueType: ProfileStringModerationQueueType.waitingAdmin,
+      ),
+    ),
+  );
+}
+
+Setting moderateProfileTextsBotSetting(BuildContext context) {
+  final r = context.read<RepositoryInstances>();
+  return Setting.createSetting(
+    Icons.text_fields,
+    "Moderate profile texts (bot)",
+    () => MyNavigator.pushLimited(
+      context,
+      ModerateProfileStringsPage(
+        r,
+        contentType: ProfileStringModerationContentType.profileText,
+        queueType: ProfileStringModerationQueueType.waitingAdminBot,
+      ),
+    ),
+  );
+}
+
+Setting moderateProfileTextsHumanSetting(BuildContext context) {
+  final r = context.read<RepositoryInstances>();
+  return Setting.createSetting(
+    Icons.text_fields,
+    "Moderate profile texts (human)",
+    () => MyNavigator.pushLimited(
+      context,
+      ModerateProfileStringsPage(
+        r,
+        contentType: ProfileStringModerationContentType.profileText,
+        queueType: ProfileStringModerationQueueType.waitingAdmin,
+      ),
+    ),
+  );
+}
+
+Setting processReportsSetting(BuildContext context) {
+  final r = context.read<RepositoryInstances>();
+  return Setting.createSetting(
+    Icons.report,
+    "Process reports",
+    () =>
+        MyNavigator.pushLimited(context, ProcessReportsPage(r, queueType: ReportQueueType.waiting)),
+  );
 }

@@ -282,131 +282,170 @@ class _AdminBotProcessedContentTasksScreenState extends State<AdminBotProcessedC
   }
 
   Iterable<Widget> tasks(BuildContext context, RequiredData data) {
-    final r = context.read<RepositoryInstances>();
     List<Setting> settings = [
-      if (data.contentBotInitial)
-        Setting.createSetting(
-          Icons.image,
-          "Moderate images (initial, bot accepted)",
-          () => MyNavigator.pushLimited(
-            context,
-            ModerateImagesPage(
-              r,
-              moderationType: MediaContentModerationType.initial,
-              queueType: MediaContentModerationQueueType.acceptedByAdminBot,
-            ),
-          ),
-        ),
-      if (data.contentBotInitialRejected)
-        Setting.createSetting(
-          Icons.image,
-          "Moderate images (initial, bot rejected)",
-          () => MyNavigator.pushLimited(
-            context,
-            ModerateImagesPage(
-              r,
-              moderationType: MediaContentModerationType.initial,
-              queueType: MediaContentModerationQueueType.rejectedByAdminBot,
-            ),
-          ),
-        ),
-      if (data.contentBot)
-        Setting.createSetting(
-          Icons.image,
-          "Moderate images (normal, bot accepted)",
-          () => MyNavigator.pushLimited(
-            context,
-            ModerateImagesPage(
-              r,
-              moderationType: MediaContentModerationType.normal,
-              queueType: MediaContentModerationQueueType.acceptedByAdminBot,
-            ),
-          ),
-        ),
-      if (data.contentBotRejected)
-        Setting.createSetting(
-          Icons.image,
-          "Moderate images (normal, bot rejected)",
-          () => MyNavigator.pushLimited(
-            context,
-            ModerateImagesPage(
-              r,
-              moderationType: MediaContentModerationType.normal,
-              queueType: MediaContentModerationQueueType.rejectedByAdminBot,
-            ),
-          ),
-        ),
-      if (data.profileNamesBot)
-        Setting.createSetting(
-          Icons.text_fields,
-          "Moderate profile names (bot accepted)",
-          () => MyNavigator.pushLimited(
-            context,
-            ModerateProfileStringsPage(
-              r,
-              contentType: ProfileStringModerationContentType.profileName,
-              queueType: ProfileStringModerationQueueType.acceptedByAdminBot,
-            ),
-          ),
-        ),
-      if (data.profileNamesBotRejected)
-        Setting.createSetting(
-          Icons.text_fields,
-          "Moderate profile names (bot rejected)",
-          () => MyNavigator.pushLimited(
-            context,
-            ModerateProfileStringsPage(
-              r,
-              contentType: ProfileStringModerationContentType.profileName,
-              queueType: ProfileStringModerationQueueType.rejectedByAdminBot,
-            ),
-          ),
-        ),
-      if (data.profileTextsBot)
-        Setting.createSetting(
-          Icons.text_fields,
-          "Moderate profile texts (bot accepted)",
-          () => MyNavigator.pushLimited(
-            context,
-            ModerateProfileStringsPage(
-              r,
-              contentType: ProfileStringModerationContentType.profileText,
-              queueType: ProfileStringModerationQueueType.acceptedByAdminBot,
-            ),
-          ),
-        ),
-      if (data.profileTextsBotRejected)
-        Setting.createSetting(
-          Icons.text_fields,
-          "Moderate profile texts (bot rejected)",
-          () => MyNavigator.pushLimited(
-            context,
-            ModerateProfileStringsPage(
-              r,
-              contentType: ProfileStringModerationContentType.profileText,
-              queueType: ProfileStringModerationQueueType.rejectedByAdminBot,
-            ),
-          ),
-        ),
-      if (data.reportsBot)
-        Setting.createSetting(
-          Icons.report,
-          "Process reports (bot accepted)",
-          () => MyNavigator.pushLimited(
-            context,
-            ProcessReportsPage(r, queueType: ReportQueueType.acceptedByAdminBot),
-          ),
-        ),
-      if (data.reportsBotRejected)
-        Setting.createSetting(
-          Icons.report,
-          "Process reports (bot rejected)",
-          () => MyNavigator.pushLimited(
-            context,
-            ProcessReportsPage(r, queueType: ReportQueueType.rejectedByAdminBot),
-          ),
-        ),
+      if (data.contentBotInitial) moderateImagesInitialBotAcceptedSetting(context),
+      if (data.contentBotInitialRejected) moderateImagesInitialBotRejectedSetting(context),
+      if (data.contentBot) moderateImagesNormalBotAcceptedSetting(context),
+      if (data.contentBotRejected) moderateImagesNormalBotRejectedSetting(context),
+      if (data.profileNamesBot) moderateProfileNamesBotAcceptedSetting(context),
+      if (data.profileNamesBotRejected) moderateProfileNamesBotRejectedSetting(context),
+      if (data.profileTextsBot) moderateProfileTextsBotAcceptedSetting(context),
+      if (data.profileTextsBotRejected) moderateProfileTextsBotRejectedSetting(context),
+      if (data.reportsBot) processReportsBotAcceptedSetting(context),
+      if (data.reportsBotRejected) processReportsBotRejectedSetting(context),
     ];
     return settings.map((v) => v.toListTile());
   }
+}
+
+Setting moderateImagesInitialBotAcceptedSetting(BuildContext context) {
+  final r = context.read<RepositoryInstances>();
+  return Setting.createSetting(
+    Icons.image,
+    "Moderate images (initial, bot accepted)",
+    () => MyNavigator.pushLimited(
+      context,
+      ModerateImagesPage(
+        r,
+        moderationType: MediaContentModerationType.initial,
+        queueType: MediaContentModerationQueueType.acceptedByAdminBot,
+      ),
+    ),
+  );
+}
+
+Setting moderateImagesInitialBotRejectedSetting(BuildContext context) {
+  final r = context.read<RepositoryInstances>();
+  return Setting.createSetting(
+    Icons.image,
+    "Moderate images (initial, bot rejected)",
+    () => MyNavigator.pushLimited(
+      context,
+      ModerateImagesPage(
+        r,
+        moderationType: MediaContentModerationType.initial,
+        queueType: MediaContentModerationQueueType.rejectedByAdminBot,
+      ),
+    ),
+  );
+}
+
+Setting moderateImagesNormalBotAcceptedSetting(BuildContext context) {
+  final r = context.read<RepositoryInstances>();
+  return Setting.createSetting(
+    Icons.image,
+    "Moderate images (normal, bot accepted)",
+    () => MyNavigator.pushLimited(
+      context,
+      ModerateImagesPage(
+        r,
+        moderationType: MediaContentModerationType.normal,
+        queueType: MediaContentModerationQueueType.acceptedByAdminBot,
+      ),
+    ),
+  );
+}
+
+Setting moderateImagesNormalBotRejectedSetting(BuildContext context) {
+  final r = context.read<RepositoryInstances>();
+  return Setting.createSetting(
+    Icons.image,
+    "Moderate images (normal, bot rejected)",
+    () => MyNavigator.pushLimited(
+      context,
+      ModerateImagesPage(
+        r,
+        moderationType: MediaContentModerationType.normal,
+        queueType: MediaContentModerationQueueType.rejectedByAdminBot,
+      ),
+    ),
+  );
+}
+
+Setting moderateProfileNamesBotAcceptedSetting(BuildContext context) {
+  final r = context.read<RepositoryInstances>();
+  return Setting.createSetting(
+    Icons.text_fields,
+    "Moderate profile names (bot accepted)",
+    () => MyNavigator.pushLimited(
+      context,
+      ModerateProfileStringsPage(
+        r,
+        contentType: ProfileStringModerationContentType.profileName,
+        queueType: ProfileStringModerationQueueType.acceptedByAdminBot,
+      ),
+    ),
+  );
+}
+
+Setting moderateProfileNamesBotRejectedSetting(BuildContext context) {
+  final r = context.read<RepositoryInstances>();
+  return Setting.createSetting(
+    Icons.text_fields,
+    "Moderate profile names (bot rejected)",
+    () => MyNavigator.pushLimited(
+      context,
+      ModerateProfileStringsPage(
+        r,
+        contentType: ProfileStringModerationContentType.profileName,
+        queueType: ProfileStringModerationQueueType.rejectedByAdminBot,
+      ),
+    ),
+  );
+}
+
+Setting moderateProfileTextsBotAcceptedSetting(BuildContext context) {
+  final r = context.read<RepositoryInstances>();
+  return Setting.createSetting(
+    Icons.text_fields,
+    "Moderate profile texts (bot accepted)",
+    () => MyNavigator.pushLimited(
+      context,
+      ModerateProfileStringsPage(
+        r,
+        contentType: ProfileStringModerationContentType.profileText,
+        queueType: ProfileStringModerationQueueType.acceptedByAdminBot,
+      ),
+    ),
+  );
+}
+
+Setting moderateProfileTextsBotRejectedSetting(BuildContext context) {
+  final r = context.read<RepositoryInstances>();
+  return Setting.createSetting(
+    Icons.text_fields,
+    "Moderate profile texts (bot rejected)",
+    () => MyNavigator.pushLimited(
+      context,
+      ModerateProfileStringsPage(
+        r,
+        contentType: ProfileStringModerationContentType.profileText,
+        queueType: ProfileStringModerationQueueType.rejectedByAdminBot,
+      ),
+    ),
+  );
+}
+
+Setting processReportsBotAcceptedSetting(BuildContext context) {
+  final r = context.read<RepositoryInstances>();
+  return Setting.createSetting(
+    Icons.report,
+    "Process reports (bot accepted)",
+    () => MyNavigator.pushLimited(
+      context,
+      ProcessReportsPage(r, queueType: ReportQueueType.acceptedByAdminBot),
+    ),
+  );
+}
+
+Setting processReportsBotRejectedSetting(BuildContext context) {
+  final r = context.read<RepositoryInstances>();
+  return Setting.createSetting(
+    Icons.report,
+    "Process reports (bot rejected)",
+    () => MyNavigator.pushLimited(
+      context,
+      ProcessReportsPage(r, queueType: ReportQueueType.rejectedByAdminBot),
+    ),
+  );
 }
