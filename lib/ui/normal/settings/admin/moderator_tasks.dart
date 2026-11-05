@@ -42,6 +42,30 @@ class RequiredData {
     required this.profileTextsHuman,
     required this.reports,
   });
+
+  RequiredData copyWith({
+    bool? contentBotInitial,
+    bool? contentHumanInitial,
+    bool? contentBot,
+    bool? contentHuman,
+    bool? profileNamesBot,
+    bool? profileNamesHuman,
+    bool? profileTextsBot,
+    bool? profileTextsHuman,
+    bool? reports,
+  }) {
+    return RequiredData(
+      contentBotInitial: contentBotInitial ?? this.contentBotInitial,
+      contentHumanInitial: contentHumanInitial ?? this.contentHumanInitial,
+      contentBot: contentBot ?? this.contentBot,
+      contentHuman: contentHuman ?? this.contentHuman,
+      profileNamesBot: profileNamesBot ?? this.profileNamesBot,
+      profileNamesHuman: profileNamesHuman ?? this.profileNamesHuman,
+      profileTextsBot: profileTextsBot ?? this.profileTextsBot,
+      profileTextsHuman: profileTextsHuman ?? this.profileTextsHuman,
+      reports: reports ?? this.reports,
+    );
+  }
 }
 
 class ModeratorTasksScreen extends StatefulWidget {
@@ -91,118 +115,61 @@ class _ModeratorTasksScreenState extends State<ModeratorTasksScreen> {
       return;
     }
 
-    final MediaContentModerationQueuePage? contentBotInitial;
-    final MediaContentModerationQueuePage? contentHumanInitial;
-    final MediaContentModerationQueuePage? contentBot;
-    final MediaContentModerationQueuePage? contentHuman;
-    if (permissions.adminModerateMediaContent) {
-      contentBotInitial = await widget.api
-          .mediaAdmin(
-            (api) => api.getMediaContentModerationQueuePage(
-              MediaContentType.jpegImage,
-              MediaContentModerationType.initial,
-              MediaContentModerationQueueType.waitingAdminBot,
-            ),
+    final hasMediaContent = permissions.adminModerateMediaContent;
+    final contentBotInitial = hasMediaContent
+        ? await _hasWaitingMediaContent(
+            MediaContentModerationType.initial,
+            MediaContentModerationQueueType.waitingAdminBot,
           )
-          .ok();
-      contentHumanInitial = await widget.api
-          .mediaAdmin(
-            (api) => api.getMediaContentModerationQueuePage(
-              MediaContentType.jpegImage,
-              MediaContentModerationType.initial,
-              MediaContentModerationQueueType.waitingAdmin,
-            ),
+        : false;
+    final contentHumanInitial = hasMediaContent
+        ? await _hasWaitingMediaContent(
+            MediaContentModerationType.initial,
+            MediaContentModerationQueueType.waitingAdmin,
           )
-          .ok();
-      contentBot = await widget.api
-          .mediaAdmin(
-            (api) => api.getMediaContentModerationQueuePage(
-              MediaContentType.jpegImage,
-              MediaContentModerationType.normal,
-              MediaContentModerationQueueType.waitingAdminBot,
-            ),
+        : false;
+    final contentBot = hasMediaContent
+        ? await _hasWaitingMediaContent(
+            MediaContentModerationType.normal,
+            MediaContentModerationQueueType.waitingAdminBot,
           )
-          .ok();
-      contentHuman = await widget.api
-          .mediaAdmin(
-            (api) => api.getMediaContentModerationQueuePage(
-              MediaContentType.jpegImage,
-              MediaContentModerationType.normal,
-              MediaContentModerationQueueType.waitingAdmin,
-            ),
+        : false;
+    final contentHuman = hasMediaContent
+        ? await _hasWaitingMediaContent(
+            MediaContentModerationType.normal,
+            MediaContentModerationQueueType.waitingAdmin,
           )
-          .ok();
-    } else {
-      final empty = MediaContentModerationQueuePage();
-      contentBotInitial = empty;
-      contentHumanInitial = empty;
-      contentBot = empty;
-      contentHuman = empty;
-    }
+        : false;
 
-    final ProfileStringModerationQueuePage? profileNamesBot;
-    final ProfileStringModerationQueuePage? profileNamesHuman;
-    if (permissions.adminModerateProfileNames) {
-      profileNamesBot = await widget.api
-          .profileAdmin(
-            (api) => api.getProfileStringModerationQueuePage(
-              ProfileStringModerationContentType.profileName,
-              ProfileStringModerationQueueType.waitingAdminBot,
-            ),
+    final hasProfileNames = permissions.adminModerateProfileNames;
+    final profileNamesBot = hasProfileNames
+        ? await _hasWaitingProfileString(
+            ProfileStringModerationContentType.profileName,
+            ProfileStringModerationQueueType.waitingAdminBot,
           )
-          .ok();
-      profileNamesHuman = await widget.api
-          .profileAdmin(
-            (api) => api.getProfileStringModerationQueuePage(
-              ProfileStringModerationContentType.profileName,
-              ProfileStringModerationQueueType.waitingAdmin,
-            ),
+        : false;
+    final profileNamesHuman = hasProfileNames
+        ? await _hasWaitingProfileString(
+            ProfileStringModerationContentType.profileName,
+            ProfileStringModerationQueueType.waitingAdmin,
           )
-          .ok();
-    } else {
-      profileNamesBot = ProfileStringModerationQueuePage();
-      profileNamesHuman = ProfileStringModerationQueuePage();
-    }
+        : false;
 
-    final ProfileStringModerationQueuePage? profileTextsBot;
-    final ProfileStringModerationQueuePage? profileTextsHuman;
-    if (permissions.adminModerateProfileTexts) {
-      profileTextsBot = await widget.api
-          .profileAdmin(
-            (api) => api.getProfileStringModerationQueuePage(
-              ProfileStringModerationContentType.profileText,
-              ProfileStringModerationQueueType.waitingAdminBot,
-            ),
+    final hasProfileTexts = permissions.adminModerateProfileTexts;
+    final profileTextsBot = hasProfileTexts
+        ? await _hasWaitingProfileString(
+            ProfileStringModerationContentType.profileText,
+            ProfileStringModerationQueueType.waitingAdminBot,
           )
-          .ok();
-      profileTextsHuman = await widget.api
-          .profileAdmin(
-            (api) => api.getProfileStringModerationQueuePage(
-              ProfileStringModerationContentType.profileText,
-              ProfileStringModerationQueueType.waitingAdmin,
-            ),
+        : false;
+    final profileTextsHuman = hasProfileTexts
+        ? await _hasWaitingProfileString(
+            ProfileStringModerationContentType.profileText,
+            ProfileStringModerationQueueType.waitingAdmin,
           )
-          .ok();
-    } else {
-      profileTextsBot = ProfileStringModerationQueuePage();
-      profileTextsHuman = ProfileStringModerationQueuePage();
-    }
+        : false;
 
-    final GetReportList? reports;
-    if (permissions.adminModerateProfileNames) {
-      reports = await widget.api
-          .commonAdmin(
-            (api) =>
-                api.postGetReportQueuePage(GetReportQueuePage(queueType: ReportQueueType.waiting)),
-          )
-          .ok();
-    } else {
-      reports = GetReportList();
-    }
-
-    if (!context.mounted) {
-      return;
-    }
+    final reports = hasProfileNames ? await _hasWaitingReports() : false;
 
     if (contentBotInitial == null ||
         contentHumanInitial == null ||
@@ -213,27 +180,101 @@ class _ModeratorTasksScreenState extends State<ModeratorTasksScreen> {
         profileTextsBot == null ||
         profileTextsHuman == null ||
         reports == null) {
+      if (!context.mounted) {
+        return;
+      }
       showSnackBar(R.strings.generic_error);
       setState(() {
         isLoading = false;
         isError = true;
       });
     } else {
+      if (!context.mounted) {
+        return;
+      }
       setState(() {
         isLoading = false;
         data = RequiredData(
-          contentBotInitial: contentBotInitial?.values.isNotEmpty ?? false,
-          contentHumanInitial: contentHumanInitial?.values.isNotEmpty ?? false,
-          contentBot: contentBot?.values.isNotEmpty ?? false,
-          contentHuman: contentHuman?.values.isNotEmpty ?? false,
-          profileNamesBot: profileNamesBot?.values.isNotEmpty ?? false,
-          profileNamesHuman: profileNamesHuman?.values.isNotEmpty ?? false,
-          profileTextsBot: profileTextsBot?.values.isNotEmpty ?? false,
-          profileTextsHuman: profileTextsHuman?.values.isNotEmpty ?? false,
-          reports: reports?.values.isNotEmpty ?? false,
+          contentBotInitial: contentBotInitial,
+          contentHumanInitial: contentHumanInitial,
+          contentBot: contentBot,
+          contentHuman: contentHuman,
+          profileNamesBot: profileNamesBot,
+          profileNamesHuman: profileNamesHuman,
+          profileTextsBot: profileTextsBot,
+          profileTextsHuman: profileTextsHuman,
+          reports: reports,
         );
       });
     }
+  }
+
+  Future<bool?> _hasWaitingMediaContent(
+    MediaContentModerationType moderationType,
+    MediaContentModerationQueueType queueType,
+  ) async {
+    final queue = await widget.api
+        .mediaAdmin(
+          (api) => api.getMediaContentModerationQueuePage(
+            MediaContentType.jpegImage,
+            moderationType,
+            queueType,
+          ),
+        )
+        .ok();
+    return queue?.values.isNotEmpty;
+  }
+
+  Future<bool?> _hasWaitingProfileString(
+    ProfileStringModerationContentType contentType,
+    ProfileStringModerationQueueType queueType,
+  ) async {
+    final queue = await widget.api
+        .profileAdmin((api) => api.getProfileStringModerationQueuePage(contentType, queueType))
+        .ok();
+    return queue?.values.isNotEmpty;
+  }
+
+  Future<bool?> _hasWaitingReports() async {
+    final reports = await widget.api
+        .commonAdmin(
+          (api) =>
+              api.postGetReportQueuePage(GetReportQueuePage(queueType: ReportQueueType.waiting)),
+        )
+        .ok();
+    return reports?.values.isNotEmpty;
+  }
+
+  Future<void> _reloadMediaTask(
+    MediaContentModerationType moderationType,
+    MediaContentModerationQueueType queueType,
+    RequiredData Function(RequiredData data, bool hasItems) apply,
+  ) async {
+    final hasItems = await _hasWaitingMediaContent(moderationType, queueType);
+    if (!mounted || data == null || hasItems == null) return;
+    setState(() {
+      data = apply(data!, hasItems);
+    });
+  }
+
+  Future<void> _reloadProfileStringTask(
+    ProfileStringModerationContentType contentType,
+    ProfileStringModerationQueueType queueType,
+    RequiredData Function(RequiredData data, bool hasItems) apply,
+  ) async {
+    final hasItems = await _hasWaitingProfileString(contentType, queueType);
+    if (!mounted || data == null || hasItems == null) return;
+    setState(() {
+      data = apply(data!, hasItems);
+    });
+  }
+
+  Future<void> _reloadReportsTask() async {
+    final hasItems = await _hasWaitingReports();
+    if (!mounted || data == null || hasItems == null) return;
+    setState(() {
+      data = data!.copyWith(reports: hasItems);
+    });
   }
 
   @override
@@ -297,10 +338,14 @@ class _ModeratorTasksScreenState extends State<ModeratorTasksScreen> {
     ];
   }
 
-  Future<void> _openAndReload(BuildContext context, MyScreenPageLimited<()> page) async {
+  Future<void> _openAndReload(
+    BuildContext context,
+    MyScreenPageLimited<()> page,
+    Future<void> Function() reload,
+  ) async {
     await MyNavigator.pushLimited(context, page);
     if (!mounted) return;
-    await _getData();
+    await reload();
   }
 
   Setting moderateImagesInitialBotSetting(BuildContext context) {
@@ -314,6 +359,11 @@ class _ModeratorTasksScreenState extends State<ModeratorTasksScreen> {
           r,
           moderationType: MediaContentModerationType.initial,
           queueType: MediaContentModerationQueueType.waitingAdminBot,
+        ),
+        () => _reloadMediaTask(
+          MediaContentModerationType.initial,
+          MediaContentModerationQueueType.waitingAdminBot,
+          (data, hasItems) => data.copyWith(contentBotInitial: hasItems),
         ),
       ),
     );
@@ -331,6 +381,11 @@ class _ModeratorTasksScreenState extends State<ModeratorTasksScreen> {
           moderationType: MediaContentModerationType.initial,
           queueType: MediaContentModerationQueueType.waitingAdmin,
         ),
+        () => _reloadMediaTask(
+          MediaContentModerationType.initial,
+          MediaContentModerationQueueType.waitingAdmin,
+          (data, hasItems) => data.copyWith(contentHumanInitial: hasItems),
+        ),
       ),
     );
   }
@@ -346,6 +401,11 @@ class _ModeratorTasksScreenState extends State<ModeratorTasksScreen> {
           r,
           moderationType: MediaContentModerationType.normal,
           queueType: MediaContentModerationQueueType.waitingAdminBot,
+        ),
+        () => _reloadMediaTask(
+          MediaContentModerationType.normal,
+          MediaContentModerationQueueType.waitingAdminBot,
+          (data, hasItems) => data.copyWith(contentBot: hasItems),
         ),
       ),
     );
@@ -363,6 +423,11 @@ class _ModeratorTasksScreenState extends State<ModeratorTasksScreen> {
           moderationType: MediaContentModerationType.normal,
           queueType: MediaContentModerationQueueType.waitingAdmin,
         ),
+        () => _reloadMediaTask(
+          MediaContentModerationType.normal,
+          MediaContentModerationQueueType.waitingAdmin,
+          (data, hasItems) => data.copyWith(contentHuman: hasItems),
+        ),
       ),
     );
   }
@@ -378,6 +443,11 @@ class _ModeratorTasksScreenState extends State<ModeratorTasksScreen> {
           r,
           contentType: ProfileStringModerationContentType.profileName,
           queueType: ProfileStringModerationQueueType.waitingAdminBot,
+        ),
+        () => _reloadProfileStringTask(
+          ProfileStringModerationContentType.profileName,
+          ProfileStringModerationQueueType.waitingAdminBot,
+          (data, hasItems) => data.copyWith(profileNamesBot: hasItems),
         ),
       ),
     );
@@ -395,6 +465,11 @@ class _ModeratorTasksScreenState extends State<ModeratorTasksScreen> {
           contentType: ProfileStringModerationContentType.profileName,
           queueType: ProfileStringModerationQueueType.waitingAdmin,
         ),
+        () => _reloadProfileStringTask(
+          ProfileStringModerationContentType.profileName,
+          ProfileStringModerationQueueType.waitingAdmin,
+          (data, hasItems) => data.copyWith(profileNamesHuman: hasItems),
+        ),
       ),
     );
   }
@@ -410,6 +485,11 @@ class _ModeratorTasksScreenState extends State<ModeratorTasksScreen> {
           r,
           contentType: ProfileStringModerationContentType.profileText,
           queueType: ProfileStringModerationQueueType.waitingAdminBot,
+        ),
+        () => _reloadProfileStringTask(
+          ProfileStringModerationContentType.profileText,
+          ProfileStringModerationQueueType.waitingAdminBot,
+          (data, hasItems) => data.copyWith(profileTextsBot: hasItems),
         ),
       ),
     );
@@ -427,6 +507,11 @@ class _ModeratorTasksScreenState extends State<ModeratorTasksScreen> {
           contentType: ProfileStringModerationContentType.profileText,
           queueType: ProfileStringModerationQueueType.waitingAdmin,
         ),
+        () => _reloadProfileStringTask(
+          ProfileStringModerationContentType.profileText,
+          ProfileStringModerationQueueType.waitingAdmin,
+          (data, hasItems) => data.copyWith(profileTextsHuman: hasItems),
+        ),
       ),
     );
   }
@@ -436,7 +521,11 @@ class _ModeratorTasksScreenState extends State<ModeratorTasksScreen> {
     return Setting.createSetting(
       Icons.report,
       "Process reports",
-      () => _openAndReload(context, ProcessReportsPage(r, queueType: ReportQueueType.waiting)),
+      () => _openAndReload(
+        context,
+        ProcessReportsPage(r, queueType: ReportQueueType.waiting),
+        _reloadReportsTask,
+      ),
     );
   }
 }

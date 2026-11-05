@@ -6,7 +6,7 @@
 
 - Allow '+' character in local part of email address
 - Reorganize admin tasks UI
-- Refresh admin task lists silently when returning from a task screen
+- Refresh admin task list item silently when returning from a task screen
 
 ## [0.25.5] - 2026-11-02
 

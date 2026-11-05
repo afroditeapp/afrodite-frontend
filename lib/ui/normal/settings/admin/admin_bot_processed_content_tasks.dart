@@ -44,6 +44,32 @@ class RequiredData {
     required this.reportsBot,
     required this.reportsBotRejected,
   });
+
+  RequiredData copyWith({
+    bool? contentBotInitial,
+    bool? contentBotInitialRejected,
+    bool? contentBot,
+    bool? contentBotRejected,
+    bool? profileNamesBot,
+    bool? profileNamesBotRejected,
+    bool? profileTextsBot,
+    bool? profileTextsBotRejected,
+    bool? reportsBot,
+    bool? reportsBotRejected,
+  }) {
+    return RequiredData(
+      contentBotInitial: contentBotInitial ?? this.contentBotInitial,
+      contentBotInitialRejected: contentBotInitialRejected ?? this.contentBotInitialRejected,
+      contentBot: contentBot ?? this.contentBot,
+      contentBotRejected: contentBotRejected ?? this.contentBotRejected,
+      profileNamesBot: profileNamesBot ?? this.profileNamesBot,
+      profileNamesBotRejected: profileNamesBotRejected ?? this.profileNamesBotRejected,
+      profileTextsBot: profileTextsBot ?? this.profileTextsBot,
+      profileTextsBotRejected: profileTextsBotRejected ?? this.profileTextsBotRejected,
+      reportsBot: reportsBot ?? this.reportsBot,
+      reportsBotRejected: reportsBotRejected ?? this.reportsBotRejected,
+    );
+  }
 }
 
 class AdminBotProcessedContentTasksScreen extends StatefulWidget {
@@ -95,124 +121,67 @@ class _AdminBotProcessedContentTasksScreenState extends State<AdminBotProcessedC
       return;
     }
 
-    final MediaContentModerationQueuePage? contentBotInitial;
-    final MediaContentModerationQueuePage? contentBotInitialRejected;
-    final MediaContentModerationQueuePage? contentBot;
-    final MediaContentModerationQueuePage? contentBotRejected;
-    if (permissions.adminModerateMediaContent) {
-      contentBotInitial = await widget.api
-          .mediaAdmin(
-            (api) => api.getMediaContentModerationQueuePage(
-              MediaContentType.jpegImage,
-              MediaContentModerationType.initial,
-              MediaContentModerationQueueType.acceptedByAdminBot,
-            ),
+    final hasMediaContent = permissions.adminModerateMediaContent;
+    final contentBotInitial = hasMediaContent
+        ? await _hasMediaTask(
+            MediaContentModerationType.initial,
+            MediaContentModerationQueueType.acceptedByAdminBot,
           )
-          .ok();
-      contentBotInitialRejected = await widget.api
-          .mediaAdmin(
-            (api) => api.getMediaContentModerationQueuePage(
-              MediaContentType.jpegImage,
-              MediaContentModerationType.initial,
-              MediaContentModerationQueueType.rejectedByAdminBot,
-            ),
+        : false;
+    final contentBotInitialRejected = hasMediaContent
+        ? await _hasMediaTask(
+            MediaContentModerationType.initial,
+            MediaContentModerationQueueType.rejectedByAdminBot,
           )
-          .ok();
-      contentBot = await widget.api
-          .mediaAdmin(
-            (api) => api.getMediaContentModerationQueuePage(
-              MediaContentType.jpegImage,
-              MediaContentModerationType.normal,
-              MediaContentModerationQueueType.acceptedByAdminBot,
-            ),
+        : false;
+    final contentBot = hasMediaContent
+        ? await _hasMediaTask(
+            MediaContentModerationType.normal,
+            MediaContentModerationQueueType.acceptedByAdminBot,
           )
-          .ok();
-      contentBotRejected = await widget.api
-          .mediaAdmin(
-            (api) => api.getMediaContentModerationQueuePage(
-              MediaContentType.jpegImage,
-              MediaContentModerationType.normal,
-              MediaContentModerationQueueType.rejectedByAdminBot,
-            ),
+        : false;
+    final contentBotRejected = hasMediaContent
+        ? await _hasMediaTask(
+            MediaContentModerationType.normal,
+            MediaContentModerationQueueType.rejectedByAdminBot,
           )
-          .ok();
-    } else {
-      final empty = MediaContentModerationQueuePage();
-      contentBotInitial = empty;
-      contentBotInitialRejected = empty;
-      contentBot = empty;
-      contentBotRejected = empty;
-    }
+        : false;
 
-    final ProfileStringModerationQueuePage? profileNamesBot;
-    final ProfileStringModerationQueuePage? profileNamesBotRejected;
-    if (permissions.adminModerateProfileNames) {
-      profileNamesBot = await widget.api
-          .profileAdmin(
-            (api) => api.getProfileStringModerationQueuePage(
-              ProfileStringModerationContentType.profileName,
-              ProfileStringModerationQueueType.acceptedByAdminBot,
-            ),
+    final hasProfileNames = permissions.adminModerateProfileNames;
+    final profileNamesBot = hasProfileNames
+        ? await _hasProfileStringTask(
+            ProfileStringModerationContentType.profileName,
+            ProfileStringModerationQueueType.acceptedByAdminBot,
           )
-          .ok();
-      profileNamesBotRejected = await widget.api
-          .profileAdmin(
-            (api) => api.getProfileStringModerationQueuePage(
-              ProfileStringModerationContentType.profileName,
-              ProfileStringModerationQueueType.rejectedByAdminBot,
-            ),
+        : false;
+    final profileNamesBotRejected = hasProfileNames
+        ? await _hasProfileStringTask(
+            ProfileStringModerationContentType.profileName,
+            ProfileStringModerationQueueType.rejectedByAdminBot,
           )
-          .ok();
-    } else {
-      profileNamesBot = ProfileStringModerationQueuePage();
-      profileNamesBotRejected = ProfileStringModerationQueuePage();
-    }
+        : false;
 
-    final ProfileStringModerationQueuePage? profileTextsBot;
-    final ProfileStringModerationQueuePage? profileTextsBotRejected;
-    if (permissions.adminModerateProfileTexts) {
-      profileTextsBot = await widget.api
-          .profileAdmin(
-            (api) => api.getProfileStringModerationQueuePage(
-              ProfileStringModerationContentType.profileText,
-              ProfileStringModerationQueueType.acceptedByAdminBot,
-            ),
+    final hasProfileTexts = permissions.adminModerateProfileTexts;
+    final profileTextsBot = hasProfileTexts
+        ? await _hasProfileStringTask(
+            ProfileStringModerationContentType.profileText,
+            ProfileStringModerationQueueType.acceptedByAdminBot,
           )
-          .ok();
-      profileTextsBotRejected = await widget.api
-          .profileAdmin(
-            (api) => api.getProfileStringModerationQueuePage(
-              ProfileStringModerationContentType.profileText,
-              ProfileStringModerationQueueType.rejectedByAdminBot,
-            ),
+        : false;
+    final profileTextsBotRejected = hasProfileTexts
+        ? await _hasProfileStringTask(
+            ProfileStringModerationContentType.profileText,
+            ProfileStringModerationQueueType.rejectedByAdminBot,
           )
-          .ok();
-    } else {
-      profileTextsBot = ProfileStringModerationQueuePage();
-      profileTextsBotRejected = ProfileStringModerationQueuePage();
-    }
+        : false;
 
-    final GetReportList? reportsBot;
-    final GetReportList? reportsBotRejected;
-    if (permissions.adminProcessReports) {
-      reportsBot = await widget.api
-          .commonAdmin(
-            (api) => api.postGetReportQueuePage(
-              GetReportQueuePage(queueType: ReportQueueType.acceptedByAdminBot),
-            ),
-          )
-          .ok();
-      reportsBotRejected = await widget.api
-          .commonAdmin(
-            (api) => api.postGetReportQueuePage(
-              GetReportQueuePage(queueType: ReportQueueType.rejectedByAdminBot),
-            ),
-          )
-          .ok();
-    } else {
-      reportsBot = GetReportList();
-      reportsBotRejected = GetReportList();
-    }
+    final hasReports = permissions.adminProcessReports;
+    final reportsBot = hasReports
+        ? await _hasReportsTask(ReportQueueType.acceptedByAdminBot)
+        : false;
+    final reportsBotRejected = hasReports
+        ? await _hasReportsTask(ReportQueueType.rejectedByAdminBot)
+        : false;
 
     if (!context.mounted) {
       return;
@@ -237,19 +206,87 @@ class _AdminBotProcessedContentTasksScreenState extends State<AdminBotProcessedC
       setState(() {
         isLoading = false;
         data = RequiredData(
-          contentBotInitial: contentBotInitial?.values.isNotEmpty ?? false,
-          contentBotInitialRejected: contentBotInitialRejected?.values.isNotEmpty ?? false,
-          contentBot: contentBot?.values.isNotEmpty ?? false,
-          contentBotRejected: contentBotRejected?.values.isNotEmpty ?? false,
-          profileNamesBot: profileNamesBot?.values.isNotEmpty ?? false,
-          profileNamesBotRejected: profileNamesBotRejected?.values.isNotEmpty ?? false,
-          profileTextsBot: profileTextsBot?.values.isNotEmpty ?? false,
-          profileTextsBotRejected: profileTextsBotRejected?.values.isNotEmpty ?? false,
-          reportsBot: reportsBot?.values.isNotEmpty ?? false,
-          reportsBotRejected: reportsBotRejected?.values.isNotEmpty ?? false,
+          contentBotInitial: contentBotInitial,
+          contentBotInitialRejected: contentBotInitialRejected,
+          contentBot: contentBot,
+          contentBotRejected: contentBotRejected,
+          profileNamesBot: profileNamesBot,
+          profileNamesBotRejected: profileNamesBotRejected,
+          profileTextsBot: profileTextsBot,
+          profileTextsBotRejected: profileTextsBotRejected,
+          reportsBot: reportsBot,
+          reportsBotRejected: reportsBotRejected,
         );
       });
     }
+  }
+
+  Future<bool?> _hasMediaTask(
+    MediaContentModerationType moderationType,
+    MediaContentModerationQueueType queueType,
+  ) async {
+    final queue = await widget.api
+        .mediaAdmin(
+          (api) => api.getMediaContentModerationQueuePage(
+            MediaContentType.jpegImage,
+            moderationType,
+            queueType,
+          ),
+        )
+        .ok();
+    return queue?.values.isNotEmpty;
+  }
+
+  Future<bool?> _hasProfileStringTask(
+    ProfileStringModerationContentType contentType,
+    ProfileStringModerationQueueType queueType,
+  ) async {
+    final queue = await widget.api
+        .profileAdmin((api) => api.getProfileStringModerationQueuePage(contentType, queueType))
+        .ok();
+    return queue?.values.isNotEmpty;
+  }
+
+  Future<bool?> _hasReportsTask(ReportQueueType queueType) async {
+    final reports = await widget.api
+        .commonAdmin((api) => api.postGetReportQueuePage(GetReportQueuePage(queueType: queueType)))
+        .ok();
+    return reports?.values.isNotEmpty;
+  }
+
+  Future<void> _reloadMediaTask(
+    MediaContentModerationType moderationType,
+    MediaContentModerationQueueType queueType,
+    RequiredData Function(RequiredData data, bool hasItems) apply,
+  ) async {
+    final hasItems = await _hasMediaTask(moderationType, queueType);
+    if (!mounted || data == null || hasItems == null) return;
+    setState(() {
+      data = apply(data!, hasItems);
+    });
+  }
+
+  Future<void> _reloadProfileStringTask(
+    ProfileStringModerationContentType contentType,
+    ProfileStringModerationQueueType queueType,
+    RequiredData Function(RequiredData data, bool hasItems) apply,
+  ) async {
+    final hasItems = await _hasProfileStringTask(contentType, queueType);
+    if (!mounted || data == null || hasItems == null) return;
+    setState(() {
+      data = apply(data!, hasItems);
+    });
+  }
+
+  Future<void> _reloadReportsTask(
+    ReportQueueType queueType,
+    RequiredData Function(RequiredData data, bool hasItems) apply,
+  ) async {
+    final hasItems = await _hasReportsTask(queueType);
+    if (!mounted || data == null || hasItems == null) return;
+    setState(() {
+      data = apply(data!, hasItems);
+    });
   }
 
   @override
@@ -314,10 +351,14 @@ class _AdminBotProcessedContentTasksScreenState extends State<AdminBotProcessedC
     ];
   }
 
-  Future<void> _openAndReload(BuildContext context, MyScreenPageLimited<()> page) async {
+  Future<void> _openAndReload(
+    BuildContext context,
+    MyScreenPageLimited<()> page,
+    Future<void> Function() reload,
+  ) async {
     await MyNavigator.pushLimited(context, page);
     if (!mounted) return;
-    await _getData();
+    await reload();
   }
 
   Setting moderateImagesInitialBotAcceptedSetting(BuildContext context) {
@@ -331,6 +372,11 @@ class _AdminBotProcessedContentTasksScreenState extends State<AdminBotProcessedC
           r,
           moderationType: MediaContentModerationType.initial,
           queueType: MediaContentModerationQueueType.acceptedByAdminBot,
+        ),
+        () => _reloadMediaTask(
+          MediaContentModerationType.initial,
+          MediaContentModerationQueueType.acceptedByAdminBot,
+          (data, hasItems) => data.copyWith(contentBotInitial: hasItems),
         ),
       ),
     );
@@ -348,6 +394,11 @@ class _AdminBotProcessedContentTasksScreenState extends State<AdminBotProcessedC
           moderationType: MediaContentModerationType.initial,
           queueType: MediaContentModerationQueueType.rejectedByAdminBot,
         ),
+        () => _reloadMediaTask(
+          MediaContentModerationType.initial,
+          MediaContentModerationQueueType.rejectedByAdminBot,
+          (data, hasItems) => data.copyWith(contentBotInitialRejected: hasItems),
+        ),
       ),
     );
   }
@@ -363,6 +414,11 @@ class _AdminBotProcessedContentTasksScreenState extends State<AdminBotProcessedC
           r,
           moderationType: MediaContentModerationType.normal,
           queueType: MediaContentModerationQueueType.acceptedByAdminBot,
+        ),
+        () => _reloadMediaTask(
+          MediaContentModerationType.normal,
+          MediaContentModerationQueueType.acceptedByAdminBot,
+          (data, hasItems) => data.copyWith(contentBot: hasItems),
         ),
       ),
     );
@@ -380,6 +436,11 @@ class _AdminBotProcessedContentTasksScreenState extends State<AdminBotProcessedC
           moderationType: MediaContentModerationType.normal,
           queueType: MediaContentModerationQueueType.rejectedByAdminBot,
         ),
+        () => _reloadMediaTask(
+          MediaContentModerationType.normal,
+          MediaContentModerationQueueType.rejectedByAdminBot,
+          (data, hasItems) => data.copyWith(contentBotRejected: hasItems),
+        ),
       ),
     );
   }
@@ -395,6 +456,11 @@ class _AdminBotProcessedContentTasksScreenState extends State<AdminBotProcessedC
           r,
           contentType: ProfileStringModerationContentType.profileName,
           queueType: ProfileStringModerationQueueType.acceptedByAdminBot,
+        ),
+        () => _reloadProfileStringTask(
+          ProfileStringModerationContentType.profileName,
+          ProfileStringModerationQueueType.acceptedByAdminBot,
+          (data, hasItems) => data.copyWith(profileNamesBot: hasItems),
         ),
       ),
     );
@@ -412,6 +478,11 @@ class _AdminBotProcessedContentTasksScreenState extends State<AdminBotProcessedC
           contentType: ProfileStringModerationContentType.profileName,
           queueType: ProfileStringModerationQueueType.rejectedByAdminBot,
         ),
+        () => _reloadProfileStringTask(
+          ProfileStringModerationContentType.profileName,
+          ProfileStringModerationQueueType.rejectedByAdminBot,
+          (data, hasItems) => data.copyWith(profileNamesBotRejected: hasItems),
+        ),
       ),
     );
   }
@@ -427,6 +498,11 @@ class _AdminBotProcessedContentTasksScreenState extends State<AdminBotProcessedC
           r,
           contentType: ProfileStringModerationContentType.profileText,
           queueType: ProfileStringModerationQueueType.acceptedByAdminBot,
+        ),
+        () => _reloadProfileStringTask(
+          ProfileStringModerationContentType.profileText,
+          ProfileStringModerationQueueType.acceptedByAdminBot,
+          (data, hasItems) => data.copyWith(profileTextsBot: hasItems),
         ),
       ),
     );
@@ -444,6 +520,11 @@ class _AdminBotProcessedContentTasksScreenState extends State<AdminBotProcessedC
           contentType: ProfileStringModerationContentType.profileText,
           queueType: ProfileStringModerationQueueType.rejectedByAdminBot,
         ),
+        () => _reloadProfileStringTask(
+          ProfileStringModerationContentType.profileText,
+          ProfileStringModerationQueueType.rejectedByAdminBot,
+          (data, hasItems) => data.copyWith(profileTextsBotRejected: hasItems),
+        ),
       ),
     );
   }
@@ -456,6 +537,10 @@ class _AdminBotProcessedContentTasksScreenState extends State<AdminBotProcessedC
       () => _openAndReload(
         context,
         ProcessReportsPage(r, queueType: ReportQueueType.acceptedByAdminBot),
+        () => _reloadReportsTask(
+          ReportQueueType.acceptedByAdminBot,
+          (data, hasItems) => data.copyWith(reportsBot: hasItems),
+        ),
       ),
     );
   }
@@ -468,6 +553,10 @@ class _AdminBotProcessedContentTasksScreenState extends State<AdminBotProcessedC
       () => _openAndReload(
         context,
         ProcessReportsPage(r, queueType: ReportQueueType.rejectedByAdminBot),
+        () => _reloadReportsTask(
+          ReportQueueType.rejectedByAdminBot,
+          (data, hasItems) => data.copyWith(reportsBotRejected: hasItems),
+        ),
       ),
     );
   }
