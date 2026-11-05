@@ -8,6 +8,11 @@
 - Reorganize admin tasks UI
 - Refresh admin task list item silently when returning from a task screen
 
+### Fixed
+
+- Show moderator tasks reports item when user has report processing
+  permission but no profile name moderation permission
+
 ## [0.25.5] - 2026-11-02
 
 ### Added

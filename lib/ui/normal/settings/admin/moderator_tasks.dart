@@ -169,7 +169,8 @@ class _ModeratorTasksScreenState extends State<ModeratorTasksScreen> {
           )
         : false;
 
-    final reports = hasProfileNames ? await _hasWaitingReports() : false;
+    final hasReports = permissions.adminProcessReports;
+    final reports = hasReports ? await _hasWaitingReports() : false;
 
     if (contentBotInitial == null ||
         contentHumanInitial == null ||
