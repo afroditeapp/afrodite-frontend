@@ -159,6 +159,83 @@ class MediaAdminApi {
     return null;
   }
 
+  /// Get a page of media content items iterated in descending content upload time order. Max 25 values are returned.
+  ///
+  /// `only_security_content` can be used to iterate only security content items. Default is to return all content items (profile and security content).  # Access * Permission [Permissions::admin_moderate_media_content]
+  ///
+  /// Note: This method returns the HTTP [Response].
+  ///
+  /// Parameters:
+  ///
+  /// * [int] page (required):
+  ///   Zero-based page number.
+  ///
+  /// * [int] originUnixTime (required):
+  ///   Iteration origin point. Max upload time value which can be returned. Descending iteration starts from this time. Values are always returned in descending upload time order.
+  ///
+  /// * [bool] onlySecurityContent:
+  ///   `true` returns only security content items. `false` or unset returns all content items (profile and security content).
+  Future<Response> getMediaContentIterationPageWithHttpInfo(int page, int originUnixTime, { bool? onlySecurityContent, Future<void>? abortTrigger, }) async {
+    // ignore: prefer_const_declarations
+    final path = r'/media_api/get_media_content_iteration_page';
+
+    // ignore: prefer_final_locals
+    Object? postBody;
+
+    final queryParams = <QueryParam>[];
+    final headerParams = <String, String>{};
+    final formParams = <String, String>{};
+
+    if (onlySecurityContent != null) {
+      queryParams.addAll(_queryParams('', 'only_security_content', onlySecurityContent));
+    }
+      queryParams.addAll(_queryParams('', 'page', page));
+      queryParams.addAll(_queryParams('', 'origin_unix_time', originUnixTime));
+
+    const contentTypes = <String>[];
+
+
+    return apiClient.invokeAPI(
+      path,
+      'GET',
+      queryParams,
+      postBody,
+      headerParams,
+      formParams,
+      contentTypes.isEmpty ? null : contentTypes.first,
+      abortTrigger: abortTrigger,
+    );
+  }
+
+  /// Get a page of media content items iterated in descending content upload time order. Max 25 values are returned.
+  ///
+  /// `only_security_content` can be used to iterate only security content items. Default is to return all content items (profile and security content).  # Access * Permission [Permissions::admin_moderate_media_content]
+  ///
+  /// Parameters:
+  ///
+  /// * [int] page (required):
+  ///   Zero-based page number.
+  ///
+  /// * [int] originUnixTime (required):
+  ///   Iteration origin point. Max upload time value which can be returned. Descending iteration starts from this time. Values are always returned in descending upload time order.
+  ///
+  /// * [bool] onlySecurityContent:
+  ///   `true` returns only security content items. `false` or unset returns all content items (profile and security content).
+  Future<MediaContentIterationPage?> getMediaContentIterationPage(int page, int originUnixTime, { bool? onlySecurityContent, Future<void>? abortTrigger, }) async {
+    final response = await getMediaContentIterationPageWithHttpInfo(page, originUnixTime, onlySecurityContent: onlySecurityContent, abortTrigger: abortTrigger,);
+    if (response.statusCode >= HttpStatus.badRequest) {
+      throw ApiException(response.statusCode, await _decodeBodyBytes(response));
+    }
+    // When a remote server returns no body with a status of 204, we shall not decode it.
+    // At the time of writing this, `dart:convert` will throw an "Unexpected end of input"
+    // FormatException when trying to decode an empty string.
+    if (response.body.isNotEmpty && response.statusCode != HttpStatus.noContent) {
+      return await apiClient.deserializeAsync(await _decodeBodyBytes(response), 'MediaContentIterationPage',) as MediaContentIterationPage;
+    
+    }
+    return null;
+  }
+
   /// Get the first page from media content moderation queue. The first item is the oldest item and max 25 items are returned.
   ///
   /// Note: This method returns the HTTP [Response].

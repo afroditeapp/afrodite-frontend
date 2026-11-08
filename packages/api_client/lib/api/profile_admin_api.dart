@@ -411,6 +411,79 @@ class ProfileAdminApi {
     return null;
   }
 
+  /// Get a page of profile string values iterated in descending profile edited time order. Max 25 values are returned.
+  ///
+  /// Profiles without the string value are not included.  # Access * [Permissions::admin_moderate_profile_names] or   [Permissions::admin_moderate_profile_texts] depending   on [GetProfileStringIterationPageParams::content_type].
+  ///
+  /// Note: This method returns the HTTP [Response].
+  ///
+  /// Parameters:
+  ///
+  /// * [ProfileStringModerationContentType] contentType (required):
+  ///
+  /// * [int] page (required):
+  ///   Zero-based page number.
+  ///
+  /// * [int] originUnixTime (required):
+  ///   Iteration origin point. Max edited time value which can be returned. Descending iteration starts from this time. Values are always returned in descending edited time order.
+  Future<Response> getProfileStringIterationPageWithHttpInfo(ProfileStringModerationContentType contentType, int page, int originUnixTime, { Future<void>? abortTrigger, }) async {
+    // ignore: prefer_const_declarations
+    final path = r'/profile_api/get_profile_string_iteration_page';
+
+    // ignore: prefer_final_locals
+    Object? postBody;
+
+    final queryParams = <QueryParam>[];
+    final headerParams = <String, String>{};
+    final formParams = <String, String>{};
+
+      queryParams.addAll(_queryParams('', 'content_type', contentType));
+      queryParams.addAll(_queryParams('', 'page', page));
+      queryParams.addAll(_queryParams('', 'origin_unix_time', originUnixTime));
+
+    const contentTypes = <String>[];
+
+
+    return apiClient.invokeAPI(
+      path,
+      'GET',
+      queryParams,
+      postBody,
+      headerParams,
+      formParams,
+      contentTypes.isEmpty ? null : contentTypes.first,
+      abortTrigger: abortTrigger,
+    );
+  }
+
+  /// Get a page of profile string values iterated in descending profile edited time order. Max 25 values are returned.
+  ///
+  /// Profiles without the string value are not included.  # Access * [Permissions::admin_moderate_profile_names] or   [Permissions::admin_moderate_profile_texts] depending   on [GetProfileStringIterationPageParams::content_type].
+  ///
+  /// Parameters:
+  ///
+  /// * [ProfileStringModerationContentType] contentType (required):
+  ///
+  /// * [int] page (required):
+  ///   Zero-based page number.
+  ///
+  /// * [int] originUnixTime (required):
+  ///   Iteration origin point. Max edited time value which can be returned. Descending iteration starts from this time. Values are always returned in descending edited time order.
+  Future<ProfileStringIterationPage?> getProfileStringIterationPage(ProfileStringModerationContentType contentType, int page, int originUnixTime, { Future<void>? abortTrigger, }) async {
+    final response = await getProfileStringIterationPageWithHttpInfo(contentType, page, originUnixTime, abortTrigger: abortTrigger,);
+    if (response.statusCode >= HttpStatus.badRequest) {
+      throw ApiException(response.statusCode, await _decodeBodyBytes(response));
+    }
+    // When a remote server returns no body with a status of 204, we shall not decode it.
+    // At the time of writing this, `dart:convert` will throw an "Unexpected end of input"
+    // FormatException when trying to decode an empty string.
+    if (response.body.isNotEmpty && response.statusCode != HttpStatus.noContent) {
+      return await apiClient.deserializeAsync(await _decodeBodyBytes(response), 'ProfileStringIterationPage',) as ProfileStringIterationPage;
+    
+    }
+    return null;
+  }
+
   /// Get the first page from profile string moderation queue. The first item is the oldest item and max 25 items are returned.
   ///
   /// # Access * [Permissions::admin_moderate_profile_names] or   [Permissions::admin_moderate_profile_texts] depending   on [GetProfileStringModerationQueuePageParams::content_type].

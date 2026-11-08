@@ -677,6 +677,10 @@ class ApiClient {
           return MediaAppNotificationSettings.fromJson(value);
         case 'MediaContentFaceVerifiedNullByAccount':
           return MediaContentFaceVerifiedNullByAccount.fromJson(value);
+        case 'MediaContentIterationPage':
+          return MediaContentIterationPage.fromJson(value);
+        case 'MediaContentIterationValue':
+          return MediaContentIterationValue.fromJson(value);
         case 'MediaContentModerationQueuePage':
           return MediaContentModerationQueuePage.fromJson(value);
         case 'MediaContentModerationQueueType':
@@ -861,6 +865,10 @@ class ApiClient {
           return ProfileStatisticsHistoryValue.fromJson(value);
         case 'ProfileStatisticsHistoryValueType':
           return ProfileStatisticsHistoryValueTypeTypeTransformer().decode(value);
+        case 'ProfileStringIterationPage':
+          return ProfileStringIterationPage.fromJson(value);
+        case 'ProfileStringIterationValue':
+          return ProfileStringIterationValue.fromJson(value);
         case 'ProfileStringModerationContentType':
           return ProfileStringModerationContentTypeTypeTransformer().decode(value);
         case 'ProfileStringModerationInfo':

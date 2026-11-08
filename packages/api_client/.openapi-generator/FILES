@@ -269,6 +269,8 @@ lib/model/matches_page.dart
 lib/model/max_distance_km.dart
 lib/model/media_app_notification_settings.dart
 lib/model/media_content_face_verified_null_by_account.dart
+lib/model/media_content_iteration_page.dart
+lib/model/media_content_iteration_value.dart
 lib/model/media_content_moderation_queue_page.dart
 lib/model/media_content_moderation_queue_type.dart
 lib/model/media_content_moderation_rejected_reason_category.dart
@@ -361,6 +363,8 @@ lib/model/profile_page.dart
 lib/model/profile_privacy_settings.dart
 lib/model/profile_statistics_history_value.dart
 lib/model/profile_statistics_history_value_type.dart
+lib/model/profile_string_iteration_page.dart
+lib/model/profile_string_iteration_value.dart
 lib/model/profile_string_moderation_content_type.dart
 lib/model/profile_string_moderation_info.dart
 lib/model/profile_string_moderation_queue_page.dart

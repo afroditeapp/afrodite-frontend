@@ -264,6 +264,7 @@ Class | Method | HTTP request | Description
 *MediaAdminApi* | [**getImageProcessingConfig**](doc//MediaAdminApi.md#getimageprocessingconfig) | **GET** /media_api/image_processing_config | Get image processing configuration
 *MediaAdminApi* | [**getImageProcessingConfigWarnings**](doc//MediaAdminApi.md#getimageprocessingconfigwarnings) | **GET** /media_api/image_processing_config_warnings | Get image processing config warnings
 *MediaAdminApi* | [**getMediaContentFaceVerifiedNullList**](doc//MediaAdminApi.md#getmediacontentfaceverifiednulllist) | **GET** /media_api/media_content_face_verified_null_list | Get first page of accounts with security selfie and content where `face_verified` is NULL and `face_detected` is true or `face_detected_manual` is true. Oldest security content set time is first and count 25.
+*MediaAdminApi* | [**getMediaContentIterationPage**](doc//MediaAdminApi.md#getmediacontentiterationpage) | **GET** /media_api/get_media_content_iteration_page | Get a page of media content items iterated in descending content upload time order. Max 25 values are returned.
 *MediaAdminApi* | [**getMediaContentModerationQueuePage**](doc//MediaAdminApi.md#getmediacontentmoderationqueuepage) | **GET** /media_api/media_content_moderation_queue_page | Get the first page from media content moderation queue. The first item is the oldest item and max 25 items are returned.
 *MediaAdminApi* | [**getSecurityContentAdminInfo**](doc//MediaAdminApi.md#getsecuritycontentadmininfo) | **GET** /media_api/security_content_admin_info/{aid} | Get current security content for selected profile.
 *MediaAdminApi* | [**postImageProcessingConfig**](doc//MediaAdminApi.md#postimageprocessingconfig) | **POST** /media_api/image_processing_config | Update image processing configuration
@@ -306,6 +307,7 @@ Class | Method | HTTP request | Description
 *ProfileAdminApi* | [**getProfileAttributesSchema**](doc//ProfileAdminApi.md#getprofileattributesschema) | **GET** /profile_api/profile_attributes_schema | Get profile attributes schema from DB.
 *ProfileAdminApi* | [**getProfileNameVerificationAdminInfo**](doc//ProfileAdminApi.md#getprofilenameverificationadmininfo) | **GET** /profile_api/profile_name_verification_admin_info/{aid} | Get profile name verification values.
 *ProfileAdminApi* | [**getProfileStatisticsHistory**](doc//ProfileAdminApi.md#getprofilestatisticshistory) | **GET** /profile_api/profile_statistics_history | 
+*ProfileAdminApi* | [**getProfileStringIterationPage**](doc//ProfileAdminApi.md#getprofilestringiterationpage) | **GET** /profile_api/get_profile_string_iteration_page | Get a page of profile string values iterated in descending profile edited time order. Max 25 values are returned.
 *ProfileAdminApi* | [**getProfileStringModerationQueuePage**](doc//ProfileAdminApi.md#getprofilestringmoderationqueuepage) | **GET** /profile_api/profile_string_moderation_queue_page | Get the first page from profile string moderation queue. The first item is the oldest item and max 25 items are returned.
 *ProfileAdminApi* | [**getProfileStringState**](doc//ProfileAdminApi.md#getprofilestringstate) | **GET** /profile_api/get_profile_string_state/{aid} | Get profile string state
 *ProfileAdminApi* | [**postModerateProfileString**](doc//ProfileAdminApi.md#postmoderateprofilestring) | **POST** /profile_api/moderate_profile_string | Rejected category and details can be set only when [PostModerateProfileString::value] is rejected.
@@ -564,6 +566,8 @@ Class | Method | HTTP request | Description
  - [MaxDistanceKm](doc//MaxDistanceKm.md)
  - [MediaAppNotificationSettings](doc//MediaAppNotificationSettings.md)
  - [MediaContentFaceVerifiedNullByAccount](doc//MediaContentFaceVerifiedNullByAccount.md)
+ - [MediaContentIterationPage](doc//MediaContentIterationPage.md)
+ - [MediaContentIterationValue](doc//MediaContentIterationValue.md)
  - [MediaContentModerationQueuePage](doc//MediaContentModerationQueuePage.md)
  - [MediaContentModerationQueueType](doc//MediaContentModerationQueueType.md)
  - [MediaContentModerationRejectedReasonCategory](doc//MediaContentModerationRejectedReasonCategory.md)
@@ -656,6 +660,8 @@ Class | Method | HTTP request | Description
  - [ProfilePrivacySettings](doc//ProfilePrivacySettings.md)
  - [ProfileStatisticsHistoryValue](doc//ProfileStatisticsHistoryValue.md)
  - [ProfileStatisticsHistoryValueType](doc//ProfileStatisticsHistoryValueType.md)
+ - [ProfileStringIterationPage](doc//ProfileStringIterationPage.md)
+ - [ProfileStringIterationValue](doc//ProfileStringIterationValue.md)
  - [ProfileStringModerationContentType](doc//ProfileStringModerationContentType.md)
  - [ProfileStringModerationInfo](doc//ProfileStringModerationInfo.md)
  - [ProfileStringModerationQueuePage](doc//ProfileStringModerationQueuePage.md)
