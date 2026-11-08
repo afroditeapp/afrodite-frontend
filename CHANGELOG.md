@@ -2,6 +2,11 @@
 
 ## [Unreleased]
 
+### Added
+
+- Add admin "Latest content" screen for browsing latest profile names,
+  profile texts and media content
+
 ### Changed
 
 - Allow rejecting media content with rejection reason details on the

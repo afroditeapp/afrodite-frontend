@@ -7,6 +7,7 @@ import 'package:app/ui/normal/settings/admin/edit_admin_notifications.dart';
 import 'package:app/ui/normal/settings/admin/edit_maintenance_notification.dart';
 import 'package:app/ui/normal/settings/admin/image_processing_config.dart';
 import 'package:app/ui/normal/settings/admin/info_banners/schema_editor.dart';
+import 'package:app/ui/normal/settings/admin/latest_content.dart';
 import 'package:app/ui/normal/settings/admin/moderator_tasks.dart';
 import 'package:app/ui/normal/settings/admin/admin_bot_processed_content_tasks.dart';
 import 'package:app/ui/normal/settings/admin/open_account_admin_settings.dart';
@@ -295,6 +296,17 @@ class AdminSettingsScreen extends StatelessWidget {
           Icons.settings,
           "Edit maintenance notification",
           () => MyNavigator.pushLimited(context, EditMaintenanceNotificationPage(r)),
+        ),
+      );
+    }
+    if (permissions.adminModerateMediaContent ||
+        permissions.adminModerateProfileNames ||
+        permissions.adminModerateProfileTexts) {
+      settings.add(
+        Setting.createSetting(
+          Icons.new_releases,
+          "Latest content",
+          () => MyNavigator.pushLimited(context, LatestContentPage(r)),
         ),
       );
     }
