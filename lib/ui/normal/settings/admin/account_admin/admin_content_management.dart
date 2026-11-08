@@ -176,14 +176,27 @@ class _AdminContentManagementScreenState extends State<AdminContentManagementScr
     await _getData();
   }
 
-  void changeModerationStateAction(AccountId account, ContentId content, bool accepted) async {
+  void changeModerationStateAction(
+    AccountId account,
+    ContentId content,
+    bool accepted,
+    String? rejectedDetails,
+  ) async {
+    final trimmedDetails = rejectedDetails?.trim();
+    final MediaContentModerationRejectedReasonDetails? detailsModel;
+    if (accepted || trimmedDetails == null || trimmedDetails.isEmpty) {
+      detailsModel = null;
+    } else {
+      detailsModel = MediaContentModerationRejectedReasonDetails(value: trimmedDetails);
+    }
+
     final result = await widget.api.mediaAdminAction(
       (api) => api.postModerateMediaContent(
         PostModerateMediaContent(
           accept: accepted,
           accountId: account,
           contentId: content,
-          rejectedDetails: null,
+          rejectedDetails: detailsModel,
         ),
       ),
     );
@@ -254,7 +267,8 @@ Widget _buildAvailableImg(
   AccountId accountId,
   ContentInfoDetailed content,
   void Function(AccountId, ContentId)? deleteImgAction,
-  void Function(AccountId, ContentId, bool accepted)? changeModerationStateAction,
+  void Function(AccountId, ContentId, bool accepted, String? rejectedDetails)?
+  changeModerationStateAction,
   void Function(AccountId, ContentId, bool? accepted)? changeFaceDetectedValueAction,
   void Function(AccountId, ContentId, bool? accepted)? changeFaceVerifiedValueAction,
 ) {
@@ -311,7 +325,8 @@ Widget _statusInfo(
   AccountId accountId,
   ContentInfoDetailed content,
   void Function(AccountId, ContentId)? deleteImgAction,
-  void Function(AccountId, ContentId, bool accepted)? changeModerationStateAction,
+  void Function(AccountId, ContentId, bool accepted, String? rejectedDetails)?
+  changeModerationStateAction,
   void Function(AccountId, ContentId, bool? accepted)? changeFaceDetectedValueAction,
   void Function(AccountId, ContentId, bool? accepted)? changeFaceVerifiedValueAction,
 ) {
@@ -327,33 +342,52 @@ Widget _statusInfo(
     ContentModerationState.unknownDefaultOpenApi => "Unsupported value",
   };
 
-  final Widget? moderationStateChangeButton;
+  final List<Widget> moderationStateChangeButtons;
   if (changeModerationStateAction != null &&
       (content.state == ContentModerationState.acceptedByAdminBot ||
           content.state == ContentModerationState.acceptedByAdmin)) {
-    moderationStateChangeButton = _createModerationStateChangeButton(
-      context,
-      accountId,
-      content.cid,
-      "Reject",
-      "Reject?",
-      false,
-      changeModerationStateAction,
-    );
+    moderationStateChangeButtons = [
+      _createModerationStateChangeButton(
+        context,
+        accountId,
+        content.cid,
+        "Reject",
+        "Reject?",
+        false,
+        useDetailsDialog: false,
+        initialRejectedDetails: null,
+        action: changeModerationStateAction,
+      ),
+      _createModerationStateChangeButton(
+        context,
+        accountId,
+        content.cid,
+        "Reject (details)",
+        "Reject (details)?",
+        false,
+        useDetailsDialog: true,
+        initialRejectedDetails: content.rejectedReasonDetails?.value,
+        action: changeModerationStateAction,
+      ),
+    ];
   } else if (changeModerationStateAction != null &&
       (content.state == ContentModerationState.rejectedByAdminBot ||
           content.state == ContentModerationState.rejectedByAdmin)) {
-    moderationStateChangeButton = _createModerationStateChangeButton(
-      context,
-      accountId,
-      content.cid,
-      "Accept",
-      "Accept?",
-      true,
-      changeModerationStateAction,
-    );
+    moderationStateChangeButtons = [
+      _createModerationStateChangeButton(
+        context,
+        accountId,
+        content.cid,
+        "Accept",
+        "Accept?",
+        true,
+        useDetailsDialog: false,
+        initialRejectedDetails: null,
+        action: changeModerationStateAction,
+      ),
+    ];
   } else {
-    moderationStateChangeButton = null;
+    moderationStateChangeButtons = const [];
   }
 
   final Widget? deleteButton;
@@ -482,9 +516,9 @@ Widget _statusInfo(
       Text(faceDetectedText, textAlign: TextAlign.center),
       if (faceVerifiedText != null) const Padding(padding: EdgeInsets.symmetric(vertical: 4)),
       if (faceVerifiedText != null) Text(faceVerifiedText, textAlign: TextAlign.center),
-      if (moderationStateChangeButton != null) ...[
+      for (final button in moderationStateChangeButtons) ...[
         const Padding(padding: EdgeInsets.symmetric(vertical: 4)),
-        moderationStateChangeButton,
+        button,
       ],
       if (deleteButton != null) ...[
         const Padding(padding: EdgeInsets.symmetric(vertical: 4)),
@@ -588,15 +622,39 @@ Widget _createModerationStateChangeButton(
   ContentId content,
   String buttonText,
   String dialogTitle,
-  bool accept,
-  void Function(AccountId, ContentId, bool) action,
-) {
+  bool accept, {
+  required bool useDetailsDialog,
+  required String? initialRejectedDetails,
+  required void Function(AccountId, ContentId, bool, String?) action,
+}) {
   return ElevatedButton(
     child: Text(buttonText),
     onPressed: () async {
-      final result = await confirmDialogForImage(context, accountId, content, dialogTitle);
-      if (result == true) {
-        action(accountId, content, accept);
+      Future<void> doAction(String? rejectedDetails) async {
+        final result = await confirmDialogForImage(
+          context,
+          accountId,
+          content,
+          dialogTitle,
+          details: rejectedDetails,
+        );
+        if (result == true) {
+          action(accountId, content, accept, rejectedDetails);
+        }
+      }
+
+      if (useDetailsDialog) {
+        final details = await showRejectWithDetailsDialog(
+          context,
+          initialDetails: initialRejectedDetails,
+        );
+        if (details == null) {
+          return;
+        }
+        final trimmed = details.trim();
+        await doAction(trimmed.isEmpty ? null : trimmed);
+      } else {
+        await doAction(null);
       }
     },
   );

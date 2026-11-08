@@ -2,6 +2,11 @@
 
 ## [Unreleased]
 
+### Changed
+
+- Allow rejecting media content with rejection reason details on the
+  admin content management screen
+
 ## [0.26.0] - 2026-11-05
 
 ### Changed

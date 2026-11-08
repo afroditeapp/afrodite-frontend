@@ -236,8 +236,14 @@ Future<bool?> confirmDialogForImage(
   BuildContext context,
   AccountId account,
   ContentId content,
-  String dialogTitle,
-) async {
+  String dialogTitle, {
+  String? details,
+}) async {
+  String? detailsText = details?.trim();
+  if (detailsText != null && detailsText.isEmpty) {
+    detailsText = null;
+  }
+
   Widget builder(BuildContext context, PageCloser<bool> closer) {
     const double IMG_WIDTH = 150;
     const double IMG_HEIGHT = 200;
@@ -256,7 +262,17 @@ Future<bool?> confirmDialogForImage(
 
     return AlertDialog(
       title: Text(dialogTitle),
-      content: img,
+      scrollable: true,
+      content: Column(
+        mainAxisSize: MainAxisSize.min,
+        children: [
+          img,
+          if (detailsText != null) ...[
+            const Padding(padding: EdgeInsets.all(4.0)),
+            SelectableText(detailsText),
+          ],
+        ],
+      ),
       actions: [
         TextButton(
           onPressed: () => closer.close(context, false),
@@ -274,4 +290,91 @@ Future<bool?> confirmDialogForImage(
     context: context,
     page: ConfirmDialogForImage(builder: builder),
   );
+}
+
+class RejectWithDetailsDialog extends MyDialogPage<RejectWithDetailsDialogResult> {
+  RejectWithDetailsDialog({required super.builder});
+}
+
+class RejectWithDetailsDialogResult {
+  final bool submit;
+  final String details;
+  const RejectWithDetailsDialogResult({required this.submit, required this.details});
+}
+
+class RejectWithDetailsActionDialog extends StatefulWidget {
+  final PageCloser<RejectWithDetailsDialogResult> closer;
+  final String? initialDetails;
+  const RejectWithDetailsActionDialog({required this.closer, this.initialDetails, super.key});
+
+  @override
+  State<RejectWithDetailsActionDialog> createState() => _RejectWithDetailsActionDialogState();
+}
+
+class _RejectWithDetailsActionDialogState extends State<RejectWithDetailsActionDialog> {
+  final TextEditingController detailsController = TextEditingController();
+
+  @override
+  void initState() {
+    super.initState();
+    detailsController.text = widget.initialDetails ?? '';
+  }
+
+  @override
+  Widget build(BuildContext context) {
+    return AlertDialog(
+      title: const Text("Reject"),
+      content: TextField(
+        controller: detailsController,
+        autofocus: true,
+        minLines: 1,
+        maxLines: 4,
+        decoration: const InputDecoration(hintText: "Rejection details"),
+      ),
+      actions: [
+        TextButton(
+          onPressed: () => widget.closer.close(
+            context,
+            const RejectWithDetailsDialogResult(submit: false, details: ''),
+          ),
+          child: Text(context.strings.generic_cancel),
+        ),
+        TextButton(
+          onPressed: () => widget.closer.close(
+            context,
+            RejectWithDetailsDialogResult(submit: true, details: detailsController.text),
+          ),
+          child: Text(context.strings.generic_ok),
+        ),
+      ],
+    );
+  }
+
+  @override
+  void dispose() {
+    detailsController.dispose();
+    super.dispose();
+  }
+}
+
+/// Shows a dialog for inputting rejection details.
+///
+/// Returns the details string when the dialog is submitted,
+/// or null when the dialog is canceled.
+Future<String?> showRejectWithDetailsDialog(BuildContext context, {String? initialDetails}) {
+  return MyNavigator.showDialog<RejectWithDetailsDialogResult>(
+    context: context,
+    page: RejectWithDetailsDialog(
+      builder: (_, closer) =>
+          RejectWithDetailsActionDialog(closer: closer, initialDetails: initialDetails),
+    ),
+  ).then((value) {
+    if (value == null) {
+      return null;
+    }
+    if (value.submit) {
+      return value.details;
+    }
+    return null;
+  });
 }
