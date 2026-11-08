@@ -22,12 +22,22 @@ import 'package:openapi/api.dart';
 class RequiredData {
   final AccountContent accountContent;
   final ContentId? securityContent;
-  RequiredData(this.accountContent, this.securityContent);
+  final List<ContentId>? profileContent;
+  RequiredData(this.accountContent, this.securityContent, this.profileContent);
 }
 
 class AdminContentManagementPage extends MyScreenPageLimited<()> {
-  AdminContentManagementPage(RepositoryInstances r, AccountId accountId)
-    : super(builder: (_) => AdminContentManagementScreen(r, accountId));
+  AdminContentManagementPage(
+    RepositoryInstances r,
+    AccountId accountId, {
+    required bool adminViewAllProfiles,
+  }) : super(
+         builder: (_) => AdminContentManagementScreen(
+           r,
+           accountId,
+           permissionAdminViewAllProfiles: adminViewAllProfiles,
+         ),
+       );
 }
 
 class AdminContentManagementScreen extends StatefulWidget {
@@ -35,10 +45,15 @@ class AdminContentManagementScreen extends StatefulWidget {
   final ProfileRepository profile;
   final ChatRepository chat;
   final AccountId accountId;
-  AdminContentManagementScreen(RepositoryInstances r, this.accountId, {super.key})
-    : api = r.api,
-      profile = r.profile,
-      chat = r.chat;
+  final bool permissionAdminViewAllProfiles;
+  AdminContentManagementScreen(
+    RepositoryInstances r,
+    this.accountId, {
+    required this.permissionAdminViewAllProfiles,
+    super.key,
+  }) : api = r.api,
+       profile = r.profile,
+       chat = r.chat;
 
   @override
   State<AdminContentManagementScreen> createState() => _AdminContentManagementScreenState();
@@ -59,6 +74,14 @@ class _AdminContentManagementScreenState extends State<AdminContentManagementScr
         .mediaAdmin((api) => api.getSecurityContentAdminInfo(widget.accountId.aid))
         .ok();
 
+    List<ContentId>? profileContent;
+    if (widget.permissionAdminViewAllProfiles) {
+      final profileContentResult = await widget.api
+          .media((api) => api.getProfileContentInfo(widget.accountId.aid))
+          .ok();
+      profileContent = profileContentResult?.content?.content.map((e) => e.cid).toList();
+    }
+
     if (!context.mounted) {
       return;
     }
@@ -72,7 +95,7 @@ class _AdminContentManagementScreenState extends State<AdminContentManagementScr
     } else {
       setState(() {
         isLoading = false;
-        data = RequiredData(result, securityContent.content?.cid);
+        data = RequiredData(result, securityContent.content?.cid, profileContent);
       });
     }
   }
@@ -104,6 +127,8 @@ class _AdminContentManagementScreenState extends State<AdminContentManagementScr
             context,
             widget.accountId,
             info.accountContent,
+            info.securityContent,
+            info.profileContent,
             state.permissions,
           );
         },
@@ -115,6 +140,8 @@ class _AdminContentManagementScreenState extends State<AdminContentManagementScr
     BuildContext context,
     AccountId accountId,
     AccountContent content,
+    ContentId? securityContent,
+    List<ContentId>? profileContent,
     Permissions permissions,
   ) {
     final List<Widget> listWidgets = [];
@@ -125,6 +152,8 @@ class _AdminContentManagementScreenState extends State<AdminContentManagementScr
           context,
           accountId,
           e,
+          securityContent,
+          profileContent,
           permissions.adminDeleteMediaContent ? deleteAction : null,
           permissions.adminModerateMediaContent ? changeModerationStateAction : null,
           permissions.adminEditMediaContentFaceDetectedValue ? changeFaceDetectedValue : null,
@@ -266,6 +295,8 @@ Widget _buildAvailableImg(
   BuildContext context,
   AccountId accountId,
   ContentInfoDetailed content,
+  ContentId? securityContent,
+  List<ContentId>? profileContent,
   void Function(AccountId, ContentId)? deleteImgAction,
   void Function(AccountId, ContentId, bool accepted, String? rejectedDetails)?
   changeModerationStateAction,
@@ -307,6 +338,8 @@ Widget _buildAvailableImg(
               context,
               accountId,
               content,
+              securityContent,
+              profileContent,
               deleteImgAction,
               changeModerationStateAction,
               changeFaceDetectedValueAction,
@@ -324,6 +357,8 @@ Widget _statusInfo(
   BuildContext context,
   AccountId accountId,
   ContentInfoDetailed content,
+  ContentId? securityContent,
+  List<ContentId>? profileContent,
   void Function(AccountId, ContentId)? deleteImgAction,
   void Function(AccountId, ContentId, bool accepted, String? rejectedDetails)?
   changeModerationStateAction,
@@ -506,6 +541,19 @@ Widget _statusInfo(
     faceVerifiedText = null;
   }
 
+  final List<String> usageTexts = [];
+  final bool inUse = content.usageStartTime != null;
+  if (inUse && securityContent != null && content.cid == securityContent) {
+    usageTexts.add("Security selfie");
+  }
+  final profileIndex = inUse && profileContent != null ? profileContent.indexOf(content.cid) : -1;
+  if (profileIndex >= 0) {
+    usageTexts.add("Profile image ${profileIndex + 1}");
+  }
+  if (usageTexts.isEmpty && inUse) {
+    usageTexts.add("In use");
+  }
+
   return Column(
     crossAxisAlignment: CrossAxisAlignment.center,
     mainAxisAlignment: MainAxisAlignment.center,
@@ -516,6 +564,8 @@ Widget _statusInfo(
       Text(faceDetectedText, textAlign: TextAlign.center),
       if (faceVerifiedText != null) const Padding(padding: EdgeInsets.symmetric(vertical: 4)),
       if (faceVerifiedText != null) Text(faceVerifiedText, textAlign: TextAlign.center),
+      if (usageTexts.isNotEmpty) const Padding(padding: EdgeInsets.symmetric(vertical: 4)),
+      if (usageTexts.isNotEmpty) Text(usageTexts.join(" + "), textAlign: TextAlign.center),
       for (final button in moderationStateChangeButtons) ...[
         const Padding(padding: EdgeInsets.symmetric(vertical: 4)),
         button,

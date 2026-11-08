@@ -260,7 +260,14 @@ class _AccountAdminSettingsScreenState extends State<AccountAdminSettingsScreen>
         Setting.createSetting(
           Icons.image,
           "Admin image management",
-          () => MyNavigator.pushLimited(context, AdminContentManagementPage(r, widget.accountId)),
+          () => MyNavigator.pushLimited(
+            context,
+            AdminContentManagementPage(
+              r,
+              widget.accountId,
+              adminViewAllProfiles: permissions.adminViewAllProfiles,
+            ),
+          ),
         ).toListTile(),
       );
     }
