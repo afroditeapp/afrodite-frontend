@@ -85,7 +85,7 @@ class MainStateBloc extends Bloc<MainStateEvent, MainState> {
               // and getting AccountState fails.
               AccountStateEmpty() => MsLoginRequired(),
               AccountStateExists(:final state) => switch (state) {
-                AccountState.initialSetup => switch (initialSetupSkipped) {
+                AccountStateInternal.initialSetup => switch (initialSetupSkipped) {
                   InitialSetupSkippedLoading() => null,
                   InitialSetupSkippedExists(value: true) => await createMainScreenState(
                     ls.repositories,
@@ -94,9 +94,11 @@ class MainStateBloc extends Bloc<MainStateEvent, MainState> {
                     ls.repositories,
                   ),
                 },
-                AccountState.banned => ls.toMainState(LoggedInBasicScreen.accountBanned),
-                AccountState.pendingDeletion => ls.toMainState(LoggedInBasicScreen.pendingRemoval),
-                AccountState.normal => switch ((ageVerified, clientFeaturesConfig)) {
+                AccountStateInternal.banned => ls.toMainState(LoggedInBasicScreen.accountBanned),
+                AccountStateInternal.pendingDeletion => ls.toMainState(
+                  LoggedInBasicScreen.pendingRemoval,
+                ),
+                AccountStateInternal.normal => switch ((ageVerified, clientFeaturesConfig)) {
                   (AgeVerifiedLoading(), _) || (_, ClientFeaturesConfigLoading()) => null,
                   (
                     AgeVerifiedExists(value: final isAgeVerified),

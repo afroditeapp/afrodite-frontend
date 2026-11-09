@@ -23,18 +23,18 @@ class AppleAppAttestKeyState {
   AppleAppAttestKeyState(this.keyId, this.challenge, this.attestationPending);
 }
 
-enum AccountState { initialSetup, normal, banned, pendingDeletion }
+enum AccountStateInternal { initialSetup, normal, banned, pendingDeletion }
 
 extension AccountStateContainerToAccountState on AccountStateContainer {
-  AccountState toAccountState() {
+  AccountStateInternal toAccountState() {
     if (pendingDeletion) {
-      return AccountState.pendingDeletion;
+      return AccountStateInternal.pendingDeletion;
     } else if (banned) {
-      return AccountState.banned;
+      return AccountStateInternal.banned;
     } else if (!initialSetupCompleted) {
-      return AccountState.initialSetup;
+      return AccountStateInternal.initialSetup;
     } else {
-      return AccountState.normal;
+      return AccountStateInternal.normal;
     }
   }
 }

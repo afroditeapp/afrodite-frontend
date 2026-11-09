@@ -343,7 +343,7 @@ class _NotificationPermissionDialogOpenerState extends State<NotificationPermiss
   Widget build(BuildContext context) {
     return BlocBuilder<AccountBloc, AccountBlocData>(
       builder: (context, state) {
-        if (state.accountState != AccountState.normal) {
+        if (state.accountState != AccountStateInternal.normal) {
           return const SizedBox.shrink();
         }
 

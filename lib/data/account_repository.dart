@@ -51,7 +51,7 @@ class AccountRepository extends DataRepositoryWithLifecycle {
 
   final CachedValues _cachedValues = CachedValues();
 
-  Stream<AccountState?> get accountState =>
+  Stream<AccountStateInternal?> get accountState =>
       db.accountStream((db) => db.account.watchAccountState());
   Stream<String?> get emailAddress => _cachedValues._cachedEmailAddress;
   Stream<Permissions> get permissions =>
@@ -66,7 +66,7 @@ class AccountRepository extends DataRepositoryWithLifecycle {
 
   ProfileVisibility get profileVisibilityValue => _cachedValues._cachedProfileVisibility.value;
   String? get emailAddressValue => _cachedValues._cachedEmailAddress.value;
-  AccountState? get accountStateValue => _cachedValues._cachedAccountState.value;
+  AccountStateInternal? get accountStateValue => _cachedValues._cachedAccountState.value;
   ClientFeaturesConfig get clientFeaturesConfigValue =>
       _cachedValues._cachedClientFeaturesConfig.value;
   DynamicClientFeaturesConfig get dynamicClientFeaturesConfigValue =>
@@ -442,8 +442,8 @@ class CachedValues {
     _PROFILE_VISIBILITY_DEFAULT,
   );
   StreamSubscription<ProfileVisibility>? _cachedProfileVisibilitySubscription;
-  final BehaviorSubject<AccountState?> _cachedAccountState = BehaviorSubject.seeded(null);
-  StreamSubscription<AccountState?>? _cachedAccountStateSubscription;
+  final BehaviorSubject<AccountStateInternal?> _cachedAccountState = BehaviorSubject.seeded(null);
+  StreamSubscription<AccountStateInternal?>? _cachedAccountStateSubscription;
   final BehaviorSubject<ClientFeaturesConfig> _cachedClientFeaturesConfig = BehaviorSubject.seeded(
     emptyClientFeaturesConfig(),
   );

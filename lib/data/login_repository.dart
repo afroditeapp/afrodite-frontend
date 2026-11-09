@@ -945,7 +945,7 @@ class RepositoryStateStreams {
   final BehaviorSubject<AccountStateStreamValue> _accountState = BehaviorSubject.seeded(
     AccountStateLoading(),
   );
-  StreamSubscription<AccountState?>? _accountStateSubscription;
+  StreamSubscription<AccountStateInternal?>? _accountStateSubscription;
   Stream<AccountStateStreamValue> get accountState => _accountState;
 
   final BehaviorSubject<InitialSetupSkippedStreamValue> _initialSetupSkipped =
@@ -1058,7 +1058,7 @@ class AccountStateEmpty extends AccountStateStreamValue {
 }
 
 class AccountStateExists extends AccountStateStreamValue {
-  final AccountState state;
+  final AccountStateInternal state;
   AccountStateExists(this.state);
 
   @override

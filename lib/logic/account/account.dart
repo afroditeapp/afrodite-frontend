@@ -22,7 +22,7 @@ class NewProfileVisibilityValue extends AccountEvent {
 }
 
 class NewAccountStateValue extends AccountEvent {
-  final AccountState? accountState;
+  final AccountStateInternal? accountState;
   NewAccountStateValue(this.accountState);
 }
 
@@ -43,7 +43,7 @@ class AccountBloc extends Bloc<AccountEvent, AccountBlocData> with ActionRunner 
 
   StreamSubscription<Permissions>? _permissionsSubscription;
   StreamSubscription<ProfileVisibility>? _profileVisibilitySubscription;
-  StreamSubscription<AccountState?>? _accountStateSubscription;
+  StreamSubscription<AccountStateInternal?>? _accountStateSubscription;
   StreamSubscription<String?>? _emailAddressSubscription;
   StreamSubscription<bool?>? _emailVerifiedSubscription;
 

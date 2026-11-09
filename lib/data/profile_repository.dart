@@ -604,7 +604,7 @@ class ProfileRepository extends DataRepositoryWithLifecycle {
   }) async {
     if (skipIfAccountStateIsInitialSetup) {
       final state = await account.accountState.firstOrNull;
-      if (state == AccountState.initialSetup) {
+      if (state == AccountStateInternal.initialSetup) {
         // It is not possible to download the info when
         // the state is initial setup.
         return;

@@ -23,14 +23,14 @@ final _privateConstructorErrorAccountBlocData = UnsupportedError(
 mixin _$AccountBlocData {
   String? get email => throw _privateConstructorErrorAccountBlocData;
   bool get emailVerified => throw _privateConstructorErrorAccountBlocData;
-  AccountState? get accountState => throw _privateConstructorErrorAccountBlocData;
+  AccountStateInternal? get accountState => throw _privateConstructorErrorAccountBlocData;
   Permissions get permissions => throw _privateConstructorErrorAccountBlocData;
   ProfileVisibility get visibility => throw _privateConstructorErrorAccountBlocData;
 
   AccountBlocData copyWith({
     String? email,
     bool? emailVerified,
-    AccountState? accountState,
+    AccountStateInternal? accountState,
     Permissions? permissions,
     ProfileVisibility? visibility,
   }) => throw _privateConstructorErrorAccountBlocData;
@@ -41,7 +41,7 @@ abstract class _AccountBlocData extends AccountBlocData {
   factory _AccountBlocData({
     String? email,
     bool emailVerified,
-    required AccountState? accountState,
+    required AccountStateInternal? accountState,
     required Permissions permissions,
     required ProfileVisibility visibility,
   }) = _$AccountBlocDataImpl;
@@ -65,7 +65,7 @@ class _$AccountBlocDataImpl extends _AccountBlocData with DiagnosticableTreeMixi
   @override
   final bool emailVerified;
   @override
-  final AccountState? accountState;
+  final AccountStateInternal? accountState;
   @override
   final Permissions permissions;
   @override
@@ -126,7 +126,7 @@ class _$AccountBlocDataImpl extends _AccountBlocData with DiagnosticableTreeMixi
   }) => _$AccountBlocDataImpl(
     email: (email == _detectDefaultValueInCopyWith ? this.email : email) as String?,
     emailVerified: (emailVerified ?? this.emailVerified) as bool,
-    accountState: (accountState == _detectDefaultValueInCopyWith ? this.accountState : accountState) as AccountState?,
+    accountState: (accountState == _detectDefaultValueInCopyWith ? this.accountState : accountState) as AccountStateInternal?,
     permissions: (permissions ?? this.permissions) as Permissions,
     visibility: (visibility ?? this.visibility) as ProfileVisibility,
   );

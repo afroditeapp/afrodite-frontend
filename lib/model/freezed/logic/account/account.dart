@@ -15,7 +15,7 @@ class AccountBlocData with _$AccountBlocData {
     /// Set by default to true, so that profiles screen will not
     /// try to show email not verified UI.
     @Default(true) bool emailVerified,
-    required AccountState? accountState,
+    required AccountStateInternal? accountState,
     required Permissions permissions,
     required ProfileVisibility visibility,
   }) = _AccountBlocData;

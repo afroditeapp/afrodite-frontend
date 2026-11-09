@@ -142,7 +142,7 @@ class InitialSetupUtils {
     await _api.accountAction((api) => api.postCompleteSetup());
 
     final state = await _api.account((api) => api.getAccountState()).ok();
-    if (state == null || state.state.toAccountState() != AccountState.normal) {
+    if (state == null || state.state.toAccountState() != AccountStateInternal.normal) {
       return "Error";
     }
 

@@ -34,7 +34,7 @@ Future<void> openMyProfileScreen(BuildContext context) async {
     return;
   }
 
-  if (context.read<AccountBloc>().state.accountState == AccountState.initialSetup) {
+  if (context.read<AccountBloc>().state.accountState == AccountStateInternal.initialSetup) {
     showSnackBar(context.strings.view_profile_screen_my_profile_initial_setup_not_done);
   } else {
     await MyNavigator.push(context, MyProfilePage());

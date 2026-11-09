@@ -22,7 +22,7 @@ part 'account.g.dart';
 class DaoReadAccount extends DatabaseAccessor<AccountDatabase> with _$DaoReadAccountMixin {
   DaoReadAccount(super.db);
 
-  Stream<dbm.AccountState?> watchAccountState() =>
+  Stream<dbm.AccountStateInternal?> watchAccountState() =>
       (select(accountState)..where((t) => t.id.equals(SingleRowTable.ID.value)))
           .map((r) => r.jsonAccountState?.value?.toAccountState())
           .watchSingleOrNull();
