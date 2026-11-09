@@ -14,6 +14,7 @@ class GetAccountLoginSessionInfo {
   /// Returns a new [GetAccountLoginSessionInfo] instance.
   GetAccountLoginSessionInfo({
     this.info,
+    this.lastSeenTime,
     this.loggedIn = false,
     this.online = false,
   });
@@ -27,6 +28,14 @@ class GetAccountLoginSessionInfo {
   ///
   LoginSessionInfo? info;
 
+  ///
+  /// Please note: This property should have been non-nullable! Since the specification file
+  /// does not include a default value (using the "default:" property), however, the generated
+  /// source code must fall back to having a nullable type.
+  /// Consider adding a "default:" property in the specification file to hide this note.
+  ///
+  UnixTime? lastSeenTime;
+
   bool loggedIn;
 
   bool online;
@@ -34,6 +43,7 @@ class GetAccountLoginSessionInfo {
   @override
   bool operator ==(Object other) => identical(this, other) || other is GetAccountLoginSessionInfo &&
     other.info == info &&
+    other.lastSeenTime == lastSeenTime &&
     other.loggedIn == loggedIn &&
     other.online == online;
 
@@ -41,11 +51,12 @@ class GetAccountLoginSessionInfo {
   int get hashCode =>
     // ignore: unnecessary_parenthesis
     (info == null ? 0 : info!.hashCode) +
+    (lastSeenTime == null ? 0 : lastSeenTime!.hashCode) +
     (loggedIn.hashCode) +
     (online.hashCode);
 
   @override
-  String toString() => 'GetAccountLoginSessionInfo[info=$info, loggedIn=$loggedIn, online=$online]';
+  String toString() => 'GetAccountLoginSessionInfo[info=$info, lastSeenTime=$lastSeenTime, loggedIn=$loggedIn, online=$online]';
 
   Map<String, dynamic> toJson() {
     final json = <String, dynamic>{};
@@ -53,6 +64,11 @@ class GetAccountLoginSessionInfo {
       json[r'info'] = this.info;
     } else {
       json[r'info'] = null;
+    }
+    if (this.lastSeenTime != null) {
+      json[r'last_seen_time'] = this.lastSeenTime;
+    } else {
+      json[r'last_seen_time'] = null;
     }
       json[r'logged_in'] = this.loggedIn;
       json[r'online'] = this.online;
@@ -75,6 +91,7 @@ class GetAccountLoginSessionInfo {
 
       return GetAccountLoginSessionInfo(
         info: LoginSessionInfo.fromJson(json[r'info']),
+        lastSeenTime: UnixTime.fromJson(json[r'last_seen_time']),
         loggedIn: mapValueOfType<bool>(json, r'logged_in') ?? false,
         online: mapValueOfType<bool>(json, r'online') ?? false,
       );
