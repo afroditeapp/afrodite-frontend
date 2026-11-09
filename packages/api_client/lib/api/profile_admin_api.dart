@@ -18,35 +18,30 @@ class ProfileAdminApi {
 
   /// Get admin profile iterator page
   ///
-  /// # Access - Permission [model::Permissions::admin_view_all_profiles]
+  /// HTTP method is POST to allow JSON request body for filters and extra info settings.  Filter values and extra info which the caller does not have permission to use are silently ignored.  # Access - Permission [model::Permissions::admin_view_all_profiles]
   ///
   /// Note: This method returns the HTTP [Response].
   ///
   /// Parameters:
   ///
-  /// * [int] startPosition (required):
-  ///
-  /// * [int] page (required):
-  Future<Response> getAdminProfileIteratorPageWithHttpInfo(int startPosition, int page, { Future<void>? abortTrigger, }) async {
+  /// * [ProfileIteratorSettings] profileIteratorSettings (required):
+  Future<Response> getAdminProfileIteratorPageWithHttpInfo(ProfileIteratorSettings profileIteratorSettings, { Future<void>? abortTrigger, }) async {
     // ignore: prefer_const_declarations
     final path = r'/profile_api/get_admin_profile_iterator_page';
 
     // ignore: prefer_final_locals
-    Object? postBody;
+    Object? postBody = profileIteratorSettings;
 
     final queryParams = <QueryParam>[];
     final headerParams = <String, String>{};
     final formParams = <String, String>{};
 
-      queryParams.addAll(_queryParams('', 'start_position', startPosition));
-      queryParams.addAll(_queryParams('', 'page', page));
-
-    const contentTypes = <String>[];
+    const contentTypes = <String>['application/json'];
 
 
     return apiClient.invokeAPI(
       path,
-      'GET',
+      'POST',
       queryParams,
       postBody,
       headerParams,
@@ -58,15 +53,13 @@ class ProfileAdminApi {
 
   /// Get admin profile iterator page
   ///
-  /// # Access - Permission [model::Permissions::admin_view_all_profiles]
+  /// HTTP method is POST to allow JSON request body for filters and extra info settings.  Filter values and extra info which the caller does not have permission to use are silently ignored.  # Access - Permission [model::Permissions::admin_view_all_profiles]
   ///
   /// Parameters:
   ///
-  /// * [int] startPosition (required):
-  ///
-  /// * [int] page (required):
-  Future<ProfileIteratorPage?> getAdminProfileIteratorPage(int startPosition, int page, { Future<void>? abortTrigger, }) async {
-    final response = await getAdminProfileIteratorPageWithHttpInfo(startPosition, page, abortTrigger: abortTrigger,);
+  /// * [ProfileIteratorSettings] profileIteratorSettings (required):
+  Future<ProfileIteratorPage?> getAdminProfileIteratorPage(ProfileIteratorSettings profileIteratorSettings, { Future<void>? abortTrigger, }) async {
+    final response = await getAdminProfileIteratorPageWithHttpInfo(profileIteratorSettings, abortTrigger: abortTrigger,);
     if (response.statusCode >= HttpStatus.badRequest) {
       throw ApiException(response.statusCode, await _decodeBodyBytes(response));
     }

@@ -201,6 +201,10 @@ class ApiClient {
           return AccountBannedAdminTypeTypeTransformer().decode(value);
         case 'AccountContent':
           return AccountContent.fromJson(value);
+        case 'AccountExtraInfoSettings':
+          return AccountExtraInfoSettings.fromJson(value);
+        case 'AccountFilters':
+          return AccountFilters.fromJson(value);
         case 'AccountId':
           return AccountId.fromJson(value);
         case 'AccountIdDbValue':
@@ -211,6 +215,8 @@ class ApiClient {
           return AccountLoginPlatforms.fromJson(value);
         case 'AccountRegistrationPlatforms':
           return AccountRegistrationPlatforms.fromJson(value);
+        case 'AccountState':
+          return AccountStateTypeTransformer().decode(value);
         case 'AccountStateContainer':
           return AccountStateContainer.fromJson(value);
         case 'AccountSyncVersion':
@@ -237,6 +243,8 @@ class ApiClient {
           return AddFavoriteProfileResult.fromJson(value);
         case 'AddPublicKeyResult':
           return AddPublicKeyResult.fromJson(value);
+        case 'AdminAccountLoginSessionInfo':
+          return AdminAccountLoginSessionInfo.fromJson(value);
         case 'AdminBotAccountVerificationConfig':
           return AdminBotAccountVerificationConfig.fromJson(value);
         case 'AdminBotBaseLlmConfig':
@@ -853,6 +861,8 @@ class ApiClient {
           return ProfileIteratorPageValue.fromJson(value);
         case 'ProfileIteratorSessionId':
           return ProfileIteratorSessionId.fromJson(value);
+        case 'ProfileIteratorSettings':
+          return ProfileIteratorSettings.fromJson(value);
         case 'ProfileLink':
           return ProfileLink.fromJson(value);
         case 'ProfileNameVerificationAdminInfo':

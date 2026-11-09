@@ -11,33 +11,32 @@
 part of openapi.api;
 
 
-class AccountState {
-  /// Instantiate a new enum with the provided [value].
-  const AccountState._(this.value);
+enum AccountState {
+  initialSetup._(r'InitialSetup'),
+  normal._(r'Normal'),
+  banned._(r'Banned'),
+  pendingDeletion._(r'PendingDeletion'),
+  unknownDefaultOpenApi._(r'unknown_default_open_api'),
+  ;
+
+  /// Instantiate a new enum with the provided value.
+  const AccountState._(this._value);
 
   /// The underlying value of this enum member.
-  final String value;
+  final String _value;
 
   @override
-  String toString() => value;
+  String toString() => _value;
 
-  String toJson() => value;
+  /// Encodes this enum as a value suitable for JSON.
+  String toJson() => _value;
 
-  static const initialSetup = AccountState._(r'InitialSetup');
-  static const normal = AccountState._(r'Normal');
-  static const banned = AccountState._(r'Banned');
-  static const pendingDeletion = AccountState._(r'PendingDeletion');
-
-  /// List of all possible values in this [enum][AccountState].
-  static const values = <AccountState>[
-    initialSetup,
-    normal,
-    banned,
-    pendingDeletion,
-  ];
-
+  /// Returns the instance of [AccountState] that was successfully decoded
+  /// from the passed [value] on success, null otherwise.
   static AccountState? fromJson(dynamic value) => AccountStateTypeTransformer().decode(value);
 
+  /// Returns a [List] containing instances of [AccountState]
+  /// that were successfully decoded from the passed [JSON][json].
   static List<AccountState> listFromJson(dynamic json, {bool growable = false,}) {
     final result = <AccountState>[];
     if (json is List && json.isNotEmpty) {
@@ -59,9 +58,11 @@ class AccountStateTypeTransformer {
 
   const AccountStateTypeTransformer._();
 
-  String encode(AccountState data) => data.value;
+  /// Encodes this enum as a value suitable for JSON.
+  String encode(AccountState data) => data._value;
 
-  /// Decodes a [dynamic value][data] to a AccountState.
+  /// Returns the instance of [AccountState] that was successfully decoded
+  /// from the passed [data] value on success, null otherwise.
   ///
   /// If [allowNull] is true and the [dynamic value][data] cannot be decoded successfully,
   /// then null is returned. However, if [allowNull] is false and the [dynamic value][data]
@@ -70,12 +71,16 @@ class AccountStateTypeTransformer {
   /// The [allowNull] is very handy when an API changes and a new enum value is added or removed,
   /// and users are still using an old app with the old code.
   AccountState? decode(dynamic data, {bool allowNull = true}) {
+    if (data is AccountState) {
+      return data;
+    }
     if (data != null) {
       switch (data) {
         case r'InitialSetup': return AccountState.initialSetup;
         case r'Normal': return AccountState.normal;
         case r'Banned': return AccountState.banned;
         case r'PendingDeletion': return AccountState.pendingDeletion;
+        case r'unknown_default_open_api': return AccountState.unknownDefaultOpenApi;
         default:
           if (!allowNull) {
             throw ArgumentError('Unknown enum value to decode: $data');
@@ -85,7 +90,7 @@ class AccountStateTypeTransformer {
     return null;
   }
 
-  /// Singleton [AccountStateTypeTransformer] instance.
+  /// The singleton instance of this transformer.
   static AccountStateTypeTransformer? _instance;
 }
 

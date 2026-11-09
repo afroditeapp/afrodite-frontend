@@ -13,25 +13,42 @@ part of openapi.api;
 class ProfileIteratorPage {
   /// Returns a new [ProfileIteratorPage] instance.
   ProfileIteratorPage({
+    this.nextPage,
     this.values = const [],
   });
+
+  /// Page number of the next page. None if the end of the iteration has been reached.
+  ///
+  /// Please note: This property should have been non-nullable! Since the specification file
+  /// does not include a default value (using the "default:" property), however, the generated
+  /// source code must fall back to having a nullable type.
+  /// Consider adding a "default:" property in the specification file to hide this note.
+  ///
+  int? nextPage;
 
   List<ProfileIteratorPageValue> values;
 
   @override
   bool operator ==(Object other) => identical(this, other) || other is ProfileIteratorPage &&
+    other.nextPage == nextPage &&
     _deepEquality.equals(other.values, values);
 
   @override
   int get hashCode =>
     // ignore: unnecessary_parenthesis
+    (nextPage == null ? 0 : nextPage!.hashCode) +
     (values.hashCode);
 
   @override
-  String toString() => 'ProfileIteratorPage[values=$values]';
+  String toString() => 'ProfileIteratorPage[nextPage=$nextPage, values=$values]';
 
   Map<String, dynamic> toJson() {
     final json = <String, dynamic>{};
+    if (this.nextPage != null) {
+      json[r'next_page'] = this.nextPage;
+    } else {
+      json[r'next_page'] = null;
+    }
       json[r'values'] = this.values;
     return json;
   }
@@ -53,6 +70,7 @@ class ProfileIteratorPage {
       }());
 
       return ProfileIteratorPage(
+        nextPage: mapValueOfType<int>(json, r'next_page'),
         values: ProfileIteratorPageValue.listFromJson(json[r'values']),
       );
     }

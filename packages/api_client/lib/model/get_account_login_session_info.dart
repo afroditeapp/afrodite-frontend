@@ -15,6 +15,7 @@ class GetAccountLoginSessionInfo {
   GetAccountLoginSessionInfo({
     this.info,
     this.loggedIn = false,
+    this.online = false,
   });
 
   /// Login session info from current (when logged in) or previous (when logged out) login.
@@ -28,19 +29,23 @@ class GetAccountLoginSessionInfo {
 
   bool loggedIn;
 
+  bool online;
+
   @override
   bool operator ==(Object other) => identical(this, other) || other is GetAccountLoginSessionInfo &&
     other.info == info &&
-    other.loggedIn == loggedIn;
+    other.loggedIn == loggedIn &&
+    other.online == online;
 
   @override
   int get hashCode =>
     // ignore: unnecessary_parenthesis
     (info == null ? 0 : info!.hashCode) +
-    (loggedIn.hashCode);
+    (loggedIn.hashCode) +
+    (online.hashCode);
 
   @override
-  String toString() => 'GetAccountLoginSessionInfo[info=$info, loggedIn=$loggedIn]';
+  String toString() => 'GetAccountLoginSessionInfo[info=$info, loggedIn=$loggedIn, online=$online]';
 
   Map<String, dynamic> toJson() {
     final json = <String, dynamic>{};
@@ -50,6 +55,7 @@ class GetAccountLoginSessionInfo {
       json[r'info'] = null;
     }
       json[r'logged_in'] = this.loggedIn;
+      json[r'online'] = this.online;
     return json;
   }
 
@@ -70,6 +76,7 @@ class GetAccountLoginSessionInfo {
       return GetAccountLoginSessionInfo(
         info: LoginSessionInfo.fromJson(json[r'info']),
         loggedIn: mapValueOfType<bool>(json, r'logged_in') ?? false,
+        online: mapValueOfType<bool>(json, r'online') ?? false,
       );
     }
     return null;

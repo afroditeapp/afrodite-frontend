@@ -300,7 +300,7 @@ Class | Method | HTTP request | Description
 *ProfileApi* | [**postSearchAgeRange**](doc//ProfileApi.md#postsearchagerange) | **POST** /profile_api/search_age_range | Set account's current search age range
 *ProfileApi* | [**postSearchGroups**](doc//ProfileApi.md#postsearchgroups) | **POST** /profile_api/search_groups | Set account's current search groups (gender and what gender user is looking for)
 *ProfileApi* | [**putLocation**](doc//ProfileApi.md#putlocation) | **PUT** /profile_api/location | Update location for account which makes this request.
-*ProfileAdminApi* | [**getAdminProfileIteratorPage**](doc//ProfileAdminApi.md#getadminprofileiteratorpage) | **GET** /profile_api/get_admin_profile_iterator_page | Get admin profile iterator page
+*ProfileAdminApi* | [**getAdminProfileIteratorPage**](doc//ProfileAdminApi.md#getadminprofileiteratorpage) | **POST** /profile_api/get_admin_profile_iterator_page | Get admin profile iterator page
 *ProfileAdminApi* | [**getLatestCreatedAccountIdDb**](doc//ProfileAdminApi.md#getlatestcreatedaccountiddb) | **GET** /profile_api/get_latest_created_account_id_db | Get latest created account ID DB
 *ProfileAdminApi* | [**getProfileAgeAndName**](doc//ProfileAdminApi.md#getprofileageandname) | **GET** /profile_api/get_profile_age_and_name/{aid} | Get profile age and name
 *ProfileAdminApi* | [**getProfileAgeRangeVerificationAdminInfo**](doc//ProfileAdminApi.md#getprofileagerangeverificationadmininfo) | **GET** /profile_api/profile_age_range_verification_admin_info/{aid} | Get profile age range verification values.
@@ -328,11 +328,14 @@ Class | Method | HTTP request | Description
  - [AccountBanReasonDetails](doc//AccountBanReasonDetails.md)
  - [AccountBannedAdminType](doc//AccountBannedAdminType.md)
  - [AccountContent](doc//AccountContent.md)
+ - [AccountExtraInfoSettings](doc//AccountExtraInfoSettings.md)
+ - [AccountFilters](doc//AccountFilters.md)
  - [AccountId](doc//AccountId.md)
  - [AccountIdDbValue](doc//AccountIdDbValue.md)
  - [AccountLockedState](doc//AccountLockedState.md)
  - [AccountLoginPlatforms](doc//AccountLoginPlatforms.md)
  - [AccountRegistrationPlatforms](doc//AccountRegistrationPlatforms.md)
+ - [AccountState](doc//AccountState.md)
  - [AccountStateContainer](doc//AccountStateContainer.md)
  - [AccountSyncVersion](doc//AccountSyncVersion.md)
  - [AccountVerificationConfig](doc//AccountVerificationConfig.md)
@@ -346,6 +349,7 @@ Class | Method | HTTP request | Description
  - [AccountVerificationScopesConfig](doc//AccountVerificationScopesConfig.md)
  - [AddFavoriteProfileResult](doc//AddFavoriteProfileResult.md)
  - [AddPublicKeyResult](doc//AddPublicKeyResult.md)
+ - [AdminAccountLoginSessionInfo](doc//AdminAccountLoginSessionInfo.md)
  - [AdminBotAccountVerificationConfig](doc//AdminBotAccountVerificationConfig.md)
  - [AdminBotBaseLlmConfig](doc//AdminBotBaseLlmConfig.md)
  - [AdminBotConfig](doc//AdminBotConfig.md)
@@ -654,6 +658,7 @@ Class | Method | HTTP request | Description
  - [ProfileIteratorPageItem](doc//ProfileIteratorPageItem.md)
  - [ProfileIteratorPageValue](doc//ProfileIteratorPageValue.md)
  - [ProfileIteratorSessionId](doc//ProfileIteratorSessionId.md)
+ - [ProfileIteratorSettings](doc//ProfileIteratorSettings.md)
  - [ProfileLink](doc//ProfileLink.md)
  - [ProfileNameVerificationAdminInfo](doc//ProfileNameVerificationAdminInfo.md)
  - [ProfilePage](doc//ProfilePage.md)

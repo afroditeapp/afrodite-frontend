@@ -204,7 +204,11 @@ class _BlockedProfilesScreen extends State<ViewAccountsScreen> {
 
     final page = _pagingState.currentPageNumber();
     final data = await widget.api
-        .profileAdmin((api) => api.getAdminProfileIteratorPage(startPosition.accountDbId, page))
+        .profileAdmin(
+          (api) => api.getAdminProfileIteratorPage(
+            ProfileIteratorSettings(startPosition: startPosition.accountDbId, page: page),
+          ),
+        )
         .ok();
     if (data == null) {
       updatePagingState((s) => s.copyAndShowError());
