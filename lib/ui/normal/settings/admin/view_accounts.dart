@@ -39,10 +39,10 @@ const List<(bool?, String)> _accountOnlineFilterOptions = [
   (false, "Offline"),
 ];
 
-const List<(bool?, String)> _attestationNotValidFilterOptions = [
+const List<(bool?, String)> _attestationValidityFilterOptions = [
   (null, "Any"),
-  (true, "Not valid"),
-  (false, "Valid"),
+  (true, "Valid"),
+  (false, "Not valid"),
 ];
 
 extension AccountStateUiText on AccountState {
@@ -94,7 +94,7 @@ class _ViewAccountsScreenState extends State<ViewAccountsScreen> {
   int _accountStateIndex = 0;
   int _profileVisibilityIndex = 0;
   int _accountOnlineIndex = 0;
-  int _attestationNotValidIndex = 0;
+  int _attestationValidityIndex = 0;
 
   final TextEditingController _ipCountryController = TextEditingController();
 
@@ -111,14 +111,14 @@ class _ViewAccountsScreenState extends State<ViewAccountsScreen> {
     final filters = AccountFilters(
       accountOnline: _accountOnlineFilterOptions[_accountOnlineIndex].$1,
       accountState: _accountStateFilterOptions[_accountStateIndex].$1,
-      loginSessionBasicAppAttestationNotValid:
-          _attestationNotValidFilterOptions[_attestationNotValidIndex].$1,
+      loginSessionBasicAppAttestationValidity:
+          _attestationValidityFilterOptions[_attestationValidityIndex].$1,
       loginSessionIpCountryIsNot: ipCountry.isEmpty ? null : ipCountry,
       profileVisibility: _profileVisibilityFilterOptions[_profileVisibilityIndex].$1,
     );
     if (filters.accountOnline == null &&
         filters.accountState == null &&
-        filters.loginSessionBasicAppAttestationNotValid == null &&
+        filters.loginSessionBasicAppAttestationValidity == null &&
         filters.loginSessionIpCountryIsNot == null &&
         filters.profileVisibility == null) {
       return null;
@@ -221,10 +221,10 @@ class _ViewAccountsScreenState extends State<ViewAccountsScreen> {
       const Padding(padding: EdgeInsets.all(8.0)),
       hPad(
         _filterDropdown<bool?>(
-          label: "Login session basic app attestation not valid",
-          options: _attestationNotValidFilterOptions,
-          selectedIndex: _attestationNotValidIndex,
-          onChanged: (value) => setState(() => _attestationNotValidIndex = value),
+          label: "Login session basic app attestation validity",
+          options: _attestationValidityFilterOptions,
+          selectedIndex: _attestationValidityIndex,
+          onChanged: (value) => setState(() => _attestationValidityIndex = value),
         ),
       ),
       const Padding(padding: EdgeInsets.all(8.0)),

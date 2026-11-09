@@ -15,7 +15,7 @@ class AccountFilters {
   AccountFilters({
     this.accountOnline,
     this.accountState,
-    this.loginSessionBasicAppAttestationNotValid,
+    this.loginSessionBasicAppAttestationValidity,
     this.loginSessionIpCountryIsNot,
     this.profileVisibility,
   });
@@ -36,14 +36,14 @@ class AccountFilters {
   ///
   AccountState? accountState;
 
-  /// Includes accounts whose latest login session does not have valid basic app attestation. Valid basic app attestation means valid iOS app attestation token or valid Android app and device integrity values.
+  /// Includes accounts whose latest login session basic app attestation validity matches the provided value. Valid basic app attestation means valid iOS app attestation token or valid Android app and device integrity values. Accounts without a login session are included when the value is false.
   ///
   /// Please note: This property should have been non-nullable! Since the specification file
   /// does not include a default value (using the "default:" property), however, the generated
   /// source code must fall back to having a nullable type.
   /// Consider adding a "default:" property in the specification file to hide this note.
   ///
-  bool? loginSessionBasicAppAttestationNotValid;
+  bool? loginSessionBasicAppAttestationValidity;
 
   /// Includes accounts whose latest login session IP country is not the provided country code.
   ///
@@ -66,7 +66,7 @@ class AccountFilters {
   bool operator ==(Object other) => identical(this, other) || other is AccountFilters &&
     other.accountOnline == accountOnline &&
     other.accountState == accountState &&
-    other.loginSessionBasicAppAttestationNotValid == loginSessionBasicAppAttestationNotValid &&
+    other.loginSessionBasicAppAttestationValidity == loginSessionBasicAppAttestationValidity &&
     other.loginSessionIpCountryIsNot == loginSessionIpCountryIsNot &&
     other.profileVisibility == profileVisibility;
 
@@ -75,12 +75,12 @@ class AccountFilters {
     // ignore: unnecessary_parenthesis
     (accountOnline == null ? 0 : accountOnline!.hashCode) +
     (accountState == null ? 0 : accountState!.hashCode) +
-    (loginSessionBasicAppAttestationNotValid == null ? 0 : loginSessionBasicAppAttestationNotValid!.hashCode) +
+    (loginSessionBasicAppAttestationValidity == null ? 0 : loginSessionBasicAppAttestationValidity!.hashCode) +
     (loginSessionIpCountryIsNot == null ? 0 : loginSessionIpCountryIsNot!.hashCode) +
     (profileVisibility == null ? 0 : profileVisibility!.hashCode);
 
   @override
-  String toString() => 'AccountFilters[accountOnline=$accountOnline, accountState=$accountState, loginSessionBasicAppAttestationNotValid=$loginSessionBasicAppAttestationNotValid, loginSessionIpCountryIsNot=$loginSessionIpCountryIsNot, profileVisibility=$profileVisibility]';
+  String toString() => 'AccountFilters[accountOnline=$accountOnline, accountState=$accountState, loginSessionBasicAppAttestationValidity=$loginSessionBasicAppAttestationValidity, loginSessionIpCountryIsNot=$loginSessionIpCountryIsNot, profileVisibility=$profileVisibility]';
 
   Map<String, dynamic> toJson() {
     final json = <String, dynamic>{};
@@ -94,10 +94,10 @@ class AccountFilters {
     } else {
       json[r'account_state'] = null;
     }
-    if (this.loginSessionBasicAppAttestationNotValid != null) {
-      json[r'login_session_basic_app_attestation_not_valid'] = this.loginSessionBasicAppAttestationNotValid;
+    if (this.loginSessionBasicAppAttestationValidity != null) {
+      json[r'login_session_basic_app_attestation_validity'] = this.loginSessionBasicAppAttestationValidity;
     } else {
-      json[r'login_session_basic_app_attestation_not_valid'] = null;
+      json[r'login_session_basic_app_attestation_validity'] = null;
     }
     if (this.loginSessionIpCountryIsNot != null) {
       json[r'login_session_ip_country_is_not'] = this.loginSessionIpCountryIsNot;
@@ -129,7 +129,7 @@ class AccountFilters {
       return AccountFilters(
         accountOnline: mapValueOfType<bool>(json, r'account_online'),
         accountState: AccountState.fromJson(json[r'account_state']),
-        loginSessionBasicAppAttestationNotValid: mapValueOfType<bool>(json, r'login_session_basic_app_attestation_not_valid'),
+        loginSessionBasicAppAttestationValidity: mapValueOfType<bool>(json, r'login_session_basic_app_attestation_validity'),
         loginSessionIpCountryIsNot: mapValueOfType<String>(json, r'login_session_ip_country_is_not'),
         profileVisibility: ProfileVisibility.fromJson(json[r'profile_visibility']),
       );
