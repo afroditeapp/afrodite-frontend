@@ -250,6 +250,13 @@ class AdminSettingsScreen extends StatelessWidget {
         Setting.createSetting(
           Icons.group,
           "View accounts",
+          () => MyNavigator.pushLimited(context, BrowseAccountsPage(r.api)),
+        ),
+      );
+      settings.add(
+        Setting.createSetting(
+          Icons.manage_search,
+          "View accounts (advanced)",
           () => MyNavigator.pushLimited(context, ViewAccountsPage(r)),
         ),
       );

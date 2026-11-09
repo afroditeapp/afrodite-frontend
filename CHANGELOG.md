@@ -6,6 +6,8 @@
 
 - Add admin "Latest content" screen for browsing latest profile names,
   profile texts and media content
+- Add admin "View accounts (advanced)" screen for filtering accounts and
+  selecting which extra info is shown while browsing accounts
 
 ### Changed
 
