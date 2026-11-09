@@ -130,6 +130,8 @@ class _LoginManagementScreenState extends State<LoginManagementScreen> {
           const Padding(padding: EdgeInsets.all(8.0)),
           hPad(Text("Login session info", style: Theme.of(context).textTheme.titleSmall)),
           hPad(Text("Logged in: ${loginSessionInfo?.loggedIn ?? false}")),
+          hPad(Text("Online: ${loginSessionInfo?.online ?? false}")),
+          hPad(Text("Last seen: ${_lastSeenText(localeString)}")),
           if (info == null)
             hPad(const Text("No login session info available"))
           else ...[
@@ -170,6 +172,14 @@ class _LoginManagementScreenState extends State<LoginManagementScreen> {
         ],
       ),
     );
+  }
+
+  String _lastSeenText(String localeString) {
+    final lastSeenTime = loginSessionInfo?.lastSeenTime;
+    if (lastSeenTime == null) {
+      return "Unknown";
+    }
+    return fullTimeString(lastSeenTime.toUtcDateTime(), localeString);
   }
 
   Future<void> _toggleLockState(AccountLockedState currentState) async {
