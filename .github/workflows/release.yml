@@ -42,6 +42,11 @@ jobs:
           flutter-version: '3.47.8'
           channel: 'stable'
 
+      - name: Create services config
+        env:
+          CONFIG_SERVICES_DART: ${{ secrets.CONFIG_SERVICES_DART }}
+        run: printf '%s\n' "${CONFIG_SERVICES_DART:?secret is not set}" > lib/config_services.dart
+
       - name: Build Android release
         run: |
           unset ANDROID_NDK ANDROID_NDK_HOME ANDROID_NDK_LATEST_HOME ANDROID_NDK_ROOT
@@ -84,6 +89,11 @@ jobs:
         with:
           flutter-version: '3.47.8'
           channel: 'stable'
+
+      - name: Create services config
+        env:
+          CONFIG_SERVICES_DART: ${{ secrets.CONFIG_SERVICES_DART }}
+        run: printf '%s\n' "${CONFIG_SERVICES_DART:?secret is not set}" > lib/config_services.dart
 
       - name: Download web dependencies
         run: |
