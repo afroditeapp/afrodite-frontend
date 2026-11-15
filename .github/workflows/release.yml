@@ -80,10 +80,6 @@ jobs:
           sudo mv wasm-pack-v0.15.0-x86_64-unknown-linux-musl/wasm-pack /usr/local/bin/
           wasm-pack --version
 
-      - name: Install Rust wasm target
-        run: |
-          rustup target add wasm32-unknown-unknown
-
       - name: Set up Flutter
         uses: subosito/flutter-action@1a449444c387b1966244ae4d4f8c696479add0b2 # v2.23.0
         with:
