@@ -28,7 +28,7 @@ check-fmt:
 	! -path "*/.dart_tool/*" \
 	| \
 	xargs dart format \
-	--show none \
+	--show changed \
 	--page-width 100 \
 	--summary none \
 	--output none \
