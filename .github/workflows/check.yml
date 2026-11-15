@@ -43,6 +43,19 @@ jobs:
       - name: Test
         run: make test
 
+  build-web:
+    name: Build web
+    runs-on: ubuntu-24.04
+    steps:
+      - name: Checkout code
+        uses: actions/checkout@v7
+
+      - name: Create placeholder config
+        run: make create-placeholder-config-services
+
+      - name: Build web
+        uses: ./.github/actions/build-web
+
   spell-check:
     name: Spell check
     runs-on: ubuntu-24.04
