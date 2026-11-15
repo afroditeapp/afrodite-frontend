@@ -44,6 +44,9 @@ test:
 spell-check:
 	cspell --config cspell.jsonc --gitignore .
 
+create-placeholder-config-services:
+	test -f lib/config_services.dart || cp tools/config_services_placeholder.dart.txt lib/config_services.dart
+
 update-api-bindings:
 	openapi-generator-cli generate \
 	-i http://localhost:3001/api-doc/app_api.json \
