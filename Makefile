@@ -28,7 +28,7 @@ check-fmt:
 	! -path "*/.dart_tool/*" \
 	| \
 	xargs dart format \
-	--show none \
+	--show changed \
 	--page-width 100 \
 	--summary none \
 	--output none \
@@ -43,6 +43,9 @@ test:
 
 spell-check:
 	cspell --config cspell.jsonc --gitignore .
+
+create-placeholder-config-services:
+	test -f lib/config_services.dart || cp tools/config_services_placeholder.dart.txt lib/config_services.dart
 
 update-api-bindings:
 	openapi-generator-cli generate \

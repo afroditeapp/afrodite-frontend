@@ -114,24 +114,7 @@ Command `make update-licenses-for-native-utils` requires
 
 ### Placeholder files needed for compiling the project
 
-lib/config_services.dart
-```dart
-import 'package:app/data/push_notification_manager.dart';
-
-String signInWithGoogleWebClientId() => "";
-String signInWithAppleServiceIdForAndroidAndWebLogin() => "";
-String iosAppGroupIdentifier() => "";
-
-class DefaultFirebaseOptions {
-  static const FirebaseOptions android = FirebaseOptions(
-    apiKey: "",
-    appId: "",
-    projectId: "",
-  );
-}
-
-int? playIntegrityApiCloudProjectNumber() => null;
-```
+Create `lib/config_services.dart` with `make create-placeholder-config-services`.
 
 ### Add missing iOS project files
 

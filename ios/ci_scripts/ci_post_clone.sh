@@ -10,7 +10,7 @@ set -e
 # Change working directory to the root of the cloned repo.
 cd "$CI_PRIMARY_REPOSITORY_PATH"
 
-FLUTTER_VERSION="3.47.8"
+FLUTTER_VERSION=$(sed -n "s/^  flutter: '\(.*\)'/\1/p" pubspec.yaml)
 echo "==> Installing Flutter $FLUTTER_VERSION"
 git clone https://github.com/flutter/flutter.git --depth 1 -b "$FLUTTER_VERSION" "$HOME/flutter"
 export PATH="$PATH:$HOME/flutter/bin"
