@@ -1,6 +1,7 @@
 import 'dart:io';
 
 import 'package:android_intent_plus/android_intent.dart';
+import 'package:app/config_features.dart';
 import 'package:app/data/notification_manager.dart';
 import 'package:app/data/utils/repository_instances.dart';
 import 'package:app/ui/normal/settings/debug.dart';
@@ -206,6 +207,11 @@ ${screenContext.strings.generic_state}: $stateText""";
 }
 
 void joinVideoCall(BuildContext context, AccountId callee) async {
+  if (!FEATURE_VIDEO_CALLS) {
+    showSnackBar(context.strings.generic_this_feature_is_disabled);
+    return;
+  }
+
   final api = context.read<RepositoryInstances>().api;
 
   if (await isInstallingJitsiMeetAppPossible() && !await isJitsiMeetAppInstalled()) {

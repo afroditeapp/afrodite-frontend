@@ -23,5 +23,8 @@ const bool FEATURE_INITIAL_SETUP_SKIP = kIsWeb;
 /// Enable showing the attribution text in the about dialog
 const bool FEATURE_ABOUT_DIALOG_ATTRIBUTION = kIsWeb;
 
+/// Enable user facing UI for video calls
+const bool FEATURE_VIDEO_CALLS = false;
+
 const bool FEATURE_SERVER_SELECTION = !kReleaseMode;
 const bool FEATURE_DEBUG_SETTINGS = !kReleaseMode;

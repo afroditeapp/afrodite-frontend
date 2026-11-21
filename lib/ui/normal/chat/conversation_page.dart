@@ -4,6 +4,7 @@ import 'package:app/data/chat/message_database_iterator.dart';
 import 'package:app/data/utils/repository_instances.dart';
 import 'package:app/database/common_database_manager.dart';
 import 'package:app/api/server_connection_manager.dart';
+import 'package:app/config_features.dart';
 import 'package:app/logic/account/client_features_config.dart';
 import 'package:app/logic/chat/chat_enabled.dart';
 import 'package:app/ui/normal/chat/chat_data_outdated_widget.dart';
@@ -235,7 +236,8 @@ class ConversationScreenState extends State<ConversationScreen> {
       appBar: AppBar(
         title: profileEntry != null ? appBarTitle(profileEntry) : null,
         actions: [
-          if (context.read<ClientFeaturesConfigBloc>().state.config.featuresConfig().videoCalls)
+          if (FEATURE_VIDEO_CALLS &&
+              context.read<ClientFeaturesConfigBloc>().state.config.featuresConfig().videoCalls)
             IconButton(
               onPressed: () {
                 if (context.read<ChatEnabledBloc>().state.chatEnabled) {
@@ -454,7 +456,8 @@ class _VideoCallTipDialogOpenerState extends State<VideoCallTipDialogOpener> {
     final r = context.read<RepositoryInstances>();
 
     // Only show dialog if video calls feature is enabled
-    if (!context.read<ClientFeaturesConfigBloc>().state.config.featuresConfig().videoCalls) {
+    if (!FEATURE_VIDEO_CALLS ||
+        !context.read<ClientFeaturesConfigBloc>().state.config.featuresConfig().videoCalls) {
       return widget.child;
     }
 
