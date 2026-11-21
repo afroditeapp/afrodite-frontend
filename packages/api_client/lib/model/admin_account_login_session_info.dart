@@ -13,6 +13,8 @@ part of openapi.api;
 class AdminAccountLoginSessionInfo {
   /// Returns a new [AdminAccountLoginSessionInfo] instance.
   AdminAccountLoginSessionInfo({
+    this.appAttestationAndroidSdkVersion,
+    this.appAttestationAndroidStrongIntegrity,
     this.appAttestationAppIntegrity,
     this.appAttestationDeviceIntegrity,
     this.appAttestationFailed,
@@ -20,6 +22,22 @@ class AdminAccountLoginSessionInfo {
     this.clientType,
     this.loginMethod,
   });
+
+  ///
+  /// Please note: This property should have been non-nullable! Since the specification file
+  /// does not include a default value (using the "default:" property), however, the generated
+  /// source code must fall back to having a nullable type.
+  /// Consider adding a "default:" property in the specification file to hide this note.
+  ///
+  int? appAttestationAndroidSdkVersion;
+
+  ///
+  /// Please note: This property should have been non-nullable! Since the specification file
+  /// does not include a default value (using the "default:" property), however, the generated
+  /// source code must fall back to having a nullable type.
+  /// Consider adding a "default:" property in the specification file to hide this note.
+  ///
+  bool? appAttestationAndroidStrongIntegrity;
 
   ///
   /// Please note: This property should have been non-nullable! Since the specification file
@@ -71,6 +89,8 @@ class AdminAccountLoginSessionInfo {
 
   @override
   bool operator ==(Object other) => identical(this, other) || other is AdminAccountLoginSessionInfo &&
+    other.appAttestationAndroidSdkVersion == appAttestationAndroidSdkVersion &&
+    other.appAttestationAndroidStrongIntegrity == appAttestationAndroidStrongIntegrity &&
     other.appAttestationAppIntegrity == appAttestationAppIntegrity &&
     other.appAttestationDeviceIntegrity == appAttestationDeviceIntegrity &&
     other.appAttestationFailed == appAttestationFailed &&
@@ -81,6 +101,8 @@ class AdminAccountLoginSessionInfo {
   @override
   int get hashCode =>
     // ignore: unnecessary_parenthesis
+    (appAttestationAndroidSdkVersion == null ? 0 : appAttestationAndroidSdkVersion!.hashCode) +
+    (appAttestationAndroidStrongIntegrity == null ? 0 : appAttestationAndroidStrongIntegrity!.hashCode) +
     (appAttestationAppIntegrity == null ? 0 : appAttestationAppIntegrity!.hashCode) +
     (appAttestationDeviceIntegrity == null ? 0 : appAttestationDeviceIntegrity!.hashCode) +
     (appAttestationFailed == null ? 0 : appAttestationFailed!.hashCode) +
@@ -89,10 +111,20 @@ class AdminAccountLoginSessionInfo {
     (loginMethod == null ? 0 : loginMethod!.hashCode);
 
   @override
-  String toString() => 'AdminAccountLoginSessionInfo[appAttestationAppIntegrity=$appAttestationAppIntegrity, appAttestationDeviceIntegrity=$appAttestationDeviceIntegrity, appAttestationFailed=$appAttestationFailed, appAttestationType=$appAttestationType, clientType=$clientType, loginMethod=$loginMethod]';
+  String toString() => 'AdminAccountLoginSessionInfo[appAttestationAndroidSdkVersion=$appAttestationAndroidSdkVersion, appAttestationAndroidStrongIntegrity=$appAttestationAndroidStrongIntegrity, appAttestationAppIntegrity=$appAttestationAppIntegrity, appAttestationDeviceIntegrity=$appAttestationDeviceIntegrity, appAttestationFailed=$appAttestationFailed, appAttestationType=$appAttestationType, clientType=$clientType, loginMethod=$loginMethod]';
 
   Map<String, dynamic> toJson() {
     final json = <String, dynamic>{};
+    if (this.appAttestationAndroidSdkVersion != null) {
+      json[r'app_attestation_android_sdk_version'] = this.appAttestationAndroidSdkVersion;
+    } else {
+      json[r'app_attestation_android_sdk_version'] = null;
+    }
+    if (this.appAttestationAndroidStrongIntegrity != null) {
+      json[r'app_attestation_android_strong_integrity'] = this.appAttestationAndroidStrongIntegrity;
+    } else {
+      json[r'app_attestation_android_strong_integrity'] = null;
+    }
     if (this.appAttestationAppIntegrity != null) {
       json[r'app_attestation_app_integrity'] = this.appAttestationAppIntegrity;
     } else {
@@ -141,6 +173,8 @@ class AdminAccountLoginSessionInfo {
       }());
 
       return AdminAccountLoginSessionInfo(
+        appAttestationAndroidSdkVersion: mapValueOfType<int>(json, r'app_attestation_android_sdk_version'),
+        appAttestationAndroidStrongIntegrity: mapValueOfType<bool>(json, r'app_attestation_android_strong_integrity'),
         appAttestationAppIntegrity: mapValueOfType<bool>(json, r'app_attestation_app_integrity'),
         appAttestationDeviceIntegrity: mapValueOfType<bool>(json, r'app_attestation_device_integrity'),
         appAttestationFailed: mapValueOfType<bool>(json, r'app_attestation_failed'),

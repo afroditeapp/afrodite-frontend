@@ -160,6 +160,7 @@ Class | Method | HTTP request | Description
 *ChatApi* | [**getConversationId**](doc//ChatApi.md#getconversationid) | **GET** /chat_api/conversation_id/{aid} | Get account specific conversation ID which can be used to display new message received notifications.
 *ChatApi* | [**getDailyLikesLeft**](doc//ChatApi.md#getdailylikesleft) | **GET** /chat_api/daily_likes_left | Get daily likes left value.
 *ChatApi* | [**getInitialMatchesIteratorState**](doc//ChatApi.md#getinitialmatchesiteratorstate) | **GET** /chat_api/matches/initial_state | 
+*ChatApi* | [**getInitialSentLikesIteratorState**](doc//ChatApi.md#getinitialsentlikesiteratorstate) | **GET** /chat_api/sent_likes/initial_state | 
 *ChatApi* | [**getLatestPublicKeyId**](doc//ChatApi.md#getlatestpublickeyid) | **GET** /chat_api/latest_public_key_id/{aid} | Get latest public key ID for some account
 *ChatApi* | [**getMessageDeliveryInfo**](doc//ChatApi.md#getmessagedeliveryinfo) | **GET** /chat_api/message_delivery_info | Get all message delivery info where the API caller is the message sender.
 *ChatApi* | [**getPendingChatNotifications**](doc//ChatApi.md#getpendingchatnotifications) | **GET** /chat_api/pending_notifications | 
@@ -184,6 +185,7 @@ Class | Method | HTTP request | Description
 *ChatApi* | [**postGetMatchesIteratorPage**](doc//ChatApi.md#postgetmatchesiteratorpage) | **POST** /chat_api/matches | Get requested page of matches iterator page. If the page is empty there is no more matches available.
 *ChatApi* | [**postGetNewReceivedLikesCount**](doc//ChatApi.md#postgetnewreceivedlikescount) | **POST** /chat_api/new_received_likes_count | 
 *ChatApi* | [**postGetReceivedLikesPage**](doc//ChatApi.md#postgetreceivedlikespage) | **POST** /chat_api/received_likes | Get next page of received likes. If the page is empty there is no more received likes available.
+*ChatApi* | [**postGetSentLikesPage**](doc//ChatApi.md#postgetsentlikespage) | **POST** /chat_api/sent_likes | Get next page of sent likes. If the page is empty there is no more sent likes available.
 *ChatApi* | [**postGetSentMessage**](doc//ChatApi.md#postgetsentmessage) | **POST** /chat_api/sent_message | Receive unreceived [model_chat::SignedMessageData] for sent message.
 *ChatApi* | [**postMarkMessageAsSeen**](doc//ChatApi.md#postmarkmessageasseen) | **POST** /chat_api/mark_message_as_seen | Mark received message as seen. Only latest message number is stored so client should mark the latest messages as seen.
 *ChatApi* | [**postMarkReceivedLikesViewed**](doc//ChatApi.md#postmarkreceivedlikesviewed) | **POST** /chat_api/mark_received_likes_viewed | 
@@ -284,7 +286,7 @@ Class | Method | HTTP request | Description
 *ProfileApi* | [**getProfileFilters**](doc//ProfileApi.md#getprofilefilters) | **GET** /profile_api/profile_filters | Get current profile filters.
 *ProfileApi* | [**getProfileFromDatabaseDebugModeBenchmark**](doc//ProfileApi.md#getprofilefromdatabasedebugmodebenchmark) | **GET** /profile_api/benchmark/profile/{aid} | Get account's current profile from database. Debug mode must be enabled that route can be used.
 *ProfileApi* | [**getProfilePrivacySettings**](doc//ProfileApi.md#getprofileprivacysettings) | **GET** /profile_api/get_profile_privacy_settings | 
-*ProfileApi* | [**getProfileStatistics**](doc//ProfileApi.md#getprofilestatistics) | **GET** /profile_api/profile_statistics | Non default values for [model::GetProfileStatisticsParams] requires [model::Permissions::admin_profile_statistics].
+*ProfileApi* | [**getProfileStatistics**](doc//ProfileApi.md#getprofilestatistics) | **GET** /profile_api/profile_statistics | Setting [model::GetProfileStatisticsParams::generate_new_statistics] requires [model::Permissions::admin_profile_statistics].
 *ProfileApi* | [**getSearchAgeRange**](doc//ProfileApi.md#getsearchagerange) | **GET** /profile_api/search_age_range | Get account's current search age range
 *ProfileApi* | [**getSearchGroups**](doc//ProfileApi.md#getsearchgroups) | **GET** /profile_api/search_groups | Get account's current search groups (gender and what gender user is looking for)
 *ProfileApi* | [**postAutomaticProfileSearchSettings**](doc//ProfileApi.md#postautomaticprofilesearchsettings) | **POST** /profile_api/automatic_profile_search_settings | 
@@ -733,6 +735,9 @@ Class | Method | HTTP request | Description
  - [SendMessageResult](doc//SendMessageResult.md)
  - [SendVerifyEmailMessageResult](doc//SendVerifyEmailMessageResult.md)
  - [SentBlocksPage](doc//SentBlocksPage.md)
+ - [SentLikeId](doc//SentLikeId.md)
+ - [SentLikesIteratorState](doc//SentLikesIteratorState.md)
+ - [SentLikesPage](doc//SentLikesPage.md)
  - [SentMessageIdList](doc//SentMessageIdList.md)
  - [ServerMaintenanceStatus](doc//ServerMaintenanceStatus.md)
  - [ServerMessageType](doc//ServerMessageType.md)

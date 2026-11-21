@@ -13,6 +13,8 @@ part of openapi.api;
 class LoginSessionInfo {
   /// Returns a new [LoginSessionInfo] instance.
   LoginSessionInfo({
+    this.appAttestationAndroidSdkVersion,
+    this.appAttestationAndroidStrongIntegrity,
     this.appAttestationAppIntegrity,
     this.appAttestationDeviceIntegrity,
     this.appAttestationFailed,
@@ -23,6 +25,10 @@ class LoginSessionInfo {
     required this.loginMethod,
     required this.startUnixTime,
   });
+
+  int? appAttestationAndroidSdkVersion;
+
+  bool? appAttestationAndroidStrongIntegrity;
 
   bool? appAttestationAppIntegrity;
 
@@ -46,6 +52,8 @@ class LoginSessionInfo {
 
   @override
   bool operator ==(Object other) => identical(this, other) || other is LoginSessionInfo &&
+    other.appAttestationAndroidSdkVersion == appAttestationAndroidSdkVersion &&
+    other.appAttestationAndroidStrongIntegrity == appAttestationAndroidStrongIntegrity &&
     other.appAttestationAppIntegrity == appAttestationAppIntegrity &&
     other.appAttestationDeviceIntegrity == appAttestationDeviceIntegrity &&
     other.appAttestationFailed == appAttestationFailed &&
@@ -59,6 +67,8 @@ class LoginSessionInfo {
   @override
   int get hashCode =>
     // ignore: unnecessary_parenthesis
+    (appAttestationAndroidSdkVersion == null ? 0 : appAttestationAndroidSdkVersion!.hashCode) +
+    (appAttestationAndroidStrongIntegrity == null ? 0 : appAttestationAndroidStrongIntegrity!.hashCode) +
     (appAttestationAppIntegrity == null ? 0 : appAttestationAppIntegrity!.hashCode) +
     (appAttestationDeviceIntegrity == null ? 0 : appAttestationDeviceIntegrity!.hashCode) +
     (appAttestationFailed == null ? 0 : appAttestationFailed!.hashCode) +
@@ -70,10 +80,20 @@ class LoginSessionInfo {
     (startUnixTime.hashCode);
 
   @override
-  String toString() => 'LoginSessionInfo[appAttestationAppIntegrity=$appAttestationAppIntegrity, appAttestationDeviceIntegrity=$appAttestationDeviceIntegrity, appAttestationFailed=$appAttestationFailed, appAttestationTypeNumber=$appAttestationTypeNumber, clientIp=$clientIp, clientPlatform=$clientPlatform, clientPort=$clientPort, loginMethod=$loginMethod, startUnixTime=$startUnixTime]';
+  String toString() => 'LoginSessionInfo[appAttestationAndroidSdkVersion=$appAttestationAndroidSdkVersion, appAttestationAndroidStrongIntegrity=$appAttestationAndroidStrongIntegrity, appAttestationAppIntegrity=$appAttestationAppIntegrity, appAttestationDeviceIntegrity=$appAttestationDeviceIntegrity, appAttestationFailed=$appAttestationFailed, appAttestationTypeNumber=$appAttestationTypeNumber, clientIp=$clientIp, clientPlatform=$clientPlatform, clientPort=$clientPort, loginMethod=$loginMethod, startUnixTime=$startUnixTime]';
 
   Map<String, dynamic> toJson() {
     final json = <String, dynamic>{};
+    if (this.appAttestationAndroidSdkVersion != null) {
+      json[r'app_attestation_android_sdk_version'] = this.appAttestationAndroidSdkVersion;
+    } else {
+      json[r'app_attestation_android_sdk_version'] = null;
+    }
+    if (this.appAttestationAndroidStrongIntegrity != null) {
+      json[r'app_attestation_android_strong_integrity'] = this.appAttestationAndroidStrongIntegrity;
+    } else {
+      json[r'app_attestation_android_strong_integrity'] = null;
+    }
     if (this.appAttestationAppIntegrity != null) {
       json[r'app_attestation_app_integrity'] = this.appAttestationAppIntegrity;
     } else {
@@ -131,6 +151,8 @@ class LoginSessionInfo {
       }());
 
       return LoginSessionInfo(
+        appAttestationAndroidSdkVersion: mapValueOfType<int>(json, r'app_attestation_android_sdk_version'),
+        appAttestationAndroidStrongIntegrity: mapValueOfType<bool>(json, r'app_attestation_android_strong_integrity'),
         appAttestationAppIntegrity: mapValueOfType<bool>(json, r'app_attestation_app_integrity'),
         appAttestationDeviceIntegrity: mapValueOfType<bool>(json, r'app_attestation_device_integrity'),
         appAttestationFailed: mapValueOfType<bool>(json, r'app_attestation_failed'),

@@ -287,6 +287,48 @@ class ChatApi {
     return null;
   }
 
+  /// Performs an HTTP 'GET /chat_api/sent_likes/initial_state' operation and returns the [Response].
+  Future<Response> getInitialSentLikesIteratorStateWithHttpInfo({ Future<void>? abortTrigger, }) async {
+    // ignore: prefer_const_declarations
+    final path = r'/chat_api/sent_likes/initial_state';
+
+    // ignore: prefer_final_locals
+    Object? postBody;
+
+    final queryParams = <QueryParam>[];
+    final headerParams = <String, String>{};
+    final formParams = <String, String>{};
+
+    const contentTypes = <String>[];
+
+
+    return apiClient.invokeAPI(
+      path,
+      'GET',
+      queryParams,
+      postBody,
+      headerParams,
+      formParams,
+      contentTypes.isEmpty ? null : contentTypes.first,
+      abortTrigger: abortTrigger,
+    );
+  }
+
+  Future<SentLikesIteratorState?> getInitialSentLikesIteratorState({ Future<void>? abortTrigger, }) async {
+    final response = await getInitialSentLikesIteratorStateWithHttpInfo(abortTrigger: abortTrigger,);
+    if (response.statusCode >= HttpStatus.badRequest) {
+      throw ApiException(response.statusCode, await _decodeBodyBytes(response));
+    }
+    // When a remote server returns no body with a status of 204, we shall not decode it.
+    // At the time of writing this, `dart:convert` will throw an "Unexpected end of input"
+    // FormatException when trying to decode an empty string.
+    if (response.body.isNotEmpty && response.statusCode != HttpStatus.noContent) {
+      return await apiClient.deserializeAsync(await _decodeBodyBytes(response), 'SentLikesIteratorState',) as SentLikesIteratorState;
+    
+    }
+    return null;
+  }
+
   /// Get latest public key ID for some account
   ///
   /// Note: This method returns the HTTP [Response].
@@ -1447,6 +1489,63 @@ class ChatApi {
     // FormatException when trying to decode an empty string.
     if (response.body.isNotEmpty && response.statusCode != HttpStatus.noContent) {
       return await apiClient.deserializeAsync(await _decodeBodyBytes(response), 'ReceivedLikesPage',) as ReceivedLikesPage;
+    
+    }
+    return null;
+  }
+
+  /// Get next page of sent likes. If the page is empty there is no more sent likes available.
+  ///
+  /// Blocked profiles are not filtered away from the list.
+  ///
+  /// Note: This method returns the HTTP [Response].
+  ///
+  /// Parameters:
+  ///
+  /// * [SentLikesIteratorState] sentLikesIteratorState (required):
+  Future<Response> postGetSentLikesPageWithHttpInfo(SentLikesIteratorState sentLikesIteratorState, { Future<void>? abortTrigger, }) async {
+    // ignore: prefer_const_declarations
+    final path = r'/chat_api/sent_likes';
+
+    // ignore: prefer_final_locals
+    Object? postBody = sentLikesIteratorState;
+
+    final queryParams = <QueryParam>[];
+    final headerParams = <String, String>{};
+    final formParams = <String, String>{};
+
+    const contentTypes = <String>['application/json'];
+
+
+    return apiClient.invokeAPI(
+      path,
+      'POST',
+      queryParams,
+      postBody,
+      headerParams,
+      formParams,
+      contentTypes.isEmpty ? null : contentTypes.first,
+      abortTrigger: abortTrigger,
+    );
+  }
+
+  /// Get next page of sent likes. If the page is empty there is no more sent likes available.
+  ///
+  /// Blocked profiles are not filtered away from the list.
+  ///
+  /// Parameters:
+  ///
+  /// * [SentLikesIteratorState] sentLikesIteratorState (required):
+  Future<SentLikesPage?> postGetSentLikesPage(SentLikesIteratorState sentLikesIteratorState, { Future<void>? abortTrigger, }) async {
+    final response = await postGetSentLikesPageWithHttpInfo(sentLikesIteratorState, abortTrigger: abortTrigger,);
+    if (response.statusCode >= HttpStatus.badRequest) {
+      throw ApiException(response.statusCode, await _decodeBodyBytes(response));
+    }
+    // When a remote server returns no body with a status of 204, we shall not decode it.
+    // At the time of writing this, `dart:convert` will throw an "Unexpected end of input"
+    // FormatException when trying to decode an empty string.
+    if (response.body.isNotEmpty && response.statusCode != HttpStatus.noContent) {
+      return await apiClient.deserializeAsync(await _decodeBodyBytes(response), 'SentLikesPage',) as SentLikesPage;
     
     }
     return null;

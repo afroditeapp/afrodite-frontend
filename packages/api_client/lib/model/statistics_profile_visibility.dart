@@ -10,7 +10,7 @@
 
 part of openapi.api;
 
-
+/// Deprecated. Profile statistics are now always calculated for public and private profiles and are returned separately in [GetProfileStatisticsResult].
 enum StatisticsProfileVisibility {
   public._(r'Public'),
   private._(r'Private'),

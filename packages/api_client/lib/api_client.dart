@@ -1011,6 +1011,12 @@ class ApiClient {
           return SendVerifyEmailMessageResult.fromJson(value);
         case 'SentBlocksPage':
           return SentBlocksPage.fromJson(value);
+        case 'SentLikeId':
+          return SentLikeId.fromJson(value);
+        case 'SentLikesIteratorState':
+          return SentLikesIteratorState.fromJson(value);
+        case 'SentLikesPage':
+          return SentLikesPage.fromJson(value);
         case 'SentMessageIdList':
           return SentMessageIdList.fromJson(value);
         case 'ServerMaintenanceStatus':

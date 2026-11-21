@@ -289,7 +289,7 @@ class ProfileApi {
 
   /// Get account's current profile.
   ///
-  /// Response includes version UUID which can be used for caching.  # Access  ## Own profile Unrestricted access.  ## Public other profiles Normal account state required.  ## Private other profiles If the profile is a match, then the profile can be accessed if query parameter `is_match` is set to `true`.  If the profile is not a match, then permission `admin_view_all_profiles` is required.  
+  /// Response includes version UUID which can be used for caching.  # Access  ## Own profile Unrestricted access.  ## Public other profiles Normal account state required.  ## Private other profiles If the profile is a match, then the profile can be accessed if query parameter `is_match` is set to `true`.  If the requested profile has sent a like to current account, then the profile can be accessed if query parameter `is_received_like` is set to `true`.  If the profile is not a match and has not sent a like to current account, then permission `admin_view_all_profiles` is required.  
   ///
   /// Note: This method returns the HTTP [Response].
   ///
@@ -302,7 +302,10 @@ class ProfileApi {
   ///
   /// * [bool] isMatch:
   ///   If requested profile is not public, allow getting the profile data if the requested profile is a match.
-  Future<Response> getProfileWithHttpInfo(String aid, { String? v, bool? isMatch, Future<void>? abortTrigger, }) async {
+  ///
+  /// * [bool] isReceivedLike:
+  ///   If requested profile is not public, allow getting the profile data if the requested profile has sent a like to current account.
+  Future<Response> getProfileWithHttpInfo(String aid, { String? v, bool? isMatch, bool? isReceivedLike, Future<void>? abortTrigger, }) async {
     // ignore: prefer_const_declarations
     final path = r'/profile_api/profile/{aid}'
       .replaceAll('{aid}', aid);
@@ -319,6 +322,9 @@ class ProfileApi {
     }
     if (isMatch != null) {
       queryParams.addAll(_queryParams('', 'is_match', isMatch));
+    }
+    if (isReceivedLike != null) {
+      queryParams.addAll(_queryParams('', 'is_received_like', isReceivedLike));
     }
 
     const contentTypes = <String>[];
@@ -338,7 +344,7 @@ class ProfileApi {
 
   /// Get account's current profile.
   ///
-  /// Response includes version UUID which can be used for caching.  # Access  ## Own profile Unrestricted access.  ## Public other profiles Normal account state required.  ## Private other profiles If the profile is a match, then the profile can be accessed if query parameter `is_match` is set to `true`.  If the profile is not a match, then permission `admin_view_all_profiles` is required.  
+  /// Response includes version UUID which can be used for caching.  # Access  ## Own profile Unrestricted access.  ## Public other profiles Normal account state required.  ## Private other profiles If the profile is a match, then the profile can be accessed if query parameter `is_match` is set to `true`.  If the requested profile has sent a like to current account, then the profile can be accessed if query parameter `is_received_like` is set to `true`.  If the profile is not a match and has not sent a like to current account, then permission `admin_view_all_profiles` is required.  
   ///
   /// Parameters:
   ///
@@ -349,8 +355,11 @@ class ProfileApi {
   ///
   /// * [bool] isMatch:
   ///   If requested profile is not public, allow getting the profile data if the requested profile is a match.
-  Future<GetProfileResult?> getProfile(String aid, { String? v, bool? isMatch, Future<void>? abortTrigger, }) async {
-    final response = await getProfileWithHttpInfo(aid, v: v, isMatch: isMatch, abortTrigger: abortTrigger,);
+  ///
+  /// * [bool] isReceivedLike:
+  ///   If requested profile is not public, allow getting the profile data if the requested profile has sent a like to current account.
+  Future<GetProfileResult?> getProfile(String aid, { String? v, bool? isMatch, bool? isReceivedLike, Future<void>? abortTrigger, }) async {
+    final response = await getProfileWithHttpInfo(aid, v: v, isMatch: isMatch, isReceivedLike: isReceivedLike, abortTrigger: abortTrigger,);
     if (response.statusCode >= HttpStatus.badRequest) {
       throw ApiException(response.statusCode, await _decodeBodyBytes(response));
     }
@@ -421,7 +430,10 @@ class ProfileApi {
   ///
   /// * [bool] isMatch:
   ///   If requested profile is not public, allow getting the profile data if the requested profile is a match.
-  Future<Response> getProfileBinaryWithHttpInfo(String aid, { String? v, bool? isMatch, Future<void>? abortTrigger, }) async {
+  ///
+  /// * [bool] isReceivedLike:
+  ///   If requested profile is not public, allow getting the profile data if the requested profile has sent a like to current account.
+  Future<Response> getProfileBinaryWithHttpInfo(String aid, { String? v, bool? isMatch, bool? isReceivedLike, Future<void>? abortTrigger, }) async {
     // ignore: prefer_const_declarations
     final path = r'/profile_api/profile_binary/{aid}'
       .replaceAll('{aid}', aid);
@@ -438,6 +450,9 @@ class ProfileApi {
     }
     if (isMatch != null) {
       queryParams.addAll(_queryParams('', 'is_match', isMatch));
+    }
+    if (isReceivedLike != null) {
+      queryParams.addAll(_queryParams('', 'is_received_like', isReceivedLike));
     }
 
     const contentTypes = <String>[];
@@ -468,8 +483,11 @@ class ProfileApi {
   ///
   /// * [bool] isMatch:
   ///   If requested profile is not public, allow getting the profile data if the requested profile is a match.
-  Future<MultipartFile?> getProfileBinary(String aid, { String? v, bool? isMatch, Future<void>? abortTrigger, }) async {
-    final response = await getProfileBinaryWithHttpInfo(aid, v: v, isMatch: isMatch, abortTrigger: abortTrigger,);
+  ///
+  /// * [bool] isReceivedLike:
+  ///   If requested profile is not public, allow getting the profile data if the requested profile has sent a like to current account.
+  Future<MultipartFile?> getProfileBinary(String aid, { String? v, bool? isMatch, bool? isReceivedLike, Future<void>? abortTrigger, }) async {
+    final response = await getProfileBinaryWithHttpInfo(aid, v: v, isMatch: isMatch, isReceivedLike: isReceivedLike, abortTrigger: abortTrigger,);
     if (response.statusCode >= HttpStatus.badRequest) {
       throw ApiException(response.statusCode, await _decodeBodyBytes(response));
     }
@@ -624,14 +642,14 @@ class ProfileApi {
     return null;
   }
 
-  /// Non default values for [model::GetProfileStatisticsParams] requires [model::Permissions::admin_profile_statistics].
+  /// Setting [model::GetProfileStatisticsParams::generate_new_statistics] requires [model::Permissions::admin_profile_statistics].
   ///
   /// Note: This method returns the HTTP [Response].
   ///
   /// Parameters:
   ///
   /// * [StatisticsProfileVisibility] profileVisibility:
-  ///   Control which profiles are included in [GetProfileStatisticsResult::age_counts] by profile visibility.  Non default value is only for admins.
+  ///   Deprecated. Does nothing. Statistics for public and private profiles are always returned.  Non default value was only for admins.
   ///
   /// * [bool] generateNewStatistics:
   ///   Non default value is only for admins.
@@ -668,12 +686,12 @@ class ProfileApi {
     );
   }
 
-  /// Non default values for [model::GetProfileStatisticsParams] requires [model::Permissions::admin_profile_statistics].
+  /// Setting [model::GetProfileStatisticsParams::generate_new_statistics] requires [model::Permissions::admin_profile_statistics].
   ///
   /// Parameters:
   ///
   /// * [StatisticsProfileVisibility] profileVisibility:
-  ///   Control which profiles are included in [GetProfileStatisticsResult::age_counts] by profile visibility.  Non default value is only for admins.
+  ///   Deprecated. Does nothing. Statistics for public and private profiles are always returned.  Non default value was only for admins.
   ///
   /// * [bool] generateNewStatistics:
   ///   Non default value is only for admins.

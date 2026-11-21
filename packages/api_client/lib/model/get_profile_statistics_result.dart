@@ -20,10 +20,12 @@ class GetProfileStatisticsResult {
     required this.connectionsMin,
     required this.generationTime,
     required this.onlineAccountCountBotsExcluded,
+    this.privateAgeCounts,
   });
 
   int accountCountBotsExcluded;
 
+  /// Age counts for public profiles, excluding bots.
   ProfileAgeCounts ageCounts;
 
   /// Average WebSocket connections per hour
@@ -39,6 +41,9 @@ class GetProfileStatisticsResult {
 
   int onlineAccountCountBotsExcluded;
 
+  /// Age counts for private profiles which have completed the initial setup, excluding bots.  This is always `Some` currently. The value is optional so that in future, if more privacy is needed, private statistics can be omitted and clients can default to public statistics.
+  ProfileAgeCounts? privateAgeCounts;
+
   @override
   bool operator ==(Object other) => identical(this, other) || other is GetProfileStatisticsResult &&
     other.accountCountBotsExcluded == accountCountBotsExcluded &&
@@ -47,7 +52,8 @@ class GetProfileStatisticsResult {
     other.connectionsMax == connectionsMax &&
     other.connectionsMin == connectionsMin &&
     other.generationTime == generationTime &&
-    other.onlineAccountCountBotsExcluded == onlineAccountCountBotsExcluded;
+    other.onlineAccountCountBotsExcluded == onlineAccountCountBotsExcluded &&
+    other.privateAgeCounts == privateAgeCounts;
 
   @override
   int get hashCode =>
@@ -58,10 +64,11 @@ class GetProfileStatisticsResult {
     (connectionsMax.hashCode) +
     (connectionsMin.hashCode) +
     (generationTime.hashCode) +
-    (onlineAccountCountBotsExcluded.hashCode);
+    (onlineAccountCountBotsExcluded.hashCode) +
+    (privateAgeCounts == null ? 0 : privateAgeCounts!.hashCode);
 
   @override
-  String toString() => 'GetProfileStatisticsResult[accountCountBotsExcluded=$accountCountBotsExcluded, ageCounts=$ageCounts, connectionsAverage=$connectionsAverage, connectionsMax=$connectionsMax, connectionsMin=$connectionsMin, generationTime=$generationTime, onlineAccountCountBotsExcluded=$onlineAccountCountBotsExcluded]';
+  String toString() => 'GetProfileStatisticsResult[accountCountBotsExcluded=$accountCountBotsExcluded, ageCounts=$ageCounts, connectionsAverage=$connectionsAverage, connectionsMax=$connectionsMax, connectionsMin=$connectionsMin, generationTime=$generationTime, onlineAccountCountBotsExcluded=$onlineAccountCountBotsExcluded, privateAgeCounts=$privateAgeCounts]';
 
   Map<String, dynamic> toJson() {
     final json = <String, dynamic>{};
@@ -72,6 +79,11 @@ class GetProfileStatisticsResult {
       json[r'connections_min'] = this.connectionsMin;
       json[r'generation_time'] = this.generationTime;
       json[r'online_account_count_bots_excluded'] = this.onlineAccountCountBotsExcluded;
+    if (this.privateAgeCounts != null) {
+      json[r'private_age_counts'] = this.privateAgeCounts;
+    } else {
+      json[r'private_age_counts'] = null;
+    }
     return json;
   }
 
@@ -111,6 +123,7 @@ class GetProfileStatisticsResult {
         connectionsMin: ConnectionStatistics.fromJson(json[r'connections_min'])!,
         generationTime: UnixTime.fromJson(json[r'generation_time'])!,
         onlineAccountCountBotsExcluded: mapValueOfType<int>(json, r'online_account_count_bots_excluded')!,
+        privateAgeCounts: ProfileAgeCounts.fromJson(json[r'private_age_counts']),
       );
     }
     return null;
