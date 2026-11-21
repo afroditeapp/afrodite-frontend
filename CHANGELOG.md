@@ -2,6 +2,10 @@
 
 ## [Unreleased]
 
+### Changed
+
+- Hide zero values from the multiple metrics chart tooltip
+
 ### Fixed
 
 - Save profile privacy settings to the local database during initial
