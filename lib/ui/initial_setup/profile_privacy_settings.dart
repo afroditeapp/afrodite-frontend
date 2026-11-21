@@ -13,7 +13,7 @@ class ProfilePrivacySetupPage extends InitialSetupPageBase
   ProfilePrivacySetupPage() : super(builder: (_) => const ProfilePrivacySetupScreen());
 
   @override
-  String get nameForDb => 'profile_privacy_settings';
+  String get nameForDb => initialSetupPageNameInDb("profile_privacy_settings");
 
   @override
   ProfilePrivacySetupPage create() => ProfilePrivacySetupPage();

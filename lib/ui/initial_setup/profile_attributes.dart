@@ -34,7 +34,7 @@ class AskProfileAttributesPage extends InitialSetupPageBase {
     : super(builder: (_) => AskProfileAttributesScreen(attributeIndex: attributeIndex));
 
   @override
-  String get nameForDb => 'profile_attributes';
+  String get nameForDb => initialSetupPageNameInDb("profile_attributes");
 
   @override
   String get urlPath => "/$urlName/$attributeIndex";

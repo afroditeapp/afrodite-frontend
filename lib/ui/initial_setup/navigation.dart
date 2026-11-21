@@ -17,6 +17,12 @@ import "package:app/ui_utils/snack_bar.dart";
 import "package:flutter/material.dart";
 import "package:flutter_bloc/flutter_bloc.dart";
 
+/// Names for initial setup pages are generated with this function.
+///
+/// Generated string contains page order version which can be incremented
+/// when changing the page order.
+String initialSetupPageNameInDb(String name) => "order_v2_$name";
+
 /// The order of initial setup pages.
 ///
 /// This must contain at least a single page.
@@ -24,11 +30,11 @@ List<InitialSetupPageBase> getInitialSetupPageOrder() {
   return [
     AskEmailPage(),
     AgeConfirmationPage(),
-    AskSecuritySelfiePage(),
-    AskProfilePicturesPage(),
     AskProfileBasicInfoPage(),
     AskGenderPage(),
     AskSearchSettingsPage(),
+    AskSecuritySelfiePage(),
+    AskProfilePicturesPage(),
     // Required to be the fourth last page
     AskLocationPage(),
     // Required to be the third last page

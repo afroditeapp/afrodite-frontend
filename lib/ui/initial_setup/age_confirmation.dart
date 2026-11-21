@@ -21,7 +21,7 @@ class AgeConfirmationPage extends InitialSetupPageBase with SimpleUrlParser<AgeC
   AgeConfirmationPage create() => AgeConfirmationPage();
 
   @override
-  String get nameForDb => 'age_confirmation';
+  String get nameForDb => initialSetupPageNameInDb("age_confirmation");
 }
 
 class AgeConfirmationScreen extends StatelessWidget {

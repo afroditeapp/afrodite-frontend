@@ -14,7 +14,7 @@ class AskLocationPage extends InitialSetupPageBase with SimpleUrlParser<AskLocat
   AskLocationPage() : super(builder: (_) => AskLocationScreen());
 
   @override
-  String get nameForDb => 'location';
+  String get nameForDb => initialSetupPageNameInDb("location");
 
   @override
   AskLocationPage create() => AskLocationPage();

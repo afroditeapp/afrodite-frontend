@@ -11,7 +11,7 @@ class AskGenderPage extends InitialSetupPageBase with SimpleUrlParser<AskGenderP
   AskGenderPage() : super(builder: (_) => AskGenderScreen());
 
   @override
-  String get nameForDb => 'gender';
+  String get nameForDb => initialSetupPageNameInDb("gender");
 
   @override
   AskGenderPage create() => AskGenderPage();

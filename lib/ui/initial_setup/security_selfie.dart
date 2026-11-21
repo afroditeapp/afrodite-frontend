@@ -32,7 +32,7 @@ class AskSecuritySelfiePage extends InitialSetupPageBase
   AskSecuritySelfiePage() : super(builder: (_) => AskSecuritySelfieScreen());
 
   @override
-  String get nameForDb => 'security_selfie';
+  String get nameForDb => initialSetupPageNameInDb("security_selfie");
 
   @override
   AskSecuritySelfiePage create() => AskSecuritySelfiePage();

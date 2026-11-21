@@ -17,7 +17,7 @@ class FirstChatBackupPage extends InitialSetupPageBase with SimpleUrlParser<Firs
   FirstChatBackupPage() : super(builder: (_) => FirstChatBackupScreen());
 
   @override
-  String get nameForDb => 'first_chat_backup';
+  String get nameForDb => initialSetupPageNameInDb("first_chat_backup");
 
   @override
   FirstChatBackupPage create() => FirstChatBackupPage();

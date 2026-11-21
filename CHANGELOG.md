@@ -4,6 +4,7 @@
 
 ### Changed
 
+- Move initial setup basic details screens before the security selfie screen.
 - Hide zero values from the multiple metrics chart tooltip
 - Disable video calling features by default
 

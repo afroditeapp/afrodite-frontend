@@ -17,7 +17,7 @@ class AskSearchSettingsPage extends InitialSetupPageBase
   AskSearchSettingsPage() : super(builder: (_) => AskSearchSettingsScreen());
 
   @override
-  String get nameForDb => 'search_settings';
+  String get nameForDb => initialSetupPageNameInDb("search_settings");
 
   @override
   AskSearchSettingsPage create() => AskSearchSettingsPage();

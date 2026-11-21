@@ -18,7 +18,7 @@ class AskProfileBasicInfoPage extends InitialSetupPageBase
   AskProfileBasicInfoPage() : super(builder: (_) => AskProfileBasicInfoScreen());
 
   @override
-  String get nameForDb => 'profile_basic_info';
+  String get nameForDb => initialSetupPageNameInDb("profile_basic_info");
 
   @override
   AskProfileBasicInfoPage create() => AskProfileBasicInfoPage();

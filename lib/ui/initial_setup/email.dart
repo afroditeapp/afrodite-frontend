@@ -16,7 +16,7 @@ class AskEmailPage extends InitialSetupPageBase with SimpleUrlParser<AskEmailPag
   AskEmailPage create() => AskEmailPage();
 
   @override
-  String get nameForDb => 'email';
+  String get nameForDb => initialSetupPageNameInDb("email");
 }
 
 class AskEmailScreen extends StatelessWidget {

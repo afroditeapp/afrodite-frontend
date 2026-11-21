@@ -38,7 +38,7 @@ class AskProfilePicturesPage extends InitialSetupPageBase
   AskProfilePicturesPage() : super(builder: (_) => AskProfilePicturesScreen());
 
   @override
-  String get nameForDb => 'profile_pictures';
+  String get nameForDb => initialSetupPageNameInDb("profile_pictures");
 
   @override
   AskProfilePicturesPage create() => AskProfilePicturesPage();
