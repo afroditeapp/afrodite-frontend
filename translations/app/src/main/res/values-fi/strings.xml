@@ -767,6 +767,9 @@
     <string name="statistics_screen_online_users_per_hour_statistics_title">Paikalla olevat käyttäjät tunneittain</string>
     <string name="statistics_screen_hour_value">Tunti: %s</string>
     <string name="statistics_screen_count_online_users_bar_chart_tooltip">Paikalla: %s</string>
+    <string name="statistics_screen_profiles_visibility_selection_all">Kaikki</string>
+    <string name="statistics_screen_profiles_visibility_selection_public">Julkiset</string>
+    <string name="statistics_screen_profiles_visibility_selection_private">Yksityiset</string>
     <string name="statistics_screen_count_public_profiles">Julkiset profiilit: %s</string>
     <string name="statistics_screen_count_private_profiles">Yksityiset profiilit: %s</string>
     <string name="statistics_screen_count_all_profiles">Kaikki profiilit: %s</string>

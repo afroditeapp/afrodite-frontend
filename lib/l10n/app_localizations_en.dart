@@ -2419,6 +2419,15 @@ class AppLocalizationsEn extends AppLocalizations {
   String get statistics_screen_online_users_per_hour_statistics_title => 'Online users per hour';
 
   @override
+  String get statistics_screen_profiles_visibility_selection_all => 'All';
+
+  @override
+  String get statistics_screen_profiles_visibility_selection_private => 'Private';
+
+  @override
+  String get statistics_screen_profiles_visibility_selection_public => 'Public';
+
+  @override
   String statistics_screen_time(String p0) {
     return 'Time: $p0';
   }

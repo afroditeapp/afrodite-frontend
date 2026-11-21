@@ -2443,6 +2443,15 @@ class AppLocalizationsFi extends AppLocalizations {
       'Paikalla olevat käyttäjät tunneittain';
 
   @override
+  String get statistics_screen_profiles_visibility_selection_all => 'Kaikki';
+
+  @override
+  String get statistics_screen_profiles_visibility_selection_private => 'Yksityiset';
+
+  @override
+  String get statistics_screen_profiles_visibility_selection_public => 'Julkiset';
+
+  @override
   String statistics_screen_time(String p0) {
     return 'Aika: $p0';
   }

@@ -22,6 +22,8 @@ Future<void> openStatisticsScreen(BuildContext context) {
   return MyNavigator.push(context, StatisticsPage());
 }
 
+enum SelectedProfileStatistics { all, public, private }
+
 enum SelectedConnectionStatistics { min, max, average }
 
 enum HourGroup {
@@ -80,19 +82,10 @@ class StatisticsScreen extends StatefulWidget {
 
 class StatisticsScreenState extends State<StatisticsScreen> {
   bool adminGenerateStatistics = false;
-  int adminVisibilitySelection = 0;
-  late final List<StatisticsProfileVisibility> adminVisibilityOptions;
+  SelectedProfileStatistics selectedProfileStatistics = SelectedProfileStatistics.all;
 
   HourGroup? startPositionForConnectionStatisticsByGender;
   SelectedConnectionStatistics selectedConnectionStatistics = SelectedConnectionStatistics.max;
-
-  @override
-  void initState() {
-    super.initState();
-    adminVisibilityOptions = StatisticsProfileVisibility.values
-        .where((v) => v != StatisticsProfileVisibility.unknownDefaultOpenApi)
-        .toList();
-  }
 
   @override
   Widget build(BuildContext context) {
@@ -158,7 +151,7 @@ class StatisticsScreenState extends State<StatisticsScreen> {
             const Padding(padding: EdgeInsets.symmetric(vertical: 4)),
             const Divider(),
             const Padding(padding: EdgeInsets.symmetric(vertical: 4)),
-            ...publicProfileStatistics(context, item.ageCounts),
+            ...profileAgeStatistics(context, item),
             const Padding(padding: EdgeInsets.symmetric(vertical: 4)),
             const Divider(),
             const Padding(padding: EdgeInsets.symmetric(vertical: 4)),
@@ -318,7 +311,84 @@ class StatisticsScreenState extends State<StatisticsScreen> {
     ];
   }
 
-  List<Widget> publicProfileStatistics(BuildContext context, ProfileAgeCounts ageCounts) {
+  List<Widget> profileAgeStatistics(BuildContext context, GetProfileStatisticsResult statistics) {
+    final privateAgeCountsAvailable = statistics.privateAgeCounts != null;
+    final ProfileAgeCounts? ageCounts = switch (selectedProfileStatistics) {
+      SelectedProfileStatistics.public => statistics.ageCounts,
+      SelectedProfileStatistics.private => statistics.privateAgeCounts ?? statistics.ageCounts,
+      SelectedProfileStatistics.all =>
+        statistics.privateAgeCounts == null
+            ? statistics.ageCounts
+            : sumAgeCounts(statistics.ageCounts, statistics.privateAgeCounts!),
+    };
+
+    if (ageCounts == null) {
+      return [buildListReplacementMessageSimple(context, context.strings.generic_error)];
+    }
+
+    final String Function(String) currentCountFunction;
+    if (!privateAgeCountsAvailable ||
+        selectedProfileStatistics == SelectedProfileStatistics.public) {
+      currentCountFunction = context.strings.statistics_screen_count_public_profiles;
+    } else if (selectedProfileStatistics == SelectedProfileStatistics.private) {
+      currentCountFunction = context.strings.statistics_screen_count_private_profiles;
+    } else {
+      currentCountFunction = context.strings.statistics_screen_count_all_profiles;
+    }
+
+    return [
+      if (privateAgeCountsAvailable)
+        Center(
+          child: SegmentedButton<SelectedProfileStatistics>(
+            segments: [
+              ButtonSegment(
+                value: SelectedProfileStatistics.all,
+                label: Text(context.strings.statistics_screen_profiles_visibility_selection_all),
+              ),
+              ButtonSegment(
+                value: SelectedProfileStatistics.public,
+                label: Text(context.strings.statistics_screen_profiles_visibility_selection_public),
+              ),
+              ButtonSegment(
+                value: SelectedProfileStatistics.private,
+                label: Text(
+                  context.strings.statistics_screen_profiles_visibility_selection_private,
+                ),
+              ),
+            ],
+            selected: {selectedProfileStatistics},
+            onSelectionChanged: (selected) {
+              setState(() {
+                selectedProfileStatistics = selected.first;
+              });
+            },
+            showSelectedIcon: false,
+          ),
+        ),
+      ...profileAgeCharts(context, ageCounts, currentCountFunction),
+    ];
+  }
+
+  ProfileAgeCounts? sumAgeCounts(ProfileAgeCounts a, ProfileAgeCounts b) {
+    if (a.startAge != b.startAge) {
+      return null;
+    }
+    return ProfileAgeCounts(
+      startAge: a.startAge,
+      men: List.generate(a.men.length, (i) => a.men[i] + (b.men.getAtOrNull(i) ?? 0)),
+      women: List.generate(a.women.length, (i) => a.women[i] + (b.women.getAtOrNull(i) ?? 0)),
+      nonbinaries: List.generate(
+        a.nonbinaries.length,
+        (i) => a.nonbinaries[i] + (b.nonbinaries.getAtOrNull(i) ?? 0),
+      ),
+    );
+  }
+
+  List<Widget> profileAgeCharts(
+    BuildContext context,
+    ProfileAgeCounts ageCounts,
+    String Function(String) currentCountFunction,
+  ) {
     final data = AgeGroupManager();
     for (final (i, manCount) in ageCounts.men.indexed) {
       final age = ageCounts.startAge + i;
@@ -331,18 +401,8 @@ class StatisticsScreenState extends State<StatisticsScreen> {
 
     final profileCount = data.total();
 
-    final String Function(String) currentCountFunction;
-    if (adminVisibilitySelection == 0) {
-      currentCountFunction = context.strings.statistics_screen_count_public_profiles;
-    } else if (adminVisibilitySelection == 1) {
-      currentCountFunction = context.strings.statistics_screen_count_private_profiles;
-    } else if (adminVisibilitySelection == 2) {
-      currentCountFunction = context.strings.statistics_screen_count_all_profiles;
-    } else {
-      currentCountFunction = (_) => context.strings.generic_error;
-    }
-
     return [
+      const Padding(padding: EdgeInsets.only(top: 8)),
       Text(currentCountFunction(profileCount.toString())),
       const Padding(padding: EdgeInsets.symmetric(vertical: 8)),
       getChart(
@@ -505,48 +565,15 @@ class StatisticsScreenState extends State<StatisticsScreen> {
           onChanged: (value) {
             setState(() {
               adminGenerateStatistics = value ?? false;
-              reload(context);
+              context.read<StatisticsBloc>().add(
+                Reload(adminRefresh: true, generateNew: adminGenerateStatistics),
+              );
             });
           },
         ),
         const Padding(padding: EdgeInsets.symmetric(vertical: 4)),
-        Padding(
-          padding: const EdgeInsets.symmetric(horizontal: 16.0),
-          child: Text(
-            "Profile visibility for profile statistics",
-            style: Theme.of(context).textTheme.bodyLarge,
-          ),
-        ),
-        Padding(
-          padding: const EdgeInsets.symmetric(horizontal: 16.0),
-          child: Wrap(
-            spacing: 5.0,
-            children: List<ChoiceChip>.generate(adminVisibilityOptions.length, (i) {
-              return ChoiceChip(
-                label: Text(adminVisibilityOptions[i].toString()),
-                selected: adminVisibilitySelection == i,
-                onSelected: (value) {
-                  setState(() {
-                    adminVisibilitySelection = i;
-                    reload(context);
-                  });
-                },
-              );
-            }),
-          ),
-        ),
         const Divider(),
       ],
-    );
-  }
-
-  void reload(BuildContext context) {
-    context.read<StatisticsBloc>().add(
-      Reload(
-        adminRefresh: true,
-        generateNew: adminGenerateStatistics,
-        visibility: adminVisibilityOptions[adminVisibilitySelection],
-      ),
     );
   }
 

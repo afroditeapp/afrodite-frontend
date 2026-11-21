@@ -4273,6 +4273,24 @@ abstract class AppLocalizations {
   /// **'Online users per hour'**
   String get statistics_screen_online_users_per_hour_statistics_title;
 
+  /// Value text for profile statistics visibility selection
+  ///
+  /// In en, this message translates to:
+  /// **'All'**
+  String get statistics_screen_profiles_visibility_selection_all;
+
+  /// Value text for profile statistics visibility selection
+  ///
+  /// In en, this message translates to:
+  /// **'Private'**
+  String get statistics_screen_profiles_visibility_selection_private;
+
+  /// Value text for profile statistics visibility selection
+  ///
+  /// In en, this message translates to:
+  /// **'Public'**
+  String get statistics_screen_profiles_visibility_selection_public;
+
   /// Text for data generation time
   ///
   /// In en, this message translates to:
