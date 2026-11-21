@@ -1,5 +1,12 @@
 # Changelog
 
+## [Unreleased]
+
+### Fixed
+
+- Save profile privacy settings to the local database during initial
+  setup so that the privacy settings screen shows the selected values
+
 ## [0.26.1] - 2026-11-09
 
 ### Added

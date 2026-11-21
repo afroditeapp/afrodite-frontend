@@ -218,6 +218,9 @@ class InitialSetupUtils {
       );
       final r = await _api.profileAction((api) => api.postProfilePrivacySettings(privacySettings));
       if (r.isErr()) return errAndLog("Setting profile privacy settings failed");
+      await _db.accountAction(
+        (db) => db.profilePrivacy.updateProfilePrivacySettings(privacySettings),
+      );
     }
 
     {
