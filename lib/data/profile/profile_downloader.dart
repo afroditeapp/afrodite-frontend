@@ -64,13 +64,13 @@ class ProfileEntryDownloader {
 
           final primaryContent = contentInfo.content.firstOrNull;
           if (primaryContent == null) {
-            _log.warning("Profile content info is missing");
+            _log.fine("Profile content info is missing");
             return Err(OtherProfileDownloadError());
           }
 
           if (accountId != media.currentUser && !primaryContent.accepted) {
             // Server does not allow downloading content which is not accepted
-            _log.warning("Skipping one profile because primary content is not accepted");
+            _log.fine("Skipping one profile because primary content is not accepted");
             return Err(OtherProfileDownloadError());
           }
 
@@ -82,7 +82,7 @@ class ProfileEntryDownloader {
             media: media,
           );
           if (bytes == null) {
-            _log.warning("Skipping one profile because image loading failed");
+            _log.fine("Skipping one profile because image loading failed");
             return Err(OtherProfileDownloadError());
           }
         }
