@@ -234,7 +234,6 @@
 
     <!-- Profile image errors -->
     <string name="profile_image_error_no_image">Ei profiilikuvaa</string>
-    <string name="profile_image_error_no_primary_image">Ensisijainen profiilikuva puuttuu</string>
     <string name="profile_image_error_image_not_accepted">Profiilikuvaa ei ole hyväksytty</string>
 
     <!-- Splash screen -->

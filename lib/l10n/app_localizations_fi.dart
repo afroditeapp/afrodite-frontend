@@ -2034,9 +2034,6 @@ class AppLocalizationsFi extends AppLocalizations {
   String get profile_image_error_no_image => 'Ei profiilikuvaa';
 
   @override
-  String get profile_image_error_no_primary_image => 'Ensisijainen profiilikuva puuttuu';
-
-  @override
   String get profile_location_screen_title => 'Sijainti';
 
   @override

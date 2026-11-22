@@ -1,6 +1,5 @@
 import 'package:app/data/utils/repository_instances.dart';
 import 'package:app/localizations.dart';
-import 'package:app/logic/account/client_features_config.dart';
 import 'package:app/ui_utils/profile_thumbnail_image.dart';
 import 'package:app/ui_utils/snack_bar.dart';
 import 'package:app/utils/profile_entry.dart';
@@ -34,13 +33,9 @@ class ProfileThumbnailImageOrError extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
     final img = entry.content.firstOrNull;
-    final config = context.watch<ClientFeaturesConfigBloc>().state.config;
-    final requireFace = config.profile?.firstImage?.requireFaceDetectedWhenViewing ?? false;
 
     if (img == null) {
       return error(context.strings.profile_image_error_no_image);
-    } else if (requireFace && !img.faceDetected) {
-      return error(context.strings.profile_image_error_no_primary_image);
     } else if (!img.accepted) {
       return error(context.strings.profile_image_error_image_not_accepted);
     } else {

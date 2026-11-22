@@ -2020,9 +2020,6 @@ class AppLocalizationsEn extends AppLocalizations {
   String get profile_image_error_no_image => 'No profile image';
 
   @override
-  String get profile_image_error_no_primary_image => 'Primary profile picture missing';
-
-  @override
   String get profile_location_screen_title => 'Location';
 
   @override

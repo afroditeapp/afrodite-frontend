@@ -3595,12 +3595,6 @@ abstract class AppLocalizations {
   /// **'No profile image'**
   String get profile_image_error_no_image;
 
-  /// Snackbar text for no primary profile image error
-  ///
-  /// In en, this message translates to:
-  /// **'Primary profile picture missing'**
-  String get profile_image_error_no_primary_image;
-
   /// Title for profile location screen
   ///
   /// In en, this message translates to:

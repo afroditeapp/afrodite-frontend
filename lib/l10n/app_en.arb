@@ -2635,10 +2635,6 @@
   "@profile_image_error_no_image": {
     "description": "Snackbar text for no profile image error"
   },
-  "profile_image_error_no_primary_image": "Primary profile picture missing",
-  "@profile_image_error_no_primary_image": {
-    "description": "Snackbar text for no primary profile image error"
-  },
   "profile_location_screen_title": "Location",
   "@profile_location_screen_title": {
     "description": "Title for profile location screen"

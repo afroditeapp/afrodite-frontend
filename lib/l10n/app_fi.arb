@@ -579,7 +579,6 @@
   "profile_grid_settings_screen_title": "Profiiliruudukko",
   "profile_image_error_image_not_accepted": "Profiilikuvaa ei ole hyväksytty",
   "profile_image_error_no_image": "Ei profiilikuvaa",
-  "profile_image_error_no_primary_image": "Ensisijainen profiilikuva puuttuu",
   "profile_location_screen_title": "Sijainti",
   "receive_chat_backup_import_success": "Varmuuskopio tuotu onnistuneesti",
   "receive_chat_backup_importing": "Tuodaan varmuuskopiota…",

@@ -18,7 +18,6 @@ import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:openapi/api.dart';
 import 'package:openapi/manual_additions.dart';
 import 'package:app/data/media_repository.dart';
-import 'package:app/logic/account/client_features_config.dart';
 import 'package:app/ui/normal/settings/location.dart';
 import 'package:utils/utils.dart';
 
@@ -403,10 +402,7 @@ class PrecacheImageForViewProfileScreen {
   static Future<void> usingProfileEntry(BuildContext context, ProfileEntry e) async {
     final first = e.content.firstOrNull;
 
-    final config = context.read<ClientFeaturesConfigBloc>().state.config;
-    final requireFace = config.profile?.firstImage?.requireFaceDetectedWhenViewing ?? false;
-
-    if (first != null && (!requireFace || first.faceDetected) && first.accepted) {
+    if (first != null && first.accepted) {
       // AccountImageProvider.create does not need isMatch
       // set to true as image is available locally and
       // it is loaded to ImageCache.

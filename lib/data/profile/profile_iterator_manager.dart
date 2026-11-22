@@ -2,7 +2,6 @@ import 'dart:async';
 
 import 'package:openapi/api.dart';
 import 'package:app/api/server_connection_manager.dart';
-import 'package:app/data/account_repository.dart';
 import 'package:app/data/chat_repository.dart';
 import 'package:app/data/media_repository.dart';
 import 'package:app/data/general/iterator/profile_iterator.dart';
@@ -47,7 +46,6 @@ class ProfileIteratorManager {
   final AccountDatabaseManager db;
   final ChatRepository chat;
   final MediaRepository media;
-  final AccountRepository account;
   final ServerConnectionManager connectionManager;
 
   final AccountId currentUser;
@@ -55,7 +53,6 @@ class ProfileIteratorManager {
   ProfileIteratorManager({
     required this.chat,
     required this.media,
-    required this.account,
     required this.db,
     required this.connectionManager,
     required this.currentUser,
@@ -196,17 +193,9 @@ class ProfileIteratorManager {
 
         final firstContent = p.content.firstOrNull;
 
-        final requireFaceDetectedWhenViewing =
-            account.clientFeaturesConfigValue.profile?.firstImage?.requireFaceDetectedWhenViewing ??
-            false;
-
-        final faceDetectedError =
-            requireFaceDetectedWhenViewing && firstContent?.faceDetected != true;
         final acceptedError = firstContent?.accepted != true;
 
-        final invalidPrimaryContent = faceDetectedError || acceptedError;
-
-        if (isBlocked || alreadyReturned || p.accountId == currentUser || invalidPrimaryContent) {
+        if (isBlocked || alreadyReturned || p.accountId == currentUser || acceptedError) {
           toBeRemoved.add(p);
         } else {
           _duplicateAccountsPreventer.add(p.accountId);

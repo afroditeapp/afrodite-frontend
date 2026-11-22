@@ -241,7 +241,6 @@
 
     <!-- Profile image errors -->
     <string name="profile_image_error_no_image" description="Snackbar text for no profile image error">No profile image</string>
-    <string name="profile_image_error_no_primary_image" description="Snackbar text for no primary profile image error">Primary profile picture missing</string>
     <string name="profile_image_error_image_not_accepted" description="Snackbar text for profile image is not accepted error">Profile picture has not been approved</string>
 
     <!-- Splash screen -->

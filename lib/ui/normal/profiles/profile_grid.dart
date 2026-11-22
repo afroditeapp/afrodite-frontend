@@ -58,7 +58,6 @@ class ProfileGridState extends State<ProfileGrid> {
       db: widget.r.accountDb,
       chat: widget.r.chat,
       media: widget.r.media,
-      account: widget.r.account,
       connectionManager: widget.r.connectionManager,
       currentUser: widget.r.chat.currentUser,
     );
