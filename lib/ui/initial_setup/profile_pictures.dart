@@ -11,6 +11,7 @@ import "package:openapi/api.dart";
 import "package:utils/utils.dart";
 import "package:app/data/image_cache.dart";
 import "package:app/localizations.dart";
+import "package:app/logic/account/account.dart";
 import "package:app/logic/account/client_features_config.dart";
 import "package:app/logic/account/initial_setup.dart";
 import "package:app/logic/app/navigator_state.dart";
@@ -438,19 +439,21 @@ class _ProfilePictureSelection<
           return const SizedBox.shrink();
         }
 
+        final enforceAllRequirements = switch (widget.mode) {
+          InitialSetupProfilePictures() => isAllProfilePictureRequirementsEnforcedInInitialSetup(
+            context.read<InitialSetupBloc>().state.gender,
+          ),
+          NormalProfilePictures() => profileEditingEnforcesAllRequirements(
+            context.watch<AccountBloc>().state.gender,
+          ),
+        };
+        if (!enforceAllRequirements) {
+          return const SizedBox.shrink();
+        }
+
         return BlocBuilder<B, S>(
           bloc: widget.bloc,
           builder: (context, state) {
-            // In the initial setup the face requirement is only enforced for
-            // some genders. Other genders can skip it, so don't show a
-            // blocking error for them.
-            if (widget.mode is InitialSetupProfilePictures &&
-                !isAllProfilePictureRequirementsEnforcedInInitialSetup(
-                  context.read<InitialSetupBloc>().state.gender,
-                )) {
-              return const SizedBox.shrink();
-            }
-
             final imgState = state.valuePictures()[0];
             if (imgState is ImageSelected && !imgState.isFaceDetected()) {
               return _primaryImageErrorWidget(

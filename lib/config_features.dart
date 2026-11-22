@@ -44,6 +44,10 @@ const Set<Gender> FEATURE_PROFILE_VIEWING_REQUIRES_PUBLIC_PROFILE_GENDERS = {Gen
 /// requirements (e.g. face detection) are not met.
 const Set<Gender> FEATURE_PROFILE_VIEWING_ENFORCE_ALL_REQUIREMENTS_GENDERS = {Gender.man};
 
+/// Genders for which the face not detected error is shown when editing the
+/// profile.
+const Set<Gender> FEATURE_PROFILE_EDITING_ENFORCE_ALL_REQUIREMENTS_GENDERS = {Gender.man};
+
 /// Enable showing the attribution text in the about dialog
 const bool FEATURE_ABOUT_DIALOG_ATTRIBUTION = kIsWeb;
 

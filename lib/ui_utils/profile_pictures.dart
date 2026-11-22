@@ -1,3 +1,5 @@
+import 'package:app/config_features.dart';
+import 'package:app/model/freezed/logic/account/initial_setup.dart';
 import 'package:app/ui_utils/crop_image_screen.dart';
 import 'package:app/utils/api.dart';
 import 'package:meta/meta.dart';
@@ -13,6 +15,13 @@ class InitialSetupProfilePictures extends PictureSelectionMode {
 
 class NormalProfilePictures extends PictureSelectionMode {
   const NormalProfilePictures();
+}
+
+/// Whether the face not detected error is shown when editing the profile for
+/// the given gender.
+bool profileEditingEnforcesAllRequirements(Gender? gender) {
+  return gender != null &&
+      FEATURE_PROFILE_EDITING_ENFORCE_ALL_REQUIREMENTS_GENDERS.contains(gender);
 }
 
 @immutable

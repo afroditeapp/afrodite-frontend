@@ -2,6 +2,7 @@ import 'dart:async';
 
 import 'package:app/data/general/notification/state/profile_string_moderation_completed.dart';
 import 'package:app/data/utils/repository_instances.dart';
+import 'package:app/logic/account/account.dart';
 import 'package:app/logic/account/client_features_config.dart';
 import 'package:app/model/freezed/logic/account/client_features_config.dart';
 import 'package:app/ui/normal/settings/profile/edit_profile_text.dart';
@@ -164,7 +165,10 @@ class _EditProfileScreenState extends State<EditProfileScreen> {
     }
 
     final config = context.read<ClientFeaturesConfigBloc>().state.config;
-    final requireFace = config.profile?.firstImage?.requireFaceDetectedWhenEditing ?? false;
+    final gender = context.read<AccountBloc>().state.gender;
+    final requireFace =
+        profileEditingEnforcesAllRequirements(gender) &&
+        (config.profile?.firstImage?.requireFaceDetectedWhenEditing ?? false);
 
     if (requireFace && !s.faceDetectedFromPrimaryImage()) {
       showSnackBar(

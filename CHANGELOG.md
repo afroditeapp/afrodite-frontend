@@ -22,6 +22,8 @@
 - Enforce all profile viewing requirements from the client config only for men
   (configurable per gender). Other genders can view profiles even when the
   requirements (e.g. face detection) are not met.
+- Show the face not detected error when editing the profile only for men
+  (configurable per gender).
 - Don't require face detection from other profiles' primary picture when
   displaying received profiles.
 
