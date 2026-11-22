@@ -1703,32 +1703,33 @@ class AppLocalizationsEn extends AppLocalizations {
 
   @override
   String get privacy_settings_last_seen_time_disabled_description =>
-      'You won\'t see when others were last online';
+      'Others can\'t see when you were last online';
 
   @override
   String get privacy_settings_last_seen_time_enabled_description =>
-      'Show when you were last online';
+      'Others can see when you were last online';
 
   @override
   String get privacy_settings_message_state_seen => 'Message read receipts';
 
   @override
   String get privacy_settings_message_state_seen_disabled_description =>
-      'You won\'t see read receipts';
+      'Others can\'t see when you\'ve read their messages';
 
   @override
   String get privacy_settings_message_state_seen_enabled_description =>
-      'Let others see when you\'ve read their messages';
+      'Others can see when you\'ve read their messages';
 
   @override
   String get privacy_settings_online_status => 'Online status';
 
   @override
   String get privacy_settings_online_status_disabled_description =>
-      'You won\'t see others\' online status';
+      'Others can\'t see when you\'re online';
 
   @override
-  String get privacy_settings_online_status_enabled_description => 'Show when you are online';
+  String get privacy_settings_online_status_enabled_description =>
+      'Others can see when you\'re online';
 
   @override
   String get privacy_settings_screen_chat_category => 'Chat';
@@ -1744,11 +1745,11 @@ class AppLocalizationsEn extends AppLocalizations {
 
   @override
   String get privacy_settings_typing_indicator_disabled_description =>
-      'You won\'t see when others are typing';
+      'Others can\'t see when you\'re typing';
 
   @override
   String get privacy_settings_typing_indicator_enabled_description =>
-      'Let others see when you\'re typing';
+      'Others can see when you\'re typing';
 
   @override
   String get profile_filters_screen_disable_filters_action => 'Reset filters';
@@ -2287,11 +2288,11 @@ class AppLocalizationsEn extends AppLocalizations {
 
   @override
   String get settings_screen_profile_visibility_private_description =>
-      'Hide your profile from Profiles view';
+      'Your profile is hidden from Profiles view';
 
   @override
   String get settings_screen_profile_visibility_public_description =>
-      'Show your profile in Profiles view';
+      'Your profile is visible in Profiles view';
 
   @override
   String get settings_screen_profile_visibility_setting => 'Profile visibility';

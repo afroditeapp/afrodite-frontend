@@ -1716,31 +1716,33 @@ class AppLocalizationsFi extends AppLocalizations {
 
   @override
   String get privacy_settings_last_seen_time_disabled_description =>
-      'Et näe, milloin toiset olivat viimeksi paikalla';
+      'Muut eivät näe, milloin olit viimeksi paikalla';
 
   @override
   String get privacy_settings_last_seen_time_enabled_description =>
-      'Näytä, milloin olit viimeksi paikalla';
+      'Muut näkevät, milloin olit viimeksi paikalla';
 
   @override
   String get privacy_settings_message_state_seen => 'Viestien lukukuittaukset';
 
   @override
-  String get privacy_settings_message_state_seen_disabled_description => 'Et näe lukukuittauksia';
+  String get privacy_settings_message_state_seen_disabled_description =>
+      'Muut eivät näe, että olet lukenut heidän viestinsä';
 
   @override
   String get privacy_settings_message_state_seen_enabled_description =>
-      'Anna muiden nähdä, kun olet lukenut heidän viestinsä';
+      'Muut näkevät, että olet lukenut heidän viestinsä';
 
   @override
   String get privacy_settings_online_status => 'Paikallaolotila';
 
   @override
   String get privacy_settings_online_status_disabled_description =>
-      'Et näe muiden paikallaolotilaa';
+      'Muut eivät näe, milloin olet paikalla';
 
   @override
-  String get privacy_settings_online_status_enabled_description => 'Näytä, milloin olet paikalla';
+  String get privacy_settings_online_status_enabled_description =>
+      'Muut näkevät, milloin olet paikalla';
 
   @override
   String get privacy_settings_screen_chat_category => 'Keskustelu';
@@ -1756,11 +1758,10 @@ class AppLocalizationsFi extends AppLocalizations {
 
   @override
   String get privacy_settings_typing_indicator_disabled_description =>
-      'Et näe, kun toiset kirjoittavat';
+      'Muut eivät näe, kun kirjoitat';
 
   @override
-  String get privacy_settings_typing_indicator_enabled_description =>
-      'Anna muiden nähdä, kun kirjoitat';
+  String get privacy_settings_typing_indicator_enabled_description => 'Muut näkevät, kun kirjoitat';
 
   @override
   String get profile_filters_screen_disable_filters_action => 'Nollaa suodattimet';
@@ -2305,11 +2306,11 @@ class AppLocalizationsFi extends AppLocalizations {
 
   @override
   String get settings_screen_profile_visibility_private_description =>
-      'Piilota profiilisi Profiilit-näkymästä';
+      'Profiilisi ei näy Profiilit-näkymässä';
 
   @override
   String get settings_screen_profile_visibility_public_description =>
-      'Näytä profiilisi Profiilit-näkymässä';
+      'Profiilisi näkyy Profiilit-näkymässä';
 
   @override
   String get settings_screen_profile_visibility_setting => 'Profiilin näkyvyys';

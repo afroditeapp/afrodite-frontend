@@ -3065,13 +3065,13 @@ abstract class AppLocalizations {
   /// Description when last seen time is disabled
   ///
   /// In en, this message translates to:
-  /// **'You won\'t see when others were last online'**
+  /// **'Others can\'t see when you were last online'**
   String get privacy_settings_last_seen_time_disabled_description;
 
   /// Description when last seen time is enabled
   ///
   /// In en, this message translates to:
-  /// **'Show when you were last online'**
+  /// **'Others can see when you were last online'**
   String get privacy_settings_last_seen_time_enabled_description;
 
   /// Setting for message seen state
@@ -3083,13 +3083,13 @@ abstract class AppLocalizations {
   /// Description when message read receipts are disabled
   ///
   /// In en, this message translates to:
-  /// **'You won\'t see read receipts'**
+  /// **'Others can\'t see when you\'ve read their messages'**
   String get privacy_settings_message_state_seen_disabled_description;
 
   /// Description when message read receipts are enabled
   ///
   /// In en, this message translates to:
-  /// **'Let others see when you\'ve read their messages'**
+  /// **'Others can see when you\'ve read their messages'**
   String get privacy_settings_message_state_seen_enabled_description;
 
   /// Setting for online status visibility
@@ -3101,13 +3101,13 @@ abstract class AppLocalizations {
   /// Description when online status is disabled
   ///
   /// In en, this message translates to:
-  /// **'You won\'t see others\' online status'**
+  /// **'Others can\'t see when you\'re online'**
   String get privacy_settings_online_status_disabled_description;
 
   /// Description when online status is enabled
   ///
   /// In en, this message translates to:
-  /// **'Show when you are online'**
+  /// **'Others can see when you\'re online'**
   String get privacy_settings_online_status_enabled_description;
 
   /// Title for chat privacy settings category
@@ -3137,13 +3137,13 @@ abstract class AppLocalizations {
   /// Description when typing indicator is disabled
   ///
   /// In en, this message translates to:
-  /// **'You won\'t see when others are typing'**
+  /// **'Others can\'t see when you\'re typing'**
   String get privacy_settings_typing_indicator_disabled_description;
 
   /// Description when typing indicator is enabled
   ///
   /// In en, this message translates to:
-  /// **'Let others see when you\'re typing'**
+  /// **'Others can see when you\'re typing'**
   String get privacy_settings_typing_indicator_enabled_description;
 
   /// Title for disable filters action
@@ -4078,13 +4078,13 @@ abstract class AppLocalizations {
   /// Description for private profile visibility
   ///
   /// In en, this message translates to:
-  /// **'Hide your profile from Profiles view'**
+  /// **'Your profile is hidden from Profiles view'**
   String get settings_screen_profile_visibility_private_description;
 
   /// Description for public profile visibility
   ///
   /// In en, this message translates to:
-  /// **'Show your profile in Profiles view'**
+  /// **'Your profile is visible in Profiles view'**
   String get settings_screen_profile_visibility_public_description;
 
   /// Title for profile visibility setting

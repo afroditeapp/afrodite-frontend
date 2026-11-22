@@ -2215,11 +2215,11 @@
   "@privacy_settings_last_seen_time": {
     "description": "Setting for last seen time visibility"
   },
-  "privacy_settings_last_seen_time_disabled_description": "You won't see when others were last online",
+  "privacy_settings_last_seen_time_disabled_description": "Others can't see when you were last online",
   "@privacy_settings_last_seen_time_disabled_description": {
     "description": "Description when last seen time is disabled"
   },
-  "privacy_settings_last_seen_time_enabled_description": "Show when you were last online",
+  "privacy_settings_last_seen_time_enabled_description": "Others can see when you were last online",
   "@privacy_settings_last_seen_time_enabled_description": {
     "description": "Description when last seen time is enabled"
   },
@@ -2227,11 +2227,11 @@
   "@privacy_settings_message_state_seen": {
     "description": "Setting for message seen state"
   },
-  "privacy_settings_message_state_seen_disabled_description": "You won't see read receipts",
+  "privacy_settings_message_state_seen_disabled_description": "Others can't see when you've read their messages",
   "@privacy_settings_message_state_seen_disabled_description": {
     "description": "Description when message read receipts are disabled"
   },
-  "privacy_settings_message_state_seen_enabled_description": "Let others see when you've read their messages",
+  "privacy_settings_message_state_seen_enabled_description": "Others can see when you've read their messages",
   "@privacy_settings_message_state_seen_enabled_description": {
     "description": "Description when message read receipts are enabled"
   },
@@ -2239,11 +2239,11 @@
   "@privacy_settings_online_status": {
     "description": "Setting for online status visibility"
   },
-  "privacy_settings_online_status_disabled_description": "You won't see others' online status",
+  "privacy_settings_online_status_disabled_description": "Others can't see when you're online",
   "@privacy_settings_online_status_disabled_description": {
     "description": "Description when online status is disabled"
   },
-  "privacy_settings_online_status_enabled_description": "Show when you are online",
+  "privacy_settings_online_status_enabled_description": "Others can see when you're online",
   "@privacy_settings_online_status_enabled_description": {
     "description": "Description when online status is enabled"
   },
@@ -2263,11 +2263,11 @@
   "@privacy_settings_typing_indicator": {
     "description": "Setting for typing indicator"
   },
-  "privacy_settings_typing_indicator_disabled_description": "You won't see when others are typing",
+  "privacy_settings_typing_indicator_disabled_description": "Others can't see when you're typing",
   "@privacy_settings_typing_indicator_disabled_description": {
     "description": "Description when typing indicator is disabled"
   },
-  "privacy_settings_typing_indicator_enabled_description": "Let others see when you're typing",
+  "privacy_settings_typing_indicator_enabled_description": "Others can see when you're typing",
   "@privacy_settings_typing_indicator_enabled_description": {
     "description": "Description when typing indicator is enabled"
   },
@@ -2996,11 +2996,11 @@
   "@settings_screen_profile_category": {
     "description": "Title for profile settings category"
   },
-  "settings_screen_profile_visibility_private_description": "Hide your profile from Profiles view",
+  "settings_screen_profile_visibility_private_description": "Your profile is hidden from Profiles view",
   "@settings_screen_profile_visibility_private_description": {
     "description": "Description for private profile visibility"
   },
-  "settings_screen_profile_visibility_public_description": "Show your profile in Profiles view",
+  "settings_screen_profile_visibility_public_description": "Your profile is visible in Profiles view",
   "@settings_screen_profile_visibility_public_description": {
     "description": "Description for public profile visibility"
   },

@@ -30,6 +30,8 @@
   (configurable per gender).
 - Don't require face detection from other profiles' primary picture when
   displaying received profiles.
+- Clarify privacy settings switch descriptions to consistently describe
+  what others can see about you
 
 ### Fixed
 
