@@ -207,31 +207,27 @@ class ChatRepository extends DataRepositoryWithLifecycle {
     return result.isOk();
   }
 
-  Future<List<(AccountId, ProfileEntry?)>> _genericIteratorNext(
-    AccountIdDatabaseIterator iterator, {
-    bool cache = false,
-    bool download = false,
-    bool isMatch = false,
-  }) async {
+  Future<Result<List<(AccountId, ProfileEntry?)>, ()>> _genericIteratorNext(
+    AccountIdDatabaseIterator iterator,
+  ) async {
     final accounts = await iterator.nextList();
-    final newList = <(AccountId, ProfileEntry?)>[];
-    for (final accountId in accounts) {
-      ProfileEntry? profileData;
-      if (cache) {
-        profileData = await db.accountData((db) => db.profile.getProfileEntry(accountId)).ok();
-      }
-      if (download) {
-        profileData ??= await profileEntryDownloader.download(accountId, isMatch: isMatch).ok();
-      }
-      newList.add((accountId, profileData));
+    switch (accounts) {
+      case Err():
+        return const Err(());
+      case Ok(:final v):
+        final newList = <(AccountId, ProfileEntry?)>[];
+        for (final accountId in v) {
+          final profileData = await profileEntryDownloader.download(accountId).ok();
+          newList.add((accountId, profileData));
+        }
+        return Ok(newList);
     }
-    return newList;
   }
 
   /// Returns AccountId for all blocked profiles. ProfileEntry is returned only
   /// if the blocked profile is public.
-  Future<List<(AccountId, ProfileEntry?)>> sentBlocksIteratorNext() =>
-      _genericIteratorNext(sentBlocksIterator, download: true);
+  Future<Result<List<(AccountId, ProfileEntry?)>, ()>> sentBlocksIteratorNext() =>
+      _genericIteratorNext(sentBlocksIterator);
 
   void sentBlocksIteratorReset() {
     sentBlocksIterator.reset();

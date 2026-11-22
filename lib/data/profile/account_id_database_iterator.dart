@@ -1,6 +1,7 @@
 import 'dart:async';
 
 import 'package:openapi/api.dart';
+import 'package:app/utils/result.dart';
 
 class AccountIdDatabaseIterator {
   int currentIndex;
@@ -11,14 +12,14 @@ class AccountIdDatabaseIterator {
     currentIndex = 0;
   }
 
-  Future<List<AccountId>> nextList() async {
+  Future<Result<List<AccountId>, ()>> nextList() async {
     const queryCount = 10;
     final profiles = await dataGetter(currentIndex, queryCount);
     if (profiles != null) {
       currentIndex += queryCount;
-      return profiles;
+      return Ok(profiles);
     } else {
-      return [];
+      return const Err(());
     }
   }
 }

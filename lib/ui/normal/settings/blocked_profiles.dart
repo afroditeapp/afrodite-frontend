@@ -16,6 +16,7 @@ import 'package:app/model/freezed/logic/settings/blocked_profiles.dart';
 import 'package:app/ui_utils/consts/padding.dart';
 import 'package:app/ui_utils/dialog.dart';
 import 'package:app/ui_utils/list.dart';
+import 'package:app/utils/result.dart';
 
 class BlockedProfilesPage extends MyScreenPage<()> with SimpleUrlParser<BlockedProfilesPage> {
   final RepositoryInstances r;
@@ -71,8 +72,12 @@ class _BlockedProfilesScreen extends State<BlockedProfilesScreen> {
     }
 
     final profileList = await widget.chat.sentBlocksIteratorNext();
-
-    updatePagingState((s) => s.copyAndAdd(profileList));
+    switch (profileList) {
+      case Ok(:final v):
+        updatePagingState((s) => s.copyAndAdd(v));
+      case Err():
+        updatePagingState((s) => s.copyAndShowError());
+    }
   }
 
   @override

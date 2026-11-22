@@ -16,6 +16,8 @@
 
 - Save profile privacy settings to the local database during initial
   setup so that the privacy settings screen shows the selected values
+- Show an error message with a retry button on the blocked profiles
+  screen when loading the blocked profiles fails
 
 ## [0.26.1] - 2026-11-09
 
