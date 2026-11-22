@@ -376,7 +376,7 @@
   "initial_setup_screen_profile_basic_info_profile_name_title": "Etunimi",
   "initial_setup_screen_profile_basic_info_title": "Tietoja minusta…",
   "initial_setup_screen_profile_pictures_primary_image_face_not_detected": "Kasvoja ei havaittu. Valitse kuva, jossa kasvosi näkyvät selkeästi.",
-  "initial_setup_screen_profile_pictures_primary_image_info_dialog_description": "Vähintään yksi profiilikuva vaaditaan. Ensimmäisessä kuvassa täytyy näkyä kasvosi selkeästi, ja sen neliömäinen rajaus näytetään profiiliruudukoissa.",
+  "initial_setup_screen_profile_pictures_primary_image_info_dialog_description": "Vähintään yksi profiilikuva vaaditaan. Ensimmäisen kuvasi neliömäinen rajaus näytetään profiiliruudukoissa.",
   "initial_setup_screen_profile_pictures_select_picture_dialog_title": "Valitse kuva…",
   "initial_setup_screen_profile_pictures_select_picture_from_gallery_title": "Valitse galleriasta",
   "initial_setup_screen_profile_pictures_select_picture_security_selfie_title": "Käytä moderointiselfietä",

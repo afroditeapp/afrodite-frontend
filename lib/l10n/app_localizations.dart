@@ -2375,7 +2375,7 @@ abstract class AppLocalizations {
   /// Dialog description text about profile primary image
   ///
   /// In en, this message translates to:
-  /// **'At least one profile picture is required. Your first picture must show your face clearly, and its square crop will be shown in profile grids.'**
+  /// **'At least one profile picture is required. The square crop of your first picture will be shown in profile grids.'**
   String get initial_setup_screen_profile_pictures_primary_image_info_dialog_description;
 
   /// Dialog title for initial setup profile picture selection dialog

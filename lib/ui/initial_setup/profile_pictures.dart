@@ -1,3 +1,4 @@
+import "package:app/config_features.dart";
 import "package:app/data/utils/repository_instances.dart";
 import "package:app/ui_utils/consts/padding.dart";
 import "package:app/ui_utils/profile_pictures.dart";
@@ -33,6 +34,15 @@ import "package:app/ui_utils/view_image_screen.dart";
 
 final _log = Logger("ProfilePictures");
 
+/// Whether all profile picture requirements from the client config are
+/// enforced in the initial setup for the given gender.
+///
+/// All genders must select at least one profile picture regardless of this.
+bool isAllProfilePictureRequirementsEnforcedInInitialSetup(Gender? gender) {
+  return gender != null &&
+      FEATURE_INITIAL_SETUP_PROFILE_PICTURES_ENFORCE_ALL_REQUIREMENTS.contains(gender);
+}
+
 class AskProfilePicturesPage extends InitialSetupPageBase
     with SimpleUrlParser<AskProfilePicturesPage> {
   AskProfilePicturesPage() : super(builder: (_) => AskProfilePicturesScreen());
@@ -66,23 +76,42 @@ class _AskProfilePicturesScreenInternal extends StatelessWidget {
             builder: (context, configData) {
               return BlocBuilder<InitialSetupBloc, InitialSetupData>(
                 builder: (context, state) {
-                  void Function()? onPressed;
                   final pictures = state.valuePictures();
                   final primaryPicture = pictures[0];
+                  final hasPicture = primaryPicture is ImageSelected;
 
                   final requireFace =
                       configData.config.profile?.firstImage?.requireFaceDetectedWhenEditing ??
                       false;
+                  final enforceAllRequirements =
+                      isAllProfilePictureRequirementsEnforcedInInitialSetup(state.gender);
+                  final enforceFace = requireFace && enforceAllRequirements;
+                  final faceRequirementMet =
+                      !enforceFace ||
+                      (primaryPicture is ImageSelected && primaryPicture.isFaceDetected());
 
-                  if (primaryPicture is ImageSelected &&
-                      (!requireFace || primaryPicture.isFaceDetected())) {
-                    onPressed = () {
-                      navigateToNextInitialSetupPage(context);
-                    };
+                  // All genders must select at least one picture.
+                  if (!hasPicture) {
+                    return ElevatedButton(
+                      onPressed: null,
+                      child: Text(context.strings.generic_continue),
+                    );
                   }
 
+                  // Client config requirements are not enforced for this
+                  // gender, so they can be skipped.
+                  if (faceRequirementMet || !enforceAllRequirements) {
+                    return ElevatedButton(
+                      onPressed: () {
+                        navigateToNextInitialSetupPage(context);
+                      },
+                      child: Text(context.strings.generic_continue),
+                    );
+                  }
+
+                  // Requirements are enforced for this gender but not met.
                   return ElevatedButton(
-                    onPressed: onPressed,
+                    onPressed: null,
                     child: Text(context.strings.generic_continue),
                   );
                 },
@@ -412,6 +441,16 @@ class _ProfilePictureSelection<
         return BlocBuilder<B, S>(
           bloc: widget.bloc,
           builder: (context, state) {
+            // In the initial setup the face requirement is only enforced for
+            // some genders. Other genders can skip it, so don't show a
+            // blocking error for them.
+            if (widget.mode is InitialSetupProfilePictures &&
+                !isAllProfilePictureRequirementsEnforcedInInitialSetup(
+                  context.read<InitialSetupBloc>().state.gender,
+                )) {
+              return const SizedBox.shrink();
+            }
+
             final imgState = state.valuePictures()[0];
             if (imgState is ImageSelected && !imgState.isFaceDetected()) {
               return _primaryImageErrorWidget(

@@ -24,6 +24,13 @@ const bool FEATURE_INITIAL_SETUP_SKIP = kIsWeb;
 /// Genders for which the security selfie screen is shown in the initial setup
 const Set<Gender> FEATURE_INITIAL_SETUP_SECURITY_SELFIE_GENDERS = {Gender.man};
 
+/// Genders for which all profile picture requirements from the client config
+/// are enforced in the initial setup profile pictures screen.
+///
+/// All genders must select at least one profile picture. Genders not in this
+/// set can skip the other requirements (e.g. face detection).
+const Set<Gender> FEATURE_INITIAL_SETUP_PROFILE_PICTURES_ENFORCE_ALL_REQUIREMENTS = {Gender.man};
+
 /// Enable showing the attribution text in the about dialog
 const bool FEATURE_ABOUT_DIALOG_ATTRIBUTION = kIsWeb;
 

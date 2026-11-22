@@ -1312,7 +1312,7 @@ class AppLocalizationsEn extends AppLocalizations {
 
   @override
   String get initial_setup_screen_profile_pictures_primary_image_info_dialog_description =>
-      'At least one profile picture is required. Your first picture must show your face clearly, and its square crop will be shown in profile grids.';
+      'At least one profile picture is required. The square crop of your first picture will be shown in profile grids.';
 
   @override
   String get initial_setup_screen_profile_pictures_select_picture_dialog_title => 'Choose photo…';

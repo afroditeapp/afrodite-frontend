@@ -13,6 +13,9 @@
 - Disable video calling features by default
 - Ask the security selfie screen in the initial setup only for men
   (configurable per gender)
+- Enforce all profile picture requirements in the initial setup only for men
+  (configurable per gender). All genders must still select at least one
+  profile picture.
 
 ### Fixed
 

@@ -1319,7 +1319,7 @@ class AppLocalizationsFi extends AppLocalizations {
 
   @override
   String get initial_setup_screen_profile_pictures_primary_image_info_dialog_description =>
-      'Vähintään yksi profiilikuva vaaditaan. Ensimmäisessä kuvassa täytyy näkyä kasvosi selkeästi, ja sen neliömäinen rajaus näytetään profiiliruudukoissa.';
+      'Vähintään yksi profiilikuva vaaditaan. Ensimmäisen kuvasi neliömäinen rajaus näytetään profiiliruudukoissa.';
 
   @override
   String get initial_setup_screen_profile_pictures_select_picture_dialog_title => 'Valitse kuva…';

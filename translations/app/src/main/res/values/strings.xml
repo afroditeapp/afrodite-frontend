@@ -338,7 +338,7 @@
     <string name="initial_setup_screen_profile_pictures_select_picture_from_gallery_title" description="Action title for selecting profile picture from gallery">Choose from gallery</string>
     <string name="initial_setup_screen_profile_pictures_select_picture_take_new_picture_title" description="Action title for taking new picture to be used as a profile picture">Take photo</string>
     <string name="initial_setup_screen_profile_pictures_select_picture_security_selfie_title" description="Action title for using security selfie as a profile picture">Use security selfie</string>
-    <string name="initial_setup_screen_profile_pictures_primary_image_info_dialog_description" description="Dialog description text about profile primary image">At least one profile picture is required. Your first picture must show your face clearly, and its square crop will be shown in profile grids.</string>
+    <string name="initial_setup_screen_profile_pictures_primary_image_info_dialog_description" description="Dialog description text about profile primary image">At least one profile picture is required. The square crop of your first picture will be shown in profile grids.</string>
     <string name="initial_setup_screen_profile_pictures_primary_image_face_not_detected" description="Error text that face is not detected for primary profile image">No face detected. Please select a photo that clearly shows your face.</string>
     <string name="initial_setup_screen_profile_basic_info_title" description="Title text for asking profile information">About me…</string>
     <string name="initial_setup_screen_profile_basic_info_profile_name_title" description="Title text for profile name text field">First name</string>
