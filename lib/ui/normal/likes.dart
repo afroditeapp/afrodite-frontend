@@ -400,6 +400,7 @@ class LikeViewContentState extends State<LikeViewContent> {
             settings: settings,
             showNewLikeMarker: true,
             maxItemWidth: singleItemWidth,
+            isReceivedLike: true,
             onTap: (context, thumbnail) {
               openProfileView(context, thumbnail.entry, item.initialProfileAction);
             },

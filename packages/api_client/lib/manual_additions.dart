@@ -78,6 +78,7 @@ extension MediaManualAdditions on MediaApi {
     String contentId,
     bool isMatch,
     String quality, {
+    bool isReceivedLike = false,
     String? ifNoneMatch,
   }) async {
     final path = r'/media_api/content/{aid}/{cid}'
@@ -86,6 +87,7 @@ extension MediaManualAdditions on MediaApi {
 
     final queryParams = <QueryParam>[
       QueryParam('is_match', isMatch.toString()),
+      QueryParam('is_received_like', isReceivedLike.toString()),
       QueryParam('q', quality),
     ];
     final headerParams = <String, String>{};
@@ -189,15 +191,19 @@ extension MediaManualAdditions on MediaApi {
   /// * [String] version:
   ///
   /// * [bool] isMatch:
+  ///
+  /// * [bool] isReceivedLike:
   Future<Uint8List?> getProfileContentInfoBinaryFixed(
     String aid, {
     String? version,
     bool? isMatch,
+    bool? isReceivedLike,
   }) async {
     final response = await getProfileContentInfoBinaryWithHttpInfo(
       aid,
       version: version,
       isMatch: isMatch,
+      isReceivedLike: isReceivedLike,
     );
     if (response.statusCode >= HttpStatus.badRequest) {
       throw ApiException(
@@ -228,15 +234,19 @@ extension ProfileManualAdditions on ProfileApi {
   /// * [String] v:
   ///
   /// * [bool] isMatch:
+  ///
+  /// * [bool] isReceivedLike:
   Future<Uint8List?> getProfileBinaryFixed(
     String aid, {
     String? v,
     bool? isMatch,
+    bool? isReceivedLike,
   }) async {
     final response = await getProfileBinaryWithHttpInfo(
       aid,
       v: v,
       isMatch: isMatch,
+      isReceivedLike: isReceivedLike,
     );
     if (response.statusCode >= HttpStatus.badRequest) {
       throw ApiException(response.statusCode, "Profile download failed");

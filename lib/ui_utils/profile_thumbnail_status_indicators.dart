@@ -24,6 +24,10 @@ class UpdatingProfileThumbnailWithInfo extends StatefulWidget {
   /// Show only profile thumbnail with smaller online indicator
   final bool appBarMode;
 
+  /// True when the profile has sent a like to the current account. Allows
+  /// loading images of private profiles.
+  final bool isReceivedLike;
+
   const UpdatingProfileThumbnailWithInfo({
     required this.db,
     required this.initialData,
@@ -32,6 +36,7 @@ class UpdatingProfileThumbnailWithInfo extends StatefulWidget {
     required this.maxItemWidth,
     this.onTap,
     this.appBarMode = false,
+    this.isReceivedLike = false,
     super.key,
   });
 
@@ -61,6 +66,7 @@ class _UpdatingProfileThumbnailWithInfoState extends State<UpdatingProfileThumbn
           entry: e.entry,
           borderRadius: BorderRadius.circular(widget.settings.valueProfileThumbnailBorderRadius()),
           cacheSize: ImageCacheSize.squareImageForGrid(context, widget.maxItemWidth),
+          isReceivedLike: widget.isReceivedLike,
           child: Stack(
             children: [
               if (!widget.appBarMode)

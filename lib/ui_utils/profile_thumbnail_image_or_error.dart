@@ -13,6 +13,7 @@ import 'package:flutter_bloc/flutter_bloc.dart';
 class ProfileThumbnailImageOrError extends StatelessWidget {
   final ProfileEntry entry;
   final CropArea cropArea;
+  final bool isReceivedLike;
 
   final double? width;
   final double? height;
@@ -27,6 +28,7 @@ class ProfileThumbnailImageOrError extends StatelessWidget {
     this.child,
     this.borderRadius = const BorderRadius.all(Radius.circular(PROFILE_PICTURE_BORDER_RADIUS)),
     required this.cacheSize,
+    this.isReceivedLike = false,
     super.key,
   }) : cropArea = entry.primaryImageCropArea();
 
@@ -48,6 +50,7 @@ class ProfileThumbnailImageOrError extends StatelessWidget {
         height: height,
         borderRadius: borderRadius,
         cacheSize: cacheSize,
+        isReceivedLike: isReceivedLike,
         child: child,
       );
     }

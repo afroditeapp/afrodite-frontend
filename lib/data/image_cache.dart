@@ -52,6 +52,7 @@ class ImageCacheData {
     AccountId imageOwner,
     ContentId id, {
     bool isMatch = false,
+    bool isReceivedLike = false,
     required MediaRepository media,
   }) async {
     final userPreferredQualityResult = await media.db.accountData(
@@ -64,6 +65,7 @@ class ImageCacheData {
       imageOwner,
       id,
       isMatch: isMatch,
+      isReceivedLike: isReceivedLike,
       preferredQuality: userPreferredQuality,
       media: media,
     );
@@ -94,6 +96,7 @@ class ImageCacheData {
     AccountId imageOwner,
     ContentId id, {
     bool isMatch = false,
+    bool isReceivedLike = false,
     required int preferredQuality,
     required MediaRepository media,
   }) async {
@@ -103,6 +106,7 @@ class ImageCacheData {
         imageOwner,
         id,
         isMatch: isMatch,
+        isReceivedLike: isReceivedLike,
         preferredQuality: preferredQuality.toString(),
       );
       if (result case ContentQualityData(:final etag) || ContentQualityNotModified(:final etag)) {
@@ -125,6 +129,7 @@ class ImageCacheData {
       imageOwner,
       id,
       isMatch: isMatch,
+      isReceivedLike: isReceivedLike,
       preferredQuality: preferredQuality.toString(),
       ifNoneMatch: fileInfo?.etag,
     );
@@ -227,9 +232,15 @@ Future<Uint8List> _cachedEmptyMapTile() async {
 class AccountImageProvider extends ImageProvider<AccountImgKey> {
   final AccountImgKey imgInfo;
   final bool isMatch;
+  final bool isReceivedLike;
   final MediaRepository media;
 
-  AccountImageProvider._(this.imgInfo, {this.isMatch = false, required this.media});
+  AccountImageProvider._(
+    this.imgInfo, {
+    this.isMatch = false,
+    this.isReceivedLike = false,
+    required this.media,
+  });
 
   @override
   ImageStreamCompleter loadImage(AccountImgKey key, ImageDecoderCallback decode) {
@@ -238,6 +249,7 @@ class AccountImageProvider extends ImageProvider<AccountImgKey> {
         imgInfo.accountId,
         imgInfo.contentId,
         isMatch: isMatch,
+        isReceivedLike: isReceivedLike,
         media: media,
       );
 
@@ -280,6 +292,7 @@ class AccountImageProvider extends ImageProvider<AccountImgKey> {
     AccountId accountId,
     ContentId contentId, {
     bool isMatch = false,
+    bool isReceivedLike = false,
     required ImageCacheSize cacheSize,
     required MediaRepository media,
     required CropArea? cropArea,
@@ -305,7 +318,12 @@ class AccountImageProvider extends ImageProvider<AccountImgKey> {
       cacheSize: size,
       cropArea: cropArea,
     );
-    final imgProvider = AccountImageProvider._(key, isMatch: isMatch, media: media);
+    final imgProvider = AccountImageProvider._(
+      key,
+      isMatch: isMatch,
+      isReceivedLike: isReceivedLike,
+      media: media,
+    );
     if (cropArea == null && size != ImageCacheSize.useImageResolution()) {
       return ResizeImage(
         imgProvider,

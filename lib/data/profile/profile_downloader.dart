@@ -21,9 +21,14 @@ class ProfileEntryDownloader {
   ProfileEntryDownloader(this.media, this.db, this.api);
 
   /// Download profile entry, save to databases and return it.
+  ///
+  /// Set [isReceivedLike] to true when the profile has sent a like to the
+  /// current account. That allows downloading private profiles which are
+  /// visible in the received likes screen.
   Future<Result<ProfileEntry, ProfileDownloadError>> download(
     AccountId accountId, {
     bool isMatch = false,
+    bool isReceivedLike = false,
   }) async {
     final currentData = await db.accountData((db) => db.profile.getProfileEntry(accountId)).ok();
     final currentVersion = currentData?.version;
@@ -33,6 +38,7 @@ class ProfileEntryDownloader {
       final bytes = await api.getProfileContentInfoBinaryFixed(
         accountId.aid,
         isMatch: isMatch,
+        isReceivedLike: isReceivedLike,
         version: currentContentVersion?.v,
       );
       if (bytes == null) {
@@ -66,6 +72,7 @@ class ProfileEntryDownloader {
             accountId,
             primaryContentId,
             isMatch: isMatch,
+            isReceivedLike: isReceivedLike,
             media: media,
           );
           if (bytes == null) {
@@ -84,6 +91,7 @@ class ProfileEntryDownloader {
       final bytes = await api.getProfileBinaryFixed(
         accountId.aid,
         isMatch: isMatch,
+        isReceivedLike: isReceivedLike,
         v: currentVersion?.v,
       );
       if (bytes == null) {

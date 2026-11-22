@@ -177,7 +177,12 @@ class ProfileRepository extends DataRepositoryWithLifecycle {
 
     if (download) {
       final isMatch = await chat.isInMatches(id);
-      await ProfileEntryDownloader(media, db, _api).download(id, isMatch: isMatch);
+      final isReceivedLike = await chat.isInReceivedLikes(id);
+      await ProfileEntryDownloader(
+        media,
+        db,
+        _api,
+      ).download(id, isMatch: isMatch, isReceivedLike: isReceivedLike);
     }
 
     while (true) {
@@ -192,7 +197,12 @@ class ProfileRepository extends DataRepositoryWithLifecycle {
 
   Future<void> downloadProfileToDatabase(ChatRepository chat, AccountId id) async {
     final isMatch = await chat.isInMatches(id);
-    await ProfileEntryDownloader(media, db, _api).download(id, isMatch: isMatch);
+    final isReceivedLike = await chat.isInReceivedLikes(id);
+    await ProfileEntryDownloader(
+      media,
+      db,
+      _api,
+    ).download(id, isMatch: isMatch, isReceivedLike: isReceivedLike);
   }
 
   /// Returns true if profile update was successful

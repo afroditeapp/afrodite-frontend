@@ -81,6 +81,7 @@ class MediaRepository extends DataRepositoryWithLifecycle {
     AccountId imageOwner,
     ContentId id, {
     bool isMatch = false,
+    bool isReceivedLike = false,
     required String preferredQuality,
     String? ifNoneMatch,
   }) async {
@@ -93,6 +94,7 @@ class MediaRepository extends DataRepositoryWithLifecycle {
             id.cid,
             isMatch,
             preferredQuality,
+            isReceivedLike: isReceivedLike,
             ifNoneMatch: ifNoneMatch,
           ),
         )
