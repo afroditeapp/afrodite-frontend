@@ -90,7 +90,7 @@ class _ContentManagementScreenState extends State<ContentManagementScreen> {
                       final content = state.accountContent;
                       if (state.isLoading) {
                         return const Center(child: CircularProgressIndicator());
-                      } else if (content == null || securityContent == null || myProfile == null) {
+                      } else if (content == null || myProfile == null) {
                         return Center(child: Text(context.strings.generic_error));
                       } else {
                         return selectContentPage(
@@ -115,7 +115,7 @@ class _ContentManagementScreenState extends State<ContentManagementScreen> {
   Widget selectContentPage(
     BuildContext context,
     AccountContent content,
-    ContentId securityContent,
+    ContentId? securityContent,
     MyProfileEntry myProfile,
     bool faceVerificationEnabled,
   ) {
@@ -169,7 +169,7 @@ Widget _buildAvailableImg(
   AccountId accountId,
   ContentInfoDetailed content,
   int unusedContentWaitSeconds,
-  ContentId securityContent,
+  ContentId? securityContent,
   MyProfileEntry myProfile,
   bool faceVerificationEnabled,
 ) {
@@ -239,7 +239,7 @@ Widget _statusInfo(
   AccountId accountId,
   ContentInfoDetailed content,
   int unusedContentWaitSeconds,
-  ContentId securityContent,
+  ContentId? securityContent,
   MyProfileEntry myProfile,
   bool faceVerificationEnabled,
 ) {

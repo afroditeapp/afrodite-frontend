@@ -24,6 +24,9 @@ const bool FEATURE_INITIAL_SETUP_SKIP = kIsWeb;
 /// Genders for which the security selfie screen is shown in the initial setup
 const Set<Gender> FEATURE_INITIAL_SETUP_SECURITY_SELFIE_GENDERS = {Gender.man};
 
+/// Genders which must have a security selfie.
+const Set<Gender> FEATURE_SECURITY_SELFIE_GENDERS = {Gender.man};
+
 /// Genders for which all profile picture requirements from the client config
 /// are enforced in the initial setup profile pictures screen.
 ///

@@ -188,9 +188,11 @@ class PublicProfileViewingBlocker extends StatelessWidget {
   }
 
   Widget checkMyContent({required Gender? gender}) {
+    final securitySelfieRequired = securitySelfieIsRequired(gender);
     return BlocBuilder<ContentBloc, ContentData>(
       builder: (context, contentState) {
-        if (contentState.isLoadingSecurityContent || contentState.isLoadingPrimaryContent) {
+        if (contentState.isLoadingPrimaryContent ||
+            (securitySelfieRequired && contentState.isLoadingSecurityContent)) {
           return _handleBlocked(const SizedBox.shrink());
         }
 
@@ -200,7 +202,9 @@ class PublicProfileViewingBlocker extends StatelessWidget {
         final securityContentIsWaitingModeration =
             securityContent?.state.waitingModeration() == true;
 
-        if (securityContentIsValid || securityContentIsWaitingModeration) {
+        if (!securitySelfieRequired ||
+            securityContentIsValid ||
+            securityContentIsWaitingModeration) {
           return BlocBuilder<ClientFeaturesConfigBloc, ClientFeaturesConfigData>(
             builder: (context, configData) {
               return BlocBuilder<MyProfileBloc, MyProfileData>(
@@ -377,6 +381,14 @@ class PublicProfileViewingBlocker extends StatelessWidget {
       ),
     );
   }
+}
+
+/// Returns true if the given [gender] must have a security selfie.
+///
+/// Unknown gender is treated as requiring a security selfie so that profiles are
+/// not shown before the gender is known.
+bool securitySelfieIsRequired(Gender? gender) {
+  return gender == null || FEATURE_SECURITY_SELFIE_GENDERS.contains(gender);
 }
 
 /// Returns true if the given [gender] must have a public profile to be able to
