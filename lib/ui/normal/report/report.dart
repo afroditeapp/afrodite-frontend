@@ -22,6 +22,7 @@ Widget showReportAction(BuildContext context, AccountId accountId, ProfileEntry?
     onPressed: () async {
       final r = context.read<RepositoryInstances>();
       final isMatch = await r.chat.isInMatches(accountId);
+      final isReceivedLike = await r.chat.isInReceivedLikes(accountId);
       final messages = await r.chat.getAllMessages(accountId).ok();
       final localAccountId = await r.accountDb
           .accountDataWrite((db) => db.account.createLocalAccountIdIfNeeded(accountId))
@@ -37,6 +38,7 @@ Widget showReportAction(BuildContext context, AccountId accountId, ProfileEntry?
           localAccountId: localAccountId,
           profile: profile,
           isMatch: isMatch,
+          isReceivedLike: isReceivedLike,
           messages: messages,
         ),
       );
@@ -61,6 +63,7 @@ class ReportPageUrlParser extends UrlParser<ReportPage> {
         .accountData((db) => db.profile.getProfileEntry(ids.accountId))
         .ok();
     final isMatch = await r.chat.isInMatches(ids.accountId);
+    final isReceivedLike = await r.chat.isInReceivedLikes(ids.accountId);
     final messages = await r.chat.getAllMessages(ids.accountId).ok();
     if (messages == null) {
       return Err(());
@@ -72,6 +75,7 @@ class ReportPageUrlParser extends UrlParser<ReportPage> {
         localAccountId: ids.localAccountId,
         profile: profile,
         isMatch: isMatch,
+        isReceivedLike: isReceivedLike,
         messages: messages,
       ),
       nextSegments,
@@ -87,12 +91,14 @@ class ReportPage extends MyScreenPage<()> {
     required this.localAccountId,
     required ProfileEntry? profile,
     required bool isMatch,
+    required bool isReceivedLike,
     required List<MessageEntry> messages,
   }) : super(
          builder: (_) => ReportScreen(
            accountId: accountId,
            profile: profile,
            isMatch: isMatch,
+           isReceivedLike: isReceivedLike,
            messages: messages,
          ),
        );
@@ -109,11 +115,13 @@ class ReportScreen extends StatefulWidget {
   final AccountId accountId;
   final ProfileEntry? profile;
   final bool isMatch;
+  final bool isReceivedLike;
   final List<MessageEntry> messages;
   const ReportScreen({
     required this.accountId,
     required this.profile,
     required this.isMatch,
+    required this.isReceivedLike,
     required this.messages,
     super.key,
   });
@@ -254,7 +262,11 @@ class _ReportScreenState extends State<ReportScreen> {
           reportListTile(context.strings.report_screen_profile_image_action, null, () {
             MyNavigator.pushLimited(
               context,
-              ReportProfileImagePage(profileEntry: profileEntry, isMatch: widget.isMatch),
+              ReportProfileImagePage(
+                profileEntry: profileEntry,
+                isMatch: widget.isMatch,
+                isReceivedLike: widget.isReceivedLike,
+              ),
             );
           }),
         );

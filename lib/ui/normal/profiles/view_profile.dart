@@ -262,9 +262,12 @@ class ViewProfileScreen extends StatelessWidget {
       builder: (context, state) {
         handleStateAction(context, state);
 
+        final action = state.profileActionState;
         return ViewProfileEntry(
           profile: state.profile,
           isMyProfile: false,
+          isMatch: action == ProfileActionState.chat,
+          isReceivedLike: action == ProfileActionState.makeMatch,
           lastSeenTimeState: state.lastSeenTimeState,
         );
       },

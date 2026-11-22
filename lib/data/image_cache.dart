@@ -421,9 +421,10 @@ class PrecacheImageForViewProfileScreen {
     final first = e.content.firstOrNull;
 
     if (first != null && first.accepted) {
-      // AccountImageProvider.create does not need isMatch
-      // set to true as image is available locally and
-      // it is loaded to ImageCache.
+      // Pre-caching is best effort. Access flags are not needed here because
+      // the profile view loads the image again with the correct flags if
+      // this fails, for example when a stale cache entry of a private
+      // profile image is revalidated from the server.
       await PrecacheImageForViewProfileScreen.usingAccountAndContentIds(
         context,
         e.accountId,

@@ -12,16 +12,29 @@ import 'package:app/ui_utils/dialog.dart';
 import 'package:provider/provider.dart';
 
 class ReportProfileImagePage extends MyScreenPageLimited<()> {
-  ReportProfileImagePage({required ProfileEntry profileEntry, required bool isMatch})
-    : super(
-        builder: (_) => ReportProfileImageScreen(profileEntry: profileEntry, isMatch: isMatch),
-      );
+  ReportProfileImagePage({
+    required ProfileEntry profileEntry,
+    required bool isMatch,
+    required bool isReceivedLike,
+  }) : super(
+         builder: (_) => ReportProfileImageScreen(
+           profileEntry: profileEntry,
+           isMatch: isMatch,
+           isReceivedLike: isReceivedLike,
+         ),
+       );
 }
 
 class ReportProfileImageScreen extends StatefulWidget {
   final ProfileEntry profileEntry;
   final bool isMatch;
-  const ReportProfileImageScreen({required this.profileEntry, required this.isMatch, super.key});
+  final bool isReceivedLike;
+  const ReportProfileImageScreen({
+    required this.profileEntry,
+    required this.isMatch,
+    required this.isReceivedLike,
+    super.key,
+  });
 
   @override
   State<ReportProfileImageScreen> createState() => _ReportProfileImageScreen();
@@ -67,6 +80,7 @@ class _ReportProfileImageScreen extends State<ReportProfileImageScreen> {
       widget.profileEntry.accountId,
       content,
       isMatch: widget.isMatch,
+      isReceivedLike: widget.isReceivedLike,
       width: _IMG_SIZE,
       height: _IMG_SIZE,
       cacheSize: ImageCacheSize.squareImageForListWithTextContent(context, _IMG_SIZE),

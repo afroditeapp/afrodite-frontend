@@ -37,11 +37,21 @@ class ViewProfileEntry extends StatefulWidget {
   final ProfileEntry profile;
   final bool isMyProfile;
 
+  /// True when the profile is a match. Allows loading images of private
+  /// profiles.
+  final bool isMatch;
+
+  /// True when the profile has sent a like to the current account. Allows
+  /// loading images of private profiles.
+  final bool isReceivedLike;
+
   /// Overrides [ProfileEntry.lastSeenTimeValue]
   final LastSeenTimeState lastSeenTimeState;
   const ViewProfileEntry({
     required this.profile,
     required this.isMyProfile,
+    this.isMatch = false,
+    this.isReceivedLike = false,
     this.lastSeenTimeState = const LastSeenTimeNotReceived(),
     super.key,
   });
@@ -65,6 +75,8 @@ class _ViewProfileEntryState extends State<ViewProfileEntry> {
                 child: ViewProfileImgViewer(
                   profile: widget.profile,
                   showNonAcceptedImages: widget.profile is MyProfileEntry,
+                  isMatch: widget.isMatch,
+                  isReceivedLike: widget.isReceivedLike,
                 ),
               ),
               const Padding(padding: EdgeInsets.only(top: 16)),
@@ -388,9 +400,20 @@ class _ViewProfileEntryState extends State<ViewProfileEntry> {
 class ViewProfileImgViewer extends StatefulWidget {
   final ProfileEntry profile;
   final bool showNonAcceptedImages;
+
+  /// True when the profile is a match. Allows loading images of private
+  /// profiles.
+  final bool isMatch;
+
+  /// True when the profile has sent a like to the current account. Allows
+  /// loading images of private profiles.
+  final bool isReceivedLike;
+
   const ViewProfileImgViewer({
     required this.profile,
     required this.showNonAcceptedImages,
+    this.isMatch = false,
+    this.isReceivedLike = false,
     super.key,
   });
 
@@ -509,6 +532,8 @@ class _ViewProfileImgViewerState extends State<ViewProfileImgViewer> {
       context,
       accountId,
       contentId,
+      isMatch: widget.isMatch,
+      isReceivedLike: widget.isReceivedLike,
       cacheSize: PrecacheImageForViewProfileScreen.cacheSizeForViewProfileScreenImages(context),
     );
   }

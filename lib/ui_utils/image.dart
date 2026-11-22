@@ -29,6 +29,7 @@ Widget accountImgWidget(
   AccountId accountId,
   ContentId contentId, {
   bool isMatch = false,
+  bool isReceivedLike = false,
   double? width,
   double? height,
   AlignmentGeometry alignment = Alignment.center,
@@ -40,6 +41,7 @@ Widget accountImgWidget(
       accountId,
       contentId,
       isMatch: isMatch,
+      isReceivedLike: isReceivedLike,
       cacheSize: cacheSize,
       media: context.read<RepositoryInstances>().media,
       cropArea: null,
@@ -66,6 +68,7 @@ Widget accountImgWidgetInk(
   AccountId accountId,
   ContentId contentId, {
   bool isMatch = false,
+  bool isReceivedLike = false,
   double? width,
   double? height,
   AlignmentGeometry alignment = Alignment.center,
@@ -79,6 +82,7 @@ Widget accountImgWidgetInk(
       accountId,
       contentId,
       isMatch: isMatch,
+      isReceivedLike: isReceivedLike,
       width: width,
       height: height,
       alignment: alignment,

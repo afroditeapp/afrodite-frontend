@@ -41,8 +41,7 @@
   setup so that the privacy settings screen shows the selected values
 - Show an error message with a retry button on the blocked profiles
   screen when loading the blocked profiles fails
-- Load private profiles in the received likes view
-- Load private profiles in the chats view and the matches screen
+- Improve loading of private profiles
 
 ## [0.26.1] - 2026-11-09
 
