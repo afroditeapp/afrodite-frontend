@@ -32,6 +32,8 @@
   displaying received profiles.
 - Clarify privacy settings switch descriptions to consistently describe
   what others can see about you
+- Show Android SDK version and strong integrity verdict on the admin
+  login management screen and in the admin account browsing list
 
 ### Fixed
 

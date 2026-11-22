@@ -696,6 +696,14 @@ class _BrowseAccountsScreenState extends State<BrowseAccountsScreen> {
       if (appAttestationFailed != null) {
         parts.add(appAttestationFailed ? "attestation failed" : "attestation ok");
       }
+      final androidSdkVersion = loginSession.appAttestationAndroidSdkVersion;
+      if (androidSdkVersion != null) {
+        parts.add("Android SDK $androidSdkVersion");
+      }
+      final androidStrongIntegrity = loginSession.appAttestationAndroidStrongIntegrity;
+      if (androidStrongIntegrity != null) {
+        parts.add("strong integrity: $androidStrongIntegrity");
+      }
       if (parts.isNotEmpty) {
         lines.add("Login: ${parts.join(", ")}");
       }

@@ -155,6 +155,18 @@ class _LoginManagementScreenState extends State<LoginManagementScreen> {
                 "${info.appAttestationTypeNumber?.toString() ?? "Unknown"}",
               ),
             ),
+            hPad(
+              Text(
+                "Android SDK version: "
+                "${info.appAttestationAndroidSdkVersion?.toString() ?? "Unknown"}",
+              ),
+            ),
+            hPad(
+              Text(
+                "Android strong integrity: "
+                "${info.appAttestationAndroidStrongIntegrity?.toString() ?? "Unknown"}",
+              ),
+            ),
           ],
           const Padding(padding: EdgeInsets.all(8.0)),
           const Divider(),
