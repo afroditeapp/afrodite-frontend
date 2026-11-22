@@ -2530,6 +2530,10 @@
   "@profile_grid_screen_profile_filter_settings_update_ongoing": {
     "description": "Snackbar text that profile filter settings update is ongoing"
   },
+  "profile_grid_screen_profile_is_private_banner_text": "Your profile is hidden from others",
+  "@profile_grid_screen_profile_is_private_banner_text": {
+    "description": "Info banner text shown when profile visibility is set to private but the user is still allowed to browse profiles"
+  },
   "profile_grid_screen_profile_is_private_info": "To browse profiles, make your profile public in Settings.",
   "@profile_grid_screen_profile_is_private_info": {
     "description": "Info text which is shown when profile visibility is set to private"

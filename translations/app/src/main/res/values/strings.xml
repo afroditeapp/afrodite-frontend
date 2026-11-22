@@ -394,6 +394,7 @@
     <string name="profile_grid_screen_email_not_verified" description="Info text which is shown when email is not verified">Please verify your email address. A verification link has been sent to your email. If you don't see it, check your spam folder.</string>
     <string name="profile_grid_screen_email_not_verified_button" description="Button text for account settings action when email is not verified">Account settings</string>
     <string name="profile_grid_screen_profile_is_private_info" description="Info text which is shown when profile visibility is set to private">To browse profiles, make your profile public in Settings.</string>
+    <string name="profile_grid_screen_profile_is_private_banner_text" description="Info banner text shown when profile visibility is set to private but the user is still allowed to browse profiles">Your profile is hidden from others</string>
     <string name="profile_grid_screen_no_profiles_found_title" description="Title that no profiles were found">No profiles found</string>
     <string name="profile_grid_screen_no_profiles_found_description_filters_enabled" description="Description displayed when there is no profiles and some filter is enabled">Try adjusting or clearing your filters</string>
     <string name="profile_grid_screen_no_profiles_found_description_filters_disabled" description="Description displayed when there is no profiles and there is no filters enabled">Spread the word about the app on social media</string>

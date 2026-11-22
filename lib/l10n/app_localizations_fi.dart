@@ -1951,6 +1951,10 @@ class AppLocalizationsFi extends AppLocalizations {
       'Päivitetään suodattimia…';
 
   @override
+  String get profile_grid_screen_profile_is_private_banner_text =>
+      'Profiilisi on piilotettu muilta';
+
+  @override
   String get profile_grid_screen_profile_is_private_info =>
       'Selataksesi profiileja, aseta profiilisi julkiseksi Asetuksista.';
 

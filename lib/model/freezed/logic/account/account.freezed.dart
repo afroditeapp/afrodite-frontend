@@ -26,6 +26,7 @@ mixin _$AccountBlocData {
   AccountStateInternal? get accountState => throw _privateConstructorErrorAccountBlocData;
   Permissions get permissions => throw _privateConstructorErrorAccountBlocData;
   ProfileVisibility get visibility => throw _privateConstructorErrorAccountBlocData;
+  Gender? get gender => throw _privateConstructorErrorAccountBlocData;
 
   AccountBlocData copyWith({
     String? email,
@@ -33,6 +34,7 @@ mixin _$AccountBlocData {
     AccountStateInternal? accountState,
     Permissions? permissions,
     ProfileVisibility? visibility,
+    Gender? gender,
   }) => throw _privateConstructorErrorAccountBlocData;
 }
 
@@ -44,6 +46,7 @@ abstract class _AccountBlocData extends AccountBlocData {
     required AccountStateInternal? accountState,
     required Permissions permissions,
     required ProfileVisibility visibility,
+    Gender? gender,
   }) = _$AccountBlocDataImpl;
   _AccountBlocData._() : super._();
 }
@@ -58,6 +61,7 @@ class _$AccountBlocDataImpl extends _AccountBlocData with DiagnosticableTreeMixi
     required this.accountState,
     required this.permissions,
     required this.visibility,
+    this.gender,
   }) : super._();
 
   @override
@@ -70,10 +74,12 @@ class _$AccountBlocDataImpl extends _AccountBlocData with DiagnosticableTreeMixi
   final Permissions permissions;
   @override
   final ProfileVisibility visibility;
+  @override
+  final Gender? gender;
 
   @override
   String toString({DiagnosticLevel minLevel = DiagnosticLevel.info}) {
-    return 'AccountBlocData(email: $email, emailVerified: $emailVerified, accountState: $accountState, permissions: $permissions, visibility: $visibility)';
+    return 'AccountBlocData(email: $email, emailVerified: $emailVerified, accountState: $accountState, permissions: $permissions, visibility: $visibility, gender: $gender)';
   }
 
   @override
@@ -85,7 +91,8 @@ class _$AccountBlocDataImpl extends _AccountBlocData with DiagnosticableTreeMixi
       ..add(DiagnosticsProperty('emailVerified', emailVerified))
       ..add(DiagnosticsProperty('accountState', accountState))
       ..add(DiagnosticsProperty('permissions', permissions))
-      ..add(DiagnosticsProperty('visibility', visibility));
+      ..add(DiagnosticsProperty('visibility', visibility))
+      ..add(DiagnosticsProperty('gender', gender));
   }
 
   @override
@@ -102,7 +109,9 @@ class _$AccountBlocDataImpl extends _AccountBlocData with DiagnosticableTreeMixi
         (identical(other.permissions, permissions) ||
           other.permissions == permissions) &&
         (identical(other.visibility, visibility) ||
-          other.visibility == visibility)
+          other.visibility == visibility) &&
+        (identical(other.gender, gender) ||
+          other.gender == gender)
     );
   }
 
@@ -114,6 +123,7 @@ class _$AccountBlocDataImpl extends _AccountBlocData with DiagnosticableTreeMixi
     accountState,
     permissions,
     visibility,
+    gender,
   );
 
   @override
@@ -123,11 +133,13 @@ class _$AccountBlocDataImpl extends _AccountBlocData with DiagnosticableTreeMixi
     Object? accountState = _detectDefaultValueInCopyWith,
     Object? permissions,
     Object? visibility,
+    Object? gender = _detectDefaultValueInCopyWith,
   }) => _$AccountBlocDataImpl(
     email: (email == _detectDefaultValueInCopyWith ? this.email : email) as String?,
     emailVerified: (emailVerified ?? this.emailVerified) as bool,
     accountState: (accountState == _detectDefaultValueInCopyWith ? this.accountState : accountState) as AccountStateInternal?,
     permissions: (permissions ?? this.permissions) as Permissions,
     visibility: (visibility ?? this.visibility) as ProfileVisibility,
+    gender: (gender == _detectDefaultValueInCopyWith ? this.gender : gender) as Gender?,
   );
 }

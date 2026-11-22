@@ -16,6 +16,9 @@
 - Enforce all profile picture requirements in the initial setup only for men
   (configurable per gender). All genders must still select at least one
   profile picture.
+- Allow viewing profiles with a private profile for genders which are not
+  required to have a public profile (configurable per gender). An info banner
+  about the hidden profile is shown instead of the blocking screen.
 
 ### Fixed
 

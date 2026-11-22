@@ -1938,6 +1938,10 @@ class AppLocalizationsEn extends AppLocalizations {
   String get profile_grid_screen_profile_filter_settings_update_ongoing => 'Updating filters…';
 
   @override
+  String get profile_grid_screen_profile_is_private_banner_text =>
+      'Your profile is hidden from others';
+
+  @override
   String get profile_grid_screen_profile_is_private_info =>
       'To browse profiles, make your profile public in Settings.';
 

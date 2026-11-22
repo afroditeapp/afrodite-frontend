@@ -1,3 +1,4 @@
+import 'package:app/config_features.dart';
 import 'package:app/data/utils/repository_instances.dart';
 import 'package:app/logic/account/client_features_config.dart';
 import 'package:app/logic/media/content.dart';
@@ -20,11 +21,11 @@ import 'package:app/utils/list.dart';
 import 'package:database/database.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
-import 'package:openapi/api.dart';
 import 'package:app/logic/account/account.dart';
 import 'package:app/logic/app/navigator_state.dart';
 import 'package:app/logic/profile/profile_filters.dart';
 import 'package:app/model/freezed/logic/account/account.dart';
+import 'package:app/model/freezed/logic/account/initial_setup.dart';
 import 'package:app/model/freezed/logic/profile/profile_filters.dart';
 import 'package:app/ui/normal/profiles/profile_filters.dart';
 import 'package:app/ui/normal/profiles/profile_grid.dart';
@@ -135,6 +136,14 @@ class _ProfileViewState extends State<ProfileView> {
     return Column(
       children: [
         const InfoBannersWidget(location: InfoBannerLocation.profiles),
+        BlocBuilder<AccountBloc, AccountBlocData>(
+          builder: (context, data) {
+            if (data.visibility.isPublic() || profileViewingRequiresPublicProfile(data.gender)) {
+              return const SizedBox.shrink();
+            }
+            return const PrivateProfileInfoBanner();
+          },
+        ),
         Expanded(
           child: PublicProfileViewingBlocker(
             child: ProfileGrid(
@@ -166,16 +175,19 @@ class PublicProfileViewingBlocker extends StatelessWidget {
           return _handleBlocked(startInitialSetupButton(context));
         } else if (!data.emailVerified) {
           return _handleBlocked(emailNotVerified(context));
-        } else if (data.visibility.isPublic()) {
-          return checkMyContent(data.visibility);
-        } else {
+        }
+
+        final profileIsPrivate = !data.visibility.isPublic();
+        if (profileIsPrivate && profileViewingRequiresPublicProfile(data.gender)) {
           return _handleBlocked(profileIsSetToPrivateInfo(context));
         }
+
+        return checkMyContent();
       },
     );
   }
 
-  Widget checkMyContent(ProfileVisibility visibility) {
+  Widget checkMyContent() {
     return BlocBuilder<ContentBloc, ContentData>(
       builder: (context, contentState) {
         if (contentState.isLoadingSecurityContent || contentState.isLoadingPrimaryContent) {
@@ -361,6 +373,40 @@ class PublicProfileViewingBlocker extends StatelessWidget {
       child: ElevatedButton(
         onPressed: () => MyNavigator.push(context, getInitialSetupPageOrder().first),
         child: Text(context.strings.profile_grid_screen_start_initial_setup_button),
+      ),
+    );
+  }
+}
+
+/// Returns true if the given [gender] must have a public profile to be able to
+/// view profiles.
+///
+/// Unknown gender is treated as requiring a public profile so that profiles are
+/// not shown before the gender is known.
+bool profileViewingRequiresPublicProfile(Gender? gender) {
+  return gender == null || FEATURE_PROFILE_VIEWING_REQUIRES_PUBLIC_PROFILE_GENDERS.contains(gender);
+}
+
+/// Info banner which is shown when the profile is hidden from others but the
+/// current gender is still allowed to view profiles.
+class PrivateProfileInfoBanner extends StatelessWidget {
+  const PrivateProfileInfoBanner({super.key});
+
+  @override
+  Widget build(BuildContext context) {
+    final colorScheme = Theme.of(context).colorScheme;
+    return Container(
+      color: colorScheme.primaryContainer,
+      child: Padding(
+        padding: const EdgeInsets.symmetric(vertical: 4),
+        child: InfoBannerItemLayout(
+          icon: Icon(Icons.public_off_rounded, color: colorScheme.onPrimaryContainer),
+          body: context.strings.profile_grid_screen_profile_is_private_banner_text,
+          action: TextButton(
+            onPressed: () => openSettingsScreen(context),
+            child: Text(context.strings.settings_screen_title),
+          ),
+        ),
       ),
     );
   }

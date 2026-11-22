@@ -74,7 +74,7 @@ class InfoBannersWidget extends StatelessWidget {
           mainAxisSize: MainAxisSize.min,
           children: [
             for (final maintenanceBody in maintenanceBodies)
-              _InfoBannerItemLayout(
+              InfoBannerItemLayout(
                 icon: Icon(Icons.info, color: Theme.of(context).colorScheme.onPrimaryContainer),
                 body: maintenanceBody,
               ),
@@ -218,14 +218,14 @@ class _InfoBannerItem extends StatelessWidget {
     final button = infoBanner.urlButton;
     final urlButton = button == null
         ? null
-        : _InfoBannerUrlButton(text: button.text.toLocalizedText(context), url: button.url);
+        : InfoBannerUrlButtonData(text: button.text.toLocalizedText(context), url: button.url);
     final onClose = infoBanner.dismissible
         ? () => context.read<InfoBannersBloc>().add(
             DismissInfoBanner(bannerKey: banner.bannerKey, bannerVersion: banner.bannerVersion),
           )
         : null;
 
-    return _InfoBannerItemLayout(
+    return InfoBannerItemLayout(
       icon: icon == null
           ? null
           : AttributeIconWidget(icon: icon, color: colorScheme.onPrimaryContainer),
@@ -236,20 +236,32 @@ class _InfoBannerItem extends StatelessWidget {
   }
 }
 
-class _InfoBannerUrlButton {
+class InfoBannerUrlButtonData {
   final String text;
   final String url;
 
-  const _InfoBannerUrlButton({required this.text, required this.url});
+  const InfoBannerUrlButtonData({required this.text, required this.url});
 }
 
-class _InfoBannerItemLayout extends StatelessWidget {
+/// Layout for a single info banner item.
+///
+/// This can be used also outside of [InfoBannersWidget] to render a banner
+/// which has the same style as the info banners.
+class InfoBannerItemLayout extends StatelessWidget {
   final Widget? icon;
   final String body;
-  final _InfoBannerUrlButton? urlButton;
+  final InfoBannerUrlButtonData? urlButton;
   final VoidCallback? onClose;
+  final Widget? action;
 
-  const _InfoBannerItemLayout({required this.body, this.icon, this.urlButton, this.onClose});
+  const InfoBannerItemLayout({
+    required this.body,
+    this.icon,
+    this.urlButton,
+    this.onClose,
+    this.action,
+    super.key,
+  });
 
   @override
   Widget build(BuildContext context) {
@@ -281,6 +293,8 @@ class _InfoBannerItemLayout extends StatelessWidget {
                 onPressed: () => launchUrlString(urlButton!.url),
                 child: Text(urlButton!.text),
               ),
+            if (action != null) const Padding(padding: EdgeInsets.only(left: 8)),
+            ?action,
             if (onClose != null) const Padding(padding: EdgeInsets.only(left: 4)),
             if (onClose != null) IconButton(onPressed: onClose, icon: Icon(Icons.close)),
           ],

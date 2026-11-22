@@ -7,6 +7,7 @@ import "package:flutter_bloc/flutter_bloc.dart";
 import "package:openapi/api.dart";
 import "package:app/data/account_repository.dart";
 import "package:app/model/freezed/logic/account/account.dart";
+import "package:app/model/freezed/logic/account/initial_setup.dart";
 import "package:app/utils.dart";
 
 sealed class AccountEvent {}
@@ -19,6 +20,11 @@ class NewPermissionsValue extends AccountEvent {
 class NewProfileVisibilityValue extends AccountEvent {
   final ProfileVisibility value;
   NewProfileVisibilityValue(this.value);
+}
+
+class NewGenderValue extends AccountEvent {
+  final Gender? value;
+  NewGenderValue(this.value);
 }
 
 class NewAccountStateValue extends AccountEvent {
@@ -43,6 +49,7 @@ class AccountBloc extends Bloc<AccountEvent, AccountBlocData> with ActionRunner 
 
   StreamSubscription<Permissions>? _permissionsSubscription;
   StreamSubscription<ProfileVisibility>? _profileVisibilitySubscription;
+  StreamSubscription<Gender?>? _genderSubscription;
   StreamSubscription<AccountStateInternal?>? _accountStateSubscription;
   StreamSubscription<String?>? _emailAddressSubscription;
   StreamSubscription<bool?>? _emailVerifiedSubscription;
@@ -59,6 +66,9 @@ class AccountBloc extends Bloc<AccountEvent, AccountBlocData> with ActionRunner 
           // Use cached profile visibility to avoid profile grid UI changing quickly
           // from private profile info to profile grid after login.
           visibility: r.account.profileVisibilityValue,
+          // Use cached gender to avoid profile grid UI changing quickly from
+          // private profile info to profile grid after login.
+          gender: r.account.genderValue,
           // Use cached email to avoid showing input field UI for email
           // when initial setup is displayed.
           email: r.account.emailAddressValue,
@@ -69,6 +79,9 @@ class AccountBloc extends Bloc<AccountEvent, AccountBlocData> with ActionRunner 
     });
     on<NewProfileVisibilityValue>((key, emit) {
       emit(state.copyWith(visibility: key.value));
+    });
+    on<NewGenderValue>((key, emit) {
+      emit(state.copyWith(gender: key.value));
     });
     on<NewAccountStateValue>((key, emit) {
       emit(state.copyWith(accountState: key.accountState));
@@ -85,6 +98,9 @@ class AccountBloc extends Bloc<AccountEvent, AccountBlocData> with ActionRunner 
     });
     _profileVisibilitySubscription = account.profileVisibility.listen((event) {
       add(NewProfileVisibilityValue(event));
+    });
+    _genderSubscription = account.gender.listen((event) {
+      add(NewGenderValue(event));
     });
     _accountStateSubscription = account.accountState.listen((event) {
       add(NewAccountStateValue(event));
@@ -103,6 +119,7 @@ class AccountBloc extends Bloc<AccountEvent, AccountBlocData> with ActionRunner 
   Future<void> close() async {
     await _permissionsSubscription?.cancel();
     await _profileVisibilitySubscription?.cancel();
+    await _genderSubscription?.cancel();
     await _accountStateSubscription?.cancel();
     await _emailAddressSubscription?.cancel();
     await _emailVerifiedSubscription?.cancel();

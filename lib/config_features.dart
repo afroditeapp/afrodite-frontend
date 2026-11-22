@@ -31,6 +31,12 @@ const Set<Gender> FEATURE_INITIAL_SETUP_SECURITY_SELFIE_GENDERS = {Gender.man};
 /// set can skip the other requirements (e.g. face detection).
 const Set<Gender> FEATURE_INITIAL_SETUP_PROFILE_PICTURES_ENFORCE_ALL_REQUIREMENTS = {Gender.man};
 
+/// Genders which must have a public profile to be able to view profiles.
+///
+/// Genders not in this set can view profiles even when their own profile is
+/// private. They are shown an info banner about their profile being hidden.
+const Set<Gender> FEATURE_PROFILE_VIEWING_REQUIRES_PUBLIC_PROFILE_GENDERS = {Gender.man};
+
 /// Enable showing the attribution text in the about dialog
 const bool FEATURE_ABOUT_DIALOG_ATTRIBUTION = kIsWeb;
 

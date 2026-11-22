@@ -1,3 +1,4 @@
+import "package:app/model/freezed/logic/account/initial_setup.dart";
 import "package:database/database.dart";
 import "package:openapi/api.dart";
 
@@ -18,5 +19,6 @@ class AccountBlocData with _$AccountBlocData {
     required AccountStateInternal? accountState,
     required Permissions permissions,
     required ProfileVisibility visibility,
+    Gender? gender,
   }) = _AccountBlocData;
 }

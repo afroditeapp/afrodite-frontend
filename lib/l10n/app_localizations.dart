@@ -3445,6 +3445,12 @@ abstract class AppLocalizations {
   /// **'Updating filters…'**
   String get profile_grid_screen_profile_filter_settings_update_ongoing;
 
+  /// Info banner text shown when profile visibility is set to private but the user is still allowed to browse profiles
+  ///
+  /// In en, this message translates to:
+  /// **'Your profile is hidden from others'**
+  String get profile_grid_screen_profile_is_private_banner_text;
+
   /// Info text which is shown when profile visibility is set to private
   ///
   /// In en, this message translates to:

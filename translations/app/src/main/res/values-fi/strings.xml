@@ -387,6 +387,7 @@
     <string name="profile_grid_screen_email_not_verified">Vahvista sähköpostiosoitteesi. Vahvistuslinkki on lähetetty sähköpostiisi. Jos et löydä sitä, tarkista roskapostikansio.</string>
     <string name="profile_grid_screen_email_not_verified_button">Tilin asetukset</string>
     <string name="profile_grid_screen_profile_is_private_info">Selataksesi profiileja, aseta profiilisi julkiseksi Asetuksista.</string>
+    <string name="profile_grid_screen_profile_is_private_banner_text">Profiilisi on piilotettu muilta</string>
     <string name="profile_grid_screen_no_profiles_found_title">Profiileja ei löytynyt</string>
     <string name="profile_grid_screen_no_profiles_found_description_filters_enabled">Kokeile muokata tai nollata suodattimia</string>
     <string name="profile_grid_screen_no_profiles_found_description_filters_disabled">Kerro sovelluksesta sosiaalisessa mediassa</string>

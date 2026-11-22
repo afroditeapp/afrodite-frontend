@@ -57,6 +57,7 @@ class AccountRepository extends DataRepositoryWithLifecycle {
   Stream<Permissions> get permissions =>
       db.accountStreamOrDefault((db) => db.account.watchPermissions(), Permissions());
   Stream<ProfileVisibility> get profileVisibility => _cachedValues._cachedProfileVisibility;
+  Stream<Gender?> get gender => _cachedValues._cachedGender;
   Stream<ClientFeaturesConfig> get clientFeaturesConfig =>
       _cachedValues._cachedClientFeaturesConfig;
   Stream<DynamicClientFeaturesConfig> get dynamicClientFeaturesConfig =>
@@ -65,6 +66,7 @@ class AccountRepository extends DataRepositoryWithLifecycle {
       _cachedValues._cachedInfoBannerDismissStates;
 
   ProfileVisibility get profileVisibilityValue => _cachedValues._cachedProfileVisibility.value;
+  Gender? get genderValue => _cachedValues._cachedGender.value;
   String? get emailAddressValue => _cachedValues._cachedEmailAddress.value;
   AccountStateInternal? get accountStateValue => _cachedValues._cachedAccountState.value;
   ClientFeaturesConfig get clientFeaturesConfigValue =>
@@ -442,6 +444,8 @@ class CachedValues {
     _PROFILE_VISIBILITY_DEFAULT,
   );
   StreamSubscription<ProfileVisibility>? _cachedProfileVisibilitySubscription;
+  final BehaviorSubject<Gender?> _cachedGender = BehaviorSubject.seeded(null);
+  StreamSubscription<SearchGroups?>? _cachedGenderSubscription;
   final BehaviorSubject<AccountStateInternal?> _cachedAccountState = BehaviorSubject.seeded(null);
   StreamSubscription<AccountStateInternal?>? _cachedAccountStateSubscription;
   final BehaviorSubject<ClientFeaturesConfig> _cachedClientFeaturesConfig = BehaviorSubject.seeded(
@@ -468,6 +472,10 @@ class CachedValues {
         .listen((v) {
           _cachedProfileVisibility.add(v);
         });
+
+    _cachedGenderSubscription = db.accountStream((db) => db.search.watchSearchGroups()).listen((v) {
+      _cachedGender.add(v?.toGender());
+    });
 
     _cachedAccountStateSubscription = db
         .accountStream((db) => db.account.watchAccountState())
@@ -506,12 +514,14 @@ class CachedValues {
   Future<void> _dispose() async {
     await _cachedEmailSubscription?.cancel();
     await _cachedProfileVisibilitySubscription?.cancel();
+    await _cachedGenderSubscription?.cancel();
     await _cachedAccountStateSubscription?.cancel();
     await _cachedClientFeaturesConfigSubscription?.cancel();
     await _cachedDynamicClientFeaturesConfigSubscription?.cancel();
     await _cachedInfoBannerDismissStatesSubscription?.cancel();
     await _cachedEmailAddress.close();
     await _cachedProfileVisibility.close();
+    await _cachedGender.close();
     await _cachedAccountState.close();
     await _cachedClientFeaturesConfig.close();
     await _cachedDynamicClientFeaturesConfig.close();
