@@ -40,6 +40,7 @@ class SelectMatchScreen extends StatelessWidget {
           );
         },
         noProfilesText: context.strings.chat_list_screen_no_matches_found,
+        isMatch: true,
       ),
     );
   }

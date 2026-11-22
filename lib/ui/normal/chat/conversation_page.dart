@@ -300,6 +300,7 @@ class ConversationScreenState extends State<ConversationScreen> {
                       db: r.accountDb,
                       maxItemWidth: IMG_HEIGHT,
                       appBarMode: true,
+                      isMatch: widget.isMatch,
                     ),
                   ),
                   const Padding(padding: EdgeInsets.all(8.0)),

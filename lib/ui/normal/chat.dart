@@ -425,6 +425,8 @@ class ConversationListItem extends StatelessWidget {
         initialData: ProfileThumbnail(entry: data.entry, isFavorite: data.isFavorite),
         db: r.accountDb,
         maxItemWidth: _IMG_SIZE,
+        // Conversations are only listed after a match.
+        isMatch: true,
       ),
     );
     final Widget textColumn = Column(

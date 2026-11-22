@@ -31,11 +31,13 @@ class ProfileThumbnailImage extends StatelessWidget {
     this.child,
     this.borderRadius = const BorderRadius.all(Radius.circular(PROFILE_PICTURE_BORDER_RADIUS)),
     required this.cacheSize,
+    bool isMatch = false,
     bool isReceivedLike = false,
     super.key,
   }) : _imageProvider = AccountImageProvider.create(
          accountId,
          contentId,
+         isMatch: isMatch,
          isReceivedLike: isReceivedLike,
          cacheSize: cacheSize,
          media: media,

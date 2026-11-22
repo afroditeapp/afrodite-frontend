@@ -35,11 +35,17 @@ class GenericProfileGrid extends StatefulWidget {
   final UiProfileIterator Function() buildIteratorManager;
   final String noProfilesText;
   final String? noProfilesTextDescription;
+
+  /// True when the grid shows matches. Allows loading images of private
+  /// profiles.
+  final bool isMatch;
+
   GenericProfileGrid(
     RepositoryInstances r, {
     required this.buildIteratorManager,
     required this.noProfilesText,
     this.noProfilesTextDescription,
+    this.isMatch = false,
     super.key,
   }) : chatRepository = r.chat,
        profileRepository = r.profile,
@@ -178,6 +184,7 @@ class _GenericProfileGridState extends State<GenericProfileGrid> {
             db: widget.accountDb,
             settings: settings,
             maxItemWidth: singleItemWidth,
+            isMatch: widget.isMatch,
             onTap: (context, thumbnail) {
               openProfileView(context, thumbnail.entry, item.initialProfileAction);
             },

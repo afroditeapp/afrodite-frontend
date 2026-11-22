@@ -116,7 +116,9 @@ class OnlineIterator extends IteratorType {
                 (db) => db.profile.updateProfileLastSeenTimeIfNeeded(p.a, p.l),
               );
             } else {
-              entry = await downloader.download(p.a, isReceivedLike: io.isReceivedLike).ok();
+              entry = await downloader
+                  .download(p.a, isMatch: io.isMatch, isReceivedLike: io.isReceivedLike)
+                  .ok();
             }
 
             final gridEntry = entry;
@@ -152,6 +154,10 @@ abstract class OnlineIteratorIo {
   /// True when server requests are sent through the WebSocket API and
   /// connection waiting is handled internally by WebSocketApiRequestManager.
   bool get usesWebSocket;
+
+  /// True when iterated profiles are matches. Matches can see the profiles
+  /// of each other even if one or both are set as private.
+  bool get isMatch => false;
 
   /// True when iterated profiles have sent a like to the current account.
   /// That allows downloading private profiles.
@@ -382,6 +388,9 @@ class MatchesOnlineIteratorIo extends OnlineIteratorIo {
 
   @override
   bool get usesWebSocket => false;
+
+  @override
+  bool get isMatch => true;
 
   @override
   IteratorType? get databaseIterator => null;
