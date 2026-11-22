@@ -1256,6 +1256,12 @@ abstract class AppLocalizations {
   /// **'Face picture verified mark will be added to your profile after AI has verified your face pictures using security selfie'**
   String get current_security_selfie_screen_ai_face_verification_description_enabled;
 
+  /// Description text at the top of the current security selfie screen explaining what the security selfie is used for
+  ///
+  /// In en, this message translates to:
+  /// **'Your security selfie is used to verify your profile pictures and is only visible to moderators unless you add it to your profile later'**
+  String get current_security_selfie_screen_description;
+
   /// Snackbar text for API limit error
   ///
   /// In en, this message translates to:

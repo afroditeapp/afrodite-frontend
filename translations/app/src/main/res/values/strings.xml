@@ -657,6 +657,7 @@
     <string name="blocked_profiles_screen_no_blocked_profiles" description="Info text displayed when there is no blocked profiles">No blocked profiles</string>
 
     <!-- Current security selfie -->
+    <string name="current_security_selfie_screen_description" description="Description text at the top of the current security selfie screen explaining what the security selfie is used for">Your security selfie is used to verify your profile pictures and is only visible to moderators unless you add it to your profile later</string>
     <string name="current_security_selfie_screen_ai_face_verification" description="Title for AI face verification consent setting">AI face verification</string>
     <string name="current_security_selfie_screen_ai_face_verification_description_enabled" description="Description for AI face verification consent setting when enabled">Face picture verified mark will be added to your profile after AI has verified your face pictures using security selfie</string>
     <string name="current_security_selfie_screen_ai_face_verification_description_disabled" description="Description for AI face verification consent setting when disabled">Face picture verified mark will be added to your profile after AI has verified your face pictures using security selfie</string>

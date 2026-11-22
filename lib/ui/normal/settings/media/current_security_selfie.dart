@@ -161,7 +161,9 @@ class _CurrentSecuritySelfieScreenState extends State<CurrentSecuritySelfieScree
               crossAxisAlignment: CrossAxisAlignment.center,
               children: [
                 const Padding(padding: EdgeInsets.only(top: 16)),
-                if (contentId == null) Text(context.strings.generic_empty),
+                hPad(descriptionText(context)),
+                const Padding(padding: EdgeInsets.only(top: 16)),
+                if (contentId == null) addSecuritySelfieWidget(context),
                 if (contentId != null) securitySelfieWidget(context, contentId),
                 if (infoText.isNotEmpty) const Padding(padding: EdgeInsets.only(top: 16)),
                 if (infoText.isNotEmpty) hPad(Text(infoText)),
@@ -178,18 +180,30 @@ class _CurrentSecuritySelfieScreenState extends State<CurrentSecuritySelfieScree
 
   Widget editSecuritySelfieButton(BuildContext context) {
     return IconButton(
-      onPressed: () async {
-        final selectedImg = await MyNavigator.showFullScreenDialog(
-          context: context,
-          page: SelectContentPage(identifyFaceImages: true, securitySelfieMode: true),
-        );
-        if (selectedImg != null && context.mounted) {
-          widget.securitySelfieBloc.add(EditSecurityContent(selectedImg));
-        }
-      },
+      onPressed: () => selectSecuritySelfie(context),
       icon: const Icon(Icons.edit),
       tooltip: context.strings.generic_edit,
     );
+  }
+
+  Widget descriptionText(BuildContext context) {
+    return Row(
+      children: [
+        Icon(Icons.info, color: Theme.of(context).colorScheme.primary, size: 20),
+        const SizedBox(width: 8),
+        Expanded(child: Text(context.strings.current_security_selfie_screen_description)),
+      ],
+    );
+  }
+
+  Future<void> selectSecuritySelfie(BuildContext context) async {
+    final selectedImg = await MyNavigator.showFullScreenDialog(
+      context: context,
+      page: SelectContentPage(identifyFaceImages: true, securitySelfieMode: true),
+    );
+    if (selectedImg != null && context.mounted) {
+      widget.securitySelfieBloc.add(EditSecurityContent(selectedImg));
+    }
   }
 
   Widget aiFaceVerificationSwitchTile(BuildContext context, bool allowFaceVerification) {
@@ -217,6 +231,32 @@ class _CurrentSecuritySelfieScreenState extends State<CurrentSecuritySelfieScree
             widget.currentUser,
             securitySelfie,
             cacheSize: ImageCacheSize.constantWidthAndHeight(context, IMG_WIDTH, IMG_HEIGHT),
+          ),
+        ),
+      ),
+    );
+  }
+
+  Widget addSecuritySelfieWidget(BuildContext context) {
+    const double IMG_WIDTH = 150;
+    const double IMG_HEIGHT = 200;
+    return SizedBox(
+      width: IMG_WIDTH,
+      height: IMG_HEIGHT,
+      child: Material(
+        child: InkWell(
+          onTap: () => selectSecuritySelfie(context),
+          child: Ink(
+            width: IMG_WIDTH,
+            height: IMG_HEIGHT,
+            color: Theme.of(context).colorScheme.surfaceContainerHighest,
+            child: Center(
+              child: Icon(
+                Icons.add_a_photo,
+                size: 40,
+                color: Theme.of(context).colorScheme.onSurfaceVariant,
+              ),
+            ),
           ),
         ),
       ),

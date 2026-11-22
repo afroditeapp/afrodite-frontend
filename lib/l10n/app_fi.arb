@@ -190,6 +190,7 @@
   "current_security_selfie_screen_ai_face_verification": "Vahvista kaikki kuvasi tekoälyllä",
   "current_security_selfie_screen_ai_face_verification_description_disabled": "Profiiliisi lisätään kasvokuva vahvistettu -merkintä, kun tekoäly on vahvistanut kasvokuvasi moderointiselfien avulla",
   "current_security_selfie_screen_ai_face_verification_description_enabled": "Profiiliisi lisätään kasvokuva vahvistettu -merkintä, kun tekoäly on vahvistanut kasvokuvasi moderointiselfien avulla",
+  "current_security_selfie_screen_description": "Moderointiselfietäsi käytetään profiilikuviesi vahvistamiseen ja se näkyy vain moderaattoreille, ellet lisää sitä profiiliisi myöhemmin",
   "data_export_screen_api_limit_error": "Päivittäinen raja saavutettu. Yritä uudelleen 24 tunnin kuluttua.",
   "data_export_screen_title_export_type_admin": "Tietojen vienti",
   "data_export_screen_title_export_type_user": "Lataa omat tiedot",

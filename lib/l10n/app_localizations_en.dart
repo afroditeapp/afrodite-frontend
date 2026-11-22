@@ -700,6 +700,10 @@ class AppLocalizationsEn extends AppLocalizations {
       'Face picture verified mark will be added to your profile after AI has verified your face pictures using security selfie';
 
   @override
+  String get current_security_selfie_screen_description =>
+      'Your security selfie is used to verify your profile pictures and is only visible to moderators unless you add it to your profile later';
+
+  @override
   String get data_export_screen_api_limit_error => 'Daily limit reached. Try again after 24 hours.';
 
   @override

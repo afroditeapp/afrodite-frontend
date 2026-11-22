@@ -34,6 +34,8 @@
   what others can see about you
 - Show Android SDK version and strong integrity verdict on the admin
   login management screen and in the admin account browsing list
+- Show a description of the security selfie and an add image button
+  when no security selfie is set on the security selfie screen
 
 ### Fixed
 

@@ -704,6 +704,10 @@ class AppLocalizationsFi extends AppLocalizations {
       'Profiiliisi lisätään kasvokuva vahvistettu -merkintä, kun tekoäly on vahvistanut kasvokuvasi moderointiselfien avulla';
 
   @override
+  String get current_security_selfie_screen_description =>
+      'Moderointiselfietäsi käytetään profiilikuviesi vahvistamiseen ja se näkyy vain moderaattoreille, ellet lisää sitä profiiliisi myöhemmin';
+
+  @override
   String get data_export_screen_api_limit_error =>
       'Päivittäinen raja saavutettu. Yritä uudelleen 24 tunnin kuluttua.';
 

@@ -913,6 +913,10 @@
   "@current_security_selfie_screen_ai_face_verification_description_enabled": {
     "description": "Description for AI face verification consent setting when enabled"
   },
+  "current_security_selfie_screen_description": "Your security selfie is used to verify your profile pictures and is only visible to moderators unless you add it to your profile later",
+  "@current_security_selfie_screen_description": {
+    "description": "Description text at the top of the current security selfie screen explaining what the security selfie is used for"
+  },
   "data_export_screen_api_limit_error": "Daily limit reached. Try again after 24 hours.",
   "@data_export_screen_api_limit_error": {
     "description": "Snackbar text for API limit error"

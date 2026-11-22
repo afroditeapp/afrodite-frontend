@@ -650,6 +650,7 @@
     <string name="blocked_profiles_screen_no_blocked_profiles">Ei estettyjä profiileja</string>
 
     <!-- Current security selfie -->
+    <string name="current_security_selfie_screen_description">Moderointiselfietäsi käytetään profiilikuviesi vahvistamiseen ja se näkyy vain moderaattoreille, ellet lisää sitä profiiliisi myöhemmin</string>
     <string name="current_security_selfie_screen_ai_face_verification">Vahvista kaikki kuvasi tekoälyllä</string>
     <string name="current_security_selfie_screen_ai_face_verification_description_enabled">Profiiliisi lisätään kasvokuva vahvistettu -merkintä, kun tekoäly on vahvistanut kasvokuvasi moderointiselfien avulla</string>
     <string name="current_security_selfie_screen_ai_face_verification_description_disabled">Profiiliisi lisätään kasvokuva vahvistettu -merkintä, kun tekoäly on vahvistanut kasvokuvasi moderointiselfien avulla</string>
