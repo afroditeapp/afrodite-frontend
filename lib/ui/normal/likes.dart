@@ -6,6 +6,8 @@ import 'package:app/logic/profile/view_profiles.dart';
 import 'package:app/logic/settings/ui_settings.dart';
 import 'package:app/model/freezed/logic/settings/ui_settings.dart';
 import 'package:app/ui/normal/profiles/view_profile.dart';
+import 'package:app/ui/normal/sent_likes.dart';
+import 'package:app/ui_utils/app_bar/menu_actions.dart';
 import 'package:app/ui_utils/extensions/other.dart';
 import 'package:app/ui_utils/paged_grid_logic.dart';
 import 'package:app/ui_utils/profile_grid.dart';
@@ -18,6 +20,7 @@ import 'package:app/data/profile_repository.dart';
 import 'package:database/database.dart';
 import 'package:app/logic/app/bottom_navigation_state.dart';
 import 'package:app/logic/app/like_grid_instance_manager.dart';
+import 'package:app/logic/app/navigator_state.dart';
 import 'package:app/logic/chat/new_received_likes_available_bloc.dart';
 import 'package:app/model/freezed/logic/chat/new_received_likes_available_bloc.dart';
 import 'package:app/model/freezed/logic/main/bottom_navigation_state.dart';
@@ -39,6 +42,19 @@ class LikeView extends BottomNavigationScreen {
   @override
   String title(BuildContext context) {
     return context.strings.likes_screen_title;
+  }
+
+  @override
+  List<Widget> actions(BuildContext context) {
+    return [
+      menuActions([
+        MenuItemButton(
+          onPressed: () =>
+              MyNavigator.push(context, SentLikesListPage(context.read<RepositoryInstances>())),
+          child: Text(context.strings.likes_screen_open_sent_likes_action),
+        ),
+      ]),
+    ];
   }
 
   @override
@@ -122,7 +138,18 @@ class _LikesScreenState extends State<LikesScreen> {
   @override
   Widget build(BuildContext context) {
     return Scaffold(
-      appBar: AppBar(title: Text(context.strings.likes_screen_title)),
+      appBar: AppBar(
+        title: Text(context.strings.likes_screen_title),
+        actions: [
+          menuActions([
+            MenuItemButton(
+              onPressed: () =>
+                  MyNavigator.push(context, SentLikesListPage(context.read<RepositoryInstances>())),
+              child: Text(context.strings.likes_screen_open_sent_likes_action),
+            ),
+          ]),
+        ],
+      ),
       body: content(),
       floatingActionButton: refreshLikesFloatingActionButton(),
     );

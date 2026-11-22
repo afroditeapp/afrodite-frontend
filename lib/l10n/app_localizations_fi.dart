@@ -1383,6 +1383,9 @@ class AppLocalizationsFi extends AppLocalizations {
       'Kerro sovelluksesta sosiaalisessa mediassa';
 
   @override
+  String get likes_screen_open_sent_likes_action => 'Lähetetyt keskustelupyynnöt';
+
+  @override
   String get likes_screen_refresh_action => 'Päivitä';
 
   @override
@@ -2236,6 +2239,35 @@ class AppLocalizationsFi extends AppLocalizations {
 
   @override
   String get send_chat_backup_use_text_code_button => 'Käytä tekstikoodia';
+
+  @override
+  String get sent_likes_screen_block_profile_dialog_description =>
+      'Tämä profiili ei ole saatavilla. Yleensä tämä tarkoittaa, että profiili on yksityinen, mutta kyseessä voi olla myös tilapäinen ongelma. Voit estää profiilin poistaaksesi sen tästä listasta ja piilottaaksesi keskustelupyyntösi.';
+
+  @override
+  String get sent_likes_screen_block_profile_dialog_title => 'Estä profiili?';
+
+  @override
+  String get sent_likes_screen_block_profile_failed => 'Profiilin estäminen epäonnistui';
+
+  @override
+  String get sent_likes_screen_block_profile_in_progress => 'Edellinen estäminen on kesken';
+
+  @override
+  String get sent_likes_screen_block_profile_successful => 'Profiili estetty';
+
+  @override
+  String get sent_likes_screen_loading_failed =>
+      'Lähetettyjen keskustelupyyntöjen lataus epäonnistui';
+
+  @override
+  String get sent_likes_screen_no_sent_likes => 'Ei lähetettyjä keskustelupyyntöjä';
+
+  @override
+  String get sent_likes_screen_profile_not_available => 'Profiili ei ole saatavilla';
+
+  @override
+  String get sent_likes_screen_title => 'Lähetetyt keskustelupyynnöt';
 
   @override
   String get server_connection_indicator_connection_failed => 'Yhteys epäonnistui';

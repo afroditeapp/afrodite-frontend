@@ -2486,6 +2486,12 @@ abstract class AppLocalizations {
   /// **'Spread the word about the app on social media'**
   String get likes_screen_no_received_likes_found_description;
 
+  /// Title for action which opens sent likes screen
+  ///
+  /// In en, this message translates to:
+  /// **'Sent chat requests'**
+  String get likes_screen_open_sent_likes_action;
+
   /// Title for likes screen refresh action
   ///
   /// In en, this message translates to:
@@ -3960,6 +3966,60 @@ abstract class AppLocalizations {
   /// In en, this message translates to:
   /// **'Use text code'**
   String get send_chat_backup_use_text_code_button;
+
+  /// Description for block profile dialog in sent likes screen
+  ///
+  /// In en, this message translates to:
+  /// **'This profile is not available. This usually means that the profile is private, but it can also be a temporary problem. You can block the profile to remove it from this list and to hide your chat request.'**
+  String get sent_likes_screen_block_profile_dialog_description;
+
+  /// Title for block profile dialog in sent likes screen
+  ///
+  /// In en, this message translates to:
+  /// **'Block profile?'**
+  String get sent_likes_screen_block_profile_dialog_title;
+
+  /// Snackbar text displayed when profile blocking failed
+  ///
+  /// In en, this message translates to:
+  /// **'Failed to block profile'**
+  String get sent_likes_screen_block_profile_failed;
+
+  /// Snackbar text displayed when previous block is still in progress
+  ///
+  /// In en, this message translates to:
+  /// **'Previous block is in progress'**
+  String get sent_likes_screen_block_profile_in_progress;
+
+  /// Snackbar text displayed when profile blocking was successful
+  ///
+  /// In en, this message translates to:
+  /// **'Profile blocked'**
+  String get sent_likes_screen_block_profile_successful;
+
+  /// Text displayed when sent likes loading fails
+  ///
+  /// In en, this message translates to:
+  /// **'Failed to load sent chat requests'**
+  String get sent_likes_screen_loading_failed;
+
+  /// Info text displayed when there is no sent likes
+  ///
+  /// In en, this message translates to:
+  /// **'No sent chat requests'**
+  String get sent_likes_screen_no_sent_likes;
+
+  /// Placeholder text for a sent like whose profile is not available
+  ///
+  /// In en, this message translates to:
+  /// **'Profile not available'**
+  String get sent_likes_screen_profile_not_available;
+
+  /// Title for sent likes screen
+  ///
+  /// In en, this message translates to:
+  /// **'Sent chat requests'**
+  String get sent_likes_screen_title;
 
   /// Server connection indicator text when connection failed after max retries
   ///

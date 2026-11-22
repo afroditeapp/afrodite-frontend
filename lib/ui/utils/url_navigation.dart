@@ -21,6 +21,7 @@ import 'package:app/ui/normal/chat/select_match.dart';
 import 'package:app/ui/normal/profiles/profile_filters.dart';
 import 'package:app/ui/normal/profiles/view_profile.dart';
 import 'package:app/ui/normal/report/report.dart';
+import 'package:app/ui/normal/sent_likes.dart';
 import 'package:app/ui/normal/settings.dart';
 import 'package:app/ui/normal/settings/account_settings.dart';
 import 'package:app/ui/normal/settings/admin.dart';
@@ -156,6 +157,7 @@ List<UrlParser<MyScreenPage<Object>>> loggedInPages(RepositoryInstances r) => [
   SelectMatchPage(),
   ConversationListPage(),
   ConversationPageUrlParser(r),
+  SentLikesListPage(r),
 
   // Profile and chat
   ReportPageUrlParser(r),

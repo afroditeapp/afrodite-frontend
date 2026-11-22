@@ -550,6 +550,18 @@
     <string name="likes_screen_like_loading_failed">Keskustelupyyntöjen lataus epäonnistui</string>
     <string name="likes_screen_refresh_action">Päivitä</string>
     <string name="likes_screen_new_likes_available">Uusia keskustelupyyntöjä saatavilla</string>
+    <string name="likes_screen_open_sent_likes_action">Lähetetyt keskustelupyynnöt</string>
+
+    <!-- Sent likes -->
+    <string name="sent_likes_screen_title">Lähetetyt keskustelupyynnöt</string>
+    <string name="sent_likes_screen_no_sent_likes">Ei lähetettyjä keskustelupyyntöjä</string>
+    <string name="sent_likes_screen_loading_failed">Lähetettyjen keskustelupyyntöjen lataus epäonnistui</string>
+    <string name="sent_likes_screen_profile_not_available">Profiili ei ole saatavilla</string>
+    <string name="sent_likes_screen_block_profile_dialog_title">Estä profiili?</string>
+    <string name="sent_likes_screen_block_profile_dialog_description">Tämä profiili ei ole saatavilla. Yleensä tämä tarkoittaa, että profiili on yksityinen, mutta kyseessä voi olla myös tilapäinen ongelma. Voit estää profiilin poistaaksesi sen tästä listasta ja piilottaaksesi keskustelupyyntösi.</string>
+    <string name="sent_likes_screen_block_profile_successful">Profiili estetty</string>
+    <string name="sent_likes_screen_block_profile_failed">Profiilin estäminen epäonnistui</string>
+    <string name="sent_likes_screen_block_profile_in_progress">Edellinen estäminen on kesken</string>
 
     <!-- Chat list -->
     <string name="chat_list_screen_title">Keskustelut</string>

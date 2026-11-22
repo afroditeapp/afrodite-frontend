@@ -1376,6 +1376,9 @@ class AppLocalizationsEn extends AppLocalizations {
       'Spread the word about the app on social media';
 
   @override
+  String get likes_screen_open_sent_likes_action => 'Sent chat requests';
+
+  @override
   String get likes_screen_refresh_action => 'Refresh';
 
   @override
@@ -2219,6 +2222,34 @@ class AppLocalizationsEn extends AppLocalizations {
 
   @override
   String get send_chat_backup_use_text_code_button => 'Use text code';
+
+  @override
+  String get sent_likes_screen_block_profile_dialog_description =>
+      'This profile is not available. This usually means that the profile is private, but it can also be a temporary problem. You can block the profile to remove it from this list and to hide your chat request.';
+
+  @override
+  String get sent_likes_screen_block_profile_dialog_title => 'Block profile?';
+
+  @override
+  String get sent_likes_screen_block_profile_failed => 'Failed to block profile';
+
+  @override
+  String get sent_likes_screen_block_profile_in_progress => 'Previous block is in progress';
+
+  @override
+  String get sent_likes_screen_block_profile_successful => 'Profile blocked';
+
+  @override
+  String get sent_likes_screen_loading_failed => 'Failed to load sent chat requests';
+
+  @override
+  String get sent_likes_screen_no_sent_likes => 'No sent chat requests';
+
+  @override
+  String get sent_likes_screen_profile_not_available => 'Profile not available';
+
+  @override
+  String get sent_likes_screen_title => 'Sent chat requests';
 
   @override
   String get server_connection_indicator_connection_failed => 'Connection failed';

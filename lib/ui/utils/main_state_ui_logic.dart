@@ -45,6 +45,7 @@ import 'package:app/logic/app/notification_permission.dart';
 import 'package:app/logic/app/notification_settings.dart';
 import 'package:app/logic/chat/chat_enabled.dart';
 import 'package:app/logic/chat/new_received_likes_available_bloc.dart';
+import 'package:app/logic/chat/sent_likes.dart';
 import 'package:app/logic/chat/unread_conversations_bloc.dart';
 import 'package:app/logic/media/content.dart';
 import 'package:app/logic/media/image_processing.dart';
@@ -225,6 +226,7 @@ abstract class LoggedInRootScreen extends StatelessWidget {
 
         // Likes
         BlocProvider(create: (_) => LikeGridInstanceManagerBloc()),
+        BlocProvider(create: (_) => SentLikesBloc(r)),
 
         // Automatic profile search
         BlocProvider(create: (_) => AutomaticProfileSearchBadgeBloc(r)),

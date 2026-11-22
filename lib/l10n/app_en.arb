@@ -1791,6 +1791,10 @@
   "@likes_screen_no_received_likes_found_description": {
     "description": "Description text displayed when there is no received likes"
   },
+  "likes_screen_open_sent_likes_action": "Sent chat requests",
+  "@likes_screen_open_sent_likes_action": {
+    "description": "Title for action which opens sent likes screen"
+  },
   "likes_screen_refresh_action": "Refresh",
   "@likes_screen_refresh_action": {
     "description": "Title for likes screen refresh action"
@@ -2909,6 +2913,42 @@
   "send_chat_backup_use_text_code_button": "Use text code",
   "@send_chat_backup_use_text_code_button": {
     "description": "Button text to show text code input"
+  },
+  "sent_likes_screen_block_profile_dialog_description": "This profile is not available. This usually means that the profile is private, but it can also be a temporary problem. You can block the profile to remove it from this list and to hide your chat request.",
+  "@sent_likes_screen_block_profile_dialog_description": {
+    "description": "Description for block profile dialog in sent likes screen"
+  },
+  "sent_likes_screen_block_profile_dialog_title": "Block profile?",
+  "@sent_likes_screen_block_profile_dialog_title": {
+    "description": "Title for block profile dialog in sent likes screen"
+  },
+  "sent_likes_screen_block_profile_failed": "Failed to block profile",
+  "@sent_likes_screen_block_profile_failed": {
+    "description": "Snackbar text displayed when profile blocking failed"
+  },
+  "sent_likes_screen_block_profile_in_progress": "Previous block is in progress",
+  "@sent_likes_screen_block_profile_in_progress": {
+    "description": "Snackbar text displayed when previous block is still in progress"
+  },
+  "sent_likes_screen_block_profile_successful": "Profile blocked",
+  "@sent_likes_screen_block_profile_successful": {
+    "description": "Snackbar text displayed when profile blocking was successful"
+  },
+  "sent_likes_screen_loading_failed": "Failed to load sent chat requests",
+  "@sent_likes_screen_loading_failed": {
+    "description": "Text displayed when sent likes loading fails"
+  },
+  "sent_likes_screen_no_sent_likes": "No sent chat requests",
+  "@sent_likes_screen_no_sent_likes": {
+    "description": "Info text displayed when there is no sent likes"
+  },
+  "sent_likes_screen_profile_not_available": "Profile not available",
+  "@sent_likes_screen_profile_not_available": {
+    "description": "Placeholder text for a sent like whose profile is not available"
+  },
+  "sent_likes_screen_title": "Sent chat requests",
+  "@sent_likes_screen_title": {
+    "description": "Title for sent likes screen"
   },
   "server_connection_indicator_connection_failed": "Connection failed",
   "@server_connection_indicator_connection_failed": {

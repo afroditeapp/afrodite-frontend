@@ -557,6 +557,18 @@
     <string name="likes_screen_like_loading_failed" description="Text displayed when like loading fails">Failed to load chat requests</string>
     <string name="likes_screen_refresh_action" description="Title for likes screen refresh action">Refresh</string>
     <string name="likes_screen_new_likes_available" description="Banner text shown above likes grid when new likes are available">New chat requests available</string>
+    <string name="likes_screen_open_sent_likes_action" description="Title for action which opens sent likes screen">Sent chat requests</string>
+
+    <!-- Sent likes -->
+    <string name="sent_likes_screen_title" description="Title for sent likes screen">Sent chat requests</string>
+    <string name="sent_likes_screen_no_sent_likes" description="Info text displayed when there is no sent likes">No sent chat requests</string>
+    <string name="sent_likes_screen_loading_failed" description="Text displayed when sent likes loading fails">Failed to load sent chat requests</string>
+    <string name="sent_likes_screen_profile_not_available" description="Placeholder text for a sent like whose profile is not available">Profile not available</string>
+    <string name="sent_likes_screen_block_profile_dialog_title" description="Title for block profile dialog in sent likes screen">Block profile?</string>
+    <string name="sent_likes_screen_block_profile_dialog_description" description="Description for block profile dialog in sent likes screen">This profile is not available. This usually means that the profile is private, but it can also be a temporary problem. You can block the profile to remove it from this list and to hide your chat request.</string>
+    <string name="sent_likes_screen_block_profile_successful" description="Snackbar text displayed when profile blocking was successful">Profile blocked</string>
+    <string name="sent_likes_screen_block_profile_failed" description="Snackbar text displayed when profile blocking failed">Failed to block profile</string>
+    <string name="sent_likes_screen_block_profile_in_progress" description="Snackbar text displayed when previous block is still in progress">Previous block is in progress</string>
 
     <!-- Chat list -->
     <string name="chat_list_screen_title" description="Title for chat list screen">Chats</string>

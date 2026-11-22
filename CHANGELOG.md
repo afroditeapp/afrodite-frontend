@@ -2,6 +2,10 @@
 
 ## [Unreleased]
 
+### Added
+
+- Add sent likes screen
+
 ### Changed
 
 - Move initial setup basic details screens before the security selfie screen.
