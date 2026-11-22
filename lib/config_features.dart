@@ -37,6 +37,13 @@ const Set<Gender> FEATURE_INITIAL_SETUP_PROFILE_PICTURES_ENFORCE_ALL_REQUIREMENT
 /// private. They are shown an info banner about their profile being hidden.
 const Set<Gender> FEATURE_PROFILE_VIEWING_REQUIRES_PUBLIC_PROFILE_GENDERS = {Gender.man};
 
+/// Genders for which all profile viewing requirements from the client config
+/// are enforced when viewing profiles.
+///
+/// Genders not in this set can view profiles even when the client config
+/// requirements (e.g. face detection) are not met.
+const Set<Gender> FEATURE_PROFILE_VIEWING_ENFORCE_ALL_REQUIREMENTS_GENDERS = {Gender.man};
+
 /// Enable showing the attribution text in the about dialog
 const bool FEATURE_ABOUT_DIALOG_ATTRIBUTION = kIsWeb;
 

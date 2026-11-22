@@ -182,12 +182,12 @@ class PublicProfileViewingBlocker extends StatelessWidget {
           return _handleBlocked(profileIsSetToPrivateInfo(context));
         }
 
-        return checkMyContent();
+        return checkMyContent(gender: data.gender);
       },
     );
   }
 
-  Widget checkMyContent() {
+  Widget checkMyContent({required Gender? gender}) {
     return BlocBuilder<ContentBloc, ContentData>(
       builder: (context, contentState) {
         if (contentState.isLoadingSecurityContent || contentState.isLoadingPrimaryContent) {
@@ -212,8 +212,9 @@ class PublicProfileViewingBlocker extends StatelessWidget {
                   final primaryContent = myProfileState.profile?.myContent.getAtOrNull(0);
 
                   final requireFace =
-                      configData.config.profile?.firstImage?.requireFaceDetectedWhenViewing ??
-                      false;
+                      profileViewingEnforcesAllRequirements(gender) &&
+                      (configData.config.profile?.firstImage?.requireFaceDetectedWhenViewing ??
+                          false);
                   final faceDetected = primaryContent?.faceDetected == true;
 
                   if (primaryContent?.state.waitingModeration() == true) {
@@ -385,6 +386,16 @@ class PublicProfileViewingBlocker extends StatelessWidget {
 /// not shown before the gender is known.
 bool profileViewingRequiresPublicProfile(Gender? gender) {
   return gender == null || FEATURE_PROFILE_VIEWING_REQUIRES_PUBLIC_PROFILE_GENDERS.contains(gender);
+}
+
+/// Returns true if all profile viewing requirements from the client config are
+/// enforced for the given [gender].
+///
+/// Unknown gender is treated as enforcing the requirements so that profiles are
+/// not shown before the gender is known.
+bool profileViewingEnforcesAllRequirements(Gender? gender) {
+  return gender == null ||
+      FEATURE_PROFILE_VIEWING_ENFORCE_ALL_REQUIREMENTS_GENDERS.contains(gender);
 }
 
 /// Info banner which is shown when the profile is hidden from others but the
