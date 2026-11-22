@@ -44,6 +44,8 @@
 - Show an error message with a retry button on the blocked profiles
   screen when loading the blocked profiles fails
 - Improve loading of private profiles
+- Skip profiles which have a rejected primary profile picture instead of
+  showing an error
 
 ## [0.26.1] - 2026-11-09
 

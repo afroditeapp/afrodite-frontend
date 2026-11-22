@@ -62,15 +62,21 @@ class ProfileEntryDownloader {
             (db) => db.profile.updateProfileContent(accountId, contentInfo, contentVersion),
           );
 
-          final primaryContentId = contentInfo.content.firstOrNull?.cid;
-          if (primaryContentId == null) {
+          final primaryContent = contentInfo.content.firstOrNull;
+          if (primaryContent == null) {
             _log.warning("Profile content info is missing");
+            return Err(OtherProfileDownloadError());
+          }
+
+          if (accountId != media.currentUser && !primaryContent.accepted) {
+            // Server does not allow downloading content which is not accepted
+            _log.warning("Skipping one profile because primary content is not accepted");
             return Err(OtherProfileDownloadError());
           }
 
           final bytes = await media.imageCache.getImage(
             accountId,
-            primaryContentId,
+            primaryContent.cid,
             isMatch: isMatch,
             isReceivedLike: isReceivedLike,
             media: media,
