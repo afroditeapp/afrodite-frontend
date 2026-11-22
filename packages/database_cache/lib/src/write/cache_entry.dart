@@ -15,14 +15,23 @@ class DaoWriteCacheEntry extends DatabaseAccessor<CacheDatabase> with _$DaoWrite
     required DateTime expireAt,
     String? etag,
   }) async {
-    return await into(cacheEntry).insertOnConflictUpdate(
+    final row = await into(cacheEntry).insertReturning(
       CacheEntryCompanion.insert(
         entryKey: entryKey,
         staleAt: staleAt,
         expireAt: expireAt,
         etag: Value(etag),
       ),
+      onConflict: DoUpdate(
+        (_) => CacheEntryCompanion(
+          staleAt: Value(staleAt),
+          expireAt: Value(expireAt),
+          etag: Value(etag),
+        ),
+        target: [cacheEntry.entryKey],
+      ),
     );
+    return row.id;
   }
 
   /// Mark a cache entry as successfully saved to disk

@@ -46,6 +46,9 @@
 - Improve loading of private profiles
 - Skip profiles which have a rejected primary profile picture instead of
   showing an error
+- Fix database error when the same image is cached concurrently by targeting
+  the unique cache entry key in the cache database upsert and returning the
+  id of the existing row
 
 ## [0.26.1] - 2026-11-09
 
