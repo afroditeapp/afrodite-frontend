@@ -8,6 +8,7 @@ import 'package:logging/logging.dart';
 import 'package:openapi/api.dart';
 import 'package:app/api/server_connection_manager.dart';
 import 'package:app/model/freezed/logic/account/initial_setup.dart';
+import 'package:app/ui/initial_setup/navigation.dart';
 import 'package:app/utils/api.dart';
 import 'package:app/utils/result.dart';
 import 'package:utils/utils.dart';
@@ -238,9 +239,11 @@ class InitialSetupUtils {
 
     // Images
     {
+      final askSecuritySelfie = isSecuritySelfieScreenAskedInInitialSetup(data.gender);
       final r1 = await _handleInitialSetupImages(
         data.securitySelfie?.contentId,
         data.profileImages,
+        askSecuritySelfie: askSecuritySelfie,
       );
       if (r1.isErr()) return errAndLog("Image related error detected");
     }
@@ -255,11 +258,15 @@ class InitialSetupUtils {
 
   Future<Result<(), ()>> _handleInitialSetupImages(
     ContentId? securitySelfie,
-    Iterable<ImgState>? profileImages,
-  ) async {
-    if (securitySelfie == null) return errAndLog("Security selfie is null");
-    final r1 = await _api.mediaAction((api) => api.putSecurityContentInfo(securitySelfie));
-    if (r1.isErr()) return errAndLog("Setting security selfie failed");
+    Iterable<ImgState>? profileImages, {
+    required bool askSecuritySelfie,
+  }) async {
+    if (securitySelfie != null) {
+      final r1 = await _api.mediaAction((api) => api.putSecurityContentInfo(securitySelfie));
+      if (r1.isErr()) return errAndLog("Setting security selfie failed");
+    } else if (askSecuritySelfie) {
+      return errAndLog("Security selfie is null");
+    }
 
     if (profileImages == null) return errAndLog("Profile images is null");
     final newProfileContent = createProfileContent(profileImages).ok();

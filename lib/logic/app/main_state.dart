@@ -1,10 +1,12 @@
 import "package:app/data/notification_manager.dart";
 import "package:app/data/push_notification_manager.dart";
 import "package:app/data/utils/repository_instances.dart";
+import "package:app/logic/account/initial_setup.dart";
 import "package:app/logic/app/global_init.dart";
 import "package:app/config_features.dart";
 import "package:app/logic/app/main_state_types.dart";
 import "package:app/logic/app/bottom_navigation_state.dart";
+import "package:app/model/freezed/logic/account/initial_setup.dart";
 import "package:app/model/freezed/logic/main/bottom_navigation_state.dart";
 import "package:app/model/freezed/logic/main/navigator_state.dart";
 import "package:app/ui/initial_setup/navigation.dart";
@@ -197,10 +199,16 @@ class MainStateBloc extends Bloc<MainStateEvent, MainState> {
         .accountStream((db) => db.progress.watchInitialSetupCurrentPage())
         .first;
 
+    final gender = await r.accountDb.accountData((db) async {
+      final progress = await db.progress.watchInitialSetupProgress().first;
+      final genderStr = progress?.gender;
+      return genderStr == null ? null : parseInitialSetupGender(genderStr);
+    }).ok();
+
     final AppLaunchNavigationState? navigationState;
     if (currentPage != null && currentPage.isNotEmpty) {
       _log.info("Restoring initial setup to page: $currentPage");
-      final pages = _buildInitialSetupPageStack(currentPage);
+      final pages = _buildInitialSetupPageStack(currentPage, gender);
       navigationState = AppLaunchNavigationState(
         NavigatorStateData(pages: UnmodifiableList(pages)),
         BottomNavigationStateData(),
@@ -214,7 +222,7 @@ class MainStateBloc extends Bloc<MainStateEvent, MainState> {
     return state;
   }
 
-  List<MyScreenPage<Object>> _buildInitialSetupPageStack(String currentPageName) {
+  List<MyScreenPage<Object>> _buildInitialSetupPageStack(String currentPageName, Gender? gender) {
     final pageOrder = getInitialSetupPageOrder();
 
     final currentIndex = pageOrder.indexWhere((page) => page.nameForDb == currentPageName);
@@ -223,10 +231,14 @@ class MainStateBloc extends Bloc<MainStateEvent, MainState> {
       return [pageOrder.first];
     }
 
+    // Include pages up to the current page, skipping pages that are not asked
+    // for the current gender. If the current page itself is skipped, the setup
+    // continues from the previous page.
     final pages = <MyScreenPage<Object>>[];
-
     for (int i = 0; i <= currentIndex; i++) {
-      pages.add(pageOrder[i]);
+      final page = pageOrder[i];
+      if (isInitialSetupPageSkipped(page, gender)) continue;
+      pages.add(page);
     }
 
     return pages;

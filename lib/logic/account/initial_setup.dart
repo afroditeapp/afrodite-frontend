@@ -215,7 +215,7 @@ class InitialSetupBloc extends Bloc<InitialSetupEvent, InitialSetupData>
       }
 
       // Parse gender
-      final gender = progress.gender != null ? _parseGender(progress.gender!) : null;
+      final gender = progress.gender != null ? parseInitialSetupGender(progress.gender!) : null;
 
       // Build gender search settings
       final genderSearchSetting = GenderSearchSettingsAll(
@@ -599,7 +599,7 @@ Future<Uint8List> _createImage(Color color) {
   return createSolidColorPng(color, width: 512, height: 512);
 }
 
-Gender? _parseGender(String value) {
+Gender? parseInitialSetupGender(String value) {
   return switch (value) {
     'man' => Gender.man,
     'woman' => Gender.woman,

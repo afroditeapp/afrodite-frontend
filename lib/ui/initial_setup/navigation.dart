@@ -1,6 +1,8 @@
+import "package:app/config_features.dart";
 import "package:app/logic/account/initial_setup.dart";
 import "package:app/logic/app/navigator_state.dart";
 import "package:app/logic/profile/attributes.dart";
+import "package:app/model/freezed/logic/account/initial_setup.dart";
 import "package:app/ui/initial_setup/age_confirmation.dart";
 import "package:app/ui/initial_setup/first_chat_backup.dart";
 import "package:app/ui/initial_setup/email.dart";
@@ -26,6 +28,9 @@ String initialSetupPageNameInDb(String name) => "order_v2_$name";
 /// The order of initial setup pages.
 ///
 /// This must contain at least a single page.
+///
+/// Some pages are skipped during navigation depending on the initial setup state.
+/// See [isInitialSetupPageSkipped].
 List<InitialSetupPageBase> getInitialSetupPageOrder() {
   return [
     AskEmailPage(),
@@ -46,6 +51,15 @@ List<InitialSetupPageBase> getInitialSetupPageOrder() {
   ];
 }
 
+bool isSecuritySelfieScreenAskedInInitialSetup(Gender? gender) {
+  return gender != null && FEATURE_INITIAL_SETUP_SECURITY_SELFIE_GENDERS.contains(gender);
+}
+
+/// Returns true if [page] is skipped in the initial setup for [gender].
+bool isInitialSetupPageSkipped(InitialSetupPageBase page, Gender? gender) {
+  return page is AskSecuritySelfiePage && !isSecuritySelfieScreenAskedInInitialSetup(gender);
+}
+
 void _pushInitialSetupPage(BuildContext context, InitialSetupPageBase nextPage) {
   MyNavigator.push(context, nextPage);
   context.read<InitialSetupBloc>().add(SetCurrentPage(nextPage.nameForDb));
@@ -53,6 +67,7 @@ void _pushInitialSetupPage(BuildContext context, InitialSetupPageBase nextPage) 
 
 /// Navigate to the next initial setup page based on current page.
 void navigateToNextInitialSetupPage(BuildContext context) {
+  final gender = context.read<InitialSetupBloc>().state.gender;
   final pageOrder = getInitialSetupPageOrder();
   final navigationState = context.read<NavigatorStateBloc>().state;
   final currentPage = navigationState.pages.lastOrNull;
@@ -78,17 +93,15 @@ void navigateToNextInitialSetupPage(BuildContext context) {
     return;
   }
 
-  // Check if this page matches any page in our initial setup page order
-  for (int orderIndex = 0; orderIndex < pageOrder.length; orderIndex++) {
-    final orderedPage = pageOrder[orderIndex];
-
-    // Check if pages match by type
-    if (currentPage.runtimeType == orderedPage.runtimeType) {
-      // Found a match, navigate to next page
-      final nextIndex = orderIndex + 1;
-
-      if (nextIndex < pageOrder.length) {
-        _pushInitialSetupPage(context, pageOrder[nextIndex]);
+  final currentPageName = currentPage is InitialSetupPageBase ? currentPage.nameForDb : null;
+  if (currentPageName != null) {
+    final currentIndex = pageOrder.indexWhere((page) => page.nameForDb == currentPageName);
+    if (currentIndex != -1) {
+      // Find the next page that is not skipped for the current gender.
+      for (int i = currentIndex + 1; i < pageOrder.length; i++) {
+        final nextPage = pageOrder[i];
+        if (isInitialSetupPageSkipped(nextPage, gender)) continue;
+        _pushInitialSetupPage(context, nextPage);
         return;
       }
     }

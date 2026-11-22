@@ -1,3 +1,4 @@
+import 'package:app/model/freezed/logic/account/initial_setup.dart';
 import 'package:flutter/foundation.dart';
 
 const bool FEATURE_ADMIN = kIsWeb;
@@ -19,6 +20,9 @@ const bool FEATURE_CUSTOM_REPORT_STRING = true;
 
 /// Enable skipping the initial setup
 const bool FEATURE_INITIAL_SETUP_SKIP = kIsWeb;
+
+/// Genders for which the security selfie screen is shown in the initial setup
+const Set<Gender> FEATURE_INITIAL_SETUP_SECURITY_SELFIE_GENDERS = {Gender.man};
 
 /// Enable showing the attribution text in the about dialog
 const bool FEATURE_ABOUT_DIALOG_ATTRIBUTION = kIsWeb;
