@@ -663,6 +663,8 @@
   "settings_screen_profile_visibility_private_description": "Profiilisi ei näy Profiilit-näkymässä",
   "settings_screen_profile_visibility_public_description": "Profiilisi näkyy Profiilit-näkymässä",
   "settings_screen_profile_visibility_setting": "Profiilin näkyvyys",
+  "settings_screen_send_feedback_email_dialog_text": "Lähetä palautetta osoitteeseen {p0}",
+  "settings_screen_send_feedback_title": "Lähetä palautetta",
   "settings_screen_title": "Asetukset",
   "sign_in_with_management_screen_apple_not_linked": "Linkitä Apple-tilisi kirjautuaksesi sillä",
   "sign_in_with_management_screen_apple_title": "Kirjaudu Applella",

@@ -1,5 +1,12 @@
 # Changelog
 
+## [Unreleased]
+
+### Added
+
+- Add optional "Send feedback" settings item which opens the configured
+  feedback email address
+
 ## [0.27.0] - 2026-11-23
 
 ### Added

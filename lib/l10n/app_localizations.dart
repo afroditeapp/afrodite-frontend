@@ -4099,6 +4099,18 @@ abstract class AppLocalizations {
   /// **'Profile visibility'**
   String get settings_screen_profile_visibility_setting;
 
+  /// Dialog text shown when no email app is available. %s is the feedback email address
+  ///
+  /// In en, this message translates to:
+  /// **'Send feedback to {p0}'**
+  String settings_screen_send_feedback_email_dialog_text(String p0);
+
+  /// Title for send feedback settings item
+  ///
+  /// In en, this message translates to:
+  /// **'Send feedback'**
+  String get settings_screen_send_feedback_title;
+
   /// Title for settings screen
   ///
   /// In en, this message translates to:

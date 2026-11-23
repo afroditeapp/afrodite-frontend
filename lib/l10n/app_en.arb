@@ -3012,6 +3012,19 @@
   "@settings_screen_profile_visibility_setting": {
     "description": "Title for profile visibility setting"
   },
+  "settings_screen_send_feedback_email_dialog_text": "Send feedback to {p0}",
+  "@settings_screen_send_feedback_email_dialog_text": {
+    "description": "Dialog text shown when no email app is available. %s is the feedback email address",
+    "placeholders": {
+      "p0": {
+        "type": "String"
+      }
+    }
+  },
+  "settings_screen_send_feedback_title": "Send feedback",
+  "@settings_screen_send_feedback_title": {
+    "description": "Title for send feedback settings item"
+  },
   "settings_screen_title": "Settings",
   "@settings_screen_title": {
     "description": "Title for settings screen"

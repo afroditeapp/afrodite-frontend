@@ -2320,6 +2320,14 @@ class AppLocalizationsFi extends AppLocalizations {
   String get settings_screen_profile_visibility_setting => 'Profiilin näkyvyys';
 
   @override
+  String settings_screen_send_feedback_email_dialog_text(String p0) {
+    return 'Lähetä palautetta osoitteeseen $p0';
+  }
+
+  @override
+  String get settings_screen_send_feedback_title => 'Lähetä palautetta';
+
+  @override
   String get settings_screen_title => 'Asetukset';
 
   @override

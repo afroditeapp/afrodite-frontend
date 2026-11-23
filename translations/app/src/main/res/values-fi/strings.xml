@@ -638,6 +638,8 @@
     <string name="settings_screen_profile_visibility_public_description">Profiilisi näkyy Profiilit-näkymässä</string>
     <string name="settings_screen_data_category">Tiedot</string>
     <string name="settings_screen_general_category">Yleiset</string>
+    <string name="settings_screen_send_feedback_title">Lähetä palautetta</string>
+    <string name="settings_screen_send_feedback_email_dialog_text">Lähetä palautetta osoitteeseen %s</string>
 
     <!-- Blocked profiles screen -->
     <string name="blocked_profiles_screen_title">Estetyt profiilit</string>

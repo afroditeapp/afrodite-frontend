@@ -2302,6 +2302,14 @@ class AppLocalizationsEn extends AppLocalizations {
   String get settings_screen_profile_visibility_setting => 'Profile visibility';
 
   @override
+  String settings_screen_send_feedback_email_dialog_text(String p0) {
+    return 'Send feedback to $p0';
+  }
+
+  @override
+  String get settings_screen_send_feedback_title => 'Send feedback';
+
+  @override
   String get settings_screen_title => 'Settings';
 
   @override

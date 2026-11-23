@@ -645,6 +645,8 @@
     <string name="settings_screen_profile_visibility_public_description" description="Description for public profile visibility">Your profile is visible in Profiles view</string>
     <string name="settings_screen_data_category" description="Title for data settings category">Data</string>
     <string name="settings_screen_general_category" description="Title for general settings category">General</string>
+    <string name="settings_screen_send_feedback_title" description="Title for send feedback settings item">Send feedback</string>
+    <string name="settings_screen_send_feedback_email_dialog_text" description="Dialog text shown when no email app is available. %s is the feedback email address">Send feedback to %s</string>
 
     <!-- Blocked profiles screen -->
     <string name="blocked_profiles_screen_title" description="Title for blocked profiles screen">Blocked profiles</string>
