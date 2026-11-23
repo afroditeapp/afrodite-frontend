@@ -23,6 +23,7 @@ import 'package:app/ui/normal/profiles/view_profile.dart';
 import 'package:app/ui/normal/report/report.dart';
 import 'package:app/ui/normal/sent_likes.dart';
 import 'package:app/ui/normal/settings.dart';
+import 'package:app/ui/normal/settings/account_id_for_support.dart';
 import 'package:app/ui/normal/settings/account_settings.dart';
 import 'package:app/ui/normal/settings/admin.dart';
 import 'package:app/ui/normal/settings/blocked_profiles.dart';
@@ -174,6 +175,7 @@ List<UrlParser<MyScreenPage<Object>>> loggedInPages(RepositoryInstances r) => [
 
   // Settings
   AccountSettingsPage(),
+  AccountIdForSupportPage(),
   SearchSettingsPage(),
   LocationPage(),
   PrivacySettingsPage(),

@@ -102,6 +102,18 @@
   "@account_deletion_pending_screen_title": {
     "description": "Title for account deletion pending screen"
   },
+  "account_id_for_support_screen_email_title": "Your account's email address is",
+  "@account_id_for_support_screen_email_title": {
+    "description": "Title text shown above the account email address"
+  },
+  "account_id_for_support_screen_info": "Make sure that your support request contains this address, so that app admins can find your account.",
+  "@account_id_for_support_screen_info": {
+    "description": "Info text explaining how the account ID is used in support requests"
+  },
+  "account_id_for_support_screen_title": "Account ID for support requests",
+  "@account_id_for_support_screen_title": {
+    "description": "Title for account ID for support requests screen"
+  },
   "account_settings_screen_cancel_email_change_button": "Cancel email address change",
   "@account_settings_screen_cancel_email_change_button": {
     "description": "Button text for cancel email change action"

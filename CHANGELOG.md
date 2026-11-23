@@ -6,6 +6,8 @@
 
 - Add optional "Send feedback" settings item which opens the configured
   feedback email address
+- Add "Account ID for support requests" screen which shows the account
+  email address in a large, copyable format
 
 ### Changed
 

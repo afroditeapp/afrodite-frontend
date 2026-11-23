@@ -10,6 +10,7 @@ import 'package:app/model/freezed/logic/account/client_features_config.dart';
 import 'package:app/model/freezed/logic/account/account.dart';
 import 'package:app/model/freezed/logic/account/account_details.dart';
 import 'package:app/config_features.dart';
+import 'package:app/ui/normal/settings/account_id_for_support.dart';
 import 'package:app/ui/normal/settings/age_verification.dart';
 import 'package:app/ui/normal/settings/account_verification.dart';
 import 'package:app/ui/normal/settings/association_membership.dart';
@@ -296,6 +297,11 @@ class _AccountSettingsScreenState extends State<AccountSettingsScreen> {
           },
         ).toListTile(),
         deleteAccount(),
+        Setting.createSetting(
+          Icons.badge,
+          context.strings.account_id_for_support_screen_title,
+          () => openAccountIdForSupport(context),
+        ).toListTile(),
       ],
     );
   }

@@ -194,6 +194,24 @@ abstract class AppLocalizations {
   /// **'Account deletion pending'**
   String get account_deletion_pending_screen_title;
 
+  /// Title text shown above the account email address
+  ///
+  /// In en, this message translates to:
+  /// **'Your account\'s email address is'**
+  String get account_id_for_support_screen_email_title;
+
+  /// Info text explaining how the account ID is used in support requests
+  ///
+  /// In en, this message translates to:
+  /// **'Make sure that your support request contains this address, so that app admins can find your account.'**
+  String get account_id_for_support_screen_info;
+
+  /// Title for account ID for support requests screen
+  ///
+  /// In en, this message translates to:
+  /// **'Account ID for support requests'**
+  String get account_id_for_support_screen_title;
+
   /// Button text for cancel email change action
   ///
   /// In en, this message translates to:

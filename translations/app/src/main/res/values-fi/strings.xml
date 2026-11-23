@@ -703,6 +703,11 @@
     <string name="account_settings_screen_email_change_history_limit_reached">Sähköpostiosoitteen vaihtoraja saavutettu. Yritä uudelleen %s kuluttua.</string>
     <string name="account_settings_screen_cancel_email_change_confirm_dialog_title">Peruuta sähköpostiosoitteen vaihto?</string>
 
+    <!-- Account ID for support requests screen -->
+    <string name="account_id_for_support_screen_title">Tilin tunniste tukipyyntöihin</string>
+    <string name="account_id_for_support_screen_email_title">Tilisi sähköpostiosoite on</string>
+    <string name="account_id_for_support_screen_info">Varmista, että tukipyyntösi sisältää tämän osoitteen, jotta ylläpitäjät voivat löytää tilisi.</string>
+
     <!-- Verification errors shared between account and age verification -->
     <string name="verification_error_data_parsing_failed">Virheelliset tunnistautumistiedot</string>
     <string name="verification_error_data_verification_failed">Henkilöllisyyden vahvistus epäonnistui</string>
