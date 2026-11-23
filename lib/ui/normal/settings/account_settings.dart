@@ -128,7 +128,7 @@ class _AccountSettingsScreenState extends State<AccountSettingsScreen> {
             style: Theme.of(context).textTheme.titleSmall,
           ),
         ),
-        hPad(Text(email)),
+        hPad(SelectableText(email)),
         const Padding(padding: EdgeInsets.all(4)),
         hPad(
           Row(
@@ -183,7 +183,7 @@ class _AccountSettingsScreenState extends State<AccountSettingsScreen> {
               style: Theme.of(context).textTheme.titleSmall,
             ),
           ),
-          hPad(Text(emailChange)),
+          hPad(SelectableText(emailChange)),
           const Padding(padding: EdgeInsets.all(4)),
           hPad(
             Row(

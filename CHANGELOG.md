@@ -7,6 +7,10 @@
 - Add optional "Send feedback" settings item which opens the configured
   feedback email address
 
+### Changed
+
+- Make email addresses selectable on the account settings screen
+
 ## [0.27.0] - 2026-11-23
 
 ### Added
