@@ -15,7 +15,6 @@ const String _serverUrl = "https://localhost:3000";
 const String? _alternativeDemoAccountServerUrl = null;
 
 const String? HELP_CENTER_URL = null;
-const String? FEEDBACK_EMAIL = null;
 const bool APP_AVAILABLE_FROM_GOOGLE_PLAY_STORE = false;
 const int? APPLE_APP_STORE_APP_ID = null;
 

@@ -56,6 +56,7 @@ import 'package:app/logic/profile/location.dart';
 import 'package:app/logic/profile/my_profile.dart';
 import 'package:app/logic/profile/profile_filters.dart';
 import 'package:app/logic/settings/blocked_profiles.dart';
+import 'package:app/logic/settings/feedback.dart';
 import 'package:app/logic/settings/privacy_settings.dart';
 import 'package:app/logic/settings/profile_visibility.dart';
 import 'package:app/logic/settings/search_settings.dart';
@@ -216,6 +217,7 @@ abstract class LoggedInRootScreen extends StatelessWidget {
         BlocProvider(create: (_) => SearchSettingsBloc(r)),
         BlocProvider(create: (_) => NotificationSettingsBloc(r)),
         BlocProvider(create: (_) => EmailNotificationSettingsBloc(r)),
+        BlocProvider(create: (_) => FeedbackBloc(r)),
         BlocProvider(create: (_) => UiSettingsBloc(r)),
         BlocProvider(create: (_) => DataExportBloc(r)),
         BlocProvider(create: (_) => ChatBackupBloc(r)),

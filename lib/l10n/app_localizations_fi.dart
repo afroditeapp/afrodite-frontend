@@ -920,6 +920,42 @@ class AppLocalizationsFi extends AppLocalizations {
   String get email_notification_settings_screen_title => 'Sähköposti-ilmoitukset';
 
   @override
+  String get feedback_screen_body_label => 'Palaute';
+
+  @override
+  String get feedback_screen_body_required => 'Kirjoita palaute ensin';
+
+  @override
+  String get feedback_screen_category_hint => 'Valitse aihe';
+
+  @override
+  String get feedback_screen_category_label => 'Aihe';
+
+  @override
+  String get feedback_screen_category_required => 'Valitse aihe ensin';
+
+  @override
+  String get feedback_screen_error_body_too_long => 'Palaute on liian pitkä';
+
+  @override
+  String get feedback_screen_error_email_sending_failed => 'Palautteen lähettäminen epäonnistui';
+
+  @override
+  String get feedback_screen_error_unknown_category => 'Valittu aihe ei ole enää käytettävissä';
+
+  @override
+  String get feedback_screen_send_button => 'Lähetä';
+
+  @override
+  String get feedback_screen_send_confirmation_title => 'Lähetä palaute?';
+
+  @override
+  String get feedback_screen_sending_disabled => 'Palautteen lähettäminen on pois käytöstä';
+
+  @override
+  String get feedback_screen_sent => 'Palaute lähetetty';
+
+  @override
   String generic_account_id_text_with_value(String p0) {
     return 'Tili ID: $p0';
   }
@@ -2328,11 +2364,6 @@ class AppLocalizationsFi extends AppLocalizations {
 
   @override
   String get settings_screen_profile_visibility_setting => 'Profiilin näkyvyys';
-
-  @override
-  String settings_screen_send_feedback_email_dialog_text(String p0) {
-    return 'Lähetä palautetta osoitteeseen $p0';
-  }
 
   @override
   String get settings_screen_send_feedback_title => 'Lähetä palautetta';

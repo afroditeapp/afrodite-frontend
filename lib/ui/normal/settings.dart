@@ -1,4 +1,4 @@
-import 'package:app/config.dart';
+import 'package:app/config_features.dart';
 import 'package:app/data/utils/repository_instances.dart';
 import 'package:app/logic/profile/profile_filters.dart';
 import 'package:app/model/freezed/logic/profile/profile_filters.dart';
@@ -22,11 +22,11 @@ import 'package:app/ui/normal/settings/data_export.dart';
 import 'package:app/ui/normal/settings/media/content_management.dart';
 import 'package:app/ui_utils/consts/padding.dart';
 import 'package:app/ui/normal/settings/email_notification_settings.dart';
+import 'package:app/ui/normal/settings/feedback.dart';
 import 'package:app/ui/normal/settings/privacy_settings.dart';
 import 'package:app/ui/normal/settings/notification_settings.dart';
 import 'package:app/ui/normal/settings/profile/search_settings.dart';
 import 'package:app/localizations.dart';
-import 'package:url_launcher/url_launcher.dart';
 import 'package:url_launcher/url_launcher_string.dart';
 import 'package:app/model/freezed/logic/settings/profile_visibility.dart';
 import 'package:app/ui_utils/common_update_logic.dart';
@@ -36,27 +36,6 @@ import 'package:app/utils/api.dart';
 
 void openSettingsScreen(BuildContext context) {
   MyNavigator.push(context, SettingsPage());
-}
-
-Future<void> openSendFeedbackEmail(BuildContext context) async {
-  final email = FEEDBACK_EMAIL;
-  if (email == null) {
-    return;
-  }
-
-  bool launched;
-  try {
-    launched = await launchUrl(Uri(scheme: "mailto", path: email));
-  } catch (_) {
-    launched = false;
-  }
-
-  if (!launched && context.mounted) {
-    await showInfoDialog(
-      context,
-      context.strings.settings_screen_send_feedback_email_dialog_text(email),
-    );
-  }
 }
 
 class SettingsPage extends MyScreenPage<()> with SimpleUrlParser<SettingsPage> {
@@ -231,7 +210,7 @@ class _SettingsScreenState extends State<SettingsScreen> {
     return Setting.createSetting(
       Icons.mail,
       context.strings.settings_screen_send_feedback_title,
-      () => openSendFeedbackEmail(context),
+      () => openFeedbackScreen(context),
     ).toListTile();
   }
 
@@ -261,7 +240,7 @@ class _SettingsScreenState extends State<SettingsScreen> {
       ).toListTile(),
       termsOfService(context),
       privacyPolicy(context),
-      if (FEEDBACK_EMAIL != null) sendFeedback(context),
+      if (FEATURE_FEEDBACK) sendFeedback(context),
       Setting.createSetting(Icons.logout, context.strings.generic_logout, () {
         final inProgress = context.read<LoginBloc>().state.logoutInProgress;
         if (inProgress) {

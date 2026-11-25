@@ -1192,6 +1192,54 @@
   "@email_notification_settings_screen_title": {
     "description": "Title for email notification settings screen"
   },
+  "feedback_screen_body_label": "Feedback",
+  "@feedback_screen_body_label": {
+    "description": "Label for feedback body text field"
+  },
+  "feedback_screen_body_required": "Write your feedback first",
+  "@feedback_screen_body_required": {
+    "description": "Snackbar text shown when trying to send empty feedback"
+  },
+  "feedback_screen_category_hint": "Select category",
+  "@feedback_screen_category_hint": {
+    "description": "Hint text shown in the feedback category selection before a category is selected"
+  },
+  "feedback_screen_category_label": "Category",
+  "@feedback_screen_category_label": {
+    "description": "Label for feedback category selection"
+  },
+  "feedback_screen_category_required": "Select a category first",
+  "@feedback_screen_category_required": {
+    "description": "Text shown when no feedback category is selected"
+  },
+  "feedback_screen_error_body_too_long": "Feedback is too long",
+  "@feedback_screen_error_body_too_long": {
+    "description": "Snackbar text shown when the feedback body is too long"
+  },
+  "feedback_screen_error_email_sending_failed": "Failed to send feedback",
+  "@feedback_screen_error_email_sending_failed": {
+    "description": "Snackbar text shown when the server failed to send the feedback email"
+  },
+  "feedback_screen_error_unknown_category": "The selected category is no longer available",
+  "@feedback_screen_error_unknown_category": {
+    "description": "Snackbar text shown when the selected feedback category no longer exists"
+  },
+  "feedback_screen_send_button": "Send",
+  "@feedback_screen_send_button": {
+    "description": "Button text for sending the feedback"
+  },
+  "feedback_screen_send_confirmation_title": "Send feedback?",
+  "@feedback_screen_send_confirmation_title": {
+    "description": "Confirmation dialog title shown when leaving the feedback screen with unsaved feedback"
+  },
+  "feedback_screen_sending_disabled": "Feedback sending is disabled",
+  "@feedback_screen_sending_disabled": {
+    "description": "Text shown when the server has not enabled the feedback feature"
+  },
+  "feedback_screen_sent": "Feedback sent",
+  "@feedback_screen_sent": {
+    "description": "Snackbar text shown when feedback was sent successfully"
+  },
   "generic_account_id_text_with_value": "Account ID: {p0}",
   "@generic_account_id_text_with_value": {
     "description": "Account ID text with value",
@@ -3023,15 +3071,6 @@
   "settings_screen_profile_visibility_setting": "Profile visibility",
   "@settings_screen_profile_visibility_setting": {
     "description": "Title for profile visibility setting"
-  },
-  "settings_screen_send_feedback_email_dialog_text": "Send feedback to {p0}",
-  "@settings_screen_send_feedback_email_dialog_text": {
-    "description": "Dialog text shown when no email app is available. %s is the feedback email address",
-    "placeholders": {
-      "p0": {
-        "type": "String"
-      }
-    }
   },
   "settings_screen_send_feedback_title": "Send feedback",
   "@settings_screen_send_feedback_title": {

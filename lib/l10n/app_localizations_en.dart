@@ -912,6 +912,43 @@ class AppLocalizationsEn extends AppLocalizations {
   String get email_notification_settings_screen_title => 'Email notifications';
 
   @override
+  String get feedback_screen_body_label => 'Feedback';
+
+  @override
+  String get feedback_screen_body_required => 'Write your feedback first';
+
+  @override
+  String get feedback_screen_category_hint => 'Select category';
+
+  @override
+  String get feedback_screen_category_label => 'Category';
+
+  @override
+  String get feedback_screen_category_required => 'Select a category first';
+
+  @override
+  String get feedback_screen_error_body_too_long => 'Feedback is too long';
+
+  @override
+  String get feedback_screen_error_email_sending_failed => 'Failed to send feedback';
+
+  @override
+  String get feedback_screen_error_unknown_category =>
+      'The selected category is no longer available';
+
+  @override
+  String get feedback_screen_send_button => 'Send';
+
+  @override
+  String get feedback_screen_send_confirmation_title => 'Send feedback?';
+
+  @override
+  String get feedback_screen_sending_disabled => 'Feedback sending is disabled';
+
+  @override
+  String get feedback_screen_sent => 'Feedback sent';
+
+  @override
   String generic_account_id_text_with_value(String p0) {
     return 'Account ID: $p0';
   }
@@ -2310,11 +2347,6 @@ class AppLocalizationsEn extends AppLocalizations {
 
   @override
   String get settings_screen_profile_visibility_setting => 'Profile visibility';
-
-  @override
-  String settings_screen_send_feedback_email_dialog_text(String p0) {
-    return 'Send feedback to $p0';
-  }
 
   @override
   String get settings_screen_send_feedback_title => 'Send feedback';

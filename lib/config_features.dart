@@ -18,6 +18,9 @@ const bool FEATURE_CUSTOM_REPORT_EMPTY = kIsWeb;
 /// Enable user facing UI for custom reports with string content
 const bool FEATURE_CUSTOM_REPORT_STRING = true;
 
+/// Enable user facing UI for sending feedback to the server admins.
+const bool FEATURE_FEEDBACK = true;
+
 /// Enable skipping the initial setup
 const bool FEATURE_INITIAL_SETUP_SKIP = kIsWeb;
 

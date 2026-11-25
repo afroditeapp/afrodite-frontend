@@ -1610,6 +1610,78 @@ abstract class AppLocalizations {
   /// **'Email notifications'**
   String get email_notification_settings_screen_title;
 
+  /// Label for feedback body text field
+  ///
+  /// In en, this message translates to:
+  /// **'Feedback'**
+  String get feedback_screen_body_label;
+
+  /// Snackbar text shown when trying to send empty feedback
+  ///
+  /// In en, this message translates to:
+  /// **'Write your feedback first'**
+  String get feedback_screen_body_required;
+
+  /// Hint text shown in the feedback category selection before a category is selected
+  ///
+  /// In en, this message translates to:
+  /// **'Select category'**
+  String get feedback_screen_category_hint;
+
+  /// Label for feedback category selection
+  ///
+  /// In en, this message translates to:
+  /// **'Category'**
+  String get feedback_screen_category_label;
+
+  /// Text shown when no feedback category is selected
+  ///
+  /// In en, this message translates to:
+  /// **'Select a category first'**
+  String get feedback_screen_category_required;
+
+  /// Snackbar text shown when the feedback body is too long
+  ///
+  /// In en, this message translates to:
+  /// **'Feedback is too long'**
+  String get feedback_screen_error_body_too_long;
+
+  /// Snackbar text shown when the server failed to send the feedback email
+  ///
+  /// In en, this message translates to:
+  /// **'Failed to send feedback'**
+  String get feedback_screen_error_email_sending_failed;
+
+  /// Snackbar text shown when the selected feedback category no longer exists
+  ///
+  /// In en, this message translates to:
+  /// **'The selected category is no longer available'**
+  String get feedback_screen_error_unknown_category;
+
+  /// Button text for sending the feedback
+  ///
+  /// In en, this message translates to:
+  /// **'Send'**
+  String get feedback_screen_send_button;
+
+  /// Confirmation dialog title shown when leaving the feedback screen with unsaved feedback
+  ///
+  /// In en, this message translates to:
+  /// **'Send feedback?'**
+  String get feedback_screen_send_confirmation_title;
+
+  /// Text shown when the server has not enabled the feedback feature
+  ///
+  /// In en, this message translates to:
+  /// **'Feedback sending is disabled'**
+  String get feedback_screen_sending_disabled;
+
+  /// Snackbar text shown when feedback was sent successfully
+  ///
+  /// In en, this message translates to:
+  /// **'Feedback sent'**
+  String get feedback_screen_sent;
+
   /// Account ID text with value
   ///
   /// In en, this message translates to:
@@ -4116,12 +4188,6 @@ abstract class AppLocalizations {
   /// In en, this message translates to:
   /// **'Profile visibility'**
   String get settings_screen_profile_visibility_setting;
-
-  /// Dialog text shown when no email app is available. %s is the feedback email address
-  ///
-  /// In en, this message translates to:
-  /// **'Send feedback to {p0}'**
-  String settings_screen_send_feedback_email_dialog_text(String p0);
 
   /// Title for send feedback settings item
   ///

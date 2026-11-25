@@ -10,6 +10,8 @@
 
 - Show moderator info and hide less used actions behind an app bar
   toggle on the admin image management screen
+- Replace the "Send feedback" email link with an in-app feedback form which
+  sends the feedback to the server admins
 
 ### Fixed
 

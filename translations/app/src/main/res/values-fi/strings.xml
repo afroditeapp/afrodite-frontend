@@ -639,7 +639,20 @@
     <string name="settings_screen_data_category">Tiedot</string>
     <string name="settings_screen_general_category">Yleiset</string>
     <string name="settings_screen_send_feedback_title">Lähetä palautetta</string>
-    <string name="settings_screen_send_feedback_email_dialog_text">Lähetä palautetta osoitteeseen %s</string>
+
+    <!-- Feedback screen -->
+    <string name="feedback_screen_category_label">Aihe</string>
+    <string name="feedback_screen_category_hint">Valitse aihe</string>
+    <string name="feedback_screen_category_required">Valitse aihe ensin</string>
+    <string name="feedback_screen_body_label">Palaute</string>
+    <string name="feedback_screen_send_button">Lähetä</string>
+    <string name="feedback_screen_send_confirmation_title">Lähetä palaute?</string>
+    <string name="feedback_screen_body_required">Kirjoita palaute ensin</string>
+    <string name="feedback_screen_sent">Palaute lähetetty</string>
+    <string name="feedback_screen_sending_disabled">Palautteen lähettäminen on pois käytöstä</string>
+    <string name="feedback_screen_error_body_too_long">Palaute on liian pitkä</string>
+    <string name="feedback_screen_error_unknown_category">Valittu aihe ei ole enää käytettävissä</string>
+    <string name="feedback_screen_error_email_sending_failed">Palautteen lähettäminen epäonnistui</string>
 
     <!-- Blocked profiles screen -->
     <string name="blocked_profiles_screen_title">Estetyt profiilit</string>
