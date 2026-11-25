@@ -2,6 +2,10 @@
 
 ## [Unreleased]
 
+### Added
+
+- Add "View media content (advanced)" admin screen
+
 ### Changed
 
 - Show moderator info and hide less used actions behind an app bar

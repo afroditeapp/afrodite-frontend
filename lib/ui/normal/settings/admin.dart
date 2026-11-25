@@ -16,6 +16,7 @@ import 'package:app/ui/normal/settings/admin/server_system_info.dart';
 import 'package:app/ui/normal/settings/admin/server_tasks.dart';
 import 'package:app/ui/normal/settings/admin/view_accounts.dart';
 import 'package:app/ui/normal/settings/admin/view_admins.dart';
+import 'package:app/ui/normal/settings/admin/view_media_content.dart';
 import 'package:app/ui/normal/settings/admin/manual_association_membership_registry.dart';
 import 'package:app/ui/normal/settings/admin/association_membership_registry.dart';
 import 'package:app/ui/normal/settings/admin/custom_email/custom_email_list.dart';
@@ -314,6 +315,15 @@ class AdminSettingsScreen extends StatelessWidget {
           Icons.new_releases,
           "Latest content",
           () => MyNavigator.pushLimited(context, LatestContentPage(r)),
+        ),
+      );
+    }
+    if (permissions.adminModerateMediaContent) {
+      settings.add(
+        Setting.createSetting(
+          Icons.photo_library,
+          "View media content (advanced)",
+          () => MyNavigator.pushLimited(context, ViewMediaContentPage(r)),
         ),
       );
     }
