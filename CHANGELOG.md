@@ -7,6 +7,10 @@
 - Show moderator info and hide less used actions behind an app bar
   toggle on the admin image management screen
 
+### Fixed
+
+- Fix a layout crash in the profile attribute filter value selection screen
+
 ## [0.27.1] - 2026-11-23
 
 ### Added

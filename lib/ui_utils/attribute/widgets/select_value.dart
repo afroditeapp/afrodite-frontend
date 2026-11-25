@@ -158,8 +158,7 @@ class _SelectAttributeValueState extends State<SelectAttributeValue> {
     final checkbox = ListTile(
       title: Row(
         children: [
-          title(v),
-          const Spacer(),
+          Expanded(child: title(v)),
           ToggleButtons(
             isSelected: selected,
             onPressed: (selectedIndex) {
