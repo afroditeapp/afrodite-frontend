@@ -73,6 +73,7 @@ Class | Method | HTTP request | Description
 *AccountApi* | [**getAssociationMembership**](doc//AccountApi.md#getassociationmembership) | **GET** /account_api/association_membership | Get current association membership.
 *AccountApi* | [**getEmailAddressState**](doc//AccountApi.md#getemailaddressstate) | **GET** /account_api/email_address_state | 
 *AccountApi* | [**getEmailRegistrationPlatforms**](doc//AccountApi.md#getemailregistrationplatforms) | **GET** /account_api/email_registration_platforms | Get email registration platforms from dynamic server config.
+*AccountApi* | [**getFeedbackConfig**](doc//AccountApi.md#getfeedbackconfig) | **GET** /account_api/feedback_config | Get feedback form config.
 *AccountApi* | [**getNewsItem**](doc//AccountApi.md#getnewsitem) | **GET** /account_api/news_item/{nid} | Get news item content using specific locale and fallback to locale \"en\" if news translation is not found.
 *AccountApi* | [**getSignInWithInfo**](doc//AccountApi.md#getsigninwithinfo) | **GET** /account_api/sign_in_with_info | Get current sign in with Apple and Google state.
 *AccountApi* | [**getVerifyEmail**](doc//AccountApi.md#getverifyemail) | **GET** /verify_email | Show email verification form page. Token is passed via query parameter to prevent email scanners from accidentally verifying the email.
@@ -102,6 +103,7 @@ Class | Method | HTTP request | Description
 *AccountApi* | [**postRequestAppAttestChallenge**](doc//AccountApi.md#postrequestappattestchallenge) | **POST** /account_api/request_app_attest_challenge | Request a random string for app attestation token.
 *AccountApi* | [**postRequestEmailLoginToken**](doc//AccountApi.md#postrequestemaillogintoken) | **POST** /account_api/request_email_login_token | Request email login token to be sent via email.
 *AccountApi* | [**postResetNewsPaging**](doc//AccountApi.md#postresetnewspaging) | **POST** /account_api/reset_news_paging | 
+*AccountApi* | [**postSendFeedback**](doc//AccountApi.md#postsendfeedback) | **POST** /account_api/send_feedback | Send feedback to the server admins.
 *AccountApi* | [**postSendVerifyEmailMessage**](doc//AccountApi.md#postsendverifyemailmessage) | **POST** /account_api/send_verify_email_message | 
 *AccountApi* | [**postSetAccountDeletionRequestState**](doc//AccountApi.md#postsetaccountdeletionrequeststate) | **POST** /account_api/set_account_deletion_request_state/{aid} | Request account deletion or cancel the deletion
 *AccountApi* | [**postSetEmailLoginEnabled**](doc//AccountApi.md#postsetemailloginenabled) | **POST** /account_api/set_email_login_enabled | Enable or disable email login for an account.
@@ -263,8 +265,11 @@ Class | Method | HTTP request | Description
 *MediaApi* | [**putProfileContent**](doc//MediaApi.md#putprofilecontent) | **PUT** /media_api/profile_content | Set new profile content for current account.
 *MediaApi* | [**putSecurityContentInfo**](doc//MediaApi.md#putsecuritycontentinfo) | **PUT** /media_api/security_content_info | Set current security content for current account.
 *MediaApi* | [**putUploadContent**](doc//MediaApi.md#putuploadcontent) | **PUT** /media_api/upload_content | Upload content to server for processing.
+*MediaAdminApi* | [**getAdminMediaContentIteratorPage**](doc//MediaAdminApi.md#getadminmediacontentiteratorpage) | **POST** /media_api/get_admin_media_content_iterator_page | Get admin media content iterator page
+*MediaAdminApi* | [**getAllAccountMediaContentAdmin**](doc//MediaAdminApi.md#getallaccountmediacontentadmin) | **GET** /media_api/all_account_media_content_admin/{aid} | Get list of all media content on the server for one account.
 *MediaAdminApi* | [**getImageProcessingConfig**](doc//MediaAdminApi.md#getimageprocessingconfig) | **GET** /media_api/image_processing_config | Get image processing configuration
 *MediaAdminApi* | [**getImageProcessingConfigWarnings**](doc//MediaAdminApi.md#getimageprocessingconfigwarnings) | **GET** /media_api/image_processing_config_warnings | Get image processing config warnings
+*MediaAdminApi* | [**getLatestMediaContentIdDb**](doc//MediaAdminApi.md#getlatestmediacontentiddb) | **GET** /media_api/get_latest_media_content_id_db | Get latest created media content ID DB
 *MediaAdminApi* | [**getMediaContentFaceVerifiedNullList**](doc//MediaAdminApi.md#getmediacontentfaceverifiednulllist) | **GET** /media_api/media_content_face_verified_null_list | Get first page of accounts with security selfie and content where `face_verified` is NULL and `face_detected` is true or `face_detected_manual` is true. Oldest security content set time is first and count 25.
 *MediaAdminApi* | [**getMediaContentIterationPage**](doc//MediaAdminApi.md#getmediacontentiterationpage) | **GET** /media_api/get_media_content_iteration_page | Get a page of media content items iterated in descending content upload time order. Max 25 values are returned.
 *MediaAdminApi* | [**getMediaContentModerationQueuePage**](doc//MediaAdminApi.md#getmediacontentmoderationqueuepage) | **GET** /media_api/media_content_moderation_queue_page | Get the first page from media content moderation queue. The first item is the oldest item and max 25 items are returned.
@@ -330,6 +335,7 @@ Class | Method | HTTP request | Description
  - [AccountBanReasonDetails](doc//AccountBanReasonDetails.md)
  - [AccountBannedAdminType](doc//AccountBannedAdminType.md)
  - [AccountContent](doc//AccountContent.md)
+ - [AccountContentAdmin](doc//AccountContentAdmin.md)
  - [AccountExtraInfoSettings](doc//AccountExtraInfoSettings.md)
  - [AccountFilters](doc//AccountFilters.md)
  - [AccountId](doc//AccountId.md)
@@ -435,6 +441,7 @@ Class | Method | HTTP request | Description
  - [ContentId](doc//ContentId.md)
  - [ContentInfo](doc//ContentInfo.md)
  - [ContentInfoDetailed](doc//ContentInfoDetailed.md)
+ - [ContentInfoDetailedAdmin](doc//ContentInfoDetailedAdmin.md)
  - [ContentModerationState](doc//ContentModerationState.md)
  - [ContentProcessingState](doc//ContentProcessingState.md)
  - [ContentProcessingStateType](doc//ContentProcessingStateType.md)
@@ -481,6 +488,8 @@ Class | Method | HTTP request | Description
  - [EmailRegistrationPlatforms](doc//EmailRegistrationPlatforms.md)
  - [FavoriteProfilesPage](doc//FavoriteProfilesPage.md)
  - [FeaturesConfig](doc//FeaturesConfig.md)
+ - [FeedbackCategory](doc//FeedbackCategory.md)
+ - [FeedbackConfig](doc//FeedbackConfig.md)
  - [FirstImageConfig](doc//FirstImageConfig.md)
  - [GetAccountBanTimeResult](doc//GetAccountBanTimeResult.md)
  - [GetAccountDeletionRequestResult](doc//GetAccountDeletionRequestResult.md)
@@ -571,9 +580,15 @@ Class | Method | HTTP request | Description
  - [MatchesPage](doc//MatchesPage.md)
  - [MaxDistanceKm](doc//MaxDistanceKm.md)
  - [MediaAppNotificationSettings](doc//MediaAppNotificationSettings.md)
+ - [MediaContentExtraInfoSettings](doc//MediaContentExtraInfoSettings.md)
  - [MediaContentFaceVerifiedNullByAccount](doc//MediaContentFaceVerifiedNullByAccount.md)
+ - [MediaContentFilters](doc//MediaContentFilters.md)
+ - [MediaContentIdDbValue](doc//MediaContentIdDbValue.md)
  - [MediaContentIterationPage](doc//MediaContentIterationPage.md)
  - [MediaContentIterationValue](doc//MediaContentIterationValue.md)
+ - [MediaContentIteratorPage](doc//MediaContentIteratorPage.md)
+ - [MediaContentIteratorPageValue](doc//MediaContentIteratorPageValue.md)
+ - [MediaContentIteratorSettings](doc//MediaContentIteratorSettings.md)
  - [MediaContentModerationQueuePage](doc//MediaContentModerationQueuePage.md)
  - [MediaContentModerationQueueType](doc//MediaContentModerationQueueType.md)
  - [MediaContentModerationRejectedReasonCategory](doc//MediaContentModerationRejectedReasonCategory.md)
@@ -730,6 +745,8 @@ Class | Method | HTTP request | Description
  - [SecurityContentAdminInfo](doc//SecurityContentAdminInfo.md)
  - [SeenMessage](doc//SeenMessage.md)
  - [SendCustomEmail](doc//SendCustomEmail.md)
+ - [SendFeedback](doc//SendFeedback.md)
+ - [SendFeedbackResult](doc//SendFeedbackResult.md)
  - [SendLike](doc//SendLike.md)
  - [SendLikeResult](doc//SendLikeResult.md)
  - [SendMessageResult](doc//SendMessageResult.md)

@@ -482,6 +482,55 @@ class AccountApi {
     return null;
   }
 
+  /// Get feedback form config.
+  ///
+  /// Returns an empty category list when the feedback feature is not enabled in the server config.
+  ///
+  /// Note: This method returns the HTTP [Response].
+  Future<Response> getFeedbackConfigWithHttpInfo({ Future<void>? abortTrigger, }) async {
+    // ignore: prefer_const_declarations
+    final path = r'/account_api/feedback_config';
+
+    // ignore: prefer_final_locals
+    Object? postBody;
+
+    final queryParams = <QueryParam>[];
+    final headerParams = <String, String>{};
+    final formParams = <String, String>{};
+
+    const contentTypes = <String>[];
+
+
+    return apiClient.invokeAPI(
+      path,
+      'GET',
+      queryParams,
+      postBody,
+      headerParams,
+      formParams,
+      contentTypes.isEmpty ? null : contentTypes.first,
+      abortTrigger: abortTrigger,
+    );
+  }
+
+  /// Get feedback form config.
+  ///
+  /// Returns an empty category list when the feedback feature is not enabled in the server config.
+  Future<FeedbackConfig?> getFeedbackConfig({ Future<void>? abortTrigger, }) async {
+    final response = await getFeedbackConfigWithHttpInfo(abortTrigger: abortTrigger,);
+    if (response.statusCode >= HttpStatus.badRequest) {
+      throw ApiException(response.statusCode, await _decodeBodyBytes(response));
+    }
+    // When a remote server returns no body with a status of 204, we shall not decode it.
+    // At the time of writing this, `dart:convert` will throw an "Unexpected end of input"
+    // FormatException when trying to decode an empty string.
+    if (response.body.isNotEmpty && response.statusCode != HttpStatus.noContent) {
+      return await apiClient.deserializeAsync(await _decodeBodyBytes(response), 'FeedbackConfig',) as FeedbackConfig;
+    
+    }
+    return null;
+  }
+
   /// Get news item content using specific locale and fallback to locale \"en\" if news translation is not found.
   ///
   /// If specific locale is not found when [RequireNewsLocale::require_locale] is `true` then [GetNewsItemResult::item] is `None`.  If news item is private and account doesn't have any admin news permissions then [GetNewsItemResult::item] is `None`.
@@ -1899,6 +1948,63 @@ class AccountApi {
     // FormatException when trying to decode an empty string.
     if (response.body.isNotEmpty && response.statusCode != HttpStatus.noContent) {
       return await apiClient.deserializeAsync(await _decodeBodyBytes(response), 'ResetNewsIteratorResult',) as ResetNewsIteratorResult;
+    
+    }
+    return null;
+  }
+
+  /// Send feedback to the server admins.
+  ///
+  /// The feedback is sent as an email to the admin email address configured in the server config. The user's current email address is added to the `Reply-To` header.  The category key is validated against the current server config, so a removed category returns `error_unknown_category` and the client should fetch the feedback config again.
+  ///
+  /// Note: This method returns the HTTP [Response].
+  ///
+  /// Parameters:
+  ///
+  /// * [SendFeedback] sendFeedback (required):
+  Future<Response> postSendFeedbackWithHttpInfo(SendFeedback sendFeedback, { Future<void>? abortTrigger, }) async {
+    // ignore: prefer_const_declarations
+    final path = r'/account_api/send_feedback';
+
+    // ignore: prefer_final_locals
+    Object? postBody = sendFeedback;
+
+    final queryParams = <QueryParam>[];
+    final headerParams = <String, String>{};
+    final formParams = <String, String>{};
+
+    const contentTypes = <String>['application/json'];
+
+
+    return apiClient.invokeAPI(
+      path,
+      'POST',
+      queryParams,
+      postBody,
+      headerParams,
+      formParams,
+      contentTypes.isEmpty ? null : contentTypes.first,
+      abortTrigger: abortTrigger,
+    );
+  }
+
+  /// Send feedback to the server admins.
+  ///
+  /// The feedback is sent as an email to the admin email address configured in the server config. The user's current email address is added to the `Reply-To` header.  The category key is validated against the current server config, so a removed category returns `error_unknown_category` and the client should fetch the feedback config again.
+  ///
+  /// Parameters:
+  ///
+  /// * [SendFeedback] sendFeedback (required):
+  Future<SendFeedbackResult?> postSendFeedback(SendFeedback sendFeedback, { Future<void>? abortTrigger, }) async {
+    final response = await postSendFeedbackWithHttpInfo(sendFeedback, abortTrigger: abortTrigger,);
+    if (response.statusCode >= HttpStatus.badRequest) {
+      throw ApiException(response.statusCode, await _decodeBodyBytes(response));
+    }
+    // When a remote server returns no body with a status of 204, we shall not decode it.
+    // At the time of writing this, `dart:convert` will throw an "Unexpected end of input"
+    // FormatException when trying to decode an empty string.
+    if (response.body.isNotEmpty && response.statusCode != HttpStatus.noContent) {
+      return await apiClient.deserializeAsync(await _decodeBodyBytes(response), 'SendFeedbackResult',) as SendFeedbackResult;
     
     }
     return null;

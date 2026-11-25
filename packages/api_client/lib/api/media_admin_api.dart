@@ -16,6 +16,121 @@ class MediaAdminApi {
 
   final ApiClient apiClient;
 
+  /// Get admin media content iterator page
+  ///
+  /// HTTP method is POST to allow JSON request body for filters and extra info settings.  # Access - Permission [model::Permissions::admin_moderate_media_content]
+  ///
+  /// Note: This method returns the HTTP [Response].
+  ///
+  /// Parameters:
+  ///
+  /// * [MediaContentIteratorSettings] mediaContentIteratorSettings (required):
+  Future<Response> getAdminMediaContentIteratorPageWithHttpInfo(MediaContentIteratorSettings mediaContentIteratorSettings, { Future<void>? abortTrigger, }) async {
+    // ignore: prefer_const_declarations
+    final path = r'/media_api/get_admin_media_content_iterator_page';
+
+    // ignore: prefer_final_locals
+    Object? postBody = mediaContentIteratorSettings;
+
+    final queryParams = <QueryParam>[];
+    final headerParams = <String, String>{};
+    final formParams = <String, String>{};
+
+    const contentTypes = <String>['application/json'];
+
+
+    return apiClient.invokeAPI(
+      path,
+      'POST',
+      queryParams,
+      postBody,
+      headerParams,
+      formParams,
+      contentTypes.isEmpty ? null : contentTypes.first,
+      abortTrigger: abortTrigger,
+    );
+  }
+
+  /// Get admin media content iterator page
+  ///
+  /// HTTP method is POST to allow JSON request body for filters and extra info settings.  # Access - Permission [model::Permissions::admin_moderate_media_content]
+  ///
+  /// Parameters:
+  ///
+  /// * [MediaContentIteratorSettings] mediaContentIteratorSettings (required):
+  Future<MediaContentIteratorPage?> getAdminMediaContentIteratorPage(MediaContentIteratorSettings mediaContentIteratorSettings, { Future<void>? abortTrigger, }) async {
+    final response = await getAdminMediaContentIteratorPageWithHttpInfo(mediaContentIteratorSettings, abortTrigger: abortTrigger,);
+    if (response.statusCode >= HttpStatus.badRequest) {
+      throw ApiException(response.statusCode, await _decodeBodyBytes(response));
+    }
+    // When a remote server returns no body with a status of 204, we shall not decode it.
+    // At the time of writing this, `dart:convert` will throw an "Unexpected end of input"
+    // FormatException when trying to decode an empty string.
+    if (response.body.isNotEmpty && response.statusCode != HttpStatus.noContent) {
+      return await apiClient.deserializeAsync(await _decodeBodyBytes(response), 'MediaContentIteratorPage',) as MediaContentIteratorPage;
+    
+    }
+    return null;
+  }
+
+  /// Get list of all media content on the server for one account.
+  ///
+  /// # Access  - Permission [model::Permissions::admin_moderate_media_content] - Permission [model::Permissions::admin_edit_media_content_face_detected_value] - Permission [model::Permissions::admin_edit_media_content_face_verified_value]
+  ///
+  /// Note: This method returns the HTTP [Response].
+  ///
+  /// Parameters:
+  ///
+  /// * [String] aid (required):
+  Future<Response> getAllAccountMediaContentAdminWithHttpInfo(String aid, { Future<void>? abortTrigger, }) async {
+    // ignore: prefer_const_declarations
+    final path = r'/media_api/all_account_media_content_admin/{aid}'
+      .replaceAll('{aid}', aid);
+
+    // ignore: prefer_final_locals
+    Object? postBody;
+
+    final queryParams = <QueryParam>[];
+    final headerParams = <String, String>{};
+    final formParams = <String, String>{};
+
+    const contentTypes = <String>[];
+
+
+    return apiClient.invokeAPI(
+      path,
+      'GET',
+      queryParams,
+      postBody,
+      headerParams,
+      formParams,
+      contentTypes.isEmpty ? null : contentTypes.first,
+      abortTrigger: abortTrigger,
+    );
+  }
+
+  /// Get list of all media content on the server for one account.
+  ///
+  /// # Access  - Permission [model::Permissions::admin_moderate_media_content] - Permission [model::Permissions::admin_edit_media_content_face_detected_value] - Permission [model::Permissions::admin_edit_media_content_face_verified_value]
+  ///
+  /// Parameters:
+  ///
+  /// * [String] aid (required):
+  Future<AccountContentAdmin?> getAllAccountMediaContentAdmin(String aid, { Future<void>? abortTrigger, }) async {
+    final response = await getAllAccountMediaContentAdminWithHttpInfo(aid, abortTrigger: abortTrigger,);
+    if (response.statusCode >= HttpStatus.badRequest) {
+      throw ApiException(response.statusCode, await _decodeBodyBytes(response));
+    }
+    // When a remote server returns no body with a status of 204, we shall not decode it.
+    // At the time of writing this, `dart:convert` will throw an "Unexpected end of input"
+    // FormatException when trying to decode an empty string.
+    if (response.body.isNotEmpty && response.statusCode != HttpStatus.noContent) {
+      return await apiClient.deserializeAsync(await _decodeBodyBytes(response), 'AccountContentAdmin',) as AccountContentAdmin;
+    
+    }
+    return null;
+  }
+
   /// Get image processing configuration
   ///
   /// # Permissions Requires admin_server_view_image_processing_config.
@@ -109,6 +224,55 @@ class MediaAdminApi {
     // FormatException when trying to decode an empty string.
     if (response.body.isNotEmpty && response.statusCode != HttpStatus.noContent) {
       return await apiClient.deserializeAsync(await _decodeBodyBytes(response), 'ImageProcessingWarnings',) as ImageProcessingWarnings;
+    
+    }
+    return null;
+  }
+
+  /// Get latest created media content ID DB
+  ///
+  /// # Access - Permission [model::Permissions::admin_moderate_media_content]
+  ///
+  /// Note: This method returns the HTTP [Response].
+  Future<Response> getLatestMediaContentIdDbWithHttpInfo({ Future<void>? abortTrigger, }) async {
+    // ignore: prefer_const_declarations
+    final path = r'/media_api/get_latest_media_content_id_db';
+
+    // ignore: prefer_final_locals
+    Object? postBody;
+
+    final queryParams = <QueryParam>[];
+    final headerParams = <String, String>{};
+    final formParams = <String, String>{};
+
+    const contentTypes = <String>[];
+
+
+    return apiClient.invokeAPI(
+      path,
+      'GET',
+      queryParams,
+      postBody,
+      headerParams,
+      formParams,
+      contentTypes.isEmpty ? null : contentTypes.first,
+      abortTrigger: abortTrigger,
+    );
+  }
+
+  /// Get latest created media content ID DB
+  ///
+  /// # Access - Permission [model::Permissions::admin_moderate_media_content]
+  Future<MediaContentIdDbValue?> getLatestMediaContentIdDb({ Future<void>? abortTrigger, }) async {
+    final response = await getLatestMediaContentIdDbWithHttpInfo(abortTrigger: abortTrigger,);
+    if (response.statusCode >= HttpStatus.badRequest) {
+      throw ApiException(response.statusCode, await _decodeBodyBytes(response));
+    }
+    // When a remote server returns no body with a status of 204, we shall not decode it.
+    // At the time of writing this, `dart:convert` will throw an "Unexpected end of input"
+    // FormatException when trying to decode an empty string.
+    if (response.body.isNotEmpty && response.statusCode != HttpStatus.noContent) {
+      return await apiClient.deserializeAsync(await _decodeBodyBytes(response), 'MediaContentIdDbValue',) as MediaContentIdDbValue;
     
     }
     return null;

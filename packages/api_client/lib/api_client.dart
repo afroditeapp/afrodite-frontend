@@ -201,6 +201,8 @@ class ApiClient {
           return AccountBannedAdminTypeTypeTransformer().decode(value);
         case 'AccountContent':
           return AccountContent.fromJson(value);
+        case 'AccountContentAdmin':
+          return AccountContentAdmin.fromJson(value);
         case 'AccountExtraInfoSettings':
           return AccountExtraInfoSettings.fromJson(value);
         case 'AccountFilters':
@@ -411,6 +413,8 @@ class ApiClient {
           return ContentInfo.fromJson(value);
         case 'ContentInfoDetailed':
           return ContentInfoDetailed.fromJson(value);
+        case 'ContentInfoDetailedAdmin':
+          return ContentInfoDetailedAdmin.fromJson(value);
         case 'ContentModerationState':
           return ContentModerationStateTypeTransformer().decode(value);
         case 'ContentProcessingState':
@@ -503,6 +507,10 @@ class ApiClient {
           return FavoriteProfilesPage.fromJson(value);
         case 'FeaturesConfig':
           return FeaturesConfig.fromJson(value);
+        case 'FeedbackCategory':
+          return FeedbackCategory.fromJson(value);
+        case 'FeedbackConfig':
+          return FeedbackConfig.fromJson(value);
         case 'FirstImageConfig':
           return FirstImageConfig.fromJson(value);
         case 'GetAccountBanTimeResult':
@@ -683,12 +691,24 @@ class ApiClient {
           return MaxDistanceKm.fromJson(value);
         case 'MediaAppNotificationSettings':
           return MediaAppNotificationSettings.fromJson(value);
+        case 'MediaContentExtraInfoSettings':
+          return MediaContentExtraInfoSettings.fromJson(value);
         case 'MediaContentFaceVerifiedNullByAccount':
           return MediaContentFaceVerifiedNullByAccount.fromJson(value);
+        case 'MediaContentFilters':
+          return MediaContentFilters.fromJson(value);
+        case 'MediaContentIdDbValue':
+          return MediaContentIdDbValue.fromJson(value);
         case 'MediaContentIterationPage':
           return MediaContentIterationPage.fromJson(value);
         case 'MediaContentIterationValue':
           return MediaContentIterationValue.fromJson(value);
+        case 'MediaContentIteratorPage':
+          return MediaContentIteratorPage.fromJson(value);
+        case 'MediaContentIteratorPageValue':
+          return MediaContentIteratorPageValue.fromJson(value);
+        case 'MediaContentIteratorSettings':
+          return MediaContentIteratorSettings.fromJson(value);
         case 'MediaContentModerationQueuePage':
           return MediaContentModerationQueuePage.fromJson(value);
         case 'MediaContentModerationQueueType':
@@ -1001,6 +1021,10 @@ class ApiClient {
           return SeenMessage.fromJson(value);
         case 'SendCustomEmail':
           return SendCustomEmail.fromJson(value);
+        case 'SendFeedback':
+          return SendFeedback.fromJson(value);
+        case 'SendFeedbackResult':
+          return SendFeedbackResult.fromJson(value);
         case 'SendLike':
           return SendLike.fromJson(value);
         case 'SendLikeResult':

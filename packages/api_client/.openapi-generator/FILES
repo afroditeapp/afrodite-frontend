@@ -31,6 +31,7 @@ lib/model/account_ban_reason_category.dart
 lib/model/account_ban_reason_details.dart
 lib/model/account_banned_admin_type.dart
 lib/model/account_content.dart
+lib/model/account_content_admin.dart
 lib/model/account_extra_info_settings.dart
 lib/model/account_filters.dart
 lib/model/account_id.dart
@@ -136,6 +137,7 @@ lib/model/connection_statistics.dart
 lib/model/content_id.dart
 lib/model/content_info.dart
 lib/model/content_info_detailed.dart
+lib/model/content_info_detailed_admin.dart
 lib/model/content_moderation_state.dart
 lib/model/content_processing_state.dart
 lib/model/content_processing_state_type.dart
@@ -182,6 +184,8 @@ lib/model/email_registration_domain_lists.dart
 lib/model/email_registration_platforms.dart
 lib/model/favorite_profiles_page.dart
 lib/model/features_config.dart
+lib/model/feedback_category.dart
+lib/model/feedback_config.dart
 lib/model/first_image_config.dart
 lib/model/get_account_ban_time_result.dart
 lib/model/get_account_deletion_request_result.dart
@@ -272,9 +276,15 @@ lib/model/matches_iterator_state.dart
 lib/model/matches_page.dart
 lib/model/max_distance_km.dart
 lib/model/media_app_notification_settings.dart
+lib/model/media_content_extra_info_settings.dart
 lib/model/media_content_face_verified_null_by_account.dart
+lib/model/media_content_filters.dart
+lib/model/media_content_id_db_value.dart
 lib/model/media_content_iteration_page.dart
 lib/model/media_content_iteration_value.dart
+lib/model/media_content_iterator_page.dart
+lib/model/media_content_iterator_page_value.dart
+lib/model/media_content_iterator_settings.dart
 lib/model/media_content_moderation_queue_page.dart
 lib/model/media_content_moderation_queue_type.dart
 lib/model/media_content_moderation_rejected_reason_category.dart
@@ -431,6 +441,8 @@ lib/model/search_groups.dart
 lib/model/security_content_admin_info.dart
 lib/model/seen_message.dart
 lib/model/send_custom_email.dart
+lib/model/send_feedback.dart
+lib/model/send_feedback_result.dart
 lib/model/send_like.dart
 lib/model/send_like_result.dart
 lib/model/send_message_result.dart

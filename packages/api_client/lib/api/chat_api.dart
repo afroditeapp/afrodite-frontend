@@ -1439,7 +1439,7 @@ class ChatApi {
 
   /// Get next page of received likes. If the page is empty there is no more received likes available.
   ///
-  /// Profile will not be returned if: - Profile is blocked - Profile is a match
+  /// Profile will not be returned if: - Profile is blocked by either account - Profile is a match
   ///
   /// Note: This method returns the HTTP [Response].
   ///
@@ -1474,7 +1474,7 @@ class ChatApi {
 
   /// Get next page of received likes. If the page is empty there is no more received likes available.
   ///
-  /// Profile will not be returned if: - Profile is blocked - Profile is a match
+  /// Profile will not be returned if: - Profile is blocked by either account - Profile is a match
   ///
   /// Parameters:
   ///
