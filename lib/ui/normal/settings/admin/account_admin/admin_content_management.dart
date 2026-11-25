@@ -20,10 +20,22 @@ import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:openapi/api.dart';
 
 class RequiredData {
-  final AccountContent accountContent;
+  final AccountContentAdmin accountContent;
   final ContentId? securityContent;
   final List<ContentId>? profileContent;
   RequiredData(this.accountContent, this.securityContent, this.profileContent);
+}
+
+/// Info which is only shown when the less used actions toggle is enabled.
+class LessUsedActionsInfo {
+  final bool visible;
+  final bool isLoadingModeratorInfo;
+  final Map<String, GetProfileAgeAndName?> moderatorInfo;
+  const LessUsedActionsInfo({
+    required this.visible,
+    required this.isLoadingModeratorInfo,
+    required this.moderatorInfo,
+  });
 }
 
 class AdminContentManagementPage extends MyScreenPageLimited<()> {
@@ -65,9 +77,13 @@ class _AdminContentManagementScreenState extends State<AdminContentManagementScr
   bool isLoading = true;
   bool isError = false;
 
+  bool showLessUsedActions = false;
+  bool isLoadingModeratorInfo = false;
+  final Map<String, GetProfileAgeAndName?> moderatorInfo = {};
+
   Future<void> _getData() async {
     final result = await widget.api
-        .media((api) => api.getAllAccountMediaContent(widget.accountId.aid))
+        .mediaAdmin((api) => api.getAllAccountMediaContentAdmin(widget.accountId.aid))
         .ok();
 
     final securityContent = await widget.api
@@ -96,8 +112,60 @@ class _AdminContentManagementScreenState extends State<AdminContentManagementScr
       setState(() {
         isLoading = false;
         data = RequiredData(result, securityContent.content?.cid, profileContent);
+        // Moderator info might have changed so it is loaded again.
+        moderatorInfo.clear();
       });
+
+      if (showLessUsedActions) {
+        await _loadModeratorInfo();
+      }
     }
+  }
+
+  Future<void> _setShowLessUsedActions(bool value) async {
+    setState(() {
+      showLessUsedActions = value;
+    });
+
+    if (value) {
+      await _loadModeratorInfo();
+    }
+  }
+
+  /// Load moderator name and age for every content which has a moderator.
+  Future<void> _loadModeratorInfo() async {
+    final info = data;
+    if (info == null || !mounted) {
+      return;
+    }
+
+    final moderatorIds = <AccountId>{
+      for (final content in info.accountContent.data)
+        if (content.moderatorAccountId != null) content.moderatorAccountId!,
+    };
+    final missingIds = moderatorIds.where((id) => !moderatorInfo.containsKey(id.aid)).toList();
+
+    if (missingIds.isEmpty) {
+      return;
+    }
+
+    setState(() {
+      isLoadingModeratorInfo = true;
+    });
+
+    for (final id in missingIds) {
+      final result = await widget.api.profileAdmin((api) => api.getProfileAgeAndName(id.aid)).ok();
+
+      if (!mounted) {
+        return;
+      }
+
+      moderatorInfo[id.aid] = result;
+    }
+
+    setState(() {
+      isLoadingModeratorInfo = false;
+    });
   }
 
   @override
@@ -109,7 +177,16 @@ class _AdminContentManagementScreenState extends State<AdminContentManagementScr
   @override
   Widget build(BuildContext context) {
     return Scaffold(
-      appBar: AppBar(title: const Text("Admin image management")),
+      appBar: AppBar(
+        title: const Text("Admin image management"),
+        actions: [
+          IconButton(
+            icon: Icon(showLessUsedActions ? Icons.visibility : Icons.visibility_off),
+            tooltip: showLessUsedActions ? "Hide less used actions" : "Show less used actions",
+            onPressed: () => _setShowLessUsedActions(!showLessUsedActions),
+          ),
+        ],
+      ),
       body: screenContent(context),
     );
   }
@@ -139,11 +216,17 @@ class _AdminContentManagementScreenState extends State<AdminContentManagementScr
   Widget selectContentPage(
     BuildContext context,
     AccountId accountId,
-    AccountContent content,
+    AccountContentAdmin content,
     ContentId? securityContent,
     List<ContentId>? profileContent,
     Permissions permissions,
   ) {
+    final lessUsedActions = LessUsedActionsInfo(
+      visible: showLessUsedActions,
+      isLoadingModeratorInfo: isLoadingModeratorInfo,
+      moderatorInfo: moderatorInfo,
+    );
+
     final List<Widget> listWidgets = [];
 
     listWidgets.addAll(
@@ -154,10 +237,15 @@ class _AdminContentManagementScreenState extends State<AdminContentManagementScr
           e,
           securityContent,
           profileContent,
-          permissions.adminDeleteMediaContent ? deleteAction : null,
+          showLessUsedActions && permissions.adminDeleteMediaContent ? deleteAction : null,
           permissions.adminModerateMediaContent ? changeModerationStateAction : null,
-          permissions.adminEditMediaContentFaceDetectedValue ? changeFaceDetectedValue : null,
-          permissions.adminEditMediaContentFaceVerifiedValue ? changeFaceVerifiedValue : null,
+          showLessUsedActions && permissions.adminEditMediaContentFaceDetectedValue
+              ? changeFaceDetectedValue
+              : null,
+          showLessUsedActions && permissions.adminEditMediaContentFaceVerifiedValue
+              ? changeFaceVerifiedValue
+              : null,
+          lessUsedActions,
         ),
       ),
     );
@@ -173,12 +261,7 @@ class _AdminContentManagementScreenState extends State<AdminContentManagementScr
     widgets.add(
       Padding(
         padding: const EdgeInsets.all(COMMON_SCREEN_EDGE_PADDING),
-        child: Text(
-          context.strings.select_content_screen_count(
-            content.data.length.toString(),
-            content.maxContentCount.toString(),
-          ),
-        ),
+        child: Text("Images: ${content.data.length}"),
       ),
     );
 
@@ -294,7 +377,7 @@ class _AdminContentManagementScreenState extends State<AdminContentManagementScr
 Widget _buildAvailableImg(
   BuildContext context,
   AccountId accountId,
-  ContentInfoDetailed content,
+  ContentInfoDetailedAdmin content,
   ContentId? securityContent,
   List<ContentId>? profileContent,
   void Function(AccountId, ContentId)? deleteImgAction,
@@ -302,6 +385,7 @@ Widget _buildAvailableImg(
   changeModerationStateAction,
   void Function(AccountId, ContentId, bool? accepted)? changeFaceDetectedValueAction,
   void Function(AccountId, ContentId, bool? accepted)? changeFaceVerifiedValueAction,
+  LessUsedActionsInfo lessUsedActions,
 ) {
   return Padding(
     padding: const EdgeInsets.only(
@@ -344,6 +428,7 @@ Widget _buildAvailableImg(
               changeModerationStateAction,
               changeFaceDetectedValueAction,
               changeFaceVerifiedValueAction,
+              lessUsedActions,
             ),
           ),
         ),
@@ -356,7 +441,7 @@ Widget _buildAvailableImg(
 Widget _statusInfo(
   BuildContext context,
   AccountId accountId,
-  ContentInfoDetailed content,
+  ContentInfoDetailedAdmin content,
   ContentId? securityContent,
   List<ContentId>? profileContent,
   void Function(AccountId, ContentId)? deleteImgAction,
@@ -364,6 +449,7 @@ Widget _statusInfo(
   changeModerationStateAction,
   void Function(AccountId, ContentId, bool? accepted)? changeFaceDetectedValueAction,
   void Function(AccountId, ContentId, bool? accepted)? changeFaceVerifiedValueAction,
+  LessUsedActionsInfo lessUsedActions,
 ) {
   final String moderationState = switch (content.state) {
     ContentModerationState.inSlot => "In slot",
@@ -554,18 +640,42 @@ Widget _statusInfo(
     usageTexts.add("In use");
   }
 
+  final String? moderatorText;
+  final moderatorAccountId = content.moderatorAccountId;
+  if (lessUsedActions.visible && moderatorAccountId != null) {
+    if (!lessUsedActions.moderatorInfo.containsKey(moderatorAccountId.aid)) {
+      moderatorText = lessUsedActions.isLoadingModeratorInfo ? "Moderator: loading" : null;
+    } else {
+      final moderator = lessUsedActions.moderatorInfo[moderatorAccountId.aid];
+      if (moderator == null) {
+        moderatorText = "Moderator: unknown";
+      } else {
+        final name = moderator.name;
+        moderatorText = name == null
+            ? "Moderator: ${moderator.age}"
+            : "Moderator: $name, ${moderator.age}";
+      }
+    }
+  } else {
+    moderatorText = null;
+  }
+
   return Column(
     crossAxisAlignment: CrossAxisAlignment.center,
     mainAxisAlignment: MainAxisAlignment.center,
     mainAxisSize: MainAxisSize.min,
     children: [
       Text(moderationState, textAlign: TextAlign.center),
-      const Padding(padding: EdgeInsets.symmetric(vertical: 4)),
-      Text(faceDetectedText, textAlign: TextAlign.center),
-      if (faceVerifiedText != null) const Padding(padding: EdgeInsets.symmetric(vertical: 4)),
-      if (faceVerifiedText != null) Text(faceVerifiedText, textAlign: TextAlign.center),
+      if (lessUsedActions.visible) const Padding(padding: EdgeInsets.symmetric(vertical: 4)),
+      if (lessUsedActions.visible) Text(faceDetectedText, textAlign: TextAlign.center),
+      if (lessUsedActions.visible && faceVerifiedText != null)
+        const Padding(padding: EdgeInsets.symmetric(vertical: 4)),
+      if (lessUsedActions.visible && faceVerifiedText != null)
+        Text(faceVerifiedText, textAlign: TextAlign.center),
       if (usageTexts.isNotEmpty) const Padding(padding: EdgeInsets.symmetric(vertical: 4)),
       if (usageTexts.isNotEmpty) Text(usageTexts.join(" + "), textAlign: TextAlign.center),
+      if (moderatorText != null) const Padding(padding: EdgeInsets.symmetric(vertical: 4)),
+      if (moderatorText != null) Text(moderatorText, textAlign: TextAlign.center),
       for (final button in moderationStateChangeButtons) ...[
         const Padding(padding: EdgeInsets.symmetric(vertical: 4)),
         button,
@@ -586,7 +696,7 @@ Widget _statusInfo(
   );
 }
 
-Widget _rejectionDetailsInfo(BuildContext context, ContentInfoDetailed content) {
+Widget _rejectionDetailsInfo(BuildContext context, ContentInfoDetailedAdmin content) {
   String infoText = "";
   infoText = addRejectedCategoryRow(context, infoText, content.rejectedReasonCategory?.value);
   infoText = addRejectedDetailsRow(context, infoText, content.rejectedReasonDetails?.value);
