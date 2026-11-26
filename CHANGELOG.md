@@ -17,6 +17,10 @@
 
 - Fix a layout crash in the profile attribute filter value selection screen
 
+### Removed
+
+- Remove the "Account ID for support requests" screen
+
 ## [0.27.1] - 2026-11-23
 
 ### Added

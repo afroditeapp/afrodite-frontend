@@ -75,16 +75,6 @@ class AppLocalizationsFi extends AppLocalizations {
   String get account_deletion_pending_screen_title => 'Tilin poisto vireillä';
 
   @override
-  String get account_id_for_support_screen_email_title => 'Tilisi sähköpostiosoite on';
-
-  @override
-  String get account_id_for_support_screen_info =>
-      'Varmista, että tukipyyntösi sisältää tämän osoitteen, jotta ylläpitäjät voivat löytää tilisi.';
-
-  @override
-  String get account_id_for_support_screen_title => 'Tilin tunniste tukipyyntöihin';
-
-  @override
   String get account_settings_screen_cancel_email_change_button =>
       'Peruuta sähköpostiosoitteen vaihto';
 

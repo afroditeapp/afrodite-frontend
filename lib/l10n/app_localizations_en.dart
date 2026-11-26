@@ -75,16 +75,6 @@ class AppLocalizationsEn extends AppLocalizations {
   String get account_deletion_pending_screen_title => 'Account deletion pending';
 
   @override
-  String get account_id_for_support_screen_email_title => 'Your account\'s email address is';
-
-  @override
-  String get account_id_for_support_screen_info =>
-      'Make sure that your support request contains this address, so that app admins can find your account.';
-
-  @override
-  String get account_id_for_support_screen_title => 'Account ID for support requests';
-
-  @override
   String get account_settings_screen_cancel_email_change_button => 'Cancel email address change';
 
   @override
