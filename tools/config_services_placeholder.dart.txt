@@ -1,0 +1,11 @@
+import 'package:app/data/push_notification_manager.dart';
+
+String signInWithGoogleWebClientId() => "";
+String signInWithAppleServiceIdForAndroidAndWebLogin() => "";
+String iosAppGroupIdentifier() => "";
+
+class DefaultFirebaseOptions {
+  static const FirebaseOptions android = FirebaseOptions(apiKey: "", appId: "", projectId: "");
+}
+
+int? playIntegrityApiCloudProjectNumber() => null;

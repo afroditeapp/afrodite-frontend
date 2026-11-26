@@ -9,4 +9,6 @@ targets = [
 	"x86_64-apple-ios",
 	# For building tests on macOS
 	"aarch64-apple-darwin",
+	# For building tests on Linux (including CI)
+	"x86_64-unknown-linux-gnu",
 ]
